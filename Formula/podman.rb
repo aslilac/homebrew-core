@@ -69,5 +69,12 @@ class Podman < Formula
 
     machineinit_output = shell_output("podman-remote machine init --image-path fake-testi123 fake-testvm 2>&1", 125)
     assert_match "Error: open fake-testi123: no such file or directory", machineinit_output
+
+    # `podman machine init` will fail if $HOME/.ssh/ doesn't exist
+    mkdir ".ssh"
+
+    system "#{bin}/podman-remote", "machine", "init", "--now"
+    system "#{bin}/podman-remote", "run", "hello-world"
+    system "#{bin}/podman-remote", "machine", "rm", "-f"
   end
 end
