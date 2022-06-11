@@ -42,7 +42,8 @@ class PodmanCompose < Formula
     mkdir ".ssh"
 
     begin
-      system "podman-remote", "machine", "init", "--now"
+      system "podman-remote", "machine", "init"
+      system "podman-remote", "machine", "start"
 
       begin
         system bin/"podman-compose", "up", "-d"
