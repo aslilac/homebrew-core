@@ -33,6 +33,8 @@ class Podman < Formula
   depends_on "go-md2man" => :build
   depends_on "qemu"
 
+  uses_from_macos "zlib"
+
   def install
     ENV["CGO_ENABLED"] = "1"
     os = OS.kernel_name.downcase
@@ -73,7 +75,8 @@ class Podman < Formula
     # `podman machine init` will fail if $HOME/.ssh/ doesn't exist
     mkdir ".ssh"
 
-    system bin/"podman-remote", "machine", "init", "--now"
+    system bin/"podman-remote", "machine", "init"
+    system bin/"podman-remote", "machine", "start"
     system bin/"podman-remote", "run", "hello-world"
     system bin/"podman-remote", "machine", "rm", "-f"
   end
