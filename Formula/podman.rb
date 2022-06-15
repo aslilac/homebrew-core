@@ -92,10 +92,7 @@ class Podman < Formula
     # `podman machine init` will fail if $HOME/.ssh/ doesn't exist
     mkdir ".ssh"
 
-    
     image_path = resource("fcos").stage testpath
-    # puts "\n\n\n\n", image_path, "\n\n\n\n"
-    # system "false"
     system bin/"podman-remote", "machine", "init", "--image-path", image_path[0][0].basename
     system bin/"podman-remote", "machine", "start"
     system bin/"podman-remote", "run", "hello-world"
