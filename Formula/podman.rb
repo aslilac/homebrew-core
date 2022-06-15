@@ -67,6 +67,22 @@ class Podman < Formula
   end
 
   test do
+    # To update these resources:
+    # 1. Go to https://builds.coreos.fedoraproject.org/streams/testing.json
+    # 2. Find "architectures"."aarch64"."artifacts"."qemu"."formats"."qcow2.xz"."disk"
+    # 3. Use those values to fill the first case
+    # 4. Find "architectures"."x86_64"."artifacts"."qemu"."formats"."qcow2.xz"."disk"
+    # 5. Use those values to fill the second case
+    resource "fcos" do
+      if Hardware::CPU.arm?
+        url "https://builds.coreos.fedoraproject.org/prod/streams/testing/builds/36.20220605.2.0/aarch64/fedora-coreos-36.20220605.2.0-qemu.aarch64.qcow2.xz"
+        sha256 "d6af2fc8e9cb63777bebd3cb4fb9ea8f6576810b65a98ca49252403c7aa5cb73"
+      elsif Hardware::CPU.intel?
+        url "https://builds.coreos.fedoraproject.org/prod/streams/testing/builds/36.20220605.2.0/x86_64/fedora-coreos-36.20220605.2.0-qemu.x86_64.qcow2.xz"
+        sha256 "46291e2b77177e803903f70e0e87c1c0265c8100b450de372538d6ad1df3b981"
+      end
+    end
+
     assert_match "podman-remote version #{version}", shell_output("#{bin}/podman-remote -v")
     assert_match(/Cannot connect to Podman/i, shell_output("#{bin}/podman-remote info 2>&1", 125))
 
@@ -76,7 +92,11 @@ class Podman < Formula
     # `podman machine init` will fail if $HOME/.ssh/ doesn't exist
     mkdir ".ssh"
 
-    system bin/"podman-remote", "machine", "init"
+    
+    image_path = resource("fcos").stage testpath
+    # puts "\n\n\n\n", image_path, "\n\n\n\n"
+    # system "false"
+    system bin/"podman-remote", "machine", "init", "--image-path", image_path[0][0].basename
     system bin/"podman-remote", "machine", "start"
     system bin/"podman-remote", "run", "hello-world"
     system bin/"podman-remote", "machine", "rm", "-f"
