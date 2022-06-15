@@ -32,7 +32,8 @@ class Podman < Formula
   depends_on "go" => :build
   depends_on "go-md2man" => :build
   depends_on "qemu"
-
+  depends_on "xz"
+  
   uses_from_macos "zlib"
 
   def install
