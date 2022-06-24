@@ -58,7 +58,7 @@ class Deno < Formula
     # build rusty_v8 from source
     ENV["V8_FROM_SOURCE"] = "1"
     # Build with llvm and link against system libc++ (no runtime dep)
-    ENV["CLANG_BASE_PATH"] = Formula["llvm"].prefix
+    ENV["CLANG_BASE_PATH"] = "/Library/Developer/CommandLineTools/usr"
     ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm"].opt_lib
 
     resource("gn").stage buildpath/"gn"
