@@ -1,8 +1,8 @@
 class Deno < Formula
   desc "Secure runtime for JavaScript and TypeScript"
   homepage "https://deno.land/"
-  url "https://github.com/denoland/deno/releases/download/v1.22.0/deno_src.tar.gz"
-  sha256 "ffa1cd143ba1e53ab5d380c1e630a2fe73910b7be4e483b0d643d14b31b23ed4"
+  url "https://github.com/denoland/deno/releases/download/v1.23.1/deno_src.tar.gz"
+  sha256 "619169f952f1730870a7d1039bf3d65f030f520f5a7d2f50673fd1899ceeace7"
   license "MIT"
   head "https://github.com/denoland/deno.git", branch: "main"
 
@@ -41,7 +41,7 @@ class Deno < Formula
   # 4. Find full gn commit hash: https://gn.googlesource.com/gn.git/+/#{gn_commit}
   resource "gn" do
     url "https://gn.googlesource.com/gn.git",
-        revision: "53d92014bf94c3893886470a1c7c1289f8818db0"
+        revision: "bf4e17dc67b2a2007475415e3f9e1d1cf32f6e35"
   end
 
   def install
@@ -68,9 +68,7 @@ class Deno < Formula
     end
 
     cd "cli" do
-      # cargo seems to build rusty_v8 twice in parallel, which causes problems,
-      # hence the need for -j1
-      system "cargo", "install", "-vv", "-j1", *std_cargo_args
+      system "cargo", "install", "-vv", *std_cargo_args
     end
 
     bash_output = Utils.safe_popen_read(bin/"deno", "completions", "bash")
