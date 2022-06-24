@@ -54,12 +54,10 @@ class Deno < Formula
     ENV.prepend_path "PATH", Formula["python@3.10"].libexec/"bin"
     ENV["PYTHON"] = Formula["python@3.10"].opt_bin/"python3"
     ENV["GN"] = buildpath/"gn/out/gn"
+    ENV["GN_ARGS"] = "use_lld=false"
     ENV["NINJA"] = Formula["ninja"].opt_bin/"ninja"
-    # build rusty_v8 from source
     ENV["V8_FROM_SOURCE"] = "1"
-    # Build with llvm and link against system libc++ (no runtime dep)
     ENV["CLANG_BASE_PATH"] = "/Library/Developer/CommandLineTools/usr"
-    ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm"].opt_lib
 
     resource("gn").stage buildpath/"gn"
     cd "gn" do
