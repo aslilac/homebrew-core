@@ -45,12 +45,6 @@ class Deno < Formula
   end
 
   def install
-    if OS.mac? && (MacOS.version < :mojave)
-      # Overwrite Chromium minimum SDK version of 10.15
-      ENV["FORCE_MAC_SDK_MIN"] = MacOS.version
-    end
-
-    # env args for building a release build with our python3, ninja and gn
     ENV.prepend_path "PATH", Formula["python@3.10"].libexec/"bin"
     ENV["PYTHON"] = Formula["python@3.10"].opt_bin/"python3"
     ENV["GN"] = buildpath/"gn/out/gn"
@@ -58,6 +52,15 @@ class Deno < Formula
     ENV["NINJA"] = Formula["ninja"].opt_bin/"ninja"
     ENV["V8_FROM_SOURCE"] = "1"
     ENV["CLANG_BASE_PATH"] = "/Library/Developer/CommandLineTools/usr"
+    # ENV["CLANG_BASE_PATH"] = Formula["llvm"].prefix
+    # ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm"].opt_lib
+
+# export PATH=/opt/homebrew/Cellar/python@3.10/3.10.4/libexec/bin/:$PATH
+# export GN_ARGS="use_lld=false"
+# export V8_FROM_SOURCE=1
+# export CLANG_BASE_PATH=/opt/homebrew/Cellar/llvm/13.0.1_1/
+
+# export CLANG_BASE_PATH=/Library/Developer/CommandLineTools/usr
 
     resource("gn").stage buildpath/"gn"
     cd "gn" do
@@ -84,6 +87,6 @@ class Deno < Formula
     assert_match "hello deno", shell_output("#{bin}/deno run hello.ts")
     assert_match "console.log",
       shell_output("#{bin}/deno run --allow-read=#{testpath} https://deno.land/std@0.50.0/examples/cat.ts " \
-                   "#{testpath}/hello.ts")
+                    "#{testpath}/hello.ts")
   end
 end
