@@ -213,6 +213,10 @@
   "khard": {
     "exclude_packages": ["six"]
   },
+  "lexicon": {
+    "package_name": "dns-lexicon[full]",
+    "exclude_packages": ["six"]
+  },
   "legit": {
     "exclude_packages": ["six"]
   },
@@ -231,6 +235,10 @@
   "magic-wormhole": {
     "exclude_packages": ["six"],
     "extra_packages": ["wheel"]
+  },
+  "mapproxy": {
+    "exclude_packages": ["pillow"],
+    "extra_packages": ["pyproj"]
   },
   "mkdocs": {
     "exclude_packages": ["six"]
@@ -538,6 +546,7 @@
   "twine-pypi": {
     "exclude_packages": ["six"]
   },
+  "vdirsyncer": "vdirsyncer[google]",
   "virtualenv": {
     "exclude_packages": ["six"]
   },

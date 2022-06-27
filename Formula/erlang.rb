@@ -2,10 +2,9 @@ class Erlang < Formula
   desc "Programming language for highly scalable real-time systems"
   homepage "https://www.erlang.org/"
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url "https://github.com/erlang/otp/releases/download/OTP-25.0/otp_src_25.0.tar.gz"
-  sha256 "2d7678c9bc6fcf3a1242c4d1c3864855d85e73ade792cd80adb8a9f379996711"
+  url "https://github.com/erlang/otp/releases/download/OTP-25.0.2/otp_src_25.0.2.tar.gz"
+  sha256 "6a5cbc8d0f18e7a7fd2fb3d1567e2b70737ee4124cb22980ad4ed663c61e010e"
   license "Apache-2.0"
-  revision 1
 
   livecheck do
     url :stable
@@ -13,12 +12,12 @@ class Erlang < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "6d1d1872e0ffd23aaf68c94a115077e268e401743695601bacada90a2e5cd5e4"
-    sha256 cellar: :any,                 arm64_big_sur:  "9e5ec86007d18cc94ab5ccf4eb49b09e701bc0d381e1e0c89f4bbcaab7e03100"
-    sha256 cellar: :any,                 monterey:       "93e8902c4912b349792a1547d04d00fc2f46f67830a037fea55e324b38b1b123"
-    sha256 cellar: :any,                 big_sur:        "fa0a7ba6f10e637c83f905256fa4ee410250f0f97f748e39c885e09485290a9f"
-    sha256 cellar: :any,                 catalina:       "f3347ac517482695e097abd972d38cfbe97c52964f5e208e0f329e381ad0888e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2c1927e4e7b7fb165dff0f891ce10690091ed14c1ad27a657319494e93416b79"
+    sha256 cellar: :any,                 arm64_monterey: "25b9d82aae30c8857014db379293ed452010a73c29e305c2d875abb7da023c59"
+    sha256 cellar: :any,                 arm64_big_sur:  "c162cd5e611d53e2e24ff34530a8bc33ee8f8c03d7953b3cdfca674bf76e818a"
+    sha256 cellar: :any,                 monterey:       "af35916b60df2e96607e37d3a766c3e5a43ca987f4565b7e428dcdd8f4f3e7de"
+    sha256 cellar: :any,                 big_sur:        "319830a0e2d61164b0e616ff1d6a8c8bf7b1f483b3025148a3bb48a98f4a0059"
+    sha256 cellar: :any,                 catalina:       "6b141c0cc7da012cfd69bb506929c14378adfb751d8a58be0e6c2c69bd113b7d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "355bbce3c83cf30f8c055ef7ea9555a48ad1645134d1d579cbd1b5f6c2c2a31c"
   end
 
   head do
@@ -33,9 +32,9 @@ class Erlang < Formula
   depends_on "wxwidgets" # for GUI apps like observer
 
   resource "html" do
-    url "https://github.com/erlang/otp/releases/download/OTP-25.0/otp_doc_html_25.0.tar.gz"
-    mirror "https://fossies.org/linux/misc/otp_doc_html_25.0.tar.gz"
-    sha256 "2c5a7a3916ea619ec385985cd6df51a3e307aabfa09dda8283510ae013a0ca9e"
+    url "https://github.com/erlang/otp/releases/download/OTP-25.0.2/otp_doc_html_25.0.2.tar.gz"
+    mirror "https://fossies.org/linux/misc/otp_doc_html_25.0.2.tar.gz"
+    sha256 "1927c0536df13c03ecf30c223f56ae1f594f369ec5f8b88f6baa2c047bed151a"
   end
 
   def install

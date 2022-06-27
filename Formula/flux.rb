@@ -2,8 +2,8 @@ class Flux < Formula
   desc "Lightweight scripting language for querying databases"
   homepage "https://www.influxdata.com/products/flux/"
   url "https://github.com/influxdata/flux.git",
-      tag:      "v0.170.1",
-      revision: "878a9f1a60837db0e28c473ea0e12a1f730650ed"
+      tag:      "v0.172.0",
+      revision: "0bd05dd6371b4355ddbacf50a3eae51d5240d026"
   license "MIT"
   head "https://github.com/influxdata/flux.git", branch: "master"
 
@@ -13,12 +13,12 @@ class Flux < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "ec82f5853853937df71f305824bf045bccfbc3b2a3f21013bb08d0e415568ad7"
-    sha256 cellar: :any,                 arm64_big_sur:  "14e0de0762c1d72ea63269c35e367b9de237521da12374b1a542dc133a7da0a6"
-    sha256 cellar: :any,                 monterey:       "c81bf2bdb3dc0a786d2bd6cf834027ae7e218df918329e3061ee1ebc7c4bf9a0"
-    sha256 cellar: :any,                 big_sur:        "15a05c0cf3d11881c3f6c9eac8da26fd809306b10d3f8b2d03464dbd4130c521"
-    sha256 cellar: :any,                 catalina:       "3f56430cbbfc6c41557ace4db040530d27fe19723fa6b8b07defa6f77d538e05"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4124541d69ed7c85830fd762f45bc42dc2805b13340c5ff9767588270236fdb9"
+    sha256 cellar: :any,                 arm64_monterey: "98abd65c2faa5c098c4b8a219d35849a3ab5f6f8a71445417aeffab6d7d84c01"
+    sha256 cellar: :any,                 arm64_big_sur:  "1a32889a6165960867daf45ea027d0f2082036d55bb995b67a8ab07b14970818"
+    sha256 cellar: :any,                 monterey:       "c561222f3d8a9f46196a8c50177e0992bd1d6f07bd551accbc9fd68ee0ee614a"
+    sha256 cellar: :any,                 big_sur:        "289428523f5221a900d1c345a28c23329565252443885aa9d1439b2b0cdc86f9"
+    sha256 cellar: :any,                 catalina:       "fd414a43c20a54298990c5de1af18a33f4ea17e6caf16abc3577cd28b8e1e8fc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dc1e732bf4d24bbb17a8ad793a36f1eef9b76ffce8f3b556248a7a6acf7abf9c"
   end
 
   depends_on "go" => :build

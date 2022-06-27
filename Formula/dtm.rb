@@ -1,17 +1,17 @@
 class Dtm < Formula
   desc "Cross-language distributed transaction manager"
   homepage "https://en.dtm.pub/"
-  url "https://github.com/dtm-labs/dtm/archive/refs/tags/v1.14.2.tar.gz"
-  sha256 "8de9adc52558c1913ceb5af550870716ee8125aeded182187a11e44df1089752"
+  url "https://github.com/dtm-labs/dtm/archive/refs/tags/v1.14.4.tar.gz"
+  sha256 "94c53132d6b3679c643178f9db66922f6441e81e8a03094ff95be6bc8bce3cac"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0c57235b8a7b5a8349a04a9ee2f0965b710ff0736b7094e02bbaf5c286df39eb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "21bf396e82caa56b5a5c75a44cc0f7fc2a20693727bedf9c19d56fb4dc344568"
-    sha256 cellar: :any_skip_relocation, monterey:       "209572528a0c513ad47eb561fb16c3a2ee138ce796079d0de613f54e467db502"
-    sha256 cellar: :any_skip_relocation, big_sur:        "229baf2ba65972abf6cdd15d49ccb6ff67e3917f0dc487acdfdf7df38a3a7caa"
-    sha256 cellar: :any_skip_relocation, catalina:       "9beec17d0b2b75f2856d954c0850d39e2536eb696cf0df32173c016bcaffabfd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e1188f9cd6dee4728294177045367d356e2ba155fa857864242b19617b6eb9ab"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ea5e1d23e08371917dcf44b140263e262c12d3d6a25251161f9f544afae0b039"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f2861f0800c9895d95a569f5f1691c98a3d8b7dd0e1cd77df6f03fc74ccf0f8d"
+    sha256 cellar: :any_skip_relocation, monterey:       "c530422c825601fa541b4666565d91d2ddd2f3a328d4cb48e8521d2260bf9e44"
+    sha256 cellar: :any_skip_relocation, big_sur:        "03725db3cea1d0bdb3802045b2ae9d8abfe030ba44555c56cfc113565ad23b5f"
+    sha256 cellar: :any_skip_relocation, catalina:       "c4d04a3f8d93e3b5072c95c9dd1346e4193e9ca375f44423f7e5ed2332e72188"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9df5669005b45a2b11c602c236146bf6656ae60c7992124e8e21d218e151ce27"
   end
 
   depends_on "go" => :build

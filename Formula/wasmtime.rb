@@ -2,8 +2,8 @@ class Wasmtime < Formula
   desc "Standalone JIT-style runtime for WebAssembly, using Cranelift"
   homepage "https://wasmtime.dev/"
   url "https://github.com/bytecodealliance/wasmtime.git",
-      tag:      "v0.36.0",
-      revision: "c0e58a1e1c22b53e0330829057da6125da89bef1"
+      tag:      "v0.38.0",
+      revision: "99c6463abd69aa02a34f40da7eaebfc9b30f1feb"
   license "Apache-2.0" => { with: "LLVM-exception" }
   head "https://github.com/bytecodealliance/wasmtime.git", branch: "main"
 
@@ -13,12 +13,12 @@ class Wasmtime < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9e5d31a4e8a177472c3802046694b05566a470f7b823767b9954887ff4bcd6db"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9c03ba22dc761bb52fa8c6e22c3b126fc8e428dda589f6f9e4eda14e14b838fa"
-    sha256 cellar: :any_skip_relocation, monterey:       "2491f71f854a3399d3ad2b1bfe7079ce5d622c1f510c2bdecb825b85a329548f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "13f2c88426a30fc640c849274495676752efc86cae99c0d16620d88aba498494"
-    sha256 cellar: :any_skip_relocation, catalina:       "342f36ca7b196e1d9b7d6b9ed82383b0dc6ec9bff159f0d0e72f92c243bff71e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "39195d69384811ccd7b667baae1b3fe12e7a3faec201fac9b41f6c43bb348052"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0827746b163fe208f668aa4f12beda83ab39251cd30dd43ff79a10c92248d0a5"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "21989881f10d6c7d6845cb3e4a65047c9285cfcb60a95bd3a3ad522fd3c43844"
+    sha256 cellar: :any_skip_relocation, monterey:       "cbf32496bb5fe395a5142eefccb768f6b18767ecefb0d90c20f417e5d2797bc3"
+    sha256 cellar: :any_skip_relocation, big_sur:        "ccf96c0051b4bfaadfee83b030a9fe5dc41d79bc343fdc14209d1716b9bac7be"
+    sha256 cellar: :any_skip_relocation, catalina:       "3269a61bf9c7f0c140864f389239e4c5a28fd8c779d83f503e6e3511393da35b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9298877d731e877fabd5ae4b896892f2223e1499f15d5dc0d4b86df4b6fb0faa"
   end
 
   depends_on "rust" => :build

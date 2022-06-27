@@ -1,17 +1,17 @@
 class MscGenerator < Formula
   desc "Draws signalling charts from textual description"
-  homepage "https://sourceforge.net/p/msc-generator"
-  url "https://downloads.sourceforge.net/project/msc-generator/msc-generator/v7.x/msc-generator-7.2.tar.gz"
-  sha256 "40c7a45e1bce96bc93440b604eb0fd2b7894985fa0a723bf6483565bef026a2e"
+  homepage "https://gitlab.com/msc-generator/msc-generator"
+  url "https://gitlab.com/api/v4/projects/31167732/packages/generic/msc-generator/7.3.1/msc-generator-7.3.1.tar.gz"
+  sha256 "ee715cb0a9ca16d218d5092d6f9e4a2fa5366489beb03c9c65b03293d3c8e56a"
   license "AGPL-3.0-or-later"
 
   bottle do
-    sha256 arm64_monterey: "5707ed7ae39ba1a9de555d6c11cf6f352725e196ab5fdf48e9b926e7dfa8bb17"
-    sha256 arm64_big_sur:  "44aa53b6003d3a4a5dbbcaf26dd77850dddfc96beee584589fac8a8b8ec191a9"
-    sha256 monterey:       "8db3175190bc5b0d33535a6397603aa191f60c1b54596279de10e063971df7b4"
-    sha256 big_sur:        "a0e46ea25c940085fffcee6647459f5fb91c2fadc24e6f575554fff6da5ae7cf"
-    sha256 catalina:       "d38e92aa74a198b8b64e39d5def5d8ce83a182c8acb90dabbb83cd240e8b753f"
-    sha256 x86_64_linux:   "d5cf407d8bcbc6a65ac189613f0492df0f0c7592e57d9b0155cf4e39e0a7dc71"
+    sha256 arm64_monterey: "901294bc54e8da0986e3e0b4e1ffc0707d2f503639914187d54cd0379218b064"
+    sha256 arm64_big_sur:  "f65ba879ff561f20c4604522c07e09ab00a83862480038d45cb2cf8b79692757"
+    sha256 monterey:       "eecd90f08041a878eb775d1baebdf20efbf47f159d36b180d46de1cc9f1058c1"
+    sha256 big_sur:        "3fb9534c7e43ec8e80f852840356749feefd1f370a259bd58b9ba32b57c652a6"
+    sha256 catalina:       "e1d2f7b436ce2038ab041e244f0b7de89584741db47b4325aeff246f797d4bba"
+    sha256 x86_64_linux:   "9ddfb8e582742435e1a56d6751ec8b817264041f99812a0302748385d80f0647"
   end
 
   depends_on "autoconf" => :build
@@ -33,9 +33,7 @@ class MscGenerator < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-font-checks"
-    # Dance around upstream trying to build everything in doc/ which we don't do for now
-    # system "make", "install"
+    system "./configure", *std_configure_args, "--disable-font-checks"
     system "make", "-C", "src", "install"
     system "make", "-C", "doc", "msc-gen.1"
     man1.install "doc/msc-gen.1"

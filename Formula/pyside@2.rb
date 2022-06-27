@@ -1,16 +1,17 @@
 class PysideAT2 < Formula
   desc "Official Python bindings for Qt"
   homepage "https://wiki.qt.io/Qt_for_Python"
-  url "https://download.qt.io/official_releases/QtForPython/pyside2/PySide2-5.15.3-src/pyside-setup-opensource-src-5.15.3.tar.xz"
-  sha256 "7ff5f1cc4291fffb6d5a3098b3090abe4d415da2adec740b4e901893d95d7137"
+  url "https://download.qt.io/official_releases/QtForPython/pyside2/PySide2-5.15.5-src/pyside-setup-opensource-src-5.15.5.tar.xz"
+  sha256 "3920a4fb353300260c9bc46ff70f1fb975c5e7efa22e9d51222588928ce19b33"
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-3.0-only"]
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "728fecfbc508bbfe4c1d43230a635a872afb1a72fdfea95b7d1f6a6540736e8a"
-    sha256 cellar: :any, arm64_big_sur:  "82b52e6502919f7ed205624e1b6dbd899749f7c4901b71b00325fdacbac8b998"
-    sha256 cellar: :any, monterey:       "8bf6dba62130995c9471f84a27d0c67a587fec68d8de41654acd7d5b54a277c7"
-    sha256 cellar: :any, big_sur:        "f84594ec595143fd928c8b262256b97095ef6d0d820d0c45ae689b5c76b8661c"
-    sha256 cellar: :any, catalina:       "c1ccaa9b85e0f969a33ba77ca593009e0ca584da1b796ae87d948b5ca2109fd1"
+    sha256 cellar: :any,                 arm64_monterey: "9981b3c216053460da40f7e9e05410159ddde34eb1f98a8387cae76e89020d8a"
+    sha256 cellar: :any,                 arm64_big_sur:  "ee5a173573f466856605fa20407f90d1865a09941d791f9562acc630792dcbf9"
+    sha256 cellar: :any,                 monterey:       "b635a0bd7b231c92eb1523e05945c6eb9fa03433a6245d81626bd12ccf89c78f"
+    sha256 cellar: :any,                 big_sur:        "945f792656265d19ed410ea57be8484190794f0b44cae51efd82261dd2bbf9c1"
+    sha256 cellar: :any,                 catalina:       "0dffb5bc45842350e82847d56e06c95d8d9b5b85b5e00bd2dae626589207cade"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "de4b9c0b559acfe32afb5fe7f51cdd7ba50a5811dba69d235c12a21dd2d05ccf"
   end
 
   keg_only :versioned_formula
@@ -23,6 +24,11 @@ class PysideAT2 < Formula
   uses_from_macos "libxml2"
   uses_from_macos "libxslt"
 
+  on_linux do
+    depends_on "libxcb"
+    depends_on "mesa"
+  end
+
   fails_with gcc: "5"
 
   # Don't copy qt@5 tools.
@@ -32,7 +38,17 @@ class PysideAT2 < Formula
   end
 
   def install
+    # upstream issue: https://bugreports.qt.io/browse/PYSIDE-1684
+    unless OS.mac?
+      extra_include_dirs = [Formula["mesa"].opt_include, Formula["libxcb"].opt_include]
+
+      inreplace "sources/pyside2/cmake/Macros/PySideModules.cmake",
+                "--include-paths=${shiboken_include_dirs}",
+                "--include-paths=${shiboken_include_dirs}:#{extra_include_dirs.join(":")}"
+    end
+
     args = std_cmake_args + %W[
+      -DCMAKE_CXX_COMPILER=#{ENV.cxx}
       -DCMAKE_PREFIX_PATH=#{Formula["qt@5"].opt_lib}
       -DPYTHON_EXECUTABLE=#{Formula["python@3.10"].opt_bin}/python3
       -DCMAKE_INSTALL_RPATH=#{lib}
@@ -59,12 +75,10 @@ class PysideAT2 < Formula
       Network
       Quick
       Svg
+      WebEngineWidgets
       Widgets
       Xml
     ]
-
-    # Qt web engine is not supported on Apple Silicon.
-    modules << "WebEngineWidgets" unless Hardware::CPU.arm?
 
     modules.each { |mod| system python, "-c", "import PySide2.Qt#{mod}" }
 
@@ -81,8 +95,10 @@ class PysideAT2 < Formula
         return 0;
       }
     EOS
+    rpaths = []
+    rpaths += ["-Wl,-rpath,#{lib}", "-Wl,-rpath,#{Formula["python@3.10"].opt_lib}"] unless OS.mac?
     system ENV.cxx, "-std=c++11", "test.cpp",
-           "-I#{include}/shiboken2", "-L#{lib}", "-lshiboken2.abi3",
+           "-I#{include}/shiboken2", "-L#{lib}", "-lshiboken2.abi3", *rpaths,
            *pyincludes, *pylib, "-o", "test"
     system "./test"
   end

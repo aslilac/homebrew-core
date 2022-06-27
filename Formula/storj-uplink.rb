@@ -1,8 +1,8 @@
 class StorjUplink < Formula
   desc "Uplink CLI for the Storj network"
   homepage "https://storj.io"
-  url "https://github.com/storj/storj/archive/refs/tags/v1.50.4.tar.gz"
-  sha256 "8f507ffa4bf70eeeb3cf9dc5c4e7794c9913354495d497bdd1d1cdb2b8453fe5"
+  url "https://github.com/storj/storj/archive/refs/tags/v1.57.2.tar.gz"
+  sha256 "ba0cd9d2433eaff571082ef52bbc26ea74ef3b90760919cb48176dac3936f326"
   license "AGPL-3.0-only"
 
   livecheck do
@@ -11,12 +11,12 @@ class StorjUplink < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "24661138ae188ab1ca55e5a1ed552df4d9c0411f0db7e004f0b04ee4b2b5dbb5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fe5228829a136681027362b9deb96697afe2c43178c2c5c01b9344e8d58fe719"
-    sha256 cellar: :any_skip_relocation, monterey:       "f3da90c0dc7b02c1e78d579825533c040817219945128353e49b7ddb8684687b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "19d11124c53bfeb064259003ca6150d9f38bbc8536a8b7248256a6b113098be0"
-    sha256 cellar: :any_skip_relocation, catalina:       "2b77cf8d19b89d645fa11044e8d495b0a53d2329da12979aff99f36454aeaefe"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "eb866788f2ee8a4d177788ddc7a259c321e74e4b3ef565e5757df4cf998b55a6"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5e4a35272a2f6218b98e5c4fba2349cc07073d8c3c47b07ff58784245b5fe7b2"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c8bc33747c30d4639ddd5b0cfb93b49855c873a1b6c5584af10246647217d81b"
+    sha256 cellar: :any_skip_relocation, monterey:       "4be8dd2ef4571b058a828e724a8865f4632d0ad076c737a6f27f27571d3d5913"
+    sha256 cellar: :any_skip_relocation, big_sur:        "abd9bad232351df682d6f804a942aea6ea60c51efb009917b6eb00ae5a6d35de"
+    sha256 cellar: :any_skip_relocation, catalina:       "9c308e55477284ce407498a0f429944ee0137bdaf9d2ee684432247658429f77"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d18eaa70c6be0158071626fc5ac3575ab27fde84d2d9cbd52641fc715d1ea336"
   end
 
   depends_on "go" => :build

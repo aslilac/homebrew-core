@@ -3,24 +3,24 @@ class Pylint < Formula
 
   desc "It's not just a linter that annoys you!"
   homepage "https://github.com/PyCQA/pylint"
-  url "https://files.pythonhosted.org/packages/bb/f7/2ee3a2959d05a9dd3fba1c72b30e71af3bd86ff37f25b198dd4c41af6b1b/pylint-2.14.1.tar.gz"
-  sha256 "549261e0762c3466cc001024c4419c08252cb8c8d40f5c2c6966fea690e7fe2a"
+  url "https://files.pythonhosted.org/packages/d9/99/2958da59c0203fe40670bcbce52043b4db4e74ef0db14ab59d5b66c0ba6c/pylint-2.14.3.tar.gz"
+  sha256 "4e1378f815c63e7e44590d0d339ed6435f5281d0a0cc357d29a86ea0365ef868"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "458f45591e49a4bdef59378e38a46a78a9752f9727dd7684ae0dbd929d3c3665"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "142377290f4e5348958879d0b49f46b89fb07000aadd9d8f7cc1c5adf0cbf94f"
-    sha256 cellar: :any_skip_relocation, monterey:       "b02ac2edd0d52837ebeb624168413374d28d0be3e3a5e9914606e31ad3cc12c7"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ce214530b62d746e6fd295d79c26e24dbab13f503a0d579ce09b728786f1193f"
-    sha256 cellar: :any_skip_relocation, catalina:       "fe592ba4c32283648fc3f61b7baf5f9e07dc053451782d43577b3fdefbc24f46"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2dedc937d49abd3a4d73c6f281c7ae964fd21454984756a4d2cfba568b93946d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "278de3fd92af26975c098a5f83bcc0dc187b1a9da007d3ea512ce46c2e2b0182"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c2489642cfc58c6cc76df8cb71bf620b1f26931ef35d68778c4ab2f4be8bcdb3"
+    sha256 cellar: :any_skip_relocation, monterey:       "58e42141c17f9b32a2733138b7524b7329cca6a3d66da90517f39bb4861998ae"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e1134d05d7b9801690ce06f791a84add2900c756ca595f338dd6b2c0468937ad"
+    sha256 cellar: :any_skip_relocation, catalina:       "da09c182c2e8d65310571f3439521b69d427b779cd8fcb912026faa088572d63"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "673d47d8127d505e5f9fa5538b5a7adf666164303e41a48c0fa22c8c2c01edb9"
   end
 
   depends_on "python@3.10"
 
   resource "astroid" do
-    url "https://files.pythonhosted.org/packages/e9/1f/0ac1e7c374a0347b119f67a752a7cf7c9a2c0b2fbea9da9797a825adf175/astroid-2.11.5.tar.gz"
-    sha256 "f4e4ec5294c4b07ac38bab9ca5ddd3914d4bf46f9006eb5c0ae755755061044e"
+    url "https://files.pythonhosted.org/packages/40/89/d29f51ca63b25c488e8f12812d80a970d1f0897de22b175d8ff23f2dcbe7/astroid-2.11.6.tar.gz"
+    sha256 "4f933d0bf5e408b03a6feb5d23793740c27e07340605f236496cd6ce552043d6"
   end
 
   resource "dill" do

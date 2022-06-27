@@ -1,9 +1,9 @@
 class OpensslAT3 < Formula
   desc "Cryptography and SSL/TLS Toolkit"
   homepage "https://openssl.org/"
-  url "https://www.openssl.org/source/openssl-3.0.3.tar.gz"
-  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-3.0.3.tar.gz"
-  sha256 "ee0078adcef1de5f003c62c80cc96527721609c6f3bb42b7795df31f8b558c0b"
+  url "https://www.openssl.org/source/openssl-3.0.4.tar.gz"
+  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-3.0.4.tar.gz"
+  sha256 "2831843e9a668a0ab478e7020ad63d2d65e51f72977472dc73efcefbafc0c00f"
   license "Apache-2.0"
 
   livecheck do
@@ -12,12 +12,12 @@ class OpensslAT3 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "6a4508b120c14a1ca4e6c804db30f2da5100df94a3198e768d124dd7afd9e707"
-    sha256 arm64_big_sur:  "825d9a0d62dae77432b0391c2792e166be6cd4716b1efea40a65e9eb0fdf54c9"
-    sha256 monterey:       "044032dcdffb16c0bf7949fdf847f5f957e727bef1f982d8a7f156f727c81ad5"
-    sha256 big_sur:        "b2e06913edb52a31b6f8aab8513304875f377bf71381d9f9430e11974254f1eb"
-    sha256 catalina:       "89f1e75541cef8e314f2b4fc134a457dbc6d0bebb6e6906dbccd527144d54917"
-    sha256 x86_64_linux:   "34131de7d88d04d881351f8631dfcc1468d800ed85ae1361c6b4fb88b7ee83fd"
+    sha256 arm64_monterey: "0c76fe10482a42af93c6a7211be8c65d2eb8b84298c2e8c8c2724e98b538dab5"
+    sha256 arm64_big_sur:  "3b2c8f610a1795ae7988ef3953242180a5482f8454ef6b778a37d5b53793a198"
+    sha256 monterey:       "f73407d5c9da710a08aba96a5528e9426c3328dfd7fdf16d9ac37c6e61b42213"
+    sha256 big_sur:        "b7297c525a5e56d66ba6612abaf6fc39ba7db2ff1289a3738f0c8856da262b95"
+    sha256 catalina:       "6bba993328fa698354f8f80aee634a123e2eaf2b6fad9ca94f5dbbfc0ad2f74e"
+    sha256 x86_64_linux:   "f35334ec817d0a2077904f81f82345b9ef33243a046cfe4a80ee8d6c76eb030a"
   end
 
   keg_only :shadowed_by_macos, "macOS provides LibreSSL"
@@ -41,13 +41,6 @@ class OpensslAT3 < Formula
       url "https://cpan.metacpan.org/authors/id/B/BI/BINGOS/ExtUtils-MakeMaker-7.62.tar.gz"
       sha256 "5022ad857fd76bd3f6b16af099fe2324639d9932e08f21e891fb313d9cae1705"
     end
-  end
-
-  # Fix failing test due to an expired certificate.
-  # Remove with the next version (3.0.4).
-  patch do
-    url "https://github.com/openssl/openssl/commit/338123cd95c83bddd2f54eb28ef2c5565e1766cb.patch?full_index=1"
-    sha256 "ef4fc492c841b61572f4d2031a3d707019aeb67d89d539287699c326857187fc"
   end
 
   # SSLv2 died with 1.1.0, so no-ssl2 no longer required.

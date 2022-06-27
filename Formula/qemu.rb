@@ -4,15 +4,16 @@ class Qemu < Formula
   url "https://download.qemu.org/qemu-7.0.0.tar.xz"
   sha256 "f6b375c7951f728402798b0baabb2d86478ca53d44cedbefabbe1c46bf46f839"
   license "GPL-2.0-only"
+  revision 1
   head "https://git.qemu.org/git/qemu.git", branch: "master"
 
   bottle do
-    sha256 arm64_monterey: "0aff3ed76118297c2d63c1af3042e6153342c0dbc3fa983dd8eb7e7b2c08cccb"
-    sha256 arm64_big_sur:  "6b73ee277ce451648f43256c0350955b5420021723318c56d0302aa8f5a064e5"
-    sha256 monterey:       "eb00fbcbb8efab558f6c4eff542da9da653694e96c548e2cd1825044335d2555"
-    sha256 big_sur:        "7714e626b8dface002e237c085f040751520a1669a8db38118d4db1e47d5b981"
-    sha256 catalina:       "c81502e9803c091830ccc8d9360b57eddbed67cd44e8777b6e64c3ddc6e18ba2"
-    sha256 x86_64_linux:   "9cb56c9026cd2d3b798958e95ab1c1fb77f23d846a0adb2a3945f49fff7eb143"
+    sha256 arm64_monterey: "d0640f2fa4be667c881a9364a5eabe40626b5cc887a6ade53d0b5701aaae3054"
+    sha256 arm64_big_sur:  "cd0ea798d387018e571253f99084d8f976e73c4c696830af57c365426638f054"
+    sha256 monterey:       "545187ab2b386fc4ce48735ab4247c17783bd420a56ddb4800565c4868da141a"
+    sha256 big_sur:        "68cedd112c5442d88767b8ebf1da68f0915ba4a7b2441d54453c098889b87d5a"
+    sha256 catalina:       "50d9981998568aa2c724aa41b9c7c1be34af187667f53235469938a5cad464c1"
+    sha256 x86_64_linux:   "7e606b9abfc143d599f567ae3391ece34da5929fc9304ce6ffd4b558d9c3bbd6"
   end
 
   depends_on "libtool" => :build
@@ -33,6 +34,7 @@ class Qemu < Formula
   depends_on "pixman"
   depends_on "snappy"
   depends_on "vde"
+  depends_on "zstd"
 
   on_linux do
     depends_on "attr"
@@ -63,6 +65,7 @@ class Qemu < Formula
       --enable-slirp=system
       --enable-vde
       --enable-virtfs
+      --enable-zstd
       --extra-cflags=-DNCURSES_WIDECHAR=1
       --disable-sdl
     ]

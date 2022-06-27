@@ -3,10 +3,21 @@ class PodmanCompose < Formula
 
   desc "Alternative to docker-compose using podman"
   homepage "https://github.com/containers/podman-compose"
-  url "https://github.com/containers/podman-compose/archive/refs/tags/v1.0.3.tar.gz"
-  sha256 "b28e5792a50feee987e7864e0df1b6e8929c923c010e1f65493fe29b4c2aedcf"
+  url "https://files.pythonhosted.org/packages/c7/aa/0997e5e387822e80fb19627b2d4378db065a603c4d339ae28440a8104846/podman-compose-1.0.3.tar.gz"
+  sha256 "9c9fe8249136e45257662272ade33760613e2d9ca6153269e1e970400ea14675"
   license "GPL-2.0-only"
 
+  bottle do
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "36fde080e8321d2b63565019f3d0b55bd2f826aa1350d863a6a95cc0d75134e3"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "06415613d41540f1eefcae578699825268375517ea8331cba57964cc4ffcf007"
+    sha256 cellar: :any_skip_relocation, monterey:       "0df0a7c0f9bfdf5668d2887f559c08c94b74ccf108a671e4c13ba90ce1325ec3"
+    sha256 cellar: :any_skip_relocation, big_sur:        "3fa095e16a4e8aff1dce63dfa153ee9c0f6f62e26937f894dd317ce7c567f5cd"
+    sha256 cellar: :any_skip_relocation, catalina:       "12ce1adc3740cac41cc009713633711fe5ab2b84efb39fba02e01b7761952072"
+  end
+
+  # Depends on the `podman` command, which the podman.rb formula does not
+  # currently install on Linux.
+  depends_on :macos
   depends_on "podman"
   depends_on "python@3.9"
 
@@ -27,7 +38,7 @@ class PodmanCompose < Formula
   test do
     port = free_port
 
-    (testpath/"docker-compose.yml").write <<~EOS
+    (testpath/"compose.yml").write <<~EOS
       version: "3"
       services:
         test:

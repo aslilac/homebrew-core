@@ -34,11 +34,12 @@ class Coin3d < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "6e90d8890b3fb62e64c230cf6d18e8421cdfeb3f32566f53bd2922d695e30f43"
-    sha256 cellar: :any, arm64_big_sur:  "52a07abdd5d902857a565c483dba9873b87e2b62ec76d22f0c7313bddce93b8f"
-    sha256 cellar: :any, monterey:       "405ae02aa2ad54e90eaa4a027a293952dd8a275709a103eeb5660cfbb3660fdf"
-    sha256 cellar: :any, big_sur:        "a549965ef49f10d7869ea3ff334d7872da6ea7c9c2251900212c2153db235cbf"
-    sha256 cellar: :any, catalina:       "993bb8ae8ce7ad3e2622857e73a9a5af18e06b18cd34296f6c028d2a82872edc"
+    sha256 cellar: :any,                 arm64_monterey: "6e90d8890b3fb62e64c230cf6d18e8421cdfeb3f32566f53bd2922d695e30f43"
+    sha256 cellar: :any,                 arm64_big_sur:  "52a07abdd5d902857a565c483dba9873b87e2b62ec76d22f0c7313bddce93b8f"
+    sha256 cellar: :any,                 monterey:       "405ae02aa2ad54e90eaa4a027a293952dd8a275709a103eeb5660cfbb3660fdf"
+    sha256 cellar: :any,                 big_sur:        "a549965ef49f10d7869ea3ff334d7872da6ea7c9c2251900212c2153db235cbf"
+    sha256 cellar: :any,                 catalina:       "993bb8ae8ce7ad3e2622857e73a9a5af18e06b18cd34296f6c028d2a82872edc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "389a8a6add2f83c9ec9a6cbeba3d7f9cc6762c79d7be1ee1b41de4f31c1b0ccb"
   end
 
   head do
@@ -56,6 +57,11 @@ class Coin3d < Formula
   depends_on "boost"
   depends_on "pyside@2"
   depends_on "python@3.10"
+
+  on_linux do
+    depends_on "mesa"
+    depends_on "mesa-glu"
+  end
 
   def install
     # Create an empty directory for cpack to make the build system
@@ -80,7 +86,7 @@ class Coin3d < Formula
 
     resource("pivy").stage do
       ENV.append_path "CMAKE_PREFIX_PATH", prefix.to_s
-      ENV["LDFLAGS"] = "-rpath #{opt_lib}"
+      ENV["LDFLAGS"] = "-Wl,-rpath,#{opt_lib}"
       system "python3", *Language::Python.setup_install_args(prefix),
                          "--install-lib=#{prefix/Language::Python.site_packages("python3")}"
     end
@@ -95,13 +101,23 @@ class Coin3d < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.cpp", "-L#{lib}", "-lCoin", "-Wl,-framework,OpenGL", \
-           "-o", "test"
+
+    opengl_flags = if OS.mac?
+      ["-Wl,-framework,OpenGL"]
+    else
+      ["-L#{Formula["mesa"].opt_lib}", "-lGL"]
+    end
+
+    system ENV.cc, "test.cpp", "-L#{lib}", "-lCoin", *opengl_flags, "-o", "test"
     system "./test"
 
     xy = Language::Python.major_minor_version Formula["python@3.10"].opt_bin/"python3"
     ENV.append_path "PYTHONPATH", "#{Formula["pyside@2"].opt_lib}/python#{xy}/site-packages"
+    # Set QT_QPA_PLATFORM to minimal to avoid error:
+    # "This application failed to start because no Qt platform plugin could be initialized."
+    ENV["QT_QPA_PLATFORM"] = "minimal" if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
     system Formula["python@3.10"].opt_bin/"python3", "-c", <<~EOS
+      import shiboken2
       from pivy.sogui import SoGui
       assert SoGui.init("test") is not None
     EOS

@@ -2,21 +2,21 @@ class Argo < Formula
   desc "Get stuff done with container-native workflows for Kubernetes"
   homepage "https://argoproj.io"
   url "https://github.com/argoproj/argo-workflows.git",
-      tag:      "v3.3.6",
-      revision: "2b428be8001a9d5d232dbd52d7e902812107eb28"
+      tag:      "v3.3.8",
+      revision: "621b0d1a8e09634666ebe403ee7b8fc29db1dc4e"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f0ccf381a13ba9b67fdfe269b3bad7b9eb4ec9bc306b45ef31dd5d21bf05ff37"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c0aeb16dfe77c620695d97ebaa30656a3afe3025aa5f19940fef084cfddad1d0"
-    sha256 cellar: :any_skip_relocation, monterey:       "4e82c353637803c191fbfdfa0894ea3de75353859b4e1cc3009b5dda76fd9b0c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f58bfee60f24b95885b5f9f4efb275a0c702a15bcf71fef4cf21a2c213ab31a2"
-    sha256 cellar: :any_skip_relocation, catalina:       "8fd4612f039b80b13609188d1bf9f4054cf671e2fe6cad34cb1027c5525079ea"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cdeae8f36305f712ccab03153d47de86ef8a566a8aeaf7a15e41e0bad7257bfc"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0049dbfcef582d0d24d28d4f837cd3f977f79c3b49a88558feaa5ed11862c574"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ff5a9ab912896f0e8899d2bb1d3bcd875a474444b9843e863b3121c5abb65850"
+    sha256 cellar: :any_skip_relocation, monterey:       "5dbcf14094279e592af85b32764b0fecb09d4a4e1903be722d32f4b1c11db758"
+    sha256 cellar: :any_skip_relocation, big_sur:        "443851c118091c72b400ff940daf99ae0fbdb8dc400b2852e499f1519c0c9ab6"
+    sha256 cellar: :any_skip_relocation, catalina:       "958e818fdd4b8a97b024559e5ee3fbe3b955555e0d5a60cca92d55df33b8a642"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e6f2fb164bf3d1a01479539df377f9c7e8540d7ec8f1570fc406fb73ba04fddd"
   end
 
   depends_on "go" => :build
-  depends_on "node@14" => :build
+  depends_on "node" => :build
   depends_on "yarn" => :build
 
   def install

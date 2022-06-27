@@ -2,18 +2,18 @@ class Dagger < Formula
   desc "Portable devkit for CI/CD pipelines"
   homepage "https://dagger.io"
   url "https://github.com/dagger/dagger.git",
-      tag:      "v0.2.18",
-      revision: "6d14bddaf6974d280e227982d2be5ac77a4b3d24"
+      tag:      "v0.2.20",
+      revision: "64c6a6a23c2edba90cb2649b29ddfb16c1c21a98"
   license "Apache-2.0"
   head "https://github.com/dagger/dagger.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ea8c94a9a0898df4265ce13cd41b1560a61516acb19d65f6f1ff35b26a9790e5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ea8c94a9a0898df4265ce13cd41b1560a61516acb19d65f6f1ff35b26a9790e5"
-    sha256 cellar: :any_skip_relocation, monterey:       "2e15e38926251b15e69494bb4565fdf606151acbff71b8d8b7407bc3fce2a75a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2e15e38926251b15e69494bb4565fdf606151acbff71b8d8b7407bc3fce2a75a"
-    sha256 cellar: :any_skip_relocation, catalina:       "2e15e38926251b15e69494bb4565fdf606151acbff71b8d8b7407bc3fce2a75a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e90dbfb1abebc917e8c7cbfd203a7adbbc1d9546851f3c9e3153c90da6a079f2"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e67cfa7e60a6924294b8672c85bd3d87ca5a9e9732484538e10253f4a7545a04"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e67cfa7e60a6924294b8672c85bd3d87ca5a9e9732484538e10253f4a7545a04"
+    sha256 cellar: :any_skip_relocation, monterey:       "36a2b8980ce145e23cf78abeafaf3f8282740cf1d9c80f5d47800bd039404b01"
+    sha256 cellar: :any_skip_relocation, big_sur:        "36a2b8980ce145e23cf78abeafaf3f8282740cf1d9c80f5d47800bd039404b01"
+    sha256 cellar: :any_skip_relocation, catalina:       "36a2b8980ce145e23cf78abeafaf3f8282740cf1d9c80f5d47800bd039404b01"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f70075ccb617e4c1ee0a27eb740cc28d9345c2af2740e37592474296ec145823"
   end
 
   depends_on "go" => :build
