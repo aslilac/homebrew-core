@@ -1,18 +1,18 @@
 class Gmailctl < Formula
   desc "Declarative configuration for Gmail filters"
   homepage "https://github.com/mbrt/gmailctl"
-  url "https://github.com/mbrt/gmailctl/archive/v0.10.0.tar.gz"
-  sha256 "ebc3f13b71363e49b804daadc3e1fff394cf42769429e4b081de86100fb5f685"
+  url "https://github.com/mbrt/gmailctl/archive/v0.10.4.tar.gz"
+  sha256 "779752e853d5f59d73e37a74681d52ba6f98ecb54c31fe266d4b85bedafc7774"
   license "MIT"
   head "https://github.com/mbrt/gmailctl.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "befd99284ddcbfaf6f5b67e74022cb36e52cd831add1ef8cd6cbd2227ecbb695"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7155b35cdbc2190d4aa939968a1edeb794a53e10760352fa51050f8b486adf85"
-    sha256 cellar: :any_skip_relocation, monterey:       "24e13ac28cf47782ff714d3039d0bd3a4dfb6984572fe0b195264902f7a178a7"
-    sha256 cellar: :any_skip_relocation, big_sur:        "37309984d78e4bcd5018bff9ecf22a6a82e19283b6c30bf2412679f193020e09"
-    sha256 cellar: :any_skip_relocation, catalina:       "ed33cc60a35a08564666178242bd182b2e1a7f1f0ca1a8a5712cc6a3fa2ebe1e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9bf8787bdca7979656460081c3d8fd6b72ace1d7e3e353851e64d25336cf95f2"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "13a173734e62e0e060e03ccd0049289f0dbaa687d376cde9926a4834d9a7dde5"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0330737821e56d883585187c5db80abd81faf4d014869d2e2cad3eb0e34bf17e"
+    sha256 cellar: :any_skip_relocation, monterey:       "5602a349c56579915cf29c3995f3a214345c4b354bc8875eb8c639040745a535"
+    sha256 cellar: :any_skip_relocation, big_sur:        "4393fd98611c97ba9bacf53166ce0e42e729d8ea89b697f3e81abccf5bc006f8"
+    sha256 cellar: :any_skip_relocation, catalina:       "2b694152a729cdb850ba5eac3750247999344a078beddfdad02bf024fb8637c4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ea955ccf87bfcc188d8132d2ef86b0e520843b61a5c4d9d54ae9522721cd2c55"
   end
 
   depends_on "go" => :build

@@ -1,8 +1,8 @@
 class Wxwidgets < Formula
   desc "Cross-platform C++ GUI toolkit"
   homepage "https://www.wxwidgets.org"
-  url "https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.5/wxWidgets-3.1.5.tar.bz2"
-  sha256 "d7b3666de33aa5c10ea41bb9405c40326e1aeb74ee725bb88f90f1d50270a224"
+  url "https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.7/wxWidgets-3.1.7.tar.bz2"
+  sha256 "3d666e47d86192f085c84089b850c90db7a73a5d26b684b617298d89dce84f19"
   license "wxWindows"
   head "https://github.com/wxWidgets/wxWidgets.git", branch: "master"
 
@@ -12,13 +12,12 @@ class Wxwidgets < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "64286e7122dfb5fb4a2ff013f2a9ef10595f404d036908ca6279c2821f02cf43"
-    sha256 cellar: :any,                 arm64_big_sur:  "00b2086f68be587c6ee848954845a81e1e4bda964dc4a8b8ec117d6acb54c833"
-    sha256 cellar: :any,                 monterey:       "ee0ae69ee883fe648eec49b00c39780e1ccecf11dd8b1e1fd58ef01c92b08f03"
-    sha256 cellar: :any,                 big_sur:        "b75599c4bb938ce01b3ddcce13c8cea3d7f329db85a1a63672eca1266621e857"
-    sha256 cellar: :any,                 catalina:       "a9de66ca781fe633b958a0a7745b47fecd4ffb3fc9d7302757b057ded6c88e22"
-    sha256 cellar: :any,                 mojave:         "974046c7307cca6cb5eec6ef6b06c57817f42782ef1cfa03ff1f4bb4a97190bd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f20b0033ce08592ade30d821da88010582c6107e7269e112ab3bbd48ec887f66"
+    sha256 cellar: :any,                 arm64_monterey: "9043c93e511e5ad2ddec26406ca2a9a5b7887b61a3fe590ccc494cf609b4d30d"
+    sha256 cellar: :any,                 arm64_big_sur:  "12f667f9bea4188b91060402e5edc8f80b35cb44bbe635898fa087c04ae008dc"
+    sha256 cellar: :any,                 monterey:       "b81e1732b71ae86b348f6ff237bf740cad44995f6cef609c8ce91e54a7d86d61"
+    sha256 cellar: :any,                 big_sur:        "dac357ec7aa4fdbd2c7a5d5d7ff162732d997b71871fdc366567b6629c0c0adf"
+    sha256 cellar: :any,                 catalina:       "5a4dec6297c76d4d1b6f66f31fae608bca156527dd76e95925385559b4e4b032"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "edc81df56ac84c5680938a9d7c27c710f23990289090d3aa07ea32647c4de070"
   end
 
   depends_on "jpeg"

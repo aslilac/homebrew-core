@@ -7,6 +7,7 @@ class Libtorch < Formula
       tag:      "v1.11.0",
       revision: "bc2c6edaf163b1a1330e37a6e34caf8c553e4755"
   license "BSD-3-Clause"
+  revision 1
 
   livecheck do
     url :stable
@@ -14,21 +15,25 @@ class Libtorch < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "294098094a8026bec52a0aefcb948b3314367f56cb293802ed9574ca0563357c"
-    sha256 cellar: :any,                 arm64_big_sur:  "3e9b2aac71e5219e2e71b7abd0a896a1efe4636b7afc45958309c66b5d9ab6cc"
-    sha256 cellar: :any,                 monterey:       "56ba61203dc6991f8fe9c72aa61dd1de92c1ff8bbde6608703b379cd7136bbef"
-    sha256 cellar: :any,                 big_sur:        "d835f3937ff7ebfaa0c11df6903f27a70e3dfe2b35767b0fd6a663795ee2f4ec"
-    sha256 cellar: :any,                 catalina:       "d0bc7aa8026a04a55cc8f106db5574e7c3a5fa0144ad7a3809c58810dcaa9687"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "135719d44d32cc98ee4e879c9ce420a0dc3cc9f6d05cc48e663184eb8b369da7"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_monterey: "ade0e2426a912e8d258bb3fe0526e3411ef0476fcfed0fc49adb86f0c0117cd4"
+    sha256 cellar: :any,                 arm64_big_sur:  "382de43ea289eb525774caeeabc6d55aba6c6dcebda187d947fb5704f09322b0"
+    sha256 cellar: :any,                 monterey:       "8a0e504fa8c7203f836a75497dbbd01900dafbf87ed96c431362f08d39ba5e16"
+    sha256 cellar: :any,                 big_sur:        "e00080ee66a776d07a397aca9e5cbe78e5b4b3b7e4ba3f4c593a36c3b8fb21cd"
+    sha256 cellar: :any,                 catalina:       "52f809178bf99c740c9f45905397617df6856b59ce21aaa5ae175442ef46f547"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "70acc2535e0856a43896c394f2014ed58d65c5f7cda15a692bc33d7d2bda4bfb"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
   depends_on "eigen"
-  depends_on "libomp"
   depends_on "libyaml"
   depends_on "protobuf"
   depends_on "pybind11"
+
+  on_macos do
+    depends_on "libomp"
+  end
 
   resource "PyYAML" do
     url "https://files.pythonhosted.org/packages/36/2b/61d51a2c4f25ef062ae3f74576b01638bebad5e045f747ff12643df63844/PyYAML-6.0.tar.gz"
@@ -41,7 +46,7 @@ class Libtorch < Formula
   end
 
   def install
-    venv = virtualenv_create(buildpath/"venv", Formula["python@3.9"].opt_bin/"python3")
+    venv = virtualenv_create(buildpath/"venv", Formula["python@3.10"].opt_bin/"python3")
     venv.pip_install resources
 
     args = %W[
@@ -52,7 +57,7 @@ class Libtorch < Formula
       -DUSE_METAL=OFF
       -DUSE_MKLDNN=OFF
       -DUSE_NNPACK=OFF
-      -DUSE_OPENMP=OFF
+      -DUSE_OPENMP=ON
       -DUSE_SYSTEM_EIGEN_INSTALL=ON
       -DUSE_SYSTEM_PYBIND11=ON
     ]

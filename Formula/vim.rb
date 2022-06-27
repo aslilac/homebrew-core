@@ -2,18 +2,28 @@ class Vim < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 50 releases on multiples of 50
-  url "https://github.com/vim/vim/archive/v8.2.4600.tar.gz"
-  sha256 "3a49148998c19946bb4dd78ee764b763647c83203f0b9692a76e13acd1f68288"
+  url "https://github.com/vim/vim/archive/v8.2.5150.tar.gz"
+  sha256 "3c92f902eeed21880f38191694e87032ae9efedb479afe25eb37f1b743f45383"
   license "Vim"
+  revision 1
   head "https://github.com/vim/vim.git", branch: "master"
 
+  # The Vim repository contains thousands of tags and the `Git` strategy isn't
+  # ideal in this context. This is an exceptional situation, so this checks the
+  # first page of tags on GitHub (to minimize data transfer).
+  livecheck do
+    url "https://github.com/vim/vim/tags"
+    regex(%r{href=["']?[^"' >]*?/tag/v?(\d+(?:\.\d+)+)["' >]}i)
+    strategy :page_match
+  end
+
   bottle do
-    sha256 arm64_monterey: "4ac5e569dcd8ca5119e9af7710ae47e211ccabddfa76a5e864267e464ae1bc48"
-    sha256 arm64_big_sur:  "27b6d4db1b63caa762069841c0ef77c5622e49be946cde3bfdd79da63c21dc5e"
-    sha256 monterey:       "e3c62cecdec747a7e0f2aa249b48fe019dbcfd0c76bd08979f0961ded3f6d35f"
-    sha256 big_sur:        "a3861d691f56a02fa090a836219c440021e7c5d5e86721a22e9019b640518675"
-    sha256 catalina:       "a290e16e466700797bf7f6fb91c96e4c58e6fdb9b2255eef54defb1b2a1c5307"
-    sha256 x86_64_linux:   "27878adcffee94a3d6528b1fe0a1dc840b04d358c275b8dcd59c153dd86a2e94"
+    sha256 arm64_monterey: "ab97823955be95e5790633c7981fdcf22161ccc8d8bd1e9b07258b04d1efa541"
+    sha256 arm64_big_sur:  "1c316baa7202cf04c00b209fa7f816665e4735e106d7b74f4631bd8f5e3699be"
+    sha256 monterey:       "7cccda394d30c5250c5bacf4d2d55d95435541cf8a4eb46818ec693c3ff5b72e"
+    sha256 big_sur:        "cceebd5b84982d29a51c7995c973f3ff37f47979361a3263737085dbd92d5303"
+    sha256 catalina:       "fdff1c728ef9d9f70f53d9f460b09eea690efa82d219abb94600d7804773f9a6"
+    sha256 x86_64_linux:   "c26024f5021ea9136673e8b39ea48c76b282cf34b2b4a2ac562f8be1f405922e"
   end
 
   depends_on "gettext"
@@ -54,7 +64,7 @@ class Vim < Formula
                           "--enable-perlinterp",
                           "--enable-rubyinterp",
                           "--enable-python3interp",
-                          "--enable-gui=no",
+                          "--disable-gui",
                           "--without-x",
                           "--enable-luainterp",
                           "--with-lua-prefix=#{Formula["lua"].opt_prefix}"

@@ -1,9 +1,10 @@
 class Halide < Formula
   desc "Language for fast, portable data-parallel computation"
   homepage "https://halide-lang.org"
-  url "https://github.com/halide/Halide/archive/v13.0.4.tar.gz"
-  sha256 "4cab247cc1406a66a35ebea8f957995b484e2029e27d390b51fa40744cf350f5"
+  url "https://github.com/halide/Halide/archive/v14.0.0.tar.gz"
+  sha256 "f9fc9765217cbd10e3a3e3883a60fc8f2dbbeaac634b45c789577a8a87999a01"
   license "MIT"
+  revision 1
 
   livecheck do
     url :stable
@@ -11,12 +12,12 @@ class Halide < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "7f338eeb5f667a39bf8c7b9e31975ead7efd0b93a521376f9a8b8ea01f15a2e8"
-    sha256 cellar: :any,                 arm64_big_sur:  "50d8081722a01e2e3a1d060b0ef154c910bd40909231af5af55cef38a5a4a07d"
-    sha256 cellar: :any,                 monterey:       "7b73ae689dd71d54f37bfa24d1eba92870895d5331536cc1824e94a9b18daf0e"
-    sha256 cellar: :any,                 big_sur:        "ecafe1ae5a96849e3f62a7085b1a99a6dd1ed5a5ee33413a543373ff9004741f"
-    sha256 cellar: :any,                 catalina:       "0f5058e9839b7ea04e2db363763ec40f77f4e16629571655f1e2d57e07594ba8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f0c94a36951baaddbc68ef4bfd15d363ce335009e61b960932b545491d7e8336"
+    sha256 cellar: :any,                 arm64_monterey: "e1ba8d1d6232fd52c98664b9e307aa0f0ba0623ec3a3a4ead0d43b028499d3db"
+    sha256 cellar: :any,                 arm64_big_sur:  "f927bd59f1abcf1fd3034f04fe6cff538241bfe3a0975248578ed9e47ba7499c"
+    sha256 cellar: :any,                 monterey:       "14c4ba34f34b0261121c8d4416f685f5dc67321dd810d30c3d56c1a25b16167a"
+    sha256 cellar: :any,                 big_sur:        "4cbbc5c24273b2cc7b3b4d830ad195b9d8fdc745919e16f166ac2452aff651e2"
+    sha256 cellar: :any,                 catalina:       "490da68c6f73b829277d459ea7705b66415e9a50dd48d09b43f55f5d2e9c26ea"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bd52a51fc41dfe0184dbf1cbfdf0dfad45c1071ed0a71fb97e2c792536f6e1fe"
   end
 
   depends_on "cmake" => :build
@@ -29,7 +30,7 @@ class Halide < Formula
 
   def install
     mkdir "build" do
-      system "cmake", "..", *std_cmake_args, "-DHalide_SHARED_LLVM=ON"
+      system "cmake", "..", *std_cmake_args, "-DCMAKE_INSTALL_RPATH=#{rpath}", "-DHalide_SHARED_LLVM=ON"
       system "make"
       system "make", "install"
     end

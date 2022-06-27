@@ -1,8 +1,8 @@
 class Pybind11 < Formula
   desc "Seamless operability between C++11 and Python"
   homepage "https://github.com/pybind/pybind11"
-  url "https://github.com/pybind/pybind11/archive/v2.9.1.tar.gz"
-  sha256 "c6160321dc98e6e1184cc791fbeadd2907bb4a0ce0e447f2ea4ff8ab56550913"
+  url "https://github.com/pybind/pybind11/archive/v2.9.2.tar.gz"
+  sha256 "6bd528c4dbe2276635dc787b6b1f2e5316cf6b49ee3e150264e455a0d68d19c1"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,7 +11,12 @@ class Pybind11 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "2690279a53d22445015e97cf0365a620e04bbf6fad8fda08fddf84ed9c73669f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "be81aafb4cb0d9393362d7d566f176d6a824760f3927b50b9344bcff2dc1edb6"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "be81aafb4cb0d9393362d7d566f176d6a824760f3927b50b9344bcff2dc1edb6"
+    sha256 cellar: :any_skip_relocation, monterey:       "0f1c96bc5d6e856c4483de12dc92541eca0326b8c6f56716f955e9db199893eb"
+    sha256 cellar: :any_skip_relocation, big_sur:        "0f1c96bc5d6e856c4483de12dc92541eca0326b8c6f56716f955e9db199893eb"
+    sha256 cellar: :any_skip_relocation, catalina:       "0f1c96bc5d6e856c4483de12dc92541eca0326b8c6f56716f955e9db199893eb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "be81aafb4cb0d9393362d7d566f176d6a824760f3927b50b9344bcff2dc1edb6"
   end
 
   depends_on "cmake" => :build

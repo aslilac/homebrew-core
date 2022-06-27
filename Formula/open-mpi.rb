@@ -1,8 +1,8 @@
 class OpenMpi < Formula
   desc "High performance message passing library"
   homepage "https://www.open-mpi.org/"
-  url "https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.2.tar.bz2"
-  sha256 "9b78c7cf7fc32131c5cf43dd2ab9740149d9d87cadb2e2189f02685749a6b527"
+  url "https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.4.tar.bz2"
+  sha256 "92912e175fd1234368c8730c03f4996fe5942e7479bb1d10059405e7f2b3930d"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,16 +11,16 @@ class OpenMpi < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "ed4c20df651ef9c71c9f9b9e39db1e7c365aaa50528515bbe81a8b49d146ac3e"
-    sha256 arm64_big_sur:  "a96a415cdde33add4d1f4f61d785734df7fd4ac642778b143ad877268a5a9c3a"
-    sha256 monterey:       "380caa56100f528862c699244a14747ad66ef8abc109767f6e4573bf561e58a4"
-    sha256 big_sur:        "57559e283299c56ef3285bbda752cf9b1a5e1ac22936cbecb41b6ee15b002f82"
-    sha256 catalina:       "0605a2da6ef4d646095c1b780311df026207d75d2f3451afaf58174058059122"
-    sha256 x86_64_linux:   "3a2969e4feeb5734fba133bd4f496ff9138a847ed0c6707d3d03e3db475dc07a"
+    sha256 arm64_monterey: "c6c7bbcc4c1cb911ad45332765571daf6d7dbbd3ecad24d8143ee3648fb98299"
+    sha256 arm64_big_sur:  "106128677431abf6253682f754e24bd4b9b20047acded6f16027c530720c11d3"
+    sha256 monterey:       "dea48c72da25568d64895b92d338dca17bf98945beca0a7ee38d4c1a20ffac75"
+    sha256 big_sur:        "009c7c3922114e87c9579cf5481da1020ac5ab7c4e2c1534067acd8bdf3e3fd7"
+    sha256 catalina:       "d83d61116fa13f540aba9da95985b9f61a76e9b835c3838cdee3f6d9b79a1106"
+    sha256 x86_64_linux:   "8f98a0c30dcfb168233634311fefb8f9cf16b5a8b84b7d264ef0e24192852ffa"
   end
 
   head do
-    url "https://github.com/open-mpi/ompi.git"
+    url "https://github.com/open-mpi/ompi.git", branch: "main"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
@@ -37,21 +37,17 @@ class OpenMpi < Formula
     ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
 
     # Avoid references to the Homebrew shims directory
-    %w[
+    inreplace_files = %w[
       ompi/tools/ompi_info/param.c
-      orte/tools/orte-info/param.c
       oshmem/tools/oshmem_info/param.c
-      opal/mca/pmix/pmix3x/pmix/src/tools/pmix_info/support.c
-    ].each do |fname|
-      inreplace fname, /(OPAL|PMIX)_CC_ABSOLUTE/, "\"#{ENV.cc}\""
-    end
+    ]
 
-    %w[
-      ompi/tools/ompi_info/param.c
-      oshmem/tools/oshmem_info/param.c
-    ].each do |fname|
-      inreplace fname, "OMPI_CXX_ABSOLUTE", "\"#{ENV.cxx}\""
-    end
+    inreplace inreplace_files, "OMPI_CXX_ABSOLUTE", "\"#{ENV.cxx}\""
+
+    inreplace_files << "orte/tools/orte-info/param.c" unless build.head?
+    inreplace_files << "opal/mca/pmix/pmix3x/pmix/src/tools/pmix_info/support.c" unless build.head?
+
+    inreplace inreplace_files, /(OPAL|PMIX)_CC_ABSOLUTE/, "\"#{ENV.cc}\""
 
     ENV.cxx11
     ENV.runtime_cpu_detection

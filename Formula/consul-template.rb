@@ -2,18 +2,18 @@ class ConsulTemplate < Formula
   desc "Generic template rendering and notifications with Consul"
   homepage "https://github.com/hashicorp/consul-template"
   url "https://github.com/hashicorp/consul-template.git",
-      tag:      "v0.28.0",
-      revision: "ae2bbca18a8cf6c549b73a60dd26a86c814b95ed"
+      tag:      "v0.29.1",
+      revision: "4525703f9dd1347a38446e137d56de94dcd06ee7"
   license "MPL-2.0"
   head "https://github.com/hashicorp/consul-template.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2fcbca74682be77f3d3a7c148dfcf98da2369f1f26281c914d9c775e827eeacb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5abae2cd7ff00a6e717e1c03b13d756b688c84a2e5aebd874d558e0808f63135"
-    sha256 cellar: :any_skip_relocation, monterey:       "78f300b6baa5ac00a4bfe5f9cbfe056a44b70bc56ca625a50faf206a3ed69138"
-    sha256 cellar: :any_skip_relocation, big_sur:        "7ce95bdbde710d0e9c855cc89d6728c2237c590ba23060aae2c9f9e34a6b53a5"
-    sha256 cellar: :any_skip_relocation, catalina:       "54f51f6fa6fb4edebf3f5874156a4dd446760105eaa0a0c31b9dd4e41a3fc406"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b5a67f3a655d2df8bf65997dd4bb2ecdbe05496a4394361e6c67e33d76091020"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "91eff4b8d9aeda6a30b5b5d00c12bbb7404222630b61dfb99d660ebd8dc8cffc"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1093b3c02a63c7996a6d0c2b906b4f0bc3c9fb8f64a3a6383cde68d7a6a26ef6"
+    sha256 cellar: :any_skip_relocation, monterey:       "836a0f9610fb66d478aab42e635a1742b06a905d448faa4b9963a4f3bec05e2e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a78576ca8aac42a9c5ace65c4dab8c0ca5cd7088c4062e5697f41b5645f3fc0d"
+    sha256 cellar: :any_skip_relocation, catalina:       "c24429569d2c1234454b82d6eb88f98d91611edef8f400295c181866323a3834"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4197c506f6897da3a118cf5c0e17ffce0cc228de057dfdb893e3f513c87fae32"
   end
 
   depends_on "go" => :build

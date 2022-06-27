@@ -1,18 +1,18 @@
 class Croc < Formula
   desc "Securely send things from one computer to another"
   homepage "https://github.com/schollz/croc"
-  url "https://github.com/schollz/croc/archive/v9.5.2.tar.gz"
-  sha256 "9fcbb82fa78122b0a2279fe9b4c4c7ff6af7b0599f275c04481ad5ed162d2952"
+  url "https://github.com/schollz/croc/archive/v9.5.6.tar.gz"
+  sha256 "c03c7b9daf2ba841d373d9c43abb68dc27ab1d7e01bbadead771918d499dea9e"
   license "MIT"
   head "https://github.com/schollz/croc.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f03e4ec0fbeda621b33ac5b1957133cedb22406bc85ebbfb2098357c45315cfb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1f732d2872f368826327114b7c2e02695b574b92a41d8bab95f0149793029584"
-    sha256 cellar: :any_skip_relocation, monterey:       "8ce8a08c906e8c32484c7168622a834855c3b3341e303e624e1ef68bd53c8fd2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b09dc4d7fd14cd6b17c7ffef809b5e8bc1a39fb839e95937addae2ee6b197968"
-    sha256 cellar: :any_skip_relocation, catalina:       "f523bad5c0c56567301de7800e8a5aba8a364adeafc92a59d094736ca8520315"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a60285fde61871383133ccd28a24deec5b59311f20095a88a495bb220b90953e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "75b525c0b2df83a55f51207e46b77e66e33afa29aa4aa811e8bdaf01fe347b8d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5047415856a7db11ce7f30b4ff106c645bccae15c6840da60696aa33afd91582"
+    sha256 cellar: :any_skip_relocation, monterey:       "535d7d7a2c68580c50e2c3d71ce0e2d769e8bee4d385e93359ccc8609f77c4fc"
+    sha256 cellar: :any_skip_relocation, big_sur:        "74902dfa2e7cc14cfe0b7b86a7757f79c1ad63b66e63cb893b77a5be068a7794"
+    sha256 cellar: :any_skip_relocation, catalina:       "0bf7c63c3d193103c7b235824872784223b66fec877dcb1d42b158de1c4330e9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f5d4ca78fa244be415f3bc40849eb021d7c2a8a79acf352c8ef67c32e0119b6b"
   end
 
   depends_on "go" => :build

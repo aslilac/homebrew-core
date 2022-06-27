@@ -1,26 +1,25 @@
 class Subfinder < Formula
   desc "Subdomain discovery tool"
   homepage "https://github.com/projectdiscovery/subfinder"
-  url "https://github.com/projectdiscovery/subfinder/archive/v2.4.9.tar.gz"
-  sha256 "0163626e69aa4ea4642633ab447ca2afcf2e06f7aec16c2aa95ec5ce301250cf"
+  url "https://github.com/projectdiscovery/subfinder/archive/v2.5.2.tar.gz"
+  sha256 "3f99323effbbc0d8f1d5181ac4cc1c5bd31b50a1eb792866269ec44acf308f1d"
   license "MIT"
   head "https://github.com/projectdiscovery/subfinder.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b2116f221af97bf51db37c86020f027ed9aaf8b2c73410859d6746779e8c9e80"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "275f012045f782e5097a506b112e3c09b81c87a93259705d0ea13e41585a1704"
-    sha256 cellar: :any_skip_relocation, monterey:       "e709497a74455408d0bf5daecb8d6058698e36c7db8406241587d635a5560670"
-    sha256 cellar: :any_skip_relocation, big_sur:        "77319ca3d1d8360938b24c81487c301205070ce81d7fda7f75b957b633bbff86"
-    sha256 cellar: :any_skip_relocation, catalina:       "0e8874bad100d4d2cfa29de2498fe991508f4f67545e72a39e0edd1075344a96"
-    sha256 cellar: :any_skip_relocation, mojave:         "6d9d8773ef562f6852bbec33cba7b40f4e73fa33b814dd6e40562140e6e0dd90"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d7dade6ab43d55abf77ad24a09da38b0d1d0f47cd74b93d665eeb3689a3cba31"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "30321c80988c53331b4304fabf72ae68837f1a30eb1efa79de6cfc14151cc56f"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e980c41f0659ac603ca06f3c0009cadafadc7ba12c19d372351ee10c23275e88"
+    sha256 cellar: :any_skip_relocation, monterey:       "6f46d021e2e169d6ce183806e89d034ff10b0abd96703681e02a12a69014111e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "8886aa56ab175b67300b8f6fc4b9436727acb487b7d19c5cd08ed1d96b7bcb21"
+    sha256 cellar: :any_skip_relocation, catalina:       "cd37f7fe6ea0390a90f056dd3ac2ac00ba707b1ac2f8d8b5f500cc37c305b1d9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a6cf4d88636446ccf5c3dffe9d800388b57f0e3cc59594c34515e525ba47f89f"
   end
 
   depends_on "go" => :build
 
   def install
     cd "v2" do
-      system "go", "build", *std_go_args, "./cmd/subfinder"
+      system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd/subfinder"
     end
   end
 

@@ -3,13 +3,13 @@ class AmmoniteRepl < Formula
   homepage "https://ammonite.io/"
   # Prefer 2.13-x.xx versions, until significant regression in 3.0-x.xx is resolved
   # See https://github.com/com-lihaoyi/Ammonite/issues/1190
-  url "https://github.com/com-lihaoyi/Ammonite/releases/download/2.5.2/2.13-2.5.2"
-  version "2.5.2"
-  sha256 "66e3f26450f7fd544ffc67a070aa97666ddbbde401fd7af9137f5e424b430892"
+  url "https://github.com/com-lihaoyi/Ammonite/releases/download/2.5.4/2.13-2.5.4"
+  version "2.5.4"
+  sha256 "81c4a66ff85c5d05770e4ca59f498fc90ee7cc9df07a5504e4b3ca76444c69a0"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "2f94306cea3aca356ad9f15ec5fe24aca19261f935beecf0365135ca9fb002ff"
+    sha256 cellar: :any_skip_relocation, all: "ab1a9252e52a095340ca483c9987d6f7bb121c918eefaa974b1d47429e6f0072"
   end
 
   depends_on "openjdk"

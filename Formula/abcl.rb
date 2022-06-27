@@ -1,8 +1,8 @@
 class Abcl < Formula
   desc "Armed Bear Common Lisp: a full implementation of Common Lisp"
   homepage "https://abcl.org/"
-  url "https://abcl.org/releases/1.8.0/abcl-src-1.8.0.tar.gz"
-  sha256 "1d871ee2f6bcf991d5a6eff7ea5105ef808610db882604d4df0411e971ad257f"
+  url "https://abcl.org/releases/1.9.0/abcl-src-1.9.0.tar.gz"
+  sha256 "a12b5c84f28834bd988e3adae0ad2ad4cc6c451d9e44f3c0853d007158c19869"
   license "GPL-2.0-or-later" => {
     with: "Classpath-exception-2.0",
   }
@@ -15,14 +15,12 @@ class Abcl < Formula
 
   bottle do
     rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "762848950acfec62bdb847ba1978a616f4f0b9a611586c4083fb7fb4babe3fd7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "eae344c99094aed9e35305346291d0adf0d6475c4315b6e0f6057b76261952fb"
-    sha256 cellar: :any_skip_relocation, monterey:       "79496b33a8da0acb9aa67d1b57c14b4e2af53c074699f0b6f207ddb0d58c3ccd"
-    sha256 cellar: :any_skip_relocation, big_sur:        "48a45fe17949a01e3164abecfe77a30849cd280faac0233f11a38a216194146a"
-    sha256 cellar: :any_skip_relocation, catalina:       "a289f1940cf66e136607417d82ea29ab1df61523f5e6bc6608989c683eba509f"
-    sha256 cellar: :any_skip_relocation, mojave:         "69eae372ce01d3e1844747e79ea2dd68763e3997d5bcdbaaf8641fc6f398a23c"
-    sha256 cellar: :any_skip_relocation, high_sierra:    "a420b36787e573ecb71a14c9b45780881a25ba7d7897eb79ae74595eab21853d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ac68a7ddfbd9dd2f1db04fc050965ab7a68ae2d4e39a1c7d6633b020dd32d5c1"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f3be4843794ef45604b332aee04ebd7d9be8170fbfb66c431650f827eb09d603"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a38ec7fe9b6a5ae4dd1f5fe798a6e5d954719fef7748feb70865e1dc900fc8f1"
+    sha256 cellar: :any_skip_relocation, monterey:       "39f244d377cd1ebe59226aa615e77dcfa31b2fff63531646bf1d07bc3c8fb5b7"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d984b3ec12a62488c75e6888f1dbd9bac15cf78fe5837774095bc295af419c96"
+    sha256 cellar: :any_skip_relocation, catalina:       "151786fc05d229cb8cb3f4f2e173c6af3f70635c88f52eb2c4ba05ed0fa53cf6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "586493f8b333cba0895683381e4d48943bd861aa57c22b13a31b7841f4feb67b"
   end
 
   depends_on "ant"

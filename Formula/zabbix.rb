@@ -1,8 +1,8 @@
 class Zabbix < Formula
   desc "Availability and monitoring solution"
   homepage "https://www.zabbix.com/"
-  url "https://cdn.zabbix.com/zabbix/sources/stable/6.0/zabbix-6.0.1.tar.gz"
-  sha256 "2dd92383cc169ce8b8cbbe660ed656e5d6b5b75bf4936743b8a9d59cdfcf3af1"
+  url "https://cdn.zabbix.com/zabbix/sources/stable/6.0/zabbix-6.0.5.tar.gz"
+  sha256 "3eeb7063efc5dad56f84dfdcf9aeb781044be712e11e83f66d043da55f33bdc2"
   license "GPL-2.0-or-later"
   head "https://github.com/zabbix/zabbix.git", branch: "master"
 
@@ -12,16 +12,16 @@ class Zabbix < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "d2c96eeb37ebc246fe3171de5f900aec6189ed4946844c8f0872f2b75c9b50dc"
-    sha256 arm64_big_sur:  "1569bae14f5054671fb54e3c94c9da802b12dd16863b49ee32fd24e28524b32a"
-    sha256 monterey:       "ac6392603319c73b25963b91d51f8bfbb76c36c086f0e2e579b915377c65a37d"
-    sha256 big_sur:        "f1e8a897c385603c072b98da21b5908cdb99729eadbc7128dd4b55ea044a6c94"
-    sha256 catalina:       "e656447f9657359d93de86be52a6a354007b92b8dc12df38b0a40302812c6cd9"
-    sha256 x86_64_linux:   "4463852d2dc0d9034485074bf6771e6c2128d8a1a1c65e79f4838f8ed0c3202e"
+    sha256 arm64_monterey: "03187314c76344360450d3db8d1eb592f2143d8093b055b73571fde117eb6d19"
+    sha256 arm64_big_sur:  "c9f2ac0e4d866a16a82491ec73c9339da24381855f34eddf8184a4505bb3cba7"
+    sha256 monterey:       "11f6d53439663bbb10b539db64f6ea5c02265f309dd02fde8125e990d2576ee9"
+    sha256 big_sur:        "a2bb348493cd263d4e60565627e692057671cac5ca9095fed2d1c6ab5d08cb4e"
+    sha256 catalina:       "591ce4a6478e97c8b59b4beb61ea0b299c2f78e7192e8a1a2b0e5a076bb4c8cf"
+    sha256 x86_64_linux:   "fd03d3a3ad820b134a85668abed40b86a49a1282dafa18d92296f60684103323"
   end
 
   depends_on "openssl@1.1"
-  depends_on "pcre"
+  depends_on "pcre2"
 
   def install
     args = %W[
@@ -29,7 +29,7 @@ class Zabbix < Formula
       --prefix=#{prefix}
       --sysconfdir=#{etc}/zabbix
       --enable-agent
-      --with-libpcre=#{Formula["pcre"].opt_prefix}
+      --with-libpcre2
       --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
     ]
 

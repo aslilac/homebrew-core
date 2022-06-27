@@ -1,18 +1,18 @@
 class Fn < Formula
   desc "Command-line tool for the fn project"
   homepage "https://fnproject.io"
-  url "https://github.com/fnproject/cli/archive/0.6.17.tar.gz"
-  sha256 "7fbad5f089aa083aa3d2ab891cc1754457d3a0ccad2ed1e91af40f1ac5d6a110"
+  url "https://github.com/fnproject/cli/archive/0.6.20.tar.gz"
+  sha256 "6a1555e31f1403744248eeb1eb07631ec322cfc9594bba8a4e031b381592b9d0"
   license "Apache-2.0"
   head "https://github.com/fnproject/cli.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "267799d6b927ebe87b5c4c49e44a5cf45cc5ca85c99a1671503244a17904ecb0"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9ea254f393e0fd4ee703a50afd897f3c69ed01f00e5be3525d493d70d4fbd54f"
-    sha256 cellar: :any_skip_relocation, monterey:       "8f9262756f3be90ad340812de24a8a309a5e4d4bc846b5e42b00b1e2860631bb"
-    sha256 cellar: :any_skip_relocation, big_sur:        "41a148bff4a79248318b84787e5a5271678939a3bea271fb468fe0e0f426af05"
-    sha256 cellar: :any_skip_relocation, catalina:       "fa050aaacccba7ed6aa1e15f75aadd9a3d686234cfef03569ee763f1dad667d3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1c0163c108f2ca39f7b0709f4c54cd687d02d8ab9ddbfe82e8739f0e232498e2"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "70e980b7318a4512a47d59bae1115b65132b564cd955af33aeeb642df165d584"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "395fcc168ecdf5a0b72575a1481eff34d5ea5d7918ed287c2ed47138bfb61ab9"
+    sha256 cellar: :any_skip_relocation, monterey:       "c87f98ed1402e9da8933805ddb02477827493003aa132ec4b49a8afa4da1986a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "fd663d8190f7f4287c82c846e0756ddc093470cfe65113d05b64cabfed511002"
+    sha256 cellar: :any_skip_relocation, catalina:       "36dc09ae38ebf9f338b122cbb983532ae16609468ac22ca6042f9edcdc1aedf6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0c42971e597e3eadbc2010bd5b1969e24fd13e12a56538ef44b201414bd386c1"
   end
 
   # Bump to 1.18 on the next release, if possible.
@@ -39,6 +39,7 @@ class Fn < Formula
         }.to_json
 
         socket = server.accept
+        socket.gets
         socket.print "HTTP/1.1 200 OK\r\n" \
                      "Content-Length: #{response.bytesize}\r\n" \
                      "Connection: close\r\n"

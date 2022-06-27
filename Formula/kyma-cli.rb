@@ -1,22 +1,21 @@
 class KymaCli < Formula
   desc "Kyma command-line interface"
   homepage "https://kyma-project.io"
-  url "https://github.com/kyma-project/cli/archive/2.0.4.tar.gz"
-  sha256 "096892c1773f40a8dc23551b2b211873e7a01572ec333bdedf0a3588941ca292"
+  url "https://github.com/kyma-project/cli/archive/2.3.0.tar.gz"
+  sha256 "a7bf6261fb474b79cad5f6dd2dc9d342310f2daef9038ab52054d6b196e768ab"
   license "Apache-2.0"
   head "https://github.com/kyma-project/cli.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d717d559a6677442c1eaf0fd18b44699f993db5ed6b4639e274bd8885ef58f64"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "579b38753983943fdcf4f8765a2f7d5a0ff417da3039212b225d5bf27d5cd124"
-    sha256 cellar: :any_skip_relocation, monterey:       "714e4b2798acf529bfde1a623aa10538458430ead6d77893a43e8150de641795"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c8f6dca4fe702ba32fb99160be739cada931af146c496c89be0a65e7b36a237c"
-    sha256 cellar: :any_skip_relocation, catalina:       "5c0d06e2f5a30d58caaff7aa41cf460b2c1edc8e2f2d628d9dad2102084870ef"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3658d38f903035677d5da78289bcfa6db9f0eebe8a6dafcbacb884b79151d355"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3857234258d1bd58766b94bbd990bd17f3ee1ed61db51ae7d5cdd7262fed0b80"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ce031a7d1b94170a85bde48919b15eacdff860701a5e12617c169e6421383808"
+    sha256 cellar: :any_skip_relocation, monterey:       "42d575dbf70ce2351051d7c9d3be1008979ede62f130b1409adb2f9f9ec4fd0c"
+    sha256 cellar: :any_skip_relocation, big_sur:        "34c71020d61c1a0c1cc917c0a266327b64d86ada0306f8ed39036575a29a832e"
+    sha256 cellar: :any_skip_relocation, catalina:       "b79e3905b54e9445c21bffcb28381e555acf2452935d2eb509096d21765f79ae"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a241e79ac0f111e28ea419e73632a636793c56a1e2d3b381f3b93113b7a42761"
   end
 
   depends_on "go" => :build
-  depends_on macos: :catalina
 
   def install
     ldflags = %W[
@@ -30,6 +29,6 @@ class KymaCli < Formula
   test do
     touch testpath/"kubeconfig"
     assert_match "invalid configuration",
-      shell_output("#{bin}/kyma install --kubeconfig ./kubeconfig 2>&1", 1)
+      shell_output("#{bin}/kyma deploy --kubeconfig ./kubeconfig 2>&1", 1)
   end
 end

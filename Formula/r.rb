@@ -1,8 +1,8 @@
 class R < Formula
   desc "Software environment for statistical computing"
   homepage "https://www.r-project.org/"
-  url "https://cran.r-project.org/src/base/R-4/R-4.1.3.tar.gz"
-  sha256 "15ff5b333c61094060b2a52e9c1d8ec55cc42dd029e39ca22abdaa909526fed6"
+  url "https://cran.r-project.org/src/base/R-4/R-4.2.1.tar.gz"
+  sha256 "4d52db486d27848e54613d4ee977ad952ec08ce17807e1b525b10cd4436c643f"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,12 +11,12 @@ class R < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "a34f069127fda71f97b119036520d56703212ab38137b79b7e92cf351f69292e"
-    sha256 arm64_big_sur:  "5f1088340bcd5f8bfc75d2dee84212f8eda0769464e06c24c0819612fb415ee7"
-    sha256 monterey:       "edae2c1cd7044eca95092fdf6f370991db60393baf902acf35844f7fd8203e0c"
-    sha256 big_sur:        "28f9d5c6639eca65d2556b20e8816e04353c5d879ac21ff0186843ced832096e"
-    sha256 catalina:       "bda2b0bd71f0922a8c275b03c8191b4e54acff3a9a8e572df708b096fc17324b"
-    sha256 x86_64_linux:   "39c7d343bb57f8804402e5322bcf97ac49e06933d048d73e2ab0adfa14a8c80a"
+    sha256 arm64_monterey: "d8f17e97451602c20562b963b0bfca9dc7f2f6d3f16163b17ba75300b2cad249"
+    sha256 arm64_big_sur:  "862960db5503b9d56184b47463d05251460355bf2686cd44548622bbbec6f2ae"
+    sha256 monterey:       "831a9b2e28a8fa2d4cfdf6c649fbe22e302a23e7729e6fdf6676801d34525d82"
+    sha256 big_sur:        "5d843b6f1aff801fc894285dfe6eddb130678ea004d77b44a6fa4ee7e9c49561"
+    sha256 catalina:       "4e6000735d5542bc7b4f8d8eed6a03b8e4d8e8a162b7c9bccdaf56523ce6f6f3"
+    sha256 x86_64_linux:   "ec7d3993d9337e0d573f220a02e276c48bb997323a6986855d0b26d8f47fcae2"
   end
 
   depends_on "pkg-config" => :build
@@ -60,6 +60,10 @@ class R < Formula
       "--enable-R-shlib",
       "--disable-java",
       "--with-cairo",
+      # This isn't necessary to build R, but it's saved in Makeconf
+      # and helps CRAN packages find gfortran when Homebrew may not be
+      # in PATH (e.g. under RStudio, launched from Finder)
+      "FC=#{Formula["gcc"].opt_bin}/gfortran",
     ]
 
     if OS.mac?
@@ -135,8 +139,7 @@ class R < Formula
                      "Failed to install gss package"
 
     winsys = "[1] \"aqua\""
-    on_linux do
-      # Fails in Linux CI with: no DISPLAY variable so Tk is not available
+    if OS.linux?
       return if ENV["HOMEBREW_GITHUB_ACTIONS"]
 
       winsys = "[1] \"x11\""

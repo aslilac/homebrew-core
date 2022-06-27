@@ -1,14 +1,21 @@
 [
-  "anjuta",
+  "aqbanking",
+  "arxiv_latex_cleaner",
+  "chapel",
   "coin3d",
   "emscripten",
   "freedink",
-  "gjs",
   "hive",
+  "libgaiagraphics",
+  "librasterlite",
   "mpv",
+  "openmodelica",
   "predictionio",
   "pyside",
   "pyside@2",
+  "qca",
   "sqoop",
+  "swtpm",
+  "synergy-core",
   "watchman"
 ]

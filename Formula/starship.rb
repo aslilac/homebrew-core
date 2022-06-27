@@ -1,18 +1,18 @@
 class Starship < Formula
   desc "Cross-shell prompt for astronauts"
   homepage "https://starship.rs"
-  url "https://github.com/starship/starship/archive/v1.4.2.tar.gz"
-  sha256 "d7d1a4fb661c1612617306f4a99bacccdffca4210a51cb1b91e87fb005bbd32e"
+  url "https://github.com/starship/starship/archive/v1.8.0.tar.gz"
+  sha256 "398bf5b413ce5dfe4d3c5acceb0025f773478f28016609869821cf385448dcf5"
   license "ISC"
   head "https://github.com/starship/starship.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8b6c86661aa5e0e853f98bef10047e6d18acddb9b8b135fe8f27068a348e2487"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "558354061a0fc2cfb5d63fd44ee54af623c8e866f9dd00b71dca662367a1a290"
-    sha256 cellar: :any_skip_relocation, monterey:       "7318ddbd100d42c6e6dc079553dc10f11e61151bd2a3141eb0d74c81c876ac12"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0c3727771244c2e99b0d3dd1b81ab0001182b7410b18156c0aacac9a2980fe3b"
-    sha256 cellar: :any_skip_relocation, catalina:       "6ccc6cc7c759ffb8a458a3037430fddfd1ea29c1b420dfe6ba8ab6a414050ea5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d4cee0a79c56869f092a0269fb78b210f8782cd2bfa4c5217cda6663fc5f7f37"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4dd493736c8dbd8eb18f9d6ab24304c9b60b46c79756320131c98ace756981b1"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d6d3d27a036936782bb6108e9e002ee95e914edfec008ed0bef0890732e0c2ba"
+    sha256 cellar: :any_skip_relocation, monterey:       "86de7a29a589a35dcea0b6c32b4b17e72061fa4fc4e594ada8cd410a94f9779f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "56d37a05a06cc5ac5927c5c3f60b45b73fade4cf70b4852fe8569160a2eba11b"
+    sha256 cellar: :any_skip_relocation, catalina:       "8c10d115e3c349e75f0993db387af4e8bca1750491c4d56b997fa9d492392727"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f69317244e491266b67286a15f4169815fa5731bc8d921555948b57bdb55f5f4"
   end
 
   depends_on "rust" => :build

@@ -135,7 +135,7 @@ jobs:
               content: system "swift", "build"
 
             - label: long build
-              path: Formula/(agda|arangodb|boost|deno|dotnet|emscripten|gcc|ghc|llvm|node|ponyc|rust|swift|texlive|qt)(@[0-9]+)?.rb
+              path: Formula/(agda|arangodb|boost|deno|dotnet|emscripten|gcc|ghc|llvm|node|pango|ponyc|rust|suite-sparse|swift|texlive|qt|v8)(@[0-9]+)?.rb
               keep_if_no_match: true
 
             - label: CI-build-dependents-from-source
@@ -144,10 +144,6 @@ jobs:
 
             - label: CI-skip-recursive-dependents
               path: Formula/(gettext|openssl@(3|1.1)|sqlite).rb
-              keep_if_no_match: true
-
-            - label: CI-linux-wheezy
-              path: Formula/(zlib|binutils).rb
               keep_if_no_match: true
 
             - label: CI-linux-self-hosted

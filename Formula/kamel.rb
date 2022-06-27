@@ -2,8 +2,8 @@ class Kamel < Formula
   desc "Apache Camel K CLI"
   homepage "https://camel.apache.org/"
   url "https://github.com/apache/camel-k.git",
-      tag:      "v1.8.2",
-      revision: "3d22f48f909f99daf2a5d50c9cd518267f984616"
+      tag:      "v1.9.2",
+      revision: "405f535a9fe6f1f051ae2f5cd11c6b447e3d9e1c"
   license "Apache-2.0"
   head "https://github.com/apache/camel-k.git", branch: "main"
 
@@ -13,12 +13,12 @@ class Kamel < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a44a42d1828d68e38c603f9150b7ed14a8e5726d5d3d260803e92f1b42ac7363"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d2ef5195a2aa1ed8b0997e5115cbc5549840af60f3073d05f5fc6abdf61fc374"
-    sha256 cellar: :any_skip_relocation, monterey:       "8b726717247ca42b12e8fa9564106fea8dce5ac3eeb4d189709f16c24da5a087"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d7fa06f538c67fdef00d3b75f5c9dd5a8ad2825895e2a5d272c41a434e2ac081"
-    sha256 cellar: :any_skip_relocation, catalina:       "319129766d0e75ca1961b49aaf57be6d029d31dbc29eb134f44b348b30359dae"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c6818471e7e687205a370d4c3ce7a4e3c55be4a86041c9d32fda20f5d2faf489"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "da4dc13e152e87e162e6bc21519e76a52f11b082daa3fa1fa176ba6fd0dac4ac"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0dfa513ca886c9363ae2a0488e2eea88599b85ee2612b4d9f3e622de49fba889"
+    sha256 cellar: :any_skip_relocation, monterey:       "123bdf5d7d7f77efa28753c5568054da4ad743ee320d16912878b0279be1a5a7"
+    sha256 cellar: :any_skip_relocation, big_sur:        "2a8b32e9c0e651a63c0dadd655f70c709f03e2cfe5f6ae1da5a33fd4775d4a39"
+    sha256 cellar: :any_skip_relocation, catalina:       "e4ecdd5d8d42e460e42a4301066f3adc10951f726503da8d1015acb2a6fb8b12"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c583c5cc8c24b18347288d175c1951a921ceb74d2216ded9608c1aea3760b5ff"
   end
 
   depends_on "go" => :build
@@ -27,7 +27,7 @@ class Kamel < Formula
 
   def install
     ENV["JAVA_HOME"] = Language::Java.java_home("11")
-    system "make"
+    system "make", "build-kamel"
     bin.install "kamel"
 
     output = Utils.safe_popen_read("#{bin}/kamel", "completion", "bash")

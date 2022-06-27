@@ -1,18 +1,18 @@
 class Mdcat < Formula
   desc "Show markdown documents on text terminals"
   homepage "https://codeberg.org/flausch/mdcat"
-  url "https://codeberg.org/flausch/mdcat/archive/mdcat-0.26.1.tar.gz"
-  sha256 "1120c4f3b5b517075b6347dbfe76a2211a91837b4d0242c0b72cdbc19e6886dd"
+  url "https://codeberg.org/flausch/mdcat/archive/mdcat-0.27.1.tar.gz"
+  sha256 "79961e0a842ee0f68aee3d54b39458352664c67388e56175a9d18d80f357bf14"
   license "MPL-2.0"
   head "https://codeberg.org/flausch/mdcat.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "12f57010161981a444c3026977e1eebeda9f3719e85d8036eb3c01426055fe6e"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "10f6d24300205f1d513976d8abe7a7dfe1efd045383956fca7c19272ca9896b2"
-    sha256 cellar: :any_skip_relocation, monterey:       "b2dfb2acadf101ca418cc96a2f3de30ac03fab1b7d7977f47e13e880cdb5cc9f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2dacdc8793ee6cedc0fa76db28153fb57c27ba42260714d3fcbec84fdad800d3"
-    sha256 cellar: :any_skip_relocation, catalina:       "9ab6093b76b7903b60780ad348a4780087ca5cdc19052e851a198e8920f413da"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e9fdbe394e6c5ba0e940d52ed35aeea543ba679b20bb577a75f825d549280890"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6d4b495c466fb64bb3eca0f638ca3c31b4e866f852793d467a6be64d9e0c6e1b"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "27e7b3daaba5e744a6d65d7ca70c6f18b702f47145364cb87db5aa4d0086eb5b"
+    sha256 cellar: :any_skip_relocation, monterey:       "b380ee16e3cff91daf99c6a6970c05dd7dae9cf62376d21a752cb49816622e16"
+    sha256 cellar: :any_skip_relocation, big_sur:        "dca5bf3fad1ba9950dfccfdbd2ec2be946d35da445efa11cf8b13f28a3d5d2a4"
+    sha256 cellar: :any_skip_relocation, catalina:       "b2b05c9cb04ecc18461bbd859625553409cd311e4844a3cee228a9841e9b93cd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9b04acea14ed19b214c30b4c5a62595f8740340321c9ad8cc996f65436c53017"
   end
 
   depends_on "cmake" => :build

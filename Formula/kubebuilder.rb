@@ -2,18 +2,18 @@ class Kubebuilder < Formula
   desc "SDK for building Kubernetes APIs using CRDs"
   homepage "https://github.com/kubernetes-sigs/kubebuilder"
   url "https://github.com/kubernetes-sigs/kubebuilder.git",
-      tag:      "v3.3.0",
-      revision: "47859bf2ebf96a64db69a2f7074ffdec7f15c1ec"
+      tag:      "v3.5.0",
+      revision: "26d12ab1134964dbbc3f68877ebe9cf6314e926a"
   license "Apache-2.0"
   head "https://github.com/kubernetes-sigs/kubebuilder.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d0af64d511e0fcc2139d824f615dd6b4c08f24968559c173f459adc1f91217a8"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6e6bb1dfaa0555b207743c519d30da7d8a0405fe0a55a0f51c47538d50fc4ac2"
-    sha256 cellar: :any_skip_relocation, monterey:       "01f48b853108bd5fd059e22dd2caf309abeacf2f191f857bfec3ba78b4ecff0e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ca3d9ea050a990d098df8b62310ae08bcecbe9a1be53d7c67a116e859253ce6e"
-    sha256 cellar: :any_skip_relocation, catalina:       "07dda47a62aaf114b3c9880b349651d0c11b68de45424bcf9ce50bb21600acfa"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9489ce54dab93d234511c3228e34d380ed8197f1a2dc773f4c3e88dca4a790bc"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a2c96e90d8cc4d3850bcb6cbad7d4a073c8b74661428647309c2faf8d4f6568f"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f08d09f64f159570c1e5c7a8b3182f587cb0d2f0ec7235cce346ff2501c0dd02"
+    sha256 cellar: :any_skip_relocation, monterey:       "433a6c4388a39abbd22983d3f8a59b23d4695f8f686151e19eaf49bd105ce1ef"
+    sha256 cellar: :any_skip_relocation, big_sur:        "012a16ce93c67889e0dd434b5d1fb7ac16b3038d7f603be9d1a5f615882b8821"
+    sha256 cellar: :any_skip_relocation, catalina:       "2edc0f4cbabdbb5014761bded7e89548ccaa5d0714c4902629daa8a40df0c326"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1d4afe06eb6fec4495e2fb00fc753f1feead9a76cfb74aabb4cead6cb820608e"
   end
 
   depends_on "git-lfs" => :build

@@ -3,18 +3,17 @@ require "language/node"
 class Jhipster < Formula
   desc "Generate, develop and deploy Spring Boot + Angular/React applications"
   homepage "https://www.jhipster.tech/"
-  # Check if this can be switched to the newest `node` at version bump
-  url "https://registry.npmjs.org/generator-jhipster/-/generator-jhipster-7.7.0.tgz"
-  sha256 "561c55ad290f8325093c791e4e2125fbbce49f1c58031246934a988bafde3e94"
+  url "https://registry.npmjs.org/generator-jhipster/-/generator-jhipster-7.8.1.tgz"
+  sha256 "c39921657dc50a106e0533229492915304b30a85d647e9a65788e19546ed4ed0"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1762f57c8cdcd3575ecab96f08f07ec86d33283696188f91033321d1528de51c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1762f57c8cdcd3575ecab96f08f07ec86d33283696188f91033321d1528de51c"
-    sha256 cellar: :any_skip_relocation, monterey:       "44bed5b853f8545d3fb664c3df44fc8863c4c630b3d31257ffc13b6ffa1c49f0"
-    sha256 cellar: :any_skip_relocation, big_sur:        "44bed5b853f8545d3fb664c3df44fc8863c4c630b3d31257ffc13b6ffa1c49f0"
-    sha256 cellar: :any_skip_relocation, catalina:       "44bed5b853f8545d3fb664c3df44fc8863c4c630b3d31257ffc13b6ffa1c49f0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1762f57c8cdcd3575ecab96f08f07ec86d33283696188f91033321d1528de51c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "27c1b3541a20bdab8d9351401eabdf18548afebc85f94af1fa82dbe841d445ba"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "27c1b3541a20bdab8d9351401eabdf18548afebc85f94af1fa82dbe841d445ba"
+    sha256 cellar: :any_skip_relocation, monterey:       "f250319b1919080ce509ff83066ea2483fa6a8359627b6f722a7a9bcd45c8c54"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f250319b1919080ce509ff83066ea2483fa6a8359627b6f722a7a9bcd45c8c54"
+    sha256 cellar: :any_skip_relocation, catalina:       "f250319b1919080ce509ff83066ea2483fa6a8359627b6f722a7a9bcd45c8c54"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "27c1b3541a20bdab8d9351401eabdf18548afebc85f94af1fa82dbe841d445ba"
   end
 
   depends_on "node"

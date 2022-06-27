@@ -4,13 +4,6 @@ class NuSmv < Formula
   url "https://nusmv.fbk.eu/distrib/NuSMV-2.6.0.tar.gz"
   sha256 "dba953ed6e69965a68cd4992f9cdac6c449a3d15bf60d200f704d3a02e4bbcbb"
 
-  # The download page is behind a CAPTCHA, so we identify new versions from the
-  # the version announce links on the homepage.
-  livecheck do
-    url :homepage
-    regex(/href=.*?announce-NuSMV[._-]v?(\d+(?:\.\d+)+)\.txt/i)
-  end
-
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_monterey: "fe65bcdedc024ee8cb5c94fcd1cb6487a5ba85bd76e82f3f3d84dfbe18aa19e6"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4335d0633f214a331bbdf3d060ec0fd574a257ebe1f082025d86cc3a082eac3f"
@@ -21,6 +14,10 @@ class NuSmv < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "f2e93143e60b64244fd25958a88480acee332fd4109a6bd356719dc6259efc36"
     sha256 cellar: :any_skip_relocation, sierra:         "64f825eac53c6c16c9b3db4b505d37a6de9f1f3471863b39081b5a98d517fb3e"
   end
+
+  # Requires Python2 to run a build script.
+  # https://github.com/Homebrew/homebrew-core/issues/93940
+  deprecate! date: "2022-04-23", because: :unsupported
 
   depends_on "cmake" => :build
 

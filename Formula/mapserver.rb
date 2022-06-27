@@ -4,7 +4,7 @@ class Mapserver < Formula
   url "https://download.osgeo.org/mapserver/mapserver-7.6.4.tar.gz"
   sha256 "b46c884bc42bd49873806a05325872e4418fc34e97824d4e13d398e86ea474ac"
   license "MIT"
-  revision 1
+  revision 6
 
   livecheck do
     url "https://mapserver.org/download.html"
@@ -12,12 +12,12 @@ class Mapserver < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "7e62c905331c71a62ec7cfa886e86aa49f59313a4347ada4b4fd8f99f07129f3"
-    sha256 cellar: :any,                 arm64_big_sur:  "6fe918f74417fe3d6290472c20d6d3fea2d15fd22ecb881db07bb65b6e362f28"
-    sha256 cellar: :any,                 monterey:       "957dc74d6938859b25e88d557db1431b8da4fe1a3aa9bb53295d2226aac3aeb0"
-    sha256 cellar: :any,                 big_sur:        "f6ebf38e5f1741223655e4eb57e50d79d779f28ed6c87aed5d9f707eb3e7348a"
-    sha256 cellar: :any,                 catalina:       "b2c70beabc7fffe4b00cfdb7ede9ca389494117cbf4f6af85035f450dae3b47c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ac9a93450d6f376354f9c5770b8469f5db94612bc666a9edaca1e793a4c14fdd"
+    sha256 cellar: :any,                 arm64_monterey: "329b8b0d9171e1ddd78caccfa2181387a4a96fd6fa0d793d8e2df08e4d483e28"
+    sha256 cellar: :any,                 arm64_big_sur:  "9e9f70c6e73ebf54c17e724c9258ebfe551154a6d136110db7a84dd8d9179b5d"
+    sha256 cellar: :any,                 monterey:       "c54dfcf1ee80c006d2577a62b8d611b5deb1296e76eec74d9267ec26ccd13299"
+    sha256 cellar: :any,                 big_sur:        "27208daf7f0f2d4c54a7acb06ac64534a073e7211e687ecc8764042f996cfa65"
+    sha256 cellar: :any,                 catalina:       "47697fff3cfd46f892a42ec9ff649a72521aadf6dc8a2519966b5d24f3e19e0a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "80ad31e2bb0aaf61cb589cfe32b302179a5184aaa699bf51c4816575fff7a524"
   end
 
   depends_on "cmake" => :build
@@ -32,7 +32,7 @@ class Mapserver < Formula
   depends_on "giflib"
   depends_on "libpng"
   depends_on "postgresql"
-  depends_on "proj@7"
+  depends_on "proj"
   depends_on "protobuf-c"
   depends_on "python@3.9"
 

@@ -3,17 +3,17 @@ class Dynaconf < Formula
 
   desc "Configuration Management for Python"
   homepage "https://www.dynaconf.com/"
-  url "https://files.pythonhosted.org/packages/59/d5/bfd2aa456d1c3b335ef32fb4ff7dc765278060ab7a9f3408e0b798d8bef6/dynaconf-3.1.7.tar.gz"
-  sha256 "e9d80b46ba4d9372f2f40c812594c963f74178140c0b596e57f2881001fc4d35"
+  url "https://files.pythonhosted.org/packages/f0/0e/3c102db167de3e2bb3a36a680a89c27b9b08d9f856b2164cc1a03db96f1c/dynaconf-3.1.9.tar.gz"
+  sha256 "f435c9e5b0b4b1dddf5e17e60a1e4c91ae0e6275aa51522456e671a7be3380eb"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c29b1041d65f3e3681269e8bd8e10d1d7aa5777de261c93ebf78fe0490aaeea9"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c29b1041d65f3e3681269e8bd8e10d1d7aa5777de261c93ebf78fe0490aaeea9"
-    sha256 cellar: :any_skip_relocation, monterey:       "dfdc9796f1364ba9713577378b6cf1d3056f3776fa7bcf6a79038c8823fd5908"
-    sha256 cellar: :any_skip_relocation, big_sur:        "dfdc9796f1364ba9713577378b6cf1d3056f3776fa7bcf6a79038c8823fd5908"
-    sha256 cellar: :any_skip_relocation, catalina:       "dfdc9796f1364ba9713577378b6cf1d3056f3776fa7bcf6a79038c8823fd5908"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0515e8630c6f13cdc4fc43e07e4ee5b45df17d9fbdaa033c925788cd829c5e20"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3db109fc4f9c1731d43647a2c421e7d1cc879b5703abcb257a42b74b3568d30e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3db109fc4f9c1731d43647a2c421e7d1cc879b5703abcb257a42b74b3568d30e"
+    sha256 cellar: :any_skip_relocation, monterey:       "46a93b62b260d0805e30abe427ba5893af6ee2e40e5a035502f39d880a546d3b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "46a93b62b260d0805e30abe427ba5893af6ee2e40e5a035502f39d880a546d3b"
+    sha256 cellar: :any_skip_relocation, catalina:       "46a93b62b260d0805e30abe427ba5893af6ee2e40e5a035502f39d880a546d3b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a11204edb0ae3ca2eb0aae97e266f6e0884732380e01fe5a4cafa3b10a94dc72"
   end
 
   depends_on "python@3.10"

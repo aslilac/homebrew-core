@@ -1,16 +1,18 @@
 class Acl2 < Formula
   desc "Logic and programming language in which you can model computer systems"
   homepage "https://www.cs.utexas.edu/users/moore/acl2/index.html"
-  url "https://github.com/acl2/acl2/archive/8.3.tar.gz"
-  sha256 "45eedddb36b2eff889f0dba2b96fc7a9b1cf23992fcfdf909bc179f116f2c5ea"
+  url "https://github.com/acl2/acl2/archive/8.4.tar.gz"
+  sha256 "b440c0048e2988eeb9f477a37a0443c97037a062c076f86a999433a2c762cd8b"
   license "BSD-3-Clause"
-  revision 12
+  revision 1
 
   bottle do
-    sha256 big_sur:      "5df4406ac7d74ece58c60f8bf83e8fde1139fe1b0da8d9a83e77a8b2aad404af"
-    sha256 catalina:     "bfe8d73561e904ba9fd0e3f44c3b7c77decca4346e9428ebebf4f9b3fd553741"
-    sha256 mojave:       "a7934877c55e93a626e48473adf408606c423e427bbcf6c826a69394e8634195"
-    sha256 x86_64_linux: "74f3c4b7970761a3ab6e5c513b0d3d6df83c24e534de3634fb032c3b4810b2fc"
+    sha256 arm64_monterey: "8ae5843d76f779903854645a53c35b61fe796d8b11caf3fe415a640f815edb6f"
+    sha256 arm64_big_sur:  "743c0e77ade1b6d63bbf77e7aa3836d24da387ed3a193cd643a1d3e78469ad46"
+    sha256 monterey:       "3d67a21cc7284a17535c55c5768bfc3747f5f052682ded921e8746f2cf5b8964"
+    sha256 big_sur:        "d5d341051774fa91ccb5c6c52cefaef85a74f10974c0ab53ef1bf7fc470c3c39"
+    sha256 catalina:       "72d322a7b8d02e48d5c67a45383ae1f4f64c6d7b94437ade47ec9a494be1b27f"
+    sha256 x86_64_linux:   "b76b5d2e82941d0cba322eb758bf7dd7c3fd233ee57b19c38cef0b4cae51e064"
   end
 
   depends_on "sbcl"

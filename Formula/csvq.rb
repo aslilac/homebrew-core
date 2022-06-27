@@ -1,8 +1,8 @@
 class Csvq < Formula
   desc "SQL-like query language for csv"
   homepage "https://mithrandie.github.io/csvq"
-  url "https://github.com/mithrandie/csvq/archive/v1.16.0.tar.gz"
-  sha256 "fba766f8d4f8a3b229ba51fb923c205d018d7480b11789036a25df4ad085af3d"
+  url "https://github.com/mithrandie/csvq/archive/v1.17.5.tar.gz"
+  sha256 "6ff04ed951a099fc6aada13c920b8b5bcec1437015cf315dc090293694b5d0ee"
   license "MIT"
 
   livecheck do
@@ -11,12 +11,12 @@ class Csvq < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "093e34aaa18a6000971319cd6686e614c520ad5db4632be788d3ef56e7d70d39"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "aa4d5647a4343df93a0b62060dbec981966a04e36c82d2887f78b02f3399aaf5"
-    sha256 cellar: :any_skip_relocation, monterey:       "d8ec03ed376bf4e3d33c95c77af431dbb2c334037d1728a8ed2bdef5d71b272a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9516f10a0a7724d68c4de2331de26af739dccb5be4ff9542abd71bd44f3a6320"
-    sha256 cellar: :any_skip_relocation, catalina:       "8426e5962a4fa60154e479527d75cb59e424693e11b16216773cd9ae38427197"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b3b04dd1d9ef4f5399dd0a94e2460cab1059dc813c60442ed9c88d159ae17432"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "65307d3fc0f74de021015ad233985648f14798c2f1b99e1d38c968758fdabaa2"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "271530c69eca5f7f6896972a252c1b86f58754c1e2b676879be68a95201ebc45"
+    sha256 cellar: :any_skip_relocation, monterey:       "9ee4b55aa524c869fda5d86dde14c512cec65fb6ff315ce2b45dd76631b2cfcb"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b93c374234793c2330517bd008f12a37f5074f52e382b571b6879c88120c162b"
+    sha256 cellar: :any_skip_relocation, catalina:       "0b63dcdc09115f7d4d21db91f22f8661c1f487d5b57c78baa3c191be0eb60f80"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3c4568b441b998d2c49eb0f38596ff50d67b60dbcd1fadcf140424d41d3f5003"
   end
 
   depends_on "go" => :build

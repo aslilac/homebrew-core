@@ -1,10 +1,9 @@
 class Pdal < Formula
   desc "Point data abstraction library"
   homepage "https://www.pdal.io/"
-  url "https://github.com/PDAL/PDAL/releases/download/2.3.0/PDAL-2.3.0-src.tar.gz"
-  sha256 "5b0b92258874ef722b5027054d64c8b318b524e7a9b2b250d0330d76e19b8618"
+  url "https://github.com/PDAL/PDAL/releases/download/2.4.2/PDAL-2.4.2-src.tar.gz"
+  sha256 "582309942dc7b0fe9c3e652aa4c9c3ec3b8c6f56401a0bf3f6237d3347e8f616"
   license "BSD-3-Clause"
-  revision 2
   head "https://github.com/PDAL/PDAL.git", branch: "master"
 
   # The upstream GitHub repository sometimes tags a commit with only a
@@ -19,11 +18,12 @@ class Pdal < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "8b2d3dd5e4390a118e9e35980cef058f079ba3a0d1e25ccbd753f3d322e65870"
-    sha256 arm64_big_sur:  "724be1381656a8f68eb38d2380d998801e94103a11a7a1b08fddc294c570c5c1"
-    sha256 monterey:       "f839188c4a7a921115f1cc1e044d13206472cfb32bd06ebafe5d13269143227c"
-    sha256 big_sur:        "0a6c761f34ba44be7fa15ef1c08c7129940a8a848bfcd898fec8d7665f2e3990"
-    sha256 catalina:       "cc81422d2d7108f16bc0f0262781caa633b299afd6f6bab3cc0bfd8a841a5eb3"
+    sha256                               arm64_monterey: "998dda3bab8682185092cf3c3cd019f2b5d3678367dba539a781108db1bb11ec"
+    sha256                               arm64_big_sur:  "5b011e401cd6355232abec02411dbb4eec0120be84165d9f1e5c3afe01150d2e"
+    sha256                               monterey:       "5bd56fe6425d85b67e127d67ba9144c21cb4f78c0792836726182bb3e44f3860"
+    sha256                               big_sur:        "24b0f9bc866c49dae38f5b5ea9352b537d83fe55e81226d9ff90401534f5df4b"
+    sha256                               catalina:       "e613c1bda5f8f4004438faa55d8e1be91d4727f467067f6a25f3f4671781c419"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aad3d4e280d139b4f45701947fb6565a07101a58837f6f1cf56a632af57fe5fa"
   end
 
   depends_on "cmake" => :build
@@ -34,6 +34,12 @@ class Pdal < Formula
   depends_on "numpy"
   depends_on "pcl"
   depends_on "postgresql"
+
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5" # gdal is compiled with GCC
 
   def install
     system "cmake", ".", *std_cmake_args,

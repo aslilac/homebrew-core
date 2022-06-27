@@ -3,16 +3,17 @@ class Borgbackup < Formula
 
   desc "Deduplicating archiver with compression and authenticated encryption"
   homepage "https://borgbackup.org/"
-  url "https://files.pythonhosted.org/packages/0f/e9/0b07aaff39e22eee9a983a48507bff46cf0d634e8a24e635e336cd7b3bce/borgbackup-1.2.0.tar.gz"
-  sha256 "e39a5547902ef456101aa4c779fa66b345bda70d16788e8bd18e458f93af7f67"
+  url "https://files.pythonhosted.org/packages/e5/7e/3098f7ba4e5b6caec1657cd44e3c5d309fad83ba7bb6f6b8433315a5adbc/borgbackup-1.2.1.tar.gz"
+  sha256 "9f9ce2d1923cb33a147ee6d08177d860974567721b1142fca67914a02e64c633"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "1912c168070e993d9df72b3f23d5601d9703a79c486b089c153f90610d8a1375"
-    sha256 cellar: :any, arm64_big_sur:  "cbc2fb14c55e46974d091dc026819643c4fa6b4b420eb5501fae111c39184135"
-    sha256 cellar: :any, monterey:       "13fc64ba937c867a387c6e87c2ee4a235bd3be5628582e765c7b66d30fc3764d"
-    sha256 cellar: :any, big_sur:        "c5e69293e817ed565335c1ea9c781c911cad023298cce2b166197eb5526398f0"
-    sha256 cellar: :any, catalina:       "95bbfbb10b574b2a1ea9937c9735fabddb86475023486c305ac79fc781c50ccd"
+    sha256 cellar: :any,                 arm64_monterey: "8a621b7294cb415f7647f084cf8456e22618f40f382ac452ee03afee0162e450"
+    sha256 cellar: :any,                 arm64_big_sur:  "1f870d585a275d40a76572c37fadf0912394a8e4b502ff76436826d03313487c"
+    sha256 cellar: :any,                 monterey:       "cba587a67b8eea83172f97405312ecb3433275026a384bb68bd57bca54e79420"
+    sha256 cellar: :any,                 big_sur:        "23f930a50117c9a626d078300d5b4d98ea6a74896044452285d9b2b1101cf8d0"
+    sha256 cellar: :any,                 catalina:       "3f89b9b1b41908f490af7e1fdbf7172e2258e49b47592937965abd49012e153c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3e2e57b70c6ab3007cbb0e0015d2153c07ce9fb8e7a6647bbe51501287ab13b3"
   end
 
   depends_on "pkg-config" => :build
@@ -23,9 +24,13 @@ class Borgbackup < Formula
   depends_on "xxhash"
   depends_on "zstd"
 
+  on_linux do
+    depends_on "acl"
+  end
+
   resource "msgpack" do
-    url "https://files.pythonhosted.org/packages/61/3c/2206f39880d38ca7ad8ac1b28d2d5ca81632d163b2d68ef90e46409ca057/msgpack-1.0.3.tar.gz"
-    sha256 "51fdc7fb93615286428ee7758cecc2f374d5ff363bdd884c7ea622a7a327a81e"
+    url "https://files.pythonhosted.org/packages/22/44/0829b19ac243211d1d2bd759999aa92196c546518b0be91de9cacc98122a/msgpack-1.0.4.tar.gz"
+    sha256 "f5d869c18f030202eb412f08b28d2afeea553d6613aee89e200d7aca7ef01f5f"
   end
 
   resource "packaging" do
@@ -34,11 +39,15 @@ class Borgbackup < Formula
   end
 
   resource "pyparsing" do
-    url "https://files.pythonhosted.org/packages/d6/60/9bed18f43275b34198eb9720d4c1238c68b3755620d20df0afd89424d32b/pyparsing-3.0.7.tar.gz"
-    sha256 "18ee9022775d270c55187733956460083db60b37d0d0fb357445f3094eed3eea"
+    url "https://files.pythonhosted.org/packages/71/22/207523d16464c40a0310d2d4d8926daffa00ac1f5b1576170a32db749636/pyparsing-3.0.9.tar.gz"
+    sha256 "2b020ecf7d21b687f219b71ecad3631f644a47f01403fa1d1036b0c6416d70fb"
   end
 
   def install
+    bash_completion.install "scripts/shell_completions/bash/borg"
+    fish_completion.install "scripts/shell_completions/fish/borg.fish"
+    zsh_completion.install "scripts/shell_completions/zsh/_borg"
+
     ENV["BORG_LIBB2_PREFIX"] = Formula["libb2"].prefix
     ENV["BORG_LIBLZ4_PREFIX"] = Formula["lz4"].prefix
     ENV["BORG_LIBXXHASH_PREFIX"] = Formula["xxhash"].prefix

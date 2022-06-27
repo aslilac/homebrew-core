@@ -3,23 +3,21 @@ require "language/node"
 class NetlifyCli < Formula
   desc "Netlify command-line tool"
   homepage "https://www.netlify.com/docs/cli"
-  url "https://registry.npmjs.org/netlify-cli/-/netlify-cli-9.13.0.tgz"
-  sha256 "f81c7d48a24c7f18bc0f012f7dca6e790a4c25e544f8a542ac7697f9ed755b65"
+  url "https://registry.npmjs.org/netlify-cli/-/netlify-cli-10.5.0.tgz"
+  sha256 "cf6a433519783e7a5448b1405814d96e84f897295b7d8348cfccb87c55d53a58"
   license "MIT"
   head "https://github.com/netlify/cli.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2b04cd58f497da046af0c2bd8fdcb2b87c568da1589c6ce6ef98fe643106885a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2b04cd58f497da046af0c2bd8fdcb2b87c568da1589c6ce6ef98fe643106885a"
-    sha256 cellar: :any_skip_relocation, monterey:       "d0431aac03692d693e017914cb0f5f06011b44f7c00bf4f04e4c9247d31d925a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d0431aac03692d693e017914cb0f5f06011b44f7c00bf4f04e4c9247d31d925a"
-    sha256 cellar: :any_skip_relocation, catalina:       "d0431aac03692d693e017914cb0f5f06011b44f7c00bf4f04e4c9247d31d925a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "718ef3725a611ac13a5609596594cc769aa6eaf52a2848e0b6f578bc527f90db"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "9c102656dcc08d30251f1724e96e395187394e8ebe30f5481dc11309e6d74818"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9c102656dcc08d30251f1724e96e395187394e8ebe30f5481dc11309e6d74818"
+    sha256 cellar: :any_skip_relocation, monterey:       "f26bf235b36e82f5b834364323a881feb10ea13d26435998c5341d2d1826686f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f26bf235b36e82f5b834364323a881feb10ea13d26435998c5341d2d1826686f"
+    sha256 cellar: :any_skip_relocation, catalina:       "f26bf235b36e82f5b834364323a881feb10ea13d26435998c5341d2d1826686f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "47a91cd6de56d37c8f3a0dd80f2f0cdf5542d029c54872e168d6de5b797b65fa"
   end
 
   depends_on "node"
-
-  uses_from_macos "expect" => :test
 
   def install
     system "npm", "install", *Language::Node.std_npm_install_args(libexec)
@@ -27,10 +25,6 @@ class NetlifyCli < Formula
   end
 
   test do
-    (testpath/"test.exp").write <<~EOS
-      spawn #{bin}/netlify login
-      expect "Opening"
-    EOS
-    assert_match "Logging in", shell_output("expect -f test.exp")
+    assert_match "Not logged in. Please log in to see site status.", shell_output("#{bin}/netlify status")
   end
 end

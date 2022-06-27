@@ -2,8 +2,8 @@ class Ghcup < Formula
   desc "Installer for the general purpose language Haskell"
   homepage "https://www.haskell.org/ghcup/"
   # There is a tarball at Hackage, but that doesn't include the shell completions.
-  url "https://gitlab.haskell.org/haskell/ghcup-hs/-/archive/v0.1.17.6/ghcup-hs-v0.1.17.6.tar.bz2"
-  sha256 "b87e9ec2c4997e35118c952747cb14341d6979719f097a1c40616dce4d522329"
+  url "https://gitlab.haskell.org/haskell/ghcup-hs/-/archive/v0.1.17.8/ghcup-hs-v0.1.17.8.tar.bz2"
+  sha256 "789cd286b6a7f2bf43f84079888dd3771a9944cca72ca4bfc971689936d0ae36"
   license "LGPL-3.0-only"
   head "https://gitlab.haskell.org/haskell/ghcup-hs.git", branch: "master"
 
@@ -13,12 +13,12 @@ class Ghcup < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e4fcc54dc7d23ed80973da5997431b04ace3e2d044cae1e2174aecb9f3d21e61"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a63fd1f088270bef36256451d0d3f945ea21f158778dac218fdd871ceb381470"
-    sha256 cellar: :any_skip_relocation, monterey:       "98a146945812cece33f346a41d7b0a4cff823a7881ce5bd57dbd8790460a640f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a00640dfe7203f6be6604e159d58956b400767206ad16d9ea7f83211943e06ef"
-    sha256 cellar: :any_skip_relocation, catalina:       "d3c872e80c54ffd4c807fbe76c666aba45e3c967a4a9ba21b92bb8e11d89a0e7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f099881f02d6dae4f756724707da0f7d0afb8f14387af0f74237ced04b415903"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c56a4c8ad7ce769ab9ea73cafa0a467f756b8cba1d092c87650976b3d913e2a4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4385416171b1c06317ff3fcfb948668f0eadb65fef36231c6bacf3e3d3cffa0f"
+    sha256 cellar: :any_skip_relocation, monterey:       "aa6a55b4e8ecc1d467513a935de43073a4ac52531825e6dfc6239483e9226eab"
+    sha256 cellar: :any_skip_relocation, big_sur:        "154d6fb19190c3be91c0354375cfddcae094b5730838a96dc0ef6d99c4ce2bd3"
+    sha256 cellar: :any_skip_relocation, catalina:       "daeaa2f93032f60bcf321545982f9c3ddfbc87df5584782ada8b6d76be75c988"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "180d240de86e7a58be172432643de93e9508a9843f58ee544e6ee15e18d8745e"
   end
 
   depends_on "cabal-install" => :build

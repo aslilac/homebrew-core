@@ -1,8 +1,8 @@
 class Lean < Formula
   desc "Theorem prover"
   homepage "https://leanprover-community.github.io/"
-  url "https://github.com/leanprover-community/lean/archive/v3.41.0.tar.gz"
-  sha256 "1147d5cc990ea1d8c3a39df8e895a6401b12fe545dac984206fc024db3650f69"
+  url "https://github.com/leanprover-community/lean/archive/v3.42.1.tar.gz"
+  sha256 "5b8cbfdea6cf4de5488467297958876aa0b3a79ed5806f7d0f01a0c396beb4e2"
   license "Apache-2.0"
   head "https://github.com/leanprover-community/lean.git", branch: "master"
 
@@ -20,12 +20,12 @@ class Lean < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "e8e216c5cb0d4256f9ff0aba3bbc1082b5c0561a3faedfce45d8d09b89f4c1aa"
-    sha256 cellar: :any,                 arm64_big_sur:  "77e133cf7b5dc915a060463052204692c1574de0ea16db2814cb1e5c91000864"
-    sha256 cellar: :any,                 monterey:       "62c1c694df08ff40079650639e0868890a898d172adc45b4d92e5ccd5aef6aff"
-    sha256 cellar: :any,                 big_sur:        "6aba51e50f11072a0f1f5eac281a63712d9a99eecad8f2eb33aa73fb76db451e"
-    sha256 cellar: :any,                 catalina:       "b67d23339d7489e3381e67a4c1dc675bb012255bff6075085edb82e11e1fdb06"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "055a52d6d18cb5c867ea1317bbf404fc83b6cf2ce71fc49c2b2f7326e03a24b9"
+    sha256 cellar: :any,                 arm64_monterey: "58337f99ae7f334d298267e4f0153334d408a72d7640aeb7834d6fc8499ed0ca"
+    sha256 cellar: :any,                 arm64_big_sur:  "d8dfeaf7e902829013d0109938b910061349a2d16394e48c714a3a1f4b312717"
+    sha256 cellar: :any,                 monterey:       "1e14e749b7b08576bc0dd91f6f6fec6ab97c1c32d79f22a69c5a6b4b41330f95"
+    sha256 cellar: :any,                 big_sur:        "d623ba837328fe54810386ce2385aef9d147784bdf71c43fb749e09bf68546a0"
+    sha256 cellar: :any,                 catalina:       "e16cb80f3a05541ac1d981ff75a6ade15a601931ed8dfa606076ff2b06ac67a9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4d8d848d08308e6301a5eb4ae8bf6f7155a0936df27270c6a82ba699737c3cca"
   end
 
   depends_on "cmake" => :build
@@ -33,6 +33,10 @@ class Lean < Formula
   depends_on "gmp"
   depends_on "jemalloc"
   depends_on macos: :mojave
+
+  on_linux do
+    depends_on "gcc"
+  end
 
   conflicts_with "elan-init", because: "`lean` and `elan-init` install the same binaries"
 

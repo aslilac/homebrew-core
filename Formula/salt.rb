@@ -3,19 +3,19 @@ class Salt < Formula
 
   desc "Dynamic infrastructure communication bus"
   homepage "https://saltproject.io/"
-  url "https://files.pythonhosted.org/packages/0f/35/e4e1f092eb1a22e807f9bcc5712701bf4d55f9ab41eb2cca55680817ef05/salt-3004.tar.gz"
-  sha256 "3d53561bc86e014dca2ec3dc981079be04d55ea047890cabde25e5b10bfa5b13"
+  url "https://files.pythonhosted.org/packages/2f/31/73c98765b59608fe6742824af31f2037ef1490e46a95873a07a34b596f15/salt-3004.1.tar.gz"
+  sha256 "7f344a2432648a4f078daa5accc68dcdffe1095cea13ec21e50413560f04c298"
   license "Apache-2.0"
   revision 1
   head "https://github.com/saltstack/salt.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "816a1798d052afddd1ea49591b979aa1dac7e36449c2acc50702d6dd4eebac49"
-    sha256 cellar: :any,                 arm64_big_sur:  "784652bf2c19fa36407b18c9d3817dc6d0a4f1de7f4098fdf3fc8f6a3f7abe6a"
-    sha256 cellar: :any,                 monterey:       "db230b3958b6dc379d7a9206d5ab46f5ce082843d8950da7700c009c8e8991de"
-    sha256 cellar: :any,                 big_sur:        "82e595adfa0647e5080da65ea008f206b57541bf1e4a3ea96b4a5689f9ebc46f"
-    sha256 cellar: :any,                 catalina:       "80a91a0852a0d04d616f2c79c1834ac191618dadf4c94578c3a5b43a3c6dde0e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "22045d596abfdd938932adbdffde67aae2cbd9e86d54c38259fcdfbd9c1b472b"
+    sha256 cellar: :any,                 arm64_monterey: "5b789c110b3792fd5357c82d92321b7f8a07251d67e35507b2271434df1f1309"
+    sha256 cellar: :any,                 arm64_big_sur:  "c67b23a17f3ec28837c84fc6d02590cc89d425cc5c14debb8f1fee1322655be2"
+    sha256 cellar: :any,                 monterey:       "f260ee77093e7a65989da9b6b99ea80d85f9d5cee15c221b8765b4bd6bcaba13"
+    sha256 cellar: :any,                 big_sur:        "539865516f1b52fe954980db66223d1cbe1334d9d4f3fc71f380df3235a7dfb5"
+    sha256 cellar: :any,                 catalina:       "9da24ea230e388350907a677b7a84083e58dfec378f7efeba58a52fdc60bad3b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c5b764d4f98174eb878d412f86769796df87d06f989bdcdf55d1ae04b6b17778"
   end
 
   depends_on "swig" => :build
@@ -36,7 +36,7 @@ class Salt < Formula
 
   # Homebrew installs optional dependencies: pycryptodome, pygit2
   #
-  # Plase do not add PyObjC (pyobjc* resources) since it causes broken linkage
+  # Please do not add PyObjC (pyobjc* resources) since it causes broken linkage
   # https://github.com/Homebrew/homebrew-core/pull/52835#issuecomment-617502578
 
   resource "apache-libcloud" do
@@ -102,11 +102,6 @@ class Salt < Formula
   resource "immutables" do
     url "https://files.pythonhosted.org/packages/d5/33/1187e0fcc0a521a72234b011e06cff99f8a204e1125ea791c190bd780de7/immutables-0.15.tar.gz"
     sha256 "3713ab1ebbb6946b7ce1387bb9d1d7f5e09c45add58c2a2ee65f963c171e746b"
-  end
-
-  resource "importlib-metadata" do
-    url "https://files.pythonhosted.org/packages/aa/b9/514816064db3028d7370f2ce02e8e8f5d9bc68f6f9a41b04d19176aba70e/importlib_metadata-4.6.4.tar.gz"
-    sha256 "7b30a78db2922d78a6f47fb30683156a14f3c6aa5cc23f77cc8967e9ab2d002f"
   end
 
   resource "jaraco.classes" do
@@ -180,8 +175,8 @@ class Salt < Formula
   end
 
   resource "pycryptodome" do
-    url "https://files.pythonhosted.org/packages/64/ab/f2b4059ddf59bffbdbb4bdb60a6729c6c1de5eea1ef186d5a633ae12db3b/pycryptodome-3.11.0.tar.gz"
-    sha256 "428096bbf7a77e207f418dfd4d7c284df8ade81d2dc80f010e92753a3e406ad0"
+    url "https://files.pythonhosted.org/packages/32/09/41ea2633fea5b973dac9829de871b417ff3ce2963d07fd92e3f2d2a9ee9b/pycryptodome-3.14.1.tar.gz"
+    sha256 "e04e40a7f8c1669195536a37979dd87da2c32dbdc73d6fe35f0077b0c17c803b"
   end
 
   resource "pycryptodomex" do
@@ -190,8 +185,8 @@ class Salt < Formula
   end
 
   resource "pygit2" do
-    url "https://files.pythonhosted.org/packages/7e/8c/c162e50ad20c36b457aa97a9d96536fde316d90052fb03fc4ae22a7fe9ea/pygit2-1.9.0.tar.gz"
-    sha256 "c5e8588acad5e32fa0595582571059e6b90ec7c487c58b4e53c2800dcbde44c8"
+    url "https://files.pythonhosted.org/packages/ef/24/2c63bfe5144dd89ec54e978ac6557640caf44ec61dc46999ca7ddc648c28/pygit2-1.9.1.tar.gz"
+    sha256 "ef6479c3b6192825316b056336db77ebff6e7849aeb1fbb88b76001ac337b9c9"
   end
 
   resource "pyOpenSSL" do
@@ -217,11 +212,6 @@ class Salt < Formula
   resource "PyYAML" do
     url "https://files.pythonhosted.org/packages/a0/a4/d63f2d7597e1a4b55aa3b4d6c5b029991d3b824b5bd331af8d4ab1ed687d/PyYAML-5.4.1.tar.gz"
     sha256 "607774cbba28732bfa802b54baa7484215f530991055bb562efbed5b2f20a45e"
-  end
-
-  resource "pyzmq" do
-    url "https://files.pythonhosted.org/packages/af/9f/5b4942b3b028fb38cd66514472649025644d78ca0b29f7b79e9ff2acc048/pyzmq-21.0.2.tar.gz"
-    sha256 "098c13c6198913c2a0690235fa74d2e49161755f66b663beaec89651554cc79c"
   end
 
   resource "requests" do
@@ -264,9 +254,10 @@ class Salt < Formula
     sha256 "307ad78227e48be260e64896ec8886edc7eae22d8ec53e4d528ab5537a83203b"
   end
 
-  resource "zipp" do
-    url "https://files.pythonhosted.org/packages/3a/9f/1d4b62cbe8d222539a84089eeab603d8e45ee1f897803a0ae0860400d6e7/zipp-3.5.0.tar.gz"
-    sha256 "f5812b1e007e48cff63449a5e9f4e7ebea716b4111f9c4f9a645f91d579bf0c4"
+  # Fix python 3.10 compatibility, remove when https://github.com/saltstack/salt/pull/61064 is in a release
+  patch do
+    url "https://github.com/saltstack/salt/commit/a273fffc857145198f25ba269f7e2493112e55fc.patch?full_index=1"
+    sha256 "7f1d781846f684e25308ecaad601b0aa7ac563a78b6e2d83ff476d6f23849d1c"
   end
 
   def install

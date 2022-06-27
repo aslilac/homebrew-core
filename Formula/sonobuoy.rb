@@ -1,17 +1,17 @@
 class Sonobuoy < Formula
   desc "Kubernetes component that generates reports on cluster conformance"
   homepage "https://github.com/vmware-tanzu/sonobuoy"
-  url "https://github.com/vmware-tanzu/sonobuoy/archive/v0.56.3.tar.gz"
-  sha256 "26a3bf677a7013a3ce6da080b2c983c72cfe7d5fe9e1d4964df0e6f0abb30419"
+  url "https://github.com/vmware-tanzu/sonobuoy/archive/v0.56.7.tar.gz"
+  sha256 "664746d50fec283e16185c3463acdec04a987d65ccee75d4a0a5d3c08c50e708"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5dfb75a03623471ad07da92a8d0d2e375739751415d43c6885e5a67165e6a0bf"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8509a78551e03f91cf3f7dec1f878a74b24c999a7fd622c55099f010600c0bd8"
-    sha256 cellar: :any_skip_relocation, monterey:       "b31002f99e0926ad22f455e0c7db2b564350c9b9cd79b6d52b2e8089feebfc67"
-    sha256 cellar: :any_skip_relocation, big_sur:        "027f159e331b4d4ef1c758b1d5ac18972caf0262c14ac243740d31cf076180df"
-    sha256 cellar: :any_skip_relocation, catalina:       "ec2f81142931b130b96f27e873c501155ae9da02dfa104ab30ce094228e00860"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f3ed63fc6bf9c035431ac7dbd743cf378604b1c2f84dfec68eaefc98bc131f7a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "485be540780023ea9c8f56a6fcd404b25b99780bdab29564213e6c7da94fc82e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "982668f18d7d220a7347e4ccbd252a58597e74d3db758025bdecaa3b04e1a519"
+    sha256 cellar: :any_skip_relocation, monterey:       "6724f94a07a7876391ba8d1683bd667b6ede3243864fd5faa95ac2138ac488fc"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5b43cc27fd91e47ed150fa5e957e4766baf7047b4e4f21be68f5f7c98c895110"
+    sha256 cellar: :any_skip_relocation, catalina:       "904cc3f067576f6bc2c174662be1b83ffaa52319a574148879e927016a33112b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bbfdb71eb9af9c4146decd6ad8e8dd822d8d4cd1142f517de9909f411be15f94"
   end
 
   # Segfaults on Go 1.18 - try test it again when updating this formula.

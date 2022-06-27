@@ -1,32 +1,30 @@
 class Restic < Formula
   desc "Fast, efficient and secure backup program"
-  homepage "https://restic.github.io/"
-  url "https://github.com/restic/restic/archive/v0.12.1.tar.gz"
-  sha256 "a9c88d5288ce04a6cc78afcda7590d3124966dab3daa9908de9b3e492e2925fb"
+  homepage "https://restic.net/"
+  url "https://github.com/restic/restic/archive/v0.13.1.tar.gz"
+  sha256 "8430f80dc17b98fd78aca6f7d635bf12a486687677e15989a891ff4f6d8490a9"
   license "BSD-2-Clause"
+  revision 1
   head "https://github.com/restic/restic.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ac34f5a9df926e51febf7fc69df6ca57c7fd2c5705f9b1fe057a9e36cf8ac952"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c42f5dc067e1f3d2fc001bceb623564bff4b2bc692c486e2bc69911fc4db932e"
-    sha256 cellar: :any_skip_relocation, monterey:       "189c9d1377a6a0d3569a6c9ce5f716df4bb75d685623e46201829d018567b2ac"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b776b9a367a6a290d7ba970ecb560e1bca188534a868020ed37f5e7d8bcb33a7"
-    sha256 cellar: :any_skip_relocation, catalina:       "c8ad9c03fcad3d00e354208d4225f5a625185f2b7179e78f93f759748b80cf8f"
-    sha256 cellar: :any_skip_relocation, mojave:         "a3f6155d24196e1f49fda7cad19da3753428ce1cae63e283dc1b66e623a0c756"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2ce82bf169c87af5f42b0b564179148d06ed6b19ae1bde13b10e04a8ccce5e3a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5d302f557aadf90ab0715d4ba38b73562e640609ab7993e60749f9aca006ef99"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5d302f557aadf90ab0715d4ba38b73562e640609ab7993e60749f9aca006ef99"
+    sha256 cellar: :any_skip_relocation, monterey:       "b20f4e3f5683a908b592cb38a212410e74d77b8898adfaa4609106af734f4234"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b20f4e3f5683a908b592cb38a212410e74d77b8898adfaa4609106af734f4234"
+    sha256 cellar: :any_skip_relocation, catalina:       "b20f4e3f5683a908b592cb38a212410e74d77b8898adfaa4609106af734f4234"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e73e11921db005141f386b90ae1966568afec23d763ec8404059d7a088d7a6cc"
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = HOMEBREW_CACHE/"go_cache"
-    ENV["CGO_ENABLED"] = "1"
-
-    system "go", "run", "-mod=vendor", "build.go", "--enable-cgo"
+    system "go", "run", "build.go"
 
     mkdir "completions"
     system "./restic", "generate", "--bash-completion", "completions/restic"
     system "./restic", "generate", "--zsh-completion", "completions/_restic"
+    system "./restic", "generate", "--fish-completion", "completions/restic.fish"
 
     mkdir "man"
     system "./restic", "generate", "--man", "man"
@@ -34,6 +32,7 @@ class Restic < Formula
     bin.install "restic"
     bash_completion.install "completions/restic"
     zsh_completion.install "completions/_restic"
+    fish_completion.install "completions/restic.fish"
     man1.install Dir["man/*.1"]
   end
 

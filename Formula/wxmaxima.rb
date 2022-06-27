@@ -1,17 +1,19 @@
 class Wxmaxima < Formula
   desc "Cross platform GUI for Maxima"
   homepage "https://wxmaxima-developers.github.io/wxmaxima/"
-  url "https://github.com/wxMaxima-developers/wxmaxima/archive/Version-22.03.0.tar.gz"
-  sha256 "2192f804588511e9a796ad0b677e6f4721bb2cf2a52766f3d47f4528ad0ce0a4"
+  url "https://github.com/wxMaxima-developers/wxmaxima/archive/Version-22.05.0.tar.gz"
+  sha256 "a0140b9f6171540556bd40c6b5617eb9ea224debe592014cbfabd0c095594b93"
   license "GPL-2.0-or-later"
+  revision 1
   head "https://github.com/wxMaxima-developers/wxmaxima.git", branch: "main"
 
   bottle do
-    sha256 arm64_monterey: "718f9ae3af0763c8094b715d0e34857858bd5f3c6305d1b8ac39cb1b8cdb4e4e"
-    sha256 arm64_big_sur:  "2678b66d83d8bd57c907adcca4a7f936b03faa8b0770c10f93d83e35c1ac2e7e"
-    sha256 monterey:       "d71b3f3ccf429325724186d915909ee47ba9a1ac6a44a1666a530a1857328fa6"
-    sha256 big_sur:        "9596ecb5db2ecd423aa650a3cc38d9d2daea37e5fa84f0cac09858d8c935f1c0"
-    sha256 catalina:       "1b7a63db2fb176a15c2eabd00e0081c5cd22920ef0c5c1f720e98ec09287bf4f"
+    sha256 arm64_monterey: "778a293f94761b9bfd05ff83b1560b6995cecd2b3aba90eaefc8859e76f2a310"
+    sha256 arm64_big_sur:  "ea2d3a5c1966fa12f8f100086234b1a3b2fa1bd862a728d4ed2c63cde975033d"
+    sha256 monterey:       "0d26505bd559f98e95df34be56bfe9d05bd794bd4d28d64268b92cb34056feae"
+    sha256 big_sur:        "7e00267d843814c571690d8357cb59e6c05b14c2a0dd8095893bcab1b8d87524"
+    sha256 catalina:       "81849af465fc704e934ccd5bd47f2f7db36985c503047ce42b9b4adea632b985"
+    sha256 x86_64_linux:   "e2658a29828d6b86fcbe3722251f06034b3a1b7ef3a786a1529ea01ccaa8ece4"
   end
 
   depends_on "cmake" => :build
@@ -47,10 +49,8 @@ class Wxmaxima < Formula
   end
 
   test do
-    on_linux do
-      # Error: Unable to initialize GTK+, is DISPLAY set properly
-      return if ENV["HOMEBREW_GITHUB_ACTIONS"]
-    end
+    # Error: Unable to initialize GTK+, is DISPLAY set properly
+    return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
     assert_match "algebra", shell_output("#{bin}/wxmaxima --help 2>&1")
   end

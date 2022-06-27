@@ -2,8 +2,8 @@ class V8 < Formula
   desc "Google's JavaScript engine"
   homepage "https://github.com/v8/v8/wiki"
   # Track V8 version from Chrome stable: https://omahaproxy.appspot.com
-  url "https://github.com/v8/v8/archive/9.9.115.8.tar.gz"
-  sha256 "e3406fc757aa3cddfc05131d94375b4e050f685295c4484efb045be781bd6d2e"
+  url "https://github.com/v8/v8/archive/10.2.154.4.tar.gz"
+  sha256 "6f4865ffe499f51da3e422cf7e4d85d3dab1b0a99b2d5bf204910ce423505597"
   license "BSD-3-Clause"
 
   livecheck do
@@ -12,12 +12,12 @@ class V8 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "3a333ef9c5f6c7ac8ba221b2c03d4360c1b4d14cc037ac5fc85ed44839301f00"
-    sha256 cellar: :any,                 arm64_big_sur:  "19773928d1ae5a99d42167ac7c82dcfdf49ebd5b1d6f8cdb48b088fd80fbccb6"
-    sha256 cellar: :any,                 monterey:       "01989541426293a6ccd2a96a6a01160aa4f324e59f7a053d501105ffc0515c03"
-    sha256 cellar: :any,                 big_sur:        "fcb9b5ec972077416de4ddba764ee473d75687f5a35e216adf5c9ad194935500"
-    sha256 cellar: :any,                 catalina:       "8ab64667d8cd92b76654ddde3beb0154d7160ec7842933a82de7441f9aa7d79f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a65117d01b494d32b14cc12ff2eaf09aad99c410b8da10f19b4dcd88802149d6"
+    sha256 cellar: :any,                 arm64_monterey: "9356133c624b366d4fe95ba96b299ef86aab4d34f4b2be7415bf8622c5a40ed7"
+    sha256 cellar: :any,                 arm64_big_sur:  "8a2841b43c1fb89fcf218eb6bb340012c782502cabc2bfaadbab6f83ae561cbe"
+    sha256 cellar: :any,                 monterey:       "4930cb3d2541294f93a44daf8d70c66511bf6d81e3d94f6691c25dcc355f1ab7"
+    sha256 cellar: :any,                 big_sur:        "3ba40273b83236ba5aa28d9b6276d2ba431ff421f5f95f09007e05d7b23c79ab"
+    sha256 cellar: :any,                 catalina:       "9c6e7386475164af409437e86abb7d8ed8f5d4d0611c41348a0d4754382df38d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d605b343d54a84ee5af95f801518950540eaa678abeea32e6dfda9618c22d89d"
   end
 
   depends_on "ninja" => :build
@@ -37,31 +37,31 @@ class V8 < Formula
   fails_with gcc: "5"
 
   # Look up the correct resource revisions in the DEP file of the specific releases tag
-  # e.g. for CIPD dependency gn: https://chromium.googlesource.com/v8/v8.git/+/refs/tags/9.9.115.8/DEPS#43
+  # e.g. for CIPD dependency gn: https://chromium.googlesource.com/v8/v8.git/+/refs/tags/10.2.154.4/DEPS#43
   resource "gn" do
     url "https://gn.googlesource.com/gn.git",
-        revision: "80a40b07305373617eba2d5878d353532af77da3"
+        revision: "ae110f8b525009255ba1f9ae96982176d3bfad3d"
   end
 
-  # e.g.: https://chromium.googlesource.com/v8/v8.git/+/refs/tags/9.9.115.8/DEPS#84
+  # e.g.: https://chromium.googlesource.com/v8/v8.git/+/refs/tags/10.2.154.4/DEPS#84
   resource "v8/base/trace_event/common" do
     url "https://chromium.googlesource.com/chromium/src/base/trace_event/common.git",
-        revision: "7f36dbc19d31e2aad895c60261ca8f726442bfbb"
+        revision: "d115b033c4e53666b535cbd1985ffe60badad082"
   end
 
   resource "v8/build" do
     url "https://chromium.googlesource.com/chromium/src/build.git",
-        revision: "f3be6e847f004923466a350274aae3fbf048c19c"
+        revision: "b37c340767cf9e7777d4ca5a588c34c5744df9b2"
   end
 
   resource "v8/third_party/googletest/src" do
     url "https://chromium.googlesource.com/external/github.com/google/googletest.git",
-        revision: "c9643a2e45ed0cb18b8409c62994be7c6e66dc1b"
+        revision: "af29db7ec28d6df1c7f0f745186884091e602e07"
   end
 
   resource "v8/third_party/icu" do
     url "https://chromium.googlesource.com/chromium/deps/icu.git",
-        revision: "b9f6d0a5c5375dc4643f35360d257dba37c1d3e1"
+        revision: "1fd0dbea04448c3f73fe5cb7599f9472f0f107f1"
   end
 
   resource "v8/third_party/jinja2" do
@@ -76,8 +76,12 @@ class V8 < Formula
 
   resource "v8/third_party/zlib" do
     url "https://chromium.googlesource.com/chromium/src/third_party/zlib.git",
-        revision: "fc5cfd78a357d5bb7735a58f383634faaafe706a"
+        revision: "a6d209ab932df0f1c9d5b7dc67cfa74e8a3272c0"
   end
+
+  # Apply patch to fix v8 build with glibc < 2.27. See here for details:
+  # https://libc-alpha.sourceware.narkive.com/XOENQFwL/add-fcntl-sealing-interfaces-from-linux-3-17-to-bits-fcntl-linux-h
+  patch :DATA
 
   def install
     (buildpath/"build").install resource("v8/build")
@@ -173,3 +177,18 @@ class V8 < Formula
       "-L#{lib}", "-lv8", "-lv8_libplatform"
   end
 end
+
+__END__
+--- a/src/base/platform/platform-posix.cc
++++ b/src/base/platform/platform-posix.cc
+@@ -88,6 +88,11 @@ extern int madvise(caddr_t, size_t, int);
+ extern "C" void* __libc_stack_end;
+ #endif
+
++#ifndef MFD_CLOEXEC
++#define MFD_CLOEXEC 0x0001U
++#define MFD_ALLOW_SEALING 0x0002U
++#endif
++
+ namespace v8 {
+ namespace base {

@@ -1,11 +1,12 @@
 class FfmpegAT4 < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-4.4.1.tar.xz"
-  sha256 "eadbad9e9ab30b25f5520fbfde99fae4a92a1ae3c0257a8d68569a4651e30e02"
+  url "https://ffmpeg.org/releases/ffmpeg-4.4.2.tar.xz"
+  sha256 "af419a7f88adbc56c758ab19b4c708afbcae15ef09606b82b855291f6a6faa93"
   # None of these parts are used by default, you have to explicitly pass `--enable-gpl`
   # to configure to activate them. In this case, FFmpeg's license changes to GPL v2+.
   license "GPL-2.0-or-later"
+  revision 3
 
   livecheck do
     url "https://ffmpeg.org/download.html"
@@ -13,12 +14,12 @@ class FfmpegAT4 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "e5bb29c1f83c1c48bc0b3adcb05b5bc9ac04f5d99d5d1e1f8bd02a115e9b5104"
-    sha256 arm64_big_sur:  "545c2a76da393e9f4719209493f1d4a50ff25899b5ce5ac59fe4d719b4715e51"
-    sha256 monterey:       "397d1907352f6ada22576bf8944034d841cce24233fe5bc9ed9b249cd79d1825"
-    sha256 big_sur:        "7e4be682fe8f62668b25f991e697290cb7ad909c9c31ebaa24d8a4b670715834"
-    sha256 catalina:       "4d836cc976f06fa4b67ba53f900b4c94d4097ce88db5846547351fad2a8c4af7"
-    sha256 x86_64_linux:   "aac393e201fd79971e19f697c440f27f0be57e6cc1f3469d61e384b231f058e3"
+    sha256 arm64_monterey: "45fe3d6bcbed4a82661897100313edef0985cbbfd31c8a26e3d0e8d0cff4ae80"
+    sha256 arm64_big_sur:  "6be8e7871edbbdc8ac4ed06c30aaf0b2ce885a06d228f25b212e8133ae251034"
+    sha256 monterey:       "97d4a31d4b3273635c38fd06d3dcf6476564517c8b8d25e172d97823ceb08cea"
+    sha256 big_sur:        "48bd7a081bda5fa6fa355611e3a2ca7e1b58c34296df821fcaad79bd2068ecf4"
+    sha256 catalina:       "1249b1db3fd4bb13354a11db67c3546f81ef74eafc0b13b671be3828a51ff903"
+    sha256 x86_64_linux:   "d7a6a6e7ed2ce7ad954f05ecd16324c79ffa6cdb7d8a1699c3b8afa6837b675f"
   end
 
   keg_only :versioned_formula
@@ -65,7 +66,7 @@ class FfmpegAT4 < Formula
 
   on_linux do
     depends_on "libxv"
-    depends_on "gcc" # because rubbernand is compiled with gcc
+    depends_on "gcc" # because rubberband is compiled with gcc
   end
 
   fails_with gcc: "5"

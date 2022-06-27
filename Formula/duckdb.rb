@@ -2,17 +2,17 @@ class Duckdb < Formula
   desc "Embeddable SQL OLAP Database Management System"
   homepage "https://www.duckdb.org"
   url "https://github.com/duckdb/duckdb.git",
-      tag:      "v0.3.2",
-      revision: "5aebf7dac8378ac4fb31badadf24de0499d86381"
+      tag:      "v0.4.0",
+      revision: "da9ee490df829a96bfbcfcd737f95f8dbc707d0a"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "4b2402fd7fe4ce8a9ef239226bf845c856fa837c76e4d136ad1e1ab41fbea661"
-    sha256 cellar: :any,                 arm64_big_sur:  "9016048c33fb30ce2396c5eac2cbb0ed7563febae29cf23234e83a382f7f650b"
-    sha256 cellar: :any,                 monterey:       "1ceed95af86ddc91242b31d42ff69e6bdf19f055bcf43fdf40ec4630e72004a5"
-    sha256 cellar: :any,                 big_sur:        "56868ceb522a9d5ac55f1d76cbb2230fd52386fe146f66dc394cfdea4dac0db6"
-    sha256 cellar: :any,                 catalina:       "733bd43a7533d71421bb6d85ccadf1398d72cf725f6f599de5e109c4298b3209"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4de55d51dac2a088917b5cc7e732d38cea547df20c7377d74d762d045dcdd63b"
+    sha256 cellar: :any,                 arm64_monterey: "16708c45329391634949ff594dd5537645b96b6097210ef3496ffe3434dc91c5"
+    sha256 cellar: :any,                 arm64_big_sur:  "3e9b36be75e00ece879fab0e595f57bf749a5eab481271c76a8b99a5b7dc433d"
+    sha256 cellar: :any,                 monterey:       "f0b9d2a1c37e430c86db458d68f83ab2bf25f54479258efdb1df3bd9b5e5959e"
+    sha256 cellar: :any,                 big_sur:        "601e5fbbb20b48a99b2ef769ba5b353617f804d6ffdc5e9e1717f00542dae787"
+    sha256 cellar: :any,                 catalina:       "7d19e4337901af7f5d7ed0009dbe3db97a7ae58633a8703e66665594337d017b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d0834b58ed799b2fe7da2bfb8250099d4cb627c4a2ec58ca455fb6847b733f3f"
   end
 
   depends_on "cmake" => :build
@@ -43,11 +43,11 @@ class Duckdb < Formula
     EOS
 
     expected_output = <<~EOS
-      ┌───────────┐
-      │ avg(temp) │
-      ├───────────┤
-      │ 45.0      │
-      └───────────┘
+      ┌─────────────┐
+      │ avg("temp") │
+      ├─────────────┤
+      │ 45.0        │
+      └─────────────┘
     EOS
 
     assert_equal expected_output, shell_output("#{bin}/duckdb_cli < #{path}")

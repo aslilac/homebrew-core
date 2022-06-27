@@ -1,9 +1,9 @@
 class Aarch64ElfGcc < Formula
   desc "GNU compiler collection for aarch64-elf"
   homepage "https://gcc.gnu.org"
-  url "https://ftp.gnu.org/gnu/gcc/gcc-11.2.0/gcc-11.2.0.tar.xz"
-  mirror "https://ftpmirror.gnu.org/gcc/gcc-11.2.0/gcc-11.2.0.tar.xz"
-  sha256 "d08edc536b54c372a1010ff6619dd274c0f1603aa49212ba20f7aa2cda36fa8b"
+  url "https://ftp.gnu.org/gnu/gcc/gcc-12.1.0/gcc-12.1.0.tar.xz"
+  mirror "https://ftpmirror.gnu.org/gcc/gcc-12.1.0/gcc-12.1.0.tar.xz"
+  sha256 "62fd634889f31c02b64af2c468f064b47ad1ca78411c45abe6ac4b5f8dd19c7b"
   license "GPL-3.0-or-later" => { with: "GCC-exception-3.1" }
 
   livecheck do
@@ -11,27 +11,18 @@ class Aarch64ElfGcc < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "92474692b6ef287cb63ec41a10514aeaad71affbf192407ee29855c170eda306"
-    sha256 arm64_big_sur:  "2a4d21fcaea6782bd26d412d678708360233295cd7571ac322c6d9e214eaf7e4"
-    sha256 monterey:       "a98058438dfd98f239883fdc781ecf7cd2be11a52664e4ce2a6c21680e9f693b"
-    sha256 big_sur:        "d7c2e86dddb3b3f8eeee5eb1c779d799f81f96876aa8fcb02bbfdc19087eeb5b"
-    sha256 catalina:       "0303660a6f129a103c50aa5e6b3953ea9ede1b30730b6c2d908665bce6aa68b8"
-    sha256 x86_64_linux:   "189149b0bf9d4070e762a1ffc6270a15e10183b0496ffcb0253b50126f8bc99d"
+    sha256 arm64_monterey: "e3e61b1ddba97ee4156243b6e4a75d2e7ab7772d7427f136d2db7f65e91c5429"
+    sha256 arm64_big_sur:  "e6f7eaabc4d43eed86b0a0b737c2bf0e922a608686ddc1d033b872bba4f766f1"
+    sha256 monterey:       "cea22bcae56ca4ab90f52d5cee01c68362a5a59cfe9e82e1e1003f5912346b72"
+    sha256 big_sur:        "db306ab8ee3a4fab34538e632a83e8adc6e71cf714a6b5f047d4d20bed4b331b"
+    sha256 catalina:       "ab2276b06f5740bdfc54f98a0469f94b9135456deaf785cf7318f622d35746e3"
+    sha256 x86_64_linux:   "0a6b4a81b2d56f4b10e82735c29a20787f9d45d93d5425031ab4f089adab2008"
   end
 
   depends_on "aarch64-elf-binutils"
   depends_on "gmp"
   depends_on "libmpc"
   depends_on "mpfr"
-
-  # Remove when upstream has Apple Silicon support
-  if Hardware::CPU.arm?
-    patch do
-      # patch from gcc-11.1.0-arm branch
-      url "https://github.com/fxcoudert/gcc/commit/eea3046c5fa62d4dee47e074c7a758570d9da61c.patch?full_index=1"
-      sha256 "b55ca05a0ed32f69f63bbe708568df5ad62d938da0e34b515d601bb966d32d40"
-    end
-  end
 
   def install
     target = "aarch64-elf"

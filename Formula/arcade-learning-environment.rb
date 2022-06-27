@@ -4,24 +4,24 @@ class ArcadeLearningEnvironment < Formula
   desc "Platform for AI research"
   homepage "https://github.com/mgbellemare/Arcade-Learning-Environment"
   url "https://github.com/mgbellemare/Arcade-Learning-Environment.git",
-      tag:      "v0.7.4",
-      revision: "069f8bd860b9da816cea58c5ade791025a51c105"
+      tag:      "v0.7.5",
+      revision: "db3728264f382402120913d76c4fa0dc320ef59f"
   license "GPL-2.0-only"
   head "https://github.com/mgbellemare/Arcade-Learning-Environment.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "f48743856e7b5c5cabcaa5c679ed3e4125f1e140a9ccec675649471809549c22"
-    sha256 cellar: :any,                 arm64_big_sur:  "a1ce427d316f550ea3b0caa3ec599a6902acabb2984ed11057f85013ccb197df"
-    sha256 cellar: :any,                 monterey:       "cdace3dae128c5db8c5ccac3f287fbbc11bb53441afe88a273530ece7a7e1b93"
-    sha256 cellar: :any,                 big_sur:        "ab5c24294ed10dbf24aff5443728b2d74904e4ae5a10dad7606acc449de1680d"
-    sha256 cellar: :any,                 catalina:       "1d1eeee25208be527357cc2d48856e77d0a4f8633a0e216a1504af3eef29ef0c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e952625790585e200774051d118c2fb86af4d9ab8bbe50880eaa52cc08ab237b"
+    sha256 cellar: :any,                 arm64_monterey: "69b3c918b471d86a15ddc33ca7d8788b7df97cdb37c24b0f9bf278acea044a92"
+    sha256 cellar: :any,                 arm64_big_sur:  "b91365dd433a5aaa6c63e1930fa485a0c7d8f30aee4709f77d47a1c227aad39c"
+    sha256 cellar: :any,                 monterey:       "928deddbfd6b71a6683d9baabb34e95e42b2426e306d050cf785e5aa0ea45c07"
+    sha256 cellar: :any,                 big_sur:        "385f3c78c9926ea3cf5fb5ea44d0ef363d3c097058e039e822a127d3f7f031f1"
+    sha256 cellar: :any,                 catalina:       "6b4982ba66a1dae92d8894c64d10413eefe553bcb3e368770d49a4ea66b6af3b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "11739052d50db05aac650a0d23c46aeb04535b9ff97b982c3687bb5baac0fbbc"
   end
 
   depends_on "cmake" => :build
   depends_on macos: :catalina # requires std::filesystem
   depends_on "numpy"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
   depends_on "sdl2"
 
   uses_from_macos "zlib"
@@ -32,53 +32,37 @@ class ArcadeLearningEnvironment < Formula
 
   fails_with gcc: "5"
 
-  resource "homebrew-test-tetris.bin" do
-    url "https://raw.githubusercontent.com/mgbellemare/Arcade-Learning-Environment/v0.7.0/tests/resources/tetris.bin"
-    sha256 "36d5b5d3222f007ca8e3691cfc17f639801453b98438b1282dfd695ae44752f6"
+  # Issue building with older setuptools currently included with Python 3.10.4.
+  # TODO: remove after next python update
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/4a/25/ec29a23ef38b9456f9965c57a9e1221e6c246d87abbf2a31158799bca201/setuptools-62.3.2.tar.gz"
+    sha256 "a43bdedf853c670e5fed28e5623403bad2f73cf02f9a2774e91def6bda8265a7"
   end
 
   resource "importlib-resources" do
-    url "https://files.pythonhosted.org/packages/b5/d8/51ace1c1ea6609c01c7f46ca2978e11821aa0efaaa7516002ef6df000731/importlib_resources-5.4.0.tar.gz"
-    sha256 "d756e2f85dd4de2ba89be0b21dba2a3bbec2e871a42a3a16719258a11f87506b"
-  end
-
-  # TODO: Check to see if `importlib-metadata` resource should be removed when switching to `python@3.10`
-  # https://github.com/mgbellemare/Arcade-Learning-Environment/blob/v#{version}/setup.cfg
-  resource "importlib-metadata" do
-    url "https://files.pythonhosted.org/packages/82/10/600b88188a4e94562cfdf202ef1aca6fedda0723acae8a47376350ec0d5d/importlib_metadata-4.11.1.tar.gz"
-    sha256 "175f4ee440a0317f6e8d81b7f8d4869f93316170a65ad2b007d2929186c8052c"
-  end
-
-  # TODO: Check to see if `zipp` resource should be removed when switching to `python@3.10`
-  # https://github.com/python/importlib_resources/blob/#{importlib-resources.version}/setup.cfg
-  resource "zipp" do
-    url "https://files.pythonhosted.org/packages/94/64/3115548d41cb001378099cb4fc6a6889c64ef43ac1b0e68c9e80b55884fa/zipp-3.7.0.tar.gz"
-    sha256 "9f50f446828eb9d45b267433fd3e9da8d801f614129124863f9c51ebceafb87d"
+    url "https://files.pythonhosted.org/packages/07/3c/4e27ef7d4cea5203ed4b52b7fe96ddd08559d9f147a2a4307e7d6d98c035/importlib_resources-5.7.1.tar.gz"
+    sha256 "b6062987dfc51f0fcb809187cffbd60f35df7acb4589091f154214af6d0d49d3"
   end
 
   def install
-    args = %W[
-      -DCMAKE_INSTALL_NAME_DIR=#{opt_lib}
-      -DCMAKE_BUILD_WITH_INSTALL_NAME_DIR=ON
-      -DSDL_SUPPORT=ON
-      -DSDL_DYNLOAD=ON
-    ]
-
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, *args
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args,
+                    "-DCMAKE_INSTALL_NAME_DIR=#{opt_lib}",
+                    "-DCMAKE_BUILD_WITH_INSTALL_NAME_DIR=ON",
+                    "-DSDL_SUPPORT=ON",
+                    "-DSDL_DYNLOAD=ON"
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
+    pkgshare.install "tests/resources/tetris.bin"
 
     venv = virtualenv_create(libexec, "python3")
-    venv.pip_install resources.reject { |r| r.name == "homebrew-test-tetris.bin" }
+    venv.pip_install resources
 
     # error: no member named 'signbit' in the global namespace
-    python_args = Language::Python.setup_install_args(libexec)
-    python_cmake_options = "--cmake-options=-DCMAKE_OSX_SYSROOT=#{MacOS.sdk_path}"
-    python_args.insert((python_args.index "install"), python_cmake_options) if OS.mac?
+    inreplace "setup.py", "cmake_args = [", "\\0\"-DCMAKE_OSX_SYSROOT=#{MacOS.sdk_path}\"," if OS.mac?
 
-    # `venv.pip_install_and_link buildpath` alternative to allow passing in arguments
+    # `venv.pip_install_and_link buildpath` fails to install scripts, so manually run setup.py instead
     bin_before = Dir[libexec/"bin/*"].to_set
-    system libexec/"bin/python3", *python_args
+    system libexec/"bin/python3", *Language::Python.setup_install_args(libexec)
     bin.install_symlink (Dir[libexec/"bin/*"].to_set - bin_before).to_a
 
     site_packages = Language::Python.site_packages("python3")
@@ -92,7 +76,7 @@ class ArcadeLearningEnvironment < Formula
     output = shell_output("#{bin}/ale-import-roms .").lines.last.chomp
     assert_equal "Imported 0 / 0 ROMs", output
 
-    testpath.install resource("homebrew-test-tetris.bin")
+    cp pkgshare/"tetris.bin", testpath
     output = shell_output("#{bin}/ale-import-roms --dry-run .").lines.first.chomp
     assert_match(/\[SUPPORTED\].*tetris\.bin/, output)
 
@@ -106,7 +90,7 @@ class ArcadeLearningEnvironment < Formula
       assert len(ale.getLegalActionSet()) == 18
     EOS
 
-    output = shell_output("#{Formula["python@3.9"].opt_bin}/python3 test.py 2>&1")
+    output = shell_output("#{Formula["python@3.10"].opt_bin}/python3 test.py 2>&1")
     assert_match <<~EOS, output
       Game console created:
         ROM file:  tetris.bin

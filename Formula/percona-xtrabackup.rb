@@ -1,8 +1,8 @@
 class PerconaXtrabackup < Formula
   desc "Open source hot backup tool for InnoDB and XtraDB databases"
   homepage "https://www.percona.com/software/mysql-database/percona-xtrabackup"
-  url "https://downloads.percona.com/downloads/Percona-XtraBackup-LATEST/Percona-XtraBackup-8.0.27-19/source/tarball/percona-xtrabackup-8.0.27-19.tar.gz"
-  sha256 "0bcfc60b2b19723ea348e43b04bd904c49142f58d326ab32db11e69dda00b733"
+  url "https://downloads.percona.com/downloads/Percona-XtraBackup-LATEST/Percona-XtraBackup-8.0.28-21/source/tarball/percona-xtrabackup-8.0.28-21.tar.gz"
+  sha256 "66d7f15f8e61d0231cbc814dff73fc6181ed9aa91d55b14a34a5b32b63e8ca02"
 
   livecheck do
     url "https://www.percona.com/downloads/Percona-XtraBackup-LATEST/"
@@ -10,19 +10,21 @@ class PerconaXtrabackup < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "79c2503f36e248d1ea6359b93dae4f08fd47df196bf641a3cc5e3174f31b1c15"
-    sha256 arm64_big_sur:  "d6d69ad3d8eaac0cd857d501108918ff856aa8b8e9a19c6e2b12f1282b74ead1"
-    sha256 monterey:       "c18308e63a27c0e9a248952c739e2fb25cb2be95336acf232ee7f84e79ae7c17"
-    sha256 big_sur:        "c949c6eeeb273196e2b7f782a6a0d89982aa5ac89e2016e48d04b914616369e6"
-    sha256 catalina:       "7a486c4e5f32d58ca96f01b6e0388767c6ed1fd470e0909d9e03f89f79141849"
-    sha256 x86_64_linux:   "078970832f38184664309696ff21aee42ceec078b2e87e1418e65e69558a5aef"
+    sha256 arm64_monterey: "22110a9e2939d894d496df4be13d2c19d6dee1c732cf098cc7e368204730f775"
+    sha256 arm64_big_sur:  "c719a20c96ea5e3ce42e5067d56691ad450acdc01e905e021cb494694111cea1"
+    sha256 monterey:       "0b8aad803f2fb53a6e97c07cc2a08bcc25cfa7ba39fd1b59841095c9b5b7a336"
+    sha256 big_sur:        "3e5a529881fadd1b18beaaa3bc3f3104791da806fc074fe362483b614832347d"
+    sha256 catalina:       "2540ec4f7d57769aae7e116944c384382341f1f83b14f3c8398cd3c82c8fa76a"
+    sha256 x86_64_linux:   "d66fba0621ace48141118d7e5c9624e169ab660ca5cf9baab3cabae7fd78aea5"
   end
 
   depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
   depends_on "sphinx-doc" => :build
   depends_on "icu4c"
   depends_on "libev"
   depends_on "libevent"
+  depends_on "libfido2"
   depends_on "libgcrypt"
   depends_on "lz4"
   depends_on "mysql-client"
@@ -71,32 +73,18 @@ class PerconaXtrabackup < Formula
     sha256 "4eb3b8d442b426dc35346235c8733b5ae35ba431690e38c6a8263dce9fcbb402"
   end
 
-  # Fix build on Monterey.
-  # Remove with the next version.
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/fcbea58e245ea562fbb749bfe6e1ab178fd10025/mysql/monterey.diff"
-    sha256 "6709edb2393000bd89acf2d86ad0876bde3b84f46884d3cba7463cd346234f6f"
-  end
-
-  # Fix linkage errors on macOS.
-  # Remove with the next version.
-  patch do
-    url "https://github.com/percona/percona-xtrabackup/commit/89004bb0a67b73daeafc6a5008d0eefc2e80134b.patch?full_index=1"
-    sha256 "53f1f444e7d924b6a58844a3f9be521ccde70d2adeed7e6ba4f513ceedc82ec4"
-  end
-
-  # Fix compilation error on macOS.
-  # https://github.com/percona/percona-xtrabackup/pull/1265
-  patch do
-    url "https://github.com/percona/percona-xtrabackup/commit/b3884892797f405c88a130923d35d0d3350098d1.patch?full_index=1"
-    sha256 "2c9287f807a796ff538f2f0d3527fbe384f3f2cc01ad8daba991f176f3a9a9e7"
-  end
-
   # Fix CMake install error with manpages.
   # https://github.com/percona/percona-xtrabackup/pull/1266
   patch do
     url "https://github.com/percona/percona-xtrabackup/commit/1d733eade782dd9fdf8ef66b9e9cb9e00f572606.patch?full_index=1"
     sha256 "9b38305b4e4bae23b085b3ef9cb406451fa3cc14963524e95fc1e6cbf761c7cf"
+  end
+
+  # Fix libfibo2 finding; fix unneeded coping of openssl@1.1 libs
+  # Remove in the next version (8.0.29)
+  patch do
+    url "https://github.com/mysql/mysql-server/commit/4498aef6d4a1fd266cdbddcce60965e3cb12fe1a.patch?full_index=1"
+    sha256 "09246d7f3a141adfc616bafb83f927648865eeb613f0726514fcb0aa6815d98b"
   end
 
   def install
@@ -112,6 +100,7 @@ class PerconaXtrabackup < Formula
       -DINSTALL_MYSQLTESTDIR=
       -DWITH_SYSTEM_LIBS=ON
       -DWITH_EDITLINE=system
+      -DWITH_FIDO=system
       -DWITH_ICU=system
       -DWITH_LIBEVENT=system
       -DWITH_LZ4=system
@@ -121,10 +110,6 @@ class PerconaXtrabackup < Formula
       -DWITH_ZLIB=system
       -DWITH_ZSTD=system
     ]
-
-    # macOS has this value empty by default.
-    # See https://bugs.python.org/issue18378#msg215215
-    ENV["LC_ALL"] = "en_US.UTF-8"
 
     (buildpath/"boost").install resource("boost")
     cmake_args << "-DWITH_BOOST=#{buildpath}/boost"
@@ -142,14 +127,6 @@ class PerconaXtrabackup < Formula
 
     # remove conflicting library that is already installed by mysql
     rm lib/"libmysqlservices.a"
-
-    if OS.mac?
-      # Remove libssl copies as the binaries use the keg anyway and they create problems for other applications
-      rm lib/"libssl.dylib"
-      rm lib/"libssl.1.1.dylib"
-      rm lib/"libcrypto.1.1.dylib"
-      rm lib/"libcrypto.dylib"
-    end
 
     ENV.prepend_create_path "PERL5LIB", buildpath/"build_deps/lib/perl5"
 

@@ -1,8 +1,8 @@
 class Libvirt < Formula
   desc "C virtualization API"
   homepage "https://libvirt.org/"
-  url "https://libvirt.org/sources/libvirt-8.1.0.tar.xz"
-  sha256 "3c6c43becffeb34a3f397c616206aa69a893ff8bf5e8208393c84e8e75352934"
+  url "https://libvirt.org/sources/libvirt-8.4.0.tar.xz"
+  sha256 "601a6e9bb03a43d05659f63e4a403df253ab0975b4a973f10a5607f3bbc018dd"
   license all_of: ["LGPL-2.1-or-later", "GPL-2.0-or-later"]
   head "https://gitlab.com/libvirt/libvirt.git", branch: "master"
 
@@ -12,12 +12,12 @@ class Libvirt < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "c4e68bfb88bcdb629ed55718a00ea5cc1934f3ecaa01380d7ccedc6007e2e809"
-    sha256 arm64_big_sur:  "d471f8003e5a936a149b857b9c215141d06a7dee771a735d9c0f095da370e33a"
-    sha256 monterey:       "dea823676f80f465ac06f06e78834b97422f3d5c512b16d3775649b6c418af7b"
-    sha256 big_sur:        "9a1610a93e02a4f404a038f688a4e3c3ecc208e9e986465a57295580704f5926"
-    sha256 catalina:       "1764ac765f2d3424378685e8843c3cb95263cea07f3b29f4380a3f6c48c15576"
-    sha256 x86_64_linux:   "91aad643da2f74af8f2b550f80f0f6f3c921acc2de6078eb2495a0950343b542"
+    sha256 arm64_monterey: "a75eaa89a40a4c197a5a2860fa1db285595826a60349b34c8ce4c0508b4a43b5"
+    sha256 arm64_big_sur:  "57b5b9288a66422d46f39eb07a67719c82fba387542113d70422a3087eaa9e00"
+    sha256 monterey:       "12d72abec429bc149c7ebf9dfdfb5f877e2c3cebd9de72e25f0b739396d8df5b"
+    sha256 big_sur:        "7644a045ba234c080286b3236f3d796c1b244c5385dcdbe64c100ea9766b0da0"
+    sha256 catalina:       "8aa749edc9a1a76989c3d5eba5500c58bf514804c9ffe794c9bc9b11ae06a9ad"
+    sha256 x86_64_linux:   "189a157b80c3fa5e52ba42b7d5b12de1c83ebf3501dbe4fe2b027d2531e9d946"
   end
 
   depends_on "docutils" => :build
@@ -25,7 +25,7 @@ class Libvirt < Formula
   depends_on "ninja" => :build
   depends_on "perl" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
   depends_on "gettext"
   depends_on "glib"
   depends_on "gnu-sed"

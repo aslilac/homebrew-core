@@ -1,9 +1,10 @@
 class PythonAT39 < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.9.10/Python-3.9.10.tar.xz"
-  sha256 "0a8fbfb5287ebc3a13e9baf3d54e08fa06778ffeccf6311aef821bb3a6586cc8"
+  url "https://www.python.org/ftp/python/3.9.13/Python-3.9.13.tar.xz"
+  sha256 "125b0c598f1e15d2aa65406e83f792df7d171cdf38c16803b149994316a3080f"
   license "Python-2.0"
+  revision 1
 
   livecheck do
     url "https://www.python.org/ftp/python/"
@@ -11,12 +12,12 @@ class PythonAT39 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "990e4223926283132282a211207158ad883aa6465aca37c102fa21c30f9cc7cd"
-    sha256 arm64_big_sur:  "07244e9130c068b78b2269943d8e67928dc53c3fd736db2115785257139e1233"
-    sha256 monterey:       "be3b63b24b595b7dadd25913c916cdf1c451cd5cf8068b3b2e98e6d8c40012a4"
-    sha256 big_sur:        "4d708aff6323847361c768e067ce932a0cd34e28bf53210c04f39bbf0d7fe0db"
-    sha256 catalina:       "393f1d4bf1a9d2bbc4506dae9b496a5eec0fb7f329eae00f5a3925dfb0201c45"
-    sha256 x86_64_linux:   "725befd5f76ca7ec2728734c0f2a69941a9bc80219183336c5050bf49425ac3c"
+    sha256 arm64_monterey: "2e02d1c12a0baecc8b1af05701c7db8038e6b9a7bf453cc49992eef74c268f7b"
+    sha256 arm64_big_sur:  "2b26548e5bd01505398539a0a4ba8a891cae2688569d109295e16bc91342d17c"
+    sha256 monterey:       "74a5bc1cb0c57f60a65f63f4c2cd7b10ce9aed3fb0d4e8634be0e7f44b8d02a7"
+    sha256 big_sur:        "c91826d8daf2835b6b0f4dbc1697e8cb6227e2cc3cb7d9dfd47a73e4da1636f0"
+    sha256 catalina:       "4cb2b93b180f1aeacd7a89551c36ff0986c8cf31d66099649f44067755c83866"
+    sha256 x86_64_linux:   "ba4a42a1bb96ff3abe62e2f622bbe304b42c99b2d6e5381f5fa761d022c4a1d8"
   end
 
   # setuptools remembers the build flags python is built with and uses them to
@@ -34,6 +35,7 @@ class PythonAT39 < Formula
   uses_from_macos "bzip2"
   uses_from_macos "expat"
   uses_from_macos "libffi"
+  uses_from_macos "libxcrypt"
   uses_from_macos "ncurses"
   uses_from_macos "unzip"
   uses_from_macos "zlib"
@@ -59,13 +61,13 @@ class PythonAT39 < Formula
 
   # Always update to latest release
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/69/77/aee1ecacea4d0db740046ce1785e81d16c4b1755af50eceac4ca1a1f8bfd/setuptools-60.5.0.tar.gz"
-    sha256 "2404879cda71495fc4d5cbc445ed52fdaddf352b36e40be8dcc63147cb4edabe"
+    url "https://files.pythonhosted.org/packages/4a/25/ec29a23ef38b9456f9965c57a9e1221e6c246d87abbf2a31158799bca201/setuptools-62.3.2.tar.gz"
+    sha256 "a43bdedf853c670e5fed28e5623403bad2f73cf02f9a2774e91def6bda8265a7"
   end
 
   resource "pip" do
-    url "https://files.pythonhosted.org/packages/da/f6/c83229dcc3635cdeb51874184241a9508ada15d8baa337a41093fab58011/pip-21.3.1.tar.gz"
-    sha256 "fd11ba3d0fdb4c07fbc5ecbba0b1b719809420f25038f8ee3cd913d3faa3033a"
+    url "https://files.pythonhosted.org/packages/3e/0a/6125e67aa4d3245faeed476e4e26f190b5209f84f01efd733ac6372eb247/pip-22.1.1.tar.gz"
+    sha256 "8dfb15d8a1c3d3085a4cbe11f29e19527dfaf2ba99354326fd62cec013eaee81"
   end
 
   resource "wheel" do

@@ -1,8 +1,8 @@
 class MediaInfo < Formula
   desc "Unified display of technical and tag data for audio/video"
   homepage "https://mediaarea.net/"
-  url "https://mediaarea.net/download/binary/mediainfo/21.09/MediaInfo_CLI_21.09_GNU_FromSource.tar.bz2"
-  sha256 "cced70fc0f23a3e95a5d602099c86547d5b291ff0aef78ea7aaff03908b4d3c5"
+  url "https://mediaarea.net/download/binary/mediainfo/22.06/MediaInfo_CLI_22.06_GNU_FromSource.tar.bz2"
+  sha256 "e96633cfced36e7810fc5cd0f15a83362be1f4670e0b38971d8172003dd068d3"
   license "BSD-2-Clause"
 
   livecheck do
@@ -11,13 +11,12 @@ class MediaInfo < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "d808a90ceb8e9d8a3372df00f86713c44fa63e0e21355fda3f151d0874d8d4eb"
-    sha256 cellar: :any,                 arm64_big_sur:  "a867be2d48af32254cf7d789bc1180453caf7966126b2388d80da99a6aaa4f9e"
-    sha256 cellar: :any,                 monterey:       "1c27fe68ded8e89d95776eeb2dea6cb326a302e058c0e1f4d0871c0baca17548"
-    sha256 cellar: :any,                 big_sur:        "75c84b8b3d32e058bafeee2a086c739e190ee94a92c987bb2928a093eff48e35"
-    sha256 cellar: :any,                 catalina:       "5bf600f4122b3922d0935e0c40c1c598a7884d1fb89aead60b27b5c9d2aecd37"
-    sha256 cellar: :any,                 mojave:         "207f0ed70033e804e776765b3ba9afd85a50731685441985b9598c225be8c958"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "821008db0d750423722c9f694c4b95374ea023844afb6019a09170e2534307ef"
+    sha256 cellar: :any,                 arm64_monterey: "8b24d5ae8ea40e7a23bbb50a37c8b9dbee55cf4294d613fb693a5d9c4efa1371"
+    sha256 cellar: :any,                 arm64_big_sur:  "cc1c9fdcce0308d85c9d1475edaebbf9e9c90e06594b49de04d7fbf638294d8c"
+    sha256 cellar: :any,                 monterey:       "ff0e87a34917f7adb55f44783322fce7724c110206efc46df736d773c5542fe7"
+    sha256 cellar: :any,                 big_sur:        "840a9f8518f369f2269242eb241f665588c2245e793c44791ddb0da2cfd7cfc6"
+    sha256 cellar: :any,                 catalina:       "f812ef569a1256b049c7e8c6b7c45223d686527af1d2b8073dc7dc4397f0a3ec"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "61e0635c6e62553b450fc3ddcdc3d4eff9e8bd6a751406618494a1bcab757a77"
   end
 
   depends_on "pkg-config" => :build

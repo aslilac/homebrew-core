@@ -1,17 +1,17 @@
 class StressNg < Formula
   desc "Stress test a computer system in various selectable ways"
   homepage "https://wiki.ubuntu.com/Kernel/Reference/stress-ng"
-  url "https://github.com/ColinIanKing/stress-ng/archive/refs/tags/V0.13.12.tar.gz"
-  sha256 "16540d9cfa80d6a274fc0238d7251675ee38df6d5be805d14a67ce9efcb59ce9"
+  url "https://github.com/ColinIanKing/stress-ng/archive/refs/tags/V0.14.02.tar.gz"
+  sha256 "30dd0ec5799b717fe416a46c314869f26c456b7c05e7498d9c36affe1e9f0d18"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a770f70d5cb4fe34cd9e802fbf096912ba7ad4b9615360109f93ff66254ee97d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "02009f5667760e93a569086ee6d9e99141b9dfaf736df0da356aad9b4cc8756c"
-    sha256 cellar: :any_skip_relocation, monterey:       "9b62617f6b22b642a7949cb6439427788c85c7d84269a6ffd6d976f1b5d7cee8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ed8f5f01fc1d326f0bb93dcfc490463e0603d63aec94e789664479aeb91bfa58"
-    sha256 cellar: :any_skip_relocation, catalina:       "b07d8be03e26ccc2b73d596e00dca2ebf00c0393cdbaa557133d31265b608ac6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e4b599502e47da03e594f8c58a8a9a4b6b8662e9cb8164d5894233a4f4c4ad82"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "43f0213982bb72e42c2f9dd4b1e1aaf7882d9d46083628577ce7a00ba77742d0"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "931e90bbf1ac2bef57779d9a530e9dcafaf6d3e0af1288be2c3df6ecf6498393"
+    sha256 cellar: :any_skip_relocation, monterey:       "317ae7333ad61144ffe2f3357d876362a235d78a4f7b674949d4281378c342b6"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c7f57e2e0a06e2acb14d452f0edb4df7c1da06498f6499de4b51f3bbd13f3f30"
+    sha256 cellar: :any_skip_relocation, catalina:       "edd37d3c1b7cef2060efab462b1f284b341815e0ff989d59acf09634e7d3d82b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4f2387b9517035b0adc1e7781cdea35e1a349701f438061eb8a02af8aec38680"
   end
 
   depends_on macos: :sierra

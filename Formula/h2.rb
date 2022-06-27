@@ -1,13 +1,13 @@
 class H2 < Formula
   desc "Java SQL database"
   homepage "https://www.h2database.com/"
-  url "https://github.com/h2database/h2database/releases/download/version-2.1.210/h2-2022-01-17.zip"
-  version "2.1.210"
-  sha256 "f3a82b598526270b60ea60d439e21bd290bacc2d18d262512bb9b37748055691"
+  url "https://github.com/h2database/h2database/releases/download/version-2.1.214/h2-2022-06-13.zip"
+  version "2.1.214"
+  sha256 "34c5ffe2d27ceeff217e5b71aefe964fb3fb6c0e6891551bec4e599df5e78c9b"
   license "MPL-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "638ded79dfd9abaaac869f8ef7ef9aec709766e1ada24feb928ff2b22b297da2"
+    sha256 cellar: :any_skip_relocation, all: "fa5d5febd18e101ce73f94cab8a2c41d126dd0acbfd6386de14a85ed0b40671b"
   end
 
   depends_on "openjdk"

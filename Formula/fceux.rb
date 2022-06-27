@@ -2,17 +2,19 @@ class Fceux < Formula
   desc "All-in-one NES/Famicom Emulator"
   homepage "https://fceux.com/"
   url "https://github.com/TASEmulators/fceux.git",
-      tag:      "fceux-2.6.3",
-      revision: "84cf82cb6a5b1d486523855e056ecebed34d7862"
+      tag:      "fceux-2.6.4",
+      revision: "2b8c61802029721229a26592e4578f92efe814fb"
   license "GPL-2.0-only"
+  revision 1
   head "https://github.com/TASEmulators/fceux.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "ca8d296677efe2411d35bb74007259c4daa24f1d464709150684f1ee3828168e"
-    sha256 cellar: :any, arm64_big_sur:  "d09db6f7a940654916002a49226113f1a936716ccae5901d870281f72bd0c17a"
-    sha256 cellar: :any, monterey:       "2d8ee62c8e4f15e97d5cf52b07093a62ee69a0c2283e41bb03301bc1c3997b77"
-    sha256 cellar: :any, big_sur:        "5cff74b8d555a3de7d14f420b5e7ec2474e07648e9e11985c9275a02dab035b2"
-    sha256 cellar: :any, catalina:       "3ce20ce9e46e3cad0550ba1c832e3d4aba40d19d899e5f1c63ae4610afdd983f"
+    sha256 cellar: :any,                 arm64_monterey: "6b487aace664447205f9aa223f343c9b0b40dd46af80faf06f8afade175d6bd2"
+    sha256 cellar: :any,                 arm64_big_sur:  "3a52c3f3c2784ff73890b37a66aebfdb1de0d239a6e909a0656c8beda45534a9"
+    sha256 cellar: :any,                 monterey:       "f5430a054f5eb0bff5797bc71c487943a22ee156815ee39b4f0700c907e28f5a"
+    sha256 cellar: :any,                 big_sur:        "462d04dd0ef169b5e85c80eb2f62443747ab9d3af3ce99e7096a687b01185a50"
+    sha256 cellar: :any,                 catalina:       "ff69736d07f7836d141565d16c682b5f2a5fa8abfd386b63aa373f1736d13895"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "51dfaab2b7752e008015a46c7ff551187d273ad100a1f96a0ea7266859b41605"
   end
 
   depends_on "cmake" => :build
@@ -26,6 +28,7 @@ class Fceux < Formula
   on_linux do
     depends_on "gcc"
   end
+
   fails_with gcc: "5"
 
   def install
@@ -33,7 +36,8 @@ class Fceux < Formula
     system "cmake", ".", *std_cmake_args, "-DQT6=ON"
     system "make"
     cp "src/auxlib.lua", "output/luaScripts"
-    libexec.install "src/fceux.app/Contents/MacOS/fceux"
+    fceux_path = OS.mac? ? "src/fceux.app/Contents/MacOS" : "src"
+    libexec.install Pathname.new(fceux_path)/"fceux"
     pkgshare.install ["output/luaScripts", "output/palettes", "output/tools"]
     (bin/"fceux").write <<~EOS
       #!/bin/bash
@@ -42,6 +46,10 @@ class Fceux < Formula
   end
 
   test do
+    # Set QT_QPA_PLATFORM to minimal to avoid error:
+    # "This application failed to start because no Qt platform plugin could be initialized."
+    ENV["QT_QPA_PLATFORM"] = "minimal" if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
+
     system "#{bin}/fceux", "--help"
   end
 end

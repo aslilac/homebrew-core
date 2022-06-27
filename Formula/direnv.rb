@@ -1,18 +1,18 @@
 class Direnv < Formula
   desc "Load/unload environment variables based on $PWD"
   homepage "https://direnv.net/"
-  url "https://github.com/direnv/direnv/archive/v2.30.3.tar.gz"
-  sha256 "7fb5431b98d57fb8c70218b4a0fab4b08f102790e7a92486f588bf3d5751ac3b"
+  url "https://github.com/direnv/direnv/archive/v2.32.1.tar.gz"
+  sha256 "dc7df9a9e253e1124748aa74da94bf2b96f5a61d581c60d52d3f8e8dc86ecfde"
   license "MIT"
   head "https://github.com/direnv/direnv.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0a2bf97696f0e57e713db8f39dcff719fa17e0512b6ad14a7657a1c946943a85"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "41d4f105cdef28417dae6c248a5819709967897071c34ed63fa5432644d944f2"
-    sha256 cellar: :any_skip_relocation, monterey:       "761499a99dc029d5cafe075105827c4897d5e45dd53cfa7bf86ea51fc4f1afaf"
-    sha256 cellar: :any_skip_relocation, big_sur:        "73fc3e19b391c97806c44d2f2b38b5ddc28742d656ab6ca013371acc6cabd5bc"
-    sha256 cellar: :any_skip_relocation, catalina:       "77c87b8f6ee51b65514b5688babcd83117b75feb2b40b0489bd0649cdeb3f3cb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b18ff46bf3e0b18eace8b2a0754829555a991d58d6fe3f76681a8a057c48a04c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "567a8c1ca45ffae17d4901b0aa729be8866b6cb93ee8224da98cacf36f73ed69"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b21230f43123e6b1a832f87d30f040d9f4684bb19f62f69f651bb24ae1cfaaab"
+    sha256 cellar: :any_skip_relocation, monterey:       "68f7b9093d44fdef4210ffeaa8f88e8fa27bef356b4c8b2d4fc7749aab1d2614"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f5dc03f040b2638a14e30c9fdeaaed616084539c0360fc916b53c3c8206259c4"
+    sha256 cellar: :any_skip_relocation, catalina:       "2edc8e221d28db3da039490d4728d3c5ac7ce38d5274418b4d5f0ca31dfc0b28"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c0356bf7cc43d0a1eb7777e7ed390f47f9dd8fb51cc480c8fb87fcde5fba1b4a"
   end
 
   depends_on "go" => :build

@@ -1,17 +1,17 @@
 class Docuum < Formula
   desc "Perform least recently used (LRU) eviction of Docker images"
   homepage "https://github.com/stepchowfun/docuum"
-  url "https://github.com/stepchowfun/docuum/archive/v0.20.5.tar.gz"
-  sha256 "830aca5f43fb9cf1bef21657bd89ffe3bfa3829613f8b0a8e4f31b8c3058749d"
+  url "https://github.com/stepchowfun/docuum/archive/v0.21.1.tar.gz"
+  sha256 "6327d5e587460fb6cb10bfc10a7430b77a61926b49c919b2026e46592df2e0ac"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "522dfc02c0e048df75890eb180260c029bbd2697b98b6e58f1a508000c5afd44"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8ba50a8305769c48caad3e9bbddaf5cbd158bb08ee0b1c0523a8d037e15bde6b"
-    sha256 cellar: :any_skip_relocation, monterey:       "601f6974757e348ba9993f070bae3eca308f9d51462c72b80a866458bc78fabf"
-    sha256 cellar: :any_skip_relocation, big_sur:        "31f94906755b535e2f7ced1370823ef9398a050bb6ad7b3b8c5eaa75f1ab4e86"
-    sha256 cellar: :any_skip_relocation, catalina:       "4ac55b613e69442098752f2e8928397320842bb2541dab968a35a8ec39b4403e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f4f68d38631516ce33424792b0cf638548df0d192534a508202b6ece3220728a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "621cd7b8f28627bce234a6895402f152bd81a81f97d91d34ef780226a5b81b28"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cceb92da75b1c92689b0ae2fa771c8b1e25e9662fa900be5b7a2cb568bef584c"
+    sha256 cellar: :any_skip_relocation, monterey:       "e0109727463946234cd667db2eab532fd44094101d9be557fd7558747ec63cd6"
+    sha256 cellar: :any_skip_relocation, big_sur:        "ac7b4c69296ed79b6b78194bfbfbd2190e6c4be40b53c42f53b885636cc9d5d7"
+    sha256 cellar: :any_skip_relocation, catalina:       "1124f7c27e284d40d95f0c7873b8e09d98e7af336771de826cd79d1a9405b766"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fc714a83fd2e0453d48f949236df6aebd7f4382bd5d6319d85321b2e0e292bf4"
   end
 
   depends_on "rust" => :build

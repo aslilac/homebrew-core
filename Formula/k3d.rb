@@ -1,9 +1,9 @@
 class K3d < Formula
-  desc "Little helper to run Rancher Lab's k3s in Docker"
+  desc "Little helper to run CNCF's k3s in Docker"
   homepage "https://k3d.io"
-  url "https://github.com/rancher/k3d.git",
-    tag:      "v5.3.0",
-    revision: "bb8a2b0bb57ad69680e4e2a0772a0bf31f35a457"
+  url "https://github.com/k3d-io/k3d.git",
+    tag:      "v5.4.3",
+    revision: "7e4b1124c891e2b4944f26238ed4938c5404e137"
   license "MIT"
 
   livecheck do
@@ -12,12 +12,12 @@ class K3d < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "41c2469e48c8cb188e5d7dcca428ecc55d18f83527fe7b6bc5bbd231672eb028"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "db93a045dc43b8d61395f1ca33ca5b6f77fca14e44a30ffbdedaee0a472fce3b"
-    sha256 cellar: :any_skip_relocation, monterey:       "ae559b2904237997e1ec299c937a3bbca3c5e707e11a733066d372c3e4fd4ea8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f60292be2dc2460df8771178b8e4eaf9ec5fb7cfa3bf0cafc256c1670d208a3f"
-    sha256 cellar: :any_skip_relocation, catalina:       "4d882ecfc0f37019ada4752ca32eec26f5594b275fd8a5c26a77a79c0ce835cd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9526672cddacd5ee8aaa6b294036da4cfdb03e87e642cda8c1cee61463be1a5c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8c2af98a480e0cbc308317d9a690a2e4d7a1ca765e5f587ead80222c1333fc01"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "68a26f812194dfa53322c7a3f2337e67c4d1fa5d138904ffcdfaa3586da0b3cc"
+    sha256 cellar: :any_skip_relocation, monterey:       "5626984ea69bd457991049e606afde54b4d25d20ac2983d02141424f64fe59bc"
+    sha256 cellar: :any_skip_relocation, big_sur:        "798fd84e244051fd514ea6cb39b0d2ebe63a665f915e3fdfcb8e7de7b71244ab"
+    sha256 cellar: :any_skip_relocation, catalina:       "13cec3c20dc35246e7fd52978d61a2c3ad70f1b5440f25482812ee01446db742"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e34f528c2e28374eb3b5a43fec747a8e50b93974bf2a25cc1444c57d985cc77c"
   end
 
   depends_on "go" => :build
@@ -31,8 +31,8 @@ class K3d < Formula
 
     ldflags = %W[
       -s -w
-      -X github.com/rancher/k3d/v#{version.major}/version.Version=v#{version}
-      -X github.com/rancher/k3d/v#{version.major}/version.K3sVersion=#{k3s_version}
+      -X github.com/k3d-io/k3d/v#{version.major}/version.Version=v#{version}
+      -X github.com/k3d-io/k3d/v#{version.major}/version.K3sVersion=#{k3s_version}
     ]
 
     system "go", "build",

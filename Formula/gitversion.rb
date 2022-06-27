@@ -1,17 +1,17 @@
 class Gitversion < Formula
   desc "Easy semantic versioning for projects using Git"
   homepage "https://gitversion.net"
-  url "https://github.com/GitTools/GitVersion/archive/5.9.0.tar.gz"
-  sha256 "ff67f91ed4ea5a208b9be37f9b52d76e20d3b8f63f5f6c407bf51a8c4f652446"
+  url "https://github.com/GitTools/GitVersion/archive/5.10.3.tar.gz"
+  sha256 "3d0e1874b8037021db75cad22f49377f85e11d1590e760f4d7ba25dc93be3379"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "d920a0c9ae1322ef7de0cbe88a0a67b34acfeff19abc9569c4405a3c9d319061"
-    sha256 cellar: :any,                 arm64_big_sur:  "d4e807ed7268f6b70493b49e98d5d4c79af7b50622d7e1362970341be09cbf90"
-    sha256 cellar: :any,                 monterey:       "c70832a9c59c1b0c8fed72434ae8d75517c612a8f65c2ccb892d2f647b88d434"
-    sha256 cellar: :any,                 big_sur:        "77a7ccdff16cdbe9bc97bb2507008aade43780147fa3ecb93ca78723b51941da"
-    sha256 cellar: :any,                 catalina:       "2eabafaae6dbaa06f58617d1049388fc4d5113e1324ae948cc90bce1f8ca4b68"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "102a4b40a448529506fcf40e689ad5853943d45bac6ed9f414f45e3298756512"
+    sha256 cellar: :any,                 arm64_monterey: "91095e6f53c0bdd790d33f4e6a058428da032406b9c75f9f0a027ddad022a172"
+    sha256 cellar: :any,                 arm64_big_sur:  "f63fcfb138232512266b774a25c6bf233b527b1ac5bde899cf1d1706e15d9d53"
+    sha256 cellar: :any,                 monterey:       "9587dee1b305b62cab5cf6343077ad8a30ddd45b254d9cbd57c474bd9b17076a"
+    sha256 cellar: :any,                 big_sur:        "ca3c4923a8c5bf6d0a3f2a71179b37f64327126dad9e35f209e0d0fb4f617c05"
+    sha256 cellar: :any,                 catalina:       "8001a610e6b58fe435ecbf82a6e071d500db30f7d3d9d6ec3101e637ba9c5d34"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1b00030ec01da55e3f9acb23bdea80893f9bb59dfa50ab64c8b3cda4a9b9cb63"
   end
 
   depends_on "dotnet"

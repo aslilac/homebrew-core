@@ -1,19 +1,19 @@
 class Daq < Formula
   desc "Network intrusion prevention and detection system"
   homepage "https://www.snort.org/"
-  url "https://github.com/snort3/libdaq/archive/v3.0.6.tar.gz"
-  mirror "https://fossies.org/linux/misc/libdaq-3.0.6.tar.gz"
-  sha256 "08455b2f09dd4b83067810464a98d25e644383375156f8be0c52ca5b5331350e"
+  url "https://github.com/snort3/libdaq/archive/v3.0.9.tar.gz"
+  mirror "https://fossies.org/linux/misc/libdaq-3.0.9.tar.gz"
+  sha256 "c0e8535533720a6df05ab884b7c8f5fb4222f3aac12bdc11829e08c79716d338"
   license "GPL-2.0-only"
   head "https://github.com/snort3/libdaq.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "d9b3ee5412c02960d47e7ec751a77cb7db4c90248e8d0acc86b5109706b94d9a"
-    sha256 cellar: :any,                 arm64_big_sur:  "de7c31db17594cfe76b75b247959bd6771c1deacdd4c170e227e88745ecdf350"
-    sha256 cellar: :any,                 monterey:       "7f3cc6fc33f45e6f30fb87be6687d85f137b0e2b0e23144e67c0d72f040c9adb"
-    sha256 cellar: :any,                 big_sur:        "b19e476f082f9e81038faa89b6f949b382bcac25a688325e5e28973b7367376d"
-    sha256 cellar: :any,                 catalina:       "0b3e1622d7fa64426a06b9d9e2055a4a54c06cd4027a9ea3621eacda242c380e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0c90c7b2ca952f926fd80f70612b1b1084fed2cfddc08634266e628ede24ea15"
+    sha256 cellar: :any,                 arm64_monterey: "1a963ac9b6dd33dda01a3a59b5e78a0ac5f9e9548c70bb230bc28c980c58b61d"
+    sha256 cellar: :any,                 arm64_big_sur:  "526d1a7cc5f258caabaacc684a8e4888c881a32e1095c2aec66c9100b459ee63"
+    sha256 cellar: :any,                 monterey:       "a3abe4b20f9cd886cc2d473a9010065de9b293156895ecaff41a991313cc3188"
+    sha256 cellar: :any,                 big_sur:        "cc472d0fecf5739b6a0e528aa94033cfa1095f863ad0187a59f38dc191cc1c4c"
+    sha256 cellar: :any,                 catalina:       "98f0fbe2af7177937ff3aaeb2fb0846cff2b3049a7ad127cfd82a02bc8bfd3a4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5f7bfc74cc962bc559d07584be350516a73838dcaeb024adb5605ecba3c9392a"
   end
 
   depends_on "autoconf" => :build

@@ -1,38 +1,29 @@
 class Uwsgi < Formula
   desc "Full stack for building hosting services"
   homepage "https://uwsgi-docs.readthedocs.io/en/latest/"
+  url "https://files.pythonhosted.org/packages/24/fd/93851e4a076719199868d4c918cc93a52742e68370188c1c570a6e42a54f/uwsgi-2.0.20.tar.gz"
+  sha256 "88ab9867d8973d8ae84719cf233b7dafc54326fcaec89683c3f9f77c002cdff9"
   license "GPL-2.0-or-later"
-  revision 2
+  revision 1
   head "https://github.com/unbit/uwsgi.git", branch: "master"
 
-  stable do
-    url "https://files.pythonhosted.org/packages/c7/75/45234f7b441c59b1eefd31ba3d1041a7e3c89602af24488e2a22e11e7259/uWSGI-2.0.19.1.tar.gz"
-    sha256 "faa85e053c0b1be4d5585b0858d3a511d2cd10201802e8676060fd0a109e5869"
-
-    # Fix "library not found for -lgcc_s.10.5" with 10.14 SDK
-    # Remove in next release
-    patch do
-      url "https://github.com/unbit/uwsgi/commit/6b1b397f.patch?full_index=1"
-      sha256 "85725f31ea0f914e89e3abceffafc64038ee5e44e979ae85eb8d58c80de53897"
-    end
-  end
-
   bottle do
-    sha256 arm64_monterey: "8165b1f5c4e155fbb114f1f7dfa02802528531874c5364bb44acb21d13d6f284"
-    sha256 arm64_big_sur:  "26fab6fdc9ceeec301ef5fd5cbcfadfcfbe7166ef327229467ba90c6a787a4e6"
-    sha256 monterey:       "ad2fae7eefbe577c898841750ce6867e73185445730f3ff974e135ab57b00e99"
-    sha256 big_sur:        "a2a58236a725f7b14d68b0cd5defb7b186827b7e1008f6b8ea118f9b5365c524"
-    sha256 catalina:       "32b2ae6a83e6b18be219052bac8dee129eef3aae9881a455486abaa0d3e3c904"
-    sha256 x86_64_linux:   "ba0b90b81f4b8bcb207ccb2b473f47fb0d9facb0520a0af5824adf4ed486a665"
+    sha256 arm64_monterey: "56616732f6b6076f009d65e3361887585dffa03629788949ac44e1c3799e5a63"
+    sha256 arm64_big_sur:  "52f4f303c418ae10ddd567ff72b434454e6f9ace5edc38bb1160616aea81b2b3"
+    sha256 monterey:       "b698236d01c855607cc95ac5d210ba47048098f398879f370d3efb1da8ae7b4e"
+    sha256 big_sur:        "272d281f40360c2455a96611a709a7dd892209e2aa3d8c0bd51be880f04f8628"
+    sha256 catalina:       "7734363aedfd421c78d7d2c49dfab153c435e2d00334036d8228bacac1577b0a"
+    sha256 x86_64_linux:   "4af33f405f0444ec27e682381d30b8f6ea68b3ea9080f89dbb8dee8000faec1a"
   end
 
   depends_on "pkg-config" => :build
   depends_on "openssl@1.1"
   depends_on "pcre"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
   depends_on "yajl"
 
   uses_from_macos "curl"
+  uses_from_macos "libxcrypt"
   uses_from_macos "libxml2"
   uses_from_macos "openldap"
   uses_from_macos "perl"
@@ -42,10 +33,6 @@ class Uwsgi < Formula
   end
 
   def install
-    # Fix file not found errors for /usr/lib/system/libsystem_symptoms.dylib and
-    # /usr/lib/system/libsystem_darwin.dylib on 10.11 and 10.12, respectively
-    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version <= :sierra
-
     openssl = Formula["openssl@1.1"]
     ENV.prepend "CFLAGS", "-I#{openssl.opt_include}"
     ENV.prepend "LDFLAGS", "-L#{openssl.opt_lib}"
@@ -65,7 +52,7 @@ class Uwsgi < Formula
 
     plugins = %w[airbrake alarm_curl asyncio cache
                  carbon cgi cheaper_backlog2 cheaper_busyness
-                 corerouter curl_cron cplusplus dumbloop dummy
+                 corerouter curl_cron dumbloop dummy
                  echo emperor_amqp fastrouter forkptyrouter gevent
                  http logcrypto logfile ldap logpipe logsocket
                  msgpack notfound pam ping psgi pty rawrouter
@@ -80,6 +67,7 @@ class Uwsgi < Formula
                  transformation_offload transformation_tofile
                  transformation_toupper ugreen webdav zergpool]
     plugins << "alarm_speech" if OS.mac?
+    plugins << "cplusplus" if OS.linux?
 
     (libexec/"uwsgi").mkpath
     plugins.each do |plugin|

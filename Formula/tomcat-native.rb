@@ -1,19 +1,18 @@
 class TomcatNative < Formula
   desc "Lets Tomcat use some native resources for performance"
   homepage "https://tomcat.apache.org/native-doc/"
-  url "https://www.apache.org/dyn/closer.lua?path=tomcat/tomcat-connectors/native/1.2.31/source/tomcat-native-1.2.31-src.tar.gz"
-  mirror "https://archive.apache.org/dist/tomcat/tomcat-connectors/native/1.2.31/source/tomcat-native-1.2.31-src.tar.gz"
-  sha256 "acc0e6e342fbdda54b029564405322823c93d83f9d64363737c1cbcc3af1c1fd"
+  url "https://www.apache.org/dyn/closer.lua?path=tomcat/tomcat-connectors/native/1.2.34/source/tomcat-native-1.2.34-src.tar.gz"
+  mirror "https://archive.apache.org/dist/tomcat/tomcat-connectors/native/1.2.34/source/tomcat-native-1.2.34-src.tar.gz"
+  sha256 "b7571881f527c079b4e9114f556797d11ce483db28f55f9a5943fc0eea82d930"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "94de42ed8da515cb63be2b5bab2322975f02810f214c575fb5a48f0f8df00900"
-    sha256 cellar: :any,                 arm64_big_sur:  "c6f4dd11e7fbf16ad6f7e11b7d4c81e1ee6159bc025e0464430d920588fd1f24"
-    sha256 cellar: :any,                 monterey:       "966d83820a8738edb2fea2fb2c4dbc4b18c786b70ddbed1c01126821a24e9241"
-    sha256 cellar: :any,                 big_sur:        "41a3d1bd142f9af9709a09ef08fa9c1d4afba8c1df9afcf206680abef9cdc561"
-    sha256 cellar: :any,                 catalina:       "49cb291540334f5a2b15ddbd2b597df9993cd958aa55d301b45b36389178c10e"
-    sha256 cellar: :any,                 mojave:         "24a026ac8fbbaf58b678c8cb8b8eaaf6d1ffca5774fd761943bc49b1e1179366"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "330a4f42782065c9160ff41e5c55d483f1d866b569854db3b91f45959f553f1b"
+    sha256 cellar: :any,                 arm64_monterey: "afba44a13503c085aa4c2bc04ae214ea3e308e8efeb8ddbf28fbea74d910f3ae"
+    sha256 cellar: :any,                 arm64_big_sur:  "cf4ad6e34bd693103a4215fbf07880b101c7d82dd134e1e88665518a226a5488"
+    sha256 cellar: :any,                 monterey:       "bf7f822a871f9235e68b2992214b68dc46070de10928c1087aca297b8ad0697a"
+    sha256 cellar: :any,                 big_sur:        "ec404eb9a6ddeb729105ecaa53b74372450e4b63dd2091cd56d49cd0ff6d2310"
+    sha256 cellar: :any,                 catalina:       "0f8b40945e5b939b7e97f97696f7a846ac9d353033ad8159db63b6bff5846340"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7c1167d8baacd91f44e1a62cbc6581f2eb06b4d6ef363e3a289224611f830e8b"
   end
 
   depends_on "libtool" => :build

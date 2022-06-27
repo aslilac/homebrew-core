@@ -1,17 +1,17 @@
 class Sshs < Formula
   desc "Graphical command-line client for SSH"
   homepage "https://github.com/quantumsheep/sshs"
-  url "https://github.com/quantumsheep/sshs/archive/refs/tags/3.0.0.tar.gz"
-  sha256 "3c142d823fd0c985a0416ba0e96425cb63c8fe7b5d1b29dc0ee4846c697ddfc1"
+  url "https://github.com/quantumsheep/sshs/archive/refs/tags/3.2.0.tar.gz"
+  sha256 "8b3127178c7bff19c1ea1a5fd2c5758137863c7e7cfbc4900cdf3fa2f13007a6"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ad2b231a0bc855fd57cccb3d7bfd05b9408c928ea81f43186bbca700dcc692a9"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c725b4ef6afee5c5197e988cfc17b18b0da123bfb6ddc6d2d447f03a7027c88e"
-    sha256 cellar: :any_skip_relocation, monterey:       "0d2301b173186789f1ee42a1d2a60295461a2e1d5685c479f2d0d99fd8d4e6cf"
-    sha256 cellar: :any_skip_relocation, big_sur:        "83dd80157f7cef2b456bc58ece4856bea94e98a402a1fd355793cd6ed1e5925d"
-    sha256 cellar: :any_skip_relocation, catalina:       "c9c471ed21dd6fb131e001e01bcd78ea4bf56a7c43ea39a05428130fb2df1cb7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "de5201f08b3948522ca05ca48d3ff40e70a13398cc0cb597eafdceca4b3f3e0b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "25ddb81546acf421a7314d16e113049b92247e6f5d9ef82d21b616c9c9b203dd"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2d99b452bc112129f2cd1c0db08c54b89cc6c9d6efa12ad7d9a6eab77d514869"
+    sha256 cellar: :any_skip_relocation, monterey:       "a94fbcb2090a8762122c6ebfed9f2b5fcbfdfbda259293ebeb5dfdd7919262f1"
+    sha256 cellar: :any_skip_relocation, big_sur:        "4523020639af5422641feec22d3ff6c5b2027fc65d13c3ac1563e0d5e0a3e407"
+    sha256 cellar: :any_skip_relocation, catalina:       "bcf3b701609f1a4eb851178d6e97ba0f18a8becd5e5537b046ffb79d32052bac"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fde91b2d26c5147e1f2a97a2e26f7755419e9c1861ac68e591fc1662e49ba6f4"
   end
 
   depends_on "go" => :build

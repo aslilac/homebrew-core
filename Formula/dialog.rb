@@ -1,8 +1,8 @@
 class Dialog < Formula
   desc "Display user-friendly message boxes from shell scripts"
   homepage "https://invisible-island.net/dialog/"
-  url "https://invisible-mirror.net/archives/dialog/dialog-1.3-20220117.tgz"
-  sha256 "754cb6bf7dc6a9ac5c1f80c13caa4d976e30a5a6e8b46f17b3bb9b080c31041f"
+  url "https://invisible-mirror.net/archives/dialog/dialog-1.3-20220526.tgz"
+  sha256 "858c9a625b20fde19fb7b19949ee9e9efcade23c56d917b1adb30e98ff6d6b33"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -11,12 +11,12 @@ class Dialog < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d6416f5ced5a9df460e0749bd8ddc70761e8b1277fbe0d50461e21d7dc260b65"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5da2362b2d79f7103aa14bbbe94ab1997828acfb3632f52b53b326bf22ce5a02"
-    sha256 cellar: :any_skip_relocation, monterey:       "924f9c2a183dbe4a5569920439139880a4f8b1885bc5e8ba2432407f1e2eec02"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a3cbb241e0a0e7ce3f00a7a62787eefbeeff1093b1250c8276db20c5a91924ab"
-    sha256 cellar: :any_skip_relocation, catalina:       "c3b26717d508ffad00c2a389c159af92659322cbabb42313e9078259cc79dfae"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "69cc9da2efda63e3df5aea8adaaa64867d459cb2164556e1d7f5430f190796ee"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "053937d0f1b8b8edc8eaae4a99d2b2d5c7b3bca38731dc6ecd80fa0d75773851"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "99c12f1af4c9dbb9b709952bee5481325586b784bfcf463cf3881d4290172568"
+    sha256 cellar: :any_skip_relocation, monterey:       "4f36a9baff2209ba023b323f82bea9d9f55d955378621f75be74f9f9658ace1e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "0701269128c16d30f28c8bbd183e6ce903326fd62eedef3b93a9d251fee55159"
+    sha256 cellar: :any_skip_relocation, catalina:       "6f984cc9cbe2bb194741f896034c872f28ae44cc7cf2faff5acb38e8b2e6b86b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5fc422560715fa5aefd571febc1c519a5a5c8f18253bbf078cd6f4279e769690"
   end
 
   uses_from_macos "ncurses"

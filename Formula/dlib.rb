@@ -1,9 +1,10 @@
 class Dlib < Formula
   desc "C++ library for machine learning"
   homepage "http://dlib.net/"
-  url "http://dlib.net/files/dlib-19.23.tar.bz2"
-  sha256 "b1be30672302abdb8e010a21edf50d20a398ef9c38fddc45334dedf058af288a"
+  url "http://dlib.net/files/dlib-19.24.tar.bz2"
+  sha256 "28fdd1490c4d0bb73bd65dad64782dd55c23ea00647f5654d2227b7d30b784c4"
   license "BSL-1.0"
+  revision 1
   head "https://github.com/davisking/dlib.git", branch: "master"
 
   livecheck do
@@ -12,16 +13,16 @@ class Dlib < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "716804b2263be0d5838f771743a0c2c3bf2edb5d90b9c45daa71a9aab5fbf52f"
-    sha256 cellar: :any,                 arm64_big_sur:  "f076d570b9b83d388a153ca175780a39a1aded6270955bc2d983184240ee107a"
-    sha256 cellar: :any,                 monterey:       "a507111d2b5820fa2ae50266df3e3063ac0a52e16ec2aaf6cfb015fbd111e615"
-    sha256 cellar: :any,                 big_sur:        "dbca75d3d14e4c314ebb9d3f273684140dd999929019a950b111d6fbcc012439"
-    sha256 cellar: :any,                 catalina:       "54272687cbb34d28d0b61e93183d8cc1257db518357ed7fdf3fdb997c0666395"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7b2a7242c594ca4f6da385e61701705f1b309f96bcc007aa942491dcd1e7ae82"
+    sha256 cellar: :any,                 arm64_monterey: "20350a3f0a638a1a5b6466c4809c7beea386545b35a98de7181bc66e2d3a0e3d"
+    sha256 cellar: :any,                 arm64_big_sur:  "2546c7c03817f1181c406a1e6167c2a66a0a87b224567b7a7feb7c4111736e39"
+    sha256 cellar: :any,                 monterey:       "3be4dd9f52d3d4aa041c1909159466b57f4ccbbb32404f3a07325d37d0fd8144"
+    sha256 cellar: :any,                 big_sur:        "2d16a7080c79a77d00003641420e051dd08a69f6b1f2233af47afd76de567909"
+    sha256 cellar: :any,                 catalina:       "d52920f7bb619e287c2eb05e902ca4041d6dc08344e48d75b6ad7575e0d27774"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4d95e3ef4dce0839979479f9d75e24a6776f74d04f7f3a6f0ec9b365e7e81392"
   end
 
   depends_on "cmake" => :build
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "openblas"
 
@@ -31,8 +32,8 @@ class Dlib < Formula
     args = std_cmake_args + %W[
       -DDLIB_USE_BLAS=ON
       -DDLIB_USE_LAPACK=ON
-      -Dcblas_lib=#{Formula["openblas"].opt_lib}/libopenblas.dylib
-      -Dlapack_lib=#{Formula["openblas"].opt_lib}/libopenblas.dylib
+      -Dcblas_lib=#{Formula["openblas"].opt_lib/shared_library("libopenblas")}
+      -Dlapack_lib=#{Formula["openblas"].opt_lib/shared_library("libopenblas")}
       -DDLIB_NO_GUI_SUPPORT=ON
       -DBUILD_SHARED_LIBS=ON
     ]
@@ -42,10 +43,9 @@ class Dlib < Formula
       args << "-DUSE_SSE4_INSTRUCTIONS=ON" if MacOS.version.requires_sse4?
     end
 
-    mkdir "dlib/build" do
-      system "cmake", "..", *args
-      system "make", "install"
-    end
+    system "cmake", "-S", "dlib", "-B", "build", *args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

@@ -13,11 +13,14 @@ class Hbase < Formula
     sha256 monterey:       "58ffd20595142d630cd5d302235f192cba177b52a39f6c70a842b2c58d7c0687"
     sha256 big_sur:        "b3f30692842d918532e06b18658882d791121487cdfdc5f9a3beddfbf1c4d971"
     sha256 catalina:       "06a7f7214e854fe14f963f31890b61c77e656c967b5b7d90e2b2900db63c30e3"
+    sha256 x86_64_linux:   "a28df9cb5049a4596bf0cab24b1e2a816fd1c2b26d7dfad21d4318cbdb200b51"
   end
 
   depends_on "ant" => :build
   depends_on "lzo"
   depends_on "openjdk@11"
+
+  uses_from_macos "netcat" => :test
 
   resource "hadoop-lzo" do
     url "https://github.com/cloudera/hadoop-lzo/archive/0.4.14.tar.gz"
@@ -48,6 +51,13 @@ class Hbase < Formula
     end
 
     resource("hadoop-lzo").stage do
+      # Help configure to find liblzo on Linux.
+      unless OS.mac?
+        inreplace "src/native/configure",
+        "#define HADOOP_LZO_LIBRARY ${ac_cv_libname_lzo2}",
+        "#define HADOOP_LZO_LIBRARY \"#{Formula["lzo"].opt_lib/shared_library("liblzo2")}\""
+      end
+
       # Fixed upstream: https://github.com/cloudera/hadoop-lzo/blob/HEAD/build.xml#L235
       ENV["CLASSPATH"] = Dir["#{libexec}/lib/hadoop-common-*.jar"].first
       ENV["CFLAGS"] = "-m64"
@@ -141,6 +151,9 @@ class Hbase < Formula
       s.gsub!(/(hbase.rootdir.*)\n.*/, "\\1\n<value>file://#{testpath}/hbase</value>")
       s.gsub!(/(hbase.zookeeper.property.dataDir.*)\n.*/, "\\1\n<value>#{testpath}/zookeeper</value>")
       s.gsub!(/(hbase.zookeeper.property.clientPort.*)\n.*/, "\\1\n<value>#{port}</value>")
+
+      # Interface name is lo on Linux, not lo0.
+      s.gsub!("lo0", "lo") unless OS.mac?
     end
 
     ENV["HBASE_LOG_DIR"]  = testpath/"logs"

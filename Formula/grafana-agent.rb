@@ -1,17 +1,17 @@
 class GrafanaAgent < Formula
   desc "Exporter for Prometheus Metrics, Loki Logs, and Tempo Traces"
   homepage "https://grafana.com/docs/agent/"
-  url "https://github.com/grafana/agent/archive/refs/tags/v0.23.0.tar.gz"
-  sha256 "0de47be2e96fff1ddf55de6f53bff301a55b3a142af40bfb934c8c8b5189e9b3"
+  url "https://github.com/grafana/agent/archive/refs/tags/v0.25.1.tar.gz"
+  sha256 "a8bf90eed088fc40bdafbc741080a995f5ded73c2dc83d45a654fd40c65874bf"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bab099008ea51ea316dd70c4d9673ac7eab6149dd3b9c62ab198b8ca7df15880"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "39da596276b4d240e46c36ac0664942270c82dcfdc64ef590c4b2ceefcf46404"
-    sha256 cellar: :any_skip_relocation, monterey:       "c97b0730792eabdf17b2812e5577e354f52165b7abf3790f82fa4afc7a084ec7"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2aaf8f39bf8239f5a633fe4520cbcacfa0dfd35f375904de27610ceff925d51b"
-    sha256 cellar: :any_skip_relocation, catalina:       "cdb94c433986171f0eddf729c2f1ca94a888d9bab4241cd7c740f424cd310f7a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cda0a043d29204e87815f0003cbc8f6082b0834aacb59e4fd84fd836bccb9fdf"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0be2dd902955f68cd3d4e95d4b2c75ba30eaf9125d31facd0c7d141caf323121"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dd7cad2ece9e5817f9e048197e20b32a09f97eb81a4ff01f71146b9daa45a3de"
+    sha256 cellar: :any_skip_relocation, monterey:       "125d57a1995fbd85f7e264e6a15383850e1ee2fd67f4800399e0ab6cbd21cc9b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "603f4f57bc555a82027723df8c81659afabe6604640f70cdebf25ea9a75a82af"
+    sha256 cellar: :any_skip_relocation, catalina:       "c490955cd699cb583f31938ac7993ec1ab86ca513799ed19a115ad5e8ee40440"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fd0ecd7e2503b86ae3a27c254ddd5495a607e4b7e50548d20eebbe65e94cac9c"
   end
 
   # Bump to 1.18 on the next release, if possible.
@@ -69,7 +69,7 @@ class GrafanaAgent < Formula
 
     fork do
       exec bin/"grafana-agent", "-config.file=#{testpath}/grafana-agent.yaml",
-        "-prometheus.wal-directory=#{testpath}/wal"
+        "-metrics.wal-directory=#{testpath}/wal"
     end
     sleep 10
 

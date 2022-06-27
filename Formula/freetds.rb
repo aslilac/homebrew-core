@@ -1,11 +1,11 @@
 class Freetds < Formula
   desc "Libraries to talk to Microsoft SQL Server and Sybase databases"
   homepage "https://www.freetds.org/"
-  license "LGPL-2.0-or-later"
+  license "GPL-2.0-or-later"
 
   stable do
-    url "https://www.freetds.org/files/stable/freetds-1.3.9.tar.gz", using: :homebrew_curl
-    sha256 "923dff0c8cf258ef33d661d71bf431ffb55218f14e0026f75d361951c2e92dbb"
+    url "https://www.freetds.org/files/stable/freetds-1.3.12.tar.bz2", using: :homebrew_curl
+    sha256 "1c5a86ec40f3475a46a6ecf472aa4126f1add9f7bad1acf268820f1baec6c16b"
 
     # Fix -flat_namespace being used on Big Sur and later.
     patch do
@@ -20,12 +20,12 @@ class Freetds < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "8717760292249498afc8e822bf848ba8ad694c6898a0a5d40ab404c8deda8102"
-    sha256 arm64_big_sur:  "dbe9bf2aa2d5c08122bcf4687879d4b12632690ee8800fb85891a02557a4130f"
-    sha256 monterey:       "97f3205764a327250f02b8b865c64da309cd7e678d00e1c8ab8788f10ea207d7"
-    sha256 big_sur:        "cbd58146111dea706ee06f72c1ca3283a75e63f08d9c0e200aab5c89a12b7e50"
-    sha256 catalina:       "0a6c953da2cceddcad1aa6f0dff6a50bc07fe587699d6f68efe502f393fbc1cf"
-    sha256 x86_64_linux:   "1d141167d7f3a52ec24f48421689d912e14ecb2d45777cff07a3259621a70b0a"
+    sha256 arm64_monterey: "3a800bf77f14a48c5c61703fa69df897420ae1e457aae4c3546e88b6559fbe0b"
+    sha256 arm64_big_sur:  "1dd8560b2d5c903ef1f99142a4301eed6671aeda8330410f2d9dea2808b47d8a"
+    sha256 monterey:       "ca036940ca5701fb711de36eb6bf4bff18df4265e1acaede9e572896145d0be8"
+    sha256 big_sur:        "7bd4e3e1a1e6bf87a8c5fbbaa4bfd883d715eabfa7df093fea5986044e7bd929"
+    sha256 catalina:       "d7b10c5454404631d71638683464342fb99550bb39443945b0dc084731331b3f"
+    sha256 x86_64_linux:   "57e7a7958a25c3216b28ce0fd11e1ada9cccfc9363acd8df07daf112a19006b8"
   end
 
   head do

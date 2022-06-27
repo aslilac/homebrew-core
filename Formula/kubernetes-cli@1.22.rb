@@ -2,8 +2,8 @@ class KubernetesCliAT122 < Formula
   desc "Kubernetes command-line interface"
   homepage "https://kubernetes.io/"
   url "https://github.com/kubernetes/kubernetes.git",
-      tag:      "v1.22.8",
-      revision: "7061dbbf75f9f82e8ab21f9be7e8ffcaae8e0d44"
+      tag:      "v1.22.11",
+      revision: "5824e3251d294d324320db85bf63a53eb0767af2"
   license "Apache-2.0"
 
   livecheck do
@@ -12,12 +12,12 @@ class KubernetesCliAT122 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "081e8e640f0cdd0ff2c2d9e8440bcfc69f6d99ad17093b21faa49ea66439e6ef"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7bbfd968ec41dc8c0e67fb070e3a3cfc9b75365449477c179c8c19568eb2e490"
-    sha256 cellar: :any_skip_relocation, monterey:       "766147c5d6069d3de5952430c28ad0349bb12ce4400fee47ea9f0dc0fea2458e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f8a8cf1b146fd85e640917f8c6a22f23007fa51783c6bd27c886a3f1be0b06a5"
-    sha256 cellar: :any_skip_relocation, catalina:       "dce87257e925ae4c371ef69452b4d478b45c2eddf0aed4857fab19c2c0b50fcc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "761bcc756c87c13939993c4727c7320ffb981bbb8254a73bcde1473095f651d7"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a9374d343ccfb61d79b7214a18e069426a6a5d7ad4165225493801583ac38616"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9db4dea77df8e82e4eb7d10e3cdd4c70995af6ad7bb04d362e63b84b2260a3a8"
+    sha256 cellar: :any_skip_relocation, monterey:       "50149d93329aee88762596660da84d9dd857470d37a935643d1655683c7643bf"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d512759da5a976179bb967bd0edcf58bacef813931d6a9ea36359fbeae1576b4"
+    sha256 cellar: :any_skip_relocation, catalina:       "395f5143921100112aec3201a6e045a2bc091d14f60cb0c624fe271df02db6b5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "79f276baa93453fbc8b7e4accaa1c2c3eb4d0bf8e0289a140fcc7ef913315c38"
   end
 
   keg_only :versioned_formula

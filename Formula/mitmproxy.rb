@@ -3,24 +3,24 @@ class Mitmproxy < Formula
 
   desc "Intercept, modify, replay, save HTTP/S traffic"
   homepage "https://mitmproxy.org"
-  url "https://github.com/mitmproxy/mitmproxy/archive/v8.0.0.tar.gz"
-  sha256 "9bf403660169327e1b9c8b1701f9f45923e72eba935005cb357f1f4bca1815b5"
+  url "https://github.com/mitmproxy/mitmproxy/archive/v8.1.0.tar.gz"
+  sha256 "41a06a69afc479e41cbb5dbcbf9f6eb94c10e79ece3406fbcc9582457a6a812a"
   license "MIT"
   head "https://github.com/mitmproxy/mitmproxy.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "47e5b1c2c8851d08ccde6ed8965f5b0b870cb4685f8ca1aa9d6273b91582c7c2"
-    sha256 cellar: :any,                 arm64_big_sur:  "4c2fc0b1d23999e671d72725b7243841ccd573df66fcdc34879ed09c51519593"
-    sha256 cellar: :any,                 monterey:       "ed487f35462288c9b04eabdcd122d33bdaac1b8dcdda87321e542b254c65ef69"
-    sha256 cellar: :any,                 big_sur:        "ba77498c12d371dae97545b19ee19bea2a398c8f18b46ecb4cd7422db0c444b2"
-    sha256 cellar: :any,                 catalina:       "7c58868bf7313c45d0a82ceaed72368f718f9d48010e72c6d6822467e5156757"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d98906d07d8a55e46458e9490f5d8977b4531e809636010a6613b54981401150"
+    sha256 cellar: :any,                 arm64_monterey: "9eb62abd9bbf0f1bded2735a08192a77cea6275450dceae58e857e778f88c418"
+    sha256 cellar: :any,                 arm64_big_sur:  "62fb83701a66d5a6d636450213dc08f6d879cb32f0812fb3ddcd0c9abdcea851"
+    sha256 cellar: :any,                 monterey:       "9b81454e40c31e666888cc9efa584d2e4b654be2cfd0c049e928ceee47db698b"
+    sha256 cellar: :any,                 big_sur:        "04eb3d1d2d47778a6a04d57b19927eb16b784f02df270b713e92d47d5a44c294"
+    sha256 cellar: :any,                 catalina:       "ccdb7991f06a240ef957657de858d62fa3da639f75c41de764ecfc6c9c8d2771"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "deb106fd532a26076f032361f133c0bb5805ebfe98f1f2b336d2ea0c81717668"
   end
 
   depends_on "rust" => :build # for cryptography
   depends_on "openssl@1.1"
   depends_on "protobuf"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
   depends_on "six"
 
   uses_from_macos "libffi"

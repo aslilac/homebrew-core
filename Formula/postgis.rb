@@ -4,7 +4,7 @@ class Postgis < Formula
   url "https://download.osgeo.org/postgis/source/postgis-3.2.1.tar.gz"
   sha256 "fbab68dde6ca3934b24ba08c8ab0cff2594f57f93deab41a15c82ae1bb69893e"
   license "GPL-2.0-or-later"
-  revision 1
+  revision 3
 
   livecheck do
     url "https://download.osgeo.org/postgis/source/"
@@ -12,12 +12,12 @@ class Postgis < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "fe01d34be0797dfff4b0f4442ca2e9c31ce797c0456b1414b288d7847b228064"
-    sha256 cellar: :any,                 arm64_big_sur:  "150a331b5aff05a8534a80ac96ef302faeac17a1633e16fa5a390a1366e5b8dd"
-    sha256 cellar: :any,                 monterey:       "91fb7ee25452558239c6580f8561afa056cbeb0785e8f5451b22e56cd9994c66"
-    sha256 cellar: :any,                 big_sur:        "d82ded3dad84a3f426e62762299185b9e2a852d58504491a16bb090e64a903c0"
-    sha256 cellar: :any,                 catalina:       "9bbe99340fa5529ad85bcc6faa2452424efda60c434fab75a3cb60d6797d958f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c0cb2d22187aaeace22bb16dd48e47cda84cf1aed2295bc9734cb9cae4cd9aa8"
+    sha256 cellar: :any,                 arm64_monterey: "68e30a69033eed503c20586c7350257f3a3e49e29f0e259c6d20ad1b2094d9f0"
+    sha256 cellar: :any,                 arm64_big_sur:  "4ac4c7df17fba4c4a76ff73fbca5ce08f3daaa75a65cbbe1fe48217861cf5d50"
+    sha256 cellar: :any,                 monterey:       "6ff885044b51f19ce2d2f04b749d195ed3bd22aa65b0e37fbe91834e47a44efb"
+    sha256 cellar: :any,                 big_sur:        "531b37febc9b86113fd5f1e105759d07e8370ff0e4a3b07656e2f9fd4e750ea0"
+    sha256 cellar: :any,                 catalina:       "ba7ea5fb4695dae44b743819f670cb2ddd1b4a55c33adadc68c1dbeee3238971"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f751106ea4e6db15afa67d2de430b5602ecfc28035526bfd8fc801a7578eb462"
   end
 
   head do
@@ -35,7 +35,7 @@ class Postgis < Formula
   depends_on "json-c" # for GeoJSON and raster handling
   depends_on "pcre2"
   depends_on "postgresql"
-  depends_on "proj@7"
+  depends_on "proj"
   depends_on "protobuf-c" # for MVT (map vector tiles) support
   depends_on "sfcgal" # for advanced 2D/3D functions
 
@@ -49,7 +49,7 @@ class Postgis < Formula
     ENV.deparallelize
 
     args = [
-      "--with-projdir=#{Formula["proj@7"].opt_prefix}",
+      "--with-projdir=#{Formula["proj"].opt_prefix}",
       "--with-jsondir=#{Formula["json-c"].opt_prefix}",
       "--with-pgconfig=#{Formula["postgresql"].opt_bin}/pg_config",
       "--with-protobufdir=#{Formula["protobuf-c"].opt_bin}",
