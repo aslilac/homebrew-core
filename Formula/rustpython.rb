@@ -1,8 +1,8 @@
 class Rustpython < Formula
   desc "Python interpreter written in Rust"
   homepage "https://rustpython.github.io"
-  url "https://github.com/RustPython/RustPython/archive/refs/tags/v0.1.2.tar.gz"
-  sha256 "14c2786b28072006de1f9035487b0f65a9d1972d7e1f3fe4a2f9a39645290da8"
+  url "https://github.com/RustPython/RustPython/archive/174c0267276f3ba617cebc7cba3c79a607474615.tar.gz"
+  sha256 "3aa331e64d52e835df70b47b9ab54af660923afd219c176225efc1a14d520a37"
   license "MIT"
   head "https://github.com/RustPython/RustPython.git", branch: "main"
 
