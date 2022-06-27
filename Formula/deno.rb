@@ -1,22 +1,23 @@
 class Deno < Formula
   desc "Secure runtime for JavaScript and TypeScript"
   homepage "https://deno.land/"
-  url "https://github.com/denoland/deno/releases/download/v1.19.3/deno_src.tar.gz"
-  sha256 "ca7545bc513c408ba86479dce24925d54b73bd6e2dcd3473eb48695cd74892fc"
+  url "https://github.com/denoland/deno/releases/download/v1.22.0/deno_src.tar.gz"
+  sha256 "ffa1cd143ba1e53ab5d380c1e630a2fe73910b7be4e483b0d643d14b31b23ed4"
   license "MIT"
+  head "https://github.com/denoland/deno.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a145098b41ccf1f67791754d9a49a133dd85320a3102a561d7fc190087095d07"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a7af2ee4acb622f9cb66c722da6195ec3d83f2ad1a3a521b917a8261e83cd048"
-    sha256 cellar: :any_skip_relocation, monterey:       "8156003b085acc4c4a9886a1eed9a87504579b59846a4298e6d90963c8d7f475"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d564f1d906c985f7f05a78b4d9ab32e82e96bdd3d79b97e6cb3120ac4f502f30"
-    sha256 cellar: :any_skip_relocation, catalina:       "3878b95df6bdc379ebb3a5c26e8f385fdfefae4e47af1797e96f253c4aa398a3"
-    sha256                               x86_64_linux:   "f6cb2886196c4604f666dfc728a0de1c1600c227665121df2883a348f6c9b7b4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ef4b117706e007e417804196ce60872e1ce6f7202ea3f862184c25278cccffb2"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ebb26e6a478fbbfe089532b5ded2661ddf7e14041a9c8619a8baf10c6ff84877"
+    sha256 cellar: :any_skip_relocation, monterey:       "85628d306b00dca9cdc8a989f859bd8074427607f61a158c71bdc5ae792c38b0"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b866adea0a356019407a3172095f708831f48ca7a4578d5b8d47e587d4575f50"
+    sha256 cellar: :any_skip_relocation, catalina:       "1c4a4feccfcc738dfa6127eadde112793ee82521043e4df21eec13f655ff360b"
+    sha256                               x86_64_linux:   "b5a64d4feae3eae0b2837dfed6d0d7b1bfea07a8a643f6c6abc565ac9cf4cf73"
   end
 
   depends_on "llvm" => :build
   depends_on "ninja" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
   depends_on "rust" => :build
 
   uses_from_macos "xz"
@@ -50,8 +51,8 @@ class Deno < Formula
     end
 
     # env args for building a release build with our python3, ninja and gn
-    ENV.prepend_path "PATH", Formula["python@3.9"].libexec/"bin"
-    ENV["PYTHON"] = Formula["python@3.9"].opt_bin/"python3"
+    ENV.prepend_path "PATH", Formula["python@3.10"].libexec/"bin"
+    ENV["PYTHON"] = Formula["python@3.10"].opt_bin/"python3"
     ENV["GN"] = buildpath/"gn/out/gn"
     ENV["NINJA"] = Formula["ninja"].opt_bin/"ninja"
     # build rusty_v8 from source

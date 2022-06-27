@@ -2,17 +2,48 @@ class Dotnet < Formula
   desc ".NET Core"
   homepage "https://dotnet.microsoft.com/"
   url "https://github.com/dotnet/installer.git",
-      tag:      "v6.0.103-source-build",
-      revision: "2c677ffc1e93aea3b6c92d6121d04fdaeba32d32"
+      tag:      "v6.0.104",
+      revision: "915d644e451858f4f7c6e1416ea202695ddd54fb"
   license "MIT"
+  revision 1
+
+  # https://github.com/dotnet/source-build/#support
+  livecheck do
+    url "https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/releases-index.json"
+    regex(/unused/i)
+    strategy :page_match do |page|
+      index = JSON.parse(page)["releases-index"]
+
+      # Find latest release channel still supported.
+      avoid_phases = ["preview", "eol"].freeze
+      valid_channels = index.select do |release|
+        avoid_phases.exclude?(release["support-phase"])
+      end
+      latest_channel = valid_channels.max_by do |release|
+        Version.new(release["channel-version"])
+      end
+
+      # Fetch the releases.json for that channel and find the latest release info.
+      channel_page = Homebrew::Livecheck::Strategy.page_content(latest_channel["releases.json"])
+      channel_json = JSON.parse(channel_page[:content])
+      latest_release = channel_json["releases"].find do |release|
+        release["release-version"] == channel_json["latest-release"]
+      end
+
+      # Get _oldest_ SDK version.
+      latest_release["sdks"].map do |sdk|
+        Version.new(sdk["version"])
+      end.min.to_s
+    end
+  end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "2ff313f22047d96e30f1f8731ce1134ba7768c5dd74aab97f16dbcf68ea2fd10"
-    sha256 cellar: :any,                 arm64_big_sur:  "05595a903157061df43342bd994691101112929d12caabef85ffc7be19458326"
-    sha256 cellar: :any,                 monterey:       "9654a2ff03d8dec596aa334f3aacdd98dc220ac625f8cc64a9e0d61460267030"
-    sha256 cellar: :any,                 big_sur:        "52ad3129736d0ffa2a5845f4a7b156e032ac7f9f216f077728c7c7bd97699cdc"
-    sha256 cellar: :any,                 catalina:       "f8135105c6e3f9a40d423b4c2b23959718b83ad8e9cbac4fa1a03e0a8a16e4af"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bb07a23433b58bd146f0573e050bf1c9dec13f64e220ea7a1981fd7e4adc1808"
+    sha256 cellar: :any,                 arm64_monterey: "751adb8399371c7722ba990ee86194984f60e154477709b6da177bea382443fe"
+    sha256 cellar: :any,                 arm64_big_sur:  "49bdb86b60915e1f5ff0f4d03d5f3fc74e0f91643f4e8fdee5cc674771708d0b"
+    sha256 cellar: :any,                 monterey:       "9eabebc8b707cb299cfe182c4c6513ee3164f6d52c5b2fdcb7dd4a6bd5457195"
+    sha256 cellar: :any,                 big_sur:        "310a96bad4884f2018432bf0d15157d108ad3042f50bb12178c15d4fd856cdc0"
+    sha256 cellar: :any,                 catalina:       "5ea57799f58711207bea8932d8eebb3f7074150acc86157aceb44baf65466668"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d681bec8e558a9e60488dc92853b62419feee197d91d234e93c57101b280e072"
   end
 
   depends_on "cmake" => :build
@@ -41,6 +72,13 @@ class Dotnet < Formula
   # GCC builds have limited support via community.
   fails_with :gcc
 
+  # Fixes race condition in MSBuild.
+  # Remove with 6.0.3xx or later.
+  resource "homebrew-msbuild-patch" do
+    url "https://github.com/dotnet/msbuild/commit/64edb33a278d1334bd6efc35fecd23bd3af4ed48.patch?full_index=1"
+    sha256 "5870bcdd12164668472094a2f9f1b73a4124e72ac99bbbe43028370be3648ccd"
+  end
+
   # Fix build failure on macOS due to missing ILAsm/ILDAsm
   # Fix build failure on macOS ARM due to `osx-x64` override
   patch :DATA
@@ -52,10 +90,29 @@ class Dotnet < Formula
       ENV.prepend_path "PATH", Formula["gnu-sed"].opt_libexec/"gnubin"
     end
 
+    (buildpath/"src/SourceBuild/tarball/patches/msbuild").install resource("homebrew-msbuild-patch")
+
+    # Fix usage of GNU-specific flag.
+    # TODO: Remove this when upstreamed
+    inreplace "src/SourceBuild/tarball/content/repos/Directory.Build.targets",
+              "--block-size=1M", "-m"
+
     Dir.mktmpdir do |sourcedir|
       system "./build.sh", "/p:ArcadeBuildTarball=true", "/p:TarballDir=#{sourcedir}"
 
       cd sourcedir
+
+      # Use our libunwind rather than the bundled one.
+      inreplace Dir["src/runtime.*/eng/SourceBuild.props"],
+                "/p:BuildDebPackage=false",
+                "\\0 --cmakeargs -DCLR_CMAKE_USE_SYSTEM_LIBUNWIND=ON"
+
+      # Fix missing macOS conditional for system unwind searching.
+      # TODO: Remove this when upstreamed
+      inreplace Dir["src/runtime.*/src/native/corehost/apphost/static/CMakeLists.txt"],
+                "if(CLR_CMAKE_USE_SYSTEM_LIBUNWIND)",
+                "if(CLR_CMAKE_USE_SYSTEM_LIBUNWIND AND NOT CLR_CMAKE_TARGET_OSX)"
+
       # Workaround for error MSB4018 while building 'installer in tarball' due
       # to trying to find aspnetcore-runtime-internal v6.0.0 rather than current.
       # TODO: Remove when packaging is fixed
@@ -67,7 +124,7 @@ class Dotnet < Formula
       # TODO: Remove whenever patch is no longer used
       rm Dir["src/nuget-client.*/eng/source-build-patches/0001-Rename-NuGet.Config*.patch"].first if OS.mac?
       system "./prep.sh", "--bootstrap"
-      system "./build.sh"
+      system "./build.sh", "--", "/p:CleanWhileBuilding=true"
 
       libexec.mkpath
       tarball = Dir["artifacts/*/Release/dotnet-sdk-#{version}-*.tar.gz"].first

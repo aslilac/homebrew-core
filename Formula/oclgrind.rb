@@ -4,6 +4,7 @@ class Oclgrind < Formula
   url "https://github.com/jrprice/Oclgrind/archive/v21.10.tar.gz"
   sha256 "b40ea81fcf64e9012d63c3128640fde9785ef4f304f9f876f53496595b8e62cc"
   license "BSD-3-Clause"
+  revision 1
 
   livecheck do
     url :homepage
@@ -11,20 +12,20 @@ class Oclgrind < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "c28fb5bc8dd0fa6897dfeae3dcd1b04c7d2494d6e69f2fdad110dfe0fd53210b"
-    sha256 cellar: :any, arm64_big_sur:  "7eb82923ede6b708c46585ea8277f4f73ed521f5a9411709f27de4daa9f48bb4"
-    sha256 cellar: :any, monterey:       "456d3363136042e98b217cd9fad9165fa0038b97c68279911ff7cd93cfc4889e"
-    sha256 cellar: :any, big_sur:        "d7e20e1c27a6716a448f9e878f60706490751edfde5296a676776c2ec3d2ef2c"
-    sha256 cellar: :any, catalina:       "3b7f3865bc3ed7ea3f9d4436b9e4a003b8759262347c7a27edf68ae291e804a2"
-    sha256 cellar: :any, mojave:         "f92d8a342ad7d878f2164345e2f8982d8bd6c750ef625e1761f80cee666627fb"
+    sha256 cellar: :any, arm64_monterey: "5499b3da0a526ff49c99dee81fd3ee5741a826ffabe8caac9d84beb5e22456db"
+    sha256 cellar: :any, arm64_big_sur:  "6b3987f87ae3fcdc235e3720cf74cfa6c040edb1d64d748399d0c5154771697a"
+    sha256 cellar: :any, monterey:       "76232b405325846dc572ecb4afb4a972d8775e5da5637760583c297b4afd42e7"
+    sha256 cellar: :any, big_sur:        "b062cc2e561df81cd43152a81504e9619c7dafee8dfdba92cb9906587263a1d6"
+    sha256 cellar: :any, catalina:       "12c44f51700c3c5a36640e5d740a0187b1dce35433639170841d2abfcdad89e3"
   end
 
   depends_on "cmake" => :build
-  depends_on "llvm"
+  depends_on "llvm@13"
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, "-DCMAKE_INSTALL_RPATH=#{rpath}"
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

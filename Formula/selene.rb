@@ -1,18 +1,18 @@
 class Selene < Formula
   desc "Blazing-fast modern Lua linter"
   homepage "https://kampfkarren.github.io/selene"
-  url "https://github.com/Kampfkarren/selene/archive/0.16.0.tar.gz"
-  sha256 "35879e6cb85993935481e2940d3532fff787733f940cbe27bbede70f84aea496"
+  url "https://github.com/Kampfkarren/selene/archive/0.19.1.tar.gz"
+  sha256 "c6a98dda7e0e4d4fe5d310560520136ae9deafc53256de130ef0228b2b367cd3"
   license "MPL-2.0"
   head "https://github.com/Kampfkarren/selene.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b023f8629059e3e0068fbc8ee3ba24d3064b697c5e661b4b64ab27651a78ee73"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7404ce9917227fc3fed3a2daafb0289549cd849e9d955f0638534267b49cc677"
-    sha256 cellar: :any_skip_relocation, monterey:       "6bf55e064c3ec6a3245bec4954b9cb028ae54350ed4f77cdbfca1047cfa653e8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "864a4566000b5617fe51bd4a03de7065c1d13c9cb5ae0bbcd875de0d7fb379a5"
-    sha256 cellar: :any_skip_relocation, catalina:       "3e2d4193bc5e02d08851e5d42759d3e526707e0fe5906da3e6226d20feae1a99"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bd28cf78de4aa7b9bddb50deb786ca474301fbc2a3db42e573a4d99da545b95c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b3243f618683b7eb04915ff5c7130089f047ba54db390f845e36df69151a494c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ef1d51d93cb2fcc885f160b20fd7174f601894443b66d867433ef771176948bf"
+    sha256 cellar: :any_skip_relocation, monterey:       "4ff395f7d862d6f6e644fd5c474aab726cff50f2ea60e4ee352e417e4a67fee2"
+    sha256 cellar: :any_skip_relocation, big_sur:        "0193e12ffb22a0a41be67d33f5d7a829b938684fa908f4d7cdbe14de6648d118"
+    sha256 cellar: :any_skip_relocation, catalina:       "5da4123d198679d79ab78af00ea71ace066f596a591a9fadba1cd1441d3bbb79"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "44981ebc20284330014a86a5dd85bf31fbf29454947bae84b255a93e708bde6c"
   end
 
   depends_on "rust" => :build

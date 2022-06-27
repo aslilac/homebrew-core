@@ -1,18 +1,18 @@
 class Dune < Formula
   desc "Composable build system for OCaml"
   homepage "https://dune.build/"
-  url "https://github.com/ocaml/dune/releases/download/3.0.3/fiber-3.0.3.tbz"
-  sha256 "d504499a1658f0d99caefbffd7386f2e31d46ceca73167157fe4686c41e5732f"
+  url "https://github.com/ocaml/dune/releases/download/3.3.1/dune-3.3.1.tbz"
+  sha256 "840c80491bfe12bab5f2b99d49e163f3e4c4d2fc4b4a3e6fb16c24dccd5502e1"
   license "MIT"
   head "https://github.com/ocaml/dune.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6310dba5ab1e8e007459525efe49535bb031a568e9a74eeaf136e3b1fd0848a5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "787358c6a8ecc686d3505ccaddbf99cb935e39f5307dabf785060edb92016e10"
-    sha256 cellar: :any_skip_relocation, monterey:       "7b3b1403375e5869f70aaa9915957f3db34956a3b37dec092acc8e5ad61df2de"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9e8340848cc60e5d6f041ada85e6c8954273d567f9b7c8606362985125d86da3"
-    sha256 cellar: :any_skip_relocation, catalina:       "102dca3583162dd80e3d8deffcd2012b41ce7111deaa7c1a8c31558e02c0a035"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "759481fce1a26285b2100c18a18ded17081e3e32d08b309f2e798ea9e3dec442"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3146026708210229297a97c38a67cebbe44507bc8a35ca6f4d77c1b80d162618"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "720ad5635e8291f3b549544985de3e9387e8169f69aa1200f0f5be8bfc443560"
+    sha256 cellar: :any_skip_relocation, monterey:       "27da632b313bfe7b66fd804a9a712cd959247b8bbe560e4f34d2eeeca2c78929"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d1ed63f8c5e51cca3ad344b254ae7629973f58cb584dfffb636b7e546b9aeed9"
+    sha256 cellar: :any_skip_relocation, catalina:       "29a84bd4fb94f7fe8cdb49f9bb3388a27190594a597beaa9511d5c5386c99a1b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "59e74e6f97c9f86b24b2d5ad20e6ba13e2ddb7517f8d06b9fdc66d66b3064924"
   end
 
   depends_on "ocaml" => [:build, :test]

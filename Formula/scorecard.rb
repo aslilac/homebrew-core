@@ -1,25 +1,34 @@
 class Scorecard < Formula
   desc "Security health metrics for Open Source"
   homepage "https://github.com/ossf/scorecard"
-  url "https://github.com/ossf/scorecard/archive/v4.1.0.tar.gz"
-  sha256 "c460ae4cf019dbf7a582c353cf052f14524f187e9fab76132a1af1d674ef8613"
+  url "https://github.com/ossf/scorecard.git",
+      tag:      "v4.4.0",
+      revision: "e42af756609b2cde6d757fd45ea05ddf0016ff62"
   license "Apache-2.0"
   head "https://github.com/ossf/scorecard.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6a16bbfc7c49f62ce079e29dc53998cebf8fef13b284cc0819adb06893a23843"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "217619e3c112497e3855d37573815964eb8da8e97a8970df0cb5e3a5aa30250d"
-    sha256 cellar: :any_skip_relocation, monterey:       "709ab2224f01859b214d80a0a3c4a1622ff08dad099ce34d379ec96c333484d2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "7a854372e5db0a6fca7563fd036520c296447942fd807200b324027ecd40031f"
-    sha256 cellar: :any_skip_relocation, catalina:       "bbc22cca40e2d83e6a137ca6c919f7859e2366ca29a0809cadeb4026dab83506"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5305613482626e39425225348e291dbfc193e0c04381dcf3373884d3e112eb16"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7f82fd3def94de894b1299c81c0b8aa81e91dc3bebbd8df9e7f1dd268522b875"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4a0d0aefe56a191e453d813606dc4b82407f45b5fb4ae76677d383d5ea64f4ea"
+    sha256 cellar: :any_skip_relocation, monterey:       "d20da08deebd8104ff66b66d233487fa01acd69b304dc114b06fb9654c782172"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c6df2a091e433ca3c83530a42ade527c833d40fb7524512e6954cb29f6ddaa02"
+    sha256 cellar: :any_skip_relocation, catalina:       "d710495c255fdf6e21d1e28ec5656362a58abd8568e43a9deceb4386e1a7d196"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "578324961d1ca4d30ac2a0b5295326fe204340158ce4f0e26b07fb15b0ac1164"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-s -w")
-    cd("docs/checks/internal/generate") { system "go", "run", "main.go", "../../checks.md" }
+    pkg = "sigs.k8s.io/release-utils/version"
+    ldflags = %W[
+      -s -w
+      -X #{pkg}.gitVersion=#{version}
+      -X #{pkg}.gitCommit=#{Utils.git_head}
+      -X #{pkg}.gitTreeState=clean
+      -X #{pkg}.buildDate=#{time.iso8601}
+    ]
+    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "make", "generate-docs"
     doc.install "docs/checks.md"
   end
 
@@ -28,5 +37,7 @@ class Scorecard < Formula
     output = shell_output("#{bin}/scorecard --repo=github.com/kubernetes/kubernetes --checks=Maintained 2>&1", 2)
     expected_output = "InitRepo: repo unreachable: GET https://api.github.com/repos/google/oss-fuzz: 401"
     assert_match expected_output, output
+
+    assert_match version.to_s, shell_output("#{bin}/scorecard version 2>&1")
   end
 end

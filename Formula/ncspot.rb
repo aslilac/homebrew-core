@@ -1,17 +1,17 @@
 class Ncspot < Formula
   desc "Cross-platform ncurses Spotify client written in Rust"
   homepage "https://github.com/hrkfdn/ncspot"
-  url "https://github.com/hrkfdn/ncspot/archive/v0.9.6.tar.gz"
-  sha256 "43f3108bffac6d735280d96feb9a49ca61674c9efebd553e1551d61b389bab93"
+  url "https://github.com/hrkfdn/ncspot/archive/v0.10.0.tar.gz"
+  sha256 "18617de29ba4d96b3c4b17139fc3b0fcdfa0adb205cbec96afb817b7981a33d2"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "443df99acd4a33084bf0533530f1cbccb1f11483a0247e79d93f94507888182f"
-    sha256 cellar: :any,                 arm64_big_sur:  "f4a0f3505f22dac478f24bdda52e95235a96ff5c432ed9b14ecf0b2a02f33bf1"
-    sha256 cellar: :any,                 monterey:       "5977b7dbde358af77e538cf4b87c70f50a029d0c7269a331918c551ec4121f13"
-    sha256 cellar: :any,                 big_sur:        "faf99435a6f2b0b68ad608ce7eca5c7d48628b37c189a1e7030aa526233d63da"
-    sha256 cellar: :any,                 catalina:       "aa94c644da36534645ca0b28a5a903bd800a52f4d64c0da5fcfb98456fde683c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "16a84d543f43fe58721fcce5694d33a3e247d3e9dd427f3a15393f145d6f1803"
+    sha256 cellar: :any,                 arm64_monterey: "ba5d74c03e1b8629cefb37e3f9a3084f9ea261d782227183861a68e9313ed68d"
+    sha256 cellar: :any,                 arm64_big_sur:  "301b46feac963a022209b751a50f9554a8455a4200289e44af3bd9d138857be7"
+    sha256 cellar: :any,                 monterey:       "00d1757333e950e11f6e26de41322cbc603d227db8e351ba8e383a967e4a56f1"
+    sha256 cellar: :any,                 big_sur:        "620941a6b33f2522fa1043b32e953e832adf439ebb283cea28335429d681df84"
+    sha256 cellar: :any,                 catalina:       "f7ee58e798a7b2e0b8319f3ce87767acb092401186c14b22f321897c7d4a90bb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ad4761a4b43e68e4f7db6290b0af972d87cd66c09be802b90279d9d2a86916bd"
   end
 
   depends_on "python@3.10" => :build
@@ -40,7 +40,7 @@ class Ncspot < Formula
     assert_match "portaudio", shell_output("#{bin}/ncspot --help")
 
     # Linux CI has an issue running `script`-based testcases
-    on_macos do
+    if OS.mac?
       stdin, stdout, wait_thr = Open3.popen2 "script -q /dev/null"
       stdin.puts "stty rows 80 cols 130"
       stdin.puts "env LC_CTYPE=en_US.UTF-8 LANG=en_US.UTF-8 TERM=xterm #{bin}/ncspot -b ."

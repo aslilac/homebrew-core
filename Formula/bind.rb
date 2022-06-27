@@ -8,8 +8,8 @@ class Bind < Formula
   # "version_scheme" because someone upgraded to 9.15.0, and required a
   # downgrade.
 
-  url "https://downloads.isc.org/isc/bind9/9.18.1/bind-9.18.1.tar.xz"
-  sha256 "57c7afd871694d615cb4defb1c1bd6ed023350943d7458414db8d493ef560427"
+  url "https://downloads.isc.org/isc/bind9/9.18.4/bind-9.18.4.tar.xz"
+  sha256 "f277ae50159a00c300eb926a9c5d51953038a936bd8242d6913dfb6eac42761d"
   license "MPL-2.0"
   version_scheme 1
   head "https://gitlab.isc.org/isc-projects/bind9.git", branch: "main"
@@ -22,12 +22,12 @@ class Bind < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "658ae1bb03fdb3bcb470ce4d21bb9351a2577af742ebc09b8a886c400a26bd00"
-    sha256 arm64_big_sur:  "adb7948d739d2f3ff10e5450f6a5e509d151b4e5fb06b7ba0487a44f2e97ae17"
-    sha256 monterey:       "6b0a5867d2b05c745e484c104bb925c276e24d6e2deb323ca40e231835a52193"
-    sha256 big_sur:        "85eb740653c2c08e1a643607ca8bf17758ef35bb1cf35497c73d19260639ad9f"
-    sha256 catalina:       "e9619f8e805114d3168321d1e64f6d2667babc030ddca9861c170a58e0673b02"
-    sha256 x86_64_linux:   "b8e2ca668a4fff0b59e6ca99b556eddff60ab712bafeda2212159787cecf91ef"
+    sha256 arm64_monterey: "8352de7a0d861019a3e0b526a100947868c2cf8046a128a9256de9455e346d56"
+    sha256 arm64_big_sur:  "9856aab0a5b725fe728cb807feb9fd574d8f1f85d166dc75ec523a2ed4778eca"
+    sha256 monterey:       "2ea19ccf8e427da708a01f2d856ff9b39b9404aa1c38eebc1381bbff60307078"
+    sha256 big_sur:        "97826f190b21b8b851be8b8137f5a1325440b246f6f530e93cf5b904cf1272ab"
+    sha256 catalina:       "9b4998d51f2c65e898d693ef0a939531c5317b49d75163652194798b95682174"
+    sha256 x86_64_linux:   "ec147c4dccef99e0b669993996c2a8bf18b6e8ef28c17c90aac50a41fdbc297f"
   end
 
   depends_on "pkg-config" => :build
@@ -38,17 +38,14 @@ class Bind < Formula
   depends_on "openssl@1.1"
 
   def install
-    # Fix "configure: error: xml2-config returns badness"
-    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version <= :sierra
-
     args = [
       "--prefix=#{prefix}",
       "--sysconfdir=#{pkgetc}",
+      "--localstatedir=#{var}",
       "--with-json-c",
-      "--with-openssl=#{Formula["openssl@1.1"].opt_prefix}",
-      "--with-libjson=#{Formula["json-c"].opt_prefix}",
-      "--without-lmdb",
       "--with-libidn2=#{Formula["libidn2"].opt_prefix}",
+      "--with-openssl=#{Formula["openssl@1.1"].opt_prefix}",
+      "--without-lmdb",
     ]
     args << "--disable-linux-caps" if OS.linux?
     system "./configure", *args

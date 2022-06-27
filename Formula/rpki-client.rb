@@ -1,16 +1,17 @@
 class RpkiClient < Formula
   desc "OpenBSD portable rpki-client"
   homepage "https://www.rpki-client.org/index.html"
-  url "https://ftp.openbsd.org/pub/OpenBSD/rpki-client/rpki-client-7.6.tar.gz"
-  sha256 "d147bbedd1eea0fac3a431144f836074588949c67e7ef6fdd94ecec37b762b6b"
+  url "https://ftp.openbsd.org/pub/OpenBSD/rpki-client/rpki-client-7.8.tar.gz"
+  sha256 "7a87a6fe7b1bd36a1ce277cf50e125ece7b2ed0236e252a66e2b34ca8f88b7f5"
   license "ISC"
+  revision 1
 
   bottle do
-    sha256 arm64_monterey: "d2c1e200ed3fed78bcdec733dc0e644c595b95b427281a994dc6e3ecc36e46bf"
-    sha256 arm64_big_sur:  "56eaa8f7fbb7c9d673862d788c2c3af153d4491ab839398af8e40325e70eee0f"
-    sha256 monterey:       "a18fb56a1c25775c161c23164fee57020d6e2067e9598e3bb2dac2bd6efd021e"
-    sha256 big_sur:        "eab8f4c81d172ccad44b10402a45d03e4edbb87b49e49d4725afab4450f2dec6"
-    sha256 catalina:       "3f3bb03603511673944161dc8bd105f43ecf22c7dbc87bc0ac5848dbdb9fce85"
+    sha256 arm64_monterey: "3e61ce6a33ccc4852aa3dba1bbfeeb256eeb84886db3b627e4c7ed2cfa3a0538"
+    sha256 arm64_big_sur:  "0f982491437041f53160c0248e653c2e1e0d40ba4dd7c767168fcd8bab76ae5f"
+    sha256 monterey:       "00450aa3f5296beb2859a654b12fdf4c2f841755d5d07e91a8cefbc82f2ff35e"
+    sha256 big_sur:        "e2a3f21af703e38864d15c7fcde0e5acf0802bd4ddb292fd35761d414c5b5cba"
+    sha256 catalina:       "cf6086ae67b81b0dd49b1befafc83fb942377d5a5ab1f400a80db11de4a6e1d7"
   end
 
   depends_on "pkg-config" => :build

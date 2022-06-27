@@ -1,18 +1,18 @@
 class Broot < Formula
   desc "New way to see and navigate directory trees"
   homepage "https://dystroy.org/broot/"
-  url "https://github.com/Canop/broot/archive/v1.9.4.tar.gz"
-  sha256 "f1a3cda2ebb3a436b039cb2296914871599305f7f9292cc53d3641a67706fe9f"
+  url "https://github.com/Canop/broot/archive/v1.13.1.tar.gz"
+  sha256 "95b4b01c43f23b8d4f06030b57c9b2e47a4fbbc4f6099acaf6e42d1f1697385e"
   license "MIT"
   head "https://github.com/Canop/broot.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "cce878a27d8b8361fcf52eac2869af60d8ee403c93342d2cbb34658883dbcb69"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cb1383129cd5d56501cc0b4bc274d65fac116cc651ed5e548ecf6935ad8c9b64"
-    sha256 cellar: :any_skip_relocation, monterey:       "3fc0b658ae2b0d7c21b6bf45363da542ab66a2e2f6edd821d890ce9cd68d1b6d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "255e700733fd5af8954e7acbbceec2dd011db85e13884008a98896349dd8930c"
-    sha256 cellar: :any_skip_relocation, catalina:       "372b82625802cce8fd4201f9e397e97813d2db6dabbef66a349dba05fe82bcf5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1ac312b6caebe73995a903ec65acfb2d5194f8e6afba2b2e5eb773daa9d1d224"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "089f401e6464a3e61dc2d09492b718628c115102e2fe66baaf4d4936acd8fe54"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "54fe36df295d4518d77ab1d1b9e5fc5a86cb7d2f505f92c6bc67c23dae624f76"
+    sha256 cellar: :any_skip_relocation, monterey:       "3a4a98c852d5ebf2be5dda8a1a982d4d59f3bff447eca38b4796b599d016c6d1"
+    sha256 cellar: :any_skip_relocation, big_sur:        "4479526a4e39cdbe9a3f1d7703c8c8a657d7bbc6cb249a7c0157a2d7f4f0a023"
+    sha256 cellar: :any_skip_relocation, catalina:       "2d6782ad1d0791b27cf471af9cd8ccfd3dc945ae481add2732f1c5d811dc9656"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "998bf7371bcfecdba277ad955b5b0da3d1a807d747b79a5a4fb8d8a32609f429"
   end
 
   depends_on "rust" => :build
@@ -43,9 +43,7 @@ class Broot < Formula
   end
 
   test do
-    on_linux do
-      return if ENV["HOMEBREW_GITHUB_ACTIONS"]
-    end
+    return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
     assert_match "A tree explorer and a customizable launcher", shell_output("#{bin}/broot --help 2>&1")
 

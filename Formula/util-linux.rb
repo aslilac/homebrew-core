@@ -1,8 +1,8 @@
 class UtilLinux < Formula
   desc "Collection of Linux utilities"
-  homepage "https://github.com/karelzak/util-linux"
-  url "https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.37/util-linux-2.37.4.tar.xz"
-  sha256 "634e6916ad913366c3536b6468e7844769549b99a7b2bf80314de78ab5655b83"
+  homepage "https://github.com/util-linux/util-linux"
+  url "https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.38/util-linux-2.38.tar.xz"
+  sha256 "6d111cbe4d55b336db2f1fbeffbc65b89908704c01136371d32aa9bec373eb64"
   license all_of: [
     "BSD-3-Clause",
     "BSD-4-Clause-UC",
@@ -12,14 +12,15 @@ class UtilLinux < Formula
     "LGPL-2.1-or-later",
     :public_domain,
   ]
+  revision 1
 
   bottle do
-    sha256 arm64_monterey: "833632c958e5c4c5894a851495a19ceede6020121bdb2588b3d0b525ab20119d"
-    sha256 arm64_big_sur:  "396af2a927ac674004559b240e6c9231b44edaf4365fe56ead3af1d2b09a541d"
-    sha256 monterey:       "17068a0d8798b05c1cc25658807bc2648279d3593e60c720e80ef11179bd08ac"
-    sha256 big_sur:        "2fac77333191fca96449124103eaaced2d57f687c963708540ee5a0d28b6b312"
-    sha256 catalina:       "b8795170d00306fac79becc12e03e237a5a7b7db77c25edacc6f146e163553bb"
-    sha256 x86_64_linux:   "9f09535c3dee636484b21e994b9ec2314f8e6a59168315dd0a4432fca1e149f5"
+    sha256 arm64_monterey: "c9653e2676398fa31ef966b4708dd77598d940567ae98bf8a358bf6e3f9795d3"
+    sha256 arm64_big_sur:  "af364bc9ec694952b1d7a24754c06b42dbf29a6d177b6a17d2f6d0142b9c996f"
+    sha256 monterey:       "1d3d53424843429c548fbbe26708ff3fc70c61fa77e431f15586ec85a86e43f5"
+    sha256 big_sur:        "16e6c5fc7d5f68666b8d418180d76cf6df8ac085935836747e9ba4a81a3684cb"
+    sha256 catalina:       "9a4c50aca114732ebdca292bff3d11074824dc7d8991421dc9d57ff35d8c5bc6"
+    sha256 x86_64_linux:   "79b4830d6c2b45d991a81915e7f340c21ddc7e6c4b189916791aaab296a30517"
   end
 
   keg_only :shadowed_by_macos, "macOS provides the uuid.h header"
@@ -27,29 +28,42 @@ class UtilLinux < Formula
   depends_on "asciidoctor" => :build
   depends_on "gettext"
 
+  uses_from_macos "libxcrypt"
   uses_from_macos "ncurses"
   uses_from_macos "zlib"
+
+  # Everything in following macOS block is for temporary patches
+  # TODO: Remove in the next release.
+  on_macos do
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "gtk-doc" => :build
+    depends_on "libtool" => :build
+    depends_on "pkg-config" => :build
+
+    # Fix ./include/statfs_magic.h:4:10: fatal error: 'sys/statfs.h' file not found
+    patch do
+      url "https://github.com/util-linux/util-linux/commit/478b9d477ecdd8f4e3a7b488524e1d4c6a113525.patch?full_index=1"
+      sha256 "576c26c3d15642f1c44548d0120b192b855cceeebf8ad97fb5e300350e88a3f7"
+    end
+
+    # Fix lib/procfs.c:9:10: fatal error: 'sys/vfs.h' file not found
+    patch do
+      url "https://github.com/util-linux/util-linux/commit/3671d4a878fb58aa953810ecf9af41809317294f.patch?full_index=1"
+      sha256 "d38c9ae06c387da151492dd5862c58551559dd6d2b1877c74cc1e11754221fe4"
+    end
+  end
 
   on_linux do
     conflicts_with "bash-completion", because: "both install `mount`, `rfkill`, and `rtcwake` completions"
     conflicts_with "rename", because: "both install `rename` binaries"
   end
 
-  # Change mkswap.c include order to avoid "c.h" including macOS system <uuid.h> via <grp.h>.
-  # The missing definitions in uuid.h cause error: use of undeclared identifier 'UUID_STR_LEN'.
-  # Issue ref: https://github.com/karelzak/util-linux/issues/1432
-  patch :DATA
-
-  # Fix -flat_namespace being used on Big Sur and later.
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
-    sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
-  end
-
   def install
-    args = std_configure_args + %w[
-      --disable-silent-rules
-    ]
+    # Temporary work around for patches. Remove in the next release.
+    system "autoreconf", "--force", "--install", "--verbose" if OS.mac?
+
+    args = %w[--disable-silent-rules]
 
     if OS.mac?
       args << "--disable-ipcs" # does not build on macOS
@@ -57,11 +71,6 @@ class UtilLinux < Formula
       args << "--disable-wall" # already comes with macOS
       args << "--disable-libmount" # does not build on macOS
       args << "--enable-libuuid" # conflicts with ossp-uuid
-
-      # To build `hardlink`, we need to prevent configure from detecting macOS system
-      # <sys/xattr.h>, which doesn't have all expected functions like `lgetxattr`.
-      # Issue ref: https://github.com/karelzak/util-linux/issues/1432
-      inreplace "configure", %r{^\tsys/xattr.h \\\n}, ""
     else
       args << "--disable-use-tty-group" # Fix chgrp: changing group of 'wall': Operation not permitted
       args << "--disable-kill" # Conflicts with coreutils.
@@ -77,7 +86,7 @@ class UtilLinux < Formula
       args << "--without-python"
     end
 
-    system "./configure", *args
+    system "./configure", *std_configure_args, *args
     system "make", "install"
 
     # install completions only for installed programs
@@ -130,31 +139,3 @@ class UtilLinux < Formula
     assert_equal ["d#{perms}", owner, group, "usr"], out
   end
 end
-
-__END__
-diff --git a/disk-utils/mkswap.c b/disk-utils/mkswap.c
-index c45a3a317..0040198c8 100644
---- a/disk-utils/mkswap.c
-+++ b/disk-utils/mkswap.c
-@@ -30,6 +30,10 @@
- # include <linux/fiemap.h>
- #endif
- 
-+#ifdef HAVE_LIBUUID
-+# include <uuid.h>
-+#endif
-+
- #include "linux_version.h"
- #include "swapheader.h"
- #include "strutils.h"
-@@ -42,10 +46,6 @@
- #include "closestream.h"
- #include "ismounted.h"
- 
--#ifdef HAVE_LIBUUID
--# include <uuid.h>
--#endif
--
- #ifdef HAVE_LIBBLKID
- # include <blkid.h>
- #endif

@@ -3,18 +3,18 @@ class ReorderPythonImports < Formula
 
   desc "Rewrites source to reorder python imports"
   homepage "https://github.com/asottile/reorder_python_imports"
-  url "https://files.pythonhosted.org/packages/5d/16/fac8bebf74e45c7498296f1f7cfcb11fe1b0792ff9ce2c468c94dbe742bc/reorder_python_imports-3.0.1.tar.gz"
-  sha256 "a4e1c28a1bf90a7c8fa4c534058803a7956adc722137d3e54eb91536fe12ffb6"
+  url "https://files.pythonhosted.org/packages/0f/09/03893c8de481420a71476b47ca5e1a09a9aba111802de7ad24957a72d129/reorder_python_imports-3.1.0.tar.gz"
+  sha256 "6b7a810ee77a9be0e646033d034ce02457e32597c5f48e5faec1866ca9eb4957"
   license "MIT"
   head "https://github.com/asottile/reorder_python_imports.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bc7dcebec417cef0f7c31c1e2aad83e16281c5bc91556e0aa9b188a0a3799dd3"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bc7dcebec417cef0f7c31c1e2aad83e16281c5bc91556e0aa9b188a0a3799dd3"
-    sha256 cellar: :any_skip_relocation, monterey:       "b803c194964b602a1c2851f3906696b8686aab4b7c504aef78ea5fb064da1d6a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b803c194964b602a1c2851f3906696b8686aab4b7c504aef78ea5fb064da1d6a"
-    sha256 cellar: :any_skip_relocation, catalina:       "b803c194964b602a1c2851f3906696b8686aab4b7c504aef78ea5fb064da1d6a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a15b57300b47e60e8a804f252055adc9a4ef6dc549660b3928cd338200ac717e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1fbc532def7c000bd395760b26372aeed401202ad4edaa98a7a109d53400116c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1fbc532def7c000bd395760b26372aeed401202ad4edaa98a7a109d53400116c"
+    sha256 cellar: :any_skip_relocation, monterey:       "a5fcdb7eea5268e819e632bf8d26a1552e60e7470461e7f1350e4a3e5df146ea"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a5fcdb7eea5268e819e632bf8d26a1552e60e7470461e7f1350e4a3e5df146ea"
+    sha256 cellar: :any_skip_relocation, catalina:       "a5fcdb7eea5268e819e632bf8d26a1552e60e7470461e7f1350e4a3e5df146ea"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "70375e2797be7317f5b02c454c5eab397051b0dfcdc3380f836f88c104cd6bb1"
   end
 
   depends_on "python@3.10"

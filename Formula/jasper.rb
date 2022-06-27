@@ -1,8 +1,8 @@
 class Jasper < Formula
   desc "Library for manipulating JPEG-2000 images"
   homepage "https://ece.engr.uvic.ca/~frodo/jasper/"
-  url "https://github.com/jasper-software/jasper/releases/download/version-3.0.3/jasper-3.0.3.tar.gz"
-  sha256 "7c2ae6e10f0e4988277aba9d6d15cbf4f73576e9372c1749366e565b68c76eae"
+  url "https://github.com/jasper-software/jasper/releases/download/version-3.0.5/jasper-3.0.5.tar.gz"
+  sha256 "3e600d98f41d3b08124bd24c558ed0c171fe5fd705fa90d56baf2b814c58483a"
   license "JasPer-2.0"
 
   livecheck do
@@ -11,12 +11,12 @@ class Jasper < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "9e635dfd87b1259ba12c7f507dfd8b8d316cb8ede579eb01219601af2a0dd9a9"
-    sha256 cellar: :any,                 arm64_big_sur:  "94ece4798dcc13479a719d52684c0c4ab6a26deb8c1331948953d01c6061e514"
-    sha256 cellar: :any,                 monterey:       "ad01c6d8f38d4aab1a34c29fd665d4b6f7f68a21b4041ee745ceec15b88e085f"
-    sha256 cellar: :any,                 big_sur:        "1e52cfd6893ed868d1041f912ef31b99c7530b002194b57f1905a21cd0f337e2"
-    sha256 cellar: :any,                 catalina:       "1a3ce7bc7b60cd9ca3ec7e0d6ee405d6609c84d2fdcfb040f68a1ce3d5e54146"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "08426c225b8e8ca3d9f3e702380b13aad3d676067ecc64ab449c78fc5962170c"
+    sha256 cellar: :any,                 arm64_monterey: "bc677ea04e1d617278a2e2c1333e1428d6c3f3b01ece71aa765627c404b57fe9"
+    sha256 cellar: :any,                 arm64_big_sur:  "c8b902827a015ee9bc53cfd58da2726da109186bb91e4fab0286f4d74e0cf683"
+    sha256 cellar: :any,                 monterey:       "c8229227691aa57fd325705c4da1510c1ead41e6350cd45aaef033bbbd5eb1ec"
+    sha256 cellar: :any,                 big_sur:        "bdb4562775bd2fef32696ed4f535aa718ab1bfb0cb4aabd3cf756aabfeda99f9"
+    sha256 cellar: :any,                 catalina:       "69bb474ce202311f77b67556d36a1fa76302934c3015a8f19f2cbce066277f71"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b82ae0394fc150bad2f801a4ead62873a3276753fc585b697eb13c0efd4e442c"
   end
 
   depends_on "cmake" => :build

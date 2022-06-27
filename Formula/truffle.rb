@@ -3,24 +3,50 @@ require "language/node"
 class Truffle < Formula
   desc "Development environment, testing framework and asset pipeline for Ethereum"
   homepage "https://trufflesuite.com"
-  url "https://registry.npmjs.org/truffle/-/truffle-5.4.12.tgz"
-  sha256 "5942d8502e9c6910967d8392bd5d2eae76459cef4639b1ab6468f404008a0bd7"
+  url "https://registry.npmjs.org/truffle/-/truffle-5.5.18.tgz"
+  sha256 "c3c125ac9777725d0bd08778b76e1ea123918a774b12866441f81f84683706df"
   license "MIT"
 
   bottle do
-    sha256 big_sur:  "c39fe4aef87c1c78a58b1d7dd791519e2e608a9b1eddf9c4865c4a42626f3c23"
-    sha256 catalina: "dd0c6c697882c291dd6e697ed430f2c864a5f1ebe38544a3d563507c5dc5dea7"
-    sha256 mojave:   "5b19919e36101ef6cf0020a3a75b8087a5a766644138ebd8a08893b9765503cf"
+    sha256                               monterey:     "4c798bd79deb6dda407486614f4e5713167919dfaeb2e86f1d8d14dfdfdc1cea"
+    sha256                               big_sur:      "2af5aab28142385ababecadd67874be9f92b9ea7e59ffc816f94caccfd48865c"
+    sha256                               catalina:     "cc2bc564fba6daca6c596344ad845cd13be05afa54e4aba10a1603dfd99e1307"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "5c4e729241a3517718e2e6393aca94998dd5db0e215606f2d0dc0e2ff09b4ccd"
   end
 
-  # the formula does not build any binaries for arm64
-  # see upstream issue report, https://github.com/trufflesuite/truffle/issues/4266
-  depends_on arch: :x86_64
   depends_on "node"
 
   def install
     system "npm", "install", *Language::Node.std_npm_install_args(libexec)
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink Dir[libexec/"bin/*"]
+
+    truffle_dir = libexec/"lib/node_modules/truffle"
+    os = OS.kernel_name.downcase
+    arch = Hardware::CPU.intel? ? "x64" : Hardware::CPU.arch.to_s
+    %w[
+      **/node_modules/*
+      node_modules/ganache/node_modules/@trufflesuite/bigint-buffer
+    ].each do |pattern|
+      truffle_dir.glob("#{pattern}/prebuilds/*").each do |dir|
+        if OS.mac? && dir.basename.to_s == "darwin-x64+arm64"
+          # Replace universal binaries with their native slices
+          deuniversalize_machos dir/"node.napi.node"
+        else
+          # Remove incompatible pre-built binaries
+          dir.glob("*.musl.node").map(&:unlink)
+          dir.rmtree if dir.basename.to_s != "#{os}-#{arch}"
+        end
+      end
+    end
+
+    # Replace remaining universal binaries with their native slices
+    deuniversalize_machos truffle_dir/"node_modules/fsevents/fsevents.node"
+
+    # Remove incompatible pre-built binaries that have arbitrary names
+    if OS.mac?
+      truffle_dir.glob("node_modules/ganache/dist/node/*.node")
+                 .each { |f| f.unlink if f.dylib? && f.archs.exclude?(Hardware::CPU.arch) }
+    end
   end
 
   test do

@@ -1,8 +1,8 @@
 class Pypy < Formula
   desc "Highly performant implementation of Python 2 in Python"
   homepage "https://pypy.org/"
-  url "https://downloads.python.org/pypy/pypy2.7-v7.3.8-src.tar.bz2"
-  sha256 "0cdad270c62d3ccc53cc87eeb069a6dc46acaf95521b584624bcd6697d94fa1c"
+  url "https://downloads.python.org/pypy/pypy2.7-v7.3.9-src.tar.bz2"
+  sha256 "39b0972956f6548ce5828019dbae12503c32d6cbe91a2becf88d3e42cc52197b"
   license "MIT"
   head "https://foss.heptapod.net/pypy/pypy", using: :hg
 
@@ -12,10 +12,10 @@ class Pypy < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 monterey:     "c816650c738a81562270c4245ab12eaadd8cf4c184f1fc38f0404123b4a7ac89"
-    sha256 cellar: :any,                 big_sur:      "357c7116eee6b1c2ab359e8884f004a8e936c3c8adaf2a6546edcb838e890fe6"
-    sha256 cellar: :any,                 catalina:     "6b61e43f81b6a02c87e76457974016059c92be9ce269cd8ba9ac63f5a4859092"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "98886d182cb4b61544cb04da587846506679294e6ff9e015cc179031fc51e64b"
+    sha256 cellar: :any,                 monterey:     "596f21127b64366a965ac5f5f750d0b923f7b466e2f044c06ad0f7bcd1586659"
+    sha256 cellar: :any,                 big_sur:      "860de6d6a144bc37ff5478b19ab284be15f8028268e344928ebfd416b89d5fe5"
+    sha256 cellar: :any,                 catalina:     "47cd908fe90ea5d08ef34ad69180c3371aafab7cf6a823a337c6d1f3c89de822"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "cee95372f34f80d0491f767ddefc9202ff463c706f931fbf18206317cd5553f6"
   end
 
   depends_on "pkg-config" => :build

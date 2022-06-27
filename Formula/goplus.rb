@@ -1,32 +1,28 @@
 class Goplus < Formula
   desc "Programming language for engineering, STEM education, and data science"
   homepage "https://goplus.org"
-  url "https://github.com/goplus/gop/archive/v1.0.39.tar.gz"
-  sha256 "abc5ed80ccd5d233c0b90e82b6fa5aaa874c4fe50cc6fe0f30372f96f7e75677"
+  url "https://github.com/goplus/gop/archive/v1.1.2.tar.gz"
+  sha256 "a68fe2e64a2a183f129b96a225c9ba4638568ae16de3e23d3faa8f6753bb037b"
   license "Apache-2.0"
-  revision 1
   head "https://github.com/goplus/gop.git", branch: "main"
 
   bottle do
-    sha256 arm64_monterey: "787817b6d30ce045804b5cd4124f2c157ca3ebc04b0f8c49f6c7576b5ea322aa"
-    sha256 arm64_big_sur:  "4d9b065bbec3d8b4b9e161c3ac9fdf4517e0301500faf0567fb60b166b336af7"
-    sha256 monterey:       "dba5db488bf81f97428478ca4615291d6a09021c06ba77102c144d7f2a97ae63"
-    sha256 big_sur:        "fab34d637e3cc69e5ee473f31ce2888092c3dc1cd771942103ec57a28406489a"
-    sha256 catalina:       "a59780cc2d6f9170de630ed38da0680b963076a821fb4dd5ee01d73b98ee2db9"
-    sha256 x86_64_linux:   "36a85ee921d8c8a65cb03c6b7e57c35ae1fbb4edc8dc529288bf8fd0b21b5507"
+    sha256 arm64_monterey: "2bca85843879449a8aaef13086a037f4e2d84cc783c09a8fd394febd1735b5c3"
+    sha256 arm64_big_sur:  "67ce97efd99d1c35fefd958fd9f507d3eb68caf80c9c8c2445b2c8fbb02f316c"
+    sha256 monterey:       "fc590548c8213b35c81d8d421eadb4d676eff500591c208d4177d85ffc2fd457"
+    sha256 big_sur:        "ad70f4b77a1c8f63683a01abfd81623e52e176e02342ca635c14b0b12555d192"
+    sha256 catalina:       "b09a3f21d88ec26bdabccf7dc3af528d69451d6de9ff7b27280c611f616a25e0"
+    sha256 x86_64_linux:   "d7cb089004ae6e89d8f2f86619ae66631d609d7dfdd09563d3f19a7302ef9809"
   end
 
-  # Bump to 1.18 on the next release (1.1.0).
-  depends_on "go@1.17"
+  depends_on "go"
 
   def install
     ENV["GOPROOT_FINAL"] = libexec
     system "go", "run", "cmd/make.go", "--install"
 
     libexec.install Dir["*"] - Dir[".*"]
-    libexec.glob("bin/*").each do |file|
-      (bin/file.basename).write_env_script(file, PATH: "$PATH:#{Formula["go@1.17"].opt_bin}")
-    end
+    bin.install_symlink (libexec/"bin").children
   end
 
   test do
@@ -45,7 +41,7 @@ class Goplus < Formula
       module hello
     EOS
 
-    system Formula["go@1.17"].opt_bin/"go", "get", "github.com/goplus/gop/builtin"
+    system "go", "get", "github.com/goplus/gop/builtin"
     system bin/"gop", "build", "-o", "hello"
     assert_equal "Hello World\n", shell_output("./hello")
   end

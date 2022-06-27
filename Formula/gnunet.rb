@@ -1,18 +1,18 @@
 class Gnunet < Formula
   desc "Framework for distributed, secure and privacy-preserving applications"
   homepage "https://gnunet.org/"
-  url "https://ftp.gnu.org/gnu/gnunet/gnunet-0.16.2.tar.gz"
-  mirror "https://ftpmirror.gnu.org/gnunet/gnunet-0.16.2.tar.gz"
-  sha256 "b5858833836509b71d5c0d9bdc11fd1beeeaba5a75be4bbd93581a4d13e0f49a"
+  url "https://ftp.gnu.org/gnu/gnunet/gnunet-0.17.1.tar.gz"
+  mirror "https://ftpmirror.gnu.org/gnunet/gnunet-0.17.1.tar.gz"
+  sha256 "75de0a715e3e969286483ec6ae4b25a87365664d42cdfb606df8e746a15f1265"
   license "AGPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "de55ad7b59ee82375065931a70d9e1f84ecb772f18c1ffdb176cb60c1ba893b1"
-    sha256 cellar: :any,                 arm64_big_sur:  "a800f0ad74e22c1bd38d2c899d9349a80e1daea77b5cf4a20fb981df43b6caf5"
-    sha256 cellar: :any,                 monterey:       "a9feb7b41a7d1c1c69ed0840244a1616758cb129f2b2c60d1302140f4e23a135"
-    sha256 cellar: :any,                 big_sur:        "d6189389002b05470549a66d419e5903c5e8cbc3d3a13018208ea4436f0169a4"
-    sha256 cellar: :any,                 catalina:       "5a8e262752e7bcb0a522943a3d4b13b61625b4416a741676c44df1a018e5ed76"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d8c2fedd07e283c997c2c3c73db448534f08d51a72deb048e300697167f7af48"
+    sha256 cellar: :any,                 arm64_monterey: "488dd8a59fcbe9c1e5a395efa02121998a5a9fd1999a4b9b76269584af1b9615"
+    sha256 cellar: :any,                 arm64_big_sur:  "02338566adee0a3208517d825d52bff67901326b5a5e086a34b37a291f840e54"
+    sha256 cellar: :any,                 monterey:       "3d42043f2b0ecc3769778cb23eecbee431d4b4652bc73b991b49fcc92c3c5d3f"
+    sha256 cellar: :any,                 big_sur:        "256cbb7ab27cb8cc89361dfcf4f6720923792d7e75e58505552dd9181f35f1a8"
+    sha256 cellar: :any,                 catalina:       "9289d962c431ac5d696ddcb535c8316ab3c79c5a385fb9c06d8b07ad08809668"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aa28dfb86b1a90e267817b4b38af8f85ef8bb835818c390838ae86293a4d463a"
   end
 
   depends_on "pkg-config" => :build
@@ -31,7 +31,7 @@ class Gnunet < Formula
 
   def install
     ENV.deparallelize if OS.linux?
-    system "./configure", "--prefix=#{prefix}", "--with-microhttpd"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 

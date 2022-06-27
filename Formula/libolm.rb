@@ -1,17 +1,17 @@
 class Libolm < Formula
   desc "Implementation of the Double Ratchet cryptographic ratchet"
   homepage "https://gitlab.matrix.org/matrix-org/olm"
-  url "https://gitlab.matrix.org/matrix-org/olm/-/archive/3.2.10/olm-3.2.10.tar.gz"
-  sha256 "e3be900ce7983f2ce9c4507431d7c784b5ebe09b58f4f8b68e8adabdad010b59"
+  url "https://gitlab.matrix.org/matrix-org/olm/-/archive/3.2.12/olm-3.2.12.tar.gz"
+  sha256 "32c81f7fed1dbdfc1322568e4c2f4d12da3974848d4b41b7721b1bbbc0296a12"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "b7c728434be90bceb4f8958622c430ee4ff356e1d6e7f6d8ceaa60a2ee1e522f"
-    sha256 cellar: :any,                 arm64_big_sur:  "1b732bde482f7f8ade23cc9f92cc47b7bd4a193fb2d482c2a4d20a99466dd5de"
-    sha256 cellar: :any,                 monterey:       "7354d1a6c04e9fd1eb4cb64e72871adf8475443d7d7a66b17da9e208ccf514d5"
-    sha256 cellar: :any,                 big_sur:        "e53bb220099cd0227a9662915c210a388d2694360a138caeac11d11d6554ead9"
-    sha256 cellar: :any,                 catalina:       "7bbe110a3e2f5bb4a0f5d45c349d44a904a0cedc6b6fd9c238251db85b5bd1c2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3108c9d27510d43ffdf77970499af30067a8b24181dc6e5b50b34625451dcf7f"
+    sha256 cellar: :any,                 arm64_monterey: "bf7952e643e6d501003cf26956f09aa0c492abbb2e0ac099393ca2a17aa4d21a"
+    sha256 cellar: :any,                 arm64_big_sur:  "e113ddf0542c3892c4adfc66f0683ded20c4d35f99966ed8e56bec932ca7d29e"
+    sha256 cellar: :any,                 monterey:       "318efaae41e59e5abce32933ef82f55cf9b18259ab73f334b426f683e424b45c"
+    sha256 cellar: :any,                 big_sur:        "5707ea67ed3f049c02b7cc6c0dde28f9d214e0caf006967b16e2e1cbff522252"
+    sha256 cellar: :any,                 catalina:       "6585fb3d0af941a52c8d74de4f91fafd7924d87252149e3ba49fdfc531c000b7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b53d055793f37b30bed1a54ba78b086463e006a087611c750e2f544337c90915"
   end
 
   depends_on "cmake" => :build

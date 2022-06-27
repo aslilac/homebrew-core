@@ -1,8 +1,8 @@
 class Ki18n < Formula
   desc "KDE Gettext-based UI text internationalization"
   homepage "https://api.kde.org/frameworks/ki18n/html/index.html"
-  url "https://download.kde.org/stable/frameworks/5.92/ki18n-5.92.0.tar.xz"
-  sha256 "058032e8e9556f1dadcf0c2bd633da6cfc9673e966dd113388e2b8aee2395777"
+  url "https://download.kde.org/stable/frameworks/5.95/ki18n-5.95.0.tar.xz"
+  sha256 "5dd77edd69a42c4ca2458344ed5e7c3eb469d243acbff714983dc88ed241426d"
   license all_of: [
     "BSD-3-Clause",
     "LGPL-2.0-or-later",
@@ -18,11 +18,12 @@ class Ki18n < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "e2ca0a67418a0363ba8148e1eb22cbbee03206773cfeaf42104a4035f70ad5ce"
-    sha256 arm64_big_sur:  "60af3a4dfe5ba9d71dc7014ddea5b2075de5f2f8bf7192f4af002ac311c62e2f"
-    sha256 monterey:       "024b0441dd3ea1ad6d34802a29e0dd6fa162de6332c2e88a99b920767e16ccdd"
-    sha256 big_sur:        "b6bd1aea9e64d046e30238edd4e2dac06c9a9b01c7103fc8afec2ed9ce24936a"
-    sha256 catalina:       "bb0b095703789a62e0cba55d52ed90564b222faf89cb0640b6cded2cfaa63a35"
+    sha256 arm64_monterey: "4be66a749974287833b1d1c6f964193f5d4b8e70137605705d01ad88206ba76e"
+    sha256 arm64_big_sur:  "61fdb931a0ed683fab5709541e6b32a186d87513d22f3017eddcfe9ae9be8748"
+    sha256 monterey:       "3ecd85e9cdb94af28d6e8a38465e34e0b4e833e00b20e7f2834ba7d13e5ad11a"
+    sha256 big_sur:        "3c9f71c218c46b4e9e534744d0ff04bb8995adaa8fac884901cfca09326dfc3d"
+    sha256 catalina:       "be3e8496472612ab613a7c896850c8bad2fb15d24141a4b47753e40ccf74e9c7"
+    sha256 x86_64_linux:   "3999af2775023f63ad3fb49924319ea4c23e769f8477896d5ccadc41391d8512"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -32,6 +33,12 @@ class Ki18n < Formula
   depends_on "gettext"
   depends_on "iso-codes"
   depends_on "qt@5"
+
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
 
   def install
     args = std_cmake_args + %w[

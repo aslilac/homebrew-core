@@ -1,16 +1,16 @@
 class MoltenVk < Formula
   desc "Implementation of the Vulkan graphics and compute API on top of Metal"
   homepage "https://github.com/KhronosGroup/MoltenVK"
-  url "https://github.com/KhronosGroup/MoltenVK/archive/v1.1.8.tar.gz"
-  sha256 "f316c814d0cb6d60a0e8ad164d8cafa64010dee9dd41748b038b6b67fa40f08a"
+  url "https://github.com/KhronosGroup/MoltenVK/archive/v1.1.10.tar.gz"
+  sha256 "fac11c2501195c9ce042103685c7778e35484562e6c084963a22072dd0a602e0"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "40ecbe1cb7fa39206e044bb65de6d1d947ce8c3b9c66dc6d1ad4d13d9852e100"
-    sha256 cellar: :any, arm64_big_sur:  "21f71933c797a2dd8707b185de6e73cfe3019ed74a745798ad92e5e3bffa19b4"
-    sha256 cellar: :any, monterey:       "dbf1a33eb34c9a29dd9655ebe0f4f1ea4f5fa5312297ddef629599ef7514cdd7"
-    sha256 cellar: :any, big_sur:        "740ca02b3a6099e098a309615e3226cfb689e6b6618faa405eb16ac062524845"
-    sha256 cellar: :any, catalina:       "54a083e8b4cd0e6e9da512cd9f8112c866ac58ef36e016a1dffd96111244ddfb"
+    sha256 cellar: :any, arm64_monterey: "63331fa43116526b4c08c082fee1caf55ca667eaf74b5392d22f84838b750c47"
+    sha256 cellar: :any, arm64_big_sur:  "59ab209832acb5ef3fcd998376d7065fffa230cf48717dabf2b2dd6ef6835206"
+    sha256 cellar: :any, monterey:       "26e6dfe583fd12b4339eb54b933ff19b9daa2fe3d974be7e227d14d0986b1686"
+    sha256 cellar: :any, big_sur:        "517fd7868e2e478fd8d8332c0c6d7a0565fcd5e67c0418116a1be213c6278bfe"
+    sha256 cellar: :any, catalina:       "996f7d2eaab657046ccaa9a533e12f8bcd5eddf17dad996ea9b9bd85fbbcf465"
   end
 
   depends_on "cmake" => :build
@@ -32,37 +32,37 @@ class MoltenVk < Formula
   resource "Vulkan-Headers" do
     # ExternalRevisions/Vulkan-Headers_repo_revision
     url "https://github.com/KhronosGroup/Vulkan-Headers.git",
-        revision: "1dace16d8044758d32736eb59802d171970e9448"
+        revision: "3ef4c97fd6ea001d75a8e9da408ee473c180e456"
   end
 
   resource "SPIRV-Cross" do
     # ExternalRevisions/SPIRV-Cross_repo_revision
     url "https://github.com/KhronosGroup/SPIRV-Cross.git",
-        revision: "131278458ea8eebe6a6e9c476fbcf71278726e1a"
+        revision: "50b4d5389b6a06f86fb63a2848e1a7da6d9755ca"
   end
 
   resource "glslang" do
     # ExternalRevisions/glslang_repo_revision
     url "https://github.com/KhronosGroup/glslang.git",
-        revision: "2742e959347ae2fac58acd0d022c92a0ff1f24bf"
+        revision: "adbf0d3106b26daa237b10b9bf72b1af7c31092d"
   end
 
   resource "SPIRV-Tools" do
     # known_good.json in the glslang repository
     url "https://github.com/KhronosGroup/SPIRV-Tools.git",
-        revision: "45dd184c790d6bfc78a5a74a10c37e888b1823fa"
+        revision: "b930e734ea198b7aabbbf04ee1562cf6f57962f0"
   end
 
   resource "SPIRV-Headers" do
     # known_good.json in the glslang repository
     url "https://github.com/KhronosGroup/SPIRV-Headers.git",
-        revision: "b42ba6d92faf6b4938e6f22ddd186dbdacc98d78"
+        revision: "5a121866927a16ab9d49bed4788b532c7fcea766"
   end
 
   resource "Vulkan-Tools" do
     # ExternalRevisions/Vulkan-Tools_repo_revision
     url "https://github.com/KhronosGroup/Vulkan-Tools.git",
-        revision: "bb32aa13d4920261b5086219028ef329605d0126"
+        revision: "ef9db7a8ec52f6c56158d83f5d57ef388c1abec1"
   end
 
   def install

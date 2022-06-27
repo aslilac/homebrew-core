@@ -1,17 +1,17 @@
 class Libhandy < Formula
   desc "Building blocks for modern adaptive GNOME apps"
   homepage "https://gitlab.gnome.org/GNOME/libhandy"
-  url "https://gitlab.gnome.org/GNOME/libhandy/-/archive/1.6.1/libhandy-1.6.1.tar.gz"
-  sha256 "6d7936fb85f5dc84b2d5146d8b352f167f4297320591d42c068901fd9485bcfb"
+  url "https://gitlab.gnome.org/GNOME/libhandy/-/archive/1.6.2/libhandy-1.6.2.tar.gz"
+  sha256 "42247aac9f06e1083f5b0ea3f114f36f647e1b35b84089ad1b66d89ba2dc777e"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 arm64_monterey: "ebbe54fcb78893c4c8de374c49c8fe723ee732f54a97c38d0260d2e690bf0470"
-    sha256 arm64_big_sur:  "789ef01caeb83be07da4dfb85964833b6ad43701f5cf94a5794578719d5d0e7d"
-    sha256 monterey:       "0147123e7fedf3ef43f2837a81d9769355cc89614c0990880b6c6c6b018d6be6"
-    sha256 big_sur:        "c215f07ff7d085c9e7686e6a3ec32bc1e79af334347e31642ff0e02a87198b57"
-    sha256 catalina:       "9d1c112eb85f490a73e749e6a11b2a5cd7a2be0e8aaa9353c982c57e8ae530bf"
-    sha256 x86_64_linux:   "cf43b401b5a54201077e6782f9dc539691506a4dd35bdcc64de46b5125fd3058"
+    sha256 arm64_monterey: "9bfcb69be81e5aabb383000523e1ef93583822fa0e23884494ac132a9852149a"
+    sha256 arm64_big_sur:  "77f7cc160e8479f1bba4da15bbcd1a29536766c793f8ca201df59c81e2c9d4c0"
+    sha256 monterey:       "301c0abe14b96657a3ec17224df3a73e89adf897eb78efd808a3124b040a0c21"
+    sha256 big_sur:        "024deeb5265f53ef9704418c3460cc0e2e0dc420d5d7e82feb1fdf4f5f4636a0"
+    sha256 catalina:       "d8e95733e8c0d854ba05523cc38cba209971528b57cac86572c5580a689bba56"
+    sha256 x86_64_linux:   "f45efbcfd848c1b75ae8d8cf65307ffbd77a9068d4e25ad1a2fcb30ce906ddff"
   end
 
   depends_on "gettext" => :build
@@ -90,13 +90,9 @@ class Libhandy < Formula
       -lpango-1.0
       -lpangocairo-1.0
     ]
-    on_macos do
-      flags << "-lintl"
-    end
+    flags << "-lintl" if OS.mac?
     system ENV.cc, "test.c", "-o", "test", *flags
     # Don't have X/Wayland in Docker
-    on_macos do
-      system "./test"
-    end
+    system "./test" if OS.mac?
   end
 end

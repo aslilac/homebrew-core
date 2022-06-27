@@ -1,17 +1,17 @@
 class Clash < Formula
   desc "Rule-based tunnel in Go"
   homepage "https://github.com/Dreamacro/clash"
-  url "https://github.com/Dreamacro/clash/archive/v1.10.0.tar.gz"
-  sha256 "40205e152ce73984a29f1888a1f235cb653f03a751ae5062b88b4b4076d5e87b"
+  url "https://github.com/Dreamacro/clash/archive/v1.11.0.tar.gz"
+  sha256 "551d6e1bfb87bb7bb7dc0cd36a763791d95d09a610c49544575baa1905b18986"
   license "GPL-3.0-only"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0698b5ab0a9ffc8fa9c788877cf1826c7ec4a5932a23d40ccc78768045a3690a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f252fa3abf913ee4900b75f15bfe3ae3e29dbead89ca61428fe2d372973570be"
-    sha256 cellar: :any_skip_relocation, monterey:       "45e7eeddc565a7e30000262c572f3c24ab83bf4d8d88a297e9864990ddd4fd97"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c815badaf8c3cc07f92e2d4c467ce71a4618393f72071da2b6d67e066171f552"
-    sha256 cellar: :any_skip_relocation, catalina:       "40a718ea22b51c5ed3ff6e3d4a6d8ec3f37769880f85fee6a9c9e034abb68328"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "305ae2c31442c910d08548ca810125b16344eabc73bcb8fd8ca8d67ed77adca4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "491f3a817883a5d6e1ee6a494dcca37a9cde9c3ef67a0211e5d2ac5c7ecd3f09"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b15e9e6824dadd17fc2a6d21f4b5d1ded92d4678d9f263b7713b1793f9315a36"
+    sha256 cellar: :any_skip_relocation, monterey:       "5e54e36b2ace13d568ee6f5a94773f10997a334b004f0c600cfbd18c9e8b535d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "3889c0caa845aacdad13c491244b9998de84b1650722db2306e58a425360df26"
+    sha256 cellar: :any_skip_relocation, catalina:       "05d2b91d91be9dd14c5c0da3ccdd466445a769770e605c7ded346924b310b5cc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "18768ab7943714e6a0b8d55fdb26d92f6e28f7e2ffe6855fcca02dbe5cb9184f"
   end
 
   depends_on "go" => :build

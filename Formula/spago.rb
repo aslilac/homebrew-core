@@ -1,8 +1,8 @@
 class Spago < Formula
   desc "PureScript package manager and build tool"
   homepage "https://github.com/purescript/spago"
-  url "https://github.com/purescript/spago/archive/refs/tags/0.20.7.tar.gz"
-  sha256 "4bb73918813550d9841a8f50b5653f46253da12295d9d8038a63923044d7cf7c"
+  url "https://github.com/purescript/spago/archive/refs/tags/0.20.9.tar.gz"
+  sha256 "4e0ac70ce37a9bb7679ef280e62b61b21c9ff66e0ba335d9dae540dcde364c39"
   license "BSD-3-Clause"
   head "https://github.com/purescript/spago.git", branch: "master"
 
@@ -12,12 +12,12 @@ class Spago < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0d160c989c2cd9520d6d8d9a0f2c3803d4d941f7e37f64b1d6f74003dabdcafe"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9340120fc5e77f7de0d29cfb329e8c45de1272e65be1436070a03f937080ffdc"
-    sha256 cellar: :any_skip_relocation, monterey:       "06e96aaf68a086ea2e70bb165054dc8c1de09a9e578ec76a834b75015971b3fc"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a37ef8471ac5eea76e4792839bdcca6b9680ec76d506208b063eda3a5a8a9d76"
-    sha256 cellar: :any_skip_relocation, catalina:       "0ef86f40ca0aae715f8868e6f1384d270294d8d36b4187678f73ece91966d3e1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "44fca4ef668bde449085d2b7618193a394f9d983deae2dbe383f18e4bc63e307"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1e0bdbfd6c263b7887da4f8031a5c6263b7bd2345bd50df31cbdecb9af3075ef"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b13c6566d9d4c40d34dfb9293fd39e3cf66ebb54e82999257a47475f0ade1ddd"
+    sha256 cellar: :any_skip_relocation, monterey:       "a3d4cf0264b4fea348f09122552279ac9515bff3003d7fcb01808d465da89f8d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "771754939dc4374b84a3cd39214a3b0749e665d590a736f397cf91657d48a8be"
+    sha256 cellar: :any_skip_relocation, catalina:       "9dbe38aaceb447ea90a4aeb7911f3111e60f18f84729af89b5a6e431acd13738"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e8bee7f77a2ab534fc5c83201fe3ba287a2581be9a7470baed0dd4e870ad7670"
   end
 
   depends_on "ghc" => :build

@@ -1,8 +1,8 @@
 class QtPostgresql < Formula
   desc "Qt SQL Database Driver"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/6.2/6.2.3/submodules/qtbase-everywhere-src-6.2.3.tar.xz"
-  sha256 "34d6d0072e197241463c417ad72610c3d44e2efd6062868e9a95283103d75df4"
+  url "https://download.qt.io/official_releases/qt/6.3/6.3.1/submodules/qtbase-everywhere-src-6.3.1.tar.xz"
+  sha256 "0a64421d9c2469c2c48490a032ab91d547017c9cc171f3f8070bc31888f24e03"
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
 
   livecheck do
@@ -10,17 +10,24 @@ class QtPostgresql < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "95508eb11de8771ede01c98ec45ca19fbf79a1767deac2ffebcf05472d4d3893"
-    sha256 cellar: :any, arm64_big_sur:  "9a3625ccf4fc232f58846420211043a74fda76319af2d7398709ad602bc714d9"
-    sha256 cellar: :any, monterey:       "bdead761d0304dc9f8f1b29830028da13cdec56fcc109f801d31cd7b8b126af7"
-    sha256 cellar: :any, big_sur:        "ff35b43c422f97065123b0086a878cb61189de9d46c127305fc2fd0b6e1f9b52"
-    sha256 cellar: :any, catalina:       "abc763d462cf61b789d13ea8a9c8e2a9512b7807e28fc3f291154d59f1db6d17"
+    sha256 cellar: :any,                 arm64_monterey: "c37f34707f8229699684f741fce8e555a290f7903f0fb7b3e1514df9fffd2184"
+    sha256 cellar: :any,                 arm64_big_sur:  "df4c92846a5239140c4b150716cc13925a9b4c168198c07d4c9a195aa65583c1"
+    sha256 cellar: :any,                 monterey:       "fc4b2dd092830166b3d382923365b576b1551ad6ea53dc71cb99eceb6006aee5"
+    sha256 cellar: :any,                 big_sur:        "739c9145a5126114e7f975b11d9e0c1dd223a2469e2abfba7fd961c6c9b6c0a1"
+    sha256 cellar: :any,                 catalina:       "4fcdbcd599012582fc4264a2e5c50b27586c399d43a42a52f723be7cfd0b8753"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "db64756aca724b6197652beee557f296b0621a98e225199cbe273473d46d97f8"
   end
 
   depends_on "cmake" => [:build, :test]
 
   depends_on "postgresql"
   depends_on "qt"
+
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
 
   def install
     args = std_cmake_args + %W[
@@ -73,6 +80,7 @@ class QtPostgresql < Formula
       #include <cassert>
       int main(int argc, char *argv[])
       {
+        QCoreApplication::addLibraryPath("#{share}/qt/plugins");
         QCoreApplication a(argc, argv);
         QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
         assert(db.isValid());

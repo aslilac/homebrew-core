@@ -1,17 +1,17 @@
 class Kubergrunt < Formula
   desc "Collection of commands to fill in the gaps between Terraform, Helm, and Kubectl"
   homepage "https://github.com/gruntwork-io/kubergrunt"
-  url "https://github.com/gruntwork-io/kubergrunt/archive/v0.8.0.tar.gz"
-  sha256 "cbb2faa340868a13eae0c4fe845fd45586e57afb48568c9d864725527ef26a7e"
+  url "https://github.com/gruntwork-io/kubergrunt/archive/v0.9.1.tar.gz"
+  sha256 "8bc05d05ffb61af96c00823ecc1eacc0fdd33de985bfc2501baf0ea829762367"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "624db864f225cd62e012955622304f455c398f3fbb04bf70431a69c9c041da07"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8b2b9e8e800d5134736e708276e90bac44b5c52ed12ef6dd21671feaef087646"
-    sha256 cellar: :any_skip_relocation, monterey:       "df59a3cf5e42717f22f59313474420100834d666fea09593d2b0328b2fa49ad3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8d82a465bf245c37e56f2e70452b03fe023fd075303c714a2bcaad607d0ebaf3"
-    sha256 cellar: :any_skip_relocation, catalina:       "32472be7d1c6dc5bdc8281b34529f599e316b5382b5b0518a054f61952a0e97f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0febe5e67ffc420ca144fe13e08d70753b60d8a784f62c2a1d59be79064db916"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b28253f592a18170eac8bc754c4a41f2cf76481063d760156afa7e81112dea2d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b40b0c7931cbe6e14f64fa1674ed4d3029b9a6facb05e4fa6433b43dbf8404e7"
+    sha256 cellar: :any_skip_relocation, monterey:       "680210953d896ebd68457f2078b58500ea5eb92f95f2f8fb0820573c4b64f399"
+    sha256 cellar: :any_skip_relocation, big_sur:        "401e869549b868b8681f80c5c80fa0a35574e2e81d38eb7ec70c1b35480bacab"
+    sha256 cellar: :any_skip_relocation, catalina:       "c303f8d436e03fb99339642fac47c2d8d5bfa6eb9db61486859383b50a8e9f90"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1bc886ee8abb2f8e2a104e43874c4bd281f50cff4c0ef2e573ff129534d9f171"
   end
 
   # Bump to 1.18 on the next release, if possible.

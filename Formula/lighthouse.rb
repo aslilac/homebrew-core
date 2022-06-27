@@ -1,17 +1,17 @@
 class Lighthouse < Formula
   desc "Rust Ethereum 2.0 Client"
   homepage "https://github.com/sigp/lighthouse"
-  url "https://github.com/sigp/lighthouse/archive/refs/tags/v2.1.5.tar.gz"
-  sha256 "b8cb866dd321b262b23e00ab1e89fccaece233ca9812c97c46a40356368b3266"
+  url "https://github.com/sigp/lighthouse/archive/refs/tags/v2.3.0.tar.gz"
+  sha256 "191dd902f8d4f1d67d3edf4b3af808fddefaa5d85a83da2d8f6268306331bcfa"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1c9f9bad4234150d442aac6692c50caffbb30843ef08c66611a363d6ec608e50"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f8ebf2344b6d3657a90e15c88afb250a5598b521138706496a2e330b749a0330"
-    sha256 cellar: :any_skip_relocation, monterey:       "4154937bfe45f5adc827303719718128e79879ad06db232b0a7c96836738f368"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f46daa88ad4fb33543e182dfa3ed3de3ddb134689420fb543ccc44040547f806"
-    sha256 cellar: :any_skip_relocation, catalina:       "a33e227d41e83570e3de4d33d7fa3bc3cd3d95a59806577fa4b160e1caeca70b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "03f7fe868f6718c2d0427341804ad11bbe42afb39a0ea5826956474605de06f6"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "95cfa93c0f49106b6522f9ce7ca0bbd726006f571a7f2f87ef4978a79486b359"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4d2971b02471348df20b64445a2e15fd960dc419d546512522eec870c4c95cec"
+    sha256 cellar: :any_skip_relocation, monterey:       "6939bbed1598f7c40b0dcc187597acfc4e8f95297cca77b67f886dc768d4830d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "4040268a7f5d01f2800624d77f60445a6e77df9ee1d4465ad7ad22f58c9a547b"
+    sha256 cellar: :any_skip_relocation, catalina:       "f9f288869faeb5883963ef2b59ebeea192631483336f7096e59ab8e35fd7c508"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7f3d6381ae98857bf6f1f540407d8c42a9f14baa39a1449ec29ce5abb6207491"
   end
 
   depends_on "cmake" => :build

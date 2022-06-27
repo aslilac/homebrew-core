@@ -2,8 +2,8 @@ class Influxdb < Formula
   desc "Time series, events, and metrics database"
   homepage "https://influxdata.com/time-series-platform/influxdb/"
   url "https://github.com/influxdata/influxdb.git",
-      tag:      "v2.1.1",
-      revision: "657e1839de9e8a734abad1207ca28e7d02444207"
+      tag:      "v2.3.0",
+      revision: "090f681737896feb99870ee534c9ccc4203b9a6d"
   license "MIT"
   head "https://github.com/influxdata/influxdb.git", branch: "master"
 
@@ -14,11 +14,12 @@ class Influxdb < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7de2e0f730864bf4db5f3af35533d5b8d462def4013cebc1dd9991fab1b59d83"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "42c89aa4f7c843b8f99ac406d42d822505ec9cf6d0ecb38d7ce4217f000ee165"
-    sha256 cellar: :any_skip_relocation, monterey:       "371081fed5b98ae9fbb03fee57ce016cb29d39796a35dc9b57bfe0fb8030681b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2ffa689372e99aff4f2366eded763e59d2f1fb9c09f14cfe37ab6fc2cccbcc72"
-    sha256 cellar: :any_skip_relocation, catalina:       "23711126f0cb3c7b89bf68a9f933aec3be44d86cd88ebdd80079bc841c9b5728"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "95105d666775e9a4b652a430222da82f15f7bdf11e02508cce1c7e00f6b25ec7"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "202bd77fdae7445a217740f9964b07e765cf262a01dea787268ccf4423ed84b3"
+    sha256 cellar: :any_skip_relocation, monterey:       "cbb3dd12f7730b73e5d59c50462e2c252b2e0a2d3360a884e7fd54f5bca125fc"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7921499d12ad9c04673d4d57a4a8c0f0399ae765829de04cf7a192e648514769"
+    sha256 cellar: :any_skip_relocation, catalina:       "48285a09744171ad0ca5b9e95b9e7559388a3deb7c00f5b90febd52d209a25ec"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b5b6262d944954a1396ef7c87b2e712f7fa26c2f3d0de0de0d578c2d7fc26f70"
   end
 
   depends_on "breezy" => :build
@@ -26,13 +27,12 @@ class Influxdb < Formula
   depends_on "pkg-config" => :build
   depends_on "protobuf" => :build
   depends_on "rust" => :build
-  depends_on "influxdb-cli"
 
   # NOTE: The version here is specified in the go.mod of influxdb.
   # If you're upgrading to a newer influxdb version, check to see if this needs upgraded too.
   resource "pkg-config-wrapper" do
-    url "https://github.com/influxdata/pkg-config/archive/refs/tags/v0.2.9.tar.gz"
-    sha256 "25843e58a3e6994bdafffbc0ef0844978a3d1f999915d6770cb73505fcf87e44"
+    url "https://github.com/influxdata/pkg-config/archive/refs/tags/v0.2.11.tar.gz"
+    sha256 "52b22c151163dfb051fd44e7d103fc4cde6ae8ff852ffc13adeef19d21c36682"
   end
 
   # NOTE: The version/URL here is specified in scripts/fetch-ui-assets.sh in influxdb.
@@ -52,7 +52,6 @@ class Influxdb < Formula
 
     # Extract pre-build UI resources to the location expected by go-bindata.
     resource("ui-assets").stage(buildpath/"static/data/build")
-
     # Embed UI files into the Go source code.
     system "make", "generate-web-assets"
 
@@ -82,6 +81,13 @@ class Influxdb < Formula
     (var/"log/influxdb2").mkpath
   end
 
+  def caveats
+    <<~EOS
+      This formula does not contain command-line interface; to install it, run:
+        brew install influxdb-cli
+    EOS
+  end
+
   service do
     run bin/"influxd"
     keep_alive true
@@ -103,9 +109,6 @@ class Influxdb < Formula
                              "--log-level=error"
     end
     sleep 30
-
-    # Check that the CLI works and can talk to the server.
-    assert_match "OK", shell_output("influx ping")
 
     # Check that the server has properly bundled UI assets and serves them as HTML.
     curl_output = shell_output("curl --silent --head #{influx_host}")

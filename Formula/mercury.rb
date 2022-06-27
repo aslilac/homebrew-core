@@ -1,8 +1,8 @@
 class Mercury < Formula
   desc "Logic/functional programming language"
   homepage "https://mercurylang.org/"
-  url "https://dl.mercurylang.org/release/mercury-srcdist-20.06.1.tar.gz"
-  sha256 "ef093ae81424c4f3fe696eff9aefb5fb66899e11bb17ae0326adfb70d09c1c1f"
+  url "https://dl.mercurylang.org/release/mercury-srcdist-22.01.2.tar.gz"
+  sha256 "a8f92f5b916c2a333101bcad2e2c405a527b8c4ec7fdd1cfd973f9f4f6ab17e8"
   license all_of: ["GPL-2.0-only", "LGPL-2.0-only", "MIT"]
 
   livecheck do
@@ -11,11 +11,12 @@ class Mercury < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 monterey:     "529ee1af9b6aaf8a8173af8f2208007599ae96c6ef1275ddb03497181f6bb6d7"
-    sha256 cellar: :any,                 big_sur:      "8b37f68829e59efd2127a32dfbcbf80d617196b6f35c970e1d4727b5076abb39"
-    sha256 cellar: :any,                 catalina:     "2b98c59507d6aa72db55b8864d9818f302fef92b5bbdc6630287276494a3bc62"
-    sha256 cellar: :any,                 mojave:       "e0011e25fa5732a2a271f30c5589c35f1caeb7cbab44ccba2271ab7bd2632243"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "c1313fc019178406ba574ef1f9ffdf9b724a337e6831fc54b4a7aa68e02d2635"
+    sha256 cellar: :any,                 arm64_monterey: "b195074f59ae3d78ed191c698294f46d79d97f3abd2a5f2aa42e2f79ae29d16c"
+    sha256 cellar: :any,                 arm64_big_sur:  "d0d93983ca4e7a235b746d522cf780c558d5b96d5735dcfeb9e0100cc96f78ef"
+    sha256 cellar: :any,                 monterey:       "027211fa6f95af6d93b5bc410c90fa51e21d049db5cac8265edff024fe1731d2"
+    sha256 cellar: :any,                 big_sur:        "46085c1e7a2827170b8409ab7197af0fe9c32f776adaff1bfccab2b339cb11a9"
+    sha256 cellar: :any,                 catalina:       "eb449cffa5f41ac6884a0d00f6245a65594b0439e57ffdb67a2328d27271318c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "40c9aa159fa04ea34c3266bf53a567a549964223672b5e30f5842cb23ab18a2e"
   end
 
   depends_on "openjdk"

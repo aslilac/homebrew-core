@@ -2,23 +2,23 @@ class Mmctl < Formula
   desc "Remote CLI tool for Mattermost server"
   homepage "https://github.com/mattermost/mmctl"
   url "https://github.com/mattermost/mmctl.git",
-      tag:      "v6.4.2",
-      revision: "b16bfe5977aef9c715cd931dc963c8a7b811debe"
+      tag:      "v7.0.1",
+      revision: "62266d165f180f6ab158026ff4931e1ba7138483"
   license "Apache-2.0"
   head "https://github.com/mattermost/mmctl.git", branch: "master"
 
   livecheck do
     url :stable
-    strategy :github_latest
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "536dd0594e19dd46bc34b842955d82c6cbc431ce27b761a178ff974e88da4904"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7ac4e14e5a8267768db6a655107c6087ecc5c5a91c662be7394d07698d638650"
-    sha256 cellar: :any_skip_relocation, monterey:       "e567eb99f82888e1acdf40f3997ed20bf45129c7dc4d8c6653967af9c307fa56"
-    sha256 cellar: :any_skip_relocation, big_sur:        "48aaa034edd491bd69c4d9225f5908749ed671cde2a7e737e122102b74a43442"
-    sha256 cellar: :any_skip_relocation, catalina:       "ef9468690951c1f7258a87c66bce7e1cf1f2193b5b1a40545afc4438e38409d2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "54b71c7c78ac00fca3b6b7efa230fe1e63d8c4be637f0e73059d2bdc77dca42d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "63f385864ee453c3f5808c836b095129e18066b1e400465a6a7a772e85ff8793"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9ca0a0b2dcddb427e4a5ed76bb8c6ae7ee81e00844b685d558b2e1398c34e0b3"
+    sha256 cellar: :any_skip_relocation, monterey:       "b6491758d0de6ac44e95d6cfa380284cee91884a21a5da13df36bec3e0bc119c"
+    sha256 cellar: :any_skip_relocation, big_sur:        "069150e8c82e89452b2d1f8554806205f136412c584f92686ef2e8ce7556307d"
+    sha256 cellar: :any_skip_relocation, catalina:       "48cc7b41e474554758c6f0a79a72d333cb52d6aa6c31b6b5f3afcdca113b2841"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "eece21a9ae57960c948a49f5ac0df8db1548893f4a7b11394ef8935c59bd21df"
   end
 
   depends_on "go" => :build

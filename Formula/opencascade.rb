@@ -1,14 +1,14 @@
 class Opencascade < Formula
   desc "3D modeling and numerical simulation software for CAD/CAM/CAE"
   homepage "https://dev.opencascade.org/"
-  url "https://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=refs/tags/V7_6_1;sf=tgz"
-  version "7.6.1"
-  sha256 "c111c635fa4cae05821640f5afbbf362efaee8dc51fcbee953866eec7482cd6a"
+  url "https://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=refs/tags/V7_6_2;sf=tgz"
+  version "7.6.2"
+  sha256 "443f782f4adfd316e3f81bfad01d5367ae55ceb0d04c1acec1b87baae5c75e1c"
   license "LGPL-2.1-only"
 
   # The first-party download page (https://dev.opencascade.org/release)
   # references version 7.5.0 and hasn't been updated for later maintenance
-  # releases (e.g., 7.6.1, 7.5.2), so we check the Git tags instead. Release
+  # releases (e.g., 7.6.2, 7.5.2), so we check the Git tags instead. Release
   # information is posted at https://dev.opencascade.org/forums/occt-releases
   # but the text varies enough that we can't reliably match versions from it.
   livecheck do
@@ -20,12 +20,12 @@ class Opencascade < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "b644006d509ec7ce892c0ab6f43c5d2504db5a71b0a33664ec9258aada6b8651"
-    sha256 cellar: :any,                 arm64_big_sur:  "d4401dfa5877c0fbe9f57754da085a3385d2add72adf9fab748ca8b4325e3015"
-    sha256 cellar: :any,                 monterey:       "b648155d3e07648a573806d9e042be76679ccb54d80c3d9d7810f270b8cffa37"
-    sha256 cellar: :any,                 big_sur:        "4312f5eaf4ed92c249e991c1b2a4378559219ade72a2a79504447615101faf46"
-    sha256 cellar: :any,                 catalina:       "9786c4a2ab41a1856201dfae2b4cfbb67cf32baa1f607758d25d0d8e797d4b3c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "95d1d6e66b367210adcd332e6cec2b7e56230d7d7891334a8c0e243e5c6b421b"
+    sha256 cellar: :any,                 arm64_monterey: "fcc339d2b37a2b8cb0d2abfe18278b377052db2efc4e878f3041172cf4556fd8"
+    sha256 cellar: :any,                 arm64_big_sur:  "d1fe34d968ef3cc896ef218dac0c874f3c878ad9b2ec3fe2745d97246d23775a"
+    sha256 cellar: :any,                 monterey:       "aab016c958c57cbba2bfc69aae276dabd8262ceae3534f6a11161015649774a7"
+    sha256 cellar: :any,                 big_sur:        "c8a1c82ba773d2172970286fb8e3bc497bf36cdf2ea496be1fc0ccdb900db16c"
+    sha256 cellar: :any,                 catalina:       "7a3b452e17479cb7c94b3e85a1c9de6e364ececa0cfe99cfc558791420a731b0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "952cd53fcd596b002bf2e914d498280240597b892022b102c6c04c13ac67064b"
   end
 
   depends_on "cmake" => :build

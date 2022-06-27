@@ -1,18 +1,18 @@
 class Waypoint < Formula
   desc "Tool to build, deploy, and release any application on any platform"
   homepage "https://www.waypointproject.io/"
-  url "https://github.com/hashicorp/waypoint/archive/v0.7.2.tar.gz"
-  sha256 "da89019fad31ca583c8c8327c8da00fb4a76c278ff1c53583c842bb827496558"
+  url "https://github.com/hashicorp/waypoint/archive/v0.8.2.tar.gz"
+  sha256 "2df379dfb119e93baf2a946414181b4f9ae741412f5178a2fc43a2425bb70a84"
   license "MPL-2.0"
   head "https://github.com/hashicorp/waypoint.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f8eb96c9daee9ad1d54a0e1657c8a0792b9d0aa1162881aedf0717f74649b855"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "45183a6556c614f01445406bd77dbad96a87be4e68bbfca9857698fc406643d7"
-    sha256 cellar: :any_skip_relocation, monterey:       "da1b2fccfe09e2fb5095d3a10e88e5e067428648bf307e7897b4b7435eb6cbd8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "92b377654e17904405b22cb61945a8b538526dd2bc1c5ab947b2c59c64d1eac9"
-    sha256 cellar: :any_skip_relocation, catalina:       "ec9249b78fefd43b34aaa2989b8ba3afd3e0d39c0e2a140c86a8904ad33e0b70"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6dce201c9e24573bb00293819dfd377861b8d020563ce6aac8881ff7df8142e2"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "759c1791fa50bb15c7f270d7d8d1f7621b17d23f5c6d9785d9c04341a2fc1ead"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "29f515a429801627bcdd80619e4a9161a257512b9b846ac85a4b43842c66001a"
+    sha256 cellar: :any_skip_relocation, monterey:       "ca07c300dc1ddc403d823b19557b875db85c89d9b0ade0f3c5ef87bf675ba321"
+    sha256 cellar: :any_skip_relocation, big_sur:        "2dae6f6dae2616f06e42e327cad8e7dcdf762cd7e37b512bf1fd709b55eda1a6"
+    sha256 cellar: :any_skip_relocation, catalina:       "bb7e85feda880189e66e0474538da43a182214028318d20a17cb4b7db2c0af5b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "54a6b50395ccedca823a14536363877e8352711735d4918cbcb8ce92d1d8d5af"
   end
 
   depends_on "go" => :build

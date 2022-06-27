@@ -1,17 +1,17 @@
 class Librem < Formula
   desc "Toolkit library for real-time audio and video processing"
   homepage "https://github.com/baresip/rem"
-  url "https://github.com/baresip/rem/archive/refs/tags/v1.0.0.tar.gz"
-  sha256 "bcc91bb521fae183357fb422b00a3981477a22e99d3afe165c4ec50a6bbed9da"
+  url "https://github.com/baresip/rem/archive/refs/tags/v2.4.0.tar.gz"
+  sha256 "e9c4ebb63fe37dcf77638f280e619776d4e93884d9063084432f18bff2020cfe"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "632e4be4c8fb4a2706d926f10f1bdea97d216727c267edcaa06243df413d4479"
-    sha256 cellar: :any,                 arm64_big_sur:  "b1ed3438f5f9df958dce188f3ca00c7ae2c74171c96b221e4c744341be0a4102"
-    sha256 cellar: :any,                 monterey:       "b11acf9f97f836314277d3a8b19df66a4586ada58f45253e1c942d300696c604"
-    sha256 cellar: :any,                 big_sur:        "7a9f6baf6d099b4b2e044fa145d7bdceb185ee2b5f7f4cb35d4f9d266baa3e8c"
-    sha256 cellar: :any,                 catalina:       "31935ce4ff60c59a1c49c7f1c8b102258b48f3fbd0c4334a1b9b069380560efc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4278d958c1bd5ce1d8204610d742d53ea2a4cbd391d7ed1fe21d27574c55abeb"
+    sha256 cellar: :any,                 arm64_monterey: "adc166347b0d36bb87261367d7272b34f82e3d005963e7612fb5c01189cd2991"
+    sha256 cellar: :any,                 arm64_big_sur:  "5308edf36b5c93b02b438aea5b72cb1ffc763ed1fc0acc7d822f39bcb7ed08cf"
+    sha256 cellar: :any,                 monterey:       "875583f6011e284b28e136befc619592a05053fd5c622e58993fb1f476d2dd55"
+    sha256 cellar: :any,                 big_sur:        "3c9082aabf1909f264b6282018ec952ce7f388c1f026a504dd05235a71a99f95"
+    sha256 cellar: :any,                 catalina:       "a247fb6d0ae5458ee589f564e20b41604068d78730b815cfb3946d5412edd316"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "488f6d7dd6869b3d102c0ddbcd336c6675aa27128ecb906bbe56709dcee8ae7f"
   end
 
   depends_on "libre"

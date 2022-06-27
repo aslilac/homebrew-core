@@ -1,18 +1,17 @@
 class Libmatio < Formula
   desc "C library for reading and writing MATLAB MAT files"
   homepage "https://matio.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/matio/matio/1.5.21/matio-1.5.21.tar.gz"
-  sha256 "21809177e55839e7c94dada744ee55c1dea7d757ddaab89605776d50122fb065"
+  url "https://downloads.sourceforge.net/project/matio/matio/1.5.23/matio-1.5.23.tar.gz"
+  sha256 "9f91eae661df46ea53c311a1b2dcff72051095b023c612d7cbfc09406c9f4d6e"
   license "BSD-2-Clause"
-  revision 2
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "2543bb273ff8c2a4d36bd087a563c19bc99d7c709130544d5da7a8954b94c984"
-    sha256 cellar: :any,                 arm64_big_sur:  "83535d794eb32470b1272bc210afe19ba21b10f4549eaa61b98d4bc172a89048"
-    sha256 cellar: :any,                 monterey:       "fd77f8a1a2668e7fa341590738f31fa15729d18c0eb8d7348241843b380f2a8a"
-    sha256 cellar: :any,                 big_sur:        "4015116bdbe565d268904594816a5e1eca9e1fccc3a61da1eff8b1e8911cc1dd"
-    sha256 cellar: :any,                 catalina:       "fe8e1aecf04374a42029201cdd9d64da5554eb9548ff57b6bf96d4dc0ec79dac"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a1ce599ef49eb124309f42a69b3c179258e61b2a930ba0c8a3fd353171c7e40a"
+    sha256 cellar: :any,                 arm64_monterey: "2ebdabd8423bbaeaa00d7083a52b83ff3fe2f0bcd451c2ed6594a75e5344eaa0"
+    sha256 cellar: :any,                 arm64_big_sur:  "121e79cf19f53276b35be99b8f5ddf1922eac000a60005876d74039e63acf3c6"
+    sha256 cellar: :any,                 monterey:       "065fdfe8c7d13dd17f2082ec55c02d4aa445c391ce3eaff3b5ff987f5a1f3f68"
+    sha256 cellar: :any,                 big_sur:        "056c699084c0a29cf51cbc3a58cc5ae469501a27ccc7785773b260d0c2cbe09b"
+    sha256 cellar: :any,                 catalina:       "4a5fb729796b011d5ee47e924d6b9c10084803d436c6234011f499c07b5d664f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "90857721a7996319c0b57ed2c87bb7331f9c237a3b0a72a21d404493a83eca4a"
   end
 
   depends_on "hdf5"

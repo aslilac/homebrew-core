@@ -1,8 +1,8 @@
 class Datree < Formula
   desc "CLI tool to run policies against Kubernetes manifests YAML files or Helm charts"
   homepage "https://www.datree.io/"
-  url "https://github.com/datreeio/datree/archive/0.15.52.tar.gz"
-  sha256 "00f99cf86ef12333e168c685d405d3667c636761c4d9ca3752af3740e5e61831"
+  url "https://github.com/datreeio/datree/archive/1.5.19.tar.gz"
+  sha256 "00c78d6d44ac2e6c312d62310ef489489554185132cde2c6dbab79c181ffdd5e"
   license "Apache-2.0"
   head "https://github.com/datreeio/datree.git", branch: "main"
 
@@ -12,12 +12,12 @@ class Datree < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "46ed314ad55ba0bfe66857102095216d4b7c8201519b9ea0dbeb610f2be6432f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a7c31b7b52458f1ed6d724e69b258b758f7a5864fc182914e56d9d276dd6d099"
-    sha256 cellar: :any_skip_relocation, monterey:       "68eb4a94ef4ca97ee342c851da0942a7896b5b8236085c110602d62ffd226d9c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "89d4ec492dc3654c603f7c1f69533839cc5f09c091eb05d499df8a19f14cda55"
-    sha256 cellar: :any_skip_relocation, catalina:       "1963f21c02f3b97fa11cad29ca85d39afbae3bf603274e4cfdec0801eaca46d1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9fa6a58698bcfc8163f9bf9acef14c0b2c75cf020fa379d83cb822cabe91749b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "98d13db5b0d5adf551ff78fb7a97ff588eeb7134d535d98932fdad063d7504a7"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "92a89eef1e4f7a74772d5e49cce3a7b45b5c5dd71f9300ec7c7019a176e8eaaa"
+    sha256 cellar: :any_skip_relocation, monterey:       "1705e511c611555fd245ce95b2c062a56ea65b8a0c0f272840569cef174567e6"
+    sha256 cellar: :any_skip_relocation, big_sur:        "6357cb591a57a826ea28d093509614221d656e8f96a37952dc9fcb60d387c39a"
+    sha256 cellar: :any_skip_relocation, catalina:       "b899bc1ca5f4730b7cd98ee0411b9398e229a2568ae10abc91f8eb82152aac28"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bae6a315b81871865c3de7979a8b8cd650a3c00ca6c1da2bde7e17bf7343e080"
   end
 
   depends_on "go" => :build
@@ -42,8 +42,8 @@ class Datree < Formula
     EOS
 
     assert_match "k8s schema validation error: For field (root): Additional property apiversion is not allowed",
-      shell_output("#{bin}/datree test #{testpath}/invalidK8sSchema.yaml 2>&1", 2)
+      shell_output("#{bin}/datree test #{testpath}/invalidK8sSchema.yaml --no-record 2>&1", 2)
 
-    assert_equal "#{version}\n", shell_output("#{bin}/datree version")
+    assert_match "#{version}\n", shell_output("#{bin}/datree version")
   end
 end

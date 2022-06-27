@@ -2,19 +2,18 @@ class Openrct2 < Formula
   desc "Open source re-implementation of RollerCoaster Tycoon 2"
   homepage "https://openrct2.io/"
   url "https://github.com/OpenRCT2/OpenRCT2.git",
-      tag:      "v0.3.5.1",
-      revision: "61c67afc667bfee8a6c3b180e98e84e87f442550"
+      tag:      "v0.4.0",
+      revision: "c6302a1dae09e2539ed053390ca0dd1816448a14"
   license "GPL-3.0-only"
-  revision 2
   head "https://github.com/OpenRCT2/OpenRCT2.git", branch: "develop"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "fade49a67c3c4e6482c26920a22cce14584f3e113c4ff3bfb97b3c7ad75c53c4"
-    sha256 cellar: :any,                 arm64_big_sur:  "f7d54d7a4f15a2472532403a3dd90414d6a82c77494fadf3110208b0f04c34dc"
-    sha256 cellar: :any,                 monterey:       "a24dfca95a0553fb0aba91d3667d8f95b195b5ac3035183f6dbb52a333f28979"
-    sha256 cellar: :any,                 big_sur:        "8c7bee97db5f9455da1dedd0048b9ed24b0738e1975e8ea5baa6e2438e00e715"
-    sha256 cellar: :any,                 catalina:       "74e498408e5802c10e5dd776223011d08811b943aacfab11faff88a1d8bde7f4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1515ae1da051676328ae5bf59cf0d627677e5440e976c33b49a40fae3c7f7b97"
+    sha256 cellar: :any, arm64_monterey: "a2ee8367042840c57fa5d75a7251645b04a44367fd3b1c5a3d6080df09fb1bbf"
+    sha256 cellar: :any, arm64_big_sur:  "00d148141e96617fe0329c19758dbc9389548ef095085fa032e8b6f46f5865e5"
+    sha256 cellar: :any, monterey:       "0a201d49bb9c2470052dc7ad589d0b45f4398a8ecc3b685660795ebca3334955"
+    sha256 cellar: :any, big_sur:        "c2c92d7f274ad0e3b367ab44726890d0acd00cc6beecb4260c760d14f6f00a4d"
+    sha256 cellar: :any, catalina:       "9444c48070a07bcc412ce737a652cacc0cf79b8e12f382d7c2ff5be73eab81fe"
+    sha256               x86_64_linux:   "73b8a305ad9eb561d24d517f30fe996c2bfe81aca4a0d5384ca3e0da7b98fcf3"
   end
 
   depends_on "cmake" => :build
@@ -39,13 +38,13 @@ class Openrct2 < Formula
   fails_with gcc: "5" # C++17
 
   resource "title-sequences" do
-    url "https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2c/title-sequences.zip"
-    sha256 "5284333fa501270835b5f0cf420cb52155742335f5658d7889ea35d136b52517"
+    url "https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.0/title-sequences.zip"
+    sha256 "6e7c7b554717072bfc7acb96fd0101dc8e7f0ea0ea316367a05c2e92950c9029"
   end
 
   resource "objects" do
-    url "https://github.com/OpenRCT2/objects/archive/v1.2.2.tar.gz"
-    sha256 "f24ed11bc21473c3eee3be3fd0f776e542af408b3b408eb6c35f6115b1bed89d"
+    url "https://github.com/OpenRCT2/objects/archive/v1.2.7.tar.gz"
+    sha256 "ec9a4f862365477b24a9eea16159131b235e05330fa2becefa1a113b17e6bceb"
   end
 
   def install

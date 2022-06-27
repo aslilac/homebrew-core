@@ -1,18 +1,18 @@
 class Sdb < Formula
   desc "Ondisk/memory hashtable based on CDB"
-  homepage "https://github.com/radare/sdb"
-  url "https://github.com/radareorg/sdb/archive/1.8.6.tar.gz"
-  sha256 "0fbbbb577dec318d79cd110251a6a469460955dc49aa52b6f7796a6a7b478b00"
+  homepage "https://github.com/radareorg/sdb"
+  url "https://github.com/radareorg/sdb/archive/1.9.0.tar.gz"
+  sha256 "29c2dede43ad4eeecb330e0b0c6fbb332d8a72f7b183a9d946ed2603e0ae3720"
   license "MIT"
-  head "https://github.com/radare/sdb.git", branch: "master"
+  head "https://github.com/radareorg/sdb.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "be36bdcd1618af66b970c9065c53f4fd8decc8b1444a2ba50c64de87baf2e000"
-    sha256 cellar: :any,                 arm64_big_sur:  "f57086d47de992aed35787eb990c7e5cf9a678c45b61c004188156156623ce27"
-    sha256 cellar: :any,                 monterey:       "b9fad697dbb950e3b7cf84fa876a4557e56bbb94eea3b9a952184073db3de54f"
-    sha256 cellar: :any,                 big_sur:        "ce9d738ae013083d6993b255468964919b2b19c911c95a27a8c7eb13ed3eaa3a"
-    sha256 cellar: :any,                 catalina:       "dd9e453d898cc2c456fb5cd5ee943aa5a843c83381fea81b542cba014cad6886"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dcb88db1e47a0e12c96ecf7cb7486f20161e2a377c73e59118a2104dba943268"
+    sha256 cellar: :any,                 arm64_monterey: "c739b1aeabeca4a0e049b9b58c363795f64e0651d8818ad153ef194f91b59cd9"
+    sha256 cellar: :any,                 arm64_big_sur:  "d8992da63dedeb5d340ee3711205f0301c0b7b4914759817370da4aea1d4c04a"
+    sha256 cellar: :any,                 monterey:       "91da7b11e0fba02df72bc17219f27ef6edd68155a23febaa2b7738df21f7c5cb"
+    sha256 cellar: :any,                 big_sur:        "9ca357d124dfcdc4af70afcea661c0bd1b75577743a0e42c7c42e008dd013411"
+    sha256 cellar: :any,                 catalina:       "683ee06ffd042a64f8c109318465cf9402ad351cc8d5a282b7318005e2d59f11"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "35a3b67f282789c0ca1f18be9c44b47bb9d73d855df2dc12fd1b41a8e96cfb4d"
   end
 
   depends_on "pkg-config" => :build

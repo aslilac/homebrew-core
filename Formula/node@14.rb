@@ -1,8 +1,8 @@
 class NodeAT14 < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v14.19.1/node-v14.19.1.tar.xz"
-  sha256 "e1ae09dd861ab39af04483bb5c0fa54ddd82b6b15543be9a27ea6704a8ba9dd9"
+  url "https://nodejs.org/dist/v14.19.3/node-v14.19.3.tar.xz"
+  sha256 "5cf45b1f1aca77523acf36240c1d53a999279070a7711eabf23346f88b0cc994"
   license "MIT"
 
   livecheck do
@@ -11,18 +11,17 @@ class NodeAT14 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "b40b066d32d9fbb21a951706a57cdb849ef71bde1d3609f1fea8b9c0839b2948"
-    sha256 cellar: :any,                 arm64_big_sur:  "783321851bcd89037838653d3f93f9475e45b19cff5623bfd95236e92ce4cd9d"
-    sha256 cellar: :any,                 monterey:       "f26ed399312abf65e601b65f2691628b61416dc5029737b4ffeaa8aa7936206c"
-    sha256 cellar: :any,                 big_sur:        "ce8641bb1c3f21741bc9febf72c06eba4691f58ed82d0858775fab350d27a22e"
-    sha256 cellar: :any,                 catalina:       "ced3b35b9617887e2de6daaf433a4b2d0040c5d8a2a5a9542cacf8e7f74e7690"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b7ffb157896a7868e80add0dc0de015d8dc216dada3d0b9c5ac852536d779d3f"
+    sha256 cellar: :any,                 arm64_monterey: "3887b21bad6630db6cadbda77a28c4d426be9e9223584e54025876315ecfa3df"
+    sha256 cellar: :any,                 arm64_big_sur:  "7136a0a7dfe5c0ae2fe97bfd530cd2e649172f4887486d076a7ad283a56b1d7f"
+    sha256 cellar: :any,                 monterey:       "7552042ab27893957554b8eb38f204eb072527cb60f401b54530e3b774ba1b96"
+    sha256 cellar: :any,                 big_sur:        "03d428f146009b987141dd5dca7a763d250af5be7e87eab6a8fcf7faf78e92ce"
+    sha256 cellar: :any,                 catalina:       "66d2551f4f6bf33cbf26d2e6baf7de8bfc7b8176a2f663b2362bc6566be1b527"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d9655db65f68bfc49ed365cfc4201603dc229e972d5f9b88f07791b9e471b4e2"
   end
 
   keg_only :versioned_formula
 
   depends_on "pkg-config" => :build
-  depends_on "python@3.10" => :build
   depends_on "brotli"
   depends_on "c-ares"
   depends_on "icu4c"
@@ -30,9 +29,11 @@ class NodeAT14 < Formula
   depends_on "libuv"
   depends_on "openssl@1.1"
 
+  uses_from_macos "python"
   uses_from_macos "zlib"
 
   on_macos do
+    depends_on "python@3.10" => [:build, :test]
     depends_on "macos-term-size"
   end
 
@@ -91,8 +92,9 @@ class NodeAT14 < Formula
     output = shell_output("#{bin}/node -e 'console.log(new Intl.NumberFormat(\"de-DE\").format(1234.56))'").strip
     assert_equal "1.234,56", output
 
-    # make sure npm can find node
+    # make sure npm can find node and python
     ENV.prepend_path "PATH", opt_bin
+    ENV.prepend_path "PATH", Formula["python@3.10"].opt_libexec/"bin" if OS.mac?
     ENV.delete "NVM_NODEJS_ORG_MIRROR"
     assert_equal which("node"), opt_bin/"node"
     assert_predicate bin/"npm", :exist?, "npm must exist"

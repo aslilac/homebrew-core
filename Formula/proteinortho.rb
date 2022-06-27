@@ -1,17 +1,17 @@
 class Proteinortho < Formula
   desc "Detecting orthologous genes within different species"
   homepage "https://gitlab.com/paulklemm_PHD/proteinortho"
-  url "https://gitlab.com/paulklemm_PHD/proteinortho/-/archive/v6.0.33/proteinortho-v6.0.33.tar.gz"
-  sha256 "332f61eee4ea6f3e27b38e123bb78b5263627fb5a4fd3609502877d8c0af7373"
+  url "https://gitlab.com/paulklemm_PHD/proteinortho/-/archive/v6.1.0/proteinortho-v6.1.0.tar.gz"
+  sha256 "4c087cbfd91051136df808a679694ab2ada3c266c175b4187689f302e8ccf8ac"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "86d0a6bba939c19be78b655b7fe161e7c2aa51d5535db2b8918def494b70d6ee"
-    sha256 cellar: :any,                 arm64_big_sur:  "ae9faec3141c8ad3f91975208cfe2788bc83d3c80d33171269cb88495f6d457a"
-    sha256 cellar: :any,                 monterey:       "63d12ed4d29984b6bed15047c392fc7e2dad45df827a5631b0cd183725df092c"
-    sha256 cellar: :any,                 big_sur:        "8eef61bed20ff2035788c88088d4e15d3bc6e4f93526de5b4d3df8420a8a2d61"
-    sha256 cellar: :any,                 catalina:       "ab9b48a0acf47a57d7f5d92d1181d67a87b3fb57d5132900d45d666bfff570ac"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dc69849d15f173ed8145690fe9b1d525c20cbbcbb9d8e3c6110a689f3eaa5fea"
+    sha256 cellar: :any,                 arm64_monterey: "61d9ca433c614a5c4785b340b918533e5058bd521dbb7730442cb9d8724ccc33"
+    sha256 cellar: :any,                 arm64_big_sur:  "e27b32e5c4601009c33251b813dc1f062f391ea7e9065ccf90f85836f786dcdf"
+    sha256 cellar: :any,                 monterey:       "180ab82f443e1df126ebe112b8eb0b186bed2a1bdd264fb5c0debb95718ba35c"
+    sha256 cellar: :any,                 big_sur:        "ba3144f596ae203536ac9898305d2324f747faf64a6f54f64260e64e59670d90"
+    sha256 cellar: :any,                 catalina:       "7cdf1d14bf86e7c6160fb228abbe2fce11d4814c385d240810c1d0b14a24a297"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9cdc6240b097f209e3b06d0a5a17a75ece7960518ade778870b26813e7b21317"
   end
 
   depends_on "diamond"

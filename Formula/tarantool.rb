@@ -1,20 +1,24 @@
 class Tarantool < Formula
   desc "In-memory database and Lua application server"
   homepage "https://tarantool.org/"
-  url "https://download.tarantool.org/tarantool/2.8/src/tarantool-2.8.3.0.tar.gz"
-  sha256 "953614448f23f37370c49c7832dba05b66c3b507c7047674403e05dbdc96bda8"
+  url "https://download.tarantool.org/tarantool/src/tarantool-2.10.0.tar.gz"
+  sha256 "42bb5a714ddf788a89ba4b2062582aee16a2bc7b68c7c3b8c03d7a30be878e2b"
   license "BSD-2-Clause"
-  revision 1
   version_scheme 1
   head "https://github.com/tarantool/tarantool.git", branch: "master"
 
+  livecheck do
+    url :head
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "2201cc3dccb89d1a7010f95ac91cf8bee4ee840e4768a1d1237f0fc29111ebe8"
-    sha256 cellar: :any,                 arm64_big_sur:  "d2925273749d2ad3b8b84e7c826c21ff0d489d423272f7c6382a8b9eb8ec8721"
-    sha256                               monterey:       "3e03f9f4fa10545196030d3f326a4fbb955a3acb7d350d1a5fb7eb309d4b26df"
-    sha256                               big_sur:        "ae0ceb0855b4cb9f2b949db8b33c0193c483d891a61a184743087d1eb1f819e3"
-    sha256                               catalina:       "63a612ec1bea575da2a071d030c8affe185da07783e783fa5a032c9faaa2527a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "254600d5998f1efa808d84906af2016c92b822b99d5d722037825fa5a96989ea"
+    sha256 cellar: :any,                 arm64_monterey: "9646eb4c0ba4cb56912beca48eb1cd41ccd87dc6af6a4fff6f552e9395cf3db3"
+    sha256 cellar: :any,                 arm64_big_sur:  "661485d7a59dc82443aa73f49eab95917cda5a3ae5c8a98e8507f111e68d23f9"
+    sha256                               monterey:       "9c3fa160fedc241a7ee1b91c5d2af42db44073a04ce8336309c0cf22952c73a3"
+    sha256                               big_sur:        "a6c5f8710409d16108329ff31349f00725d5d351fbd90a80396284d950aecc79"
+    sha256                               catalina:       "23eef1dee80232dccb1bec7b317d181bcf8bfab49725f81f08ae739f1d71228c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e1f48d09daabaa7b163335b886617869516ad4a1e6d9bd87ee568b53df85dcfe"
   end
 
   depends_on "cmake" => :build

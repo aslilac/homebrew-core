@@ -1,9 +1,10 @@
 class Gdal < Formula
   desc "Geospatial Data Abstraction Library"
   homepage "https://www.gdal.org/"
-  url "https://download.osgeo.org/gdal/3.4.2/gdal-3.4.2.tar.xz"
-  sha256 "16baf03dfccf9e3f72bb2e15cd2d5b3f4be0437cdff8a785bceab0c7be557335"
+  url "http://download.osgeo.org/gdal/3.5.0/gdal-3.5.0.tar.xz"
+  sha256 "d49121e5348a51659807be4fb866aa840f8dbec4d1acba6d17fdefa72125bfc9"
   license "MIT"
+  revision 1
 
   livecheck do
     url "https://download.osgeo.org/gdal/CURRENT/"
@@ -11,16 +12,16 @@ class Gdal < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "d69db3a479cfa43e7a9b468a7d4a0dd515af95554fdddc65570203f1e4516d6c"
-    sha256 arm64_big_sur:  "9764254c68b41fadab6a27e2586303996a501e24b256e9078d6b28aa002c4c60"
-    sha256 monterey:       "25b695c16205fb572f7c640bfd740ee1f6c3df60cb3752fc205ed0e43a34e4b7"
-    sha256 big_sur:        "0efe30c85ddddb95ccf9a4d2a577794ce8cd8a0c4edde0cf7ccd71b317eea425"
-    sha256 catalina:       "0a63aeaf2995c1a8923ffb93f23606cb63d3bebedd5cc8c1c92b2c7dbeda91d5"
-    sha256 x86_64_linux:   "e904e8a89edc553e188190395f4a8515b3efb4000047a089476149a1b594431c"
+    sha256 arm64_monterey: "cd8b34859f854298e4211e67e517d7d14a6f4f807bb7f75a9c29177c8a03878d"
+    sha256 arm64_big_sur:  "236c205c291282494ecaaf51a2d22b6ef7ce003002aece826b5099a587b442dc"
+    sha256 monterey:       "f6d4688b2c83c974b8dec9713c8c400aad1877d5142644b53507121dc1c21d51"
+    sha256 big_sur:        "c3e47602148b1329dee4069ba91f508b39d1e00fdded11ab99ce933cf0962cb2"
+    sha256 catalina:       "b89f5244d77fff50e2c970da306eecf74db65122ca39573523db9ab7208fe642"
+    sha256 x86_64_linux:   "3ce2db1ac2018c4b7b86fc7fa26e8cd5178bb60782adca742c512e2029a37c0c"
   end
 
   head do
-    url "https://github.com/OSGeo/gdal.git"
+    url "https://github.com/OSGeo/gdal.git", branch: "master"
     depends_on "doxygen" => :build
   end
 
@@ -46,7 +47,7 @@ class Gdal < Formula
   depends_on "openjpeg"
   depends_on "pcre2"
   depends_on "poppler-qt5"
-  depends_on "proj@7"
+  depends_on "proj"
   depends_on "python@3.9"
   depends_on "sqlite"
   depends_on "unixodbc"
@@ -96,7 +97,7 @@ class Gdal < Formula
       "--with-spatialite=#{Formula["libspatialite"].opt_prefix}",
       "--with-pcre2=yes",
       "--with-sqlite3=#{Formula["sqlite"].opt_prefix}",
-      "--with-proj=#{Formula["proj@7"].opt_prefix}",
+      "--with-proj=#{Formula["proj"].opt_prefix}",
       "--with-zstd=#{Formula["zstd"].opt_prefix}",
       "--with-liblzma=yes",
       "--with-cfitsio=#{Formula["cfitsio"].opt_prefix}",

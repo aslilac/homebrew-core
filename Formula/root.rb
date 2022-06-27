@@ -1,37 +1,27 @@
 class Root < Formula
   desc "Object oriented framework for large scale data analysis"
   homepage "https://root.cern.ch/"
+  url "https://root.cern.ch/download/root_v6.26.04.source.tar.gz"
+  sha256 "a271cf82782d6ed2c87ea5eef6681803f2e69e17b3036df9d863636e9358421e"
   license "LGPL-2.1-or-later"
+  revision 1
   head "https://github.com/root-project/root.git", branch: "master"
 
-  stable do
-    url "https://root.cern.ch/download/root_v6.26.00.source.tar.gz"
-    sha256 "5fb9be71fdf0c0b5e5951f89c2f03fcb5e74291d043f6240fb86f5ca977d4b31"
-
-    # ROOT 6.26.00 doesn't support installation in directories starting with a
-    # dot (.linuxbrew, for example) - two commit merge
-    patch do
-      url "https://github.com/root-project/root/commit/6802514256e948582c26ad938c2c34f22b2d1bc3.patch?full_index=1"
-      sha256 "7988fa9e842c821c9be681c0e783dc299ecc74805750a4323e2921da26e7fc5b"
-    end
-    patch do
-      url "https://github.com/root-project/root/commit/efc67e432206771fe934ad7763529cf3621696a1.patch?full_index=1"
-      sha256 "b3ca4e06abd9c69315433717ae3a75677d8175cb53b8731c93f655634df1e22c"
-    end
-  end
-
   livecheck do
-    url "https://root.cern.ch/download/"
-    regex(/href=.*?root[._-]v?(\d+(?:\.\d*[02468])+)\.source\.t/i)
+    url "https://root.cern/install/all_releases/"
+    regex(%r{Release\s+v?(\d+(?:[./]\d*[02468])+)[ >]}i)
+    strategy :page_match do |page, regex|
+      page.scan(regex).map { |match| match[0].tr("/", ".") }
+    end
   end
 
   bottle do
-    sha256 arm64_monterey: "50ea1ca18152fb8588c8b216953f5efea00b20526891a8eebefb72c7af8273d6"
-    sha256 arm64_big_sur:  "49e6c8e34d1af857ad63d7a3cf578560c10ab94aa93925e3b0c929e9de8b4bbe"
-    sha256 monterey:       "61ee0c42ee69f490cfd4b27b7afacdeab356a132902fa5608f182dbd15d56449"
-    sha256 big_sur:        "5f259765fecc033c89064cb18d651a4769f58da8bfc4b88d78a116d0557664ac"
-    sha256 catalina:       "66024796ddf23cc069083358635018f73e000c6b25a03e9dc6eb48c2ab117295"
-    sha256 x86_64_linux:   "49217866650958d6e4d00f8d893d8a5a5edab74f31909af25e81794325d057a2"
+    sha256 arm64_monterey: "40053cf5847fb77b9fa736d251c8e5c6b74941e924fe841f682533af9f3d391a"
+    sha256 arm64_big_sur:  "4a95cafcf0b6d231cee3a2a4c112d5e8d2818aff9a53cebbbdce929dcae57927"
+    sha256 monterey:       "22a22ca374e01af8d7dfc6d93915c031fcab047c831781a5326bff086b49e3ca"
+    sha256 big_sur:        "9f5d469b5c386d02d43b7fb5a1c544c1fd6939b9c022930025cb1c6835002069"
+    sha256 catalina:       "6de35167500657e1a193088a9ace296be68a639e17b046dedc929acf75e556cd"
+    sha256 x86_64_linux:   "ca415127a13260d08df53206780a66758d217aa6e2aafda84ec80d8c0fa8fdbe"
   end
 
   depends_on "cmake" => :build
@@ -45,6 +35,7 @@ class Root < Formula
   depends_on "graphviz"
   depends_on "gsl"
   depends_on "lz4"
+  depends_on "mysql-client"
   depends_on "numpy" # for tmva
   depends_on "openblas"
   depends_on "openssl@1.1"
@@ -57,6 +48,7 @@ class Root < Formula
   depends_on "xz" # for LZMA
   depends_on "zstd"
 
+  uses_from_macos "libxcrypt"
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
 
@@ -97,7 +89,7 @@ class Root < Formula
       -Dimt=ON
       -Dmathmore=ON
       -Dminuit2=ON
-      -Dmysql=OFF
+      -Dmysql=ON
       -Dpgsql=OFF
       -Dpyroot=ON
       -Droofit=ON

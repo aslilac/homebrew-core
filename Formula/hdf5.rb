@@ -1,9 +1,10 @@
 class Hdf5 < Formula
   desc "File format designed to store large amounts of data"
   homepage "https://www.hdfgroup.org/HDF5"
-  url "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.13/hdf5-1.13.0/src/hdf5-1.13.0.tar.bz2"
-  sha256 "1826e198df8dac679f0d3dc703aba02af4c614fd6b7ec936cf4a55e6aa0646ec"
+  url "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.2/src/hdf5-1.12.2.tar.bz2"
+  sha256 "1a88bbe36213a2cea0c8397201a459643e7155c9dc91e062675b3fb07ee38afe"
   license "BSD-3-Clause"
+  version_scheme 1
 
   # This regex isn't matching filenames within href attributes (as we normally
   # do on HTML pages) because this page uses JavaScript to handle the download
@@ -14,19 +15,19 @@ class Hdf5 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "59fda0940bc858fd82262243a122b81031be566ccb7250b00e236945c680360d"
-    sha256 cellar: :any,                 arm64_big_sur:  "6d87fb1aa186b5bb6676ab90747f585c3a2e35f77b979d39da2bfe724461ec56"
-    sha256 cellar: :any,                 monterey:       "00998257c99a4e0c04f8a2242b46203557a4adc9b291b2adf6d48b3252e29a09"
-    sha256 cellar: :any,                 big_sur:        "1cc618692bc853a40603ebbb3701d1e8b9402ad914c703880cc61e62f9b23d64"
-    sha256 cellar: :any,                 catalina:       "47d2b0ab27665ba57d69b177d0f6bbc49b4af2d80d420707c63c0d086055c6fb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8f8f4c1b2ff5a9e5bd5e9842b822e8263206559d39fa82da947504bbc791436c"
+    sha256 cellar: :any,                 arm64_monterey: "ef569e1536a1ee2051380aed7d89284a1baace5b1c0b66280e7905fa852a7992"
+    sha256 cellar: :any,                 arm64_big_sur:  "7ffeb068662160d8f844154198a257f0f545c1972b76f16cf8fdcbfc3c44e4f4"
+    sha256 cellar: :any,                 monterey:       "42715c0074ee5c1afc370a70bb669ed01a384b40f26a2b97661cb94e0e6d8702"
+    sha256 cellar: :any,                 big_sur:        "75b6c8d5fd1c1e296e31b6a41d2c3c0e0b1de08632d4b6bce6b6b50adb25c6f3"
+    sha256 cellar: :any,                 catalina:       "fcd9f1dfc408887eb131a56c2fa9963f64edf756f620d58e2d8ad071f29eb9f1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ce1e43594ac459f4eaaafe9a979d7109d1003f613efc22d5e0571a93ce477a1a"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "gcc" # for gfortran
-  depends_on "szip"
+  depends_on "libaec"
 
   uses_from_macos "zlib"
 
@@ -34,31 +35,31 @@ class Hdf5 < Formula
 
   def install
     inreplace %w[c++/src/h5c++.in fortran/src/h5fc.in bin/h5cc.in],
-      "${libdir}/libhdf5.settings",
-      "#{pkgshare}/libhdf5.settings"
+              "${libdir}/libhdf5.settings",
+              "#{pkgshare}/libhdf5.settings"
 
     inreplace "src/Makefile.am",
               "settingsdir=$(libdir)",
               "settingsdir=#{pkgshare}"
 
-    system "autoreconf", "-fiv"
+    system "autoreconf", "--force", "--install", "--verbose"
 
     args = %W[
       --disable-dependency-tracking
       --disable-silent-rules
-      --prefix=#{prefix}
-      --with-szlib=#{Formula["szip"].opt_prefix}
       --enable-build-mode=production
       --enable-fortran
       --enable-cxx
+      --prefix=#{prefix}
+      --with-szlib=#{Formula["libaec"].opt_prefix}
     ]
     args << "--with-zlib=#{Formula["zlib"].opt_prefix}" if OS.linux?
 
     system "./configure", *args
 
     # Avoid shims in settings file
+    inreplace "src/libhdf5.settings", Superenv.shims_path/ENV.cxx, ENV.cxx
     inreplace "src/libhdf5.settings", Superenv.shims_path/ENV.cc, ENV.cc
-    inreplace "src/libhdf5.settings", Superenv.shims_path/ENV.cxx, ENV.cxx if OS.linux?
 
     system "make", "install"
   end

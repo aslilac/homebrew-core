@@ -1,18 +1,18 @@
 class Statix < Formula
   desc "Lints and suggestions for the nix programming language"
   homepage "https://github.com/nerdypepper/statix"
-  url "https://github.com/nerdypepper/statix/archive/v0.5.4.tar.gz"
-  sha256 "c237dc526ce24fcd10c21c216c22d663b1d71604e8d058a133a172551ffbbd9c"
+  url "https://github.com/nerdypepper/statix/archive/v0.5.6.tar.gz"
+  sha256 "ed4e05c96541372d917691797674bacc1759d6a1c2d621fef5db650dfa34aea7"
   license "MIT"
   head "https://github.com/nerdypepper/statix.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7694283840360efe8f9395e20eaa9a03b1ea2fc2290a9b3eed0297bcc492c65e"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cfa50bbe6bbc726caa17290743421469cd3a0e4222f25ad1b03bac98fe6884f9"
-    sha256 cellar: :any_skip_relocation, monterey:       "23dfe965149c4ade1a3c2d45fbeb85b2824bedceba1454b96f1b2bf830d19100"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9fe82293d466ffc89da2c651ab7a0aa8db1082f7e67b6a262f812126f991252c"
-    sha256 cellar: :any_skip_relocation, catalina:       "2af9fd448cf7c427c73a281a220da1010982e546403ab6cc48237107c9a2d79e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b14392df082b6e879fdc95f2fe4d47eef10c520968dd330fdf9865df61911847"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4f2725bb833bbd7d01c0e6490704561de8b2f60ad6b7301e04df541876896611"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f959d28ba6724738ba67cb0e78a2192a1f74247748a8d1405032855f892e2746"
+    sha256 cellar: :any_skip_relocation, monterey:       "0551ac6150f1cb190d00e0c4ba2177724165a544b44ac421746e576ec5028dd8"
+    sha256 cellar: :any_skip_relocation, big_sur:        "706de39d4b5ff85977656949900fe66cdee35fa0042abcca16b7324d12abf3d6"
+    sha256 cellar: :any_skip_relocation, catalina:       "5a48aac0ccd1981df7a42ff682155457a54d419fb40b6cdb5f05557be1d75424"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1b27c405541460dcdaa4297e88e9fbf3c43581b3188a54b9e788d1350a406d93"
   end
 
   depends_on "rust" => :build

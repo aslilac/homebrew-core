@@ -1,10 +1,10 @@
 class Node < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v17.8.0/node-v17.8.0.tar.xz"
-  sha256 "7981144faf674292eff7e075f640a7084ebd927be11d1af78ff76741b6364e4b"
+  url "https://nodejs.org/dist/v18.4.0/node-v18.4.0.tar.xz"
+  sha256 "94d6f19a970361f8c8ad17450604095389f51ca6a00dcde59c21f373e95abbb5"
   license "MIT"
-  head "https://github.com/nodejs/node.git", branch: "master"
+  head "https://github.com/nodejs/node.git", branch: "main"
 
   livecheck do
     url "https://nodejs.org/dist/"
@@ -12,16 +12,16 @@ class Node < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "394470305ca6da985cd29995f2bdbd3cfd4110683b094138af3f15ee5088a3f7"
-    sha256 cellar: :any,                 arm64_big_sur:  "5b746d1c2b660747750d9dee6dc96bdbbbc9bf8c40477ad21f5efb5303710edd"
-    sha256 cellar: :any,                 monterey:       "39d39e0ebe45654a49de673e19e65b837e0f44851329ad5171b8a7f5cefbac72"
-    sha256 cellar: :any,                 big_sur:        "6e6ec3da23f3980aed2a65fc8b56c0065e4e0fbf4817c0ac31275359d6ddc5cb"
-    sha256 cellar: :any,                 catalina:       "334ee091ff3df3d8ddc2c74aceebfcf983e6437c33c33e8f300dc29fb764f2d5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "124454186ae9c17a8e2baf7733bb4e3a139ba0987d34eddf2d43c86afd4b2d59"
+    sha256 cellar: :any,                 arm64_monterey: "96ef9c260e55360894430fefd48a57d6abc40e2513359194dae6f879634b9c66"
+    sha256 cellar: :any,                 arm64_big_sur:  "8da6f648ea8468eda6e12af87eaaf3a03937e5a7520d561af5144f158a3cb258"
+    sha256 cellar: :any,                 monterey:       "5be17d68e419e48434045d5e0f5b1d6838b8500a70158fe1708d176b3812ac3e"
+    sha256 cellar: :any,                 big_sur:        "c30fde78d79c50b6c7b22be1944747095774cfa584982d22d52e822ea8294438"
+    sha256 cellar: :any,                 catalina:       "80ca3fb0268026ab407fc9d0acb1feb94d842aafdccc5c556dc7f189d9a452eb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9d91b410139f64c886d58fb4302bcfe54b5a2b564adc924479bf51db0d474360"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
   depends_on "brotli"
   depends_on "c-ares"
   depends_on "icu4c"
@@ -52,8 +52,8 @@ class Node < Formula
   # We track major/minor from upstream Node releases.
   # We will accept *important* npm patch releases when necessary.
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-8.5.5.tgz"
-    sha256 "904faa2d36ff2e0db55e9912e33742d43510bac9b40b27c0a2ceb225ffc57566"
+    url "https://registry.npmjs.org/npm/-/npm-8.12.1.tgz"
+    sha256 "0046af28aaad61275927c3a66bace3e06e32b3d1d8a4be4cc2187e93571f4a37"
   end
 
   def install
@@ -61,7 +61,7 @@ class Node < Formula
     ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1100)
 
     # make sure subprocesses spawned by make are using our Python 3
-    ENV["PYTHON"] = Formula["python@3.9"].opt_bin/"python3"
+    ENV["PYTHON"] = which("python3")
 
     # Never install the bundled "npm", always prefer our
     # installation from tarball for better packaging control.

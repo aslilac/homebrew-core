@@ -1,16 +1,16 @@
 class Derby < Formula
   desc "Apache Derby is an embedded relational database running on JVM"
   homepage "https://db.apache.org/derby/"
-  url "https://www.apache.org/dyn/closer.lua?path=db/derby/db-derby-10.15.2.0/db-derby-10.15.2.0-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/db/derby/db-derby-10.15.2.0/db-derby-10.15.2.0-bin.tar.gz"
-  sha256 "ac51246a2d9eef70cecd6562075b30aa9953f622cbd2cd3551bc3d239dc6f02a"
+  url "https://www.apache.org/dyn/closer.lua?path=db/derby/db-derby-10.16.1.1/db-derby-10.16.1.1-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/db/derby/db-derby-10.16.1.1/db-derby-10.16.1.1-bin.tar.gz"
+  sha256 "37aef8dca42061d5867afb2009c8d7a80e68c16e56aecaf088f3e30e470d9ef6"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "8d519c0911344bd9a2fe8848778602f606a6e108cecdb41c53b5193b02ca1d8f"
+    sha256 cellar: :any_skip_relocation, all: "de4f510a364389097c3be710ab140928daff7078ac8d7d2757c42d20be07cf2e"
   end
 
-  depends_on "openjdk"
+  depends_on "openjdk@17"
 
   def install
     rm_rf Dir["bin/*.bat"]
@@ -18,7 +18,7 @@ class Derby < Formula
                        KEYS docs javadoc demo]
     bin.install Dir["bin/*"]
     bin.env_script_all_files libexec/"bin",
-                             JAVA_HOME:     Formula["openjdk"].opt_prefix,
+                             JAVA_HOME:     Language::Java.overridable_java_home_env("17")[:JAVA_HOME],
                              DERBY_INSTALL: libexec,
                              DERBY_HOME:    libexec
   end

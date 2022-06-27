@@ -1,8 +1,8 @@
 class Libomp < Formula
   desc "LLVM's OpenMP runtime library"
   homepage "https://openmp.llvm.org/"
-  url "https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.1/openmp-13.0.1.src.tar.xz"
-  sha256 "6b79261371616c31fea18cd3ee1797c79ee38bcaf8417676d4fa366a24c96b4f"
+  url "https://github.com/llvm/llvm-project/releases/download/llvmorg-14.0.6/openmp-14.0.6.src.tar.xz"
+  sha256 "4f731ff202add030d9d68d4c6daabd91d3aeed9812e6a5b4968815cfdff0eb1f"
   license "MIT"
 
   livecheck do
@@ -11,12 +11,12 @@ class Libomp < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "c56a6e4de05ecc20e307afe3a04502bd8245d78118d8d8431ecf321f3ad6bcc4"
-    sha256 cellar: :any,                 arm64_big_sur:  "ad8604a13319a9959ce6a4adc769b114a78d7c2cb81e08116e499310d1ba518e"
-    sha256 cellar: :any,                 monterey:       "c751c4d5205f057c553ac87e132a8eac004e864140b495ef72cb6ecbdfd627a6"
-    sha256 cellar: :any,                 big_sur:        "4a4c9a2eecb72ee98bd8510c98d8e0318e63e1400758399ccb5bc1474d34ba68"
-    sha256 cellar: :any,                 catalina:       "ea04abaec05a603b3c76f33be974659a6a4cc58bd5a59fb7a1112ceafe2fe663"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7daf56ed8b602f30782e77645f7fa3d4eb473e9f82f3da0baf58f9346c2211a2"
+    sha256 cellar: :any,                 arm64_monterey: "b36b1393289e7d98fc03425b6c23a63c4f5e9290ecf0922d45e6fde2973ba8fb"
+    sha256 cellar: :any,                 arm64_big_sur:  "f00a5f352167b2fd68ad25b1959ef66a346023c6dbeb50892b386381d7ebe183"
+    sha256 cellar: :any,                 monterey:       "a423e0bc90a9d0f0feff08eb197768287ba4722b88d4624c2d8306e443ff6fdb"
+    sha256 cellar: :any,                 big_sur:        "46e5838f0061cfe1901c485987fc5649464cfa3b2150f2ac54dd5e61eb3342a4"
+    sha256 cellar: :any,                 catalina:       "63cdbb3a70c4b85a6a92a55c8ab2384ded244d37568cd769409dee00a14b581d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "470c1338f8c1bc8ef1a41e86bb9beddcff9c353947a2073b2c2b4f584db9bd20"
   end
 
   depends_on "cmake" => :build
@@ -32,10 +32,15 @@ class Libomp < Formula
     args = ["-DLIBOMP_INSTALL_ALIASES=OFF"]
     args << "-DOPENMP_ENABLE_LIBOMPTARGET=OFF" if OS.linux?
 
-    system "cmake", ".", *std_cmake_args, *args
-    system "make", "install"
-    system "cmake", ".", "-DLIBOMP_ENABLE_SHARED=OFF", *std_cmake_args, *args
-    system "make", "install"
+    system "cmake", "-S", "openmp-#{version}.src", "-B", "build/shared", *std_cmake_args, *args
+    system "cmake", "--build", "build/shared"
+    system "cmake", "--install", "build/shared"
+
+    system "cmake", "-S", "openmp-#{version}.src", "-B", "build/static",
+                    "-DLIBOMP_ENABLE_SHARED=OFF",
+                    *std_cmake_args, *args
+    system "cmake", "--build", "build/static"
+    system "cmake", "--install", "build/static"
   end
 
   test do

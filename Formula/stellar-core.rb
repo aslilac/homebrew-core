@@ -2,18 +2,18 @@ class StellarCore < Formula
   desc "Backbone of the Stellar (XLM) network"
   homepage "https://www.stellar.org/"
   url "https://github.com/stellar/stellar-core.git",
-      tag:      "v18.4.0",
-      revision: "13ef7c0f3ae85306ddb8633702c649c8f6ee94bb"
+      tag:      "v19.1.0",
+      revision: "e801fd93b2757bebb18ae8b4550afba444d225af"
   license "Apache-2.0"
   head "https://github.com/stellar/stellar-core.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "0d345d8e571beb4937082694c062a553e9fb0bddbf5cc79a3c5ff8661938a6eb"
-    sha256 cellar: :any,                 arm64_big_sur:  "665e205c4d9c4ba444ed43f94d8ccc5f898becbd29e2068fbae9c0f52664e6eb"
-    sha256 cellar: :any,                 monterey:       "92bd2a6c61961089a8308ce68d23cef5288e8ca86e9a73e62c53c344f3983ab1"
-    sha256 cellar: :any,                 big_sur:        "1e01e46e0d0ddd087caafa140a1a738b38ba0ca7271c7443a999f5edc659acb2"
-    sha256 cellar: :any,                 catalina:       "f4b8f02dca775eaf9dded2504d62f72933ff5fcef8875b2a90ae81698c2323ad"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d6cc582b0bb8a2636bb071bfaba8abe0ae0f7536f9459d07069364befff4f5ad"
+    sha256 cellar: :any,                 arm64_monterey: "c18a862a439f80897d2b3c34783cee9994fe1c2fc8c3632b276a3a399ccc6db3"
+    sha256 cellar: :any,                 arm64_big_sur:  "59c1c608da2a26ad6552caf23ba92797d748a91b8e9641d820732bd407731c79"
+    sha256 cellar: :any,                 monterey:       "249f9213f8921277ff6cb3d5e135dfb478187ed2163f53e07aa1ed62e3d101f7"
+    sha256 cellar: :any,                 big_sur:        "6539c8222657db288d71c18f9cac871192b62f5fde9a01bfd4eff63ca19489e8"
+    sha256 cellar: :any,                 catalina:       "0009b7fcc0f13e436b90263a40a1c3e699c9a3a3b1ad21f3ad38d2f905dd31e2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e21653c184658c398754103254d7fa0841693601b6d560daf95ef6a514dd361c"
   end
 
   depends_on "autoconf" => :build
@@ -39,14 +39,6 @@ class StellarCore < Formula
   fails_with :gcc do
     version "7"
     cause "Requires C++17 filesystem"
-  end
-
-  # Fix GCC error: xdrpp/marshal.cc:24:59: error: 'size' is not a constant expression.
-  # Remove when release has updated `xdrpp` submodule.
-  patch do
-    url "https://github.com/xdrpp/xdrpp/commit/b4979a55fe19b1fd6b716f6bd2400d519aced435.patch?full_index=1"
-    sha256 "5c74c40b0e412c80d994cec28e9d0c2d92d127bc5b9f8173fd525d2812513073"
-    directory "lib/xdrpp"
   end
 
   def install

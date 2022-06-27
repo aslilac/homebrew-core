@@ -1,17 +1,17 @@
 class Inih < Formula
   desc "Simple .INI file parser in C"
   homepage "https://github.com/benhoyt/inih"
-  url "https://github.com/benhoyt/inih/archive/refs/tags/r53.tar.gz"
-  sha256 "01b0366fdfdf6363efc070c2f856f1afa33e7a6546548bada5456ad94a516241"
+  url "https://github.com/benhoyt/inih/archive/refs/tags/r55.tar.gz"
+  sha256 "ba55f8ae2a8caf0653f30f48567241e14ea916acfc13481f502d8a9c8f507f68"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "c4427517fd0fd9ee58cef1bdaee10c99abf83522cc3b3c0aa750d20d6080b742"
-    sha256 cellar: :any,                 arm64_big_sur:  "b590c77d00e4d93ada33935c04f976fea1aa736c85cff378cc5180eaf881f485"
-    sha256 cellar: :any,                 monterey:       "92fdccdc79ffd515d9a7d038273b54d68d67e818e5d5eb0fdf6373104432e7fe"
-    sha256 cellar: :any,                 big_sur:        "695ae960d4c26d0b11e87227319c9e17a9bc5882e169d3d006d13b391f6d821b"
-    sha256 cellar: :any,                 catalina:       "e99fa791a1127ab1c205a19176be14e0fb5e7709d0f44525e6a15c30ce639da9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6e6e3860a48e514660ca4bde2724a5b3275f246eec1a25309c0cedfe44875aa6"
+    sha256 cellar: :any,                 arm64_monterey: "5ebb6e242ad1b3edf6960c4650db959df095a1d7e4047ab0bfa6747d6fd1f0fc"
+    sha256 cellar: :any,                 arm64_big_sur:  "c0f1ba13977cacda5b6e4a028d22e249e479fc295aba5ed7de36d14ebbcc5a3c"
+    sha256 cellar: :any,                 monterey:       "0c9f810156a2ffd617512a53082db6e21c47c91d9185485de1e384838f9d376d"
+    sha256 cellar: :any,                 big_sur:        "71b1efdf3603ab0cc218840f7ffd0678fa4fdf6187c92b3dbeb8fbba41484d3a"
+    sha256 cellar: :any,                 catalina:       "e7d70a5291a18636ed73c3226f260069a63b09f77b2282d6a085a2048d310cd9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "071eac9277f03b4c092f5b766fe38b6448fd50104bec4399b3358ba5759ea31c"
   end
 
   depends_on "meson" => :build

@@ -1,17 +1,17 @@
 class Skopeo < Formula
   desc "Work with remote images registries"
   homepage "https://github.com/containers/skopeo"
-  url "https://github.com/containers/skopeo/archive/v1.6.1.tar.gz"
-  sha256 "304016ec4eb802bf1e1b350854db50bdc99a93dcbcc71f9d531dbb916dc146f3"
+  url "https://github.com/containers/skopeo/archive/v1.8.0.tar.gz"
+  sha256 "287cd989aba76691bf028b4eb3fccd012abc0cab7556a7d11aebac62c4d01342"
   license "Apache-2.0"
 
   bottle do
-    sha256 arm64_monterey: "ad561076bf6ca10ad97ebd91a1159abcbae4c2a71c3e6914c7cd0f2de71efe6b"
-    sha256 arm64_big_sur:  "6dc9f207905931482178d7be433c873bf51159512b1717297873bce7b74b9f4e"
-    sha256 monterey:       "636b4ac8d96a380d4e4297dfea339a3bcb8afb9ada68ee1ce590b44b8b881c45"
-    sha256 big_sur:        "857d37750e565781bcf2a90e0d955107d41b11ccfa1e51661d70a63d75a1b396"
-    sha256 catalina:       "d1b97fd4e6e111462f1cdd40bb2e66c7e194b4cabb7148347d2aec9d21a32f32"
-    sha256 x86_64_linux:   "e1009bc3dd218b1b2da1f657925f95e3af829ccc8d97d80a3f8921822ac54e9c"
+    sha256 arm64_monterey: "c71c157090f9d45b441920b4c82839eb2db70db546d2e46c29808306d2e5467f"
+    sha256 arm64_big_sur:  "f1b1b22a30874f2f7f733a34cc6daca67a6e70d2f59ca059b3c558078aa545ae"
+    sha256 monterey:       "e64d6e03d2fd39d2238a2565a1e4c645c588fb6f56fc99418a52d13c08e04715"
+    sha256 big_sur:        "3180d507c7587131156a2a358de04ae062e0a4ce13923e35d7f6999ed9638690"
+    sha256 catalina:       "26207c8814a7740eb080a9da484ec316d24b37032003e333dd94cd53913eec37"
+    sha256 x86_64_linux:   "87c925b150e9c974c706b20c4c31fc983a76fc00051537b056d8d4b229d9924e"
   end
 
   depends_on "go" => :build

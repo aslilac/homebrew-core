@@ -1,18 +1,18 @@
 class Watchman < Formula
   desc "Watch files and take action when they change"
   homepage "https://github.com/facebook/watchman"
-  url "https://github.com/facebook/watchman/archive/v2022.03.21.00.tar.gz"
-  sha256 "afb508fcea2267448337cfcd408c171beb094555ea0b158cb568230b947cd77d"
+  url "https://github.com/facebook/watchman/archive/v2022.06.20.00.tar.gz"
+  sha256 "e6bc49a4d0aa067ab7374096f472ccb227561d5121bdb055c7eb1b8040f84ca6"
   license "MIT"
   head "https://github.com/facebook/watchman.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "3c8b8dbe975e557770929f5e32b439667ff7c68f8eea137386d7cce072d62c55"
-    sha256 cellar: :any, arm64_big_sur:  "c48a8832148bd9797e105ce208f9db6140945082b4f3dbd756f69ca4f740117e"
-    sha256 cellar: :any, monterey:       "e0a225aec7ca3047702c377f58ba95fef92a16d066401f717537ebde2935fcfa"
-    sha256 cellar: :any, big_sur:        "03272e2bb96d390c18e18d850cc47d0065441f387854221aebd2f2e3776eb695"
-    sha256 cellar: :any, catalina:       "c0dce07b80e85c68ef71e4f5e5032de98e7f71a494edc87a15cc530c80fe0dbe"
-    sha256               x86_64_linux:   "a6f69dbcbac797455b6c193e61a9d2c5ae9c7ff351a00400bd86c4bbb6d4d6c8"
+    sha256 cellar: :any, arm64_monterey: "36d66dae56c97801b7cc085634bbb4c18a21263ff4c06c49402ef17316409f54"
+    sha256 cellar: :any, arm64_big_sur:  "b368369cac3ad73256b2380cec14b23b98d13e741e752b7c669f08f398f2c652"
+    sha256 cellar: :any, monterey:       "68a6e4a9bd74f41c826fe2ec82787eb7b88b3a4610229ee1c6124b49fe16528f"
+    sha256 cellar: :any, big_sur:        "427f0702b660c316d8bec7d0500e7bf85efd69482e5e4280d711a7bb1c3c81d2"
+    sha256 cellar: :any, catalina:       "8d299931fe932846a2f77cf42c6cfa7d5765ccb95915771a3f9060736b54b722"
+    sha256               x86_64_linux:   "157c307b82e1a497345bc51f0456428fb258b6f79a45ec7efbee11cd7e5d0b77"
   end
 
   # https://github.com/facebook/watchman/issues/963

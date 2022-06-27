@@ -1,17 +1,17 @@
 class CiliumCli < Formula
   desc "CLI to install, manage & troubleshoot Kubernetes clusters running Cilium"
   homepage "https://cilium.io"
-  url "https://github.com/cilium/cilium-cli/archive/refs/tags/v0.10.4.tar.gz"
-  sha256 "2ba8158450f145fffd9f1a13bd9c3a6379671d68fa1a69fdac610c3f6cdf95bd"
+  url "https://github.com/cilium/cilium-cli/archive/refs/tags/v0.11.10.tar.gz"
+  sha256 "c0cfaa3c2cb17ba085faf4f07176f0a6cea639f0f5e64ff1c5e89ceccc79cf9c"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "01fc397fefe0872b656444ac5da939e02e4cf0cf112ea031b1a09ab400915513"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ede4863c4289f9d5bdbc10e5873a7a697e40beaf714c9f8547137be8275dcb8b"
-    sha256 cellar: :any_skip_relocation, monterey:       "09d097b4d8dfb9cbf9f04eea04cfdb43fddabbb6812da461ca5e1d3a967c8242"
-    sha256 cellar: :any_skip_relocation, big_sur:        "28075de7a74a3c01d0563f6f0e588bf92c106e1fc219d47e6e6c957340201c40"
-    sha256 cellar: :any_skip_relocation, catalina:       "4e39bd20e975410291cad39a6e4a5fc41af5f62d441f41dc59643ac8c0e1f4c2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "002639de66b3a04bb56cf96f39465a57755ea59a94b4cf79df630ff5cbcdb00a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "86c547535102c36b175e8de6c6cc21c1743a878ba77bea35e87454a075659946"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b9693ef5f24322d96d25bcd4981c651d679903f3f3488bf84ebc690cec867210"
+    sha256 cellar: :any_skip_relocation, monterey:       "bde2ad49fbf1b8197b3c58943fb97bc38663a1c0da76084b2e082c4da08bfd71"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f7f1883934e6900db3b09041ee7fc295abcf67a2583d39faa55bc13f6da7298c"
+    sha256 cellar: :any_skip_relocation, catalina:       "f55bd6b488e27fd63ad95803bea95517892c826b29c30ea55b318be726e5c303"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "079c48ecb5484140857adba3113671c09ad77081525f177caf020bce3dfbda9d"
   end
 
   depends_on "go" => :build

@@ -1,8 +1,8 @@
 class Fish < Formula
   desc "User-friendly command-line shell for UNIX-like operating systems"
   homepage "https://fishshell.com"
-  url "https://github.com/fish-shell/fish-shell/releases/download/3.4.0/fish-3.4.0.tar.xz"
-  sha256 "b5b48ab8486b19ef716a32f7f46b88b9ea5356155f0e967ee99f4093645413c5"
+  url "https://github.com/fish-shell/fish-shell/releases/download/3.5.0/fish-3.5.0.tar.xz"
+  sha256 "291e4ec7c6c3fea54dc1aed057ce3d42b356fa6f70865627b2c7dfcecaefd210"
   license "GPL-2.0-only"
 
   livecheck do
@@ -11,12 +11,12 @@ class Fish < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "0f87e924275eedd76ea943b27f9c8df3ca8a7ece90e108d2714e35a2e7a26373"
-    sha256 cellar: :any,                 arm64_big_sur:  "817d8158f193b6dd0d9b0ef212617f5465492adbe6da3af7f9a51af25114705b"
-    sha256 cellar: :any,                 monterey:       "6e21c1ed7f2e7e3a2480a9bb8c9b9845d1bd57d25f33cbf506fec17a4c619f7c"
-    sha256 cellar: :any,                 big_sur:        "58212e21816352f12a9e5a4de5269320db6796811c14e5a8e3e4e687ff4e6528"
-    sha256 cellar: :any,                 catalina:       "0636cd4420bd3dfe58c6b8f9ab5dc85adda72b02750ce383ced94ceaa6c3a57b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0c0dc8d884d8f613cfbba4576454f06d97f71c41233f7d6f2b968ba37a20a62f"
+    sha256 cellar: :any,                 arm64_monterey: "3d454cba18d2cf0096b6fed748f54f99749d08beaf3ecfc8163e08cd8a6b3e6a"
+    sha256 cellar: :any,                 arm64_big_sur:  "59a379c01fc08708dffe0788af6c6c9ed1a408c5b25ce18fe96d17817b0d5f43"
+    sha256 cellar: :any,                 monterey:       "58408e5dafbd6840d776b68f384dde61a08f9acdccd1bd41f9c6b5a8ca6aabcb"
+    sha256 cellar: :any,                 big_sur:        "7259a66a9d7d14c538c15d621c7bf43b4ab72ce6ad395103276c1b5c4fc1bcb2"
+    sha256 cellar: :any,                 catalina:       "416e09deae28f56d228d35dc2a27c6d5545d374bb633318a71b35290f60c5360"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "25a25d2b499c766f0cba7c9ae268f22925ddba16fe41e2028c1a195c8b9aa40c"
   end
 
   head do

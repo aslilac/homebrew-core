@@ -1,21 +1,22 @@
 class Nvc < Formula
   desc "VHDL compiler and simulator"
   homepage "https://github.com/nickg/nvc"
-  url "https://github.com/nickg/nvc/releases/download/r1.6.1/nvc-1.6.1.tar.gz"
-  sha256 "d41c501b3bb3be8030ef07ceabc3f95c29ab169495af6a8cf2ba665ad84eb5c5"
+  url "https://github.com/nickg/nvc/releases/download/r1.6.2/nvc-1.6.2.tar.gz"
+  sha256 "e6e2db8e086ef0e54e0745b0346e83fbc5664f9c4bda11645843656736382d3c"
   license "GPL-3.0-or-later"
+  revision 1
 
   bottle do
-    sha256 arm64_monterey: "018608bfd3bebece7e5f5af5e71f1fdc49a5e551ee3202f85772fb95d734e692"
-    sha256 arm64_big_sur:  "6eb178d6b617aafe7992943730cf697e4b2634a335f209644e789e183a9a4337"
-    sha256 monterey:       "57b66b4450bac6e24fa778812f085ae66bb31cee339ad8a218399880b2139d37"
-    sha256 big_sur:        "8cc7631d16d716f1072e4636bac84f972503cd4e2af1245843fa52f9a86942a8"
-    sha256 catalina:       "3918cf90bfe1581ee3224891fa3d8437741a3209b92690036670a42f5b7d8d0f"
-    sha256 x86_64_linux:   "59564f4fa3dec44747ee7c5bd44e7406bea7ad7cce46053214af7791a41e26b6"
+    sha256 arm64_monterey: "a2b12eab1789c86431f2c2243e07f012f8bc23eb8bdc753cc460e2c548f80e63"
+    sha256 arm64_big_sur:  "e2af86fea8247b02a6fae2a9dd6a197f180647950bcbda07a0e7a865054873c5"
+    sha256 monterey:       "9c4dbeb21c316cef280370437fe31c6a2d8536ae66bd8f6f13de8303adf4f1fc"
+    sha256 big_sur:        "41afd05b5d20c00d5f2051858bbaae4c46c200eed14e25a77916b7072341787c"
+    sha256 catalina:       "806ec3dff942acf027597a0c712527ed90d04f732cf111be011bad506fbeb16a"
+    sha256 x86_64_linux:   "58200eb93611d5b1ea8efe69f1f7d26e117f8d184c09a39ab9445fef24b17b98"
   end
 
   head do
-    url "https://github.com/nickg/nvc.git"
+    url "https://github.com/nickg/nvc.git", branch: "master"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -36,8 +37,14 @@ class Nvc < Formula
 
   def install
     system "./autogen.sh" if build.head?
+
     # Avoid hardcoding path to the `ld` shim.
-    inreplace "configure", "\\\"$linker_path\\\"", "\\\"ld\\\"" if OS.linux?
+    if build.head? && OS.linux?
+      inreplace "configure", "#define LINKER_PATH \\\"$linker_path\\\"", "#define LINKER_PATH \\\"ld\\\""
+    elsif OS.linux?
+      inreplace "configure", "#define LINKER_PATH \"$linker_path\"", "#define LINKER_PATH \"ld\""
+    end
+
     system "./configure", "--with-llvm=#{Formula["llvm"].opt_bin}/llvm-config",
                           "--prefix=#{prefix}",
                           "--with-system-cc=#{ENV.cc}",
