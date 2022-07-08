@@ -4,8 +4,8 @@ class Bun < Formula
   # url "https://github.com/Jarred-Sumner/bun/archive/refs/tags/bun-v0.1.1.tar.gz"
   # Use git for submodules
   url "https://github.com/Jarred-Sumner/bun.git",
-      tag:      "bun-v0.1.1",
-      revision: "e4fb84275715bb4de4b541f6de0ede4b5ce3e10a"
+      tag:      "bun-v0.1.2",
+      revision: "1ee94d5bd261b4cfad7798f0e119499f351b93f3"
   license "MIT" => { with: "LGPL-2.0-linking-exception" }
   head "https://github.com/Jarred-Sumner/bun.git", branch: "main"
 
@@ -43,15 +43,20 @@ class Bun < Formula
       ENV["MIN_MACOS_VERSION"] = OS::Mac.version
 
       # Remove when LINK is included in a new release
-      inreplace "Makefile" do |s|
-        s.gsub!(/^(\s*)MIN_MACOS_VERSION = .+$/, '\1MIN_MACOS_VERSION ?= #{OS::Mac.version}')
-        s.sub!("LLVM_PREFIX = $(shell brew --prefix llvm)", "LLVM_PREFIX ?= $(shell brew --prefix llvm)")
-      end
+      # inreplace "Makefile" do |s|
+      #   s.gsub!(/^(\s*)MIN_MACOS_VERSION = .+$/, '\1MIN_MACOS_VERSION ?= #{OS::Mac.version}')
+      #   s.sub!("LLVM_PREFIX = $(shell brew --prefix llvm)", "LLVM_PREFIX ?= $(shell brew --prefix llvm)")
+      # end
     end
 
     system "make", "vendor"
     system "make", "jsc"
     system "make", "identifier-cache"
+
+    system "false"
+    # TODO: What does `make dev` do, and is it what we should be doing?
+    # TODO: Probably need to do `zig build --release` or something
+
     system libexec/"bin/zig", "build"
     bin.install "zig-out/bin/bun"
   end
