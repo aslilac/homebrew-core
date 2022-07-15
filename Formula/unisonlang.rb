@@ -26,7 +26,7 @@ class Unisonlang < Formula
 
   resource "local-ui" do
     url "https://github.com/unisonweb/unison-local-ui/archive/refs/tags/release/M4.tar.gz"
-    sha256 "4287e213eb0d94c0474e2e14d0d69a8f97d1356d4c0290db1f151a520f0dd1f8"
+    sha256 "5d4b91d071497d8c2924b80fc1025373d7093270e2570a60525df7056646ff23"
     version "M4"
   end
 
