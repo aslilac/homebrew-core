@@ -24,9 +24,10 @@ class Unisonlang < Formula
   uses_from_macos "xz" => :build
   uses_from_macos "zlib"
 
-  resource "codebase-ui" do
-    url "https://github.com/unisonweb/unison-local-ui/archive/4d196d5d775c36490527552b3d98c929fc178a37.tar.gz"
+  resource "local-ui" do
+    url "https://github.com/unisonweb/unison-local-ui/archive/refs/tags/release/M4.tar.gz"
     sha256 "4287e213eb0d94c0474e2e14d0d69a8f97d1356d4c0290db1f151a520f0dd1f8"
+    version "M4"
   end
 
   def install
@@ -34,7 +35,7 @@ class Unisonlang < Formula
     ENV.deparallelize
 
     # Build and install the web interface
-    resource("codebase-ui").stage do
+    resource("local-ui").stage do
       system "npm", "install", *Language::Node.local_npm_install_args
       system "npm", "run", "ui-core:install"
       system "npm", "run", "build"
@@ -58,6 +59,9 @@ class Unisonlang < Formula
   end
 
   test do
+    # Ensure the local-ui version matches the ucm version
+    assert_equal version, resource("local-ui").version
+
     # Initialize a codebase by starting the server/repl, but then run the "exit" command
     # once everything is set up.
     pipe_output("#{bin}/ucm -C ./", "exit")
