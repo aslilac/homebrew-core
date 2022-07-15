@@ -4,9 +4,9 @@ class Unisonlang < Formula
   desc "Friendly programming language from the future"
   homepage "https://unison-lang.org/"
   url "https://github.com/unisonweb/unison.git",
-      tag:      "release/M3",
-      revision: "97cce8d23147df30b0f80ae745968db09f4e1a44"
-  version "M3"
+      tag:      "release/M4",
+      revision: "e2631205da043582b8dee1ab1d543cd79e9f2c6b"
+  version "M4"
   license "MIT"
   head "https://github.com/unisonweb/unison.git", branch: "trunk"
 
@@ -21,22 +21,26 @@ class Unisonlang < Formula
   depends_on "haskell-stack" => :build
   depends_on "node" => :build
 
-  # stack/ghc currently have a number of issues building for aarch64
-  # https://github.com/unisonweb/unison/issues/3136
-  depends_on arch: :x86_64
-
   uses_from_macos "xz" => :build
   uses_from_macos "zlib"
 
   resource "codebase-ui" do
-    url "https://github.com/unisonweb/codebase-ui/archive/refs/tags/release/M3.tar.gz"
-    sha256 "84be9135a821615f8fc73a0a894aa46a11c55393c43dc26e16a5ce75f8063012"
-    version "M3"
+    url "https://github.com/unisonweb/unison-local-ui/archive/4d196d5d775c36490527552b3d98c929fc178a37.tar.gz"
+    sha256 "4287e213eb0d94c0474e2e14d0d69a8f97d1356d4c0290db1f151a520f0dd1f8"
   end
 
   def install
     jobs = ENV.make_jobs
     ENV.deparallelize
+
+    # Build and install the web interface
+    resource("codebase-ui").stage do
+      system "npm", "install", *Language::Node.local_npm_install_args
+      system "npm", "run", "ui-core:install"
+      system "npm", "run", "build"
+
+      prefix.install "dist/unisonLocal" => "ui"
+    end
 
     stack_args = [
       "-v",
@@ -51,20 +55,9 @@ class Unisonlang < Formula
 
     prefix.install "unison" => "ucm"
     bin.install_symlink prefix/"ucm"
-
-    # Build and install the web interface
-    resource("codebase-ui").stage do
-      system "npm", "install", *Language::Node.local_npm_install_args
-      system "npm", "run", "build"
-
-      prefix.install "dist/unisonLocal" => "ui"
-    end
   end
 
   test do
-    # Ensure the codebase-ui version matches the ucm version
-    assert_equal version, resource("codebase-ui").version
-
     # Initialize a codebase by starting the server/repl, but then run the "exit" command
     # once everything is set up.
     pipe_output("#{bin}/ucm -C ./", "exit")
