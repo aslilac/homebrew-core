@@ -4,17 +4,19 @@ class Litani < Formula
   desc "Metabuild system"
   homepage "https://awslabs.github.io/aws-build-accumulator/"
   url "https://github.com/awslabs/aws-build-accumulator.git",
-      tag:      "1.26.0",
-      revision: "1307f033fd2c334150b758b569821a1b51acf930"
+      tag:      "1.27.0",
+      revision: "2e96431038ef80001f291587def57fa5218d482b"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2f6e7952a1bffed29fef1fe0f1b0dd202512292cf54a8a183f384edc22e41220"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "729ff463dc94112cec2317cc6bec848a4b61416126a310e92daea1a6beaf0150"
-    sha256 cellar: :any_skip_relocation, monterey:       "a585933f6c70e38fa504a6c092846e0e3fac9d00d46c2dac6b871dc43c25cd4c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c914ffd1accbcac1a0a2a550df79e640fa9a72f6eec98cd78d6a707d719ee052"
-    sha256 cellar: :any_skip_relocation, catalina:       "c3b1b69be5dff970d0db1382bfda789993e86116b722acbfdcec1669768e1908"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aeb7f0870e2a0aa434986c4ee6650f3fea88cdbf155526ab1b6b3670ac3f02b1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "345510ac0f6a7246d8a1afafa5d4bf013c3a6df31719e7bac940e811796648ec"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "09b731d24d17fa9019814a66c59795e6a3045f53ece5ca841b7a675b23e331c1"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "15ff461fea3eb008929ad2dd4ea59f7e465551d1e392ff47df810cad80a35e12"
+    sha256 cellar: :any_skip_relocation, ventura:        "3ce58a07493f813a922520af02cf195a37b4f4eb66ef084d655201ccac20e1a7"
+    sha256 cellar: :any_skip_relocation, monterey:       "25814ed866dcfd89ca11d9a09b98d28f2abfb6121419cf0a6dc5f9b89c6d97d1"
+    sha256 cellar: :any_skip_relocation, big_sur:        "37e505d935452f93ee7c7ca7b56f70577bb98b494cf9b5d8973bab63a3808022"
+    sha256 cellar: :any_skip_relocation, catalina:       "aca7bba81b938d4ee5301ed030e4f7d98975970850edda0faa64aa2301ba46b4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9f6c8b083732e2a18c1870ee990ca348372c87c53cc0dd2ef0ba4cdda43e2432"
   end
 
   depends_on "coreutils" => :build
@@ -23,7 +25,7 @@ class Litani < Formula
   depends_on "gnuplot"
   depends_on "graphviz"
   depends_on "ninja"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
 
   resource "Jinja2" do
     url "https://files.pythonhosted.org/packages/7a/ff/75c28576a1d900e87eb6335b063fab47a8ef3c8b4d88524c4bf78f670cce/Jinja2-3.1.2.tar.gz"
@@ -42,7 +44,7 @@ class Litani < Formula
 
   def install
     ENV.prepend_path "PATH", libexec/"vendor/bin"
-    venv = virtualenv_create(libexec/"vendor", "python3")
+    venv = virtualenv_create(libexec/"vendor", "python3.10")
     venv.pip_install resources
 
     libexec.install Dir["*"] - ["test", "examples"]

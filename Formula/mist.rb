@@ -1,16 +1,18 @@
 class Mist < Formula
   desc "Mac command-line tool that automatically downloads macOS Firmwares / Installers"
   homepage "https://github.com/ninxsoft/mist-cli"
-  url "https://github.com/ninxsoft/mist-cli/archive/refs/tags/v1.8.tar.gz"
-  sha256 "a5d21721b74c9f506ba0d84683c12f2e706621451e7718d3a1ce0797e1ca64a5"
+  url "https://github.com/ninxsoft/mist-cli/archive/refs/tags/v1.9.1.tar.gz"
+  sha256 "c4973976384d2c801bd28243b5b4be5929b98f9aad14718d05539a22c337cae9"
   license "MIT"
   head "https://github.com/ninxsoft/mist-cli.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8214125ac548a63db1c1ea0b59c0b315b15ca8497809d6e1d5587d3c18ac3919"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2de8592da1c11ff5d2dd5a6b9c78caca53641d481f4ee642aa11277be3d2d519"
-    sha256 cellar: :any_skip_relocation, monterey:       "359271650bdc927599b8a19a78b97392cd352e8c415defd4eec4f0de0a0ad5a4"
-    sha256 cellar: :any_skip_relocation, big_sur:        "117db2644b9547c56bd56adfde3d8285ee7c3fa8391dcd3d5b493574d3c29c16"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9c577efc7fb3bda73e9d5fba24d1f898f270b92e101a9820a9f5bf446eee9b8c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8eccc9c06cbc334be6e0c10734bfc27ff3407ca6689679b588c51356bba87712"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "034e6dcd59c97041a1033abe1c6cf69331baffeb13623f9209357d55683edaac"
+    sha256 cellar: :any_skip_relocation, ventura:        "ed30c419439e153bf435bec3daa359145d46c5ce76218deca63b7751a0b61238"
+    sha256 cellar: :any_skip_relocation, monterey:       "04c3a513218e8f1ce6bf5864476417a2c9794684a0226ec61848c30949459542"
+    sha256 cellar: :any_skip_relocation, big_sur:        "cc83e0f359cadc97a5c48cbc7e6c57634187d4a7d16a675c4158339ed196df96"
   end
 
   # Mist requires Swift 5.5

@@ -1,17 +1,19 @@
 class Kalker < Formula
   desc "Full-featured calculator with math syntax"
   homepage "https://kalker.strct.net"
-  url "https://github.com/PaddiM8/kalker/archive/v2.0.0.tar.gz"
-  sha256 "092ab13726515125ec3664c15e61fa7b8eec09ad590f0c5ef00df6e33b3b3da7"
+  url "https://github.com/PaddiM8/kalker/archive/v2.0.1.tar.gz"
+  sha256 "9e504b9d0aadac98247dcb6b499d6a5d761eb404c2ea74b1ee02784a1b4aef0c"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "281638cc7dc299a1d172a71a1987c83b8a607c768a5079c9eabf7c18b8651068"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d356a52f4501a02f564c7960d9b35155dab33eabf2b6923c5bca9eb4aba0df6c"
-    sha256 cellar: :any_skip_relocation, monterey:       "f0859b24ffdd063be5371f29105437ba0152669e64ec7f5bfb37aaa856b17418"
-    sha256 cellar: :any_skip_relocation, big_sur:        "3fc0fddcc274b68cc81b08eda7ef348939bf9804fec4d8c1726221c933f5949f"
-    sha256 cellar: :any_skip_relocation, catalina:       "4be457caaed473e8150d5c77791008e6850f138ff3e846cfe495f5d19249d960"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b7eba326a767e9355f75ab55b835d565eebbf59e748a4d5a2663163e0e910a2f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "41f920b4f77c931c3448e99c8523cd86ad019c3095dd6600fbed82668a7f2937"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "931a9d4a96da5996d39e7c736d91c6dc7c4806408ea884a4eb185ad06e6b204e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b1ab0bacb6245849a9fad96b84c58e4ac11198de12df26ccfb6cfeb372fcb9fb"
+    sha256 cellar: :any_skip_relocation, ventura:        "6a67e581e921721f0cfabeb30dd6a2c90f0bf728e8b808848e721090d49a624a"
+    sha256 cellar: :any_skip_relocation, monterey:       "8d0b0ceabc024ac9411705c0213e18b1c3365b4dd12d397d60518404a877c723"
+    sha256 cellar: :any_skip_relocation, big_sur:        "60b34121c7225227cd6dbf3f72ae732d642dd02531e526fa10c0027db536fbb2"
+    sha256 cellar: :any_skip_relocation, catalina:       "eb8e60109ef370ae2e0eae6311a04b8e8a066dd16451d198583eab042c6572de"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bb81f183836be1dbf294eb484b487c292635e3f78803c326d984ae38fed3333d"
   end
 
   depends_on "rust" => :build

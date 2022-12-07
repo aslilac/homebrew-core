@@ -4,6 +4,7 @@ class Qscintilla2 < Formula
   url "https://www.riverbankcomputing.com/static/Downloads/QScintilla/2.13.3/QScintilla_src-2.13.3.tar.gz"
   sha256 "711d28e37c8fccaa8229e8e39a5b3b2d97f3fffc63da10b71c71b84fa3649398"
   license "GPL-3.0-only"
+  revision 1
 
   # The downloads page also lists pre-release versions, which use the same file
   # name format as stable versions. The only difference is that files for
@@ -16,12 +17,15 @@ class Qscintilla2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "5f7514bf089c4385d8bb6fc9ae394a94f10a839f571f0a8760cd7675fa1450d6"
-    sha256 cellar: :any,                 arm64_big_sur:  "942c121fe8d2ceba45c271ffd535b8420e669d39c33cf2ae8c924514c8eb7c83"
-    sha256 cellar: :any,                 monterey:       "4c2834dfde86fe935083340fd0742bf3ebf6bcfff8591d08bde06c5a84893a4f"
-    sha256 cellar: :any,                 big_sur:        "be13e0b8b5e441404cf4239bec231109cb3dfa7fc4fbfa58fbd05f9eb1e844af"
-    sha256 cellar: :any,                 catalina:       "a82243f91a8e6b85af879686f7e3eb45fd1eb1a5b22fb6e2c190b4bb2fa8abb5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cd59e09e37a09b02219ea6a21dc39b1a1153f3bc81dfb15b54add91de0edf55b"
+    rebuild 2
+    sha256 cellar: :any,                 arm64_ventura:  "d4337a5f500a99e0bc88d83bc0be51a85913a7b60f4249a632ddbcd001a4c7f4"
+    sha256 cellar: :any,                 arm64_monterey: "d4337a5f500a99e0bc88d83bc0be51a85913a7b60f4249a632ddbcd001a4c7f4"
+    sha256 cellar: :any,                 arm64_big_sur:  "341f42c780929057356e40120c929562446f9f504fdd12a92ea0ff1e1472c5b5"
+    sha256 cellar: :any,                 ventura:        "c00a1377269db9bb302847b99b785edffd453d3f2bf36a2a26db0e629488d697"
+    sha256 cellar: :any,                 monterey:       "e5f3be88e13c7fad078dc39c0fdb2871104002da39dbed1a63a9f9aed23fc393"
+    sha256 cellar: :any,                 big_sur:        "935c0cbc9e462facb84f406f5959c09bb514c129bb11d96eaadbbc9aa4786c63"
+    sha256 cellar: :any,                 catalina:       "86e6861479dc4340b36311b63f4b2356411de921abf9b412a1b7a5f0c47c7b52"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f092425250b68a1ccbec4bdd5d642111aae1a3ea6bbf63b24932120f1417f4f4"
   end
 
   depends_on "pyqt-builder" => :build
@@ -29,14 +33,14 @@ class Qscintilla2 < Formula
 
   # TODO: use qt when octave can migrate to qt6
   depends_on "pyqt@5"
-  depends_on "python@3.9"
+  depends_on "python@3.11"
   depends_on "qt@5"
 
-  on_linux do
-    depends_on "gcc"
-  end
-
   fails_with gcc: "5"
+
+  def python3
+    "python3.11"
+  end
 
   def install
     args = []
@@ -51,7 +55,7 @@ class Qscintilla2 < Formula
 
     pyqt = Formula["pyqt@5"]
     qt = Formula["qt@5"]
-    site_packages = Language::Python.site_packages("python3")
+    site_packages = Language::Python.site_packages(python3)
 
     cd "src" do
       inreplace "qscintilla.pro" do |s|
@@ -107,6 +111,6 @@ class Qscintilla2 < Formula
       assert("QsciLexer" in dir(PyQt#{pyqt.version.major}.Qsci))
     EOS
 
-    system Formula["python@3.9"].opt_bin/"python3", "test.py"
+    system python3, "test.py"
   end
 end

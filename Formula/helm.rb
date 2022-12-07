@@ -2,18 +2,20 @@ class Helm < Formula
   desc "Kubernetes package manager"
   homepage "https://helm.sh/"
   url "https://github.com/helm/helm.git",
-      tag:      "v3.9.0",
-      revision: "7ceeda6c585217a19a1131663d8cd1f7d641b2a7"
+      tag:      "v3.10.2",
+      revision: "50f003e5ee8704ec937a756c646870227d7c8b58"
   license "Apache-2.0"
   head "https://github.com/helm/helm.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "14fc008242f71fef52a1bcc08e6a27fd4e11d6f41c84aab97b68684fa36955bc"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8c04aa5293c2a0a7f197e5c68e59b108ed2c4e763212b14fb35c079ef5804bf4"
-    sha256 cellar: :any_skip_relocation, monterey:       "ee5b2e0a917bac5c1c3af5ccb18520505a84645ba27e60dd1eaa0ae5b543bcd9"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d3c71ebbc844fcc66af53168f547e25ab25f65a3b0f491d92608e3d89ddb2842"
-    sha256 cellar: :any_skip_relocation, catalina:       "7a8b3f8995d97418b293f8b4847c74d3314c38bf72e66f1e7eeaf56a832a5f32"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "27ff6e13c6e534dab8ab38ca9711f8905fdc93b787d687be48176313bc537f4d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d0dfb7919939aa9d2b6618f0b645e419d1cc92933dc8655c6b16e8a95c989d29"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "aa33585f2fe9e0a15ed04632b4c02f5180eca774f4dd214841304d9cf9e87e03"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a837bb892d60ef25ad28af3e7d713239042497fc8135fa89994525912cdbe2dd"
+    sha256 cellar: :any_skip_relocation, ventura:        "a5c481424794b227bf06931c63950634a2f73b2712de0d3fbdfdee01d510227f"
+    sha256 cellar: :any_skip_relocation, monterey:       "52e2580b6acb6ecd425a5344672658b7f1912190346e1d75079f4aec0990ab11"
+    sha256 cellar: :any_skip_relocation, big_sur:        "cbc4b33fb618da80ff6c564407404f0f95d33a31ab28e372e483c0671d4d7014"
+    sha256 cellar: :any_skip_relocation, catalina:       "4f75fa199da9ad76b3871baf2d04cdbf34235e7f5c38a83d5baa2baa3866a952"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d3de7dd1e7b02e9158e619da0b75d361b74b23ed23198baefe0e907802041ad2"
   end
 
   depends_on "go" => :build
@@ -30,14 +32,7 @@ class Helm < Formula
       man1.install Dir["*"]
     end
 
-    output = Utils.safe_popen_read(bin/"helm", "completion", "bash")
-    (bash_completion/"helm").write output
-
-    output = Utils.safe_popen_read(bin/"helm", "completion", "zsh")
-    (zsh_completion/"_helm").write output
-
-    output = Utils.safe_popen_read(bin/"helm", "completion", "fish")
-    (fish_completion/"helm.fish").write output
+    generate_completions_from_executable(bin/"helm", "completion")
   end
 
   test do

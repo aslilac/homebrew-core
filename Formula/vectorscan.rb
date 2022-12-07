@@ -1,13 +1,14 @@
 class Vectorscan < Formula
   desc "High-performance regular expression matching library"
   homepage "https://github.com/VectorCamp/vectorscan"
-  url "https://github.com/VectorCamp/vectorscan/archive/refs/tags/vectorscan/5.4.7.tar.gz"
-  sha256 "cd70c2a7bf632b5374083a450019703605520c10c5614a4c12011c99ab8435dd"
+  url "https://github.com/VectorCamp/vectorscan/archive/refs/tags/vectorscan/5.4.8.tar.gz"
+  sha256 "71fae7ee8d63e1513a6df762cdb5d5f02a9120a2422cf1f31d57747c2b8d36ab"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "abe4b344d8deccfef0b799220de4f167f9f4bf7036cab75a5046c709fffc36a1"
-    sha256 cellar: :any, arm64_big_sur:  "dd42e4b9620e17d37f250beb78be6cdc8547b78a38d02bcf838fd5f986f8fb04"
+    sha256 cellar: :any, arm64_ventura:  "478f79fe3f560be59f53b0614dce831ee8ab8851e0d4af1ecec67992456fbaf6"
+    sha256 cellar: :any, arm64_monterey: "7ac330c646e8fae05d38781cc74e76ba4f5e56db40d64e5812b86d2b46bc80ae"
+    sha256 cellar: :any, arm64_big_sur:  "734f2c58a709fa75fe7f3dfe2abe88ea94b76a27149d07d034f4a779f2197c8a"
   end
 
   depends_on "boost" => :build

@@ -3,12 +3,12 @@ require "language/node"
 class Czg < Formula
   desc "Interactive Commitizen CLI that generate standardized commit messages"
   homepage "https://github.com/Zhengqbbb/cz-git"
-  url "https://registry.npmjs.org/czg/-/czg-1.3.9.tgz"
-  sha256 "a386466f49f66d1005ff439be5a10ac9d6d8da786c5929b29f7e00a8ddeca548"
+  url "https://registry.npmjs.org/czg/-/czg-1.4.0.tgz"
+  sha256 "ab300852dd586bf812763f21c91d40958628cc891f7b8ed64a7b2d045b527255"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "85bec7612be471eedfa5860335414ca379501e506535e22bd36983bf4a029d81"
+    sha256 cellar: :any_skip_relocation, all: "daa2d6d7645307d6f8e9bb0775dbb50053fcd560b33fe0f9eba54f4de0ac41af"
   end
 
   depends_on "node"

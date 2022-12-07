@@ -1,25 +1,28 @@
 class Ghostscript < Formula
   desc "Interpreter for PostScript and PDF"
   homepage "https://www.ghostscript.com/"
-  url "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs9561/ghostpdl-9.56.1.tar.xz"
-  sha256 "05e64c19853e475290fd608a415289dc21892c4d08ee9086138284b6addcb299"
+  url "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs1000/ghostpdl-10.0.0.tar.xz"
+  sha256 "8f2b7941f60df694b4f5c029b739007f7c4e0d43858471ae481e319a967d5d8b"
   license "AGPL-3.0-or-later"
 
-  # We check the tags from the `head` repository because the GitHub tags are
-  # formatted ambiguously, like `gs9533` (corresponding to version 9.53.3).
+  # The GitHub tags omit delimiters (e.g. `gs9533` for version 9.53.3). The
+  # `head` repository tags are formatted fine (e.g. `ghostpdl-9.53.3`) but a
+  # version may be tagged before the release is available on GitHub, so we
+  # check the version from the first-party website instead.
   livecheck do
-    url :stable
-    regex(/href=.*?ghostpdl[._-]v?(\d+(?:\.\d+)+)\.t/i)
-    strategy :github_latest
+    url "https://www.ghostscript.com/json/settings.json"
+    regex(/["']GS_VER["']:\s*?["']v?(\d+(?:\.\d+)+)["']/i)
   end
 
   bottle do
-    sha256 arm64_monterey: "29539f2c18615fb82e82e4dab331005fcde1a2310332d7edf1227d77784ef1e6"
-    sha256 arm64_big_sur:  "9909bbaac3747aac9815d27837e8c9d6e1e092dfaeaeec60834ad851dc576271"
-    sha256 monterey:       "3ac4eb5ecab09d810f5a866d6752d18a5cb6bb9ea4ffc2592f4cc77105633fe5"
-    sha256 big_sur:        "2602d48b7b9c23249cf8791c4526988301de44910645d5f4ebab068d3bf40f6c"
-    sha256 catalina:       "5b2e9e395d05d52805e3e22082207425b9ac85613cb02918e336de1809ed26e0"
-    sha256 x86_64_linux:   "c0bb4afef0ba69db933901e280a820e93a02c239a2eddde6b736820de8eb17a3"
+    sha256 arm64_ventura:  "a698c53fbc3a1117c204bf7e20122c3469cd46548f908bdf3c805b61a1620f66"
+    sha256 arm64_monterey: "07becfb977ec79a7cdd2b6c5298fbb3d24ba61599106d903a7e1ea51d23b3df3"
+    sha256 arm64_big_sur:  "6d71b98737f6113d18b963ca01d454e46218458b7b6eb8e2a5ae4c59359c5d30"
+    sha256 ventura:        "b8a4f24fd3d10ef89a53af4d9793efde9b9ce019247a398614fcba87b6d6ec9f"
+    sha256 monterey:       "c61d7421c9835d33d293fd0d496ce8fb983d8ee9351a6c59e3efbd621a4bec30"
+    sha256 big_sur:        "eaf18fcce3a87ea2513439b58733a675c96a650ec91c4302293927e0054b43c6"
+    sha256 catalina:       "0a200d59567de71739729720e96e9012961e1149c3a8cfe4ff79ca44b6a24a43"
+    sha256 x86_64_linux:   "95c5e86cc3e8d68e61b7c7c7659aa75b6673d399f67e99ab815418d9f165ce22"
   end
 
   head do
@@ -35,7 +38,7 @@ class Ghostscript < Formula
   depends_on "fontconfig"
   depends_on "freetype"
   depends_on "jbig2dec"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libidn"
   depends_on "libpng"
   depends_on "libtiff"
@@ -45,10 +48,6 @@ class Ghostscript < Formula
   uses_from_macos "expat"
   uses_from_macos "zlib"
 
-  on_linux do
-    depends_on "gcc"
-  end
-
   fails_with gcc: "5"
 
   # https://sourceforge.net/projects/gs-fonts/
@@ -57,39 +56,28 @@ class Ghostscript < Formula
     sha256 "0eb6f356119f2e49b2563210852e17f57f9dcc5755f350a69a46a0d641a0c401"
   end
 
+  # fmemopen is only supported from 10.13 onwards (https://news.ycombinator.com/item?id=25968777).
+  # For earlier versions of MacOS, needs to be excluded.
+  # This should be removed once patch added to next release of leptonica (which is incorporated by ghostscript in
+  # tarballs).
+  patch do
+    url "https://github.com/DanBloomberg/leptonica/commit/848df62ff7ad06965dd77ac556da1b2878e5e575.patch?full_index=1"
+    sha256 "7de1c4e596aad5c3d2628b309cea1e4fc1ff65e9c255fe64de1922b3fd2d60fc"
+    directory "leptonica"
+  end
+
   def install
-    # Fix vendored tesseract build error: 'cstring' file not found
-    # Remove when possible to link to system tesseract
-    ENV.append_to_cflags "-stdlib=libc++" if ENV.compiler == :clang
-
-    # Fix VERSION file incorrectly included as C++20 <version> header
-    # Remove when possible to link to system tesseract
-    rm "tesseract/VERSION"
-
     # Delete local vendored sources so build uses system dependencies
-    rm_rf "expat"
-    rm_rf "freetype"
-    rm_rf "jbig2dec"
-    rm_rf "jpeg"
-    rm_rf "lcms2mt"
-    rm_rf "libpng"
-    rm_rf "openjpeg"
-    rm_rf "tiff"
-    rm_rf "zlib"
+    libs = %w[expat freetype jbig2dec jpeg lcms2mt libpng openjpeg tiff zlib]
+    libs.each { |l| (buildpath/l).rmtree }
 
-    args = %w[
-      --disable-compile-inits
-      --disable-cups
-      --disable-gtk
-      --with-system-libtiff
-      --without-x
-    ]
-
-    if build.head?
-      system "./autogen.sh", *std_configure_args, *args
-    else
-      system "./configure", *std_configure_args, *args
-    end
+    configure = build.head? ? "./autogen.sh" : "./configure"
+    system configure, *std_configure_args,
+                      "--disable-compile-inits",
+                      "--disable-cups",
+                      "--disable-gtk",
+                      "--with-system-libtiff",
+                      "--without-x"
 
     # Install binaries and libraries
     system "make", "install"

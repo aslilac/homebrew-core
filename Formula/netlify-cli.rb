@@ -3,18 +3,20 @@ require "language/node"
 class NetlifyCli < Formula
   desc "Netlify command-line tool"
   homepage "https://www.netlify.com/docs/cli"
-  url "https://registry.npmjs.org/netlify-cli/-/netlify-cli-10.7.0.tgz"
-  sha256 "b63a01edc91062dee4b5182cfae1046eae283cedd7ac449c77aa913ca182f57e"
+  url "https://registry.npmjs.org/netlify-cli/-/netlify-cli-12.2.5.tgz"
+  sha256 "63556ff5988373bd1bb5e870eb22d385e7ab7dfd289bfad5509c223c6ebedc33"
   license "MIT"
   head "https://github.com/netlify/cli.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "53fc1d0d692923ce347fbc0f718f9e80014faa1ce62e01e330ada22b7dd7c4a1"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "53fc1d0d692923ce347fbc0f718f9e80014faa1ce62e01e330ada22b7dd7c4a1"
-    sha256 cellar: :any_skip_relocation, monterey:       "934e95c0b4d6263910456b0432de2b5fa4e16d137c6c83769942e58ec7c5187f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "934e95c0b4d6263910456b0432de2b5fa4e16d137c6c83769942e58ec7c5187f"
-    sha256 cellar: :any_skip_relocation, catalina:       "934e95c0b4d6263910456b0432de2b5fa4e16d137c6c83769942e58ec7c5187f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ccfd609aab68e1768066d9f84f624167f72fb16671663e4e1f432a6bb6ae9b98"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "effdc880be48ec328fc58fa82123ea679a2bbad9622eb6b655bfbd77b7d63eea"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "effdc880be48ec328fc58fa82123ea679a2bbad9622eb6b655bfbd77b7d63eea"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "effdc880be48ec328fc58fa82123ea679a2bbad9622eb6b655bfbd77b7d63eea"
+    sha256 cellar: :any_skip_relocation, ventura:        "4b6007af65e4017bcd2992a27582e67c7423161d2a37069f11b527d30a6ea032"
+    sha256 cellar: :any_skip_relocation, monterey:       "4b6007af65e4017bcd2992a27582e67c7423161d2a37069f11b527d30a6ea032"
+    sha256 cellar: :any_skip_relocation, big_sur:        "4b6007af65e4017bcd2992a27582e67c7423161d2a37069f11b527d30a6ea032"
+    sha256 cellar: :any_skip_relocation, catalina:       "4b6007af65e4017bcd2992a27582e67c7423161d2a37069f11b527d30a6ea032"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9d68562a013ad3079edabd8b01c8f5d68a446430129f091ee058553e93f36d23"
   end
 
   depends_on "node"

@@ -3,46 +3,48 @@ class SvtplayDl < Formula
 
   desc "Download videos from https://www.svtplay.se/"
   homepage "https://svtplay-dl.se/"
-  url "https://files.pythonhosted.org/packages/40/c0/7363733395c0a88af79ac1097ee2e5fc3d8f984eec2f04e6e539ffb68dff/svtplay-dl-4.13.tar.gz"
-  sha256 "4c0279aefed6d95048e7d01d23bea1c3e97986672ebd5330c061c52c94d1a95d"
+  url "https://files.pythonhosted.org/packages/1e/fd/d0db3eaca2443474f0659738a760e52aae9eebff494a5d271a83c43919c4/svtplay-dl-4.17.tar.gz"
+  sha256 "41a1c78d55c639a5e82c5725d6cc5c449bf8d11e5aedd1bca670de7c44b23bd0"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "95256ef752c1a33ac6e0c6f6e21aaf8196f7e579ec5ea2ed707e4f9415671083"
-    sha256 cellar: :any,                 arm64_big_sur:  "a3335792655315cfc429e998da664e4c7ca6a8585f58f9edaf511704ee768bcc"
-    sha256 cellar: :any,                 monterey:       "74828fa81d98e0c48892041b6d790847a457d9e956716de7265655a0f3ff45cc"
-    sha256 cellar: :any,                 big_sur:        "9ea1c324d9a662f0569be90900ea6a0b709d5460a3a1b67da0fc50a0457c4b71"
-    sha256 cellar: :any,                 catalina:       "9b6551ae99affebdfe9edf7548989b193b1d31057785781be37ecd5babd316fd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ca61af5e859ed520885094ca0257694b0bc5c545f6397efc4ca5d2b1b9c2c693"
+    sha256 cellar: :any,                 arm64_ventura:  "081104c2e3031dfebdcc3f7183c0757ba382e948293699c6a9dfc1efeb698abe"
+    sha256 cellar: :any,                 arm64_monterey: "16fe1c919c2295c9d372afb932c0dc87a4cae0d414ae94024669d89ddf8eeb63"
+    sha256 cellar: :any,                 arm64_big_sur:  "e8cd95d8cc54e63899bfa40546d98f998aa6fd76598f8219cd6b01f633416dd1"
+    sha256 cellar: :any,                 ventura:        "2ad6c5b9eb893287f3f918f2c3dc13782e0ee0be3c31a8332c5cbe29e7fa6b5d"
+    sha256 cellar: :any,                 monterey:       "40162d0f198de2adf941c8cf0ae3da7830a3f0a9a94423a158316135e3406526"
+    sha256 cellar: :any,                 big_sur:        "c2dc1b5918ce11dcf9fa9c8afe56e86828d5dd31ee0624b1ef94b4ae5323775f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8ba78d086a5b9ce88d2cdbc6fef6718e1f07504a54a3a9ff1eecefd977f41fe1"
   end
 
   depends_on "rust" => :build
   depends_on "openssl@1.1"
-  depends_on "python@3.10"
+  depends_on "python@3.11"
+  depends_on "pyyaml"
 
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/07/10/75277f313d13a2b74fc56e29239d5c840c2bf09f17bf25c02b35558812c6/certifi-2022.5.18.1.tar.gz"
-    sha256 "9c5705e395cd70084351dd8ad5c41e65655e08ce46f2ec9cf6c2c08390f71eb7"
+    url "https://files.pythonhosted.org/packages/cb/a4/7de7cd59e429bd0ee6521ba58a75adaec136d32f91a761b28a11d8088d44/certifi-2022.9.24.tar.gz"
+    sha256 "0d9c601124e5a6ba9712dbc60d9c53c21e34f5f641fe83002317394311bdce14"
   end
 
   resource "cffi" do
-    url "https://files.pythonhosted.org/packages/00/9e/92de7e1217ccc3d5f352ba21e52398372525765b2e0c4530e6eb2ba9282a/cffi-1.15.0.tar.gz"
-    sha256 "920f0d66a896c2d99f0adbb391f990a84091179542c205fa53ce5787aff87954"
+    url "https://files.pythonhosted.org/packages/2b/a8/050ab4f0c3d4c1b8aaa805f70e26e84d0e27004907c5b8ecc1d31815f92a/cffi-1.15.1.tar.gz"
+    sha256 "d400bfb9a37b1351253cb402671cea7e89bdecc294e8016a707f6d1d8ac934f9"
   end
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/56/31/7bcaf657fafb3c6db8c787a865434290b726653c912085fbd371e9b92e1c/charset-normalizer-2.0.12.tar.gz"
-    sha256 "2857e29ff0d34db842cd7ca3230549d1a697f96ee6d3fb071cfa6c7393832597"
+    url "https://files.pythonhosted.org/packages/a1/34/44964211e5410b051e4b8d2869c470ae8a68ae274953b1c7de6d98bbcf94/charset-normalizer-2.1.1.tar.gz"
+    sha256 "5a3d016c7c547f69d6f81fb0db9449ce888b418b5b9952cc5e6e66843e9dd845"
   end
 
   resource "cryptography" do
-    url "https://files.pythonhosted.org/packages/51/05/bb2b681f6a77276fc423d04187c39dafdb65b799c8d87b62ca82659f9ead/cryptography-37.0.2.tar.gz"
-    sha256 "f224ad253cc9cea7568f49077007d2263efa57396a2f2f78114066fd54b5c68e"
+    url "https://files.pythonhosted.org/packages/e3/3f/41186b1f2fd86a542d399175f6b8e43f82cd4dfa51235a0b030a042b811a/cryptography-38.0.4.tar.gz"
+    sha256 "175c1a818b87c9ac80bb7377f5520b7f31b3ef2a0004e2420319beadedb67290"
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/62/08/e3fc7c8161090f742f504f40b1bccbfc544d4a4e09eb774bf40aafce5436/idna-3.3.tar.gz"
-    sha256 "9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d"
+    url "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz"
+    sha256 "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
   end
 
   resource "pycparser" do
@@ -55,19 +57,14 @@ class SvtplayDl < Formula
     sha256 "3f8804571ebe159c380ac6de37643bb4685970655d3bba243530d6558b799aa0"
   end
 
-  resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/36/2b/61d51a2c4f25ef062ae3f74576b01638bebad5e045f747ff12643df63844/PyYAML-6.0.tar.gz"
-    sha256 "68fb519c14306fec9720a2a5b45bc9f0c8d1b9c72adf45c37baedfcd949c35a2"
-  end
-
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/60/f3/26ff3767f099b73e0efa138a9998da67890793bfa475d8278f84a30fec77/requests-2.27.1.tar.gz"
-    sha256 "68d7c56fd5a8999887728ef304a6d12edc7be74f1cfa47714fc8b414525c9a61"
+    url "https://files.pythonhosted.org/packages/a5/61/a867851fd5ab77277495a8709ddda0861b28163c4613b011bc00228cc724/requests-2.28.1.tar.gz"
+    sha256 "7c5599b102feddaa661c826c56ab4fee28bfd17f5abca1ebbe3e7f19d7c97983"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/1b/a5/4eab74853625505725cefdf168f48661b2cd04e7843ab836f3f63abf81da/urllib3-1.26.9.tar.gz"
-    sha256 "aabaf16477806a5e1dd19aa41f8c2b7950dd3c746362d7e3223dbe6de6ac448e"
+    url "https://files.pythonhosted.org/packages/c2/51/32da03cf19d17d46cce5c731967bf58de9bd71db3a379932f53b094deda4/urllib3-1.26.13.tar.gz"
+    sha256 "c083dd0dce68dbfbe1129d5271cb90f9447dea7d52097c6e0126120c521ddea8"
   end
 
   def install

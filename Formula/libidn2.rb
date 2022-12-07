@@ -1,10 +1,10 @@
 class Libidn2 < Formula
   desc "International domain name library (IDNA2008, Punycode and TR46)"
   homepage "https://www.gnu.org/software/libidn/#libidn2"
-  url "https://ftp.gnu.org/gnu/libidn/libidn2-2.3.2.tar.gz"
-  mirror "https://ftpmirror.gnu.org/libidn/libidn2-2.3.2.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/libidn/libidn2-2.3.2.tar.gz"
-  sha256 "76940cd4e778e8093579a9d195b25fff5e936e9dc6242068528b437a76764f91"
+  url "https://ftp.gnu.org/gnu/libidn/libidn2-2.3.4.tar.gz"
+  mirror "https://ftpmirror.gnu.org/libidn/libidn2-2.3.4.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/libidn/libidn2-2.3.4.tar.gz"
+  sha256 "93caba72b4e051d1f8d4f5a076ab63c99b77faee019b72b9783b267986dbb45f"
   license any_of: ["GPL-2.0-or-later", "LGPL-3.0-or-later"]
 
   livecheck do
@@ -13,13 +13,14 @@ class Libidn2 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "fcc51d2c385b19d647da5a53f7041f13f97d2c1119a7cbbfd8433e9e55bf5012"
-    sha256 arm64_big_sur:  "dbaac7e6e29ffa8c7c2b5e152fd6ee0118e547f90dc4b180c7f168c2f681c5f4"
-    sha256 monterey:       "29b1ea810ddad662b0c766429c2384495d643baa253dc31eed0300f5d4c4d7f4"
-    sha256 big_sur:        "d21350f576f9b9cd0512149164622671b71854da69947183bc84e09a3a257b89"
-    sha256 catalina:       "71c5f183ae570f9a77eb759ab2bd04d84eb5cb9cf9c9a3b7cd8879aad5966bcd"
-    sha256 mojave:         "9402e3774f00c5485dd341cf34c35c24de0dc9bb90b2d4057c22e432848e0f1f"
-    sha256 x86_64_linux:   "57a2bf8955bcc8c2661aec2b26acfb90ec50402d78afebb000a1f6b0c27421e4"
+    sha256 arm64_ventura:  "733adfd62ece847bb7f36e57434c58582020cd7c572a2b37b6113811108ac1c1"
+    sha256 arm64_monterey: "38eed5a97aaddeebf0c510ed609466c2c0d1fdc996452e380a4ed9366000fe5e"
+    sha256 arm64_big_sur:  "3b7b3d218a6b04a8264174da41af73e638fc75a7dcbb4f41150f2f37166d5cb9"
+    sha256 ventura:        "3561d710120deb93c7b30c1c3a9639e9649e41fc7360b25ce6a8bc53424a43da"
+    sha256 monterey:       "335207a9dc5fdab95f75b5639108c66e57d9b3fe0c632a829e05947d8e0b31ff"
+    sha256 big_sur:        "d2db4a1e16ed4293bb44a0aca0166e9a4eda64f219d655c0aa56a1014398e0ff"
+    sha256 catalina:       "9cf7ddcc4469e80d0a81bc95312e2481bdddb2b5fdd9f1a20ca8b0b37eb38af3"
+    sha256 x86_64_linux:   "e95765dc4efb32e9b9d24f3b02624d40f9c6f2753a091296900f107ada06f106"
   end
 
   head do

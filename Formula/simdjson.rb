@@ -1,25 +1,23 @@
 class Simdjson < Formula
   desc "SIMD-accelerated C++ JSON parser"
   homepage "https://simdjson.org"
-  url "https://github.com/simdjson/simdjson/archive/v2.2.0.tar.gz"
-  sha256 "011974352049e986bdcdf64fc807cf3ab901865240f4ae8e3de670dd42aab099"
+  url "https://github.com/simdjson/simdjson/archive/v3.0.1.tar.gz"
+  sha256 "156b1bc5eb0561b2bd166b46d191fd3d95a3e709cc63761477d3b7aec2b6e9ed"
   license "Apache-2.0"
   head "https://github.com/simdjson/simdjson.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "a1a7edefc038ced04f53e5b2205d769f4378d16ae90a7f2d70fb82b6f9c3ac79"
-    sha256 cellar: :any,                 arm64_big_sur:  "4b43f7ca4df0141de209670210425bef011cbd4fac7f29bfb386afa712c4e86f"
-    sha256 cellar: :any,                 monterey:       "16e38cbbef6e37652c334596f25b90fb6309c991fbcb7eade96b8ab3d14fd2d0"
-    sha256 cellar: :any,                 big_sur:        "1b882344441f28a40d5178a355e2e7fb1a946410ec5078386326e1bcfa52ab0d"
-    sha256 cellar: :any,                 catalina:       "38e4d994fa7725b837447d41dba6196508f726ac35ad30f585543fb51020512f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "00464dee0b76b85a8e9d0c3139987158913531d5d4a0a61de578b531a7255fde"
+    sha256 cellar: :any,                 arm64_ventura:  "80b5cd728a271af924f7e743cd416e69b11009005734bef73ae5ccc8c729171f"
+    sha256 cellar: :any,                 arm64_monterey: "5f901929ffcfa87d9943255a6ce3bc7e9cec00bdec4b318e235e4bbe5c0ae203"
+    sha256 cellar: :any,                 arm64_big_sur:  "63bbb93cdbfa02d0f047399ad514a29a707ffc0b2203ef944500ca4995c39d20"
+    sha256 cellar: :any,                 ventura:        "7e91bcef1a0caa980378d2b34158ba9d1ba60027e1d981b854de66ea4c6308d0"
+    sha256 cellar: :any,                 monterey:       "29ae95d05ab9363c1b2eda0bc6e252f09f00cd0f1d41821df0a07eb58b8dc107"
+    sha256 cellar: :any,                 big_sur:        "8eb716b1b9061945789e959083d1689739946b0d9a69165765662230c6f2a420"
+    sha256 cellar: :any,                 catalina:       "b018b250baa67b306782f7de14df5b4071f13756b1ed873096dcb197fb5fedce"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0596803f54131f2e190e8519260b75fd085fc911b01177313e02f2b80e2d4ee2"
   end
 
   depends_on "cmake" => :build
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5"
 

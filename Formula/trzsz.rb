@@ -8,20 +8,23 @@ class Trzsz < Formula
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5a33d8e1027e2dcc3b66748bcccd26fafbbd76164bbb0e6fdf5e039b5b253054"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3a7255468430adc1e9cdbd52692dcb932d56dea831cffc32f7e3201bb8a73560"
-    sha256 cellar: :any_skip_relocation, monterey:       "ad3127d4f5594fcc8d9fe674802415908051747281d953499ba70f49a5e7ec69"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d74a257f520b8303bfd38cceb311c329d644bd9c2e2b9989b32fdc02727bf6ba"
-    sha256 cellar: :any_skip_relocation, catalina:       "0429ec0db1f6a8fb61f84005c3750d2f5745576fcec3c6ff9525667888bec8a7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "476a4150a84b1a7190bb283e13a9b12274dbd8c616327d452ce17364a03c544a"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3f2338f18c26ef9115ad67c2338b8cd07139113e89e2a40e0eaa7b696de2b8cf"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "07154f877574bbf3fee21b8e6a13358473b3bd0d0d45130924042a004a1dbd53"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8c64bd93a5b3d27d0906f0e72b0c24ab4b9376da99bd744102ee5e865523b490"
+    sha256 cellar: :any_skip_relocation, ventura:        "c30c763f211f69dd8163016f9f6532ad6cafab23e6576edd47a9728a659f17dd"
+    sha256 cellar: :any_skip_relocation, monterey:       "f398dfd1819a386aba368ae0b3d9d2f8faf05a2f5534a75463588b6226106432"
+    sha256 cellar: :any_skip_relocation, big_sur:        "544b91290504a9dd32eb95cd8088286fd47bbcb04cfd8ed87b2b78b73d265356"
+    sha256 cellar: :any_skip_relocation, catalina:       "afc42b34487bfced6811239e7e0ba531a61b3d6a7f3871148f2216c60853f3b8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "34ec912a61b25e0d9b45afa6c72af31ef3d987f9479ab134ab483314f5157549"
   end
 
   depends_on "protobuf"
-  depends_on "python@3.10"
+  depends_on "python@3.11"
 
   resource "iterm2" do
-    url "https://files.pythonhosted.org/packages/37/a9/0f01cd95cd099a04b221a817f3b01d17034a1de6d4c3319f66ef09822b08/iterm2-2.5.tar.gz"
-    sha256 "4e0f8a463fd4d6be1282fdd12df0e17e876782ae96a45b8afd508ffd22f58555"
+    url "https://files.pythonhosted.org/packages/4f/eb/47bb125fd3b32969f3bc8e0b8997bbe308484ac4d04331ae1e6199ae2c0f/iterm2-2.7.tar.gz"
+    sha256 "f6f0bec46c32cecaf7be7fd82296ec4697d4bf2101f0c4aab24cc123991fa230"
   end
 
   resource "trzsz-iterm2" do
@@ -40,8 +43,8 @@ class Trzsz < Formula
   end
 
   resource "websockets" do
-    url "https://files.pythonhosted.org/packages/f8/a3/622d9acbfb9a71144b5d7609906bc648c62e3ca5fdbb1c8cca222949d82c/websockets-10.3.tar.gz"
-    sha256 "fc06cc8073c8e87072138ba1e431300e2d408f054b27047d047b549455066ff4"
+    url "https://files.pythonhosted.org/packages/85/dc/549a807a53c13fd4a8dac286f117a7a71260defea9ec0c05d6027f2ae273/websockets-10.4.tar.gz"
+    sha256 "eef610b23933c54d5d921c92578ae5f89813438fded840c2e9809d378dc765d3"
   end
 
   def install

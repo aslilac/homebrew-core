@@ -1,20 +1,24 @@
 class Mongoose < Formula
   desc "Web server build on top of Libmongoose embedded library"
   homepage "https://github.com/cesanta/mongoose"
-  url "https://github.com/cesanta/mongoose/archive/7.7.tar.gz"
-  sha256 "4e5733dae31c3a81156af63ca9aa3a6b9b736547f21f23c3ab2f8e3f1ecc16c0"
+  url "https://github.com/cesanta/mongoose/archive/7.8.tar.gz"
+  sha256 "55073dcd427ab9475731ad855e417884f4fbfb24b7d5694f6cabadbee1329f16"
   license "GPL-2.0-only"
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "e996de4c67cdc0c7e96f1225b3e0d55bf4d51573481aad1152ccd4a21f396154"
-    sha256 cellar: :any,                 arm64_big_sur:  "abea894ededb62320079c76476f3b64185d4a77afbdbb06c190ff5c7fa756477"
-    sha256 cellar: :any,                 monterey:       "a17463b6b5081d11abbd1e76187546def85496a7faabd6ae57b725dfd5b57b6d"
-    sha256 cellar: :any,                 big_sur:        "adb800900903650cf7e9aeb7641fab5fd5ecac00d1b9c1e281a736946585ad6c"
-    sha256 cellar: :any,                 catalina:       "869af2bf8f690fe4e1b4381c8f0c7d1c136bfc0b1f35a554855b594021dc4cf5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b1d51bf073951c5f33e86a09fc3a7a6bb9aa2bbac04bdaa9bb4a75e6ad54fdaa"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "f8081c830980b8671bb9055574cb20b4e57b09c8447dbb157e86366a9d359ed2"
+    sha256 cellar: :any,                 arm64_monterey: "7998ae2f5baf6f285f64228eb08ceea45ebb1e848a0bc0050a05b670f0d6e486"
+    sha256 cellar: :any,                 arm64_big_sur:  "ee3b2e1a77bcac51e1eb227b6b7cbcd06281090a91b477d8593a98800b6d30ee"
+    sha256 cellar: :any,                 ventura:        "df7a7b6ca96bea712b30c8aad4fda4c2733d8da86976b7133ce89d283f14591f"
+    sha256 cellar: :any,                 monterey:       "9270e8f543e74f31a551a56bec241ba3ca32f4fa4e51066453d65f564631552e"
+    sha256 cellar: :any,                 big_sur:        "7a13be2a2f240e9b61d453d6e8e83561778a5d99501a86a62071b0be8dd4685a"
+    sha256 cellar: :any,                 catalina:       "dd3af2e217dc3b2ff93e2154531503e0b594694e2b94a608473151907544488d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dc4276410eb8f29fac51ffa51a9e1c7c664b45e0742fd51f21bc82568fcc9b59"
   end
 
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
 
   conflicts_with "suite-sparse", because: "suite-sparse vendors libmongoose.dylib"
 

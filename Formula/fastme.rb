@@ -3,6 +3,7 @@ class Fastme < Formula
   homepage "http://www.atgc-montpellier.fr/fastme/"
   url "https://gite.lirmm.fr/atgc/FastME/raw/v2.1.6.3/tarball/fastme-2.1.6.3.tar.gz"
   sha256 "09a23ea94e23c0821ab75f426b410ec701dac47da841943587443a25b2b85030"
+  revision 1
 
   livecheck do
     url "https://gite.lirmm.fr/atgc/FastME.git"
@@ -10,12 +11,14 @@ class Fastme < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "ae1a14a4c05375918caea9cfd1ca10dd9da88b03368008678a77f234c907637f"
-    sha256 cellar: :any,                 arm64_big_sur:  "72fb7f3bf96eada63a931e8522a47d8ced80748908c36f4a38ab76004391a8ff"
-    sha256 cellar: :any,                 monterey:       "55e99ea2feaf54910f1db7f060e3a52ae05d178d3e302c8fe89006088e4c7488"
-    sha256 cellar: :any,                 big_sur:        "573b45beb5888133d6e5a2c276db19fec4cc6fbaf90c8ecf646a17d446775e00"
-    sha256 cellar: :any,                 catalina:       "737b04e925c4b5260eb7ea21c4207dd5e4d8be2424edb0694c2bc71c09c86a59"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2b47de3e8767c68a4cbb02e97a27ebd44eba20bca86a5c487a2a6edee29632c0"
+    sha256 cellar: :any,                 arm64_ventura:  "2fd457f0c0d96cca6a317824fb8feb6beb3ff7f0af1592f957e405e69ef54014"
+    sha256 cellar: :any,                 arm64_monterey: "e7530d4c95fba744512d6855a3c7fe472530274842a0e32b36fef471b5e36905"
+    sha256 cellar: :any,                 arm64_big_sur:  "52c11335206aa05d8be9dc67fb4b13bd2fffa40d0bf6cefcb68ac11e29a42864"
+    sha256 cellar: :any,                 ventura:        "60b489e83afeca87e9977df7d857d0f89fa229a042726a8c45c8711a9f295f95"
+    sha256 cellar: :any,                 monterey:       "fb8ceaba186e055830afb68ecab9a13d1da3e067a6d3043fcddcd193c4a72026"
+    sha256 cellar: :any,                 big_sur:        "6e2d00da0651530516a3e2ed929325f70af957e4d54ca522ca6601df256170bd"
+    sha256 cellar: :any,                 catalina:       "7554de7489c8f3c360b8ab09641f48e66638d1b8472dddbede8c017a1552cb25"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0b4189a84d30c562933f974b932eccadd0d18115bdafa12241f0207ddd5c2d7d"
   end
 
   on_macos do

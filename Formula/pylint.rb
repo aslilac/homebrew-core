@@ -3,39 +3,36 @@ class Pylint < Formula
 
   desc "It's not just a linter that annoys you!"
   homepage "https://github.com/PyCQA/pylint"
-  url "https://files.pythonhosted.org/packages/9c/90/28c6afd89c67ee3338108641f34809e4b8dfc4fd51128c82ff2c46edfc91/pylint-2.14.4.tar.gz"
-  sha256 "47705453aa9dce520e123a7d51843d5f0032cbfa06870f89f00927aa1f735a4a"
+  url "https://files.pythonhosted.org/packages/1e/fa/690c4dcf3ade9ae0497413c788267eafa36228394099708bb0fd0b8a6949/pylint-2.15.8.tar.gz"
+  sha256 "ec4a87c33da054ab86a6c79afa6771dc8765cb5631620053e727fcf3ef8cbed7"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "759f246d44be0c4361394cefda2ed9411b5847d47187f757f20de8cddd700f72"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "37bd394a4cf5d5432a6412f15f6180f5ef2362ba53506ef69f077d24f22eda02"
-    sha256 cellar: :any_skip_relocation, monterey:       "59189122fe5194fcbc8c5ba73f70228339e727a479b8b771f9dd6e2f26f965fa"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2646b8cde99cf71af443564edb6fd22b73ef21a3a4bb1c3780e75fbc9d22af1d"
-    sha256 cellar: :any_skip_relocation, catalina:       "47ce288d03e8dab7ab9e8dd153c713239ee73c4abd6e11da220c6d85fe199290"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0442e2170b41c7b280700f17d035d0405185ece4af37b564582353cc315f19ef"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2606e39ccc345e730370dbc9af9c7984eb2361539235078ab7b48010d0f5fbe1"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "290b59456402f93ee98408143cc4905c7648fd38fab2a1adefced826cb8e3f31"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cd79ec19e5c92b1edd55b1b20bc2fcacc963fc314d684759f9b04c930f3f7cbe"
+    sha256 cellar: :any_skip_relocation, ventura:        "1be2c0e6790064f9238ac510d8787aed25efffd2bb8bf7d1af4625249ddf80df"
+    sha256 cellar: :any_skip_relocation, monterey:       "73bb1b8f64072b56497871f9e4942b89cab8fa2c585e2399cce2009943354a68"
+    sha256 cellar: :any_skip_relocation, big_sur:        "39b25268af11f0b664086ebf50f2c29d72a3652433e7a6d5b1bd1b64a9b05878"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d235df914d009eb994a3192e2ecb89353aa101e3d27ac7fda9fae68a1a7f7ad3"
   end
 
-  depends_on "python@3.10"
+  depends_on "isort"
+  depends_on "python@3.11"
 
   resource "astroid" do
-    url "https://files.pythonhosted.org/packages/40/89/d29f51ca63b25c488e8f12812d80a970d1f0897de22b175d8ff23f2dcbe7/astroid-2.11.6.tar.gz"
-    sha256 "4f933d0bf5e408b03a6feb5d23793740c27e07340605f236496cd6ce552043d6"
+    url "https://files.pythonhosted.org/packages/61/d0/e7cfca72ec7d6c5e0da725c003db99bb056e9b6c2f4ee6fae1145adf28a6/astroid-2.12.13.tar.gz"
+    sha256 "1493fe8bd3dfd73dc35bd53c9d5b6e49ead98497c47b2307662556a5692d29d7"
   end
 
   resource "dill" do
-    url "https://files.pythonhosted.org/packages/59/46/634d5316ee8984e7dac658fb2e297a19f50a1f4007b09acb9c7c4e15bd67/dill-0.3.5.1.tar.gz"
-    sha256 "d75e41f3eff1eee599d738e76ba8f4ad98ea229db8b085318aa2b3333a208c86"
-  end
-
-  resource "isort" do
-    url "https://files.pythonhosted.org/packages/ab/e9/964cb0b2eedd80c92f5172f1f8ae0443781a9d461c1372a3ce5762489593/isort-5.10.1.tar.gz"
-    sha256 "e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
+    url "https://files.pythonhosted.org/packages/7c/e7/364a09134e1062d4d5ff69b853a56cf61c223e0afcc6906b6832bcd51ea8/dill-0.3.6.tar.gz"
+    sha256 "e5db55f3687856d8fbdab002ed78544e1c4559a130302693d839dfe8f93f2373"
   end
 
   resource "lazy-object-proxy" do
-    url "https://files.pythonhosted.org/packages/75/93/3fc1cc28f71dd10b87a53b9d809602d7730e84cc4705a062def286232a9c/lazy-object-proxy-1.7.1.tar.gz"
-    sha256 "d609c75b986def706743cdebe5e47553f4a5a1da9c5ff66d76013ef396b5a8a4"
+    url "https://files.pythonhosted.org/packages/74/37/591f89e8a09ae4574391bdf8a5eecd34a3dbe545917333e625c9de9a66b0/lazy-object-proxy-1.8.0.tar.gz"
+    sha256 "c219a00245af0f6fa4e95901ed28044544f50152840c5b6a3e7b2568db34d156"
   end
 
   resource "mccabe" do
@@ -44,18 +41,13 @@ class Pylint < Formula
   end
 
   resource "platformdirs" do
-    url "https://files.pythonhosted.org/packages/ff/7b/3613df51e6afbf2306fc2465671c03390229b55e3ef3ab9dd3f846a53be6/platformdirs-2.5.2.tar.gz"
-    sha256 "58c8abb07dcb441e6ee4b11d8df0ac856038f944ab98b7be6b27b2a3c7feef19"
-  end
-
-  resource "tomli" do
-    url "https://files.pythonhosted.org/packages/c0/3f/d7af728f075fb08564c5949a9c95e44352e23dee646869fa104a3b2060a3/tomli-2.0.1.tar.gz"
-    sha256 "de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"
+    url "https://files.pythonhosted.org/packages/cb/5f/dda8451435f17ed8043eab5ffe04e47d703debe8fe845eb074f42260e50a/platformdirs-2.5.4.tar.gz"
+    sha256 "1006647646d80f16130f052404c6b901e80ee4ed6bef6792e1f238a8969106f7"
   end
 
   resource "tomlkit" do
-    url "https://files.pythonhosted.org/packages/24/24/e50be8344fc6e9c9ae55bfcb136b33ad562776d822736da3d1ec0278b18b/tomlkit-0.11.0.tar.gz"
-    sha256 "71ceb10c0eefd8b8f11fe34e8a51ad07812cb1dc3de23247425fbc9ddc47b9dd"
+    url "https://files.pythonhosted.org/packages/ff/04/58b4c11430ed4b7b8f1723a5e4f20929d59361e9b17f0872d69681fd8ffd/tomlkit-0.11.6.tar.gz"
+    sha256 "71b952e5721688937fb02cf9d354dbcf0785066149d2855e44531ebdd2b65d73"
   end
 
   resource "wrapt" do
@@ -65,6 +57,11 @@ class Pylint < Formula
 
   def install
     virtualenv_install_with_resources
+
+    # we depend on isort, but that's a separate formula, so install a `.pth` file to link them
+    site_packages = Language::Python.site_packages("python3.11")
+    isort = Formula["isort"].opt_libexec
+    (libexec/site_packages/"homebrew-isort.pth").write isort/site_packages
   end
 
   test do

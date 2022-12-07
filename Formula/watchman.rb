@@ -1,47 +1,40 @@
 class Watchman < Formula
   desc "Watch files and take action when they change"
   homepage "https://github.com/facebook/watchman"
-  url "https://github.com/facebook/watchman/archive/v2022.06.27.00.tar.gz"
-  sha256 "50940f77c4c27859ff0f0b5f880e596dd9ecfc53e7ef9b4f72bf75bc61423253"
+  url "https://github.com/facebook/watchman/archive/v2022.12.05.00.tar.gz"
+  sha256 "e56c7433b186190b56d1ed86987a1f64c15486bf0f37dd7d38c826fac07e34f3"
   license "MIT"
-  revision 1
   head "https://github.com/facebook/watchman.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "ffd4296f97eb7be502a7af6ca6363bec46b8700d0d5347c6914910d4a4e5cb56"
-    sha256 cellar: :any, arm64_big_sur:  "ee0151d4c73d4218458a36854eb3220adba856e541ab3af05c87378775959885"
-    sha256 cellar: :any, monterey:       "da44d09f29d01c1cade9dda586a053d368fba0661361aaeba9cc84a5a1f46ab3"
-    sha256 cellar: :any, big_sur:        "968f7aeff4ffcd4d70816bb8cae29744cd6c7f147b8cc3c91996f230ebcd0fed"
-    sha256 cellar: :any, catalina:       "ff97b79d7f44d5cb2f72ae40d4bda141419ac3b6a7384da43f93919aeab0089b"
-    sha256               x86_64_linux:   "7e90a03210b7ca896e8b974823d928159dde457b45e566f9bef28dc676f9c6a1"
+    sha256 cellar: :any,                 arm64_ventura:  "40a999e19abb0881132905dd187274ccac0ef38e1c98011c8962637c4d3a05ce"
+    sha256 cellar: :any,                 arm64_monterey: "6f1cfaa8404756a991d001d1d5abd564aef30873b0ef635f8497a11cc7f06f9e"
+    sha256 cellar: :any,                 arm64_big_sur:  "b356696a63ce06a92e1be16e90b2c82ce311f827bfcf8bb30ae948b48dd69266"
+    sha256 cellar: :any,                 ventura:        "06e3ed54cb851478c008dfa4d5f20ce498374971dc0254ed2c67297b5913c375"
+    sha256 cellar: :any,                 monterey:       "f9186346de58cd86cbf9a0441ba32a80cad058cc13fef6d758f53b820c76ee40"
+    sha256 cellar: :any,                 big_sur:        "25536ed68d2ea54640d5becf464ce72a283b1076bb817f3462e24e1d48b9e0b8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d5914c3e392ebc05eaef29b069ed1e7aab8e56ac968d2ec0fa6aef8dff442e2c"
   end
 
   # https://github.com/facebook/watchman/issues/963
   pour_bottle? only_if: :default_prefix
 
   depends_on "cmake" => :build
+  depends_on "cpptoml" => :build
   depends_on "googletest" => :build
   depends_on "pkg-config" => :build
   depends_on "rust" => :build
   depends_on "boost"
+  depends_on "edencommon"
+  depends_on "fb303"
   depends_on "fmt"
   depends_on "folly"
   depends_on "gflags"
   depends_on "glog"
   depends_on "libevent"
   depends_on "openssl@1.1"
-  depends_on "pcre"
-  depends_on "python@3.10"
-
-  # Dependencies for Eden support. Enabling Eden support fails to build on Linux.
-  on_macos do
-    depends_on "cpptoml" => :build
-    depends_on "fb303"
-  end
-
-  on_linux do
-    depends_on "gcc"
-  end
+  depends_on "pcre2"
+  depends_on "python@3.11"
 
   fails_with gcc: "5"
 
@@ -56,7 +49,7 @@ class Watchman < Formula
     #       if they are built as shared libraries. They're not used by any other
     #       formulae, so let's link them statically instead. This is done by default.
     system "cmake", "-S", ".", "-B", "build",
-                    "-DENABLE_EDEN_SUPPORT=#{OS.mac?}",
+                    "-DENABLE_EDEN_SUPPORT=ON",
                     "-DWATCHMAN_VERSION_OVERRIDE=#{version}",
                     "-DWATCHMAN_BUILDINFO_OVERRIDE=#{tap.user}",
                     "-DWATCHMAN_STATE_DIR=#{var}/run/watchman",
@@ -67,8 +60,8 @@ class Watchman < Formula
     system "cmake", "--install", "build"
 
     path = Pathname.new(File.join(prefix, HOMEBREW_PREFIX))
-    bin.install Dir[path/"bin/*"]
-    lib.install Dir[path/"lib/*"]
+    bin.install (path/"bin").children
+    lib.install (path/"lib").children
     path.rmtree
   end
 

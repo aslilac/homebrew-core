@@ -1,10 +1,9 @@
 class Kore < Formula
   desc "Web application framework for writing web APIs in C"
   homepage "https://kore.io/"
-  url "https://kore.io/releases/kore-4.2.2.tar.gz"
-  sha256 "77c12d80bb76fe774b16996e6bac6d4ad950070d0816c3409dc0397dfc62725f"
+  url "https://kore.io/releases/kore-4.2.3.tar.gz"
+  sha256 "f9a9727af97441ae87ff9250e374b9fe3a32a3348b25cb50bd2b7de5ec7f5d82"
   license "ISC"
-  revision 2
   head "https://github.com/jorisvink/kore.git", branch: "master"
 
   livecheck do
@@ -13,12 +12,14 @@ class Kore < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "8a476b2e8a6f1876a3bb0f930b2ee67f440d2fc442dc99e98ee00b9535901b79"
-    sha256 arm64_big_sur:  "ebfe4e5da5636545f185e1535ee205389e1b71efc97242565470f72da11f4ac0"
-    sha256 monterey:       "ba1b874c9e8d25e1365258664b2e2f8355a587c755a737c84878b98013cb7ce4"
-    sha256 big_sur:        "99770a896f403b2f61ca845bc8fcbbb6ea625c62358802d2ab326a5d2f6af67e"
-    sha256 catalina:       "ef8323a13116686ae46c44f74f6dfb23a62b168681dc6913b2649fb4f2f96460"
-    sha256 x86_64_linux:   "a7be618efc5377bc7b4c5214466e016049273a1f5dcc4ae3d5db820f935f32df"
+    sha256 arm64_ventura:  "cbfccd4baa858b4b8319dc8dc8c24c72cf840c5ad0103d5d22b5d5fc206a34aa"
+    sha256 arm64_monterey: "f9f45763516449a9075be07735bf72855164b51ab549dbc07de6215bb163069a"
+    sha256 arm64_big_sur:  "75177641b3a63332f5931f39ac61001f8e45aa8751cf3c37032889a9ef49ad3f"
+    sha256 ventura:        "980d2d6c841e6e3ff768255422687a603c983d32f66a4c92b90e8a0d8976f94d"
+    sha256 monterey:       "8ba71c5137d2f2170c901a55ee0e5854b997163f715c43d46c4b823b111005f3"
+    sha256 big_sur:        "d270269663c58354047235b84a11360eb676e48e2bd1029077f58ef32d24b802"
+    sha256 catalina:       "c09baa37e79632bad83a33cae733a06f22e5caa461c20c85749a345436e0ec2b"
+    sha256 x86_64_linux:   "ef4df9e7c709ac5d717deb8b8f7b093c8936884e28039bd25ad494f56a5b1027"
   end
 
   depends_on "pkg-config" => :build

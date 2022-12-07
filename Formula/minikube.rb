@@ -2,18 +2,20 @@ class Minikube < Formula
   desc "Run a Kubernetes cluster locally"
   homepage "https://minikube.sigs.k8s.io/"
   url "https://github.com/kubernetes/minikube.git",
-      tag:      "v1.26.0",
-      revision: "f4b412861bb746be73053c9f6d2895f12cf78565"
+      tag:      "v1.28.0",
+      revision: "986b1ebd987211ed16f8cc10aed7d2c42fc8392f"
   license "Apache-2.0"
   head "https://github.com/kubernetes/minikube.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "89a6057043442a40fb27fcad58155ec715e58f99bf95d24f93f3277b1af0a839"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c7520f937609fa3992b9ba52586becb84e3e5cade7fb756fed465543de989252"
-    sha256 cellar: :any_skip_relocation, monterey:       "56fb5f23b5eb1274ca16735577f1fcdbcaccc0dfd74b9dcdf1fe5f8e2f652fc3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b66300657406c63a025093a509f6b0aeb318d02508004ae3b4fc7faa6d0546b5"
-    sha256 cellar: :any_skip_relocation, catalina:       "21bf510d51d70b66c5d9b9fd94a99523bfc3c1cbf8c951c5ca6a75b10c008613"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a87c2b709bc4c74177f6f4e1afad72c8d4c0115b7a86a5cee13d480c14bc7f03"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "638f1738d9b59cfe6d194aa27888ec4fa8b30aa82f367c8b170cf33ca176fd2c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "91c8e0853c19fcf0ddff42dde117f9c348bc1b9cd6090a5fadb0b80cac1896d3"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1e87d89e237fea75147a58badd196e36b4880370b3ab134b227238ec22559935"
+    sha256 cellar: :any_skip_relocation, ventura:        "7e892277033822ca4db0e12edbf49495f4c2abf36bc2db058ce10ebcb7e83428"
+    sha256 cellar: :any_skip_relocation, monterey:       "b5a5d42e904668bb4552a6acfa77277ecc1c5a6e435654fb5f0344c6bca9ff0d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "17f4213ce63ee73efb7e5b26e4755a152248f807d5d58638001d21610c0b34fa"
+    sha256 cellar: :any_skip_relocation, catalina:       "fba074d6203fc1a6204d15f97121de73e04236e68b9c68bd5466a33846b1151a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "219b261d714695afe2a416445b61add331061a3b08ea9a4d916c85373fb166f4"
   end
 
   depends_on "go" => :build
@@ -24,14 +26,7 @@ class Minikube < Formula
     system "make"
     bin.install "out/minikube"
 
-    output = Utils.safe_popen_read(bin/"minikube", "completion", "bash")
-    (bash_completion/"minikube").write output
-
-    output = Utils.safe_popen_read(bin/"minikube", "completion", "zsh")
-    (zsh_completion/"_minikube").write output
-
-    output = Utils.safe_popen_read(bin/"minikube", "completion", "fish")
-    (fish_completion/"minikube.fish").write output
+    generate_completions_from_executable(bin/"minikube", "completion")
   end
 
   test do

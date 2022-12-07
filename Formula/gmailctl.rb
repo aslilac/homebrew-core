@@ -1,24 +1,28 @@
 class Gmailctl < Formula
   desc "Declarative configuration for Gmail filters"
   homepage "https://github.com/mbrt/gmailctl"
-  url "https://github.com/mbrt/gmailctl/archive/v0.10.4.tar.gz"
-  sha256 "779752e853d5f59d73e37a74681d52ba6f98ecb54c31fe266d4b85bedafc7774"
+  url "https://github.com/mbrt/gmailctl/archive/v0.10.6.tar.gz"
+  sha256 "85757469561fd612209c8d7c5146b4a23d377d236a918c1636113c3d115acf60"
   license "MIT"
   head "https://github.com/mbrt/gmailctl.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "13a173734e62e0e060e03ccd0049289f0dbaa687d376cde9926a4834d9a7dde5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0330737821e56d883585187c5db80abd81faf4d014869d2e2cad3eb0e34bf17e"
-    sha256 cellar: :any_skip_relocation, monterey:       "5602a349c56579915cf29c3995f3a214345c4b354bc8875eb8c639040745a535"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4393fd98611c97ba9bacf53166ce0e42e729d8ea89b697f3e81abccf5bc006f8"
-    sha256 cellar: :any_skip_relocation, catalina:       "2b694152a729cdb850ba5eac3750247999344a078beddfdad02bf024fb8637c4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ea955ccf87bfcc188d8132d2ef86b0e520843b61a5c4d9d54ae9522721cd2c55"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f94ddd5b80ac901282cb4e9d6ab837f0260c16ced3b1b47ea3d960d50a68cfd2"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c8f85806b696fe87c80b9769dba5c2e7aeaccbda8a2556d8ba9cab48b3a0baa3"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "767e31d78fe9ce25a0bf0edffb32c923da320140428ec3b5a84b4364467386bc"
+    sha256 cellar: :any_skip_relocation, ventura:        "496ad97ff738102c0d59f8483bb7888486ec6feedff9f0955a1b01aa0e3e3602"
+    sha256 cellar: :any_skip_relocation, monterey:       "b5bc82815fa4e14df3d9b084c56b5e6883dadf09dbf4b728d28fe48e1c94620e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "74c1212da4c70372c8cf1149f2f04ce7677217108e06ecec6f8bfdab764d795a"
+    sha256 cellar: :any_skip_relocation, catalina:       "8ac17b8b385eb1b4b964d990ac9dc1bce622d72214f0f22a28a150cb271bbd95"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "380d3964ab5cac3f3dc71b37de03e699197e433990cda2ce0aa3c3b470605fe7"
   end
 
   depends_on "go" => :build
 
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w -X main.version=#{version}"), "cmd/gmailctl/main.go"
+
+    generate_completions_from_executable(bin/"gmailctl", "completion")
   end
 
   test do

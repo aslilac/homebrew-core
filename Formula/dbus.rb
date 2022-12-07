@@ -2,9 +2,9 @@ class Dbus < Formula
   # releases: even (1.12.x) = stable, odd (1.13.x) = development
   desc "Message bus system, providing inter-application communication"
   homepage "https://wiki.freedesktop.org/www/Software/dbus"
-  url "https://dbus.freedesktop.org/releases/dbus/dbus-1.14.0.tar.xz"
-  mirror "https://deb.debian.org/debian/pool/main/d/dbus/dbus_1.14.0.orig.tar.xz"
-  sha256 "ccd7cce37596e0a19558fd6648d1272ab43f011d80c8635aea8fd0bad58aebd4"
+  url "https://dbus.freedesktop.org/releases/dbus/dbus-1.14.4.tar.xz"
+  mirror "https://deb.debian.org/debian/pool/main/d/dbus/dbus_1.14.4.orig.tar.xz"
+  sha256 "7c0f9b8e5ec0ff2479383e62c0084a3a29af99edf1514e9f659b81b30d4e353e"
   license any_of: ["AFL-2.1", "GPL-2.0-or-later"]
 
   livecheck do
@@ -13,16 +13,18 @@ class Dbus < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "c9fd5fca636d95d017c791c0b5b87ec99cd3ac3ef7d194c3bb05448a52e2933a"
-    sha256 arm64_big_sur:  "26e8143ae21a90e27e9d3218c69fe7ac509379bf6adc75e0293234c366a89b35"
-    sha256 monterey:       "25e7cbac037a07c9bef1f0cf8346c6c755fa46ce1b71471e46f64f396441f734"
-    sha256 big_sur:        "76ec924fed127229906ab2e90b30ecf1a856f0f50e9ab6519cbcee1f1202632f"
-    sha256 catalina:       "8b983bdc674dff5647af3ecab82e44abacbb460db8c60435e16ae351f22bfacb"
-    sha256 x86_64_linux:   "ccf0fc79f59fa7c0ac014861c70d2df8b0c8f8c7f688d548d84b74ce998ecd38"
+    sha256 arm64_ventura:  "bd47d7e498d2c564cc9e1a72171c188a579baa2b0b1ae7fdbc90403f0b40ff56"
+    sha256 arm64_monterey: "a7c5e9ebfa5e456cfbb3e78ee917898e89cb4672b8fd0aa5bec679723d8685f5"
+    sha256 arm64_big_sur:  "77c1c3aa6d4e2d86d5c0e505326297bb4873d9cfb475eb0faad0ae588384d8af"
+    sha256 ventura:        "44e1e11140160c1aba37a011693779ebf5313735f9febce5a60958099ab76506"
+    sha256 monterey:       "0ac396a8e236fb1324f0008017e2e2dc096eec1e804e80082096974df86038f2"
+    sha256 big_sur:        "1e5f498229eb4607bad387c03b7fa29b28e5cd3d5189fbd506abfdc7e8e5bdb2"
+    sha256 catalina:       "ddc436c75350923f396fc2296b7c2e432190a1d7efec209db34b0b50fc523a9b"
+    sha256 x86_64_linux:   "d7bdfb3e9401543b28b9db7fc137ed1129f5cdd23335fbe544ed438edfba3354"
   end
 
   head do
-    url "https://gitlab.freedesktop.org/dbus/dbus.git"
+    url "https://gitlab.freedesktop.org/dbus/dbus.git", branch: "master"
 
     depends_on "autoconf" => :build
     depends_on "autoconf-archive" => :build
@@ -35,10 +37,10 @@ class Dbus < Formula
 
   uses_from_macos "expat"
 
-  on_macos do
-    # Patch applies the config templating fixed in https://bugs.freedesktop.org/show_bug.cgi?id=94494
-    # Homebrew pr/issue: 50219
-    patch do
+  # Patch applies the config templating fixed in https://bugs.freedesktop.org/show_bug.cgi?id=94494
+  # Homebrew pr/issue: 50219
+  patch do
+    on_macos do
       url "https://raw.githubusercontent.com/Homebrew/formula-patches/0a8a55872e/d-bus/org.freedesktop.dbus-session.plist.osx.diff"
       sha256 "a8aa6fe3f2d8f873ad3f683013491f5362d551bf5d4c3b469f1efbc5459a20dc"
     end

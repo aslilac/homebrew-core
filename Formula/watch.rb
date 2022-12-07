@@ -2,18 +2,19 @@ class Watch < Formula
   desc "Executes a program periodically, showing output fullscreen"
   homepage "https://gitlab.com/procps-ng/procps"
   url "https://gitlab.com/procps-ng/procps.git",
-      tag:      "v4.0.0",
-      revision: "61825a5cc56b40c4afffd8c880b641210b05b3b7"
+      tag:      "v4.0.2",
+      revision: "135069f2b2d007353a549d7589a97aeec55ab3ed"
   license all_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later"]
   head "https://gitlab.com/procps-ng/procps.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "99135b41e5c85d6faaeaa3b3f9c74b17eea68d1394b639e3f4824ed4a582e9c4"
-    sha256 cellar: :any,                 arm64_big_sur:  "4560b743e716fa5aaff0b809fbf8e0fbcc9c71f4e4f502b77acb2f9130b846e0"
-    sha256 cellar: :any,                 monterey:       "2133244ca4acb47a37f24fa3930c5ab7d200b98d0d46fb80a7fb459373389e0e"
-    sha256 cellar: :any,                 big_sur:        "77383edb8de69055e0156ac24ba26f9c786b0d40e72d8e72a2c068d36f64c45e"
-    sha256 cellar: :any,                 catalina:       "32271afc05e243444040094864b075f61079a3464197699870b5026d4b3f62a8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f6b323f891f08beffb572b77b70e371906ec9a263de9176bcf444e5d91c41719"
+    sha256 cellar: :any,                 arm64_ventura:  "0a0e9b20a5d963727fe871d036d36e8c6d9acd512f37afd89f2c776415df1e62"
+    sha256 cellar: :any,                 arm64_monterey: "295f41f104c803e7f8eeb9143f78d9d0c3ab0a586a9b21ef10d51f35f6aa5134"
+    sha256 cellar: :any,                 arm64_big_sur:  "f4be2f3608b91a6e1ec8d96301c7d1cc64e9f826db37c396f6145dd0c326cd80"
+    sha256 cellar: :any,                 ventura:        "c46ff9d0553bf1e0b521ea918bae5c37947082a60c429572d2684f3bf0adff23"
+    sha256 cellar: :any,                 monterey:       "e1fe02414d939a45b709243ccb5689d9619afbb3e7208af3f636c3b5a32dd52b"
+    sha256 cellar: :any,                 big_sur:        "a69794ac246a20aca413883e44fefeb34557caa52e6c655bba6822df140a3ad1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ce1c3480a970bf4415aded2f6b8ec57744a1b25e385ac32f705a681e4b9b4b2d"
   end
 
   depends_on "autoconf" => :build
@@ -32,9 +33,9 @@ class Watch < Formula
                           "--prefix=#{prefix}",
                           "--disable-nls",
                           "--enable-watch8bit"
-    system "make", "watch"
-    bin.install "watch"
-    man1.install "watch.1"
+    system "make", "src/watch"
+    bin.install "src/watch"
+    man1.install "man/watch.1"
   end
 
   test do

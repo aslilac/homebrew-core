@@ -1,8 +1,8 @@
 class Sord < Formula
   desc "C library for storing RDF data in memory"
   homepage "https://drobilla.net/software/sord.html"
-  url "https://download.drobilla.net/sord-0.16.10.tar.bz2"
-  sha256 "9c70b3fbbb0c5c7bf761ef66c3d5b939ab45ad063e055990f17f40f1f6f96572"
+  url "https://download.drobilla.net/sord-0.16.14.tar.xz"
+  sha256 "220fd97d5fcb216e7b85db66f685bfdaad7dc58a50d1f96dfb2558dbc6c4731b"
   license "ISC"
 
   livecheck do
@@ -11,23 +11,28 @@ class Sord < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "9d402a07136ecdd2d2d4005cc27dd0fa7cfd7f06ff05077f95f99fe59d66b029"
-    sha256 cellar: :any,                 arm64_big_sur:  "467ef187ee0bb533d4082b3c99411d0c64a407ae535555def70a830d0f1ce14d"
-    sha256 cellar: :any,                 monterey:       "5fd6561f1fb6f551323b7ead34c3c93485076455df64ce5051f5aa536a31cd68"
-    sha256 cellar: :any,                 big_sur:        "74c80fd80a8c3cf5672c31e8c1967cae4f4f48093a9551de08d3f542565b1eff"
-    sha256 cellar: :any,                 catalina:       "82c6d6362b7ed299f0e5639243e92e6ef118072214b6b4077ac94c7e520f4aa0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1c469e65f11e0450f094a593428d865a70398a28085eaf7aaae8dd02b9efc6a5"
+    sha256 cellar: :any, arm64_ventura:  "20489ceee76a03468222d1664ab094b742974816d2dfee437eab8c12009a16c4"
+    sha256 cellar: :any, arm64_monterey: "96032d07b0ac3f7364b721c935a215c6f792abbf79a8ad6004638794ae65a4d5"
+    sha256 cellar: :any, arm64_big_sur:  "b7ceac3c480159338053a7dd2da2ecab47bf61c238332a10f8700470101cc226"
+    sha256 cellar: :any, ventura:        "2dcbcfef5db2ad4ab4e44addeda16ba5490d9e773015e8137c7005956dd40c28"
+    sha256 cellar: :any, monterey:       "5181253c794efcb69212b0b22573cadd5d2d92161c1b6a725a74c40dcd718f6f"
+    sha256 cellar: :any, big_sur:        "b2f8da7c926a2280fcd124bf494a7307c5a655cd3d266791b03b34556839fda8"
+    sha256 cellar: :any, catalina:       "faf8da2bf68426cb85aafdc8f3caaf2cbb246c2d8369b7c390b803e53b209331"
+    sha256               x86_64_linux:   "b1f84037affacbb7878f87d88c10944681091bc4633f24170e7869ac72aa0182"
   end
 
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.10" => :build
   depends_on "pcre"
   depends_on "serd"
 
   def install
-    system "python3", "./waf", "configure", "--prefix=#{prefix}"
-    system "python3", "./waf"
-    system "python3", "./waf", "install"
+    mkdir "build" do
+      system "meson", *std_meson_args, "-Dtests=disabled", ".."
+      system "ninja"
+      system "ninja", "install"
+    end
   end
 
   test do

@@ -1,19 +1,18 @@
 class Hexyl < Formula
   desc "Command-line hex viewer"
   homepage "https://github.com/sharkdp/hexyl"
-  url "https://github.com/sharkdp/hexyl/archive/v0.10.0.tar.gz"
-  sha256 "5821c0aa5fdda9e84399a5f92dbab53be2dbbcd9a7d4c81166c0b224a38624f8"
+  url "https://github.com/sharkdp/hexyl/archive/v0.11.0.tar.gz"
+  sha256 "ffab2a52f6d95afd4d83ef87b694ec749837a1fb6ea8099b700bd6323a9b622e"
   license any_of: ["Apache-2.0", "MIT"]
-  revision 1
   head "https://github.com/sharkdp/hexyl.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "509d6a89942af5f03847b001080e58a5a80d4985552fe2eb3c2567a45291cedc"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b3ec37a1d0fa504e153c3e28549fa2e9b250232a0797a03fee38aa44e06fa7ea"
-    sha256 cellar: :any_skip_relocation, monterey:       "daf860cbe43139bfdc33ccc06d3e6134252d1498d97cbaedd0e3cc1128c99d88"
-    sha256 cellar: :any_skip_relocation, big_sur:        "32f0919b16859d9fa1259746eeba92f7be4a4a36455369c831b5edb5362ecc61"
-    sha256 cellar: :any_skip_relocation, catalina:       "0a3921f9a55082a65c6aca3820f3c187d99b6b1c5da18ed792fac074f14b949b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ac81155dc0210d8fdd28842b32430aff4b3f53e166432020ea5375e4b77b3e00"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3f033d8bb6aa0df9c5bf32552ab2f023a0b0067b892d1e5d5d8207ec838730dc"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f73c44d29f4953e97fb48939b36f551189197d08c7b99c3dcb91f04be63ce0ea"
+    sha256 cellar: :any_skip_relocation, ventura:        "35386ebfeb38d54bec134e92e8229432e7e8ddcc34c8dd2c8a98a67087a34833"
+    sha256 cellar: :any_skip_relocation, monterey:       "3ab6dd0e35b54784bbedfb46099f52edb3a258cc0cf1dac1e9074137e58ada81"
+    sha256 cellar: :any_skip_relocation, big_sur:        "97e15dc5c3e71eb3598a56870fde2d3e547306b6780a51ad1c0ca93672c1a28b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "85ced5662e57be08b28ca529df677e6d1cbe74c491e9450eb8e5b9194724a2c5"
   end
 
   depends_on "pandoc" => :build

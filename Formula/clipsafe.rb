@@ -4,7 +4,7 @@ class Clipsafe < Formula
   url "https://waxandwane.org/download/clipsafe-1.1.tar.gz"
   sha256 "7a70b4f467094693a58814a42d272e98387916588c6337963fa7258bda7a3e48"
   license "GPL-2.0-or-later"
-  revision 1
+  revision 2
 
   livecheck do
     url :homepage
@@ -12,16 +12,14 @@ class Clipsafe < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "dd7c76df948ba0a00f10bc5dd97f817d1ffde6c300b828135b03c8702f32c889"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b630e790518cf78ce01b8bf95d0bc47ecc36c865e70dfccfb8fc299fa5a9abd8"
-    sha256 cellar: :any_skip_relocation, monterey:       "fe85e497b3e8b625add83acbd4178b1725339ba2e2ad0913eb1c5c44002c7675"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ce6bba6a2e1e865e3f087f51933093e7fe8acb337f5db94fc72a147de09895f6"
-    sha256 cellar: :any_skip_relocation, catalina:       "1a8a00c232a748d9b45271239043f5d155666acfdcb79670efc816e26c740221"
-    sha256 cellar: :any_skip_relocation, mojave:         "c3c42621d02672ee0cabd443b871760320c1b82ba61b48bca61076acab10d097"
-    sha256 cellar: :any_skip_relocation, high_sierra:    "211d670b61c6a68650736df3deb3ae783c320491ba3205e035cc28c014fca705"
-    sha256 cellar: :any_skip_relocation, sierra:         "7c894e55e215fffa121aef718dbf7fa0f2c71531cf7970ae8d27f4b5eb939877"
-    sha256 cellar: :any_skip_relocation, el_capitan:     "ffd255c6ff1bd4c403bc4040f1751eef61b4ae341c33b226bf9a696b2836b02e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6ad9eeaf4799019ba9a0582ae6b88d49738423ce8f30edf7178eb6515796b11d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2fa4d98ac33833ba0514277bb4f653d7591b76d2865f3286bf410f2239e101d1"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d87595e7a8594b045facd8dc1cdc4d100f9d9c2277147e848cc3c0e30033f1a1"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f223d8fd1921ec1d70109a252ca7e2d36688eeea7973d596b7926c0a553f14a8"
+    sha256 cellar: :any_skip_relocation, ventura:        "1de5ffce74d79f4a439603e76e9f5f85be6271e2b8778bb99d85121a8b6e2f79"
+    sha256 cellar: :any_skip_relocation, monterey:       "7c995d83ce5e81f74a1b717a87432246747fb7f94ef8c0847e5c9c1a1d9116a1"
+    sha256 cellar: :any_skip_relocation, big_sur:        "6b949fa30ed125b70558ce545cd24a56094b2cc5cdf8fe722a1f339dedca8a9a"
+    sha256 cellar: :any_skip_relocation, catalina:       "771e4477328d156ba6c28dc73c58380f63486ac3f1adc77da6fa4585f2eed925"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ef98419e5f656879ca819a3b7c87069fbafec8d6dd7890ead046457b04bd8234"
   end
 
   uses_from_macos "perl"

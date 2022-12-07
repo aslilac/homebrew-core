@@ -2,18 +2,18 @@ class Easeprobe < Formula
   desc "Simple, standalone, and lightWeight tool that can do health/status checking"
   homepage "https://github.com/megaease/easeprobe"
   url "https://github.com/megaease/easeprobe.git",
-      tag:      "v1.6.0",
-      revision: "2f049eef2d4719f4c155a6cc14b6f49ba801cf47"
+      tag:      "v1.9.0",
+      revision: "92775df223eb2c64472a65f4d15528ebcda45bb6"
   license "Apache-2.0"
   head "https://github.com/megaease/easeprobe.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2c7d71714f2f2a2a1f031488709072489f8ae5b87682cc7be3eebc36a3ff60ec"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c3351e05338385e78266e99fa44a3a9d6ef6e788f0e08ed5202f87f22391b2d0"
-    sha256 cellar: :any_skip_relocation, monterey:       "523dd3455c61e4ebe2390d65f03b95a3f56b461fc14532dbc4b992da56707670"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0c2c69e1f3deaf7e8279a712ede1ba47d2d4ee71ba36d681d7ccf48e8ba63d4c"
-    sha256 cellar: :any_skip_relocation, catalina:       "2ccc65ea068a873cc4f6ce8f3da1f27f92375ed3fdffceb3e5e9bb37f50de06e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ba40cacdfe8cb95f9a72c3836038ef09210c431be8a51872ef8574bf09d0cf3d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2e5db11e4e4563351d3e1dcff71148d79b71669a1009d60cdef984c8fd45dd9a"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "beca54317110f9a30ebaa51d596805ab9d1413fc2ee168482816fa4316fa87de"
+    sha256 cellar: :any_skip_relocation, monterey:       "1fc0a180638fa33306252c03e3328b3ca7b3374457f590e5d22dd8de7745e1e4"
+    sha256 cellar: :any_skip_relocation, big_sur:        "ac6be7ad3ad9494cf106888e8f3a44398c750f1e4910b60e84be85157952542f"
+    sha256 cellar: :any_skip_relocation, catalina:       "d34e9de29594ad7bcdc4f6109d44eb45218692c2af80b36e65ecd06ea8dc0251"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9a01f8809017b064939f5ddad590fd163e620ece477f100881f140083a732ed2"
   end
 
   depends_on "go" => :build

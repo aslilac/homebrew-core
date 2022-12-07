@@ -4,7 +4,7 @@ class Points2grid < Formula
   url "https://github.com/CRREL/points2grid/archive/1.3.1.tar.gz"
   sha256 "6e2f2d3bbfd6f0f5c2d0c7d263cbd5453745a6fbe3113a3a2a630a997f4a1807"
   license "BSD-4-Clause"
-  revision 12
+  revision 13
 
   bottle do
     sha256 cellar: :any, monterey: "512f823167dbbf5181f29ed8114407b0412d5e078f0f936177fd740e976c0a09"
@@ -13,7 +13,7 @@ class Points2grid < Formula
     sha256 cellar: :any, mojave:   "d3e4412d6830dc9a2c8bcfc9494497eaeb4d9f606ee0211a74ce10f60382aff8"
   end
 
-  deprecate! date: "2021-05-06", because: :repo_archived
+  disable! date: "2022-07-31", because: :repo_archived
 
   depends_on "cmake" => :build
   depends_on "boost"

@@ -1,10 +1,9 @@
 class OcamlFindlib < Formula
   desc "OCaml library manager"
   homepage "http://projects.camlcity.org/projects/findlib.html"
-  url "http://download.camlcity.org/download/findlib-1.9.1.tar.gz"
-  sha256 "2b42b8bd54488d64c4bf3cb7054b4b37bd30c1dc12bd431ea1e4d7ad8a980fe2"
+  url "http://download.camlcity.org/download/findlib-1.9.6.tar.gz"
+  sha256 "2df996279ae16b606db5ff5879f93dbfade0898db9f1a3e82f7f845faa2930a2"
   license "MIT"
-  revision 1
 
   livecheck do
     url "http://download.camlcity.org/download/"
@@ -12,13 +11,14 @@ class OcamlFindlib < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "b05f66339e91c8aa5d0dc67242a82dc8c39a254532d8017c5d35bfd31139039e"
-    sha256 arm64_big_sur:  "747fcd3b425c998c45b5f83aaa72bab0a06a584ee409284447824472058a737e"
-    sha256 monterey:       "f5e661018713080fa77ad4d33f1890f51682971eb9593d821340e51655797be8"
-    sha256 big_sur:        "908202a20c99ce1e3021a2f415d876f59d8d65912df486d4085ca01b93b17e7a"
-    sha256 catalina:       "64e0d27b20e1b6ea55beda463d21701bb96688bd9dbda5b5e66095eddd25ef49"
-    sha256 mojave:         "e236f3f0d85b74fc8ced41f56cf5caae52d6ef5f542b26dc27563a1db1ecbccf"
-    sha256 x86_64_linux:   "fc83a61ef983085665a7a144d0d1d44d014da88cbb7a18b072a486555e460a40"
+    sha256 arm64_ventura:  "bac75b12905f7138e93455ef3c4599fd417448dccafec8cbf5cc63b7192b63c7"
+    sha256 arm64_monterey: "3b7dc9a49293c982c8b8fbb4bd3a979b652d9bf48b6ae6a915fe734960acb2d3"
+    sha256 arm64_big_sur:  "259a336b537993add90ebef09bc6473dfa39426ee80292d443307f36e77e8ac4"
+    sha256 ventura:        "c9731166502de936c4897ce2f9c50b0432ac81f53dd904569ef406a4ac7bcbae"
+    sha256 monterey:       "716c17abb924c7958ebad686f456cd3c19842ba334875ae0a91f1392df756815"
+    sha256 big_sur:        "d6e7046fbe14735edb44ce83654736a476357344009fe7fd497416ade6374c47"
+    sha256 catalina:       "ef1c177401fad930e6912ae5103326dc673913e0ec16d1bd730bcc6ba5a43cf8"
+    sha256 x86_64_linux:   "c319106538e9f3e0faecd3900c1ebd105ad9b39645e0952ed5cd14de9b8ef2e4"
   end
 
   depends_on "ocaml"

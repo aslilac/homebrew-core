@@ -8,7 +8,7 @@ on:
         required: false
   schedule:
     # Every day at 5am
-    - cron: '0 5 * * *'
+    - cron: "0 5 * * *"
 
 env:
   HOMEBREW_FORCE_HOMEBREW_ON_LINUX: 1
@@ -23,7 +23,6 @@ env:
     alluxio
     ammonite-repl
     angular-cli
-    annie
     ansible-lint
     ant
     ant@1.9
@@ -471,6 +470,7 @@ env:
     log4cxx
     lout
     luau
+    lux
     lychee
     macchina
     mage
@@ -562,6 +562,7 @@ env:
     ooniprobe
     opa
     openrtsp
+    openiothub-server
     opensearch
     operator-sdk
     or-tools
@@ -601,13 +602,12 @@ env:
     pmd
     pngquant
     pnpm
-    pocsuite3
     podman
     postgis
     powerman
     pre-commit
     prestd
-    presto
+    prestodb
     principalmapper
     procs
     protoc-gen-go-grpc
@@ -661,7 +661,6 @@ env:
     selenium-server
     seqkit
     ser2net
-    server-go
     serverless
     shadowenv
     sheldon
@@ -846,9 +845,9 @@ permissions:
 jobs:
   autobump:
     if: github.repository == 'Homebrew/homebrew-core'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     container:
-      image: ghcr.io/homebrew/ubuntu16.04:master
+      image: ghcr.io/homebrew/ubuntu22.04:master
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew

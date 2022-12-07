@@ -3,17 +3,12 @@ require "language/node"
 class BashLanguageServer < Formula
   desc "Language Server for Bash"
   homepage "https://github.com/bash-lsp/bash-language-server"
-  url "https://registry.npmjs.org/bash-language-server/-/bash-language-server-3.0.5.tgz"
-  sha256 "c915e2b962c57357131a484ee9ce71cffde25172266bfe1078fda11b7938bd68"
+  url "https://registry.npmjs.org/bash-language-server/-/bash-language-server-4.0.1.tgz"
+  sha256 "3fdf7b4b59f88e24b2d0170c0134858112e4cf5dbf8714e68900d567de7e469a"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "92ba17d5cf63c0244861f8dec67ba9f122b0d1bdf0e841850448cb1d04c42da6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "92ba17d5cf63c0244861f8dec67ba9f122b0d1bdf0e841850448cb1d04c42da6"
-    sha256 cellar: :any_skip_relocation, monterey:       "c65e3487c21c20e6e8ad1ad4b4292fecae275a6452c9b7b9e47ad7e2943b0f1e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c65e3487c21c20e6e8ad1ad4b4292fecae275a6452c9b7b9e47ad7e2943b0f1e"
-    sha256 cellar: :any_skip_relocation, catalina:       "c65e3487c21c20e6e8ad1ad4b4292fecae275a6452c9b7b9e47ad7e2943b0f1e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "92ba17d5cf63c0244861f8dec67ba9f122b0d1bdf0e841850448cb1d04c42da6"
+    sha256 cellar: :any_skip_relocation, all: "92465b9bc3385299c392a8cc47f4b0df024ac722f0ae40c49012533086bd2a23"
   end
 
   depends_on "node"

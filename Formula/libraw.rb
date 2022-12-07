@@ -4,7 +4,7 @@ class Libraw < Formula
   url "https://www.libraw.org/data/LibRaw-0.20.2.tar.gz"
   sha256 "dc1b486c2003435733043e4e05273477326e51c3ea554c6864a4eafaff1004a6"
   license any_of: ["LGPL-2.1-only", "CDDL-1.0"]
-  revision 2
+  revision 4
 
   livecheck do
     url "https://www.libraw.org/download/"
@@ -12,12 +12,13 @@ class Libraw < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "18c36994429964daaa9946aa3850f94f9fd6ba7c75692d81f2a5de422c7d2f1e"
-    sha256 cellar: :any,                 arm64_big_sur:  "edce6b5fa1e302705761e0d9b851422a04a98fa9e4acfa855544d13ecfa18565"
-    sha256 cellar: :any,                 monterey:       "e5e88f0e87405beceb2f0e0dcb7f7f0621f43173cf93a4d0e543a94688daf062"
-    sha256 cellar: :any,                 big_sur:        "6e1dc8ff8d4a11db7aab2dad4a310050b50dceb853f0fb5a8f49644f748dc2d9"
-    sha256 cellar: :any,                 catalina:       "bed8bf5d99ea03bd19b8fe962824518d1ce5b1b1cc7292decad833556b7079c8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3bb0248790c8d19f90e486b5ffefe19499f443523a484ca74745a72efe5e16d6"
+    sha256 cellar: :any,                 arm64_ventura:  "8b4256545b2414b6aaad493155d810adb1d393b25df0169f12e95c156957e915"
+    sha256 cellar: :any,                 arm64_monterey: "d013f4cee6561de346ee4e327f9362bf9d260ba99db77e85406b93a8cfec0858"
+    sha256 cellar: :any,                 arm64_big_sur:  "8adb515b95e5497c82372c7b9b30d721e397e5667a94ab18371722d5650d4a36"
+    sha256 cellar: :any,                 ventura:        "eea5b7c0f6ab30bc90cb4c77ff63f37ec0cb5777fbe7587bf1a00b365c155854"
+    sha256 cellar: :any,                 monterey:       "5da67713d8abe8bc6ddeab64c92438dcda76b2c80493f36d7cf7283c8e4dc800"
+    sha256 cellar: :any,                 big_sur:        "518cd6c21dc988a821963dde1b871fe5fe3223664ed0c906d324430bc1289b0b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2f84a11ebca75c0a2be9b7fc2fe9c53d083fc354fc2d24e24bcb9891cce34bf1"
   end
 
   depends_on "autoconf" => :build
@@ -25,7 +26,7 @@ class Libraw < Formula
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
   depends_on "jasper"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "little-cms2"
 
   uses_from_macos "zlib"

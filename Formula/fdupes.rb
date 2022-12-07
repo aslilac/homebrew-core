@@ -1,20 +1,20 @@
 class Fdupes < Formula
   desc "Identify or delete duplicate files"
   homepage "https://github.com/adrianlopezroche/fdupes"
-  url "https://github.com/adrianlopezroche/fdupes/releases/download/v2.1.2/fdupes-2.1.2.tar.gz"
-  sha256 "cd5cb53b6d898cf20f19b57b81114a5b263cc1149cd0da3104578b083b2837bd"
+  url "https://github.com/adrianlopezroche/fdupes/releases/download/v2.2.1/fdupes-2.2.1.tar.gz"
+  sha256 "846bb79ca3f0157856aa93ed50b49217feb68e1b35226193b6bc578be0c5698d"
   license "MIT"
   version_scheme 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "9b2c97111b7b420f99c521fce87023d4baaf49dcb03cb278cdfb774302b0ab2f"
-    sha256 cellar: :any,                 arm64_big_sur:  "90adb098f4e20620d34970ac9a959ae70acf8437756e9c339ed58e35a9553a45"
-    sha256 cellar: :any,                 monterey:       "8c79b738ca8a70384a764ee0a9f0163d7545ad0df3b41100d67a6d52b3fc619e"
-    sha256 cellar: :any,                 big_sur:        "045b4c5514bf52f37e955a497b5b8356e1e7e4819e3ee6b67109cc9b8770362e"
-    sha256 cellar: :any,                 catalina:       "e77144bd7d4b3ed472590b0bb7cb99dea185cf57b5b645bb0558c312441624c0"
-    sha256 cellar: :any,                 mojave:         "d9504149274c97eb7edb268d43ff18ebd292046d4c5691ae7c7aa9d16b40b0b3"
-    sha256 cellar: :any,                 high_sierra:    "0bd9b7c00c454042c485b1839ce6cef7f42af21710aa0d83f64a51ab5b18bfe2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cf15c9f7944fb8a759bb16f42e2081b4e8f2372f6583f65f50701fa09d1b2a9b"
+    sha256 cellar: :any,                 arm64_ventura:  "2d4923b54b24b67a3e1c01a0e230a7aff23c5be96bc448fa4b819ba961720b2d"
+    sha256 cellar: :any,                 arm64_monterey: "4ec16494f0ec45087289875f4f2eb02df77e21ba937f0b5069976241fdd072a1"
+    sha256 cellar: :any,                 arm64_big_sur:  "0dfb5e0dee88c277a48187d32892968da7f646efd032e80ea082242377907295"
+    sha256 cellar: :any,                 ventura:        "b9ad08ebb908b91bb9b0d3e7b46770dc7afadd948b12fc8cfd3c8f64526db1f5"
+    sha256 cellar: :any,                 monterey:       "2e25670f381e0554075a19f280f21c5d5703dae94332514af2ff521be94cda98"
+    sha256 cellar: :any,                 big_sur:        "274cf06310fb49f0bc5548cc39a6a6b7a80b595019e4adbd79897dff9b5d9b9a"
+    sha256 cellar: :any,                 catalina:       "44b821561c585b3b258120c18524b459813b889b298b0fa99ac21bdb096fe66f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3c4145b2b6b20271a0cf652e2ff650b668154ce5d74cc0e0f48c00369eb7cd56"
   end
 
   depends_on "pcre2"

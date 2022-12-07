@@ -1,8 +1,8 @@
 class SpirvHeaders < Formula
   desc "Headers for SPIR-V"
   homepage "https://github.com/KhronosGroup/SPIRV-Headers"
-  url "https://github.com/KhronosGroup/SPIRV-Headers/archive/refs/tags/sdk-1.3.216.0.tar.gz"
-  sha256 "46c49a0e49ea120138102b1dcb3778e5a4f2267c45b9e937810a4cf4fb889e3d"
+  url "https://github.com/KhronosGroup/SPIRV-Headers/archive/refs/tags/sdk-1.3.231.1.tar.gz"
+  sha256 "fc340700b005e9a2adc98475b5afbbabd1bc931f789a2afd02d54ebc22522af3"
   license "MIT"
 
   livecheck do
@@ -11,7 +11,7 @@ class SpirvHeaders < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "c7a263cab14ac743d43ed2a5180461d7287ef25c88c95f41a833d34a4c63130a"
+    sha256 cellar: :any_skip_relocation, all: "8608dea528108a012c1495a9ab559e5744d07fd672e96d5bc4fad2b21b805d26"
   end
 
   depends_on "cmake" => [:build, :test]

@@ -1,22 +1,32 @@
 class Rakudo < Formula
-  desc "Perl 6 compiler targeting MoarVM"
+  desc "Mature, production-ready implementation of the Raku language"
   homepage "https://rakudo.org"
-  url "https://github.com/rakudo/rakudo/releases/download/2022.04/rakudo-2022.04.tar.gz"
-  sha256 "7e13a8cc927efbe86b8ff7b19155a60a6f6e2b6e2952bd690dcacef2d02a1c74"
+  url "https://github.com/rakudo/rakudo/releases/download/2022.12/rakudo-2022.12.tar.gz"
+  sha256 "8bf95488d89b81ef9254d72c7f6b1235b4796bb465f2800fe3b97bdf74695c9e"
   license "Artistic-2.0"
 
-  bottle do
-    sha256 arm64_monterey: "bcb4a1aa20bd3fbb3897ee9aaf4492a1a8985e4214060bcc902b29033851ee48"
-    sha256 arm64_big_sur:  "7e4b2e0e000be7675d58ec6e87def4430804a64eb90f3047b0781e5d08f1f720"
-    sha256 monterey:       "2f9a945ab154c1abb995f426307f259f5243fca8537a6c22b50097ac9339a007"
-    sha256 big_sur:        "b3b36ad5f3b3ca9f8c0897bee40171a9eee6c0bb2c6aa1a9cb51397695ce99c2"
-    sha256 catalina:       "2d598a9c1eb95f2a68fe13ad98ce5aa476244d4d096f45a60434222f0d112dc6"
-    sha256 x86_64_linux:   "a31955817038c274cd2cf4677a80d1f5a5018e4b4f727007771f9ee7c9df6ba6"
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
+  bottle do
+    sha256 arm64_ventura:  "085640832724a98add766b9a42cc03948154cf707ddeef46d67ccb1d20d799eb"
+    sha256 arm64_monterey: "e471cef0702a0f38f090cad88c071e4a88e6eeef355278f7542760cdc942d24a"
+    sha256 arm64_big_sur:  "5917c2fde50b20002eaaadbbd301a8e926463dd69ef0a456e80e179ec8bebaa8"
+    sha256 ventura:        "da7593c192709ace8c1e8ecae54d54d8c25639e0114ba7c18d51d5ec2f703160"
+    sha256 monterey:       "c797d1b9314cb79ab21fbcbd10b7e996df43a9f8d21410dc82c19b8970e84e71"
+    sha256 big_sur:        "e5db77f4cc28a4b749d9e7e96d5b179b9b7a113c1fdd691f4fa819424a2b6b1d"
+    sha256 x86_64_linux:   "f3827940afb9b1df7077efc41d200acea850cf2f8d85094074dd902fb5cebcdb"
+  end
+
+  depends_on "libtommath"
+  depends_on "libuv"
   depends_on "nqp"
+  depends_on "zstd"
 
   uses_from_macos "perl" => :build
+  uses_from_macos "libffi"
 
   conflicts_with "rakudo-star"
 
@@ -27,11 +37,11 @@ class Rakudo < Formula
                    "--with-nqp=#{Formula["nqp"].bin}/nqp"
     system "make"
     system "make", "install"
-    bin.install "tools/install-dist.p6" => "perl6-install-dist"
+    bin.install "tools/install-dist.raku" => "raku-install-dist"
   end
 
   test do
-    out = shell_output("#{bin}/perl6 -e 'loop (my $i = 0; $i < 10; $i++) { print $i }'")
+    out = shell_output("#{bin}/raku -e 'loop (my $i = 0; $i < 10; $i++) { print $i }'")
     assert_equal "0123456789", out
   end
 end

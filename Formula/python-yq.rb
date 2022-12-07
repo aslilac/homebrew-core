@@ -3,32 +3,31 @@ class PythonYq < Formula
 
   desc "Command-line YAML and XML processor that wraps jq"
   homepage "https://kislyuk.github.io/yq/"
-  url "https://files.pythonhosted.org/packages/4b/31/6f26d1df7f8694479adeafa1f619dd2cfd9502089eac23bdf7fa342c9aaf/yq-3.0.1.tar.gz"
-  sha256 "a5e61078facd7ee4222f4346b5b50c4e9cea5e9d3330f074b5ea2c203bf639b1"
+  url "https://files.pythonhosted.org/packages/55/b2/0c4409c0e677ea9e6870538b4cdf4959fad92a8aaa73ee41cf03876bddf9/yq-3.1.0.tar.gz"
+  sha256 "30a84aa22486c749ba269256bd586c0bcd370b7e2a71e76c3924ead4867e74f2"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "50305fff11a875d170628a220cb7686e6ce1f97f49d16c21ccb8901c4f47aad4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a263caec56ecaa739d8f96d61aa27ba6662c064a6c9de1f2460d0f0e9f537b80"
-    sha256 cellar: :any_skip_relocation, monterey:       "ba120f4780742572c15d70abc2ec4d3518ecb362d24f4ff29150033700138011"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d7d69b7c840a461dfcc0adf1707a0f2096e52ea728a9ef2306b3ed05d0f7cf1b"
-    sha256 cellar: :any_skip_relocation, catalina:       "945b9b2eee8827d12b183f62671ffee7b08bb7e65020c415d96d7cb19231362e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7042471761d1f64822e6fe57c468225fc8e2c6365afc33f66ae7854cacef8d89"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6dd233dcf2e5b6ed7b1c283fb8c77713a6a38d303e305ede045c5f0b44bbd62c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6dd233dcf2e5b6ed7b1c283fb8c77713a6a38d303e305ede045c5f0b44bbd62c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6dd233dcf2e5b6ed7b1c283fb8c77713a6a38d303e305ede045c5f0b44bbd62c"
+    sha256 cellar: :any_skip_relocation, ventura:        "8388ac02e37b6e1921e87745b7ac2f6e840a37d5c80c200750bda121027eef0c"
+    sha256 cellar: :any_skip_relocation, monterey:       "8388ac02e37b6e1921e87745b7ac2f6e840a37d5c80c200750bda121027eef0c"
+    sha256 cellar: :any_skip_relocation, big_sur:        "8388ac02e37b6e1921e87745b7ac2f6e840a37d5c80c200750bda121027eef0c"
+    sha256 cellar: :any_skip_relocation, catalina:       "8388ac02e37b6e1921e87745b7ac2f6e840a37d5c80c200750bda121027eef0c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "53761567742c674ff7ccdf231d34562bb606b76cc4f468283abeb5b10a78bd8a"
   end
 
   depends_on "jq"
-  depends_on "python@3.10"
+  depends_on "python@3.11"
+  depends_on "pyyaml"
 
   conflicts_with "yq", because: "both install `yq` executables"
 
   resource "argcomplete" do
     url "https://files.pythonhosted.org/packages/05/f8/67851ae4fe5396ba6868c5d84219b81ea6a5d53991a6853616095c30adc0/argcomplete-2.0.0.tar.gz"
     sha256 "6372ad78c89d662035101418ae253668445b391755cfe94ea52f1b9d22425b20"
-  end
-
-  resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/36/2b/61d51a2c4f25ef062ae3f74576b01638bebad5e045f747ff12643df63844/PyYAML-6.0.tar.gz"
-    sha256 "68fb519c14306fec9720a2a5b45bc9f0c8d1b9c72adf45c37baedfcd949c35a2"
   end
 
   resource "toml" do

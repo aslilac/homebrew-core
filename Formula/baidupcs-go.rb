@@ -1,18 +1,19 @@
 class BaidupcsGo < Formula
   desc "Terminal utility for Baidu Network Disk"
   homepage "https://github.com/qjfoidnh/BaiduPCS-Go"
-  url "https://github.com/qjfoidnh/BaiduPCS-Go/archive/v3.8.7.tar.gz"
-  sha256 "e365fabee470ea5ab51b9ba034b5168dca1d0d537ab36274a17bfc460036b965"
+  url "https://github.com/qjfoidnh/BaiduPCS-Go/archive/v3.9.0.tar.gz"
+  sha256 "de71666e961a3eeb90f8aca7b11934c3f0296d1870e036a7c086ba1decfca8ab"
   license "Apache-2.0"
   head "https://github.com/qjfoidnh/BaiduPCS-Go.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "111eefb9c7f8ae719169eac7077e8bddf33b2cdd00bad03feef94d40eab5742e"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "80eaa1ecbad6e50225610d22350ae9cb678343b2eb087672af9250497fc903b9"
-    sha256 cellar: :any_skip_relocation, monterey:       "b3a4ad281be6a60c5e5fe09af3c5720aa1f6dbae5715c43c803f035a7571ee30"
-    sha256 cellar: :any_skip_relocation, big_sur:        "76a4a15ce1ead939d054a42600fde14db16174dd75c6206718af10c8fb98e927"
-    sha256 cellar: :any_skip_relocation, catalina:       "2b330c09d1b39ead114981227255ff65090e316cadff7454272ac16893b12818"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c0aea12e4a2d233097b5a9e1d1f5eb98950699ba8ac2746f08c927a92aec8cab"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9a493736ddb5671e2857addd80a0cb510a777d1cb14dcd50bc7beffca420e762"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d0a3bbc01ff311d813cbcd6a52869dfbba5209c6be099718fe91a9a206759f69"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ddf64c9ad56ed8e980d08b9f2c180fb0f746365089efc68e8999a767667818ab"
+    sha256 cellar: :any_skip_relocation, ventura:        "10d19f39051c8237bf2191efba15f6e207245f1f6983cc0060e09a4f93167b4c"
+    sha256 cellar: :any_skip_relocation, monterey:       "406b1f660ce69dc6ea9216ffd47bca8bf5522d31dad0da44edc0e2b22752e7f4"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5de66cf50df5e988289591f0ccc31d49d99319fbb99e122760f6dd4f04c0db84"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5f7cc7a5a6801b05ca2f3cc0f4b696196a260060bebe1374fa2efede1f15552b"
   end
 
   # Bump to 1.18 on the next release, if possible.

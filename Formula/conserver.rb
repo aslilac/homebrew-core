@@ -1,10 +1,9 @@
 class Conserver < Formula
   desc "Allows multiple users to watch a serial console at the same time"
   homepage "https://www.conserver.com/"
-  url "https://github.com/bstansell/conserver/releases/download/v8.2.6/conserver-8.2.6.tar.gz"
-  sha256 "33b976a909c6bce8a1290810e26e92bfa16c39bca19e1f8e06d5d768ae940734"
+  url "https://github.com/bstansell/conserver/releases/download/v8.2.7/conserver-8.2.7.tar.gz"
+  sha256 "0607f2147a4d384f1e677fbe4e6c68b66a3f015136b21bcf83ef9575985273d8"
   license "BSD-3-Clause"
-  revision 1
 
   livecheck do
     url :stable
@@ -12,16 +11,20 @@ class Conserver < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "77780c76452e5a7ad6adee31d42b7b144de04284314b85ee03999fb5b186b0ed"
-    sha256 cellar: :any,                 arm64_big_sur:  "818c726d7aef2b761e3ae88b39650e01f74f757acf899f7f351bdd2815d27875"
-    sha256 cellar: :any,                 monterey:       "15dfd208f73110868a59cf697d51945d4ec82ea3bab2745c25ea6aeddaf255ea"
-    sha256 cellar: :any,                 big_sur:        "84d3aa85edeae0dc29cf8e9f4dded552ab0f9b82dac3b711ecdb8a2bba94115a"
-    sha256 cellar: :any,                 catalina:       "59eded66b17cf4854626060c9c012efa25fe09c5fed47c0c162047a5aac1171e"
-    sha256 cellar: :any,                 mojave:         "ff0421a6796b9913159a910628f97878d2b22956f18e23e8d27bd400e6b611a8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1d246f41155c74436f806dc614996631bf92ae385d88476f6b05a60c984574e3"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "8c85d9e24aeeb0f9e6ef4840f5927511db3179ad29fcccfc4643d8d17660402c"
+    sha256 cellar: :any,                 arm64_monterey: "cbe78e9a34501f728a0815e9ccf11c3a149b6e16fd902339ccf1680cebefcebe"
+    sha256 cellar: :any,                 arm64_big_sur:  "a01d04c6b9b777e20f96e1a05d32040d636b624c647f114c2093e04d117d11b3"
+    sha256 cellar: :any,                 ventura:        "223d91506822b1d74d0bd1c0c8c2c4e7649ebe23d8ef2f5c431b76f84d7d975f"
+    sha256 cellar: :any,                 monterey:       "3184c7059ff555f33cfe4e8c6b06c58266bd6cfd17991493ec1edd2f79436091"
+    sha256 cellar: :any,                 big_sur:        "909d45ca31f883bc661141cb2fa173c2c218dd5cd9305ddb5737aac0081eb81d"
+    sha256 cellar: :any,                 catalina:       "73e2f36eedeb506e1730c6b5b55eea95899f69232f52e86796964ad61e81e856"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9e543125304a0b15fb67371473346c48ebd27ce69377ce920ac8645f2f0cdea8"
   end
 
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
+
+  uses_from_macos "libxcrypt"
 
   def install
     system "./configure", "--prefix=#{prefix}", "--with-openssl", "--with-ipv6"

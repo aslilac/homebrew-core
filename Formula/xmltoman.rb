@@ -10,22 +10,20 @@ class Xmltoman < Formula
   license "GPL-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "77b3da32f02bb89299d15ed1d377ac175c9774b53b7b381a364b0ab7e754661a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2c1c3da70de5b5ca5d57b476a540ae3219c112f76c75e5716d7565a95797b3a1"
-    sha256 cellar: :any_skip_relocation, monterey:       "b23eb8a8ca08137101f39de16513e5df52fe5df72ee3972b2be1b464d18ccfbd"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0d570defe5cd89116a1c4ed81782f9a57fc38fae3bd767d9bd41f68fb3d53e2d"
-    sha256 cellar: :any_skip_relocation, catalina:       "547b65d2c4e637b2331382f907a1a9602864d7e1e579404ae96e765dc8a4f378"
-    sha256 cellar: :any_skip_relocation, mojave:         "3e302a54f0f28d8e560d7015acef0f395f75a209a94401b8f8d01aa73d2b578a"
-    sha256 cellar: :any_skip_relocation, high_sierra:    "029c288b1f70c0dc7711304b9b1af40a95f8f343a3af29f25dabb5dbc1cbad67"
-    sha256 cellar: :any_skip_relocation, sierra:         "06a29d1545388d2111008cc244733f36971638e05408e1a7353fe9e142f91b76"
-    sha256 cellar: :any_skip_relocation, el_capitan:     "010af030c01ebe6528bbdecfa1153fac5f6e082fa088e1803d0768bb268a509b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "20b505270931bb3f16da16f43706a9bb5062948923b22d01a40709447c7c7f80"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bb945c423d08c88f0c8409149f4fd0314a46607be23429d756a9fd9bd2771a56"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "bb945c423d08c88f0c8409149f4fd0314a46607be23429d756a9fd9bd2771a56"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bb945c423d08c88f0c8409149f4fd0314a46607be23429d756a9fd9bd2771a56"
+    sha256 cellar: :any_skip_relocation, ventura:        "5678e1d8274ec425e903d5263ba20d46b2cd931e33c161da471553f7e0f31d37"
+    sha256 cellar: :any_skip_relocation, monterey:       "5678e1d8274ec425e903d5263ba20d46b2cd931e33c161da471553f7e0f31d37"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5678e1d8274ec425e903d5263ba20d46b2cd931e33c161da471553f7e0f31d37"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "77405cd2dfce160d216caf3513365b00f3af4cd01565b3ebd12dc1d4233a6a86"
   end
 
   uses_from_macos "perl"
 
-  on_linux do
-    resource "XML::Parser" do
+  resource "XML::Parser" do
+    on_linux do
       url "https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.44.tar.gz"
       sha256 "1ae9d07ee9c35326b3d9aad56eae71a6730a73a116b9fe9e8a4758b7cc033216"
     end
@@ -58,7 +56,7 @@ class Xmltoman < Formula
     bin.env_script_all_files(libexec/"bin", PERL5LIB: ENV["PERL5LIB"]) if OS.linux?
   end
 
-  def test_do
-    assert_match "You need to specify a file to parse", shell_output("xmltoman")
+  test do
+    assert_match "You need to specify a file to parse", shell_output("xmltoman 2>&1", 1).strip
   end
 end

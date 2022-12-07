@@ -1,18 +1,19 @@
 class Grafana < Formula
   desc "Gorgeous metric visualizations and dashboards for timeseries databases"
   homepage "https://grafana.com"
-  url "https://github.com/grafana/grafana/archive/v9.0.2.tar.gz"
-  sha256 "77607c4b215164d74ff8e8d75e2a2b72edbaa0afb6e968120b1c3aa508315c29"
+  url "https://github.com/grafana/grafana/archive/refs/tags/v9.3.1.tar.gz"
+  sha256 "d26b906c0d98e861a80f8c2db56ca1eb910afb7ddf337c207286c9698c9af38a"
   license "AGPL-3.0-only"
   head "https://github.com/grafana/grafana.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fb5292a91d3eea90e4f82d2b9875442399d0d99b1eff51a1e18ca47ad687ef5b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2bed11d559f5b4c20a276817a67dcc585538120365d9d49e9057d13d48dc7048"
-    sha256 cellar: :any_skip_relocation, monterey:       "6022dd955d971d2d34d70f29e56335610108c84b75081020092e29f3ec641724"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2be01520c749cbc8e395db3fa6c963bcf539e15ddc72f8d1f122616361e4757f"
-    sha256 cellar: :any_skip_relocation, catalina:       "98e7981383cf5322527a889664079931897e57bb248e1acedd500774c9f2dbce"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "78eaa4a160f6c75cefeaf83addbd82a4ec61258350618b282c7e7711a5c3a583"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4480775e6a6cca6a31fa45eb49a380f9587fdd6b2e7deebefa15fa410ff9e702"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "823c6981c2c56da1e0fd4930a11e832b39cba1bba6c069d66e80628731bc0ce5"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1216b1572720959e59ff6312eb628d0d74f467ba6a288c4d631336c262fc137f"
+    sha256 cellar: :any_skip_relocation, ventura:        "bf959f5a8a9154754ac0a8db21bf4ee411d12b9985648bef65797109b36213d3"
+    sha256 cellar: :any_skip_relocation, monterey:       "02f5d6d0a847c9b8319425ab538ccb47306f339d83902c37218199d0eaab2528"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7fb170a2f45518d3321b17e673753045be238238067b059e56d3b0391a1fc694"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3bcf90028d329d929fe2202a1fbf83e0ac51840e9a4e8ed41c7c2b02fdeafbb6"
   end
 
   depends_on "go" => :build
@@ -34,15 +35,13 @@ class Grafana < Formula
     system "yarn", "install"
     system "yarn", "build"
 
-    if OS.mac?
-      bin.install Dir["bin/darwin-*/grafana-cli"]
-      bin.install Dir["bin/darwin-*/grafana-server"]
-    else
-      bin.install "bin/linux-amd64/grafana-cli"
-      bin.install "bin/linux-amd64/grafana-server"
-    end
+    os = OS.kernel_name.downcase
+    arch = Hardware::CPU.intel? ? "amd64" : Hardware::CPU.arch.to_s
+    bin.install "bin/#{os}-#{arch}/grafana-cli"
+    bin.install "bin/#{os}-#{arch}/grafana-server"
+
     (etc/"grafana").mkpath
-    cp("conf/sample.ini", "conf/grafana.ini.example")
+    cp "conf/sample.ini", "conf/grafana.ini.example"
     etc.install "conf/sample.ini" => "grafana/grafana.ini"
     etc.install "conf/grafana.ini.example" => "grafana/grafana.ini.example"
     pkgshare.install "conf", "public", "tools"

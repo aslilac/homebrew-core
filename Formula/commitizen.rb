@@ -3,30 +3,39 @@ class Commitizen < Formula
 
   desc "Defines a standard way of committing rules and communicating it"
   homepage "https://commitizen-tools.github.io/commitizen/"
-  url "https://files.pythonhosted.org/packages/fe/8b/b35e3716d1b069c203f6369f5111d3062072538d908406e12e316147d5ed/commitizen-2.28.0.tar.gz"
-  sha256 "8510b67e4c45131ef75114aeca5fe30b4f973b2b943457cf1667177af296192e"
+  url "https://files.pythonhosted.org/packages/6c/00/9f7b3835b500b3563d200eb38509205f7859ef793f0a70c9538f0123727f/commitizen-2.37.1.tar.gz"
+  sha256 "933b7f781d22e9f76b0ff3164aa13045bf36df3d07140219f21b3e7e05e54151"
   license "MIT"
   head "https://github.com/commitizen-tools/commitizen.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3257f84bcf936c7229d08c161fe2173dead5fd97823cad9627a32586ef8d7c6e"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bf25a24d27b855c22cbc8e7242aa7fe9806501c953645999f5a8ef9b8764cd0e"
-    sha256 cellar: :any_skip_relocation, monterey:       "1d09daa5a5371aea3c781686eadb1a59b2764cf198097eab2e24634a2d1e6d67"
-    sha256 cellar: :any_skip_relocation, big_sur:        "697159721eda72cb77f23fc2b99cc1d3aa4bcb5118243ee317c0d1abe2769184"
-    sha256 cellar: :any_skip_relocation, catalina:       "5778aa23c8d4737376fc9d027ddd2a9fa9e3a98aafc8b00cca1f2454cbfa9ecf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1a28fb8c3d0545a4f9f9947d77aa97f3aad1d7108d2f9239183f471d624dbc2e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ded484ce4a40fd1442e09c0e9888914d290e7361d37ebcb5b9fbadf5cd0bc023"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3bd20b512092a26cf78222d08ae008ebbe43504c58474c55d78079f091c495e5"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c0d7b352ea6ba30ea9bea511aebe9197430a6f4a86abc6fd6a9228b63ead27a2"
+    sha256 cellar: :any_skip_relocation, ventura:        "1a8ee0840eb1d368d7922a74c01050a87b8e4283f03fb67a23a65700bf45b280"
+    sha256 cellar: :any_skip_relocation, monterey:       "d3b36bee8dff544b7f0cc385df7416f8d31d3dc87ac3f45a0ce0d15b3ba9ca6e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5a4a24a800fd25a22f6d58d8465d4132bcd4c22ddea068978d060ed35122de0c"
+    sha256 cellar: :any_skip_relocation, catalina:       "b7bdf5c6316e27ee271d19744a7563f772e69999fc844618740788966443fd7d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cf18eccce13cd81febf8c83b8e8f93223d3e059724a86c0302212e19b81f3209"
   end
 
-  depends_on "python@3.10"
+  depends_on "python-typing-extensions"
+  depends_on "python@3.11"
+  depends_on "pyyaml"
 
   resource "argcomplete" do
-    url "https://files.pythonhosted.org/packages/6a/b4/3b1d48b61be122c95f4a770b2f42fc2552857616feba4d51f34611bd1352/argcomplete-1.12.3.tar.gz"
-    sha256 "2c7dbffd8c045ea534921e63b0be6fe65e88599990d8dc408ac8c542b72a5445"
+    url "https://files.pythonhosted.org/packages/05/f8/67851ae4fe5396ba6868c5d84219b81ea6a5d53991a6853616095c30adc0/argcomplete-2.0.0.tar.gz"
+    sha256 "6372ad78c89d662035101418ae253668445b391755cfe94ea52f1b9d22425b20"
+  end
+
+  resource "charset-normalizer" do
+    url "https://files.pythonhosted.org/packages/a1/34/44964211e5410b051e4b8d2869c470ae8a68ae274953b1c7de6d98bbcf94/charset-normalizer-2.1.1.tar.gz"
+    sha256 "5a3d016c7c547f69d6f81fb0db9449ce888b418b5b9952cc5e6e66843e9dd845"
   end
 
   resource "colorama" do
-    url "https://files.pythonhosted.org/packages/2b/65/24d033a9325ce42ccbfa3ca2d0866c7e89cc68e5b9d92ecaba9feef631df/colorama-0.4.5.tar.gz"
-    sha256 "e6c6b4334fc50988a639d9b98aa429a0b57da6e17b9a44f0451f930b6967b7a4"
+    url "https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz"
+    sha256 "08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"
   end
 
   resource "decli" do
@@ -50,18 +59,13 @@ class Commitizen < Formula
   end
 
   resource "prompt-toolkit" do
-    url "https://files.pythonhosted.org/packages/c5/7e/71693dc21d20464e4cd7c600f2d8fad1159601a42ed55566500272fe69b5/prompt_toolkit-3.0.30.tar.gz"
-    sha256 "859b283c50bde45f5f97829f77a4674d1c1fcd88539364f1b28a37805cfd89c0"
+    url "https://files.pythonhosted.org/packages/c4/6e/6ff7938f47981305a801a4c5b8d8ed282b58a28c01c394d43c1fbcfc810b/prompt_toolkit-3.0.33.tar.gz"
+    sha256 "535c29c31216c77302877d5120aef6c94ff573748a5b5ca5b1b1f76f5e700c73"
   end
 
   resource "pyparsing" do
     url "https://files.pythonhosted.org/packages/71/22/207523d16464c40a0310d2d4d8926daffa00ac1f5b1576170a32db749636/pyparsing-3.0.9.tar.gz"
     sha256 "2b020ecf7d21b687f219b71ecad3631f644a47f01403fa1d1036b0c6416d70fb"
-  end
-
-  resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/36/2b/61d51a2c4f25ef062ae3f74576b01638bebad5e045f747ff12643df63844/PyYAML-6.0.tar.gz"
-    sha256 "68fb519c14306fec9720a2a5b45bc9f0c8d1b9c72adf45c37baedfcd949c35a2"
   end
 
   resource "questionary" do
@@ -70,18 +74,13 @@ class Commitizen < Formula
   end
 
   resource "termcolor" do
-    url "https://files.pythonhosted.org/packages/8a/48/a76be51647d0eb9f10e2a4511bf3ffb8cc1e6b14e9e4fab46173aa79f981/termcolor-1.1.0.tar.gz"
-    sha256 "1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"
+    url "https://files.pythonhosted.org/packages/19/da/ff1f0906818a5bd2e69e773d88801ca3c9e92d0d7caa99db1665658819ea/termcolor-2.1.1.tar.gz"
+    sha256 "67cee2009adc6449c650f6bcf3bdeed00c8ba53a8cda5362733c53e0a39fb70b"
   end
 
   resource "tomlkit" do
-    url "https://files.pythonhosted.org/packages/24/24/e50be8344fc6e9c9ae55bfcb136b33ad562776d822736da3d1ec0278b18b/tomlkit-0.11.0.tar.gz"
-    sha256 "71ceb10c0eefd8b8f11fe34e8a51ad07812cb1dc3de23247425fbc9ddc47b9dd"
-  end
-
-  resource "typing-extensions" do
-    url "https://files.pythonhosted.org/packages/9e/1d/d128169ff58c501059330f1ad96ed62b79114a2eb30b8238af63a2e27f70/typing_extensions-4.3.0.tar.gz"
-    sha256 "e6d2677a32f47fc7eb2795db1dd15c1f34eff616bcaf2cfb5e997f854fa1c4a6"
+    url "https://files.pythonhosted.org/packages/ff/04/58b4c11430ed4b7b8f1723a5e4f20929d59361e9b17f0872d69681fd8ffd/tomlkit-0.11.6.tar.gz"
+    sha256 "71b952e5721688937fb02cf9d354dbcf0785066149d2855e44531ebdd2b65d73"
   end
 
   resource "wcwidth" do

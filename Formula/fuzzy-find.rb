@@ -4,6 +4,7 @@ class FuzzyFind < Formula
   url "https://github.com/silentbicycle/ff/archive/v0.6-flag-features.tar.gz"
   version "0.6.0"
   sha256 "104300ba16af18d60ef3c11d70d2ec2a95ddf38632d08e4f99644050db6035cb"
+  license "MIT"
   head "https://github.com/silentbicycle/ff.git", branch: "master"
 
   # This regex intentionally allows anything to come after the numeric version
@@ -17,8 +18,10 @@ class FuzzyFind < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "81ff5be190dd0e8d539f7a0e3a366737db3fb72faae8c310f99ee462e4333f5b"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "40e202174aca2e775cea7f47b1936ca0cc209e2e9a96a9f9e2b9b8bd6ac7d3cc"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "35ce926faa74b7f843cd9f5facb104ade3474989156d4bdbdb61a3abaef89cac"
+    sha256 cellar: :any_skip_relocation, ventura:        "30e4f0f37ffa934c2bf2c62cb1f15a3f4cd0ec3a0ab54b8524e0f33cccd2aa0e"
     sha256 cellar: :any_skip_relocation, monterey:       "71dfdb9fbe7c51760e5095165eb35844a15435e685154a03ea9c5ce314916d00"
     sha256 cellar: :any_skip_relocation, big_sur:        "937f20d35befb11463217b680f1924321cfbec7a62273c48fbb7cad4bd898140"
     sha256 cellar: :any_skip_relocation, catalina:       "4e58e0ac23df5dbd26787238c0160716db8eb673b4a62625a9edcb4ceaf38eac"

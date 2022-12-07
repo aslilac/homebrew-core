@@ -1,18 +1,19 @@
 class Rqlite < Formula
   desc "Lightweight, distributed relational database built on SQLite"
   homepage "http://www.rqlite.com/"
-  url "https://github.com/rqlite/rqlite/archive/v7.5.1.tar.gz"
-  sha256 "4e4a38f3ba5a91589bd2424f340d8cf0739715d27e1c41eb615dbc7fb9e834ec"
+  url "https://github.com/rqlite/rqlite/archive/v7.12.1.tar.gz"
+  sha256 "6cca0c46b200934beb84799705c876c51438f85d2b93b0e33e9e8203991dfb59"
   license "MIT"
   head "https://github.com/rqlite/rqlite.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "73070c080a1571d5b5c16ae5011d948f5129338fe597d69fd857919f4352b43c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9b0cdbf478f1a67fb0e2b206cd0f3e79169f5c5cb23ab69a8063074ab1e22dfd"
-    sha256 cellar: :any_skip_relocation, monterey:       "d2a1b0651b1b87f00586ad093eed771c32748471bba83a663d67b7432d793b19"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b20beb4998f634445e1da5e6005ef573f84a2db24cbf1cbb7e0ecd6a2fb52a6d"
-    sha256 cellar: :any_skip_relocation, catalina:       "736c93791da670768b8dce0bcf25a7a155f0ac7ff906461b5d1eb13b9ef0fde4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9efd1d71fd127632eb1f22660628146199002c4c4db8a369d292bdaeed268b15"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "8b740273d49a25add1506f0e5aef6da2b52f223535a399f0f6775430a7502b72"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "82158e129938686143df4362dd2c32c30aad83c1df9df456ab3c43168b7822b2"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "932429ca5f792be074716295b010890dc2f6d4da21e29029610733234fcabf8f"
+    sha256 cellar: :any_skip_relocation, ventura:        "f28de2df5940600c07f51249c2c36f6d924433bbf812324442bda841f3a94d0b"
+    sha256 cellar: :any_skip_relocation, monterey:       "e5f9e4dc0d903e7612db94574c1b3e218ba9f3a26b1bff91b7179cdb130111b8"
+    sha256 cellar: :any_skip_relocation, big_sur:        "21de4bb1ff281a9b2757b4354ffc0821834565ca5d17218e8664a48474cef2a4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "476843f6096c4330750dd1264774e6b65e482b7467013fa1074d4bf62c555c0f"
   end
 
   depends_on "go" => :build

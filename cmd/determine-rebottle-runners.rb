@@ -29,12 +29,12 @@ module Homebrew
     linux_runner = if timeout > 360
       "linux-self-hosted-1"
     else
-      "ubuntu-latest"
+      "ubuntu-22.04"
     end
     linux_runner_spec = {
       runner:    linux_runner,
       container: {
-        image:   "ghcr.io/homebrew/ubuntu16.04:master",
+        image:   "ghcr.io/homebrew/ubuntu22.04:master",
         options: "--user=linuxbrew -e GITHUB_ACTIONS_HOMEBREW_SELF_HOSTED",
       },
       workdir:   "/github/home",
@@ -48,8 +48,13 @@ module Homebrew
         if macos_version.outdated_release? || macos_version.prerelease?
           nil
         else
-          macos_runners = [{ runner: macos_version.to_s }]
-          macos_runners << { runner: "#{macos_version}-arm64" } if macos_version >= :big_sur
+          ephemeral_suffix = "-#{ENV.fetch("GITHUB_RUN_ID")}-#{ENV.fetch("GITHUB_RUN_ATTEMPT")}"
+          macos_runners = [{ runner: "#{macos_version}#{ephemeral_suffix}" }]
+          if macos_version >= :ventura
+            macos_runners << { runner: "#{macos_version}-arm64#{ephemeral_suffix}" }
+          elsif macos_version >= :big_sur
+            macos_runners << { runner: "#{macos_version}-arm64" }
+          end
           macos_runners
         end
       end << linux_runner_spec
@@ -61,7 +66,10 @@ module Homebrew
           nil # Don't rebottle for older macOS versions (no CI to build them).
         else
           runner = macos_version.to_s
-          runner += "-#{tag.arch}" unless tag.arch == :x86_64
+          runner += "-#{tag.arch}" if tag.arch != :x86_64
+          if tag.arch == :x86_64 || macos_version >= :ventura
+            runner += "-#{ENV.fetch("GITHUB_RUN_ID")}-#{ENV.fetch("GITHUB_RUN_ATTEMPT")}"
+          end
           { runner: runner }
         end
       rescue MacOSVersionError

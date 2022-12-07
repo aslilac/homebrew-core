@@ -5,19 +5,23 @@ class Micropython < Formula
       tag:      "v1.19.1",
       revision: "9b486340da22931cde82872f79e1c34db959548b"
   license "MIT"
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "e7fd34409baf3ae9294b4955ac01ef03f8c6e9694d8b8da1df33931b5571e56c"
-    sha256 cellar: :any,                 arm64_big_sur:  "6af82d621b4ada013f9a67e350ffa3d8d9778790fb52e43c9bcc3976537d2ff3"
-    sha256 cellar: :any,                 monterey:       "b7bfacd192d122d6d425eb4c9b99f7ddb094d9d8802a9966b168eee839a0a514"
-    sha256 cellar: :any,                 big_sur:        "07388c9d6c41a2b848b7b8408dbb92a547ab8420c09d25ad353a6698287cc0a8"
-    sha256 cellar: :any,                 catalina:       "1f3b7891caa5737bb035e680c0a13186bb9e97c1717db959145bab347ad97bec"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cf8248af0e360223b5cadd07d567f3d443f9aa917e825ee2c94407b3ba6a6d19"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "23308959f468434e1173094c6e6ef2fa036dade24e45937bf3ee93097157e4c4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "986b86c0c414f814e56e3333a80c711b7b905c90f65fd4d01ef97e289385be31"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a7c9ddec80bb88b068fb1e175f4e73b2607b97a2ef136eb63b0ab291ef0d2327"
+    sha256 cellar: :any_skip_relocation, ventura:        "5ca98ed4bc48fcfd5b3d74bf3e84f4d11660912be33746a2961b3b20b3180588"
+    sha256 cellar: :any_skip_relocation, monterey:       "37d6eaf666ea01b0d01d2ae98315aab88211f4c615007dce3e9a2e9fb5abbd4a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "27cd7239415ae56c5e95e3309574a526644dbe4ba9dd4788f8c7423f51c663ad"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c4f978c41832dbfdd9e81ab168e49c9ca7cd1d25b1939c7c20862856048b45ff"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "libffi" # Requires libffi v3 closure API; macOS version is too old
-  depends_on "python@3.10" # Requires python3 executable
+  depends_on "python@3.11" # Requires python3 executable
+
+  uses_from_macos "libffi", since: :catalina # Requires libffi v3 closure API
 
   def install
     # Build mpy-cross before building the rest of micropython. Build process expects executable at

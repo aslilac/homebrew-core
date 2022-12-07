@@ -1,17 +1,19 @@
 class GlibNetworking < Formula
   desc "Network related modules for glib"
   homepage "https://gitlab.gnome.org/GNOME/glib-networking"
-  url "https://download.gnome.org/sources/glib-networking/2.72/glib-networking-2.72.1.tar.xz"
-  sha256 "6fc1bedc8062484dc8a0204965995ef2367c3db5c934058ff1607e5a24d95a74"
+  url "https://download.gnome.org/sources/glib-networking/2.74/glib-networking-2.74.0.tar.xz"
+  sha256 "1f185aaef094123f8e25d8fa55661b3fd71020163a0174adb35a37685cda613b"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 arm64_monterey: "fbc0700a8096cd5e20631902b64774999695720ab99c53d66e139c7e2da9b927"
-    sha256 arm64_big_sur:  "acdee0913dd6d67c5f30a017c425e1c71bfc122efe0e1eb79df68a687bfb4a52"
-    sha256 monterey:       "0fa447e719052aba6e469535c71697abaff68d917231007ad3c706cf8f5d8ec8"
-    sha256 big_sur:        "eb42c407a8a2826810e2853631db8b2915219f1b813c1889daa167d4c9f2f136"
-    sha256 catalina:       "03df2e2d787a1827abd1ac102cac2b4f34f7ab3628ba9be549dd87ee02590d6e"
-    sha256 x86_64_linux:   "963497f3b55d5f4684e0948ca513a9bb9cf30094ef27257ad9ef220538a82f45"
+    sha256 arm64_ventura:  "c22fa8ab4004584fe047a957a78669de9a5e379ef97e543486f083d79e5f580e"
+    sha256 arm64_monterey: "87daff64339dd3b65b69fff4cbab5b416bd7af562629d2efd74dda23ed3f164a"
+    sha256 arm64_big_sur:  "e7746e5130b1b2acbefeed67c358c404469ffe936f8ea6fb9246f787b87156df"
+    sha256 ventura:        "eed2ff2cb8c8f1254128a96078d7ccb24e1ecc0dc89455b18d0ce7e438e0fabd"
+    sha256 monterey:       "45cfef96fdb0f052d437aa9bbff0d7690fdd7bb6f0176ec6485086d7bbaba1c1"
+    sha256 big_sur:        "72acd8e5bdfb0742fa8c2d4a7b4f559b1ae384ad31459bf7190abc82e6484adb"
+    sha256 catalina:       "15216a8836cd1fb584f653de86f1de693f917727eec51ca55bc7a40eb0d55181"
+    sha256 x86_64_linux:   "d466490a0c4bb6adcc338b3fad485bc25ad7d906eb1096f24b10d916859ce60d"
   end
 
   depends_on "meson" => :build
@@ -21,25 +23,18 @@ class GlibNetworking < Formula
   depends_on "gnutls"
   depends_on "gsettings-desktop-schemas"
 
-  on_linux do
-    depends_on "libidn"
-  end
-
   link_overwrite "lib/gio/modules"
 
   def install
-    # stop meson_post_install.py from doing what needs to be done in the post_install step
+    # stop gnome.post_install from doing what needs to be done in the post_install step
     ENV["DESTDIR"] = "/"
 
-    mkdir "build" do
-      system "meson", *std_meson_args,
-                      "-Dlibproxy=disabled",
-                      "-Dopenssl=disabled",
-                      "-Dgnome_proxy=disabled",
-                      ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+    system "meson", *std_meson_args, "build",
+                    "-Dlibproxy=disabled",
+                    "-Dopenssl=disabled",
+                    "-Dgnome_proxy=disabled"
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
   end
 
   def post_install

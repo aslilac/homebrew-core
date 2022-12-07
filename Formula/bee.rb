@@ -1,20 +1,20 @@
 class Bee < Formula
   desc "Tool for managing database changes"
   homepage "https://github.com/bluesoft/bee"
-  url "https://github.com/bluesoft/bee/releases/download/1.97/bee-1.97.zip"
-  sha256 "d97d7ef0b3dff27cb4c9eb5c9da3831fdf91105208fbae26cef46f86e1b8fbf3"
+  url "https://github.com/bluesoft/bee/releases/download/1.99/bee-1.99.zip"
+  sha256 "0a7e9000a4891b285d3abfe24beae81eb220fbbe9fdf494d4a1da3e9ce22c572"
   license "MPL-1.1"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "95a35b0bb062508bb8b7fcc3f79e485ddc4f06583f41b272d397f347ec93662e"
+    sha256 cellar: :any_skip_relocation, all: "5f128fa4e7b68524c566ec317267734f961a0b85143bca34f72288c19ed77b17"
   end
 
-  depends_on "openjdk@8"
+  depends_on "openjdk"
 
   def install
     rm_rf Dir["bin/*.bat"]
     libexec.install Dir["*"]
-    (bin/"bee").write_env_script libexec/"bin/bee", Language::Java.java_home_env("1.8")
+    (bin/"bee").write_env_script libexec/"bin/bee", Language::Java.java_home_env
   end
 
   test do

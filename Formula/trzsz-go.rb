@@ -1,25 +1,28 @@
 class TrzszGo < Formula
   desc "Simple file transfer tools, similar to lrzsz (rz/sz), and compatible with tmux"
   homepage "https://trzsz.github.io"
-  url "https://github.com/trzsz/trzsz-go/archive/refs/tags/v0.1.8.tar.gz"
-  sha256 "a28f57ddab8e1a7b721584eb52116662bc3099562ac261d8f3191c2789eeec48"
+  url "https://github.com/trzsz/trzsz-go/archive/refs/tags/v0.1.9.tar.gz"
+  sha256 "f39c930360a36788f13f26da6792fcce09674e45beb539f0b4b4a747d17576ab"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fbd1533325f273796529ea261a1b416400e5c06d5840f7130cd7645b7a78caff"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c337b25fb779d7bac7fecd4305dda7e17bda61a86e4280ebf670d9fe8d23b872"
-    sha256 cellar: :any_skip_relocation, monterey:       "a8c2b7bdfdf9b7cf797e58020943093c1cc56850377b722ed39fb657c7ff1789"
-    sha256 cellar: :any_skip_relocation, big_sur:        "cdbcdeab61f4e8b86634dbb64b9241451066a0cb9559a15c978cfdb59a1b1c84"
-    sha256 cellar: :any_skip_relocation, catalina:       "d09b2b43aacad08622923b249d8af2e411bddd4c3f68c7a9ac86401667051baf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0eb85f8accffe057ef9fe91fe509ebb81a74fbdc79875dcec0807231d3253ffc"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7af0098e11685d21b7b6c81c36181d9ef955c5d28a5102cc6a73ac1c02d13074"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7aad437a36214ca009504664e5b7b1456bdd41da9fcace5f8c081169c47c6732"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ef509e6f7ec1d1153fc0f6ebcb0c8d2fb024eee288a6ce045ef944915cf25086"
+    sha256 cellar: :any_skip_relocation, ventura:        "fa2a050f4a267a0d97f48076ab718c924d65af90d1b803f8040bffd2110a57b2"
+    sha256 cellar: :any_skip_relocation, monterey:       "ce6c55b0d528f37f34338faf5aac116e38cfbe412c6a72f1c9cd4a42a03510b5"
+    sha256 cellar: :any_skip_relocation, big_sur:        "72184ef5f763e546e41fd43b54300ed6e89c2ee8167d06e71f4671ba8b518605"
+    sha256 cellar: :any_skip_relocation, catalina:       "025a1b666ee3cad25fe6ac0ef7f4f3469d1ee25f8a88957448f07e7f39b7fa82"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e11f58d6a65dbcfc72599ab6938ed3dfc3dec4e38354d8ee232cc053c4319520"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-o", bin/"trz", "./cmd/trz"
-    system "go", "build", "-o", bin/"tsz", "./cmd/tsz"
-    system "go", "build", "-o", bin/"trzsz", "./cmd/trzsz"
+    system "go", "build", *std_go_args(ldflags: "-s -w", output: bin/"trz"), "./cmd/trz"
+    system "go", "build", *std_go_args(ldflags: "-s -w", output: bin/"tsz"), "./cmd/tsz"
+    system "go", "build", *std_go_args(ldflags: "-s -w", output: bin/"trzsz"), "./cmd/trzsz"
   end
 
   test do

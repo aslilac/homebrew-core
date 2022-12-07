@@ -1,8 +1,8 @@
 class Ghz < Formula
   desc "Simple gRPC benchmarking and load testing tool"
   homepage "https://ghz.sh"
-  url "https://github.com/bojand/ghz/archive/v0.109.0.tar.gz"
-  sha256 "4b0b3c651861923a60ca3370de652eb9f3eb5b0c7510c877ec1af8d82508fd08"
+  url "https://github.com/bojand/ghz/archive/v0.111.0.tar.gz"
+  sha256 "155a818636d5927bc3975c36a5cfa5ca3e15d6e077986e2a520337e0dd3bb79b"
   license "Apache-2.0"
 
   livecheck do
@@ -11,12 +11,14 @@ class Ghz < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d0be1acbb3926894725f2e0d901a58d21c6bc805eee7c0343159edc22ae4df5d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "482538a73d0ab01164b9ed7f5cbf8608b1d680d88e2db1e06ec957bf93053933"
-    sha256 cellar: :any_skip_relocation, monterey:       "46ed3f92c8607b1669a2d9a425da7f699d401be229304d60f0b3cde88af2e65b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ca61a9e12d67ead1b51baa6bf7637a44b82383b0f4a70621e426fa525b4b7627"
-    sha256 cellar: :any_skip_relocation, catalina:       "715dace714bbc077113f4cacee068fde276e75a1522d5310e52b3adb53157b11"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d18d5e6ce6cc3c7455b2e375ec64e4974fca41fe0ccb2fc28d76c3e5f3c87117"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "27b541a734588cfaebf1e3a88f6653bb88983b2f01fff8e5360533f373038184"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ca3ecd802bba9b22f7b1672d418d37e84f55aee7f9fd090cc264d30444d50b41"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ad084b3e17afc494d60133acf620b994eafb0f14dacb054211efb82d492c3f23"
+    sha256 cellar: :any_skip_relocation, ventura:        "527b30908e2ea4e6267bafa7febc425463764d8783a86ff80708300524a476ac"
+    sha256 cellar: :any_skip_relocation, monterey:       "f29f5b2e9fbb1079a02b5ca6d9b383fdccc9119fc8b47ec7413d75c2be2dd929"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7241bcd5e8bf1b0fd196fe053626a410732e34e929da43c6cd69f8b21f5ad25b"
+    sha256 cellar: :any_skip_relocation, catalina:       "bdd5e46cf2bc00b8b1ba6aa352e76318f45f9151e878514aca490ccaa5b0a471"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "418a61657d58a9296018db6547921df25ff97aecb959d1c84475fc4174993e64"
   end
 
   depends_on "go" => :build

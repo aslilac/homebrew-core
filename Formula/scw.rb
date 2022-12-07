@@ -1,17 +1,18 @@
 class Scw < Formula
   desc "Command-line Interface for Scaleway"
   homepage "https://github.com/scaleway/scaleway-cli"
-  url "https://github.com/scaleway/scaleway-cli/archive/v2.5.4.tar.gz"
-  sha256 "1d6f0f0b334ca676b764f91551bc9b9b22665c5f23e6adf43ae0e09d9adbb50c"
+  url "https://github.com/scaleway/scaleway-cli/archive/v2.7.0.tar.gz"
+  sha256 "7168d37c3612230d5020f52c9e074486415e0edda3b82bf4aaae96e35ec72fac"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "719e02be8a7450a9dbde4e65eb316daf2db6ca5e4982ddba0578e80a93ea3e71"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7301e76d91b53ea9ea508ce00da4f801b510863a2b6dc0570a54e7bd9137b034"
-    sha256 cellar: :any_skip_relocation, monterey:       "223fef190924fabe2d50b4adb5aefd98f9ebf36b915c880b6c642a12b04ae264"
-    sha256 cellar: :any_skip_relocation, big_sur:        "584aa97b80769a97cbbeb12c6c586f945ff322a402c9add8b792b3094c6686c4"
-    sha256 cellar: :any_skip_relocation, catalina:       "801ce8652fd506e7f5ce28d3d097c0580f0b3b4991bcc047b7ed1a17bb41d5fb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "970afc9e516bef403270cb18ac969f1a710a9925ba2c7d3dcb542189b2a39d8b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6fc0a84e6b6a786d0ffce4077ac91b61c7a87e01c2795723d5d30fd183af638b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "409baa8ee83d8c8eca93b351c7bff02b9e1f0622276f69ddb3019324fcbc24f5"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "36d1d6e1916668bd4ddc00d54a2e907983d1ed1fde48e0d0eb6f9102683b441e"
+    sha256 cellar: :any_skip_relocation, ventura:        "a1e51d947ed3ae8371928d9970fe86480e32984fae8d7a297d7632959724b786"
+    sha256 cellar: :any_skip_relocation, monterey:       "8b52b776b353b7ece16c94c043e6a5b7bf8e0c4868ebff82bb378dccb7f61aa7"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b77557d71d1695f1d8925be07d756e568b6415c5275ebc0ea0a2fcb9c54ece1d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d85dd79a00535623104e76725cf2f0ff984c5e96cd54bc0a75e4c67ac954f511"
   end
 
   depends_on "go" => :build
@@ -19,14 +20,7 @@ class Scw < Formula
   def install
     system "go", "build", *std_go_args(ldflags: "-X main.Version=#{version}"), "./cmd/scw"
 
-    zsh_output = Utils.safe_popen_read({ "SHELL" => "zsh" }, bin/"scw", "autocomplete", "script")
-    (zsh_completion/"_scw").write zsh_output
-
-    bash_output = Utils.safe_popen_read({ "SHELL" => "bash" }, bin/"scw", "autocomplete", "script")
-    (bash_completion/"scw").write bash_output
-
-    fish_output = Utils.safe_popen_read({ "SHELL" => "fish" }, bin/"scw", "autocomplete", "script")
-    (fish_completion/"scw.fish").write fish_output
+    generate_completions_from_executable(bin/"scw", "autocomplete", "script", shell_parameter_format: :none)
   end
 
   test do

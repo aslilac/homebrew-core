@@ -1,8 +1,8 @@
 class Goreman < Formula
   desc "Foreman clone written in Go"
   homepage "https://github.com/mattn/goreman"
-  url "https://github.com/mattn/goreman/archive/v0.3.12.tar.gz"
-  sha256 "2068badbfffbe213df2d901be00fed273766ef1329895589e99d4ee8cfcfa7d2"
+  url "https://github.com/mattn/goreman/archive/v0.3.13.tar.gz"
+  sha256 "dfc20682714626c69db2fde9ce48432e7116f267488a123b79d72f6dabcca7a3"
   license "MIT"
   head "https://github.com/mattn/goreman.git", branch: "master"
 
@@ -12,12 +12,14 @@ class Goreman < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b835de9ad6465257f2e83d72e32066640e21d550af4d2a7db0a20d024ec4659c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2f5c838a8c0d0622ca7dafec485ace3d0161eee628dd14a4e82c95fbc6f4cfb3"
-    sha256 cellar: :any_skip_relocation, monterey:       "a210952b6b9f43b17e4bc346016933baa67042d3684a4559b75ebbd9eb4673fe"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2e8706a404fa519b75b6d3c1b7644cc1938d312ecc8771dd80610e1fbd83dc8d"
-    sha256 cellar: :any_skip_relocation, catalina:       "fa55372eb815aca1025b6055806ce017369850852621d0d2ad7d233ff51af317"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "df2f3b5165bb0635f982d8d06573ced7b9451d8bc8253cf3de25cff2ab5fe215"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "8c095f2360084a1477500f8d6684accceb6f09b22805a8d44ad08f9a64753ef7"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "986155fa8952bfc2f2e642a3dd8fef50d273fe086aa7a4c33774a4d13f4eca18"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f4b24f1d784da2b808ef927b8432d0a8cc12ba573f4a5e714be0eaeb735eb8c1"
+    sha256 cellar: :any_skip_relocation, ventura:        "2c132a1b7cdd09a873a83f992013144ed7fbf3d0fc980380f43fd7d0dfbc4776"
+    sha256 cellar: :any_skip_relocation, monterey:       "8a43d0685955570af59741794d37c4b215860b2b3c9d60823774b2c047a1cf98"
+    sha256 cellar: :any_skip_relocation, big_sur:        "bab40f093c03c2e988489dee4ab7387df524831e21c502c9585846f41c3a7735"
+    sha256 cellar: :any_skip_relocation, catalina:       "31c67a12dc71a363b8ba88fbeff4c15eabc40aeb8cc194aabb123752744fc673"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d6966ffced430d09be24f06c54954cdfba15a149e9d1d518c883a7ff3a9f150b"
   end
 
   depends_on "go" => :build

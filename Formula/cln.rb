@@ -1,9 +1,18 @@
 class Cln < Formula
   desc "Class Library for Numbers"
   homepage "https://www.ginac.de/CLN/"
-  url "https://www.ginac.de/CLN/cln-1.3.6.tar.bz2"
-  sha256 "f492530e8879bda529009b6033e1923c8f4aae843149fc28c667c20b094d984a"
   license "GPL-2.0"
+
+  stable do
+    url "https://www.ginac.de/CLN/cln-1.3.6.tar.bz2"
+    sha256 "f492530e8879bda529009b6033e1923c8f4aae843149fc28c667c20b094d984a"
+
+    # Fix -flat_namespace being used on Big Sur and later.
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
+      sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
+    end
+  end
 
   livecheck do
     url :homepage
@@ -11,6 +20,7 @@ class Cln < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 ventura:      "2c51b2f0a21013cd59254e80bfd098c6997e8eaa0e05b767c358d551649f2cf4"
     sha256 cellar: :any,                 monterey:     "e810a5132e834905a8ae4c67130a003cbf2a5d7482040eed19c24cda13118ce8"
     sha256 cellar: :any,                 big_sur:      "3234c105147111fdbb679c8a27a4b59a99d8195a3e461642783028905c244db4"
     sha256 cellar: :any,                 catalina:     "bbc7716e6028fc3dc95dc22bf20033d13119b6ffe62dbd4c2609ecce85459a92"
@@ -19,17 +29,19 @@ class Cln < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux: "899b98749201e57feef2d339c5a63ec88a19c241fa37a1480c020cca4d8363a8"
   end
 
-  depends_on "gmp"
+  head do
+    url "git://www.ginac.de/cln.git", branch: "master"
 
-  # Fix -flat_namespace being used on Big Sur and later.
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
-    sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "wget" => :build
   end
 
+  depends_on "gmp"
+
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-dependency-tracking"
+    system "./autogen.sh" if build.head?
+    system "./configure", *std_configure_args
     system "make"
     system "make", "check"
     system "make", "install"

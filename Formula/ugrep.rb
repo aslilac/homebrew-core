@@ -1,17 +1,19 @@
 class Ugrep < Formula
   desc "Ultra fast grep with query UI, fuzzy search, archive search, and more"
   homepage "https://github.com/Genivia/ugrep"
-  url "https://github.com/Genivia/ugrep/archive/v3.8.3.tar.gz"
-  sha256 "deb7e143ee07019fdaa98a4529596d965185542a195855c1bfb6779fb8dd5e55"
+  url "https://github.com/Genivia/ugrep/archive/v3.9.2.tar.gz"
+  sha256 "3416267ac5a4dd2938ca91e7bd91db958d65510c9fd33b221f067bd3c6b3fc6a"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 arm64_monterey: "3342c3772bf1109f89b77ecc8ae59a4213c3051b78dfae9f14770ac27e1beed2"
-    sha256 arm64_big_sur:  "ed1e434d6372a612dc9d76de05dbc28c134169a5797bf39a7bebdb1cfbf35734"
-    sha256 monterey:       "029f4f5dc1ac7091d4df0a169b7c157dd186ed412884b0ddf99350729ed16215"
-    sha256 big_sur:        "4f7557e48bf959394753e4912bcca4eae84c330521597f8a9036797e462e2cb9"
-    sha256 catalina:       "1f3532e352f3b722a76e0cf0d22c1007391b8c83720999d6c9ef65cac2cbc2e2"
-    sha256 x86_64_linux:   "05f09a8cde9e5b1677a9f141c98bcf9ebc1ebf97a4c40abd028d406ee057a2b4"
+    sha256 arm64_ventura:  "32998ad357de246d98c7f04317e540bb20631848b3867d97d7d70361ef04f57a"
+    sha256 arm64_monterey: "c02e298d5858fd7aa8d8307cb52c29c086e360ba2b219d71a1d7c59a27ba6ddc"
+    sha256 arm64_big_sur:  "154cd0420579b2e0203a3b6dfd44943d9eb125e2adf2037bbf90113e3fe0dbe4"
+    sha256 ventura:        "a83296acd870e799b6fd6d9b0927a758cf201cd4a8c021cbd5a68935a2bd3e0f"
+    sha256 monterey:       "b1a2c618f1f404372ac838d0a4fe890233111e3118290629bcafa65578dbb682"
+    sha256 big_sur:        "81d7214cdfaec0060179bb3f02e24edb45f390c0f4bf0bbe5f4a05dd30b36477"
+    sha256 catalina:       "db2e8624cfde4ee3d23007b365377b9d545d6f26a3b91ca28c8d9861b0259ba3"
+    sha256 x86_64_linux:   "411ab9ae62e0647f2bcc42fbbb3cffcc256349bce98eec656992a4ef4369c3a0"
   end
 
   depends_on "pcre2"

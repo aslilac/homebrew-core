@@ -1,18 +1,19 @@
 class Libffi < Formula
   desc "Portable Foreign Function Interface library"
   homepage "https://sourceware.org/libffi/"
-  url "https://github.com/libffi/libffi/releases/download/v3.4.2/libffi-3.4.2.tar.gz"
-  sha256 "540fb721619a6aba3bdeef7d940d8e9e0e6d2c193595bc243241b77ff9e93620"
+  url "https://github.com/libffi/libffi/releases/download/v3.4.4/libffi-3.4.4.tar.gz"
+  sha256 "d66c56ad259a82cf2a9dfc408b32bf5da52371500b84745f7fb8b645712df676"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "6a3605cff713d45e0500ef01c0f082d1b4d31d70cd2400b5856443050a44a056"
-    sha256 cellar: :any,                 arm64_big_sur:  "2166e9d5178197a84ec721b40e22d8c42e30bd0c4808bd38b1ca768eb03f62a5"
-    sha256 cellar: :any,                 monterey:       "d2cee9b7c8158cf7164fc58c4c5054e38898caefd5f902d36996e1c362d936bc"
-    sha256 cellar: :any,                 big_sur:        "a461f6ad21a23a725691385dbbec3eff958cf61d5282e84dc3f0483e307e1875"
-    sha256 cellar: :any,                 catalina:       "6dbeaf8209b24c0963a5c87cd99d68f8bf61ea532c1c55bec8467a621b64da1b"
-    sha256 cellar: :any,                 mojave:         "ebd8f12d294d0194f4bfd158cc20b454ff97c02def465cb4cd69eea621665033"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "48e34a380ab065bda9191298bd3eefc895f1c2315d508cb83614eac01cf38301"
+    sha256 cellar: :any,                 arm64_ventura:  "66d9dcb218283c43250b04e507b7b96f0cf18fb1017fcaf811729324d11127f7"
+    sha256 cellar: :any,                 arm64_monterey: "e7ea0921a053dc81e818c3893887e819ed26c0e231fd306e05e905b51b9ea902"
+    sha256 cellar: :any,                 arm64_big_sur:  "8d44b24963c114512934de23cc776a6190f5bcb65db8e6cc65e1b60122571747"
+    sha256 cellar: :any,                 ventura:        "a86ed7eb1b02a3d44cd6e75977c910466357a1715743f89be94416d000577133"
+    sha256 cellar: :any,                 monterey:       "9dd80c4c3d4451cc3216dbf1129a2bddec474aa9266b6bb5c603e0a6cce7605b"
+    sha256 cellar: :any,                 big_sur:        "b5c4e2054802f97a68b8f32d9ff2c6782f9a37223cd0a3b3d2175ecf04740a4f"
+    sha256 cellar: :any,                 catalina:       "1f53646211da139b423eb38f923bc38da1de86b7a68bfc2df5351098fe3c67e3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dcc9412995b5e319f64796a77b1eb8e684f1d1b6b5d7ac824f434ada692e4ff8"
   end
 
   head do

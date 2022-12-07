@@ -4,23 +4,20 @@ class Pdftoipe < Formula
   url "https://github.com/otfried/ipe-tools/archive/v7.2.24.1.tar.gz"
   sha256 "561b18fc2a7ae45c37c5d0390443b37f4585549f09cd7765d856456be24e5dbc"
   license "GPL-2.0-or-later"
-  revision 7
+  revision 10
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "167884a3aef169ca68c66039aef5c490a69fc6b03456079dbc86e8e4ddcbff52"
-    sha256 cellar: :any,                 arm64_big_sur:  "92c16b5e8fe2037f930bf2d61d0942ce3d1db2f4195cffe4aa96f3e2fcb1550f"
-    sha256 cellar: :any,                 monterey:       "c91450a786fccc95346fac43f9dee761377c5ed573a63844cc29fdf1961c4ced"
-    sha256 cellar: :any,                 big_sur:        "6046385045bdaa58bbccecec2a457384854d3bd80073c7022de94c5b3969ddc7"
-    sha256 cellar: :any,                 catalina:       "7d2237b936e622f594fcdf11e030c993a2cd87c007bf479e8216ae84b9f6e7e0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a1148b14f2d046e9f264bac8cea05d888620171a2e9547ff8a9c046d2ab805b2"
+    sha256 cellar: :any,                 arm64_ventura:  "2471b4e55316d5bb16f837504bd3d889a8e3f8e4e91345c212eae26c76e369a9"
+    sha256 cellar: :any,                 arm64_monterey: "69a9d5a667ad556629ff3aaac17ee07f595e258d404647e513bd2e17711b5740"
+    sha256 cellar: :any,                 arm64_big_sur:  "9e6aa56f8548a8327ded3033cad1beed47936a1ded75aa8aeadb346dc5230a0a"
+    sha256 cellar: :any,                 ventura:        "d093aff36bbde817e23a69f7a3bcf9b5cf970baeaad7bc212c942160599a01c1"
+    sha256 cellar: :any,                 monterey:       "233f4e217e98efe6ffb9621333e6bc6b66f8f106f2e3b785b5b5dd776c0cdf29"
+    sha256 cellar: :any,                 big_sur:        "8d8af6acbb00ba7a49e106675ec49240081998a263fe0cd93ac67345898d59e4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e905ecd0facb4015eff6c21bc383bf52254cce7e2ba87a572f1db1cc19b4ce88"
   end
 
   depends_on "pkg-config" => :build
   depends_on "poppler"
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5"
 
@@ -28,6 +25,12 @@ class Pdftoipe < Formula
   patch do
     url "https://github.com/otfried/ipe-tools/commit/14335180432152ad094300d0afd00d8e390469b2.patch?full_index=1"
     sha256 "544d891bfab2c297f659895761cb296d6ed2b4aa76a888e9ca2c215d497a48e5"
+  end
+
+  # https://github.com/otfried/ipe-tools/pull/55
+  patch do
+    url "https://github.com/otfried/ipe-tools/commit/65586fcd9cc39e482ae5a9abdb6f4932d9bb88c4.patch?full_index=1"
+    sha256 "61f507fcaa843c00e5aa06bc1c8ab1cbc2798214c5f794d2c9bd376f78b49a11"
   end
 
   def install

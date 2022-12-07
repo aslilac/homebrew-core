@@ -1,18 +1,20 @@
 class Bat < Formula
   desc "Clone of cat(1) with syntax highlighting and Git integration"
   homepage "https://github.com/sharkdp/bat"
-  url "https://github.com/sharkdp/bat/archive/v0.21.0.tar.gz"
-  sha256 "3dff1e52d577d0a105f4afe3fe7722a4a2b8bb2eb3e7a6a5284ac7add586a3ee"
+  url "https://github.com/sharkdp/bat/archive/v0.22.1.tar.gz"
+  sha256 "25e45debf7c86794281d63a51564feefa96fdfdf575381e3adc5c06653ecaeca"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/sharkdp/bat.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c2e582eafc63d7242af612bb069f3686ece8828c239232ceb15fa91b374930f9"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9a8a80443ce88c0aee5f734a2c59707c5de6713e88d7054d7791c10130beec0f"
-    sha256 cellar: :any_skip_relocation, monterey:       "c7e28f20c861c79ad3d696f597af3bf153a4eccad92968c1b0cbd96edaa83ed5"
-    sha256 cellar: :any_skip_relocation, big_sur:        "54b82450955087f9029f74a1d816cc8e099357f926fffd4f9e867e15949be2cc"
-    sha256 cellar: :any_skip_relocation, catalina:       "74e48f3a0081f5fe07b7eef3c9f9a4efffbc58e1b682530ad3f4a33a5717e4fd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ca0aafc35b964b69f3497cacc5612fe606c5a0205d0b887ff7ddd94b1ca62fea"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "44ca10d2732acc1ea598f366f57b13354700def18a170307b8a80c1252badd05"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "01aeb3e1ede73d04f64213e670127511eb50153875ffb5a8f708e7b7b56638fe"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e001f7da90ae6ff14ac240c79f8c781d0f9d92f8ae05b1993c233eeb5cbc3945"
+    sha256 cellar: :any_skip_relocation, ventura:        "d3145741d524d8bf12775263a7a376b8aa82b566719b953a429f4ab1c6b433bc"
+    sha256 cellar: :any_skip_relocation, monterey:       "c6ad09d3eba478b679c9666ea7bd8f7a5732273abba93d0a897af3d6020cd495"
+    sha256 cellar: :any_skip_relocation, big_sur:        "118c45fc332fa36bf87b9d6edd460d6ba9e69292b8eab47afe2d99e1db1e5bfb"
+    sha256 cellar: :any_skip_relocation, catalina:       "5bb11d651efbd6f854a9eaf96367ce46c78ad4232b11bae9835a5e21c56dbdba"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6064e029a93bbdf8ba005d419cce9640c3a28b7c25cd1774c55580f1bb8d3faa"
   end
 
   depends_on "rust" => :build

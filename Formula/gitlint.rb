@@ -3,26 +3,27 @@ class Gitlint < Formula
 
   desc "Linting for your git commit messages"
   homepage "https://jorisroovers.com/gitlint/"
-  url "https://files.pythonhosted.org/packages/91/77/2fc5418edff33060dd7a51aa323ee7d3df11503952b8e4e46ee65d18d815/gitlint-core-0.17.0.tar.gz"
-  sha256 "772dfd33effaa8515ca73e901466aa938c19ced894bec6783d19691f57429691"
+  url "https://files.pythonhosted.org/packages/fe/11/971074a89e50f31e32b79b73a84b8aed5787ad5718bb3857477514304db7/gitlint-core-0.18.0.tar.gz"
+  sha256 "b032eb574f7399aec6a5246a78810bacb7ce9c9fd2d9e4375950549196cae681"
   license "MIT"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d9ad929082af6a7d59dc9f7916fb11bbbe1b6d73d65ec18f4daf1f4c85610125"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "aa744d7a0efdb919426cc246447817ca12c41f4fd971099d0a30331c232c14b4"
-    sha256 cellar: :any_skip_relocation, monterey:       "f06c6dcf8980745fd7cae9c0f4bc7af1748290d83d707dc8161571f6aa8c669d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "29177c2fcddbadf9cdba116e956f91c9ce5d3199c405f5933a2ea07bd28585c3"
-    sha256 cellar: :any_skip_relocation, catalina:       "60bb922ea7278aa56b3e2b4e17c3629ed206229b6aa0f9941ff947462215be90"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2df1ea0e66d8a6c02557a1f08cd0d6c15077ad4ee3e6a337788857128c11ea10"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e76c35c0f5c1264f660de5f79a30e5609247685ca0d27a0929696009870c6218"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e4ab8cb2671afa9e4aaa8de6fda45198162567a7e8611086bce572908f4e702a"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "526b454400bcc7440c23e3659728140d2b96372734d4c59784e59a7ff542c98b"
+    sha256 cellar: :any_skip_relocation, ventura:        "f92add1cb7cca06297104b86f6c734bc164b197b440d53d86ec880159f89c5b3"
+    sha256 cellar: :any_skip_relocation, monterey:       "2043b77407919887505d5ac40225596e536a709e290be4840e9da25587b82731"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a519f46cce1b93e2045ef2880012e7a811accbe1816671ebc1b102ade4142d4c"
+    sha256 cellar: :any_skip_relocation, catalina:       "515ae6455446a91ae666d6e078e1c30eeaccac57f90976c6f72b867df31762e3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "395a1c0dc259937b455d9792749abae1235b65d1a48e10039cd2743c475b4920"
   end
 
-  depends_on "python@3.10"
+  depends_on "python@3.11"
   depends_on "six"
 
   resource "arrow" do
-    url "https://files.pythonhosted.org/packages/48/28/30a5748af715b0ab9c2b81cf08bd9e261e47a6261e247553afb7f6421b24/arrow-1.2.2.tar.gz"
-    sha256 "05caf1fd3d9a11a1135b2b6f09887421153b94558e5ef4d090b567b47173ac2b"
+    url "https://files.pythonhosted.org/packages/7f/c0/c601ea7811f422700ef809f167683899cdfddec5aa3f83597edf97349962/arrow-1.2.3.tar.gz"
+    sha256 "3934b30ca1b9f292376d9db15b19446088d12ec58629bc3f0da28fd55fb633a1"
   end
 
   resource "click" do
@@ -36,8 +37,8 @@ class Gitlint < Formula
   end
 
   resource "sh" do
-    url "https://files.pythonhosted.org/packages/80/39/ed280d183c322453e276a518605b2435f682342f2c3bcf63228404d36375/sh-1.14.2.tar.gz"
-    sha256 "9d7bd0334d494b2a4609fe521b2107438cdb21c0e469ffeeb191489883d6fe0d"
+    url "https://files.pythonhosted.org/packages/b7/09/89c28aaf2a49f226fef8587c90c6386bd2cc03a0295bc4ff7fc6ee43c01d/sh-1.14.3.tar.gz"
+    sha256 "e4045b6c732d9ce75d571c79f5ac2234edd9ae4f5fa9d59b09705082bdca18c7"
   end
 
   def install

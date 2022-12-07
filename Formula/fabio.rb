@@ -1,18 +1,20 @@
 class Fabio < Formula
   desc "Zero-conf load balancing HTTP(S) router"
   homepage "https://github.com/fabiolb/fabio"
-  url "https://github.com/fabiolb/fabio/archive/v1.6.0.tar.gz"
-  sha256 "2a3a678a3ee7a5415512a1b3b799352186859f5d4dd50330d1117b21a643c398"
+  url "https://github.com/fabiolb/fabio/archive/v1.6.2.tar.gz"
+  sha256 "9edd6ad52f9e2f6df921e173b6e0913bd1fda34693f0ed07f25c3621b1ffaee6"
   license "MIT"
   head "https://github.com/fabiolb/fabio.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3b80a286a30fac7a23bece1d65c150cc6fc1c2eeeda3766c5c93c6c8ada8ef20"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d0c59dfa1ba7258ed97881ca221973703b31eb6de8fb0deed61661aaf3458bd3"
-    sha256 cellar: :any_skip_relocation, monterey:       "397c08ca7a84a394aa612e7150b8b74a7383c39924c682f9c881fef35bf4f07c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4557d5ed59085c4bba46bba43edb6350a6c6b845bdec43ecb14c135fac046cec"
-    sha256 cellar: :any_skip_relocation, catalina:       "8024546a68136e01f7283b5d9ae216ba405fd2867a34bf4dda47e56a5910cd5b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "92e136b546ee472869e27a7bd8ee4584a79ac953a5370d01aaa1b2555dae148c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "cc2a65219ca38763639f0c2f1b96f90bef99c3a501e182c28d0a0ea08fbc0658"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2e026048e68fbb30c0c9cf919f8a2e999229235cc4664519e74f5a5a54b008b7"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3c67d7f2250abe334b63ae79e7defd7a359a3359c51e5b0a11b18f5cc879ffbd"
+    sha256 cellar: :any_skip_relocation, ventura:        "0371ce6586ef3e5f9b81744ea6d62c7004da355ff8394405d62cd20725942c06"
+    sha256 cellar: :any_skip_relocation, monterey:       "cf14d2e7044c8f3fb921f0164fae9fb003d52cd508a16e16c8bb490948813f6b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "2935f766cb066054fe48e3e784ffca0430afb329e023dc9ecfde3e29659b6e6a"
+    sha256 cellar: :any_skip_relocation, catalina:       "bab3551ce6db98ad5bc0fce72263cf7adc482ceb10c9e58d1d3dd05e8771c5b5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f7800877109e1521a02197a3c0ff466cdba791ee011dacf89316edefa9a48717"
   end
 
   depends_on "go" => :build
@@ -23,6 +25,15 @@ class Fabio < Formula
     prefix.install_metafiles
   end
 
+  def port_open?(ip_address, port, seconds = 1)
+    Timeout.timeout(seconds) do
+      TCPSocket.new(ip_address, port).close
+    end
+    true
+  rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Timeout::Error
+    false
+  end
+
   test do
     require "socket"
     require "timeout"
@@ -30,15 +41,6 @@ class Fabio < Formula
     consul_default_port = 8500
     fabio_default_port = 9999
     localhost_ip = "127.0.0.1".freeze
-
-    def port_open?(ip_address, port, seconds = 1)
-      Timeout.timeout(seconds) do
-        TCPSocket.new(ip_address, port).close
-      end
-      true
-    rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Timeout::Error
-      false
-    end
 
     if port_open?(localhost_ip, fabio_default_port)
       puts "Fabio already running or Consul not available or starting fabio failed."

@@ -4,8 +4,8 @@ class Samba < Formula
   # option. The shared folder appears in the guest as "\\10.0.2.4\qemu".
   desc "SMB/CIFS file, print, and login server for UNIX"
   homepage "https://www.samba.org/"
-  url "https://download.samba.org/pub/samba/stable/samba-4.16.2.tar.gz"
-  sha256 "a0b7a06d5b3fd138cc7b494e010ad0b52e3d5fa68493a44619a7f967467f859c"
+  url "https://download.samba.org/pub/samba/stable/samba-4.17.3.tar.gz"
+  sha256 "5d1c420cb31ec613c786f98537f959659081edc6be8373e68e87140868938e26"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -14,12 +14,14 @@ class Samba < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "be81b7446cf3b0b9d01cbed7e1aa77241bc99ce38269f80968564f09cf118cc0"
-    sha256 arm64_big_sur:  "3b3d60a08dcc050df226d6681ec0f46d200a9524d4556c9f1566e2e826a75cdc"
-    sha256 monterey:       "94692bc925c35b9189bd8d284f7d6e4eb2b56517dfdf39f8f56687c8a6817b18"
-    sha256 big_sur:        "e84813523418528f9d29e79a02de4ac05bb7e681445811b93a889a57ec819b2f"
-    sha256 catalina:       "1ebc7ff2bd5e907fcfc9741c133e098d60182cec0de43230246d3a7b8e7b9f04"
-    sha256 x86_64_linux:   "893cd32cb49f9ff92d85b73c1e043dfd5e7646c9d85e22fb5d62b7bb9f3cc330"
+    sha256 arm64_ventura:  "354dd9490f7d7055cedf59adc308d2d21226b2b6920c38a7e3d4d7d4266f5a77"
+    sha256 arm64_monterey: "4ebd6944c4f508983288f15d3ee8671cdef88aa7db172b04c67bb11243900e70"
+    sha256 arm64_big_sur:  "2a34b98843287096f182d4463b84ebe5f90bb251d7624f92a7d7099da1429925"
+    sha256 ventura:        "1d00702ea54a87620810a3bab1030295d4e6f41b011a04f7cd1e0479f9da97eb"
+    sha256 monterey:       "57aae8a01b02e32f9c6650b917a8c963d57d0cd6eb0532f803c305160da984fe"
+    sha256 big_sur:        "3eeb8cd71e7e1b4ce1e019dd3c76e802f44a654fee1355ef72cc59336a5333e4"
+    sha256 catalina:       "c8ad47ead61945b6f07330d2a60b473b7ccbd0d8380421b78d9366b154e90fb1"
+    sha256 x86_64_linux:   "1ce64a275b2815df94f1de8076eec36d54790351c1e9891995ab91e9b00ede30"
   end
 
   # configure requires python3 binary to be present, even when --disable-python is set.
@@ -37,6 +39,10 @@ class Samba < Formula
 
   on_macos do
     depends_on "openssl@1.1"
+  end
+
+  on_linux do
+    depends_on "libtirpc"
   end
 
   resource "Parse::Yapp" do

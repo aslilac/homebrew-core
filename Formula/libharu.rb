@@ -1,43 +1,36 @@
 class Libharu < Formula
   desc "Library for generating PDF files"
   homepage "https://github.com/libharu/libharu"
-  url "https://github.com/libharu/libharu/archive/RELEASE_2_3_0.tar.gz"
-  sha256 "8f9e68cc5d5f7d53d1bc61a1ed876add1faf4f91070dbc360d8b259f46d9a4d2"
+  url "https://github.com/libharu/libharu/archive/refs/tags/v2.4.3.tar.gz"
+  sha256 "a2c3ae4261504a0fda25b09e7babe5df02b21803dd1308fdf105588f7589d255"
   license "Zlib"
   head "https://github.com/libharu/libharu.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "32b1536e7d401ca8a1bf7e141b341f3dc4870a3448ecf07fadc9020bc0af7232"
-    sha256 cellar: :any,                 arm64_big_sur:  "3b3ecb6741fc471fdcabdf35215911fe21ae1eea3c7fe331198c3d614e28fe32"
-    sha256 cellar: :any,                 monterey:       "7331df46dd1a66ce9f7ee7733764c070dedded9c766c42ab2b9648eb4144dcd2"
-    sha256 cellar: :any,                 big_sur:        "fd5a1906e1b050f159f94f44d037cd50b0eb242a6f56a48f42e2085331e6dace"
-    sha256 cellar: :any,                 catalina:       "41becd02e09ddf3c566e69d7c8b2a0c52d571fb754ccff155d5e5d630d8eb64b"
-    sha256 cellar: :any,                 mojave:         "3ae8ecb2883c97e36e027d3ee6d81cf2aeaeccbf5e11616a4b06f2c229c74e35"
-    sha256 cellar: :any,                 high_sierra:    "70363d91450426724b94040b3fc5130d0e024fc13e08e5747cf47017fb94c76e"
-    sha256 cellar: :any,                 sierra:         "860cda2675feea36f82f4b8108927c6a0b1cabca5429c119f63557da11394f74"
-    sha256 cellar: :any,                 el_capitan:     "68003e06f893b8df9d412960a06c69f6b45cb4ab5abd96e9f10c5936ab8724ac"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5fe78364fa33562f2bdee06c1dfabb867ebbf50810f64fbb5d05f127dc74b106"
+    sha256 cellar: :any,                 arm64_ventura:  "99295cb20bb4c7a8d7f7d2ba07dfca6ba604bc73ef16a1352ab89a66164de4a2"
+    sha256 cellar: :any,                 arm64_monterey: "9b275ece58d1b13804e5f24c4907afb98fd903b9fbaf767ae10064fdfc4abce5"
+    sha256 cellar: :any,                 arm64_big_sur:  "5d7ddfa53783e144e70d05966047cf45a0779085aa5abaf1d3bc69974e16bee4"
+    sha256 cellar: :any,                 ventura:        "d9bbee944dd85603f7a58a3924fac5ebb607196aa9d6935fcd410090e0df655a"
+    sha256 cellar: :any,                 monterey:       "993cd8d5890d997b5594b477fd40453c31cda32402439ac6a83506505d8df9aa"
+    sha256 cellar: :any,                 big_sur:        "8d9f255db0ee0ffd1c667832130c06c624f791e5dc06dd68befb307388ffd0af"
+    sha256 cellar: :any,                 catalina:       "df8db49c177e2d6990469d150286114ac08395b3384ec7dcc60963a92c223ff2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "76904ae9e570b75c529f747aff8870c0db1dfc91be5054516b6a3afb52451297"
   end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
+  depends_on "cmake" => :build
   depends_on "libpng"
+  uses_from_macos "zlib"
 
   def install
-    system "./buildconf.sh", "--force"
+    # Build shared library
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, "-DBUILD_SHARED_LIBS=ON"
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
-    args = %W[
-      --disable-debug
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-      --with-png=#{Formula["libpng"].opt_prefix}
-    ]
-
-    args << "--with-zlib=#{MacOS.sdk_path}/usr" if MacOS.sdk_path_if_needed
-
-    system "./configure", *args
-    system "make", "install"
+    # Build static library
+    system "cmake", "-S", ".", "-B", "build-static", *std_cmake_args, "-DBUILD_SHARED_LIBS=OFF"
+    system "cmake", "--build", "build-static"
+    lib.install "build-static/src/libhpdf.a"
   end
 
   test do
@@ -61,7 +54,7 @@ class Libharu < Formula
         return result;
       }
     EOS
-    system ENV.cc, "test.c", "-L#{lib}", "-lhpdf", "-lz", "-o", "test"
+    system ENV.cc, "test.c", "-L#{lib}", "-lhpdf", "-lz", "-lm", "-o", "test"
     system "./test"
   end
 end

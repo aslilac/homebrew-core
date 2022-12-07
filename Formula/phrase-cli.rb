@@ -1,17 +1,20 @@
 class PhraseCli < Formula
   desc "Tool to interact with the Phrase API"
-  homepage "https://phrase.com/cli"
-  url "https://github.com/phrase/phrase-cli/archive/refs/tags/2.4.12.tar.gz"
-  sha256 "7fd1a9ef48fe919d1626566517d3a8d4ae1521bd504adac8c9ee35851f90b92d"
+  homepage "https://phrase.com/"
+  url "https://github.com/phrase/phrase-cli/archive/refs/tags/2.6.0.tar.gz"
+  sha256 "1c4f41c413cade1e7e0588dfa51328044944c71867d7b4b5e02cdbe91b967619"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4fcb40e8faa86f3e686b0598b8fe0e9304a480eb152d812d1320365fe8ee3b97"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "096c75f210dcc8c097ca89377cf01a364035695290b1988ac9ca10ffe88129fb"
-    sha256 cellar: :any_skip_relocation, monterey:       "82324ca1225778d75328f6f06ff65c2218e3c447f4ada4eaeaa12cde9d34fa62"
-    sha256 cellar: :any_skip_relocation, big_sur:        "29e960fc9e1d974ce80de9adbdd8713d4ed55f19350629a4bc9ea0025fafbd78"
-    sha256 cellar: :any_skip_relocation, catalina:       "fe7550a4af2d2dcef2b8eadd5ec77529b8504b52c649b1b6323c1be31bd35955"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "85ae1d093038c152d31272f0fb4d494b681bc2062394325d8c723e7a20df9bcf"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ddb0d7fb95e7a0f3847e9ca8c1b6dc64e2fd4ea70fb68f7fb369ef31e44a9e3a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "590ab5f27197992127643c2a54e4f25e3bd4906688fe405870f592e98252a0d7"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d40aad877d2bef748779bbb54e0c916c436b83f7190011651f6e5777975fbe38"
+    sha256 cellar: :any_skip_relocation, ventura:        "4d50b68eb604448caa6c4dbffb50ebc76a62130ef224d8185825a7d1134fe1e8"
+    sha256 cellar: :any_skip_relocation, monterey:       "9ded904d30ed7bf074c3569d4d9a68926622a429d66060f854b54d3d95a9b942"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e70969f5725a8941bb82ee9af2ea3a20296a123ead3c8b9bf323fbfc2d4d13f9"
+    sha256 cellar: :any_skip_relocation, catalina:       "c04f7f0d3e5aec4679921d03240d46d7ab499b28a97077b836a32e7d9d7580e7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6c2aa0ae52c15cf9cebec7c5ab469f468f50358d9ab8e6a0740c3a7127e0a546"
   end
 
   depends_on "go" => :build
@@ -24,10 +27,12 @@ class PhraseCli < Formula
     ]
     system "go", "build", *std_go_args(ldflags: ldflags)
     bin.install_symlink "phrase-cli" => "phrase"
+
+    generate_completions_from_executable(bin/"phrase", "completion", base_name: "phrase", shells: [:bash])
   end
 
   test do
-    assert_match "Error: no targets for download specified", shell_output("#{bin}/phrase pull", 1)
+    assert_match "ERROR: no targets for download specified", shell_output("#{bin}/phrase pull 2>&1", 1)
     assert_match version.to_s, shell_output("#{bin}/phrase version")
   end
 end

@@ -1,10 +1,21 @@
 class Perl < Formula
   desc "Highly capable, feature-rich programming language"
   homepage "https://www.perl.org/"
-  url "https://www.cpan.org/src/5.0/perl-5.34.0.tar.xz"
-  sha256 "82c2e5e5c71b0e10487a80d79140469ab1f8056349ca8545140a224dbbed7ded"
   license any_of: ["Artistic-1.0-Perl", "GPL-1.0-or-later"]
   head "https://github.com/perl/perl5.git", branch: "blead"
+
+  stable do
+    url "https://www.cpan.org/src/5.0/perl-5.36.0.tar.xz"
+    sha256 "0f386dccbee8e26286404b2cca144e1005be65477979beb9b1ba272d4819bcf0"
+
+    # Apply upstream commit to remove nsl from libswanted:
+    # https://github.com/Perl/perl5/commit/7e19816aa8661ce0e984742e2df11dd20dcdff18
+    # Remove with next tagged release that includes the change.
+    patch do
+      url "https://github.com/Perl/perl5/commit/7e19816aa8661ce0e984742e2df11dd20dcdff18.patch?full_index=1"
+      sha256 "03f64cf62b9b519cefdf76a120a6e505cf9dc4add863b9ad795862c071b05613"
+    end
+  end
 
   livecheck do
     url "https://www.cpan.org/src/"
@@ -12,19 +23,21 @@ class Perl < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "4c53f42a2177a516381cf2cddde7cfaffecef66910af74379cbc10901779153f"
-    sha256 arm64_big_sur:  "8b55cc95c9de8bdcf628ae6d6f631057952fa8b0218da8ac61eafe4da65a8761"
-    sha256 monterey:       "dca9e216941d2c39b8222a49d4f3434d9773de6f9b4517b2fc148b221cf5e23c"
-    sha256 big_sur:        "5f86afbccd065524f92080bd7f35ffe6398b7dd40a8fef6f0a2a7982fd276dae"
-    sha256 catalina:       "de0127c56612bbadc3621217b586571cab897c001344b7a1d63302a4f8f74a8e"
-    sha256 mojave:         "2222c3f09bdcd10640720d2f52ba71e09408ead129bc77853b2fdf88fc381061"
-    sha256 x86_64_linux:   "cfd7c32f4076b6d9fbfb894bb6dc30cb14305a13e9b0fee93cd9b1ec2a768c92"
+    sha256 arm64_ventura:  "060d846955f6c1263f550709f425b02b232a9f61adc755af6a4749fac8250f13"
+    sha256 arm64_monterey: "aef200b8035eb1fbf5b6aa219c053df7f73d9c07da10f503f08889ae70e2e92a"
+    sha256 arm64_big_sur:  "f0f893e0ceb2e9855bfcec2ceafaaaa8202df3477d11f39b88722eb776ee4f34"
+    sha256 ventura:        "5363b1a09291d6e4b4d87b263f3692b535e1426192bf13cca62264f0ea34e807"
+    sha256 monterey:       "5b63dfe448c0b7a69cb8a3d0b4220074848ae0680a2f245080a8f4cfd1be3baf"
+    sha256 big_sur:        "b8371ca58bdc89bd17ba3bd0a0f6d151fb0bbd1544e47357ad474507f4ca5f28"
+    sha256 catalina:       "3f0a9bae1a11de46f3cb19e9f1d64e63b6af957a771bcab0663ab18f2a6822b3"
+    sha256 x86_64_linux:   "64131980cdcecfdee05b10ab5878f3152f6f661fd779358b4d658d7d23f36d36"
   end
 
   depends_on "berkeley-db"
   depends_on "gdbm"
 
   uses_from_macos "expat"
+  uses_from_macos "libxcrypt"
 
   # Prevent site_perl directories from being removed
   skip_clean "lib/perl5/site_perl"
@@ -32,26 +45,24 @@ class Perl < Formula
   def install
     args = %W[
       -des
-      -Dprefix=#{prefix}
-      -Dprivlib=#{lib}/perl5/#{version}
-      -Dsitelib=#{lib}/perl5/site_perl/#{version}
-      -Dotherlibdirs=#{HOMEBREW_PREFIX}/lib/perl5/site_perl/#{version}
+      -Dinstallstyle=lib/perl5
+      -Dinstallprefix=#{prefix}
+      -Dprefix=#{opt_prefix}
+      -Dprivlib=#{opt_lib}/perl5/#{version.major_minor}
+      -Dsitelib=#{opt_lib}/perl5/site_perl/#{version.major_minor}
+      -Dotherlibdirs=#{HOMEBREW_PREFIX}/lib/perl5/site_perl/#{version.major_minor}
       -Dperlpath=#{opt_bin}/perl
       -Dstartperl=#!#{opt_bin}/perl
-      -Dman1dir=#{man1}
-      -Dman3dir=#{man3}
+      -Dman1dir=#{opt_share}/man/man1
+      -Dman3dir=#{opt_share}/man/man3
       -Duseshrplib
       -Duselargefiles
       -Dusethreads
     ]
-    args << "-Dsed=/usr/bin/sed" if OS.mac?
-
     args << "-Dusedevel" if build.head?
 
     system "./Configure", *args
-
     system "make"
-
     system "make", "install"
   end
 

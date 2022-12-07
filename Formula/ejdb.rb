@@ -2,27 +2,25 @@ class Ejdb < Formula
   desc "Embeddable JSON Database engine C11 library"
   homepage "https://ejdb.org"
   url "https://github.com/Softmotions/ejdb.git",
-      tag:      "v2.72",
-      revision: "5f44c3f222b34dc9180259e37cdd1677b84d1a85"
+      tag:      "v2.73",
+      revision: "bc370d1aab86d5e2b8b15cbd7f804d3bbc6db185"
   license "MIT"
   head "https://github.com/Softmotions/ejdb.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "c1a23396c872b4a5e05a98ae982103cfc67da805706a091dc1c57d7770026998"
-    sha256 cellar: :any,                 arm64_big_sur:  "85c60ffc351cf601c932406f75606edbf041abade468ea7ca47b2cb9a7f4cee7"
-    sha256 cellar: :any,                 monterey:       "c0a2639abef7cd76b167ae19af901b9d4cca045a2b88044e9dddcf65bc1494db"
-    sha256 cellar: :any,                 big_sur:        "e77d0cd2d377db7230ab9d6663f859ce9b4d59333204858851aae34bf689c54e"
-    sha256 cellar: :any,                 catalina:       "13387810b1f21f9d068dfe4dd82844e19a3f4e12fa95c7fd78d8fb001a1ff6c5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "eedee3fd1e621438e436a004062a96fc79e195f4b3b1e1358220c6cd46ace47f"
+    sha256 cellar: :any,                 arm64_ventura:  "4d04af75587bace755ce51b52efbb350f21fe9ff68e627e46ba6df5c0b3d802d"
+    sha256 cellar: :any,                 arm64_monterey: "651db63cf52361e30d51e00be5d21d0312a987ecf6fb13ca4db0aaa6e36419fc"
+    sha256 cellar: :any,                 arm64_big_sur:  "a8c53e49e903e393a00c1f8f252f24427aa3d597621b0a60aa625fed023e47f6"
+    sha256 cellar: :any,                 ventura:        "d1ea43ae8a72ba4c3fd46ea22cc0959a6db9ef46d99dad2443ed1896b6f745ca"
+    sha256 cellar: :any,                 monterey:       "be42fe4d45f8c3ee1e9780df885e2a9176685f741ba936cc7969e7a1dffb881a"
+    sha256 cellar: :any,                 big_sur:        "d015a8db5f02bc71e50daf8dfc76ac9224815abab9637bdb19bbb1adf814ad4d"
+    sha256 cellar: :any,                 catalina:       "70fd430780b4d69ff1f6c63984f7f8ef01e0a478e9cf9753c6ec4b2eabed4bd6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "69a8f6d1769f13275c84bb8b1bc96eb68727d85863bbf4f423f6cc6aefa1aed9"
   end
 
   depends_on "cmake" => :build
 
   uses_from_macos "curl" => :build
-
-  on_linux do
-    depends_on "gcc" => [:build, :test]
-  end
 
   fails_with :gcc do
     version "7"
@@ -114,7 +112,8 @@ class Ejdb < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "-I#{include}", "test.c", "-L#{lib}", "-lejdb2", "-o", testpath/"test"
+
+    system ENV.cc, "-I#{include}/ejdb2", "test.c", "-L#{lib}", "-lejdb2", "-o", testpath/"test"
     system "./test"
   end
 end

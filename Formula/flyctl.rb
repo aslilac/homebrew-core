@@ -2,8 +2,8 @@ class Flyctl < Formula
   desc "Command-line tools for fly.io services"
   homepage "https://fly.io"
   url "https://github.com/superfly/flyctl.git",
-      tag:      "v0.0.347",
-      revision: "d5a5435fb09b8d7c5959a826df0f07960ae4fd14"
+      tag:      "v0.0.437",
+      revision: "7073cc94fb91ded0073ba0fa144f290f813d7c09"
   license "Apache-2.0"
   head "https://github.com/superfly/flyctl.git", branch: "master"
 
@@ -13,12 +13,13 @@ class Flyctl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5d2252e8316c4da7062948b4a8b4027d6bb2fc7c9f6da123eb45994234bb0bc3"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5d2252e8316c4da7062948b4a8b4027d6bb2fc7c9f6da123eb45994234bb0bc3"
-    sha256 cellar: :any_skip_relocation, monterey:       "44904a693945e52b10b5595a6387b3dab58eea2469ca31af80c5c78cbbb45c3c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "44904a693945e52b10b5595a6387b3dab58eea2469ca31af80c5c78cbbb45c3c"
-    sha256 cellar: :any_skip_relocation, catalina:       "44904a693945e52b10b5595a6387b3dab58eea2469ca31af80c5c78cbbb45c3c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9968dae03f2172b90c568f0fbe992aef7479cb364b9242b279f88180fd740dae"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3c9f068645a5a1de0c192fb8aa2396c60a97406a024146d5895bfb4d8881f805"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3c9f068645a5a1de0c192fb8aa2396c60a97406a024146d5895bfb4d8881f805"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3c9f068645a5a1de0c192fb8aa2396c60a97406a024146d5895bfb4d8881f805"
+    sha256 cellar: :any_skip_relocation, ventura:        "b0510ddcebe123ff46f9c0733306e4d494f833285b046cd7980fcdcea62721fb"
+    sha256 cellar: :any_skip_relocation, monterey:       "b0510ddcebe123ff46f9c0733306e4d494f833285b046cd7980fcdcea62721fb"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b0510ddcebe123ff46f9c0733306e4d494f833285b046cd7980fcdcea62721fb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "40ab8fdd6cbd04ca20d952012254df5625f21e81039695a77dacfad4e6c073bf"
   end
 
   depends_on "go" => :build
@@ -36,12 +37,7 @@ class Flyctl < Formula
 
     bin.install_symlink "flyctl" => "fly"
 
-    bash_output = Utils.safe_popen_read("#{bin}/flyctl", "completion", "bash")
-    (bash_completion/"flyctl").write bash_output
-    zsh_output = Utils.safe_popen_read("#{bin}/flyctl", "completion", "zsh")
-    (zsh_completion/"_flyctl").write zsh_output
-    fish_output = Utils.safe_popen_read("#{bin}/flyctl", "completion", "fish")
-    (fish_completion/"flyctl.fish").write fish_output
+    generate_completions_from_executable(bin/"flyctl", "completion")
   end
 
   test do

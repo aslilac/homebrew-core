@@ -3,17 +3,19 @@ require "language/node"
 class AwsCdk < Formula
   desc "AWS Cloud Development Kit - framework for defining AWS infra as code"
   homepage "https://github.com/aws/aws-cdk"
-  url "https://registry.npmjs.org/aws-cdk/-/aws-cdk-2.30.0.tgz"
-  sha256 "d599497cbb35cbc928fda2f5eb650c3d92b4f23e002ca2ea5b741338db755ea6"
+  url "https://registry.npmjs.org/aws-cdk/-/aws-cdk-2.53.0.tgz"
+  sha256 "6ac070af25a50711d69c2e263f98e149b707d6e2c58bfe5b294288423bb7bb87"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a13ff6d59b7cac23770a3bf5ef40b758491ce3d627e14e3461deea103935f85f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a13ff6d59b7cac23770a3bf5ef40b758491ce3d627e14e3461deea103935f85f"
-    sha256 cellar: :any_skip_relocation, monterey:       "823e53d3af5aba2fae9285a51b2f5f4f3f8300e3173e3a1bb4f13beb91a52731"
-    sha256 cellar: :any_skip_relocation, big_sur:        "823e53d3af5aba2fae9285a51b2f5f4f3f8300e3173e3a1bb4f13beb91a52731"
-    sha256 cellar: :any_skip_relocation, catalina:       "823e53d3af5aba2fae9285a51b2f5f4f3f8300e3173e3a1bb4f13beb91a52731"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "88b7f6c0af884831b2363375c66a954a6abc6c4d1cbf8dec685508d8af45c734"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1876049a6492a49cf1390268b6bcb6bfb4a5f10328cd3f07f27bed93d2112508"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1876049a6492a49cf1390268b6bcb6bfb4a5f10328cd3f07f27bed93d2112508"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1876049a6492a49cf1390268b6bcb6bfb4a5f10328cd3f07f27bed93d2112508"
+    sha256 cellar: :any_skip_relocation, ventura:        "055b01ae28e7ce0b03cd015a8bb19febc879df9ad8015167014ecb3b2f372011"
+    sha256 cellar: :any_skip_relocation, monterey:       "055b01ae28e7ce0b03cd015a8bb19febc879df9ad8015167014ecb3b2f372011"
+    sha256 cellar: :any_skip_relocation, big_sur:        "055b01ae28e7ce0b03cd015a8bb19febc879df9ad8015167014ecb3b2f372011"
+    sha256 cellar: :any_skip_relocation, catalina:       "055b01ae28e7ce0b03cd015a8bb19febc879df9ad8015167014ecb3b2f372011"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "261f7ae3769d5bd1c7a23ce2660afe2cb0e1d94cc2c71b9bf1c3c196ed2b6dcf"
   end
 
   depends_on "node"

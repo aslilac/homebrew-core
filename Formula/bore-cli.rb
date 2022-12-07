@@ -1,18 +1,20 @@
 class BoreCli < Formula
   desc "Modern, simple TCP tunnel in Rust that exposes local ports to a remote server"
   homepage "http://bore.pub"
-  url "https://github.com/ekzhang/bore/archive/refs/tags/v0.4.0.tar.gz"
-  sha256 "ab1f3e924ce8a32eafe842de0bb1d23eeeb397ec0ad16455b443206f0c9ee59d"
+  url "https://github.com/ekzhang/bore/archive/refs/tags/v0.4.1.tar.gz"
+  sha256 "707459f6fde45139741d039910a1ec5095739ac31ed9b447c46624d71b1274b3"
   license "MIT"
   head "https://github.com/ekzhang/bore.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f244c0b291a30c7e04f446915b07f9ba185e1b0ce5b6741bd7b4dd61bacb8013"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7396f546c8565da31d6ce359cecc561b55674057d2ee60f52b0c331adaac28c4"
-    sha256 cellar: :any_skip_relocation, monterey:       "fce4ef7b3e7a96ac2b4efffd42a32dd67e08290eebe8d3b45960d8ef381a7bbd"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9781e5efc3fafaf45ece11b1cead8181ae74aa882c54b6311130cc1015543d03"
-    sha256 cellar: :any_skip_relocation, catalina:       "b0e8e5d4fbbd2380180c766f80e5159eb0afe6588865dec1866471878d0d1684"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "03809afaa3b18fec475d48af05a2df6997bb8c3cc661f0cbc3577df82c76c363"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c6edbfb09b9e6e21689d08cceecf988fe00dac7f4647a658578cb65dd603c85d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "304093791d0143ed8dd62c78de29a43578a0a0e9d378b2b93523351b7c674327"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "32cc03ab79420e849a1997bb55b3d8f951bcb70ebb1840c92a83ff4446137642"
+    sha256 cellar: :any_skip_relocation, ventura:        "1473a1140befada8a22394096192d623e538bfb0326c07695ab3e5cd256eed9a"
+    sha256 cellar: :any_skip_relocation, monterey:       "b528f1f77d6afbc20803c94378b8f25e5dfa6b305fe3de677abec629cfbf2032"
+    sha256 cellar: :any_skip_relocation, big_sur:        "2027a1f499b7b624e38f1d89a076fa5a1a893e8f7c47941b9bf01a3d690b6f87"
+    sha256 cellar: :any_skip_relocation, catalina:       "c8369c6b80646f4cb337414689f46149a8a1bdf9e2837e77a9d3bfb40ec55c69"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9957b6c7068a47e0af6cec938ee33058edc3154e751687646165e56d7bdea6e4"
   end
 
   depends_on "rust" => :build

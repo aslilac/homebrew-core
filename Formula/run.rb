@@ -1,17 +1,19 @@
 class Run < Formula
   desc "Easily manage and invoke small scripts and wrappers"
   homepage "https://github.com/TekWizely/run"
-  url "https://github.com/TekWizely/run/archive/v0.8.0.tar.gz"
-  sha256 "60b4f20152be20f0d7b76adb98ac49eff5f283d9e748165508fd54b62603bb1e"
+  url "https://github.com/TekWizely/run/archive/v0.10.0.tar.gz"
+  sha256 "1db1d50ca5f97524e5e031ba6beedf49f2e2122f57901e20fdb994bcf887284f"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "61afb39ed4512657d3730411ad1e049f2b207f7c3f991eb63f992130f675a0a1"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "61afb39ed4512657d3730411ad1e049f2b207f7c3f991eb63f992130f675a0a1"
-    sha256 cellar: :any_skip_relocation, monterey:       "df7755e6e2254ad7b93a4dd7a8e001c2e7606bce62708ac799c89532ba3c1324"
-    sha256 cellar: :any_skip_relocation, big_sur:        "df7755e6e2254ad7b93a4dd7a8e001c2e7606bce62708ac799c89532ba3c1324"
-    sha256 cellar: :any_skip_relocation, catalina:       "df7755e6e2254ad7b93a4dd7a8e001c2e7606bce62708ac799c89532ba3c1324"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bb930fec55039f0cc35d8e24752eb30734692d476f9721e82841ebfea78e6e88"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "064ba836c8f0c5bf55687f32a31a5c3ca2697a35ee179fb0008ee2088852ad01"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "064ba836c8f0c5bf55687f32a31a5c3ca2697a35ee179fb0008ee2088852ad01"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "064ba836c8f0c5bf55687f32a31a5c3ca2697a35ee179fb0008ee2088852ad01"
+    sha256 cellar: :any_skip_relocation, ventura:        "35befd6adc7d143999df865c38b28c4794e59d8ce211a7ed2259ef5e394f215d"
+    sha256 cellar: :any_skip_relocation, monterey:       "35befd6adc7d143999df865c38b28c4794e59d8ce211a7ed2259ef5e394f215d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "35befd6adc7d143999df865c38b28c4794e59d8ce211a7ed2259ef5e394f215d"
+    sha256 cellar: :any_skip_relocation, catalina:       "35befd6adc7d143999df865c38b28c4794e59d8ce211a7ed2259ef5e394f215d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3049d3110bddcfb68a6e609923d8f71b3b631ec812b3996cf9490fe08b9a91ee"
   end
 
   depends_on "go" => :build

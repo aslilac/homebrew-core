@@ -1,8 +1,8 @@
 class Txr < Formula
-  desc "Original, new programming language for convenient data munging"
+  desc "Lisp-like programming language for convenient data munging"
   homepage "https://www.nongnu.org/txr/"
-  url "http://www.kylheku.com/cgit/txr/snapshot/txr-278.tar.bz2"
-  sha256 "4703dd0d01852fce7579e8107cc6fcc47c42f003f7f617922002d78e9ff9fdcc"
+  url "http://www.kylheku.com/cgit/txr/snapshot/txr-283.tar.bz2"
+  sha256 "d939f0c47022896132b47a4a5eb13043e6a3ab5f5fd25bfbb2cf38da490fb386"
   license "BSD-2-Clause"
 
   livecheck do
@@ -11,17 +11,19 @@ class Txr < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "6cf31060d8419e59dec20d5a8248abc93c80c2590ba202f6da786782ace599d3"
-    sha256 cellar: :any, arm64_big_sur:  "cb172dd29555b5c5b54b82dd455dcba6032248e2a927c2f46746710c5262e1f9"
-    sha256 cellar: :any, monterey:       "a299e59b993c1dc325a6bf67a2c4e6d9741a79d45c8d60d3f007978d4339071e"
-    sha256 cellar: :any, big_sur:        "950f52091914640ab31afbe1c51e88fc2bf23aebc6c99ba82db4511293240bbd"
-    sha256 cellar: :any, catalina:       "63f7d7c193c2e8e48d7a117dbbcc76a5814b93bbf308097bb72ae4d1aa0b7158"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "de231f8e923bcf1049fd6f1f7e18b7732a85986a946024e30e0516bc048ce628"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f3c1d1f48d9017608baf956dbb1d7446eeb63ac911e2a55927d42f5d438e2371"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "074a4eaaad8ae9f11c39559b8648609be55b3df0ffa497e3f5e8415e2612df4f"
+    sha256 cellar: :any_skip_relocation, ventura:        "133f00160094b43a7f2a728f91ade654f5ed69d5f722ed006a5bb885970b7596"
+    sha256 cellar: :any_skip_relocation, monterey:       "19d5c749db72c0559f87c92bfd80556e0f9558f5766ee15a976610f32a2611f1"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a995db4ad4176cd5a340757f4b7547a467e6932c7982fc52772e0ecfeba4345e"
+    sha256 cellar: :any_skip_relocation, catalina:       "e795e315c105e5dded79be2a8f1693c5869639273a6e83f1300b01dcb53c6474"
   end
 
-  depends_on "libffi"
-
+  depends_on "pkg-config" => :build
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
+  uses_from_macos "libffi", since: :catalina
 
   def install
     system "./configure", "--prefix=#{prefix}", "--inline=static inline"
@@ -30,6 +32,6 @@ class Txr < Formula
   end
 
   test do
-    assert_equal "3", shell_output(bin/"txr -p '(+ 1 2)'").chomp
+    assert_equal "3", shell_output("#{bin}/txr -p '(+ 1 2)'").chomp
   end
 end

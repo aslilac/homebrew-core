@@ -1,8 +1,8 @@
 class Flatbuffers < Formula
   desc "Serialization library for C++, supporting Java, C#, and Go"
   homepage "https://google.github.io/flatbuffers"
-  url "https://github.com/google/flatbuffers/archive/v2.0.6.tar.gz"
-  sha256 "e2dc24985a85b278dd06313481a9ca051d048f9474e0f199e372fea3ea4248c9"
+  url "https://github.com/google/flatbuffers/archive/v22.11.23.tar.gz"
+  sha256 "8e9bacc942db59ca89a383dd7923f3e69a377d6e579d1ba13557de1fdfddf56a"
   license "Apache-2.0"
   head "https://github.com/google/flatbuffers.git", branch: "master"
 
@@ -12,12 +12,14 @@ class Flatbuffers < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5bbae757302623a372216f106b93de53d5597f263521e43ddd1ef8a3fa280a20"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "602f63e1a229e1aa7ae75ab98e85c9925c133ef1f4c5fde22d8b9422505216c4"
-    sha256 cellar: :any_skip_relocation, monterey:       "8c355d7efaa5cb1e3f5de82aa4846e14c05429bbe28bd84066c535d1241a034b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a72632bee30385a63c8cfdc6d2b8b4ee424441628b45f9171c15a8c646e7aec4"
-    sha256 cellar: :any_skip_relocation, catalina:       "79b5ced50e23277d66e15dc30e71adabad35f8cc6e855fbcb3b3463c303026ff"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7e6cbb4603971c8c17ba98e95e428732c2096836eda6ed852180de2e34ac6310"
+    sha256 cellar: :any,                 arm64_ventura:  "a8da20e54eac4faa2871abe2bb8f99b183b25083328adf2b9d1cb262a69eac57"
+    sha256 cellar: :any,                 arm64_monterey: "f844a16cacc5c337ce88a1afe6f7fbea2db98c63a63085281c47da9337decb3a"
+    sha256 cellar: :any,                 arm64_big_sur:  "96264bfdb14634ef2712397b2bbcbc5c98ab54ce82ecc8d49aa0b520b394b883"
+    sha256 cellar: :any,                 ventura:        "65bb7edad4778afe70173c252d40363af4e8fc71c9d1a4ec42a92b314f92114d"
+    sha256 cellar: :any,                 monterey:       "997d22279049f9e39844c80f316f72a169a8d5d13e4a5e796dd49d4a8f98a9f0"
+    sha256 cellar: :any,                 big_sur:        "b5a652182350c30e246cf7917e92768ef6e337e013d83f7d01091ffeb6dd3610"
+    sha256 cellar: :any,                 catalina:       "9b6835be6c9cd1b624b3ce93ac85b9104e27c0ed49b91b4f40044cdb18066195"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0d2cd1cd803dad119d35e41536ad16ef89e92561d5ca830215c46048f76c4e3b"
   end
 
   depends_on "cmake" => :build
@@ -26,56 +28,56 @@ class Flatbuffers < Formula
   conflicts_with "osrm-backend", because: "both install flatbuffers headers"
 
   def install
-    system "cmake", "-G", "Unix Makefiles", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DFLATBUFFERS_BUILD_SHAREDLIB=ON",
+                    "-DFLATBUFFERS_BUILD_TESTS=OFF",
+                    *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    def testfbs
-      <<~EOS
-        // example IDL file
+    testfbs = <<~EOS
+      // example IDL file
 
-        namespace MyGame.Sample;
+      namespace MyGame.Sample;
 
-        enum Color:byte { Red = 0, Green, Blue = 2 }
+      enum Color:byte { Red = 0, Green, Blue = 2 }
 
-        union Any { Monster }  // add more elements..
+      union Any { Monster }  // add more elements..
 
-          struct Vec3 {
-            x:float;
-            y:float;
-            z:float;
-          }
+        struct Vec3 {
+          x:float;
+          y:float;
+          z:float;
+        }
 
-          table Monster {
-            pos:Vec3;
-            mana:short = 150;
-            hp:short = 100;
-            name:string;
-            friendly:bool = false (deprecated);
-            inventory:[ubyte];
-            color:Color = Blue;
-          }
+        table Monster {
+          pos:Vec3;
+          mana:short = 150;
+          hp:short = 100;
+          name:string;
+          friendly:bool = false (deprecated);
+          inventory:[ubyte];
+          color:Color = Blue;
+        }
 
-        root_type Monster;
+      root_type Monster;
 
-      EOS
-    end
+    EOS
     (testpath/"test.fbs").write(testfbs)
 
-    def testjson
-      <<~EOS
-        {
-          pos: {
-            x: 1,
-            y: 2,
-            z: 3
-          },
-          hp: 80,
-          name: "MyMonster"
-        }
-      EOS
-    end
+    testjson = <<~EOS
+      {
+        pos: {
+          x: 1,
+          y: 2,
+          z: 3
+        },
+        hp: 80,
+        name: "MyMonster"
+      }
+    EOS
     (testpath/"test.json").write(testjson)
 
     system bin/"flatc", "-c", "-b", "test.fbs", "test.json"

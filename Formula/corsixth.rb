@@ -4,15 +4,19 @@ class Corsixth < Formula
   url "https://github.com/CorsixTH/CorsixTH/archive/v0.66.tar.gz"
   sha256 "9f87ff002405501b12798a715b691496775a4f9727188eeba167143816992a0f"
   license "MIT"
+  revision 1
   head "https://github.com/CorsixTH/CorsixTH.git", branch: "master"
 
   bottle do
-    sha256 arm64_monterey: "1983163d306715a37bd59ff24f0d6bce2535bed34bc1643cc7ffffb7ad78dad5"
-    sha256 arm64_big_sur:  "c90c4533b838f558b553138b17ac2710cd6642cd054e38a06f974e292b876bff"
-    sha256 monterey:       "bb64f6ad5d2c46f97aff23de1295ff587aab58a1ce6501990afc06221705e2dc"
-    sha256 big_sur:        "69d34ae25d49ddfe6554b67ce7a05ed93a5f535dd89982f196d17adcdbb293be"
-    sha256 catalina:       "3221e324484ba66c0f9767d87ee5888910947f7a53cb09f08b80ed86b5381689"
-    sha256 x86_64_linux:   "0cd0b245a8f0d201098f2bfc9e34ebb36e6e2c839900c0a137b20f162cbfd9e9"
+    rebuild 1
+    sha256 arm64_ventura:  "651735456e7376c1de75b2499680f1ee88a9a3231c36db84d8acce27717a62df"
+    sha256 arm64_monterey: "a8dbc402542a59704db0075dc3a1542977efd7cda3eeb0e24db11ee9c1b1ed6a"
+    sha256 arm64_big_sur:  "ff512592cf6ca0bfcb6cf11f48f63d275771d00ca2803707da7cac5331314051"
+    sha256 ventura:        "1306f8e8678784f4b8949b7771e0e5063782faf822102a06fbd68e785895322c"
+    sha256 monterey:       "66fc4a0640c757456c4efcc2113c0afecabbece807de950285ea577092221966"
+    sha256 big_sur:        "64645106c33f43df0b0d308c48d90d129b5d0d1df39bdd20f94b3a464b02ef6a"
+    sha256 catalina:       "b43968804acbf0f5baac47c2a8bb9a638f1f6a6478d83d5e846bb1c6cfb66837"
+    sha256 x86_64_linux:   "c36909397a1ff699f08baa76a3bae1379b78eed27557fd3cd5279d01d48a8cae"
   end
 
   depends_on "cmake" => :build
@@ -25,11 +29,8 @@ class Corsixth < Formula
   depends_on "sdl2_mixer"
 
   on_linux do
-    depends_on "gcc"
     depends_on "mesa"
   end
-
-  fails_with gcc: "5" # ffmpeg is compiled with GCC
 
   resource "lpeg" do
     url "http://www.inf.puc-rio.br/~roberto/lpeg/lpeg-1.0.2.tar.gz"

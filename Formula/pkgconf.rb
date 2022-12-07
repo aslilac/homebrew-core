@@ -1,8 +1,8 @@
 class Pkgconf < Formula
   desc "Package compiler and linker metadata toolkit"
   homepage "https://git.sr.ht/~kaniini/pkgconf"
-  url "https://distfiles.dereferenced.org/pkgconf/pkgconf-1.8.0.tar.xz"
-  sha256 "ef9c7e61822b7cb8356e6e9e1dca58d9556f3200d78acab35e4347e9d4c2bbaf"
+  url "https://distfiles.dereferenced.org/pkgconf/pkgconf-1.9.3.tar.xz"
+  sha256 "5fb355b487d54fb6d341e4f18d4e2f7e813a6622cf03a9e87affa6a40565699d"
   license "ISC"
 
   livecheck do
@@ -11,13 +11,14 @@ class Pkgconf < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "de081f7770540f6df757f909825baee091fb2a2a5c938798a9e65824a258a747"
-    sha256 arm64_big_sur:  "4eb94e8870b9a8e817dc114e310fbb708d5d05226104087ffa18eac66a59bc65"
-    sha256 monterey:       "b1bac03399b7e53e23cc1ecdcc6b47a6faf7e74681f08ddca2b2a679bebc8735"
-    sha256 big_sur:        "c5a4e284bb365062326df5947cb459cee868538599b3cbb612d79df2e7c40efa"
-    sha256 catalina:       "e14c3c64737060d5514792608c0047e336554762a5e9928ab1dddfd8ee565553"
-    sha256 mojave:         "c161289fe2bfc1367be2d4e53465d9ebd80a824eb20630fba1d19d35041b5649"
-    sha256 x86_64_linux:   "e0f0f360a8d39ff1e210dc73008952d7374bd86672dc2280396b319227f6dea8"
+    sha256 arm64_ventura:  "6adf23dfb9b483675abc3f53fe0f3e59e5894f819760a7b3344b217cf0326a8c"
+    sha256 arm64_monterey: "f6700e419d7a201272559fca5652f16b716a2dc5f9ea6ad96865931181b239c9"
+    sha256 arm64_big_sur:  "7533f7fcd23efb90f4e78024782ab71b7117a35929e8381219bcefcd5cc931ea"
+    sha256 ventura:        "926063239fbd69673abec90edc042843b803d5837cbd2057e284c6ed94b55606"
+    sha256 monterey:       "84b996d472c59021d3e641db0bc6bccc1e7503c58142f29b6657f81669617923"
+    sha256 big_sur:        "a9a477d4b51427bb8c1d17cf87063d56e12fbd0ce7eb4776b4b28a03e223b85c"
+    sha256 catalina:       "4f6660031db90526c2bc21ac3ce2e58e51c1850a351b13a6941860ecf7b751f0"
+    sha256 x86_64_linux:   "4d11d9671a30efd67241ad91535205d62a4a7c292c679a3867e108e266dda085"
   end
 
   def install

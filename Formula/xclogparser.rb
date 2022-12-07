@@ -1,20 +1,21 @@
 class Xclogparser < Formula
   desc "Tool to parse the SLF serialization format used by Xcode"
   homepage "https://github.com/MobileNativeFoundation/XCLogParser"
-  url "https://github.com/MobileNativeFoundation/XCLogParser/archive/v0.2.34.tar.gz"
-  sha256 "25e1275229064e314ce6f1107541891a5a6438c76a10ecc6d2b592f5a441713b"
+  url "https://github.com/MobileNativeFoundation/XCLogParser/archive/v0.2.36.tar.gz"
+  sha256 "d3b2e0d75b3c6920535398c882d75c92f901262a302a344a75fe23adfe01e10c"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "994fa1ec0e1e3f31bf142c624b757eeb919b6768ad26537cac04b7210ceb9fd3"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4213857270f8c4a2183b1db5e4d19b362d773fae69e0325e312a13357af18904"
-    sha256 cellar: :any_skip_relocation, monterey:       "1c4a457594ceefe0bd397520db0d20ff2284f18c27eb5e73bd21227b2f0bfd9e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "cc3ef11105330e603348299884e3b639220d2c0fecde7c3f4a67bc15aadeac40"
-    sha256 cellar: :any_skip_relocation, catalina:       "8b1cf6b196da874f6bf466356579df3d7a644cbdc66c8c141e374c4736a74b4b"
-    sha256                               x86_64_linux:   "1022ff8d803b5607c74040b869f94169b917689d62f09e8244e87eb21ab4b4f1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4563ff5ac2c03cb10b0bc33b41b3d97a56c99bf0a3c0511924d5ef18374602c3"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "cb83245ca0057d737291cc85e863341cfe4fdfcadbb5863bd9d462e748b38599"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b422ad12e5b7a6113460778c5e1f78bd728d926b8e0a3bd37697d82f15a34e51"
+    sha256 cellar: :any_skip_relocation, ventura:        "668b6a84f964e11a7f51a136e4343de59c2636a8d5d1e78fffc43ea522984ba7"
+    sha256 cellar: :any_skip_relocation, monterey:       "e9fffc983c4c0b6657e064e512b18bafb20a56c98a2d3305ad8fff34e7120c97"
+    sha256 cellar: :any_skip_relocation, big_sur:        "de504bfd1d8d5ec7b84f7755461187d9718fe9b814fc6d781f566fa7c6968496"
+    sha256                               x86_64_linux:   "ca6680fd588fa15a2227693d76ec24f87b46185e9cf4366e9476e9b77c31b0a5"
   end
 
-  depends_on xcode: "12.0"
+  depends_on xcode: "13.0"
 
   uses_from_macos "swift"
 

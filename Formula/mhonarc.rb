@@ -4,7 +4,7 @@ class Mhonarc < Formula
   url "https://www.mhonarc.org/release/MHonArc/tar/MHonArc-2.6.19.tar.bz2"
   sha256 "08912eae8323997b940b94817c83149d2ee3ed11d44f29b3ef4ed2a39de7f480"
   license "GPL-2.0-or-later"
-  revision 2
+  revision 4
 
   livecheck do
     url :homepage
@@ -12,7 +12,7 @@ class Mhonarc < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "d9a6c4bddb21af835cc9664460d4cd83dc46175de5d338f4d719d0012a7df45b"
+    sha256 cellar: :any_skip_relocation, all: "bf14803e198aabe4b95f50db39691499f43fa2aff77d7c90760782eeb4c9cbdb"
   end
 
   depends_on "perl"
@@ -24,8 +24,9 @@ class Mhonarc < Formula
   end
 
   def install
-    # Handle the hardcoded binary script
-    inreplace "mhonarc", "#!/usr/bin/perl", "#!/usr/bin/env perl"
+    # Using Perl's `installprefix` rather than `prefix` allows install.me to use
+    # Homebrew Perl directory structure even if the prefixes are different paths.
+    inreplace "install.me", "$Config{'prefix'}", "$Config{'installprefix'}"
 
     system "perl", "install.me",
            "-batch",

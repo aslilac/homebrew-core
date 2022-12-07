@@ -3,17 +3,19 @@ require "language/node"
 class YamlLanguageServer < Formula
   desc "Language Server for Yaml Files"
   homepage "https://github.com/redhat-developer/yaml-language-server"
-  url "https://registry.npmjs.org/yaml-language-server/-/yaml-language-server-1.8.0.tgz"
-  sha256 "5d97dd6af0d88ce85ebe72a235e8268d5b47854bcadaccdc82d594c7b6680ebd"
+  url "https://registry.npmjs.org/yaml-language-server/-/yaml-language-server-1.10.0.tgz"
+  sha256 "c6f79cbd5bda19ad678aa1191ff6b36a077a6ccf3c4c2783112be9036945b137"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8695f5ea822f5c34ddbe4572a7db48d5113aa276f86bf7846ea8166ce37f365d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8695f5ea822f5c34ddbe4572a7db48d5113aa276f86bf7846ea8166ce37f365d"
-    sha256 cellar: :any_skip_relocation, monterey:       "10549479b7c1fc9d629e3e615d2cda90efc2edf6299556d9315764bf81c22e44"
-    sha256 cellar: :any_skip_relocation, big_sur:        "10549479b7c1fc9d629e3e615d2cda90efc2edf6299556d9315764bf81c22e44"
-    sha256 cellar: :any_skip_relocation, catalina:       "10549479b7c1fc9d629e3e615d2cda90efc2edf6299556d9315764bf81c22e44"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8695f5ea822f5c34ddbe4572a7db48d5113aa276f86bf7846ea8166ce37f365d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "da9b392ab54ecee90aff6fb9b1bf5dbaaecaba2f961e412fa64ffcb0f99b1cd5"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "dcb26e7157119938b58bc8db42169acaea38c173c03ae884de26330bf1e86b88"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dcb26e7157119938b58bc8db42169acaea38c173c03ae884de26330bf1e86b88"
+    sha256 cellar: :any_skip_relocation, ventura:        "297f2c9f362e6e6dc4a4e1fcd98ac1e0a8b22f04c6736b3f4fc3315b4d6b3334"
+    sha256 cellar: :any_skip_relocation, monterey:       "78cbd354d779a570c10f31e6e997259758a48a7e3a89de0dad0c805b390a81e6"
+    sha256 cellar: :any_skip_relocation, big_sur:        "78cbd354d779a570c10f31e6e997259758a48a7e3a89de0dad0c805b390a81e6"
+    sha256 cellar: :any_skip_relocation, catalina:       "78cbd354d779a570c10f31e6e997259758a48a7e3a89de0dad0c805b390a81e6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dcb26e7157119938b58bc8db42169acaea38c173c03ae884de26330bf1e86b88"
   end
 
   depends_on "node"

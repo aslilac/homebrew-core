@@ -1,18 +1,20 @@
 class Jump < Formula
   desc "Helps you navigate your file system faster by learning your habits"
   homepage "https://github.com/gsamokovarov/jump"
-  url "https://github.com/gsamokovarov/jump/archive/v0.50.0.tar.gz"
-  sha256 "7832e968c81659e3750b8ecaaa49eb769fff4a96e790e28ef3d1e479f11affb4"
+  url "https://github.com/gsamokovarov/jump/archive/v0.51.0.tar.gz"
+  sha256 "ce297cada71e1dca33cd7759e55b28518d2bf317cdced1f3b3f79f40fa1958b5"
   license "MIT"
   head "https://github.com/gsamokovarov/jump.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "987dfba1cccc632159347ae8150db80a7cd6456bea696cb3c15c3d8064ebc0bc"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "987dfba1cccc632159347ae8150db80a7cd6456bea696cb3c15c3d8064ebc0bc"
-    sha256 cellar: :any_skip_relocation, monterey:       "3c2fe9f884aa4752c8256358a0c444da6b22c3143eb1d5d361ab79271c90c650"
-    sha256 cellar: :any_skip_relocation, big_sur:        "3c2fe9f884aa4752c8256358a0c444da6b22c3143eb1d5d361ab79271c90c650"
-    sha256 cellar: :any_skip_relocation, catalina:       "3c2fe9f884aa4752c8256358a0c444da6b22c3143eb1d5d361ab79271c90c650"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ad5a151b8c861fd49cdbfca4f0f9f9e844daab3f77515839df277039dfbc1e94"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "90378306728d3520372749d0632558adc2ee809652145a720545ffcc80328c92"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "530e68bb757c889ad241551f9312b147bb349463c854d72708590dc128798227"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "530e68bb757c889ad241551f9312b147bb349463c854d72708590dc128798227"
+    sha256 cellar: :any_skip_relocation, ventura:        "dbedde353648c54dffc593bef54f2a7e089d84bd8756d7913545baf8162cae91"
+    sha256 cellar: :any_skip_relocation, monterey:       "0065c059d901a155f99e532ff126ed58abfe27d27b9ab5e3decdf44dcf0ca06d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "0065c059d901a155f99e532ff126ed58abfe27d27b9ab5e3decdf44dcf0ca06d"
+    sha256 cellar: :any_skip_relocation, catalina:       "0065c059d901a155f99e532ff126ed58abfe27d27b9ab5e3decdf44dcf0ca06d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aa81693c6c5fe052474ea740a8e49610aea0f2a1fdfd319e9b4333ad17bda82f"
   end
 
   depends_on "go" => :build

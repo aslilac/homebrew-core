@@ -1,18 +1,20 @@
 class Atlas < Formula
   desc "Database toolkit"
   homepage "https://atlasgo.io/"
-  url "https://github.com/ariga/atlas/archive/v0.4.2.tar.gz"
-  sha256 "d950e9f665cfb8b556c4f921e9d642e9628c1c8c788fa2b5ef9ddcb32d8751e6"
+  url "https://github.com/ariga/atlas/archive/v0.8.3.tar.gz"
+  sha256 "517a43ee6dafd86a85ead1f12b0b4513583463b42e38b64234c6f7435610047b"
   license "Apache-2.0"
   head "https://github.com/ariga/atlas.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ded53355913bb739005d6f7fa17765db3d669da89b732146fc410173925f2c1a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ccd014013f8ac0e92a6bed45390f6d7e8da93576a694ff7694b46ef0c463c332"
-    sha256 cellar: :any_skip_relocation, monterey:       "847674e5dfed0318af4a76c6cb9cb5caa4205ea65afce31bb281e0459af4527c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "3f500b7cee6dfd11f5cf5fb729996c8ce2c36cb325ed5f685ef39192660ffe6e"
-    sha256 cellar: :any_skip_relocation, catalina:       "caf2f1c780f6c0ff2a9bd215a936f50174d612f1104921c7efe7c6c39b52bccc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9b073b66a1ca0644ce41c60363ef2f3ff5aa35156e5c5ff989eeb4a4074be2a1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "91118dde707f7733b5ef0e492b994fd30df8c983a9a83103800ab8329e7c0bb5"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7355f9b10ae5982bead5b86755b4959fe7bba61c83e4f3b52c9fe1beb39256e3"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e78a0a9fed74982b10ffeca4958f5db4ef6f5f2ceefdb43b40a959972c1b11e3"
+    sha256 cellar: :any_skip_relocation, ventura:        "ba2b6cd90e0f77a53b28995368ed90674ad5c0fbe5a8437d1b79640266642b18"
+    sha256 cellar: :any_skip_relocation, monterey:       "a6dd1f50d5b16b06971ae3e89aeec4e79df3989ccaab9378828e2dee5ea37035"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b27f8fd26eeed106c8ab99c561d912c5671c96408c08cfd11565ab1bbcab639e"
+    sha256 cellar: :any_skip_relocation, catalina:       "552e6539d5a89503f7919c019cc1491427f9b3fd633d87351eca7a626d2b6e68"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6a1b1a0a755a330617d7344d7fa948d1b70dc372d8a40610f4c72c75a1921f97"
   end
 
   depends_on "go" => :build
@@ -20,18 +22,13 @@ class Atlas < Formula
   def install
     ldflags = %W[
       -s -w
-      -X ariga.io/atlas/cmd/atlascmd.version=v#{version}
+      -X ariga.io/atlas/cmd/atlas/internal/cmdapi.version=v#{version}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/atlas"
+    cd "./cmd/atlas" do
+      system "go", "build", *std_go_args(ldflags: ldflags)
+    end
 
-    bash_output = Utils.safe_popen_read(bin/"atlas", "completion", "bash")
-    (bash_completion/"atlas").write bash_output
-
-    zsh_output = Utils.safe_popen_read(bin/"atlas", "completion", "zsh")
-    (zsh_completion/"_atlas").write zsh_output
-
-    fish_output = Utils.safe_popen_read(bin/"atlas", "completion", "fish")
-    (fish_completion/"atlas.fish").write fish_output
+    generate_completions_from_executable(bin/"atlas", "completion")
   end
 
   test do

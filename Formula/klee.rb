@@ -4,6 +4,7 @@ class Klee < Formula
   desc "Symbolic Execution Engine"
   homepage "https://klee.github.io/"
   license "NCSA"
+  revision 3
   head "https://github.com/klee/klee.git", branch: "master"
 
   stable do
@@ -16,22 +17,30 @@ class Klee < Formula
       url "https://github.com/klee/klee/commit/885997a9841ab666ccf1f1b573b980aa8c84a339.patch?full_index=1"
       sha256 "6b070c676e002d455d7a4064c937b9b7c46eb576862cc85aba29dc7e6eecee91"
     end
+
+    # Fix build with z3.
+    patch do
+      url "https://github.com/klee/klee/commit/39f8069db879e1f859c60c821092452748b4ba37.patch?full_index=1"
+      sha256 "f03ddac150c320af8cefae33c958870cc649f1908e54c3309f1ae4791c4e84e1"
+    end
   end
 
   bottle do
-    sha256 arm64_monterey: "6a31c472578a5aa4b679654b8df2da201e27089fa22a26e41bc159db3a2cbc78"
-    sha256 arm64_big_sur:  "523865bd65c97e2b4a82dea38d394b32fef36bfce275b156357b092c78fdaa44"
-    sha256 monterey:       "dcee52e30664b74d8be8b6a6c5916b8e617af263f4b17a16185490e550459adf"
-    sha256 big_sur:        "5faee0cd2b6385f27c247ddda8909f210cb33c1aba4a88fb5c538e13e1a0f71c"
-    sha256 catalina:       "a5390272bbd5454688b7014cc422b48dbbc38333d7592a76a3defd45403d5448"
-    sha256 x86_64_linux:   "03e64c52ceb8a2a660d2c01b78ecbcab730b7cfe9da438c28d83f917937a6095"
+    sha256 arm64_ventura:  "638d60b7eef46f041ffffeae39a0e7f07757c421fca64f0e96ec377bf2dd3c45"
+    sha256 arm64_monterey: "72652c1a38180b7968574e054df3b358008efce1ea52122b3ddb570a8e763ad5"
+    sha256 arm64_big_sur:  "bf8d6948e59af26ca6da46ca3d0ed7d3def25a566d03130fd975e67c7de7a884"
+    sha256 ventura:        "477150560088d0f84d548c1c72097f27c22a94a3169a538235edfd618e2060af"
+    sha256 monterey:       "4cafb0953113c315d8192e8ac828b90f178d401fcf47c697524e9db90898dc04"
+    sha256 big_sur:        "055cc3545d7dc5affe40a69e998e33e1b0981ce8aacc5c1ab692665e37b0aed2"
+    sha256 catalina:       "6251ed9651c7109d3c09f136176b30df7bd99e6992db38788fa648bfe4399413"
+    sha256 x86_64_linux:   "38a68b9001974655d9d995bb06a464b4c5be5f27995668dbfc1618e6d9a7ec8b"
   end
 
   depends_on "cmake" => :build
   depends_on "gperftools"
-  depends_on "libpython-tabulate"
   # LLVM 14 support in progress at https://github.com/klee/klee/pull/1477
   depends_on "llvm@13"
+  depends_on "python-tabulate"
   depends_on "python@3.10"
   depends_on "sqlite"
   depends_on "stp"
@@ -39,10 +48,6 @@ class Klee < Formula
   depends_on "z3"
 
   uses_from_macos "zlib"
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5"
 

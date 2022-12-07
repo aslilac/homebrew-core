@@ -1,26 +1,24 @@
 class Spdlog < Formula
   desc "Super fast C++ logging library"
   homepage "https://github.com/gabime/spdlog"
-  url "https://github.com/gabime/spdlog/archive/v1.10.0.tar.gz"
-  sha256 "697f91700237dbae2326b90469be32b876b2b44888302afbc7aceb68bcfe8224"
+  url "https://github.com/gabime/spdlog/archive/v1.11.0.tar.gz"
+  sha256 "ca5cae8d6cac15dae0ec63b21d6ad3530070650f68076f3a4a862ca293a858bb"
   license "MIT"
   head "https://github.com/gabime/spdlog.git", branch: "v1.x"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "7b4d6e509be406ad97572f6408ecfcfc5565258baf2935e670395c36643ef765"
-    sha256 cellar: :any,                 arm64_big_sur:  "b2effb44f912c9c65095f21777d531c0f1bf6bed8e3ecc8baa819506b7b3f553"
-    sha256 cellar: :any,                 monterey:       "61dae95a690c2148b523e4a8bb7b6e21def2affc652d7992301dac2ddb623f3b"
-    sha256 cellar: :any,                 big_sur:        "c69fab2e50fa9e03f3c5ebbec80833f5c1e8d6dd09fcf3841095e643a762b71f"
-    sha256 cellar: :any,                 catalina:       "72c5a9859d85d7271af9f61e56f242c6ec295f99ab0d5e456beca62309e31d14"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d3b3f7c2bf0719825dd85f844992d33255cbe7fbaa4971c83a2cc99f2a71e67a"
+    sha256 cellar: :any,                 arm64_ventura:  "99f6597478677431b87f16344e2797a5bd544ea47c7ca69cef6ddac79953550f"
+    sha256 cellar: :any,                 arm64_monterey: "63af198f33b09b066fff8439967858c2d2598d7a7af55c90bb44479439de8e4d"
+    sha256 cellar: :any,                 arm64_big_sur:  "849241d6a48c7c57f519011e816e0c910b9183dcedcb5b8a8d00aa17e12e32d6"
+    sha256 cellar: :any,                 ventura:        "bda7921ac0e39a711900fc289205dee7a55596811e365f186cd1fa2c2ee30967"
+    sha256 cellar: :any,                 monterey:       "fddfdf57dbd012a95cd5c7d23a130f68066a1f41419f6af42221d983b60c413f"
+    sha256 cellar: :any,                 big_sur:        "638f2bde2ad93fadb73c367d0508643773c04f76514b139aa87b07d47ad53222"
+    sha256 cellar: :any,                 catalina:       "6c3c582b7873203303b2295678256e560b58be94f02e6654c9289801b25bd7d5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "90bdf0ffb1445c3feb3e7541fa6d87bda07353cd938571d96c68aba274862a80"
   end
 
   depends_on "cmake" => :build
   depends_on "fmt"
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   # error: specialization of 'template<class T, ...> struct fmt::v8::formatter' in different namespace
   fails_with gcc: "5"

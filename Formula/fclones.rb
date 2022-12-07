@@ -1,17 +1,19 @@
 class Fclones < Formula
   desc "Efficient Duplicate File Finder"
   homepage "https://github.com/pkolaczk/fclones"
-  url "https://github.com/pkolaczk/fclones/archive/refs/tags/v0.26.0.tar.gz"
-  sha256 "a548977699a13f2a584d318edbc46cb42f9f7e5badb645cb886389a9669fb734"
+  url "https://github.com/pkolaczk/fclones/archive/refs/tags/v0.29.1.tar.gz"
+  sha256 "0c135b045fb03c224c26f77eb147a238f0aa74257c963d84f9f9f6dfaad09e09"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "df733c392981eaa0cf8d582cc99d29245e3e010a493a00481c67bae3fe1c5412"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1392a2b4b2790060e4dd1a84e72a4e4c94c345715e29ba0bea4b2832bc707188"
-    sha256 cellar: :any_skip_relocation, monterey:       "43704146c83458b79d04440a81c3cb0975e9ccb2bc58b76bd4abc7494c91c153"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4b2f8b62b36d4c1a2af43364eb44b355b711d294236457ba1d4778c39638cf42"
-    sha256 cellar: :any_skip_relocation, catalina:       "5097b69ff2372281bc74a00694f19e172fc5a9ba1b69c9252dd007ad2e427b40"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fc9a02c96cec3c64a4227167cc9210fbe2969469c53a93774e2f709d4211b7d7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "389e0dc22e75d33b15dcc0610576b17d6339cca28eec62f095f9254df52aeab7"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "616b22e45f425dcb774e9788f9c9c8002cf8cc4190bba07a58bfdc61ad06bccb"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "964bdba80b7e064e36805f696c68bf70d62e22fd98fa3c23326f600bc3d07b5f"
+    sha256 cellar: :any_skip_relocation, ventura:        "f9bbcd515e3cd295b852c0ef4446523c0ccc4bef33b04d9286003af7d62d6a09"
+    sha256 cellar: :any_skip_relocation, monterey:       "f41d4b5134fb9104ae9acbc550ad78d01e94b645ba1b758702175d1a1d544e29"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5d7d2f58755e770c196943730d35cfb4b4e19b0e301f7aa346e25596ebfec749"
+    sha256 cellar: :any_skip_relocation, catalina:       "272f1b848836a10d2ee5cc954689ef53b887cb563d17fea9e6b61fb39b084c8b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "74c728850dd46bdb267f64f29ec0a5bf8cfc6c449bbeaf8e5376edc503ba9825"
   end
 
   depends_on "rust" => :build
@@ -28,7 +30,7 @@ class Fclones < Formula
     (testpath/"bar2.txt").write "bar"
     output = shell_output("fclones group #{testpath}")
     assert_match "Redundant: 9 B (9 B) in 3 files", output
-    assert_match "a9707ebb28a5cf556818ea23a0c7282c", output
-    assert_match "16aa71f09f39417ecbc83ea81c90c4e7", output
+    assert_match "2c28c7a023ea186855cfa528bb7e70a9", output
+    assert_match "e7c4901ca83ec8cb7e41399ff071aa16", output
   end
 end

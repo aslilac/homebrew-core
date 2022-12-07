@@ -1,17 +1,18 @@
 class Liblouis < Formula
   desc "Open-source braille translator and back-translator"
   homepage "http://liblouis.org"
-  url "https://github.com/liblouis/liblouis/releases/download/v3.22.0/liblouis-3.22.0.tar.gz"
-  sha256 "79bc508425822e4df2ea50ac4a648e80ef0878afcd979b655bfcac5c1766763f"
+  url "https://github.com/liblouis/liblouis/releases/download/v3.24.0/liblouis-3.24.0.tar.gz"
+  sha256 "02360230cf5c1fe7dcec59c41a3e74bc283548b0de637963760fa8fad9cd0c39"
   license all_of: ["GPL-3.0-or-later", "LGPL-2.1-or-later"]
 
   bottle do
-    sha256 arm64_monterey: "e769de4bbb3c436190d0d17c385b71970852081d0b09d103e0e823e7aefc9f57"
-    sha256 arm64_big_sur:  "4f36aef2fa2137fec76ec8c48e70a12a0f869be962c664b691cb38f0ba918c38"
-    sha256 monterey:       "3edaaeb5d262ebcbe82261b530f1673352c5758be1fce71c2c4aaba004e5e22d"
-    sha256 big_sur:        "507f441db29d4922ec57910d4bd4a523a5217b36d7d55fb336425ba0ac541732"
-    sha256 catalina:       "e4f9b1cd8cde982282ce2f8c2334d7723ca663e3e4e7b72c7b0389d7288bc329"
-    sha256 x86_64_linux:   "da6e17924278bf881f62975b42cd482159152870bb3642efcc694b9832fcc7c3"
+    sha256 arm64_ventura:  "287aa4cf4b802fb51890d84ea2cb3cc5dabf2aa9f6104259b21fde90b88e9797"
+    sha256 arm64_monterey: "1e369eec8eb042a69629959bfbc7f855cfc97e0671a9eac5bbbbb383236f70d8"
+    sha256 arm64_big_sur:  "9227d5de64faed40f17c1a98d054c3f82425703dd747d0e260d4f332a7323568"
+    sha256 ventura:        "b9c284c9d5e3851aa6dfda6bf26655215646175696d279098d970b132cf77a2a"
+    sha256 monterey:       "2d5feeafe0fd58cb3c98b83e807ab8999462327a7b922c6e94cc0465993c47fb"
+    sha256 big_sur:        "87912f235eead04e225d2a40d37b9f222c11482615f771230b4d8e6ecc77598a"
+    sha256 x86_64_linux:   "8a6ba38b62b1c496307c2e598b39100d62046d5b6bffdd29d9794ff3d1b21fa1"
   end
 
   head do
@@ -24,28 +25,31 @@ class Liblouis < Formula
 
   depends_on "help2man" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.10"
+  depends_on "python@3.11"
+
+  def python3
+    "python3.11"
+  end
 
   def install
     system "./autogen.sh" if build.head?
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "./configure", *std_configure_args, "--disable-silent-rules"
     system "make"
     system "make", "check"
     system "make", "install"
     cd "python" do
-      system "python3", *Language::Python.setup_install_args(prefix),
-                        "--install-lib=#{prefix/Language::Python.site_packages("python3")}"
+      system python3, *Language::Python.setup_install_args(prefix, python3)
     end
-    mkdir "#{prefix}/tools"
-    mv "#{bin}/lou_maketable", "#{prefix}/tools/", force: true
-    mv "#{bin}/lou_maketable.d", "#{prefix}/tools/", force: true
+    (prefix/"tools").install bin/"lou_maketable", bin/"lou_maketable.d"
   end
 
   test do
-    o, = Open3.capture2(bin/"lou_translate", "unicode.dis,en-us-g2.ctb", stdin_data: "42")
-    assert_equal o, "⠼⠙⠃"
+    assert_equal "⠼⠙⠃", pipe_output("#{bin}/lou_translate unicode.dis,en-us-g2.ctb", "42")
+
+    (testpath/"test.py").write <<~EOS
+      import louis
+      print(louis.translateString(["unicode.dis", "en-us-g2.ctb"], "42"))
+    EOS
+    assert_equal "⠼⠙⠃", shell_output("#{python3} test.py").chomp
   end
 end

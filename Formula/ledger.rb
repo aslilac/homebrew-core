@@ -4,7 +4,7 @@ class Ledger < Formula
   url "https://github.com/ledger/ledger/archive/v3.2.1.tar.gz"
   sha256 "92bf09bc385b171987f456fe3ee9fa998ed5e40b97b3acdd562b663aa364384a"
   license "BSD-3-Clause"
-  revision 9
+  revision 10
   head "https://github.com/ledger/ledger.git", branch: "master"
 
   livecheck do
@@ -13,12 +13,14 @@ class Ledger < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "101d38b9ad9bbee38049c084211f1d44b1fe2880e33c80350c0e16b8ab8dec34"
-    sha256 cellar: :any,                 arm64_big_sur:  "af728a87cae6e3cc0b0b9d1809665b7914af34dd7276bf53ae56b5e3bed685ee"
-    sha256 cellar: :any,                 monterey:       "a1388b6e16fc8ec03d26a29eb68863f828887a87df31ce8f6bb094527d81868a"
-    sha256 cellar: :any,                 big_sur:        "78ae068b488f4797d71f626837489a593d74224b89e085558a5e7c95b14441a4"
-    sha256 cellar: :any,                 catalina:       "9fe8c7132791596222ce22133bb3a194b4e59b00761616a2abab6f1e5909ca77"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2ed433809b3e7e9db34611bfab79ad6186b78dbce97da6a4e7f9ab55be343963"
+    sha256 cellar: :any,                 arm64_ventura:  "62a789e94eaaae38c4411a313dd7bb782790a8c39f6a52e662d5b7b97df4e6f1"
+    sha256 cellar: :any,                 arm64_monterey: "6ee63ad79bacfc3c3dca62bfd2afddbcbefc1621265adeb6f4ac33d5b7987ccf"
+    sha256 cellar: :any,                 arm64_big_sur:  "4bf8abe81a38cb217b280187e679ebaa6c61960ac84de3a79a3be00f623d98b9"
+    sha256 cellar: :any,                 ventura:        "8c6c9063ea08e1b405a70cbaa4d12cd2068dbf7233e0a3f9ff75dc4b149802e5"
+    sha256 cellar: :any,                 monterey:       "4cd298ab7b1df2014a045c1fe0eff8d0787fb5bfde0b9e29015cff3183e60c66"
+    sha256 cellar: :any,                 big_sur:        "f3df57ec7e9bb1c266406a25a7ccd9c477ffaf52ece04eab735cbd68060f2653"
+    sha256 cellar: :any,                 catalina:       "be65d6f0c4324d44de6be95e903c82f98d90a624b84975ec1a139fd8c67e0d54"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cd3c33796a13d85404cb97a53e4262b7fe7e78b9bf11ac66f31c1d5fb4745700"
   end
 
   depends_on "cmake" => :build
@@ -27,7 +29,11 @@ class Ledger < Formula
   depends_on "mpfr"
   depends_on "python@3.10"
 
-  uses_from_macos "groff"
+  uses_from_macos "libedit"
+
+  on_system :linux, macos: :ventura_or_newer do
+    depends_on "groff" => :build
+  end
 
   # Compatibility with Boost 1.76
   # https://github.com/ledger/ledger/issues/2030

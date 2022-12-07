@@ -1,23 +1,26 @@
 class Libsoup < Formula
   desc "HTTP client/server library for GNOME"
   homepage "https://wiki.gnome.org/Projects/libsoup"
-  url "https://download.gnome.org/sources/libsoup/3.0/libsoup-3.0.7.tar.xz"
-  sha256 "ebdf90cf3599c11acbb6818a9d9e3fc9d2c68e56eb829b93962972683e1bf7c8"
+  url "https://download.gnome.org/sources/libsoup/3.2/libsoup-3.2.2.tar.xz"
+  sha256 "83673c685b910fb7d39f1f28eee5afbefb71c05798fc350ac3bf1b885e1efaa1"
   license "LGPL-2.0-or-later"
 
   bottle do
-    sha256 arm64_monterey: "3a65a35c6dfa623e09f5b36d098445e215871ec09d0a3ed18b5bd25b05e452fd"
-    sha256 arm64_big_sur:  "a90ecc9dc9b6172189d9f748a3d7bb19bbd826d9f457bd617db49200470637fa"
-    sha256 monterey:       "40baff4cb1af532c52cc26714a5fc57315f4d120612cef73e97efd2965c077bd"
-    sha256 big_sur:        "201612adc949ca409beca80f2830c6984d6dd13d9cc6f36d5472662af573f489"
-    sha256 catalina:       "0e5daf91cd10e169a35bc821675e438b331ed3f1092f2abafc461d564be85fa3"
-    sha256 x86_64_linux:   "865315a09372ab22d48f15bef518e54fdd69493dae309bca6f8816206c948834"
+    sha256 arm64_ventura:  "c571c60ad09c0c6e6c272c5ddcfdabf85ea3e3bbce93161100d6c71e446f5aee"
+    sha256 arm64_monterey: "b22b09d52e079b8d0e2325d54add7724a9f2cf218357b08b426983906cf22d5d"
+    sha256 arm64_big_sur:  "a9695ff8bdf87ff6bfe9836cf8732c414b46b5c1006b4510a78a7e880313609a"
+    sha256 ventura:        "8367c6b317f10c9c1c5958c50b70a5c0e54347b15758a684e3f722d40d18d3ca"
+    sha256 monterey:       "d3c9776e1c362071d86696f7b4b56edd03f2a010dfbe30ca22f38fa240133ccc"
+    sha256 big_sur:        "55c7ef19cad510057eae06943c05f5f918b4c42618e203c54ee6b39d4da10819"
+    sha256 catalina:       "6affbc54541538fa0e5192a9f99f6cda86f66e2f8c2fd0ac2e69fdae8dacae6c"
+    sha256 x86_64_linux:   "4939236918b6c980016d721e4156e33bbe5bc3a8cb76b37751ad73c99d75776e"
   end
 
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+  depends_on "python@3.11" => :build
   depends_on "vala" => :build
   depends_on "glib-networking"
   depends_on "gnutls"
@@ -25,6 +28,7 @@ class Libsoup < Formula
 
   uses_from_macos "krb5"
   uses_from_macos "libxml2"
+  uses_from_macos "sqlite"
 
   def install
     mkdir "build" do

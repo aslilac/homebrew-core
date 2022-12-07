@@ -3,8 +3,9 @@ class Pyside < Formula
 
   desc "Official Python bindings for Qt"
   homepage "https://wiki.qt.io/Qt_for_Python"
-  url "https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.3.1-src/pyside-setup-opensource-src-6.3.1.tar.xz"
-  sha256 "e5a85ed68834eb8324e3486283a9451b030d7221809e2a9533162e6b93899977"
+  url "https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.4.0.1-src/pyside-setup-opensource-src-6.4.0.tar.xz"
+  version "6.4.0.1"
+  sha256 "6e5be5defccacd21ec7e2579d6d6493366dd8e00f8899746abd174f1eb1eff14"
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-3.0-only"]
 
   livecheck do
@@ -13,12 +14,13 @@ class Pyside < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "5f207f24999088a15edb49144bede2c6705696da137d1ac181bd515eefebdebd"
-    sha256 cellar: :any,                 arm64_big_sur:  "38807029895b75f2b2d46c8a8dbf654322d979b7def4cad145e7de07640a8321"
-    sha256 cellar: :any,                 monterey:       "3370e4d2b38f920f86cd078ab5ca6e73a24f7f025afd3bff43304c0700fdac60"
-    sha256 cellar: :any,                 big_sur:        "b22f2a0e29d965cadff00e10a2ab99ace697fa6aabdb67c527c2d76b8439cd7a"
-    sha256 cellar: :any,                 catalina:       "f2d104fa3ac546bedfbe7c152584baba95fbbf15812fffdef1f51057f15e3fa4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6c619b6a6b16686dcaf56c6298fada03ca42c574a70dc429983dd859d7c1ea33"
+    sha256 arm64_ventura:  "dffbf25bf38b3fe04450096e9dadebae039a805aab71b34f3ca52c64b9185555"
+    sha256 arm64_monterey: "e57c3a873abd31a3dc62c7fa2ea13602ce55e5dcd2aaa6ec3060ea66ff4f895f"
+    sha256 arm64_big_sur:  "2826b9af79bce4a0c637cce74ca0d51592e29d7f976ee20ff188dc7cc03f06ee"
+    sha256 ventura:        "e26b777b21e4130aee323de0e8ae70d96131237f3e8907bd2dbc3249e96b2f27"
+    sha256 monterey:       "9431f8fdbadf747ed47725a6db282924f8446cf165fbbc29d984c12ab8090e11"
+    sha256 big_sur:        "71804120f03ca26ef7c430c4254f4c59c774624a5117d3726ddf8e274ef61dd6"
+    sha256 catalina:       "104c59b3bbb34cb563bf65080c2a04d2b2872509c186dc88a4435f2e054026af"
   end
 
   depends_on "cmake" => :build
@@ -32,24 +34,20 @@ class Pyside < Formula
   uses_from_macos "libxslt"
 
   on_linux do
-    depends_on "gcc"
     depends_on "mesa"
   end
 
   fails_with gcc: "5"
 
+  def python3
+    "python3.10"
+  end
+
   def install
     ENV.append_path "PYTHONPATH", buildpath/"build/sources"
 
     extra_include_dirs = [Formula["qt"].opt_include]
-    unless OS.mac?
-      gcc_version = Formula["gcc"].version.major
-      extra_include_dirs += [
-        Formula["gcc"].opt_include/"c++"/gcc_version,
-        Formula["gcc"].opt_include/"c++"/gcc_version/"x86_64-pc-linux-gnu",
-        Formula["mesa"].opt_include,
-      ]
-    end
+    extra_include_dirs << Formula["mesa"].opt_include if OS.linux?
 
     # upstream issue: https://bugreports.qt.io/browse/PYSIDE-1684
     inreplace "sources/pyside6/cmake/Macros/PySideModules.cmake",
@@ -63,9 +61,13 @@ class Pyside < Formula
               "in_build = Path(\"@CMAKE_BINARY_DIR@\") in location.parents",
               "in_build = Path(\"@CMAKE_BINARY_DIR@\").resolve() in location.parents"
 
+    # Install python scripts into pkgshare rather than bin
+    inreplace "sources/pyside-tools/CMakeLists.txt", "DESTINATION bin", "DESTINATION #{pkgshare}"
+
     args = std_cmake_args + [
+      "-DCMAKE_CXX_COMPILER=#{ENV.cxx}",
       "-DCMAKE_PREFIX_PATH=#{Formula["qt"].opt_lib}",
-      "-DPYTHON_EXECUTABLE=#{Formula["python@3.10"].opt_bin}/python3",
+      "-DPYTHON_EXECUTABLE=#{which(python3)}",
       "-DBUILD_TESTS=OFF",
       "-DNO_QT_TOOLS=yes",
       "-DCMAKE_INSTALL_RPATH=#{lib}",
@@ -75,14 +77,11 @@ class Pyside < Formula
     system "cmake", "-S", ".", "-B", "build", *args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
-
-    mv bin/"metaobjectdump.py", pkgshare
-    mv bin/"project.py", pkgshare
   end
 
   test do
-    system Formula["python@3.10"].opt_bin/"python3", "-c", "import PySide6"
-    system Formula["python@3.10"].opt_bin/"python3", "-c", "import shiboken6"
+    system python3, "-c", "import PySide6"
+    system python3, "-c", "import shiboken6"
 
     modules = %w[
       Core
@@ -97,11 +96,17 @@ class Pyside < Formula
 
     modules << "WebEngineCore" if OS.linux? || (DevelopmentTools.clang_build_version > 1200)
 
-    modules.each { |mod| system Formula["python@3.10"].opt_bin/"python3", "-c", "import PySide6.Qt#{mod}" }
+    modules.each { |mod| system python3, "-c", "import PySide6.Qt#{mod}" }
 
-    pyincludes = shell_output("#{Formula["python@3.10"].opt_bin}/python3-config --includes").chomp.split
-    pylib = shell_output("#{Formula["python@3.10"].opt_bin}/python3-config --ldflags --embed").chomp.split
-    pylib << "-Wl,-rpath,#{Formula["python@3.10"].opt_lib}" unless OS.mac?
+    python3_config = Formula["python@3.10"].opt_bin/"#{python3}-config"
+    pyincludes = shell_output("#{python3_config} --includes").chomp.split
+    pylib = shell_output("#{python3_config} --ldflags --embed").chomp.split
+    if OS.linux?
+      pylib += %W[
+        -Wl,-rpath,#{Formula["python@3.10"].opt_lib}
+        -Wl,-rpath,#{lib}
+      ]
+    end
 
     (testpath/"test.cpp").write <<~EOS
       #include <shiboken.h>

@@ -1,8 +1,8 @@
 class Moarvm < Formula
-  desc "Virtual machine for NQP and Rakudo Perl 6"
+  desc "VM with adaptive optimization and JIT compilation, built for Rakudo"
   homepage "https://moarvm.org"
-  url "https://github.com/MoarVM/MoarVM/releases/download/2022.04/MoarVM-2022.04.tar.gz"
-  sha256 "ae06f50ba5562721a4e5eb6457e2fea2d07eda63e2abaa8c939c9daf70774804"
+  url "https://github.com/MoarVM/MoarVM/releases/download/2022.12/MoarVM-2022.12.tar.gz"
+  sha256 "51c3e9c9a7a191c148f213b65ae1f4fcfe5d4b7c16c86300e9ee8e18eaa8becb"
   license "Artistic-2.0"
 
   livecheck do
@@ -11,26 +11,28 @@ class Moarvm < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "b039b7f3e5479b8c7edeacc49862aa3082fde0d7a85096fbe268fcdd1c129523"
-    sha256 arm64_big_sur:  "17f35bc7a45dc7379d4cfeb147a7313b3fe9d449135b91d66e0fce468e4ea7a4"
-    sha256 monterey:       "c504b1d2432155dbd1b255d8d4dc2f4658611f90b06397ad836444effbedb80d"
-    sha256 big_sur:        "53431ea6fc2bc6a331eda5c7cf190e3b61d3eaf3f538889d41aed51f481db8cf"
-    sha256 catalina:       "957ef92208468bd4d35c9929867114c7c33db690d6b2ff0b60b7e7ef9e0c436e"
-    sha256 x86_64_linux:   "31176bc8f79104414cf58f283923a98016a1c045f69ba2ab79c8cea3ba7cc77c"
+    sha256 arm64_ventura:  "6fc43306382629ef7ec2fa15c42ca906093996f3ba5a3c70b19d18927e67907c"
+    sha256 arm64_monterey: "c33d6e42e77c897ed31ce2f18c5c6a8e8b707160a1f0a8e18c3dea2628dc4c12"
+    sha256 arm64_big_sur:  "a39c90a995940e34016dd9524951e75796e6e82761be29d4b84e0ea70ecb03dc"
+    sha256 ventura:        "26ccba25d90674158d130f5e59f28c45ca7fea13c08f1174519d76b15b07e4c6"
+    sha256 monterey:       "d6a260da5e201b3710b291b235067c3e12d12cb4342ce62096b2a378c46f687f"
+    sha256 big_sur:        "269be1fb61ffd7749068dfb92a8803c1d3c1844562239013abac1220da3f7aaa"
+    sha256 x86_64_linux:   "ee1182df9db306e739b76f3ad9ccde7d03137affc0d4a76ad1612c78664ff164"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "libffi"
   depends_on "libtommath"
   depends_on "libuv"
+  depends_on "zstd"
 
   uses_from_macos "perl" => :build
+  uses_from_macos "libffi"
 
   conflicts_with "rakudo-star", because: "rakudo-star currently ships with moarvm included"
 
   resource "nqp" do
-    url "https://github.com/Raku/nqp/releases/download/2022.04/nqp-2022.04.tar.gz"
-    sha256 "556d458e25d3c0464af9f04ea3e92bbde10046066b329188a88663943bd4e79c"
+    url "https://github.com/Raku/nqp/releases/download/2022.12/nqp-2022.12.tar.gz"
+    sha256 "e5f7d13a0a4855be420c071cdaf004c7abd0984977863bd2828a5cf7de8459ad"
   end
 
   def install

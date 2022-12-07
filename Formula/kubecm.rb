@@ -1,36 +1,28 @@
 class Kubecm < Formula
   desc "KubeConfig Manager"
   homepage "https://kubecm.cloud"
-  url "https://github.com/sunny0826/kubecm/archive/v0.17.0.tar.gz"
-  sha256 "b1e1a34174f5178107ab62af95f10d016d5ae271ac13b6066880393f6936349e"
+  url "https://github.com/sunny0826/kubecm/archive/v0.21.0.tar.gz"
+  sha256 "50767ca3dfd1fa050d93409bee4bbdb49b021ef4ee2329c788efe5016ef9e28c"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "cb23e43199db2bed986591e26590efd430cadaa5624b7606448dea89573f90ee"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f45eee10420a583354c701ba9568e3f04900e7c568c79b3e15e10118e359fc77"
-    sha256 cellar: :any_skip_relocation, monterey:       "5878d7081fa72b8e227bb0a8747f0bb5f52de20512b8baada59ecd09e174a39b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4a85ad1707d0804573008a17c556c42f223c6ef8b4a76a718f9c683782cd6032"
-    sha256 cellar: :any_skip_relocation, catalina:       "2ad3563dc22f7b6febc8a8c6c895fa72e1ced42df7853ba939d02ac83446f950"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f2e11ccfa877f6d8041e3051b9c31366d011f9617f554d65ff50ad04be4bfd32"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "da53fe957ccec5fced1f7b1406f68f0180890a5c6d29384bcdd4d5898cdf0834"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "595be4ef9cdce6336d7a43c9dfc0d67baec9b9b167e6310465b9b8c0db7ad595"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fdbd1332e1342c67ad70f23cc79ba14ef91cc3b0ca6016252b127d0ea7468922"
+    sha256 cellar: :any_skip_relocation, ventura:        "401c12e8cc6495e10d0c04ba9e478df6675247da68ddf7121a32bd194fc96015"
+    sha256 cellar: :any_skip_relocation, monterey:       "f40d4d436547c7252ddbd572efc4465b5a54561733b0c9bd7f185d6a24b17a9b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e6fb0203b3bc20741a42e0d97ddc0b102a54864ba6a4b617410ed69df1d1a739"
+    sha256 cellar: :any_skip_relocation, catalina:       "6dbb0621f4a68ec640400ecf98c2a09921313d74badf1d67f4240601ec095839"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1c6264ac4fee941ba35a2081eac068207b45d161e43cca2136fe89eb8b01451c"
   end
 
   depends_on "go" => :build
 
   def install
-    ldflags = "-s -w -X github.com/sunny0826/kubecm/cmd.kubecmVersion=#{version}"
+    ldflags = "-s -w -X github.com/sunny0826/kubecm/version.Version=#{version}"
     system "go", "build", *std_go_args(ldflags: ldflags)
 
-    # Install bash completion
-    output = Utils.safe_popen_read(bin/"kubecm", "completion", "bash")
-    (bash_completion/"kubecm").write output
-
-    # Install zsh completion
-    output = Utils.safe_popen_read(bin/"kubecm", "completion", "zsh")
-    (zsh_completion/"_kubecm").write output
-
-    # Install fish completion
-    output = Utils.safe_popen_read(bin/"kubecm", "completion", "fish")
-    (fish_completion/"kubecm.fish").write output
+    generate_completions_from_executable(bin/"kubecm", "completion")
   end
 
   test do

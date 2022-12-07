@@ -1,28 +1,31 @@
 class Osm2pgsql < Formula
   desc "OpenStreetMap data to PostgreSQL converter"
   homepage "https://osm2pgsql.org"
-  url "https://github.com/openstreetmap/osm2pgsql/archive/1.6.0.tar.gz"
-  sha256 "0ec8b58ab972ac8356185af4161270c1b625a77299f09e5fb7f45e616ef1a9a5"
+  url "https://github.com/openstreetmap/osm2pgsql/archive/1.7.2.tar.gz"
+  sha256 "94c72ceb3c401c816499339f8765c62efbf40685a798dcdf9a4bf7dbedf6c7a5"
   license "GPL-2.0-only"
-  revision 3
   head "https://github.com/openstreetmap/osm2pgsql.git", branch: "master"
 
   bottle do
-    sha256 arm64_monterey: "2b1c23342805ddc22b8c69c2f91a24d33703fab6fcbb381870c2f60179058f70"
-    sha256 arm64_big_sur:  "77e304190222d4da2d28b9db1c468a1b172cbf29d90598bcd683c7418840d0f8"
-    sha256 monterey:       "278ba1a3e688722170d489a157fdf8ea6011483133bad8dbaefccc05dc07c8d1"
-    sha256 big_sur:        "0751305ff2a2d2cf937234c7741e6919a26978e8fa992444287c1904fa34713f"
-    sha256 catalina:       "49ac82bbb990d26771605e6dd82dce3594cccb5d8717ced6632b807d16f88395"
-    sha256 x86_64_linux:   "b81aa6a292f1edcee0fc87f495925e09081d4c821b64371535251e759b9154e4"
+    sha256 arm64_ventura:  "b69ab621eea80e4099cd8109ae7b2d3eae11875106a74f5134cc055010c7cd0c"
+    sha256 arm64_monterey: "e03099e841fef4d261659e909b4b8d0b77d81c9cd2cb443ab8fcd235ad568bc0"
+    sha256 arm64_big_sur:  "813f3040c488c35aeb3f08693eb1f1b15e88ce8aa933aac1345b49caca866f2f"
+    sha256 ventura:        "eaac6fb21eab1d50123aadfcf147702be5fdbbec712dd2cd3248d04926042186"
+    sha256 monterey:       "e80dd6f6e18e8faa9010c0cfe39fb44f12af9cff5c44d083f589d8de7f0222ac"
+    sha256 big_sur:        "2eea99b22a1cd595e35f2d2fbdd1aad2b9a3a8dc5901d83c12088110d6802e40"
+    sha256 catalina:       "1b8542d88aeec98a4c32b078acf808b32b822097dfe6d1b9e91066a7e223b5a7"
+    sha256 x86_64_linux:   "b47bee3ada1268932e201b4b65d8930a61eee664581a5178f5f2cca9d6a072d8"
   end
 
   depends_on "cmake" => :build
   depends_on "lua" => :build
   depends_on "boost"
   depends_on "geos"
-  depends_on "luajit-openresty"
-  depends_on "postgresql"
+  depends_on "libpq"
+  depends_on "luajit"
   depends_on "proj"
+
+  uses_from_macos "expat"
 
   def install
     # This is essentially a CMake disrespects superenv problem

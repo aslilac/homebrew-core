@@ -1,10 +1,9 @@
 class Pdnsrec < Formula
   desc "Non-authoritative/recursing DNS server"
   homepage "https://www.powerdns.com/recursor.html"
-  url "https://downloads.powerdns.com/releases/pdns-recursor-4.7.0.tar.bz2"
-  sha256 "e4872a1b11a35fc363f354d69ccb4ec88047bfc7d9308087497dc2ad3af3498c"
-  license "GPL-2.0-only"
-  revision 1
+  url "https://downloads.powerdns.com/releases/pdns-recursor-4.7.4.tar.bz2"
+  sha256 "17b5c7c881e3f400bb3b527dd866e5cf2cd62d5d33566b1b70b58c608d9968d5"
+  license "GPL-2.0-only" => { with: "openvpn-openssl-exception" }
 
   livecheck do
     url "https://downloads.powerdns.com/releases/"
@@ -12,27 +11,23 @@ class Pdnsrec < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "1b493ba9a3f1f7cc1bb9a2fedb646671ca5dc00e2155b27b62a41194fa2c1e7e"
-    sha256 arm64_big_sur:  "ac8d88349dfc62904189992221cb06c37c72ceb34ff63d4c6e781ba663f41688"
-    sha256 monterey:       "f9c1420a1409ddaee0ae062b3ce46cb970ae600246309cc960ec556d741faf77"
-    sha256 big_sur:        "10e1715d27edbf71a392eb5b6d0e1580c2839f9a429091e623f94f5c10ece361"
-    sha256 catalina:       "744a16dca515784cc29d9360a3f89791ebe90c22c8a73bd7492459f63abfef16"
-    sha256 x86_64_linux:   "987a053c68d769afa639d3feb64b853e0de8fa7337e18200d4add9a90a0be97b"
+    sha256 arm64_ventura:  "33b9a6459851bdd4dcaefcfc502dc6036c4141af9709151b9cc9a93563d0a1f1"
+    sha256 arm64_monterey: "db3ed7e89803589ff1367a1c2a37c7d893aaa2d223a9766584714eb2917916c0"
+    sha256 arm64_big_sur:  "e30e5e8b23e6249ee8089670f16c3bd2afd3f0a9af7851d4b8815f87a720a72e"
+    sha256 ventura:        "fda97eacdf011d62e1df556f0bf8dacbb868838b39280ae012a53a852e910487"
+    sha256 monterey:       "bafcc08610b09459297933cd1a24e1b458a01bcbf65013a16d4800fd7d8a3a83"
+    sha256 big_sur:        "f9cb1785e7203e5f24d77a0af7affe46af99cd4b53f90bde21db2300d5c55b61"
+    sha256 catalina:       "093f84bd403d9af6f680392daa4a0245ba559e879e25d5eaa03acacdbf6d5a14"
+    sha256 x86_64_linux:   "c153fb75cb1e50832f5b33d18462317a2cede63f75c58f370436d14f19fd68ae"
   end
 
   depends_on "pkg-config" => :build
   depends_on "boost"
   depends_on "lua"
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
 
   on_macos do
-    # This shouldn't be needed for `:test`, but there's a bug in `brew`:
-    # CompilerSelectionError: pdnsrec cannot be built with any available compilers.
-    depends_on "llvm" => [:build, :test] if DevelopmentTools.clang_build_version <= 1100
-  end
-
-  on_linux do
-    depends_on "gcc"
+    depends_on "llvm" => :build if DevelopmentTools.clang_build_version <= 1100
   end
 
   fails_with :clang do
@@ -47,7 +42,6 @@ class Pdnsrec < Formula
 
   def install
     ENV.cxx11
-    ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm"].opt_lib
     ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1100)
 
     args = %W[
@@ -55,7 +49,7 @@ class Pdnsrec < Formula
       --sysconfdir=#{etc}/powerdns
       --disable-silent-rules
       --with-boost=#{Formula["boost"].opt_prefix}
-      --with-libcrypto=#{Formula["openssl@1.1"].opt_prefix}
+      --with-libcrypto=#{Formula["openssl@3"].opt_prefix}
       --with-lua
       --without-net-snmp
     ]

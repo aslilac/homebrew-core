@@ -1,27 +1,31 @@
 class Sdb < Formula
   desc "Ondisk/memory hashtable based on CDB"
   homepage "https://github.com/radareorg/sdb"
-  url "https://github.com/radareorg/sdb/archive/1.9.0.tar.gz"
-  sha256 "29c2dede43ad4eeecb330e0b0c6fbb332d8a72f7b183a9d946ed2603e0ae3720"
+  url "https://github.com/radareorg/sdb/archive/1.9.4.tar.gz"
+  sha256 "dbdb00dc2f8824f91baf0d818371c737b3580bdc60628d3c5d1a069722d77912"
   license "MIT"
   head "https://github.com/radareorg/sdb.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "c739b1aeabeca4a0e049b9b58c363795f64e0651d8818ad153ef194f91b59cd9"
-    sha256 cellar: :any,                 arm64_big_sur:  "d8992da63dedeb5d340ee3711205f0301c0b7b4914759817370da4aea1d4c04a"
-    sha256 cellar: :any,                 monterey:       "91da7b11e0fba02df72bc17219f27ef6edd68155a23febaa2b7738df21f7c5cb"
-    sha256 cellar: :any,                 big_sur:        "9ca357d124dfcdc4af70afcea661c0bd1b75577743a0e42c7c42e008dd013411"
-    sha256 cellar: :any,                 catalina:       "683ee06ffd042a64f8c109318465cf9402ad351cc8d5a282b7318005e2d59f11"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "35a3b67f282789c0ca1f18be9c44b47bb9d73d855df2dc12fd1b41a8e96cfb4d"
+    sha256 cellar: :any,                 arm64_ventura:  "6b7c6e612fb368d7bdca0c02fb808497ec04927a016829f3687a665dfb540b2f"
+    sha256 cellar: :any,                 arm64_monterey: "a875c7d8825cb1e428d4c9bc1173b597f94190b56ff73f3d09a8f5c783636a2c"
+    sha256 cellar: :any,                 arm64_big_sur:  "9d1b6d126888e59757fb6b33b3d16758aef828769333b91c45236ea460a3ed0c"
+    sha256 cellar: :any,                 ventura:        "530fad74fc74256e00b7a54a0794022d822171b8a3e7161897e9d042f1464a89"
+    sha256 cellar: :any,                 monterey:       "73ec557ead8e379312feeb4bbd368990b435b8960d3c24c5ffb253f603ea3e3e"
+    sha256 cellar: :any,                 big_sur:        "49070ca5295f26379bf12be9567c127b3f4133e4d35be393458c79bfb5096a54"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f7b912bd1552af134beca2e64bbbfad76631536bd50890d600d1f45763ddf117"
   end
 
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "vala" => :build
   depends_on "glib"
 
   def install
-    system "make"
-    system "make", "install", "PREFIX=#{prefix}"
+    system "meson", *std_meson_args, "build"
+    system "meson", "compile", "-C", "build", "-v"
+    system "meson", "install", "-C", "build"
   end
 
   test do

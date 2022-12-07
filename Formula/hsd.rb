@@ -3,8 +3,8 @@ require "language/node"
 class Hsd < Formula
   desc "Handshake Daemon & Full Node"
   homepage "https://handshake.org"
-  url "https://github.com/handshake-org/hsd/archive/v4.0.1.tar.gz"
-  sha256 "bf2214a7b6692cbf27f8490459e7b27c586e48910723825144d34effd0237607"
+  url "https://github.com/handshake-org/hsd/archive/v4.0.2.tar.gz"
+  sha256 "ee58d681491bee90299ea2fa18656ac26fc6aef2bf3e363cb996be5015b06feb"
   license "MIT"
 
   livecheck do
@@ -13,21 +13,22 @@ class Hsd < Formula
   end
 
   bottle do
-    sha256                               arm64_monterey: "4eb83141deaf67b7671bf63bf04c29d45ffaf7a1b109fcb24c4aa3f06e88a710"
-    sha256                               arm64_big_sur:  "5e6b6ebc5536f78e46706c0452450c142564b4878de8f82d51a525d1a4448362"
-    sha256                               monterey:       "141f151e55e83daeba366eed66c6b8c9f36a6d32197b6c39e3d8880f891c93c3"
-    sha256                               big_sur:        "0fc8ac12bc30f796c3cdd1720edea91fd142f3e48304adf146884e1d6fd78694"
-    sha256                               catalina:       "68327ad96c5990bf38f9f3633ada1f0df63292d9ece40e29175f173de96c292b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "71d79ecdc8e6d7991692b4d9d6de9e5aa0a3632f4508e124cc879d07ce7b6b10"
+    sha256                               arm64_ventura:  "84ebc75554473cb29d2d039262f3c9e12bdd4111ebb0876e6e8d6d72a81b639a"
+    sha256                               arm64_monterey: "322295b784df6ecc6d4ed5cae4957589fba6f59662a38467cd7a16465161a7c4"
+    sha256                               arm64_big_sur:  "92a27b35ba52bcd1aab836d70720cc8e0a343ef2c05a035dd038e95948bf9e88"
+    sha256                               ventura:        "22118bf48f42d6dfa49c09338ab1c4d60de4cf3e1f0a5b47c558f39c3e99d720"
+    sha256                               monterey:       "333dda4bf02aed146bf4ae7c1458ac31dcd1ff9bdf0a5f7d25bdeeb88a711b64"
+    sha256                               big_sur:        "5ff1b677c57757866eb2acd527f62a7582160fe2af6cf9f1334f298a93c7455d"
+    sha256                               catalina:       "d13d7d46267337411111f127468ee825be178a80d3135bd68756589f54856641"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7eceddba39715d8c8d2a44add1bff762f2dd580786911bd9f44d258da0184227"
   end
 
-  depends_on "python@3.10" => :build
   depends_on "node"
   depends_on "unbound"
 
   def install
     system "npm", "install", *Language::Node.std_npm_install_args(libexec)
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink Dir[libexec/"bin/*"]
   end
 
   test do
@@ -44,7 +45,7 @@ class Hsd < Formula
         await node.ensure();
       })();
     EOS
-    system "#{Formula["node"].opt_bin}/node", testpath/"script.js"
-    assert File.directory?("#{testpath}/.hsd")
+    system Formula["node"].opt_bin/"node", testpath/"script.js"
+    assert_predicate testpath/".hsd", :directory?
   end
 end

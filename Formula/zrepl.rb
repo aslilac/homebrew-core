@@ -1,18 +1,20 @@
 class Zrepl < Formula
   desc "One-stop ZFS backup & replication solution"
   homepage "https://zrepl.github.io"
-  url "https://github.com/zrepl/zrepl/archive/v0.5.0.tar.gz"
-  sha256 "4acfde9e7a09eca2de3de5c7d2987907ae446b345b69133e4b3c58a99c294465"
+  url "https://github.com/zrepl/zrepl/archive/v0.6.0.tar.gz"
+  sha256 "0bf1dcf634a43af81cd9a0d7b9ae65f63a5938c35d3e6cd804177c8db52929f4"
   license "MIT"
   head "https://github.com/zrepl/zrepl.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0c8d9fd289790fce71ff766f4ba508841b26b07c9646c86c0f58d934b434a98a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "91da92f9974cacb35d64a0d84c20c6a02eb5c5ebdfc879bff968c883177e3298"
-    sha256 cellar: :any_skip_relocation, monterey:       "36ad9cad7ba5fdabf65461dd637a4cb05028a93c332b440d7f95409067d89dce"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9a54101a9d020f333e5183d372ffbd743ffc0a702cd59f9abc284d2fd2890aa8"
-    sha256 cellar: :any_skip_relocation, catalina:       "a4369b90960452b045f6d3879a2177c540fa3e42a6d18b3a567240c92c2a4772"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a615f406414dd1eed10a32de0cdae83f74b13de612ac0103248f0639ea962f43"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f43f61ea51db0d619e1be5e889e00f2237dc40c8529cf7bb470ae84bc6628ffb"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "78b4b5efe5764faedaed4b66d6099be51f35b78f3ae62348e143cc51b8109a31"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f69fbb9c9aeaa2dbc2f1cebdeaec0f9108c40b9d74615d80afa5ffcfb03648ad"
+    sha256 cellar: :any_skip_relocation, ventura:        "4ff1d78151426b9f1f5a3149e12f4d55a1a0ae23ebb7fb2cb8a10a6164be3c01"
+    sha256 cellar: :any_skip_relocation, monterey:       "cf954a340c8e55c54dcaf13cc928551c579f306138c673a0c66cbfc6d83053e3"
+    sha256 cellar: :any_skip_relocation, big_sur:        "0e72ac1fb2b5fdf3a2711e2363e0ef999feeb742f21c64f4966632f5f0700d25"
+    sha256 cellar: :any_skip_relocation, catalina:       "bde1dbd82033d10cc2d23df40c8a7b33a0db666763b3c0e82ce9735691bd9d6f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "825c2d421d4690af7640e7444eab42a8e252a9a2644848b1241c908335c21e43"
   end
 
   depends_on "go" => :build

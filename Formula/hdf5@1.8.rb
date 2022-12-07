@@ -5,7 +5,7 @@ class Hdf5AT18 < Formula
   # (see: https://portal.hdfgroup.org/display/support/HDF5%201.8.22#HDF51.8.22-futureFutureofHDF5-1.8).
   url "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.22/src/hdf5-1.8.22.tar.bz2"
   sha256 "689b88c6a5577b05d603541ce900545779c96d62b6f83d3f23f46559b48893a4"
-  revision 3
+  revision 4
 
   livecheck do
     url "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/"
@@ -13,12 +13,14 @@ class Hdf5AT18 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "b7b7d577875a460f98ea62d61b2d3c94cac815a71d7dd608694e1bd25b44fd74"
-    sha256 cellar: :any,                 arm64_big_sur:  "e4a385612628698f38ab015e10848bac04ec8b3cbcc99539cabea13f7ba86de2"
-    sha256 cellar: :any,                 monterey:       "1cab5b7ad0dd428f41cda7395afa6011e733ea35ed57f6f0e46974c03c246e2a"
-    sha256 cellar: :any,                 big_sur:        "722e36e081eda4de717052848c474c7a48d2f94b74755ed549f9dcb34a665da3"
-    sha256 cellar: :any,                 catalina:       "eea9e890f8225d6747ec5dea3562ae13a31645d15f6e4db0a23de3703473b135"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5d7b58ab67742577e914b2a1a00da722eccabfc1fbba2d84f295294f57993b08"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "256b29e21285299abcf39b3c30245b7eeec4e35acfd20cbbd41f58f4dccb8f69"
+    sha256 cellar: :any,                 arm64_monterey: "18d3be813aa10a16e33d3d54553480280874c96d94232b7ec348f0382f682267"
+    sha256 cellar: :any,                 arm64_big_sur:  "a8c32359ab98af7cfc8b718c028f051c6002cb01163843f33acf95e1d61a5753"
+    sha256 cellar: :any,                 ventura:        "21269bba79eba8ccfc0038d39c733a97b91ac7e2f52461849fe4cf75adc13674"
+    sha256 cellar: :any,                 monterey:       "454854d48dc24328a5c8b1447412c5e0395d135989790e2e14cb8426586080e8"
+    sha256 cellar: :any,                 big_sur:        "8e4c4ec541b7cc9ac9211bc8517d4ba7ff6c1bf782ef5a25fd4a0188e118fc12"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "64281b1ce5dafd2828f11ace0bff36ee9005aa2e95393e8e1ffe6f4bb9f10c1f"
   end
 
   keg_only :versioned_formula

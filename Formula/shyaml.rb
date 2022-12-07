@@ -10,21 +10,19 @@ class Shyaml < Formula
   head "https://github.com/0k/shyaml.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "9788455326ea60f6347e6b7f950505b265aa96a197aee6c7380b449cdc3d7605"
-    sha256 cellar: :any,                 arm64_big_sur:  "f875eb7002238f8636d85d8f6b3d5f64a0413c65f214b38d4efc2ac6dfa01b86"
-    sha256 cellar: :any,                 monterey:       "cbbc62f2a469c658c08693ad8c90e519404e63a7467e81ab81e033096c2e8838"
-    sha256 cellar: :any,                 big_sur:        "8e1c547e77addf803029fa7655a74f9f77ec3bdb9745631f46e08d7144a9fe48"
-    sha256 cellar: :any,                 catalina:       "a99ac074fcf20e8c16f532dc3a5f89016cb045c2c71695ad42a802fdd018c705"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "eb3df94c12dc3917a52251264f28a4ab8e24bf1e243412b231693f36df62368d"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "97c0a29a8a83f03d4fb8f04cee9932cc696308b9ceec4590cfb4f30caa8be9c8"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "97c0a29a8a83f03d4fb8f04cee9932cc696308b9ceec4590cfb4f30caa8be9c8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "97c0a29a8a83f03d4fb8f04cee9932cc696308b9ceec4590cfb4f30caa8be9c8"
+    sha256 cellar: :any_skip_relocation, ventura:        "083e980a2579d509ae832e64e27b676d32b15b4ab8c5b85ac381f9a116e5c706"
+    sha256 cellar: :any_skip_relocation, monterey:       "083e980a2579d509ae832e64e27b676d32b15b4ab8c5b85ac381f9a116e5c706"
+    sha256 cellar: :any_skip_relocation, big_sur:        "083e980a2579d509ae832e64e27b676d32b15b4ab8c5b85ac381f9a116e5c706"
+    sha256 cellar: :any_skip_relocation, catalina:       "083e980a2579d509ae832e64e27b676d32b15b4ab8c5b85ac381f9a116e5c706"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9692d49037767d99705665957e0b26aa3a9f5619b06ed57d09a63aa4c176c510"
   end
 
-  depends_on "libyaml"
-  depends_on "python@3.10"
-
-  resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/36/2b/61d51a2c4f25ef062ae3f74576b01638bebad5e045f747ff12643df63844/PyYAML-6.0.tar.gz"
-    sha256 "68fb519c14306fec9720a2a5b45bc9f0c8d1b9c72adf45c37baedfcd949c35a2"
-  end
+  depends_on "python@3.11"
+  depends_on "pyyaml"
 
   def install
     virtualenv_install_with_resources

@@ -4,25 +4,23 @@ class Field3d < Formula
   url "https://github.com/imageworks/Field3D/archive/v1.7.3.tar.gz"
   sha256 "b6168bc27abe0f5e9b8d01af7794b3268ae301ac72b753712df93125d51a0fd4"
   license "BSD-3-Clause"
-  revision 7
+  revision 8
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "b39c3161c958937e66aa74d0ef7780a4e2df3d279fd834cddc011c930bbc401c"
-    sha256 cellar: :any,                 arm64_big_sur:  "8be626af06a5963eefff00b617d732055ecc5c981aa9da4b3646f70874f92047"
-    sha256 cellar: :any,                 monterey:       "08450558bd22e30ea9fbc0987f97d7cb08996c768df4da2f1622d369100cdc13"
-    sha256 cellar: :any,                 big_sur:        "6e05fd88a91b386fdacaae1b18d2438ab3be3cbef44c0b98f83d09d9dfb5dc1d"
-    sha256 cellar: :any,                 catalina:       "90a03036d21be5f0546ae00ecc8327e44704093aebe27d5055e9007a7a9bf0f2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ce229d05e72f9d75644f1a8afdf402ab38e902b6695df6eb95f7d74c136bcb38"
+    sha256 cellar: :any,                 arm64_ventura:  "f721c232a04d8d2633c871053eab6b75531fbb65bde3ffc27090b3912610333c"
+    sha256 cellar: :any,                 arm64_monterey: "5ccab64a1d8a3f1a709b4efd84e47be950a28b468cf4315eaed9c332fc0dd0c0"
+    sha256 cellar: :any,                 arm64_big_sur:  "bdd3df3a156e09d0612b4266a4a7036baf3a8ebd99573c70fef4cb3fa3af595b"
+    sha256 cellar: :any,                 ventura:        "cc7a86c138afcffef49223cb9b65270acc147440625eaa67dd9241afd9d4d202"
+    sha256 cellar: :any,                 monterey:       "4c854331b625741ed631440767b90ceb8dae7c565b19c1b909a35068e9635c8e"
+    sha256 cellar: :any,                 big_sur:        "f7113a6ebab33c4591099ffa838d98cee8d72d8f0d2627a9e8a9c4783755fdc7"
+    sha256 cellar: :any,                 catalina:       "c74402ddc431e94001cf07efe110c4085aa486fd024a470dd2bd0d00454aba46"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "37156c96c67dcf0b5fe46027c758e6172781503495dab9364b43cad3331dc28c"
   end
 
   depends_on "cmake" => :build
   depends_on "boost"
   depends_on "hdf5"
   depends_on "ilmbase"
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5"
 
@@ -39,13 +37,14 @@ class Field3d < Formula
   end
 
   test do
-    system ENV.cxx, "-std=c++11", "-I#{include}", "-L#{lib}", "-lField3D",
+    system ENV.cxx, "-std=c++11", "-I#{include}",
+           pkgshare/"sample_code/create_and_write/main.cpp",
+           "-L#{lib}", "-lField3D",
            "-I#{Formula["boost"].opt_include}",
            "-L#{Formula["boost"].opt_lib}", "-lboost_system",
            "-I#{Formula["hdf5"].opt_include}",
            "-L#{Formula["hdf5"].opt_lib}", "-lhdf5",
            "-I#{Formula["ilmbase"].opt_include}",
-           pkgshare/"sample_code/create_and_write/main.cpp",
            "-o", "test"
     system "./test"
   end

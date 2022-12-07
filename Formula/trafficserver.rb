@@ -1,18 +1,21 @@
 class Trafficserver < Formula
   desc "HTTP/1.1 compliant caching proxy server"
   homepage "https://trafficserver.apache.org/"
-  url "https://downloads.apache.org/trafficserver/trafficserver-9.1.2.tar.bz2"
-  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-9.1.2.tar.bz2"
-  sha256 "62f27d4e16a515e7ec85393186f909d934a79db41c7905f21d15a9eacb82232f"
+  url "https://downloads.apache.org/trafficserver/trafficserver-9.1.3.tar.bz2"
+  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-9.1.3.tar.bz2"
+  sha256 "c8bf77b034b0da6c38d3ec9f3ca85ef1038aa046170e839308b0a59709d9afb6"
   license "Apache-2.0"
 
   bottle do
-    sha256 arm64_monterey: "69c21ff3257e64c403f265da0c4659842ab37d91abc9e238c889043990679369"
-    sha256 arm64_big_sur:  "8e4d17cdfffb1d59acd4d171dacfb5e888c057c342ade85b452bd2e4c06ca00b"
-    sha256 monterey:       "2052122c991d4cdf429cd6712708a69b56be7ecaf94c12f32e466e3c9fed9108"
-    sha256 big_sur:        "d49195bafda8a14f47a144ee7f6448a17389b8953e9ef5abb61866e0a0dda0dd"
-    sha256 catalina:       "c415c841e8920c3fe51143cf59710888d5e5e6853df2ea37ae0b29fd2e150382"
-    sha256 x86_64_linux:   "824e57e837fa58a49ae56f7226aed66b5c4d4c8a35929531179d02ddc4a4e329"
+    rebuild 1
+    sha256 arm64_ventura:  "70624fddac88e4b9358006484f69064d205d0573f3f138ec348c6127fd8d3040"
+    sha256 arm64_monterey: "ad1c4081325f16e88ab2e0a5b28fd40e73773ddd991aa58e6e34245ddb186e22"
+    sha256 arm64_big_sur:  "56104bf78296d6ae59562fadeda12ea162c14a201c28cb17a5d492c9ecbb2d13"
+    sha256 ventura:        "ccba3cb74efc81dc4e1386cc943449c49968bee610b8fc8de96441f0448699d8"
+    sha256 monterey:       "9514ddec436b6ca4e6b15745a82bc8e34a442c661422a603bfa5b9bd7c79746b"
+    sha256 big_sur:        "4f106b8242e5f85b470d7ee182426a4fd7f10d4cb48c77cd15b2d494fdf0981a"
+    sha256 catalina:       "cdef360aff3c14b9811e69da4c543bc62edbac14b02c36e3a1a8d70e856a07d2"
+    sha256 x86_64_linux:   "de988a5a2170b86814d457217b72f7f5c0f82f166fbfbea233b25177f3282b0a"
   end
 
   head do
@@ -36,10 +39,6 @@ class Trafficserver < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool"  => :build
-  end
-
-  on_linux do
-    depends_on "gcc"
   end
 
   fails_with gcc: "5" # needs C++17

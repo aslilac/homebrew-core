@@ -1,8 +1,8 @@
 class Libadwaita < Formula
   desc "Building blocks for modern adaptive GNOME applications"
   homepage "https://gnome.pages.gitlab.gnome.org/libadwaita/"
-  url "https://download.gnome.org/sources/libadwaita/1.1/libadwaita-1.1.2.tar.xz"
-  sha256 "2b5ca4104c21a36e31f900ef117ab887dd9d471f6a65d2ba374ce0339314219f"
+  url "https://download.gnome.org/sources/libadwaita/1.2/libadwaita-1.2.0.tar.xz"
+  sha256 "322f3e1be39ba67981d9fe7228a85818eccaa2ed0aa42bcafe263af881c6460c"
   license "LGPL-2.1-or-later"
 
   # libadwaita doesn't use GNOME's "even-numbered minor is stable" version
@@ -14,12 +14,14 @@ class Libadwaita < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "f7468ea3dca5ca1ace0e9870bd9b69829defde888389aabc3a2826386e39574a"
-    sha256 arm64_big_sur:  "81b3ba873b05ec13fa10fc4e60edb257efe67e766b1035b2e18a2270e08e5216"
-    sha256 monterey:       "08fc505b7786b65b8184a62e1f3a75a16917e7c3886cc4da580049cfafcc9876"
-    sha256 big_sur:        "baa31c55de68fd22ac79b925ab95856d16ff78fa91fa87857e60439e316406b6"
-    sha256 catalina:       "5dac0e079b1a380a3393488c339fd96da3c9946887e3e70c32b3804839ed0cc1"
-    sha256 x86_64_linux:   "10405b5e070faf47727330a3f74db25b9ed05f1433046c07c8b0c891811f7acf"
+    sha256 arm64_ventura:  "84bd7cb9a13af48ae0ff68568e26e85b2bbe69fbd4c5964c246711b8226c1bea"
+    sha256 arm64_monterey: "0792a3db924c5a33c1b6849ccc2f3cac1b168e4267025084001af8a532bc40bf"
+    sha256 arm64_big_sur:  "25c1f762056fc685c92eaf58e51237973d5afa96047997aac1ec867fc1fac33e"
+    sha256 ventura:        "dd18b3b331d34f114f783f818ab534b3fcd129e2803cc347cfa8365e3260eea1"
+    sha256 monterey:       "c0e552e7f8bb80a296e8064daf7951fcd427ee4eb2dd3a69d9f97ddd322e665b"
+    sha256 big_sur:        "558aabf74bf246f77c325ddc0d50012f4b5006873612929d56724805cc434c7a"
+    sha256 catalina:       "61c581548b0093b670535f7cd41c52a3addadafb810683897235d7eebd4ce8c3"
+    sha256 x86_64_linux:   "ab32954b42d20ceeaa2444477146842a4b67731a30030c2b18e42e7b83530680"
   end
 
   depends_on "gobject-introspection" => :build
@@ -31,18 +33,15 @@ class Libadwaita < Formula
   depends_on "gtk4"
 
   def install
-    args = std_meson_args + %w[
-      -Dtests=false
-    ]
-
-    mkdir "build" do
-      system "meson", *args, ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+    system "meson", "setup", "build", *std_meson_args, "-Dtests=false"
+    system "meson", "compile", "-C", "build"
+    system "meson", "install", "-C", "build"
   end
 
   test do
+    # Remove when `jpeg-turbo` is no longer keg-only.
+    ENV.prepend_path "PKG_CONFIG_PATH", Formula["jpeg-turbo"].opt_lib/"pkgconfig"
+
     (testpath/"test.c").write <<~EOS
       #include <adwaita.h>
 

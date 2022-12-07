@@ -1,8 +1,8 @@
 class Telegraf < Formula
-  desc "Server-level metric gathering agent for InfluxDB"
-  homepage "https://www.influxdata.com/"
-  url "https://github.com/influxdata/telegraf/archive/v1.23.0.tar.gz"
-  sha256 "097f0ae89332dd55c121dbb6b5f81b151a0f0418c11d26b430b33be31ca90d0b"
+  desc "Plugin-driven server agent for collecting & reporting metrics"
+  homepage "https://www.influxdata.com/time-series-platform/telegraf/"
+  url "https://github.com/influxdata/telegraf/archive/v1.24.4.tar.gz"
+  sha256 "b4b96471b41a0972619da2215c6112e814903699c70069454a44cccd39272e13"
   license "MIT"
   head "https://github.com/influxdata/telegraf.git", branch: "master"
 
@@ -12,18 +12,20 @@ class Telegraf < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ce6527395f5d537b2742859f9993928c00fe508e5a8947fbdd9a36155cf63f45"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3fa6d557cd623137d1296da8c675d127050c9c33571dc0188b7c8106e768df49"
-    sha256 cellar: :any_skip_relocation, monterey:       "ea573b2850d5f54562be029f8f91e1238be7bbb2c09f1005b17e8c1e9dc3605e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b18de3d6e5d36998e83dd58544f1f9a69b707459ff545edc23824d20c7b6b5e2"
-    sha256 cellar: :any_skip_relocation, catalina:       "e248a93a3bc8825fdb4aa28bcebe6fe49f57be0263f48e8ff3173fe2d842ad3f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aa33a6fcd5738028c8d2c93af1d51afb594da27c618732816d5c1aab286487eb"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "10a80e6b66711bdf855d13ca6b91bba72498da88c13648af5918df9fa68ce749"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "9eae7f66b6123f76355332e15552686c70a2ba2f49fe78772d5578e9cb13f9f5"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2ead60441d42743495ef2bb3b90884cc0a2860d03e7bfa9b653c04a8e15ff894"
+    sha256 cellar: :any_skip_relocation, ventura:        "e1be384116e8f86d4053b3c3b7bc1bbfefd8b3d7053d9d30315b8cd0e4ea1400"
+    sha256 cellar: :any_skip_relocation, monterey:       "5e837004cb3226a74f25481804b4056bbd128e5a2b59dfb44fe20a421ba76d50"
+    sha256 cellar: :any_skip_relocation, big_sur:        "123cf92b8b29f5f3e7b7c99477dffacdb055533b57491f6ec3298ee0dd97abaf"
+    sha256 cellar: :any_skip_relocation, catalina:       "99298dc66f2a6a4b12e9f690ff1ab0779e9462926d275740fe94a670de7d26b8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e7ee2237fbf67c4dc28fd31c990a97e0679cb9251c24b6f96652b1a339353cb5"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args, "-ldflags", "-X main.version=#{version}", "./cmd/telegraf"
+    system "go", "build", *std_go_args(ldflags: "-s -w -X github.com/influxdata/telegraf/internal.Version=#{version}"), "./cmd/telegraf"
     etc.install "etc/telegraf.conf" => "telegraf.conf"
   end
 
@@ -41,6 +43,7 @@ class Telegraf < Formula
   end
 
   test do
+    assert_match version.to_s, shell_output("#{bin}/telegraf --version")
     (testpath/"config.toml").write shell_output("#{bin}/telegraf -sample-config")
     system "#{bin}/telegraf", "-config", testpath/"config.toml", "-test",
            "-input-filter", "cpu:mem"

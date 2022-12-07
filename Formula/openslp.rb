@@ -5,6 +5,7 @@ class Openslp < Formula
   sha256 "924337a2a8e5be043ebaea2a78365c7427ac6e9cee24610a0780808b2ba7579b"
 
   bottle do
+    sha256 ventura:      "06a8525267384bb4eea04432b252c8e3063529b99d3d4a7203161115680c9d5c"
     sha256 monterey:     "4fe473351f951da2840deac362acc9d16d5159a30e2e5a84077d1de3ee4dcede"
     sha256 big_sur:      "3cc88f489dfe6e4e9566608ace194fb8e09a8cb28f80947d7454f03494d76341"
     sha256 catalina:     "fee6eb82ad60bf1446278498ff8860584dcd2192a7505f3c57eec2bab55f337f"
@@ -14,6 +15,8 @@ class Openslp < Formula
     sha256 el_capitan:   "1c19d8355ddda63b9259101a0b7b56ea0fd9fb8f343e2df19f7248542fbf38e5"
     sha256 x86_64_linux: "31a9bf8bd539a71378e4f5f6a438cdef166659e3641a9899213dd166dcaeee6c"
   end
+
+  depends_on arch: :x86_64
 
   # Fix -flat_namespace being used on Big Sur and later.
   patch do

@@ -9,22 +9,20 @@ class JujuWait < Formula
   revision 3
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "e04f8b657da7e878dda77d9c31306708e062f3f917c6f31426da41ecbc8dbad5"
-    sha256 cellar: :any,                 arm64_big_sur:  "755de97cf6751a7f122dab8c7333fc36010210f3e20a3869e6662a3686efac1c"
-    sha256 cellar: :any,                 monterey:       "110669824c007b0ad6a05f5b387711779377bf83e0e4e5229d7925b277c69310"
-    sha256 cellar: :any,                 big_sur:        "fadd2d52965a99d993bd11bf75de1b7e7373b4ce17c9af28118f8b211f1170d4"
-    sha256 cellar: :any,                 catalina:       "9d08ba7ec7decac831dc8d38137d028caa99f3545ffb2c75c7c1f7a51539618f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "53e1fa7c3e4fcaf849f6cdb515f63aeb5c12c2539b682b5cf3293b568ea35211"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "02a5b44bd00be30c7637fa792cda345136a29314e7b62168495c44d7c092eb03"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "02a5b44bd00be30c7637fa792cda345136a29314e7b62168495c44d7c092eb03"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "02a5b44bd00be30c7637fa792cda345136a29314e7b62168495c44d7c092eb03"
+    sha256 cellar: :any_skip_relocation, ventura:        "6e14483aeeb4bb6b08f5b70ec193830c26ea765f80314f8637a8a160d39d6aad"
+    sha256 cellar: :any_skip_relocation, monterey:       "6e14483aeeb4bb6b08f5b70ec193830c26ea765f80314f8637a8a160d39d6aad"
+    sha256 cellar: :any_skip_relocation, big_sur:        "6e14483aeeb4bb6b08f5b70ec193830c26ea765f80314f8637a8a160d39d6aad"
+    sha256 cellar: :any_skip_relocation, catalina:       "6e14483aeeb4bb6b08f5b70ec193830c26ea765f80314f8637a8a160d39d6aad"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "35a3b784c741f07c02b34efaa11164ddc4ff26795e666a37edbac31cd2567260"
   end
 
   depends_on "juju"
-  depends_on "libyaml"
-  depends_on "python@3.10"
-
-  resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/36/2b/61d51a2c4f25ef062ae3f74576b01638bebad5e045f747ff12643df63844/PyYAML-6.0.tar.gz"
-    sha256 "68fb519c14306fec9720a2a5b45bc9f0c8d1b9c72adf45c37baedfcd949c35a2"
-  end
+  depends_on "python@3.11"
+  depends_on "pyyaml"
 
   def install
     virtualenv_install_with_resources

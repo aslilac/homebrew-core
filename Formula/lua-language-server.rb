@@ -3,27 +3,25 @@ class LuaLanguageServer < Formula
   homepage "https://github.com/sumneko/lua-language-server"
   # pull from git tag to get submodules
   url "https://github.com/sumneko/lua-language-server.git",
-      tag:      "3.4.1",
-      revision: "579909cc99018e69a865d9b682ad6e867ab002dc"
+      tag:      "3.6.4",
+      revision: "8132f4c9da02858c23813d15c2cb6ded6df57ea1"
   license "MIT"
   head "https://github.com/sumneko/lua-language-server.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6d528febffbc98db1ab5e74d2242356de9833fdb95eb0caf52bc4882c2e7e917"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c348e078ebecf5de76bd4f1f98ea51395d78196266ce0dd9145deea2b8ed6d56"
-    sha256 cellar: :any_skip_relocation, monterey:       "9751f1bb8b61bcfd7ca26d29a29adde95bbefa0358da0fdef8308a21424f8a07"
-    sha256 cellar: :any_skip_relocation, big_sur:        "08f72fe3c2ccd2def69473f30670888b4f1c99c3b6a6769d1771fb6f26fdc23c"
-    sha256 cellar: :any_skip_relocation, catalina:       "8cf2aea4a862f3b88abbdab875b10aca5af6e49890588d1e83c5b16a20499516"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "574eb74d18bd814db67ca7f0ace819c4cba734653894f1e21d35400dd91731f6"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2e64defb1f3729347383366fcf22e4d61efb37cf5125d3b9d2dab82c48c0c3bc"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4da4edcd367b34879130de21d44616abef120f9eb13a965f3b215792e4f8b93b"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "47ead821a9276c553da43bb98a39ff064ad0dfb78e36a0f2c8c7b36bb82d4a17"
+    sha256 cellar: :any_skip_relocation, ventura:        "b52fb5eec50a2ea3489125eb26c654b2e1cc00b9576ba1e64d6f1e5d25e3eb50"
+    sha256 cellar: :any_skip_relocation, monterey:       "d886103ff531e14ef7f93a05471e635b316e1e5cb444f651dc162e0bb13226ff"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a84752cc0c0240d0da8e6875a5fd9100a39710322f53276d76d1aa9a3eb9ab91"
+    sha256 cellar: :any_skip_relocation, catalina:       "083ddc82334dcff3a92119ae2757b956c92f806eca12be494fbde1b50e080ecf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bf03903c074fff39aae05c223f257d718ff36b09e109f78623189622733849ab"
   end
 
   depends_on "ninja" => :build
 
-  on_linux do
-    depends_on "gcc" # For C++17
-  end
-
-  fails_with gcc: 5
+  fails_with gcc: 5 # For C++17
 
   def install
     ENV.cxx11
@@ -48,7 +46,7 @@ class LuaLanguageServer < Formula
     require "pty"
     output = /^Content-Length: \d+\s*$/
 
-    stdout, stdin, lua_ls = PTY.spawn bin/"lua-language-server"
+    stdout, stdin, lua_ls = PTY.spawn bin/"lua-language-server", "--logpath=#{testpath}/log"
     sleep 5
     stdin.write "\n"
     sleep 25

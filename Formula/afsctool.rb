@@ -1,17 +1,19 @@
 class Afsctool < Formula
   desc "Utility for manipulating APFS and ZFS compressed files"
   homepage "https://brkirch.wordpress.com/afsctool/"
-  url "https://github.com/RJVB/afsctool/archive/refs/tags/1.7.2.tar.gz"
-  sha256 "a0d01953e36a333c29369a126a81b905b70a5603533caeebc2f04bbd3aa1b0df"
+  url "https://github.com/RJVB/afsctool/archive/refs/tags/v1.7.3.tar.gz"
+  sha256 "5776ff5aaf05c513bead107536d9e98e6037019a0de8a1435cc9da89ea8d49b8"
   license all_of: ["GPL-3.0-only", "BSL-1.0"]
   head "https://github.com/RJVB/afsctool.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "eb8354b43a3be62e15b67539367e0fc34fa818f56b758f5d8875811d1eb683d2"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0ad2029644ef5a0597750a5ef27f4da1f04441a49c2b9da63cf9d75e342ecff7"
-    sha256 cellar: :any_skip_relocation, monterey:       "0a31f139ac8d56aa796446d6458f02a7a700d425e33e66824b407deeece709a9"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4d4d08188fb559874d969a3e17ec43f3758f2f884db81a917cb839fa2da0d3b2"
-    sha256 cellar: :any_skip_relocation, catalina:       "699723059b23cd7c9b91df35a38d0f0d308c61dc6ee3bcadd18b893ace2c9757"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f21804d2beead64d635cd72b2b9e5b76d1911dc2de9c15236e41689ddc46dc74"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4cee829a15d8fb035095298b056e8925c2ce5bf730c6ed7ac2e76df4f8432595"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "05e5e2d51ff1fec526024bd93ba39d39afe230badd7e5bbe686df6e7ebf0fbab"
+    sha256 cellar: :any_skip_relocation, ventura:        "9c972678aa3e291a0224c6e14cc90df0e29ccadd5cfafc895bb354b39b8a9e47"
+    sha256 cellar: :any_skip_relocation, monterey:       "e13983fdbff0c188b976e8a0bdb49fcfadf83385bb65e96eb01381884cb40d60"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a225ce419105bddbb9fbd33d7ce67c500b2e571464a6b7f5f8792b73ce5aca59"
+    sha256 cellar: :any_skip_relocation, catalina:       "588533fd0b1916a8b980983c87e603a8681a420c887c14fec5fcf7b90fbd6d9b"
   end
 
   depends_on "cmake" => :build

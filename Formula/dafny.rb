@@ -1,8 +1,8 @@
 class Dafny < Formula
   desc "Verification-aware programming language"
   homepage "https://github.com/dafny-lang/dafny/blob/master/README.md"
-  url "https://github.com/dafny-lang/dafny/archive/v3.7.1.tar.gz"
-  sha256 "6d77fca0875bdac4ef9167b1fd72bb9de02fc60bc01be3d8243d224709e50ec5"
+  url "https://github.com/dafny-lang/dafny/archive/refs/tags/v3.9.1.tar.gz"
+  sha256 "77272ca990c4555bde5a31335227b2ba7811c29c5bc8a4381bf7cfd1294a2f20"
   license "MIT"
 
   livecheck do
@@ -11,12 +11,14 @@ class Dafny < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9827947070d8bab2583703e7a875d8cb41126af68cb9cbbd85cc3002d6a3f7c2"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cf88b1dee519ad8aa4a5fa18c7ba52c9ef03b24fa492e83f85dba288540061c4"
-    sha256 cellar: :any_skip_relocation, monterey:       "8202034074f14a33044ca687be498411e20ae530fcec2a8433251469e7619702"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2b0bd384d25b23e23033250d71fe9d5c009f2721f39ead3535db64148c52d0d0"
-    sha256 cellar: :any_skip_relocation, catalina:       "ca9f0b53a0ce999f87425e046be82f1ae0b0b2c7ba8da14e64b160cb2e099c7a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e38c25c11d897bdda81239e4dcfce449ccbdc749a1b558c5f9576557e7fe3e8e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bbed4974a3c1f4039d29c96e01b5a37335f9d44d77469cd0318286e574e89316"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8dcfdd1a53f57769ca84a8d5206e537f395e1bf491af1bb8d2971ebe61bfb2a8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1814604235ab9ca7cb271bd62226bfe90337ae772f7ede97c74a3ab79ebb1192"
+    sha256 cellar: :any_skip_relocation, ventura:        "5dab2145295503018a8096ca3107ebce04a0a43414d9136fd42c7a1118ad00a3"
+    sha256 cellar: :any_skip_relocation, monterey:       "02b36ed059c898ea7bf24853b5039d0136076a5a5a73dae00b594fa673b25f74"
+    sha256 cellar: :any_skip_relocation, big_sur:        "162f5e66b082353ad318d54f7588c72ba8d622b98c894b357a4de0317b43a1d0"
+    sha256 cellar: :any_skip_relocation, catalina:       "8d5e1bead5ee82461e505e1f5c2caa0890bb9e79cbdd7576ad79339ae33ea3f5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "25d87dc6b3a2041668a3e4100d3e44c61bee2a772a8405fdc8fc63d1ac35a200"
   end
 
   depends_on "gradle" => :build
@@ -40,7 +42,7 @@ class Dafny < Formula
     dst_z3_bin.mkpath
 
     resource("z3").stage do
-      ENV["PYTHON"] = which("python3")
+      ENV["PYTHON"] = which("python3.10")
       system "./configure"
       system "make", "-C", "build"
       mv("build/z3", dst_z3_bin/"z3")

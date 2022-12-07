@@ -3,24 +3,26 @@ class Buku < Formula
 
   desc "Powerful command-line bookmark manager"
   homepage "https://github.com/jarun/buku"
-  url "https://files.pythonhosted.org/packages/94/96/1d62b1346c07f8abc661fa499fef0acc7a110735e5b768b8899e58be8dc5/buku-4.6.tar.gz"
-  sha256 "e598045dc6b41121f2b706355d41e771aca9d30df71880fdeaed6f2f670d8dd8"
+  url "https://files.pythonhosted.org/packages/7a/b7/5268eacdbb0829039b1039f58bedab03e2139ec2d242094f8c062d792277/buku-4.7.1.tar.gz"
+  sha256 "e7f3a1024a4b926e4480a32cb798f0ce3501961efcd15442616cfebeb777c916"
   license "GPL-3.0-or-later"
-  revision 4
   head "https://github.com/jarun/buku.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "1d52ce0c5f5f7012dd5b979aa32599dfbb540f47500cca7406d0114251ac46e8"
-    sha256 cellar: :any,                 arm64_big_sur:  "ac607e374fa1a64a99348773990e58cfb4fce292ba6a67d8244de65f6e781248"
-    sha256 cellar: :any,                 monterey:       "13f9a550eb38a0954c22c0adda46ec69015e14eda946f7cd1f0979a226dbd229"
-    sha256 cellar: :any,                 big_sur:        "2bb5f94cfb5733437a49244b70c35eef6f3506d785ea4dfed098fbf7c5b36f54"
-    sha256 cellar: :any,                 catalina:       "d1e2b9ea53f795ee1f8635fd3d842b2900b9578ecb1d757c066152d1d0ad1c7f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "abc0aa6b3c4f4af907a3b673e3a4a23baeedb260d0c3be762a4a54c5c980e580"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "9a793d1c6ac976e252212aeb2d202f0609bfb7f5acee5fe755a7713c6169f867"
+    sha256 cellar: :any,                 arm64_monterey: "6a4c5629699a594fd13def627e9549b0d65a4fe5f656be1b5df406d7ac1b8cfa"
+    sha256 cellar: :any,                 arm64_big_sur:  "4b4dd4cb23f639bfd9a405e63e1e43d140651e596e345f65afdf00200b856087"
+    sha256 cellar: :any,                 ventura:        "799c57645799d536e0f9a5b697ea3a85e216c9b7f8e7f3dd6613d2128ffba5b2"
+    sha256 cellar: :any,                 monterey:       "18f3707ef5957bef14d9e18ee2d943567794a14c156bece8f5b8860f67bd111a"
+    sha256 cellar: :any,                 big_sur:        "1d23e98533075753f5d34369d8889869e564df8173cbde815098fbc45eca57ec"
+    sha256 cellar: :any,                 catalina:       "0b524849b68b43a58e3f38d06139e4d8418726baa6c00b63d93fd2d09e3cb7e2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7718c862cec46c8ce256cc4551862da08f8d2fdffddb0739a3d31252c61ea76f"
   end
 
   depends_on "rust" => :build
   depends_on "openssl@1.1"
-  depends_on "python@3.10"
+  depends_on "python@3.11"
   depends_on "six"
 
   uses_from_macos "expect" => :test
@@ -36,8 +38,8 @@ class Buku < Formula
   end
 
   resource "arrow" do
-    url "https://files.pythonhosted.org/packages/48/28/30a5748af715b0ab9c2b81cf08bd9e261e47a6261e247553afb7f6421b24/arrow-1.2.2.tar.gz"
-    sha256 "05caf1fd3d9a11a1135b2b6f09887421153b94558e5ef4d090b567b47173ac2b"
+    url "https://files.pythonhosted.org/packages/7f/c0/c601ea7811f422700ef809f167683899cdfddec5aa3f83597edf97349962/arrow-1.2.3.tar.gz"
+    sha256 "3934b30ca1b9f292376d9db15b19446088d12ec58629bc3f0da28fd55fb633a1"
   end
 
   resource "beautifulsoup4" do
@@ -46,18 +48,18 @@ class Buku < Formula
   end
 
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/07/10/75277f313d13a2b74fc56e29239d5c840c2bf09f17bf25c02b35558812c6/certifi-2022.5.18.1.tar.gz"
-    sha256 "9c5705e395cd70084351dd8ad5c41e65655e08ce46f2ec9cf6c2c08390f71eb7"
+    url "https://files.pythonhosted.org/packages/cb/a4/7de7cd59e429bd0ee6521ba58a75adaec136d32f91a761b28a11d8088d44/certifi-2022.9.24.tar.gz"
+    sha256 "0d9c601124e5a6ba9712dbc60d9c53c21e34f5f641fe83002317394311bdce14"
   end
 
   resource "cffi" do
-    url "https://files.pythonhosted.org/packages/00/9e/92de7e1217ccc3d5f352ba21e52398372525765b2e0c4530e6eb2ba9282a/cffi-1.15.0.tar.gz"
-    sha256 "920f0d66a896c2d99f0adbb391f990a84091179542c205fa53ce5787aff87954"
+    url "https://files.pythonhosted.org/packages/2b/a8/050ab4f0c3d4c1b8aaa805f70e26e84d0e27004907c5b8ecc1d31815f92a/cffi-1.15.1.tar.gz"
+    sha256 "d400bfb9a37b1351253cb402671cea7e89bdecc294e8016a707f6d1d8ac934f9"
   end
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/56/31/7bcaf657fafb3c6db8c787a865434290b726653c912085fbd371e9b92e1c/charset-normalizer-2.0.12.tar.gz"
-    sha256 "2857e29ff0d34db842cd7ca3230549d1a697f96ee6d3fb071cfa6c7393832597"
+    url "https://files.pythonhosted.org/packages/a1/34/44964211e5410b051e4b8d2869c470ae8a68ae274953b1c7de6d98bbcf94/charset-normalizer-2.1.1.tar.gz"
+    sha256 "5a3d016c7c547f69d6f81fb0db9449ce888b418b5b9952cc5e6e66843e9dd845"
   end
 
   resource "click" do
@@ -66,13 +68,13 @@ class Buku < Formula
   end
 
   resource "cryptography" do
-    url "https://files.pythonhosted.org/packages/51/05/bb2b681f6a77276fc423d04187c39dafdb65b799c8d87b62ca82659f9ead/cryptography-37.0.2.tar.gz"
-    sha256 "f224ad253cc9cea7568f49077007d2263efa57396a2f2f78114066fd54b5c68e"
+    url "https://files.pythonhosted.org/packages/13/dd/a9608b7aebe5d2dc0c98a4b2090a6b815628efa46cc1c046b89d8cd25f4c/cryptography-38.0.3.tar.gz"
+    sha256 "bfbe6ee19615b07a98b1d2287d6a6073f734735b49ee45b11324d85efc4d5cbd"
   end
 
   resource "dominate" do
-    url "https://files.pythonhosted.org/packages/29/23/edf8e470f1053245c1aa99d92c8a3da9e83f6c7d3eb39205486965425be5/dominate-2.6.0.tar.gz"
-    sha256 "76ec2cde23700a6fc4fee098168b9dee43b99c2f1dd0ca6a711f683e8eb7e1e4"
+    url "https://files.pythonhosted.org/packages/12/d7/5e5f50f5d5bdd4282d2a70b9479c1d91d6628bebd4829e455cdf7366a92e/dominate-2.7.0.tar.gz"
+    sha256 "520101360892ebf9d0553f67d37e359ff92403d8a1e33814030503088a05da49"
   end
 
   resource "Flask" do
@@ -100,9 +102,12 @@ class Buku < Formula
     sha256 "a32996ec07ca004c45b768b0d50829728ab8f3986c0650ef538e42852c7aeba2"
   end
 
+  # Upstream specifies the following fork version in setup.py.
+  # TODO: Can be removed in next release as no longer included with `server` feature
+  # Ref: https://github.com/jarun/buku/pull/596
   resource "flask-reverse-proxy-fix" do
-    url "https://files.pythonhosted.org/packages/ce/ca/8ca4a400b5effa463abe7d51db3e98485addce1f04cafc746dea662e3b07/flask-reverse-proxy-fix-0.2.1.tar.gz"
-    sha256 "03ce3312d92f2b0073205e74bee1e6213640b44b1de730375d8cf478447e208c"
+    url "https://github.com/rachmadaniHaryono/flask-reverse-proxy-fix/archive/refs/tags/v0.2.2rc1.tar.gz"
+    sha256 "c1b81a133a37333240d2425c88f0f9c57cf8a1c01647b18f9583853371791971"
   end
 
   resource "Flask-WTF" do
@@ -116,8 +121,8 @@ class Buku < Formula
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/62/08/e3fc7c8161090f742f504f40b1bccbfc544d4a4e09eb774bf40aafce5436/idna-3.3.tar.gz"
-    sha256 "9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d"
+    url "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz"
+    sha256 "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
   end
 
   resource "itsdangerous" do
@@ -161,8 +166,8 @@ class Buku < Formula
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/60/f3/26ff3767f099b73e0efa138a9998da67890793bfa475d8278f84a30fec77/requests-2.27.1.tar.gz"
-    sha256 "68d7c56fd5a8999887728ef304a6d12edc7be74f1cfa47714fc8b414525c9a61"
+    url "https://files.pythonhosted.org/packages/a5/61/a867851fd5ab77277495a8709ddda0861b28163c4613b011bc00228cc724/requests-2.28.1.tar.gz"
+    sha256 "7c5599b102feddaa661c826c56ab4fee28bfd17f5abca1ebbe3e7f19d7c97983"
   end
 
   resource "soupsieve" do
@@ -171,8 +176,8 @@ class Buku < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/1b/a5/4eab74853625505725cefdf168f48661b2cd04e7843ab836f3f63abf81da/urllib3-1.26.9.tar.gz"
-    sha256 "aabaf16477806a5e1dd19aa41f8c2b7950dd3c746362d7e3223dbe6de6ac448e"
+    url "https://files.pythonhosted.org/packages/b2/56/d87d6d3c4121c0bcec116919350ca05dc3afd2eeb7dc88d07e8083f8ea94/urllib3-1.26.12.tar.gz"
+    sha256 "3fa96cf423e6987997fc326ae8df396db2a8b7c667747d47ddd8ecba91f4a74e"
   end
 
   resource "visitor" do
@@ -198,7 +203,7 @@ class Buku < Formula
   def install
     virtualenv_install_with_resources
     man1.install "buku.1"
-    bash_completion.install "auto-completion/bash/buku-completion.bash"
+    bash_completion.install "auto-completion/bash/buku-completion.bash" => "buku"
     fish_completion.install "auto-completion/fish/buku.fish"
     zsh_completion.install "auto-completion/zsh/_buku"
   end

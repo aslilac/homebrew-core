@@ -1,23 +1,23 @@
 class Coturn < Formula
   desc "Free open source implementation of TURN and STUN Server"
   homepage "https://github.com/coturn/coturn"
-  url "http://turnserver.open-sys.org/downloads/v4.5.2/turnserver-4.5.2.tar.gz"
-  sha256 "1cbef88cd4ab0de0d4d7011f4e7eaf39a344b485e9a272f3055eb53dd303b6e1"
+  url "https://github.com/coturn/coturn/archive/refs/tags/4.6.1.tar.gz"
+  sha256 "8fba86e593ed74adc46e002e925cccff2819745371814f42465fbe717483f1d8"
   license "BSD-3-Clause"
 
   livecheck do
-    url "http://turnserver.open-sys.org/downloads/"
-    regex(%r{href=.*?v?(\d+(?:\.\d+)+)/?["' >]}i)
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    sha256 arm64_monterey: "670005d35ba1ef2baec0ef1a0e628d4cd9acf447a4417fea67606b230095cabe"
-    sha256 arm64_big_sur:  "daebf6cf1b50a886b5f647c2331d0f9b811205148b04f03f60c79b0ef9b4b34f"
-    sha256 monterey:       "a09a31c0b7e5c3ca820ab6765780bec19431f8267a167cd9a5bba2a084b53e30"
-    sha256 big_sur:        "cbf4ffbe501023ff20d1d0798c0d3976c16fe29062fe18ce9e03230031c55f5b"
-    sha256 catalina:       "9fcb011c5da93820c3b567ddb6488fb6812cd8d40477d167990023db5d510749"
-    sha256 mojave:         "eef1e160c7951bd96f3f59a395d2474529fa03c12d380dd7daf9625435003c31"
-    sha256 x86_64_linux:   "3b0cb1660a6f9c5f9b340f5d697b9cd0e853e0404f0479f31ca1340a8211e3a4"
+    sha256 arm64_ventura:  "1dfbdbf3aefad9142ce2edec95d448ff9cd2fed007b52a648f3f1e922fab70e8"
+    sha256 arm64_monterey: "2501eebd1bafcb385aa6bd29251d154b5c923784c87153feed01d4c4004f692b"
+    sha256 arm64_big_sur:  "58ca95c9237a7214aed41ad8e316d7ce7598dc6b1a0b2760ca351411780bff6a"
+    sha256 ventura:        "cab7f10155f0805b455f92951adbd72c909a95157faf0512f9f0c6538e55435c"
+    sha256 monterey:       "ce8cce8014048c034e99d04c44f17715dc6c5910a49d35fdb0d5f2f6ce909e78"
+    sha256 big_sur:        "58f29be2f2ca8c8fbc24c94b5d78f81e5d70d01ff415444f3922ac04840f2425"
+    sha256 x86_64_linux:   "b84409e324a79a3eabdf937aa21369851ae533f2d4dfa7544480757e9bbdca74"
   end
 
   depends_on "pkg-config" => :build

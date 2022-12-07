@@ -1,10 +1,9 @@
 class Newt < Formula
   desc "Library for color text mode, widget based user interfaces"
   homepage "https://pagure.io/newt"
-  url "https://releases.pagure.org/newt/newt-0.52.21.tar.gz"
-  sha256 "265eb46b55d7eaeb887fca7a1d51fe115658882dfe148164b6c49fccac5abb31"
+  url "https://releases.pagure.org/newt/newt-0.52.23.tar.gz"
+  sha256 "caa372907b14ececfe298f0d512a62f41d33b290610244a58aed07bbc5ada12a"
   license "LGPL-2.0-or-later"
-  revision 2
 
   livecheck do
     url "https://releases.pagure.org/newt/"
@@ -12,23 +11,29 @@ class Newt < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "93a43143160e7432d52429e5aab0dcfda5b17858b4cd3f9921c54b98bd405ea8"
-    sha256 cellar: :any,                 arm64_big_sur:  "033f20f9fad1bf00c6e8a8ef8b24525d1184e67008b6c42e40893c8eefb6ccb5"
-    sha256 cellar: :any,                 monterey:       "0afdface002d204eff335387f8c5afba4c787836cd773db6f19811eef3a4e6c0"
-    sha256 cellar: :any,                 big_sur:        "26e7dffcbe33b1a34a69fb041fdc6740a5b5888351444a8b7f074e16c1f69877"
-    sha256 cellar: :any,                 catalina:       "c39688432c5335bb26ddc5149f119a05e4811ac7fc3a0a9d1a9f0c829c3833cb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5b8bc4c34aaff04b2bf0dc6f8b8094ee11c80b254240a231bca96b91111450c8"
+    sha256 cellar: :any,                 arm64_ventura:  "5df728ad1e151aaac5b625718e46d08da895ca69723d3784468d73769e935afa"
+    sha256 cellar: :any,                 arm64_monterey: "10b1d3a167cb58d3395e658ade694a7d1399b055bd3ac73e927b5d72ce6365c5"
+    sha256 cellar: :any,                 arm64_big_sur:  "ef5db051a9a6a3e2d4ef1640e9bd457ff7fb93e4bdecf375a616997de030f0c7"
+    sha256 cellar: :any,                 ventura:        "ab855ccc5e8616cfb5fde2b1f22280c7d985a865286d2d5a38053d7efb920108"
+    sha256 cellar: :any,                 monterey:       "fa3933a096a7fb991019e7136da6904f83f68c1fe22a1cf8fbbaba7bc032d8f9"
+    sha256 cellar: :any,                 big_sur:        "5cfff166cb954acea8b020cca6d0e583edf3edfcc0e313d9dfe5e2f77d813104"
+    sha256 cellar: :any,                 catalina:       "600d9b87f410ba129edb1fb51d82573e22dba023d69c201ebb8bed5ccbcdb982"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b67e8869197eab4707919551f3f3358d31820cbe3ce3eb7f892682a3e6fa52b0"
   end
 
-  depends_on "gettext"
   depends_on "popt"
-  depends_on "python@3.10"
+  depends_on "python@3.11"
   depends_on "s-lang"
 
-  def install
-    xy = Language::Python.major_minor_version("python3")
-    args = %W[--prefix=#{prefix} --without-tcl --with-python=python#{xy}]
+  on_macos do
+    depends_on "gettext"
+  end
 
+  def python3
+    "python3.11"
+  end
+
+  def install
     if OS.mac?
       inreplace "Makefile.in" do |s|
         # name libraries correctly
@@ -44,13 +49,13 @@ class Newt < Formula
       end
     end
 
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}", "--without-tcl", "--with-python=#{python3}"
     system "make", "install"
   end
 
   test do
     ENV["TERM"] = "xterm"
-    system Formula["python@3.10"].opt_bin/"python3", "-c", "import snack"
+    system python3, "-c", "import snack"
 
     (testpath/"test.c").write <<~EOS
       #import <newt.h>

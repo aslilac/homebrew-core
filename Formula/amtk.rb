@@ -2,17 +2,19 @@ class Amtk < Formula
   desc "Actions, Menus and Toolbars Kit for GNOME"
   homepage "https://gitlab.gnome.org/World/amtk"
   url "https://gitlab.gnome.org/World/amtk.git",
-      tag:      "5.5.1",
-      revision: "fa2835b2e60d60c924fc722a330524a378446a7d"
+      tag:      "5.6.1",
+      revision: "f0029cf75ec416159079a27b578b9253a04b1c5a"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 arm64_monterey: "250b5e388086f70a283e63dc2287d2e9df377f05aeab3b7fd80466fe4100ecd1"
-    sha256 arm64_big_sur:  "dea3d30885c8f6d1d826d5751998ed4a455402a41c59d6906b6fd9a36008a782"
-    sha256 monterey:       "9c8c733791c295dbefd5c8ef7e097254823bd29dff3c0cc2b1a1caaa1c2c89d3"
-    sha256 big_sur:        "325fa265fca221b9109873195f97c17be39334e8e4e997bac062f70dc190b090"
-    sha256 catalina:       "9f9a3c3164918a49c3c92e6a209e51e7e966a7c96d43c981cd536b9abdc22ab1"
-    sha256 x86_64_linux:   "51c6f9585fb645073a645697b971bc73eda5f23eaeaf392d0fcc0c76eaf5b101"
+    sha256 arm64_ventura:  "1cf380d9dbde9c3a165f32fe7fbfa409cfa3ace1748d07e46b22678f548450c9"
+    sha256 arm64_monterey: "f2b43d8dd35fb1d0f6da7cee85a96f322135bac94a1f59c783df4498b16ff1c7"
+    sha256 arm64_big_sur:  "7b773cc55530831d0b2d5ea72b5b6f061b7988f68d72db771a7787dedaa3bf11"
+    sha256 ventura:        "6712f5ff43799d58d6dbbfd9f056057a3db085de298046dcef957052809b3970"
+    sha256 monterey:       "5ac785fbfb332717bcd7e5999269675b55b3e4fdc227f29398c04a80d9aa85a8"
+    sha256 big_sur:        "e4d747ffc31a622fb484e6f6e29ca844d31aec1add51da911a8c6750ba079f60"
+    sha256 catalina:       "f057747729a7ced1beac244548ce06a22be404adf2d623ca10d3efacc3629e04"
+    sha256 x86_64_linux:   "36eb21a4aff1008a95772f0f3570ce32c179b3637f508bc2525d24e7d216fd14"
   end
 
   depends_on "gobject-introspection" => :build
@@ -92,13 +94,9 @@ class Amtk < Formula
       -lgtk-3
       -lpango-1.0
       -lpangocairo-1.0
+      -lamtk-5
     ]
-    if OS.mac?
-      flags << "-lintl"
-      flags << "-lamtk-5.0"
-    else
-      flags << "-lamtk-5"
-    end
+    flags << "-lintl" if OS.mac?
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

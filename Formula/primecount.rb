@@ -1,17 +1,18 @@
 class Primecount < Formula
   desc "Fast prime counting function program and C/C++ library"
   homepage "https://github.com/kimwalisch/primecount"
-  url "https://github.com/kimwalisch/primecount/archive/v7.3.tar.gz"
-  sha256 "471fe21461e42e5f28404e17ff840fb527b3ec4064853253ee22cf4a81656332"
+  url "https://github.com/kimwalisch/primecount/archive/refs/tags/v7.5.tar.gz"
+  sha256 "7dacea9ddd106eb1e69ff34963a2a79eab3931c283a46c2d0acb8de238a2b756"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "4a024848fe7f2c15cf034e77dfbdf56c2000dd7efbfd174ae1063da07f0cb8f7"
-    sha256 cellar: :any,                 arm64_big_sur:  "f4f5d8a38083b7f6fc2565632c00670992a2e29e9b882283c3ea000103e17df6"
-    sha256 cellar: :any,                 monterey:       "74e6bb9e8c6897c7fda9f5429dfb78b169e854d58aeb5f4c19430ba791af2eaf"
-    sha256 cellar: :any,                 big_sur:        "388d12fc1ac0c848ba1f51f7c496d2120de503c71657cdd5359e6e4f56571b41"
-    sha256 cellar: :any,                 catalina:       "ac6c82919085aecfb77dd0a62ab84d735f9e234736abced98874a79c0fe7098d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "037ad4deed3e4421300c9388818c61bbbe0dba3b13fe11e39508d03e48e5dc00"
+    sha256 cellar: :any,                 arm64_ventura:  "56f15be7b65990579b993ad1254d24d1c7da73c56c990869df93d7a08dfd1725"
+    sha256 cellar: :any,                 arm64_monterey: "6a310a26d3666c1cbb1a60fe0d9cacec11ae85509ebece0a37765f86f4f91033"
+    sha256 cellar: :any,                 arm64_big_sur:  "44da27b394b72b5eb2df10bc99aa4186d633895e65a4278588180850da3abbc8"
+    sha256 cellar: :any,                 ventura:        "dbaf4ff1b0426394508bd91609ae7b5a9b93120e2a0e6139b9a21fbc0dc59fbd"
+    sha256 cellar: :any,                 monterey:       "c3f14c7fbdc7bfac5fa2ea6f0211a822442096cb85c9f202d57cf1c92003c174"
+    sha256 cellar: :any,                 big_sur:        "1c31af3bce92aa215f7753e42ca96c1f8c0785e5501a5cef0011b096ccd34b9e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "69da0adcde72d8ed4a2c7849c6af3901285d96bd4644e006d86043672c6a2980"
   end
 
   depends_on "cmake" => :build

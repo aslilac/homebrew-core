@@ -4,29 +4,27 @@ class Osm2pgrouting < Formula
   url "https://github.com/pgRouting/osm2pgrouting/archive/v2.3.8.tar.gz"
   sha256 "e3a58bcacf0c8811e0dcf3cf3791a4a7cc5ea2a901276133eacf227b30fd8355"
   license "GPL-2.0-or-later"
-  revision 3
+  revision 5
   head "https://github.com/pgRouting/osm2pgrouting.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "235fcf5acf4a0b5e63d55505b12fac3fa4eef7a379568da78f854b8816738fcf"
-    sha256 cellar: :any,                 arm64_big_sur:  "e33e1d08bb7b945b8b82f2f18aa59cac766442af2ce71110782dfac031146fac"
-    sha256 cellar: :any,                 monterey:       "c098f59fda09a8e865d694130889d912e79d2399f3f67c9b52bc388863cce0c4"
-    sha256 cellar: :any,                 big_sur:        "a8821651a9d8fe0d3d60226ba1fd41fa51157ddd9ffa402b09cc4e670f1b82e2"
-    sha256 cellar: :any,                 catalina:       "8fec29b2e6de42c4d46f1328d3214733b2636fa55a10eab4d9f0c373bf9ad9c3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5a84374245284b0691602ca06d078c4d229513a54c2662f94d400cd4f8782654"
+    sha256 cellar: :any,                 arm64_ventura:  "0186ed30fb28a6910c3b9e792de81b473528bf591b4a56a4df143dc1a5588b1a"
+    sha256 cellar: :any,                 arm64_monterey: "50a6b839a749405b1a8ed973112ec404588f9689cb6f9d1838fc93e069113aaa"
+    sha256 cellar: :any,                 arm64_big_sur:  "f014ee852c616ed7e4bc83c06137c57a9005a21a6cc3a3d94867c368fcd3d4de"
+    sha256 cellar: :any,                 ventura:        "3a3826252a0b59eec79bc8471f50637b3327095c8e7073e11daa39f70a78280b"
+    sha256 cellar: :any,                 monterey:       "98c0e8d3b2fa3eceda49deaf76a4577bfe2101b298f579a725fa9c06cc426e06"
+    sha256 cellar: :any,                 big_sur:        "e8c9c756dedb666562e01bb2a617b11f81d176d1ce4c3caebf6390cd0e510790"
+    sha256 cellar: :any,                 catalina:       "3e7d0bcb78fd7b62ebee99080133aae026a77a4b2b8d6f58e84f67b98d777039"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "092b3158861c3d646c8fb955c41fa8f4a3999cc6040cc08111c9d7278ce3a52d"
   end
 
   depends_on "cmake" => :build
   depends_on "boost"
   depends_on "expat"
+  depends_on "libpq"
   depends_on "libpqxx"
   depends_on "pgrouting"
   depends_on "postgis"
-  depends_on "postgresql"
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5"
 

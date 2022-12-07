@@ -1,18 +1,20 @@
 class Wasmer < Formula
   desc "🚀 The Universal WebAssembly Runtime"
   homepage "https://wasmer.io"
-  url "https://github.com/wasmerio/wasmer/archive/2.3.0.tar.gz"
-  sha256 "b27d12494191a5fe4a77b2cce085b6005f2bf6285ede6c86601a3062c6135782"
+  url "https://github.com/wasmerio/wasmer/archive/refs/tags/v3.0.2.tar.gz"
+  sha256 "256f5564d727cf0baf89368abf82dd851b6683407b30422267c65d1851b988ac"
   license "MIT"
   head "https://github.com/wasmerio/wasmer.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "514ea51087a5ef409726ede823433d520e1d00b145480bbc7ee1ef88ae771cea"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e2d043dabcdb1f083047afc9dd1c2fba60db860fc6d1dbc24825baee457ba68f"
-    sha256 cellar: :any_skip_relocation, monterey:       "0f70d1097ad9c3d4190825845eca0273887f6378e7553b6ec93eec4a345d7f8b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c066197bb6e8fd6ee49195d534d2584d774173dcdbc2a818b792d894edfe0ba9"
-    sha256 cellar: :any_skip_relocation, catalina:       "eee9f24bedebff4531ff92b1235be06a315fd7762d2b45f841d38ab383f11d7e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "17fbc61a9c5699fad9c4c3ae2bcd51b01f3e3f30e9cc733ad51ed73ecb018e02"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a1b6e729d809eb85a8c22a56eb46c43c9c715e610413ce7fae0a771eba5559bb"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5b07745a6e10bf065644f85472fc9c70266de94f102d503dfcdfbf9525bf68a0"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4b2cb17959c9ae8b8793c3a103ea6a19a06077e96bfb66e90850170cbb92afdc"
+    sha256 cellar: :any_skip_relocation, ventura:        "92463d9ffcd179376cc4dda522e3e2cb4635498b8ebe44fff4859f493515f626"
+    sha256 cellar: :any_skip_relocation, monterey:       "467b08831da6b30bb8a03a78521c06b7ceb6046da04b3481fdd35d00a16b4e2f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "8e824d6ce85c008580959caa1e76679b58602658b84a52d9384b3d120e6c4816"
+    sha256 cellar: :any_skip_relocation, catalina:       "0d45a7864398ceda12d108c90fae226ada24fb2e6bf670d29aaee84fae0c6714"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bcaf58194df6c5dfca73617af0a4cffca1f8c3ad9f9a8b4bd6ce170515f5eac0"
   end
 
   depends_on "cmake" => :build

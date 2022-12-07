@@ -1,18 +1,19 @@
 class Ortp < Formula
   desc "Real-time transport protocol (RTP, RFC3550) library"
-  homepage "https://www.linphone.org/technical-corner/ortp"
-  url "https://gitlab.linphone.org/BC/public/ortp/-/archive/5.1.45/ortp-5.1.45.tar.bz2"
-  sha256 "2f6bd8735e94e532567e53db02488c430a0184596d9dd9e0b063d2e7d841a35e"
+  homepage "https://linphone.org/"
+  url "https://gitlab.linphone.org/BC/public/ortp/-/archive/5.2.0/ortp-5.2.0.tar.bz2"
+  sha256 "5f511597511c450ee9bc32b95bb6038082e66899961f6a035151a44d49f7eccf"
   license "GPL-3.0-or-later"
   head "https://gitlab.linphone.org/BC/public/ortp.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "5b2eec2d1f3794de780222a7a90384e0a637afc2620247b756ac42acc0884128"
-    sha256 cellar: :any,                 arm64_big_sur:  "b7169f22cbfc96804b4c586827482d93b3f6fe6e94dcb8229adb9353ab3d15e4"
-    sha256 cellar: :any,                 monterey:       "56810995ce010c76dddebfa624850d63fc2a9762118033914e6fee56cd425f1a"
-    sha256 cellar: :any,                 big_sur:        "9e75561312fcab0dc87b28bf3b170ad48e08d0eeccc161108448f98f5d4e5327"
-    sha256 cellar: :any,                 catalina:       "0599a0757c5d76c6c5230632d3370778b9e993db49a2a1283513cc42ec036b1c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7d856b968a12fd5a4e25a6c9b40fa17869675b73ff1fd63f6faa3da02f32a4cb"
+    sha256 cellar: :any,                 arm64_ventura:  "7cc89d496e016a658871879f0fc73979672035594b9d69b241055ee5cb2e1473"
+    sha256 cellar: :any,                 arm64_monterey: "a0695cf68780ed1e9379e11dad9959c959e62f17c9cd343c2364006c40d4e913"
+    sha256 cellar: :any,                 arm64_big_sur:  "d36b29f77d98d9b6db3c8a8b78bf43672b3522c9c9e3474162e836ed5ea07893"
+    sha256 cellar: :any,                 ventura:        "ecab60de39134d6cbe13c1badb999e650a1afc817b403a576c7128de0b401ba4"
+    sha256 cellar: :any,                 monterey:       "f320283f68a915518b43a44aee636c29619a11a1d8f258a91da634f9ff89ac94"
+    sha256 cellar: :any,                 big_sur:        "2b3b7fca241833505544e004e80ba883751284a4d24cdbf501c498184d854420"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d96356ae6535f3fde7ab5ff8c83a0e816e363b9589d767886f5fefeebfaed2fe"
   end
 
   depends_on "cmake" => :build
@@ -22,29 +23,36 @@ class Ortp < Formula
   # bctoolbox appears to follow ortp's version. This can be verified at the GitHub mirror:
   # https://github.com/BelledonneCommunications/bctoolbox
   resource "bctoolbox" do
-    url "https://gitlab.linphone.org/BC/public/bctoolbox/-/archive/5.1.32/bctoolbox-5.1.45.tar.bz2"
-    sha256 "d8a1374c36cedc0dfc09fe6a67075b55c13006386c466413a6af29941e9e7e65"
+    # Don't forget to change both instances of the version in the URL.
+    url "https://gitlab.linphone.org/BC/public/bctoolbox/-/archive/5.2.0/bctoolbox-5.2.0.tar.bz2"
+    sha256 "7f7ca169ea7183b91836e50efe66719295a4dc8bb8ecfa7c209717fa6776b0b4"
   end
 
   def install
     resource("bctoolbox").stage do
-      system "cmake", ".", *std_cmake_args(install_prefix: libexec), "-DENABLE_TESTS_COMPONENT=OFF"
-      system "make", "install"
+      system "cmake", "-S", ".", "-B", "build",
+                      "-DENABLE_TESTS_COMPONENT=OFF",
+                      *std_cmake_args(install_prefix: libexec)
+      system "cmake", "--build", "build"
+      system "cmake", "--install", "build"
     end
 
     ENV.prepend_path "PKG_CONFIG_PATH", libexec/"lib/pkgconfig"
     ENV.append "LDFLAGS", "-Wl,-rpath,#{libexec}/lib" if OS.linux?
+    cflags = ["-I#{libexec}/include"]
+    cflags << "-Wno-error=maybe-uninitialized" if OS.linux?
 
-    args = std_cmake_args + %W[
+    args = %W[
       -DCMAKE_PREFIX_PATH=#{libexec}
-      -DCMAKE_C_FLAGS=-I#{libexec}/include
+      -DCMAKE_C_FLAGS=#{cflags.join(" ")}
       -DCMAKE_CXX_FLAGS=-I#{libexec}/include
       -DENABLE_DOC=NO
+      -DENABLE_UNIT_TESTS=NO
     ]
-    mkdir "build" do
-      system "cmake", "..", *args
-      system "make", "install"
-    end
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

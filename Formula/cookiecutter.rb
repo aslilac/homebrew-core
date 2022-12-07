@@ -9,15 +9,19 @@ class Cookiecutter < Formula
   head "https://github.com/cookiecutter/cookiecutter.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4101c9acacc29d30afca5f5d61082ab044971defa94472c811d54d5b91958cea"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a3d81a69df0b8b4de452500dcfa8e46d1172a9bf0c5e3cfadaa085b48dad8fe9"
-    sha256 cellar: :any_skip_relocation, monterey:       "a937a1f8887fc2b7a691816a8b7282d55a29bae8dde2bf856160f60ee52710a6"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e172ba36c2faf9b7b2b33110b3b95321657342ca3cfc320e325a0741439e3564"
-    sha256 cellar: :any_skip_relocation, catalina:       "dba8823ef56fcfc709de636f51ceecef18e2fe8d329c41a54fdb004d81e5bf4b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5a98c25502094ee37748ea2dae64f36e3d7de16c6e4521e1e60a042b4154df5b"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "976519ec3673bc4c250bc0a0e82088ee0d6281a8e686ad69749076d72d47e5f0"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "898929c74f9af6b3d1f6d92f65fbf9a7ed6a36c0946fb93bd78ebf854b69f3ff"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9578c5ade6ab9ed951f170f23e1a586f8831c56025d7502c36d5b5f84c32aa35"
+    sha256 cellar: :any_skip_relocation, ventura:        "1b28228bce1ef73af75efb6214146a994f124e670664505798beca6e41cc326a"
+    sha256 cellar: :any_skip_relocation, monterey:       "bd3d3c2896c70991f56ba7677a038c4d50e2dc8c5844ad0861549ced5d8b4ea1"
+    sha256 cellar: :any_skip_relocation, big_sur:        "561e540f569764e56c252d7f75c1530086c14bbb863973cd959d4b6c2b42ff6a"
+    sha256 cellar: :any_skip_relocation, catalina:       "9239818f56d62ec3c3bae26d8f3609d92dc75cd57032f2b5b23df8e7603273c8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b9e81a06db0941468d398e43d0db11a7e4cb39ef0b6b69a2873e782c657a79d6"
   end
 
-  depends_on "python@3.10"
+  depends_on "python@3.11"
+  depends_on "pyyaml"
   depends_on "six"
 
   resource "arrow" do
@@ -78,11 +82,6 @@ class Cookiecutter < Formula
   resource "python-slugify" do
     url "https://files.pythonhosted.org/packages/5d/45/915967d7bcc28fd12f36f554e1a64aeca36214f2be9caf87158168b5a575/python-slugify-6.1.2.tar.gz"
     sha256 "272d106cb31ab99b3496ba085e3fea0e9e76dcde967b5e9992500d1f785ce4e1"
-  end
-
-  resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/36/2b/61d51a2c4f25ef062ae3f74576b01638bebad5e045f747ff12643df63844/PyYAML-6.0.tar.gz"
-    sha256 "68fb519c14306fec9720a2a5b45bc9f0c8d1b9c72adf45c37baedfcd949c35a2"
   end
 
   resource "requests" do

@@ -12,8 +12,10 @@ class Hspell < Formula
 
   bottle do
     rebuild 1
+    sha256 arm64_ventura:  "2fcc00698fda6279a021ece352de8c8c7597cabec4ae896416db031215e2dcbb"
     sha256 arm64_monterey: "743ad6762f4452a62702961c030950a6d70d36877140dd8728ce45f8d06411c3"
     sha256 arm64_big_sur:  "421fdc3ab5d0ebde258ce7bdb235d2b50144966a27a74cbbe5c607dff0984c7f"
+    sha256 ventura:        "8409b8e239d65f3109f29b1a5317c30c88fb468e1591d1a056c303afd3a95edd"
     sha256 monterey:       "21abb651324e2e46eae76ae915efe203f198a7a74f7c9144b3d21060fc5a2dfd"
     sha256 big_sur:        "426c87d91350f33392c862296b5d1b0081bc953adae5c04a9769ebb2a626213f"
     sha256 catalina:       "a0406d5a4d5adefa40b5e820510a9b7f461fcea6a61112103c112775fff49ae8"
@@ -25,10 +27,10 @@ class Hspell < Formula
 
   uses_from_macos "zlib"
 
-  on_macos do
-    # hspell was built for linux and compiles a .so shared library, to comply with macOS
-    # standards this patch creates a .dylib instead
-    patch :p0 do
+  # hspell was built for linux and compiles a .so shared library, to comply with macOS
+  # standards this patch creates a .dylib instead
+  patch :p0 do
+    on_macos do
       url "https://raw.githubusercontent.com/Homebrew/formula-patches/85fa66a9/hspell/1.3.patch"
       sha256 "63cc1bc753b1062d1144dcdd959a0a8f712b8872dce89e54ddff2d24f2ca2065"
     end

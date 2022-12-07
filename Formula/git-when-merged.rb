@@ -3,23 +3,30 @@ class GitWhenMerged < Formula
 
   desc "Find where a commit was merged in git"
   homepage "https://github.com/mhagger/git-when-merged"
-  url "https://github.com/mhagger/git-when-merged/archive/v1.2.0.tar.gz"
-  sha256 "3fb3ee2f186103c2dae1e4a2e104bc37199641f4ffdb38d85ca612cf16636982"
+  url "https://github.com/mhagger/git-when-merged/archive/v1.2.1.tar.gz"
+  sha256 "46ba5076981862ac2ad0fa0a94b9a5401ef6b5c5b0506c6e306b76e5798e1f58"
   license "GPL-2.0-only"
-  revision 1
+  head "https://github.com/mhagger/git-when-merged.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "e17a93477d9712acb9acb0c77f18c646d3a25faa19e7f9875d1a31cb44560003"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "351c05a7dfe0568ffde09a4633ab23d253ab10e0c3e0b2421e3f9b4740bae4b7"
   end
 
-  depends_on "python@3.10"
+  # TODO: Update this to whichever python has `bin/python3`.
+  depends_on "python@3.10" => :test
+  uses_from_macos "python"
 
   def install
-    rewrite_shebang detected_python_shebang, "bin/git-when-merged"
-    bin.install "bin/git-when-merged"
+    bin.install "src/git_when_merged.py" => "git-when-merged"
+
+    if !OS.mac? || MacOS.version >= :catalina
+      rewrite_shebang detected_python_shebang(use_python_from_path: true), bin/"git-when-merged"
+    end
   end
 
   test do
+    system "git", "config", "--global", "init.defaultBranch", "master"
     system "git", "init"
     system "git", "config", "user.name", "BrewTestBot"
     system "git", "config", "user.email", "BrewTestBot@example.com"
@@ -35,6 +42,11 @@ class GitWhenMerged < Formula
     touch "baz"
     system "git", "add", "baz"
     system "git", "commit", "-m", "baz"
-    system "#{bin}/git-when-merged", "bar"
+    system bin/"git-when-merged", "bar"
+
+    # Test with both Homebrew Python3 and system Python3 to validate our shebang.
+    which_all("python3").each do |python|
+      system python, bin/"git-when-merged", "bar"
+    end
   end
 end

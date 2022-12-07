@@ -1,9 +1,10 @@
 class PerconaServer < Formula
   desc "Drop-in MySQL replacement"
   homepage "https://www.percona.com"
-  url "https://downloads.percona.com/downloads/Percona-Server-8.0/Percona-Server-8.0.28-20/source/tarball/percona-server-8.0.28-20.tar.gz"
-  sha256 "88890e081d70901f938e39b688663d4514910773488fca42cd6de0f4371fb157"
+  url "https://downloads.percona.com/downloads/Percona-Server-8.0/Percona-Server-8.0.29-21/source/tarball/percona-server-8.0.29-21.tar.gz"
+  sha256 "a54c45b23719d4f6ba1e409bb2916c59dc0c9aaae98e24299ff26f150ad4f735"
   license "BSD-3-Clause"
+  revision 2
 
   livecheck do
     url "https://www.percona.com/downloads/Percona-Server-LATEST/"
@@ -11,12 +12,14 @@ class PerconaServer < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "8a32d2aab05f64122b1a43e44463be7a346b553f8d72a0489b559523f47ab00d"
-    sha256 arm64_big_sur:  "094858bc543f2fe03048ce0198f1ebb17ce07fb26706be67b01cb0a0228c5b84"
-    sha256 monterey:       "c02ec5869be9663969f8514cedddcbe8092d6f92bb0eb7b5d5d825bc9a311e09"
-    sha256 big_sur:        "e6d2a51f4460299f3afd6360d2175f3dfeed41d98707cdbcf0415201110f207c"
-    sha256 catalina:       "94474592103764a5241501c6dee071b4c614bdae6380d49e46140917afe57930"
-    sha256 x86_64_linux:   "c9f246921498ae15bf21c89c772aeab9dbcc883be4a486a1af30868d2457d65d"
+    sha256 arm64_ventura:  "1a61fec9e5d4003e9e0c5d9205091ce76f50bd821b0a4500a818593236d419c0"
+    sha256 arm64_monterey: "0133d8fe76dbc77d4d780e377b99ae220e5dd571edad87d421e5fbe2e757da1d"
+    sha256 arm64_big_sur:  "4da7726e3988cf850c41e7a796e6d734d6bf4e06e7829a9e0bf280976d304f3a"
+    sha256 ventura:        "cb4b17cbbc933936a14e16fc304bd5baaa537f7bdfb4fd7df0258b92ce312d66"
+    sha256 monterey:       "0828b310ec01954e21d01a2d1b1e63d168fe2d5f4ddb8252a1541607bc0839b0"
+    sha256 big_sur:        "336ecb45561368ce58b2591f54e52e212b2c2967b123f860e2366a1c6276f981"
+    sha256 catalina:       "6a8b7df8f17f928511a3a257895513f67f76c8916870c14499a0cecfe497d49a"
+    sha256 x86_64_linux:   "5fbb09fa511901a89990c5b87c4408723a7cb32e5766d3d55ddf8a73dde46ff2"
   end
 
   depends_on "cmake" => :build
@@ -37,15 +40,15 @@ class PerconaServer < Formula
 
   on_linux do
     depends_on "patchelf" => :build
-    depends_on "gcc"
+    depends_on "libtirpc"
     depends_on "readline"
 
     # Fix build with OpenLDAP 2.5+, which merged libldap_r into libldap
     patch :DATA
   end
 
-  conflicts_with "mariadb", "mysql",
-    because: "percona, mariadb, and mysql install the same binaries"
+  conflicts_with "mariadb", "mysql", because: "percona, mariadb, and mysql install the same binaries"
+  conflicts_with "percona-xtrabackup", because: "both install a `kmip.h`"
 
   # https://bugs.mysql.com/bug.php?id=86711
   # https://github.com/Homebrew/homebrew-core/pull/20538
@@ -61,15 +64,16 @@ class PerconaServer < Formula
 
   # https://github.com/percona/percona-server/blob/Percona-Server-#{version}/cmake/boost.cmake
   resource "boost" do
-    url "https://boostorg.jfrog.io/artifactory/main/release/1.73.0/source/boost_1_73_0.tar.bz2"
-    sha256 "4eb3b8d442b426dc35346235c8733b5ae35ba431690e38c6a8263dce9fcbb402"
+    url "https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.tar.bz2"
+    sha256 "fc9f85fc030e233142908241af7a846e60630aa7388de9a5fafb1f3a26840854"
   end
 
-  # Fix libfibo2 finding; fix unneeded copying of openssl@1.1 libs
-  # Remove in the next version (8.0.29)
+  # Patch out check for Homebrew `boost`.
+  # This should not be necessary when building inside `brew`.
+  # https://github.com/Homebrew/homebrew-test-bot/pull/820
   patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/3e668c9996eef41f7d7fa4e2d647f2b80da699e1/percona-server/8.0.28-19.diff"
-    sha256 "1410c30b8634c2bb011de08a45ea2b2c7edce13b846871a8447658c1c262ddbf"
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/030f7433e89376ffcff836bb68b3903ab90f9cdc/percona-server/boost-check.patch"
+    sha256 "3223f7eebd04b471de1c21104c46b2cdec3fe7b26e13535bdcd0d7b8fd341bde"
   end
 
   def install

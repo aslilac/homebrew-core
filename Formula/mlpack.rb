@@ -4,15 +4,17 @@ class Mlpack < Formula
   url "https://mlpack.org/files/mlpack-3.4.2.tar.gz"
   sha256 "9e5c4af5c276c86a0dcc553289f6fe7b1b340d61c1e59844b53da0debedbb171"
   license all_of: ["BSD-3-Clause", "MPL-2.0", "BSL-1.0", "MIT"]
-  revision 6
+  revision 8
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "f819a5f6a724607ea5bc22e057174099315224c3210f05418717ec02b3df3808"
-    sha256 cellar: :any,                 arm64_big_sur:  "1c6f8957881baf10be4fd9f49136cabdb9e6c11abb7f6ebd8f2e9edd7d4e6b2f"
-    sha256 cellar: :any,                 monterey:       "97fafd8126eaddf030ef0a133769811b28fa45b35893328549b958bc93b527b5"
-    sha256 cellar: :any,                 big_sur:        "36240afc0fa036df0c62b85eb20c8702acea453d34ddf0650de8ce29e0ef046b"
-    sha256 cellar: :any,                 catalina:       "3830ec71257a2e29c7dfc308751516ac74cf5f2cbd29d9acba6c1c7249d054d9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "557eec90ea9f626616de32918a7ef41cb8fcf55a86b97edee422c7a2a73a10ca"
+    sha256 cellar: :any,                 arm64_ventura:  "5293e16fd5e4a768188d45f985a9b259837cfdc7d306c5eae9f4511393f55a9e"
+    sha256 cellar: :any,                 arm64_monterey: "9054a85591ea7e35da63fcacaaf45fb703eab442bfc517c24395badb1500b2c0"
+    sha256 cellar: :any,                 arm64_big_sur:  "0a4363df84ff60bf4abdf5574e972b71f1d590ed2db3df8f8d65b8a1a0cc1f01"
+    sha256 cellar: :any,                 ventura:        "2d68ff0aeddcaf5e3e433f2cb9c73d8757359f818f9f3a0c17220e4b18d77e74"
+    sha256 cellar: :any,                 monterey:       "39d2ecbe49028f2e47aad8c937544a8ed6ea9a3b261cacef49ad8f6432d4e0e9"
+    sha256 cellar: :any,                 big_sur:        "3ce0402749604bbdebfbbcd71a5773b54cfbb2205b10a811a55176307394a4f0"
+    sha256 cellar: :any,                 catalina:       "d9f4ae02319dd3c35b8a04878d80cf351241d67ce1d731ffdcba0d945e8eaf7e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "01f0246ce3d77bf1ce07f6dbd325a9128d530346405a19391679a2f47e397107"
   end
 
   head do

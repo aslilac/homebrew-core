@@ -1,10 +1,9 @@
 class MariadbAT103 < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "https://downloads.mariadb.com/MariaDB/mariadb-10.3.32/source/mariadb-10.3.32.tar.gz"
-  sha256 "948d0cdf2f92c60cff4232af9d724e0a4bbeafbb35762fa429e7ba5c3811c064"
+  url "https://downloads.mariadb.com/MariaDB/mariadb-10.3.37/source/mariadb-10.3.37.tar.gz"
+  sha256 "a7b25f3534eff9dd847ca19f3adf70a975ee572929c16b1cf7ef8930bf782677"
   license "GPL-2.0-only"
-  revision 1
 
   # This uses a placeholder regex to satisfy the `PageMatch` strategy
   # requirement. In the future, this will be updated to use a `Json` strategy
@@ -24,12 +23,14 @@ class MariadbAT103 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "4fe2e22a22e98afc026952a27913152f59f4c95d7d571d13c80fbc401f3ce664"
-    sha256 arm64_big_sur:  "be5eb8a2b59949193c2e1cc9601f6f4f104f7288ace25a8545b907c75a4682e4"
-    sha256 monterey:       "3e6d688bac979a0ca040464fe2f4b14d7746d3c9f26ce7192e9a68cd6eaff7e5"
-    sha256 big_sur:        "eb183b81695405e7d6f63a2060edc26c0a12b45427ddf264fa7e96f599a43ae4"
-    sha256 catalina:       "bc981c9373e60ca485f209e0ce66a0d5437e4b721b96f6d3a373c9baf1cbf8c4"
-    sha256 x86_64_linux:   "f9f47f22c42fb043c3c2a8095cf372384e740f72252c76a3899a968489f29495"
+    sha256 arm64_ventura:  "efc3ce7d72aa8de26ea6d3e7c6a296241f8d5bf0462b2490d1f2d56d8db61ab5"
+    sha256 arm64_monterey: "e6d37228c97f2630cd6531addb196157d8dbfce8b70b161e20a22f3971b27c57"
+    sha256 arm64_big_sur:  "da3b62eb83c3b0ed826235d7211be5082606b67ade82f1adc758d96dc04f529d"
+    sha256 ventura:        "b168ab9f7180c11b73c33aa760eb14417c3597b51c884992408ca96059341c59"
+    sha256 monterey:       "7f4dc659979fd9064f5207bbc04e1ad28fd515a63ae19eef210fed88feaf5f7f"
+    sha256 big_sur:        "32cb96626b91388e1a603f907362c11c52f3387f6c5d567ad8f3c8571352a899"
+    sha256 catalina:       "96f1893cf241b553bf6efad47ab600e9e67a0030fc7532b01d09d072e568c073"
+    sha256 x86_64_linux:   "41cc88d26a59e4d9cac76719c2171da3167421cfa73232bb8fe69901632b0d59"
   end
 
   keg_only :versioned_formula
@@ -50,7 +51,6 @@ class MariadbAT103 < Formula
   uses_from_macos "zlib"
 
   on_linux do
-    depends_on "gcc"
     depends_on "linux-pam"
   end
 
@@ -89,6 +89,10 @@ class MariadbAT103 < Formula
       args << "-DWITH_NUMA=OFF"
       args << "-DENABLE_DTRACE=NO"
       args << "-DCONNECT_WITH_JDBC=OFF"
+    end
+
+    if OS.mac?
+      args << "-DWITH_READLINE=NO" # uses libedit on macOS
     end
 
     # disable TokuDB, which is currently not supported on macOS

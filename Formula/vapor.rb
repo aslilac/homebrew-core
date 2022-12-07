@@ -1,17 +1,20 @@
 class Vapor < Formula
   desc "Command-line tool for Vapor (Server-side Swift web framework)"
   homepage "https://vapor.codes"
-  url "https://github.com/vapor/toolbox/archive/18.5.1.tar.gz"
-  sha256 "65c0d8ccf17fcce050110de1706fd345b00ad74267b0f5945d4345e04fc11672"
+  url "https://github.com/vapor/toolbox/archive/18.6.0.tar.gz"
+  sha256 "fa41a5ef847fcb86ce9f2a9837adc9d80ba99839519d230115f2b00ff7a64156"
   license "MIT"
+  revision 1
   head "https://github.com/vapor/toolbox.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7a597647b1d2ea5a2d93a3c3bc6e2ea712934742bc7edb13eca1974a5e5a9882"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d2acb3bf8b7d15b0933afa89ca60a7425105eebaf74cf43022649a7031b219da"
-    sha256 cellar: :any_skip_relocation, monterey:       "cb34deecc5f3b363eb852cc9c362007343c041435db6825c3b3d936c0b6fc824"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5bbfd3cd885e0723bacf848b55dd2cb98e8c706bf0a1287463d19ea47e7a304b"
-    sha256                               x86_64_linux:   "b72618849d01ac80902ae0443c0c831fe129c57f60fb55cf129d293822f9bebc"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "fb51000f032c2cccc9173d690edf7f1cbfb547bc8dbba40161e2849ee50b035e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "299bc502a158f6254414065522c3bbcf452f2cf80a943a607651b53c7492cae8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4d0222d5620acd09dc93c48f0d0075e982f000ee73aea00048827f1d9c52caf8"
+    sha256 cellar: :any_skip_relocation, ventura:        "72cb4b5d035df04d2792d41a3334bcb6cbc1c417d6341cb2f601ada4bb1fe75d"
+    sha256 cellar: :any_skip_relocation, monterey:       "cdcf8e6879d872e58d28333a059e86dbd2d61ddbad066bcc73248473668a44a0"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a7fb64d81ca7c5d495bed3d621c3a2d403b19eac0cdb0c826f73eb8c7c443975"
+    sha256                               x86_64_linux:   "c387415dafc0eba81409dfd847786ec3c56284308f7289c0280b4b9cc8cc6b22"
   end
 
   depends_on xcode: "11.4"

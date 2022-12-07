@@ -1,17 +1,19 @@
 class Scalingo < Formula
   desc "CLI for working with Scalingo's PaaS"
   homepage "https://doc.scalingo.com/cli"
-  url "https://github.com/Scalingo/cli/archive/1.23.0.tar.gz"
-  sha256 "382e0272296595f0327146cb37c5b991c5e3387e26d0f0a4a01b9ab6df76befe"
+  url "https://github.com/Scalingo/cli/archive/1.26.1.tar.gz"
+  sha256 "cbd20f7eeb1cf10c855cc3ec52e419cbae3041677a3a703f09d08679dfa41da7"
   license "BSD-4-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "897840c13000d92579aa1066443ac0d7ec9df705b604b36a6b3b4eb0330c26af"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4631b61b8903c96cc9fcf58406860b1a7ed17b62d45002704beabadd6b8f97aa"
-    sha256 cellar: :any_skip_relocation, monterey:       "6ea9eb9933907793e3b79a9c35f8e9bfbee9f242e52f0ef9995e7dc26d871027"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f144e90ba794319911b2c5cd8cbeed709c9cd0e08a168806498b58458abf9435"
-    sha256 cellar: :any_skip_relocation, catalina:       "328deeec81ca75c0bb7a511bb97145b95ec41081ea2fd9043475b7ac0df554a2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "85bf751d4b347efac2d4dce7845fac6c5bcbbaee166c7be1fc6d2d244e6a76e5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ef29a3c472091c0ae87334f797ee7717e5af82bb94e0d3aab118fd91e3ccbe83"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "bc1d905b97896fadc15c35fd9b1919e870340447ccdba670123e70f1584d8d22"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d72435f55a6ed71af99dde9e6616984976316573649aca5eb4fa3486f567f258"
+    sha256 cellar: :any_skip_relocation, ventura:        "325a7f6395bdd216ddc9ad1530930f62d3d1e32806c5bc89e70fd1a5825acafb"
+    sha256 cellar: :any_skip_relocation, monterey:       "7b0b27bc708f76ff706f1e42b46b12938bb14ef3ef63694eaea209b5178f3214"
+    sha256 cellar: :any_skip_relocation, big_sur:        "16b83553c886a92f9b690c88e52a60cb2086baa21640421d417136bda7c3ded8"
+    sha256 cellar: :any_skip_relocation, catalina:       "ad58eee161d0eb5f9ab3e41084055b684e4213bf1b37be1470bfb39739c63bf8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e7cbceabf36784a4e0bb136519159d9ae1b2f14e6392c90d49ffd89b9d52010c"
   end
 
   depends_on "go" => :build

@@ -1,17 +1,19 @@
 class Miniserve < Formula
   desc "High performance static file server"
   homepage "https://github.com/svenstaro/miniserve"
-  url "https://github.com/svenstaro/miniserve/archive/v0.20.0.tar.gz"
-  sha256 "77aca0e3660564cc2b9a7f318c5d9065d471f3c5ab0a7d1b6850a5cb6e21904f"
+  url "https://github.com/svenstaro/miniserve/archive/v0.22.0.tar.gz"
+  sha256 "325f6cde391c468000b1bdcc8455ec2c6950b3c930029187671c536507b185ba"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a34ac31aaf97187206743f62568203519964ccae2fd95eb1d00e809b3fc0f0f4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "230cab894d3a5dcea0b2598514ac981e3b0c8fe90be0708a8faeca984a9ff0e7"
-    sha256 cellar: :any_skip_relocation, monterey:       "5a5922f7219e01c9a39632b44c39ee037bfbd929862810ed8177971baf25f1bf"
-    sha256 cellar: :any_skip_relocation, big_sur:        "7db8aa453665fa3ca270066243bb8369cbb10e7b64a4b7f6186f23ce6454b9eb"
-    sha256 cellar: :any_skip_relocation, catalina:       "70b35f0f705d938ee73f7e4916f87c6e4af15429341501ec6aa06ff0791e2a75"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8570bd163eadc3359a40e0fb0623cf98ca986ef7d53bb7c8747a992df6ef4630"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a9cb889ae23041f70db81cd6aa3075d9f99bb726875a595a634100d460df4702"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d8087c2fc1f3ea672221b31ff4ea5ccafa4189b4f38fbb924e7e48c6633ff611"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e175d06b9f5b09687bf3e4fb67c804ea82a97a90d8a45c5e6d11bb7113662f8f"
+    sha256 cellar: :any_skip_relocation, ventura:        "334cf68cd004ed5cf1bd92d8b04f401a6cab0f5860d813ebc85b42f24ed97279"
+    sha256 cellar: :any_skip_relocation, monterey:       "0ebc9b6c83339eec7ca4662e9128876efa1a5b45ae5303769549678c5903edf2"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5e283f0b5903041052a26ddc891c5f1ce0a47516c78ba47ac18f847563e4144f"
+    sha256 cellar: :any_skip_relocation, catalina:       "997bafd79ff359bae8980be257c34a3c264f5d9bb125fbe2d22ef897a6295487"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "46e86908e63b87be92bd74d8594dcffbfd5dc6837268852d319e790eca67e9b9"
   end
 
   depends_on "rust" => :build
@@ -19,12 +21,7 @@ class Miniserve < Formula
   def install
     system "cargo", "install", *std_cargo_args
 
-    bash_output = Utils.safe_popen_read("#{bin}/miniserve", "--print-completions", "bash")
-    (bash_completion/"miniserve").write bash_output
-    zsh_output = Utils.safe_popen_read("#{bin}/miniserve", "--print-completions", "zsh")
-    (zsh_completion/"_miniserve").write zsh_output
-    fish_output = Utils.safe_popen_read("#{bin}/miniserve", "--print-completions", "fish")
-    (fish_completion/"miniserve.fish").write fish_output
+    generate_completions_from_executable(bin/"miniserve", "--print-completions")
   end
 
   test do

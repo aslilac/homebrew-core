@@ -3,16 +3,17 @@ class Nftables < Formula
 
   desc "Netfilter tables userspace tools"
   homepage "https://netfilter.org/projects/nftables/"
-  url "https://www.netfilter.org/pub/nftables/nftables-1.0.4.tar.bz2"
-  sha256 "927fb1fea1f685a328c10cf791eb655d7e1ed49d310eea5cb3101dfd8d6cba35"
+  url "https://www.netfilter.org/pub/nftables/nftables-1.0.5.tar.bz2"
+  sha256 "8d1b4b18393af43698d10baa25d2b9b6397969beecac7816c35dd0714e4de50a"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 x86_64_linux: "e5e1457ca815910674479a1fdb4374b434daaae752bfd3ed576a489ceadb2f02"
+    rebuild 1
+    sha256 x86_64_linux: "f918a4fedb989593bb069fa5d1284ea4a60a93139ae533947860935dae5c9b12"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "python@3.10" => :build
+  depends_on "python@3.11" => :build
   depends_on "gmp"
   depends_on "jansson"
   depends_on "libedit"
@@ -24,7 +25,7 @@ class Nftables < Formula
   uses_from_macos "ncurses"
 
   def install
-    virtualenv_create(libexec, Formula["python@3.10"].bin/"python3")
+    virtualenv_create(libexec, Formula["python@3.11"].bin/"python3.11")
     system "./configure", *std_configure_args, "--disable-silent-rules",
       "--with-python-bin=#{libexec}/bin/python3"
     system "make", "install"

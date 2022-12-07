@@ -1,8 +1,8 @@
 class Freeciv < Formula
   desc "Free and Open Source empire-building strategy game"
   homepage "http://freeciv.org"
-  url "https://downloads.sourceforge.net/project/freeciv/Freeciv%203.0/3.0.2/freeciv-3.0.2.tar.xz"
-  sha256 "7407ea1a08267b1c5ee3439dc2db5c2d7b90ece7fcc3664ca2ad594435a57175"
+  url "https://downloads.sourceforge.net/project/freeciv/Freeciv%203.0/3.0.4/freeciv-3.0.4.tar.xz"
+  sha256 "d9a83fe9268e6b9d0fbe933f1f8b5c391b7e3ad72333d2d4e35cfb2e3ce9adb9"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,12 +11,14 @@ class Freeciv < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "07a23ce564fdd66cfc586ece9c48e74b9d10632edd2a2a8092fa93b7ce1927da"
-    sha256 arm64_big_sur:  "bd9fbf2db4db09448e7602c7de80a1c1f041bb3c143cbd6bdeefbb48c4109ea9"
-    sha256 monterey:       "d17179050529f4328de7850f4502d64df58eca76186a65890737935efec273b1"
-    sha256 big_sur:        "cd783c18e420cadf929b24f5f490c3ba3b27d6749909b86efd9e52dee39a8456"
-    sha256 catalina:       "9d1d460f941eb72d1ccd84a2eebaf0d0f124e1c6cce3c4c71a79061b06626f97"
-    sha256 x86_64_linux:   "31600bb2ec19192111e6e7917b38f5c63a9a6a5f30a3ba8e1ff03655d670f728"
+    sha256 arm64_ventura:  "e1c759f0a52bc1e257df771e19b21c4b6d0344e86c4c8865989d5a59716a05a3"
+    sha256 arm64_monterey: "d61fc79817b2c8b56cdea063ce11e9e90bb6f1ba88c412aff600369e81bd7d9b"
+    sha256 arm64_big_sur:  "58c8d87468b729f7faaf89233902f74f984c6bc9ae1580905fb6b37386133c22"
+    sha256 ventura:        "3dd05f6772b3e0563f3eadfdb4ae7a5b3cc6a40981b7707104fb5a500f037bb6"
+    sha256 monterey:       "0c9142560d9004315f4ae7dad894681e038dab5a4dff2a05dd14c63a2bb1830c"
+    sha256 big_sur:        "c9571c33afaf58c10542ef8cd1b996bf58992c50463b39291d89a6cf230f6431"
+    sha256 catalina:       "4c7be3976d09319dcbefb794fc574d427c2f370de0d84a57a7657ab20dec97b4"
+    sha256 x86_64_linux:   "e778ee2ab8f1aca3ff12845c5f71fa69e107f99c87561ddc3b1eb7dc6dbb80d5"
   end
 
   head do
@@ -43,6 +45,7 @@ class Freeciv < Formula
   depends_on "readline"
   depends_on "sdl2"
   depends_on "sdl2_mixer"
+  depends_on "sqlite" # try to change to uses_from_macos after python is not a dependency
 
   uses_from_macos "bzip2"
   uses_from_macos "curl"

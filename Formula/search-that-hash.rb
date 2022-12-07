@@ -10,16 +10,19 @@ class SearchThatHash < Formula
   head "https://github.com/HashPals/Search-That-Hash.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "46b1b6a51165c5c82e605c2e2bedbabecec15c058831bf497a1ff509b3bc78dd"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dac39add32bf83a3a3cb6c83447137ef8dfb4d2934aa87a397c26eb7c0548b2a"
-    sha256 cellar: :any_skip_relocation, monterey:       "ff167db1e8612206b5e5e804f9b294995da3c7763082b5f363866c20828dde44"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2a9d81d0500a9a18db128b4c1f152ebadd12a93aa9807f10ecdceb81fd802ff8"
-    sha256 cellar: :any_skip_relocation, catalina:       "3e07893fddb549c451fe537ed2dbed00a3acca6eb9aa40238c366bd2713526fe"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b253b4965cd886fb8af3adac304ebf651b1c403af27404ece1c6ae78113ce880"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d84ac4e3ab6115c4a8484cf8d632586a0ec6dcc7be463b50458530239f3ef805"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "9d3e2a70f922e14e1cf44a6d0e51b1675223d425b950cb8ff9dd4a044f44d857"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c3a295b246a955d4e75837b8a8ad34b5c9d0c5a1d488a1dfc43a7b75078f571e"
+    sha256 cellar: :any_skip_relocation, ventura:        "2f5affb96ab4d31bc4463bab9319e3a20a63440878c2de81614fa7994f140057"
+    sha256 cellar: :any_skip_relocation, monterey:       "b7c49fc78e71fedd39937cd44ccbcefe2472392ee5f0b4568dccd37f2ced785f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "3b4817beef5532aaad6b8dac4bcc6b3821435f3056897966a8bd0d1f949be5d5"
+    sha256 cellar: :any_skip_relocation, catalina:       "808111c76e4c796dc625ff86d19fcddecfd487e5c7158954cac87ba72869a633"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "edeb59fd46067f852b6a88651d957947225d928e2184e8299f2418cfaa1383bd"
   end
 
-  depends_on "poetry" => :build
-  depends_on "python@3.10"
+  depends_on "python-typing-extensions"
+  depends_on "python@3.11"
 
   resource "appdirs" do
     url "https://files.pythonhosted.org/packages/d7/d8/05696357e0311f5b5c316d7b95f46c669dd9c15aaeecbb48c7d0aeb88c40/appdirs-1.4.4.tar.gz"
@@ -27,13 +30,13 @@ class SearchThatHash < Formula
   end
 
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/6c/ae/d26450834f0acc9e3d1f74508da6df1551ceab6c2ce0766a593362d6d57f/certifi-2021.10.8.tar.gz"
-    sha256 "78884e7c1d4b00ce3cea67b44566851c4343c120abd683433ce934a68ea58872"
+    url "https://files.pythonhosted.org/packages/cb/a4/7de7cd59e429bd0ee6521ba58a75adaec136d32f91a761b28a11d8088d44/certifi-2022.9.24.tar.gz"
+    sha256 "0d9c601124e5a6ba9712dbc60d9c53c21e34f5f641fe83002317394311bdce14"
   end
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/56/31/7bcaf657fafb3c6db8c787a865434290b726653c912085fbd371e9b92e1c/charset-normalizer-2.0.12.tar.gz"
-    sha256 "2857e29ff0d34db842cd7ca3230549d1a697f96ee6d3fb071cfa6c7393832597"
+    url "https://files.pythonhosted.org/packages/a1/34/44964211e5410b051e4b8d2869c470ae8a68ae274953b1c7de6d98bbcf94/charset-normalizer-2.1.1.tar.gz"
+    sha256 "5a3d016c7c547f69d6f81fb0db9449ce888b418b5b9952cc5e6e66843e9dd845"
   end
 
   resource "click" do
@@ -42,13 +45,13 @@ class SearchThatHash < Formula
   end
 
   resource "cloudscraper" do
-    url "https://files.pythonhosted.org/packages/55/96/993d645d27225e364b6305289c379662ed6c287b3a389f9dad88f4c41386/cloudscraper-1.2.60.tar.gz"
-    sha256 "0d3413b2fff9f7cf79513b0c9aac58b527c5a2c5163d1c7cc0c4f8cca1d0f4e7"
+    url "https://files.pythonhosted.org/packages/b7/88/87b297aa84513b836c65518115bae1aad235fd1660b2f6f8c1284b711b0f/cloudscraper-1.2.65.tar.gz"
+    sha256 "bf01f9b1203dac5ae714ee3322f8e5a185d23562b9567d6b3833bbe2f3d6bc41"
   end
 
   resource "colorama" do
-    url "https://files.pythonhosted.org/packages/1f/bb/5d3246097ab77fa083a61bd8d3d527b7ae063c7d8e8671b1cf8c4ec10cbe/colorama-0.4.4.tar.gz"
-    sha256 "5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"
+    url "https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz"
+    sha256 "08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"
   end
 
   resource "coloredlogs" do
@@ -67,8 +70,8 @@ class SearchThatHash < Formula
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/62/08/e3fc7c8161090f742f504f40b1bccbfc544d4a4e09eb774bf40aafce5436/idna-3.3.tar.gz"
-    sha256 "9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d"
+    url "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz"
+    sha256 "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
   end
 
   resource "loguru" do
@@ -82,8 +85,8 @@ class SearchThatHash < Formula
   end
 
   resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/59/0f/eb10576eb73b5857bc22610cdfc59e424ced4004fe7132c8f2af2cc168d3/Pygments-2.12.0.tar.gz"
-    sha256 "5eb116118f9612ff1ee89ac96437bb6b49e8f04d8a13b514ba26f620208e26eb"
+    url "https://files.pythonhosted.org/packages/e0/ef/5905cd3642f2337d44143529c941cc3a02e5af16f0f65f81cbef7af452bb/Pygments-2.13.0.tar.gz"
+    sha256 "56a8508ae95f98e2b9bdf93a6be5ae3f7d8af858b43e02c5a2ff083726be40c1"
   end
 
   resource "pyparsing" do
@@ -92,13 +95,13 @@ class SearchThatHash < Formula
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/60/f3/26ff3767f099b73e0efa138a9998da67890793bfa475d8278f84a30fec77/requests-2.27.1.tar.gz"
-    sha256 "68d7c56fd5a8999887728ef304a6d12edc7be74f1cfa47714fc8b414525c9a61"
+    url "https://files.pythonhosted.org/packages/a5/61/a867851fd5ab77277495a8709ddda0861b28163c4613b011bc00228cc724/requests-2.28.1.tar.gz"
+    sha256 "7c5599b102feddaa661c826c56ab4fee28bfd17f5abca1ebbe3e7f19d7c97983"
   end
 
   resource "requests-toolbelt" do
-    url "https://files.pythonhosted.org/packages/28/30/7bf7e5071081f761766d46820e52f4b16c8a08fef02d2eb4682ca7534310/requests-toolbelt-0.9.1.tar.gz"
-    sha256 "968089d4584ad4ad7c171454f0a5c6dac23971e9472521ea3b6d49d610aa6fc0"
+    url "https://files.pythonhosted.org/packages/0c/4c/07f01c6ac44f7784fa399137fbc8d0cdc1b5d35304e8c0f278ad82105b58/requests-toolbelt-0.10.1.tar.gz"
+    sha256 "62e09f7ff5ccbda92772a29f394a49c3ad6cb181d568b1337626b2abb628a63d"
   end
 
   resource "rich" do
@@ -111,28 +114,24 @@ class SearchThatHash < Formula
     sha256 "b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"
   end
 
-  resource "typing-extensions" do
-    url "https://files.pythonhosted.org/packages/ed/12/c5079a15cf5c01d7f4252b473b00f7e68ee711be605b9f001528f0298b98/typing_extensions-3.10.0.2.tar.gz"
-    sha256 "49f75d16ff11f1cd258e1b988ccff82a3ca5570217d7ad8c5f48205dd99a677e"
+  resource "urllib3" do
+    url "https://files.pythonhosted.org/packages/b2/56/d87d6d3c4121c0bcec116919350ca05dc3afd2eeb7dc88d07e8083f8ea94/urllib3-1.26.12.tar.gz"
+    sha256 "3fa96cf423e6987997fc326ae8df396db2a8b7c667747d47ddd8ecba91f4a74e"
   end
 
-  resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/1b/a5/4eab74853625505725cefdf168f48661b2cd04e7843ab836f3f63abf81da/urllib3-1.26.9.tar.gz"
-    sha256 "aabaf16477806a5e1dd19aa41f8c2b7950dd3c746362d7e3223dbe6de6ac448e"
+  def python3
+    "python3.11"
   end
 
   def install
-    venv = virtualenv_create(libexec, "python3")
+    # Switch build-system to poetry-core to avoid rust dependency on Linux.
+    # Remove when merged/released: https://github.com/HashPals/Search-That-Hash/pull/184
+    inreplace "pyproject.toml", 'requires = ["poetry>=0.12"]', 'requires = ["poetry-core>=1.0"]'
+    inreplace "pyproject.toml", 'build-backend = "poetry.masonry.api"', 'build-backend = "poetry.core.masonry.api"'
 
-    resources.each do |r|
-      venv.pip_install r
-    end
+    virtualenv_install_with_resources
 
-    # Install search-that-hash using brewed poetry to avoid build dependency on Rust.
-    system Formula["poetry"].opt_bin/"poetry", "build", "--format", "wheel", "--verbose", "--no-interaction"
-    venv.pip_install_and_link Dir["dist/search_that_hash-*.whl"].first
-
-    site_packages = Language::Python.site_packages("python3")
+    site_packages = Language::Python.site_packages(python3)
     pth_contents = "import site; site.addsitedir('#{libexec/site_packages}')\n"
     (prefix/site_packages/"homebrew-search_that_hash.pth").write pth_contents
   end
@@ -143,6 +142,6 @@ class SearchThatHash < Formula
     assert_match "#{hash}\n", output
     assert_match "Text : password\nType : MD5\n", output
 
-    system Formula["python@3.10"].opt_bin/"python3", "-c", "from search_that_hash import api"
+    system python3, "-c", "from search_that_hash import api"
   end
 end

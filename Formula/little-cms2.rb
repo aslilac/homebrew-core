@@ -3,8 +3,8 @@ class LittleCms2 < Formula
   homepage "https://www.littlecms.com/"
   # Ensure release is announced at https://www.littlecms.com/categories/releases/
   # (or https://www.littlecms.com/blog/)
-  url "https://downloads.sourceforge.net/project/lcms/lcms/2.13/lcms2-2.13.1.tar.gz"
-  sha256 "d473e796e7b27c5af01bd6d1552d42b45b43457e7182ce9903f38bb748203b88"
+  url "https://downloads.sourceforge.net/project/lcms/lcms/2.14/lcms2-2.14.tar.gz"
+  sha256 "28474ea6f6591c4d4cee972123587001a4e6e353412a41b3e9e82219818d5740"
   license "MIT"
   version_scheme 1
 
@@ -18,21 +18,21 @@ class LittleCms2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "0fc9bdf0e245b210e0260f2a641dc88b1b1b5c1004eeadaafb9536eb21a347ab"
-    sha256 cellar: :any,                 arm64_big_sur:  "e78f36abce8a417db16755c5dbbdf8817e14861ea92bd029bb36e424a8563f52"
-    sha256 cellar: :any,                 monterey:       "0c50589e60d1fdc8e8ae52550c1ed0e9bbc68f77d105fa0180192d517cc5a85a"
-    sha256 cellar: :any,                 big_sur:        "7fbbf54484b962a2b72104db3f425587acf88666c0dd0753b00eb104bce1a2cc"
-    sha256 cellar: :any,                 catalina:       "152469fd79f4dde476f916be31fe0657656f298512201e6eb8be9f8dd9016c7a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "021649a443c169b8b18dd404f99d367ef79e5a6f650d8912b552a1b887e85ffe"
+    sha256 cellar: :any,                 arm64_ventura:  "f65e0095a8a82a803ac26c5bbd5197032b8e744cc6f6361d992ee40d68174f1e"
+    sha256 cellar: :any,                 arm64_monterey: "ae03cf730b8472ba74ccf339e64c2275b3b1558bee4d43f87d13bb8ddf15bcfc"
+    sha256 cellar: :any,                 arm64_big_sur:  "84b9a2b8c35fed041f23b907506aae85e501472ef55f7ef114756eb1d06524f9"
+    sha256 cellar: :any,                 ventura:        "1a90d971326c5f82f14d2b758d6bd7d8c28ebe513eac39b12a96e5df57ce12e0"
+    sha256 cellar: :any,                 monterey:       "57a938e19b097c8b0b7da9e8969678ec5f76c6332ad0f5122dce4a5558a93817"
+    sha256 cellar: :any,                 big_sur:        "53fb3147f52eca75b7954795c521e3ca40aaccd542cfaae7befc3a1d143b3cc8"
+    sha256 cellar: :any,                 catalina:       "2c3da48dad601fc033cd0d2ac8235ea6b958643ffc9bc95260bf2b356c9af668"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "50d9004057cd982330e2817ba715615660c07ef4bedb0282d82b96eb633b0ab4"
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libtiff"
 
   def install
-    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
-
-    system "./configure", *args
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 

@@ -1,18 +1,20 @@
 class CmarkGfm < Formula
   desc "C implementation of GitHub Flavored Markdown"
   homepage "https://github.com/github/cmark-gfm"
-  url "https://github.com/github/cmark-gfm/archive/0.29.0.gfm.4.tar.gz"
-  version "0.29.0.gfm.4"
-  sha256 "1be0d2c703b87cfbf51f91336db04039756e118c39398a392b9a3cca1b7d4ead"
+  url "https://github.com/github/cmark-gfm/archive/0.29.0.gfm.6.tar.gz"
+  version "0.29.0.gfm.6"
+  sha256 "b17d86164c0822b5db3818780b44cb130ff30e9c6ec6a64f199b6d142684dba0"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "3fce983843324792b1a4df8be5b242fc0cee23200e7015141bf12ef36ca5f2a9"
-    sha256 cellar: :any,                 arm64_big_sur:  "ddf818d97cc545f1c13b7613109f45786a3c2b653b2b148b36ecb40fb48af04e"
-    sha256 cellar: :any,                 monterey:       "dc4f61c2d6e50fc750f3b82404bda9bc4ce9f47f6415722b78dc75cf8216b77d"
-    sha256 cellar: :any,                 big_sur:        "6f342b5088afeeeee23b0ea4fed9bc0ef4f46ad5532985fe93a2c131c37c9d2c"
-    sha256 cellar: :any,                 catalina:       "8c99f03ce18b3c4fdc9e836e8c3fc1054883c9fd7fd4f98be1e87d2b09a86c42"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f9c19ca94d92227351f56497a01faa27f20a30cdbe04a8c8636f6d55da0a044e"
+    sha256 cellar: :any,                 arm64_ventura:  "425e781e4c130b392981dcc7d8a76f195bdd470200129bc9533d99279e4ed976"
+    sha256 cellar: :any,                 arm64_monterey: "12f770cb258f15d387b9d5aceae76a8a5f522e7a2f4d890216e8e1acb60a89dd"
+    sha256 cellar: :any,                 arm64_big_sur:  "39d8ef73d295484a155cba0ab7377e15345ee5db0cccb17e66e51cbdaf3d478b"
+    sha256 cellar: :any,                 ventura:        "9bc6047a13bfdf6be957c5633518073f44801be9934244efbb0ce6dcfeed5b2e"
+    sha256 cellar: :any,                 monterey:       "50c4ba44095b7d469ac4d80d65c6bb48e102fd464fa9b6dfdffd731997790468"
+    sha256 cellar: :any,                 big_sur:        "b71dfdc2ccea9de10faa13a81842a545f9731f25a9bb4a7b514abfbda996b441"
+    sha256 cellar: :any,                 catalina:       "344608ef10f9d5666ce379e83ae4a8d7aee632b49a99219e868b469a7096ec01"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5371a79b5545784be37bc2677d5d29abdad5df126d30a4f5942a13467cf5fae5"
   end
 
   depends_on "cmake" => :build

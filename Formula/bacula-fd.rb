@@ -1,25 +1,28 @@
 class BaculaFd < Formula
   desc "Network backup solution"
   homepage "https://www.bacula.org/"
-  url "https://downloads.sourceforge.net/project/bacula/bacula/11.0.6/bacula-11.0.6.tar.gz"
-  sha256 "0195a08bcd4f578ae4a9ce0d91f7f86731c634d56b810534722d721b2a9eecb7"
+  url "https://downloads.sourceforge.net/project/bacula/bacula/13.0.1/bacula-13.0.1.tar.gz"
+  sha256 "d63848d695ac15c1ccfc117892753314bcb9232a852c40e32cca88c0e918978a"
+  license "AGPL-3.0-only" => { with: "openvpn-openssl-exception" }
 
   bottle do
-    sha256                               arm64_monterey: "9e4bd50607f95bd6d674e8c735dba12e2ad0764496845c89823461d8116b5c65"
-    sha256                               arm64_big_sur:  "f063999629535e0fd70ebd57b58f6b79e4119741b734d072ce509b1943d2bbe1"
-    sha256                               monterey:       "46b2043db486c8e8821b342e7892305634f3be0c320cd78e0240fd98cd4c5060"
-    sha256                               big_sur:        "513208f4394d97cf93cb235f7cf53528ff326f687ae749cb83836b7a8844a888"
-    sha256                               catalina:       "2c24e7d729ebea46a6a706b20add5274914ef21d43051613c391eec791768ee6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "85685ff002be62bdc15d1a10975086a8abc4b587abe199d0078c605d71501a58"
+    rebuild 1
+    sha256                               arm64_ventura:  "42e79cb194d0d3891a4694d50531bc14e95468980dc4ccafb74a53876b310361"
+    sha256                               arm64_monterey: "0ff0297669fece22344c9d26a49137112d941c8fe6d6821c6d26b81114d1f9e9"
+    sha256                               arm64_big_sur:  "3572aa477e228c9c27b0c408d5fd0201f81c97983846551232c470903b2159bd"
+    sha256                               ventura:        "f00e354684d8aa9d8491d152fac327fa898a0f6fbd912efeed316756736fcac4"
+    sha256                               monterey:       "cb1a1ef69ef2ef0053d2f8ca92279ad0bcd5458cdbe8077bf3acd3c4858dd948"
+    sha256                               big_sur:        "3f8d86143bba66c4e2e41ae275353e843ba8d4934473a1fed73f09609eb37519"
+    sha256                               catalina:       "c11e6a5e698b06bdfe5e02e825c6bc5ae6e6c8a0a5ff1a8605510ba5b3ad7fb7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "df5b1fa70eca4c5cfb903a7a77ba3d29f1b0097cfc3fdcc4fa0096090ad28421"
   end
 
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
   depends_on "readline"
 
   uses_from_macos "zlib"
 
-  conflicts_with "bareos-client",
-    because: "both install a `bconsole` executable"
+  conflicts_with "bareos-client", because: "both install a `bconsole` executable"
 
   # Fix -flat_namespace being used on Big Sur and later.
   patch do

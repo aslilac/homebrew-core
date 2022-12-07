@@ -1,18 +1,19 @@
 class Wavpack < Formula
   desc "Hybrid lossless audio compression"
   homepage "https://www.wavpack.com/"
-  url "https://www.wavpack.com/wavpack-5.4.0.tar.bz2"
-  sha256 "0716a6dcf9a72d61005e1b09bbbd61aaf49837cb4e4a351992a6daed16cac034"
+  url "https://www.wavpack.com/wavpack-5.6.0.tar.bz2"
+  sha256 "8cbfa15927d29bcf953db35c0cfca7424344ff43ebe4083daf161577fb839cc1"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "6648965ef20e4dc6d115aa12ab7b627711b6a4ab8ac8555a87249e11594a423a"
-    sha256 cellar: :any,                 arm64_big_sur:  "3e51f2f593fffc58cd550236d6a9711900841d388d6ac7833c09f272270d5156"
-    sha256 cellar: :any,                 monterey:       "1de517ac8c52b75c8928a9b3f1ce325acd9e4aecff3a21aed26e11d79be7352f"
-    sha256 cellar: :any,                 big_sur:        "711535e6329af607e974ee9e3e957fd82b056af39e95a78226bd9e8f9a0025dd"
-    sha256 cellar: :any,                 catalina:       "29360357a18df2827e8acb41fdd874495b62f431deb230c96b8d5dcca5f6d316"
-    sha256 cellar: :any,                 mojave:         "89815dc5f1b4af0d647d2b1d3ad484ddce39208958bb315793240aa7be0c4565"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c6258f61ddd3478cbbeffc8cd939dd65222d209214a1f291859f2c00108039e3"
+    sha256 cellar: :any,                 arm64_ventura:  "6b5d5e7de0c7e1d77a4594c8d2ee9ea57253926261875279cec5d57fe3d7f561"
+    sha256 cellar: :any,                 arm64_monterey: "7b6c68f56f22027dcd9b5355b5f0bb8036b97a24a767732cb921573ea5f0424b"
+    sha256 cellar: :any,                 arm64_big_sur:  "31f0462f8aa49dea696e2c3fd2de063f683e6dea931cecce0f6ee85a6affe031"
+    sha256 cellar: :any,                 ventura:        "1c2d9b68703a6da68805c808f96e318e7a760e31f25d47d723c1dd8dfbc268c3"
+    sha256 cellar: :any,                 monterey:       "3c22e00ccb4c182fa6aef5a91d5a6f9914e657e00a567bb7709cd43d92598db2"
+    sha256 cellar: :any,                 big_sur:        "919c8c02f44926effa043cedf4252dd79c475f07b51cc6a7f656e8f7debc41b3"
+    sha256 cellar: :any,                 catalina:       "77d5572af643eaa5c4dfab561427887701af875b865bae2856ea361e5e67da58"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ac5f47e688c698f7bad7d92733f4dde6444dedc958f8535ff7b290df7391b5f7"
   end
 
   head do

@@ -3,8 +3,8 @@ class Mupen64plus < Formula
   homepage "https://www.mupen64plus.org/"
   url "https://github.com/mupen64plus/mupen64plus-core/releases/download/2.5/mupen64plus-bundle-src-2.5.tar.gz"
   sha256 "9c75b9d826f2d24666175f723a97369b3a6ee159b307f7cc876bbb4facdbba66"
-  license "GPL-2.0"
-  revision 2
+  license "GPL-2.0-or-later"
+  revision 3
 
   livecheck do
     url :stable
@@ -12,13 +12,15 @@ class Mupen64plus < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 monterey:     "d18db51b4478969eb325d16f8ee9d6c1f0cfa7f624fb9832a9dff2ad46c1c321"
-    sha256 cellar: :any,                 big_sur:      "9cef121fd3742da598d85390381f2174ef81e4e1468fb7c7c8b6f546a434c7ef"
-    sha256 cellar: :any,                 catalina:     "c573060a4413af37c1d742c385a1f9b7ab818cbed975d0a341b9f76626ee4a0a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "ce0fc6df5eb628593be7f19c63558f2af77f746f4dbc0211137040d639cc4c88"
+    sha256 cellar: :any,                 ventura:      "b8ea3824da04307420df3869d8d11d7658335f4c9543d06472fc764dc779568c"
+    sha256 cellar: :any,                 monterey:     "2eb73488a405767005c7bfa38827477a3af3750f6a0b89ecdf83426c0c5569bf"
+    sha256 cellar: :any,                 big_sur:      "609e68da8f0f86b81330a41b2fd8e8b38b3c1ac6e3523137ebf7b8b2036bdc70"
+    sha256 cellar: :any,                 catalina:     "f12ab0580cb949f04b44fb14d9607b1fd6dfe707b1eeec67e7c6429a49f48115"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "84ce051c633e46df34386a95ac16d6f7ebfd732b3d91f545898b611ca6969e97"
   end
 
   depends_on "pkg-config" => :build
+  depends_on arch: :x86_64
   depends_on "boost"
   depends_on "freetype"
   depends_on "libpng"
@@ -45,6 +47,11 @@ class Mupen64plus < Formula
     # Remove in next version
     inreplace "source/mupen64plus-video-glide64mk2/src/Glide64/3dmath.cpp",
               "__builtin_ia32_storeups", "_mm_storeu_ps"
+
+    if OS.linux?
+      ENV.append "CFLAGS", "-fcommon"
+      ENV.append "CFLAGS", "-fpie"
+    end
 
     args = ["install", "PREFIX=#{prefix}"]
     args << if OS.mac?
@@ -78,7 +85,7 @@ class Mupen64plus < Formula
     end
 
     cd "source/mupen64plus-ui-console/projects/unix" do
-      system "make", *args
+      system "make", *args, "PIE=1"
     end
   end
 

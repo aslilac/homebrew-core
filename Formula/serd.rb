@@ -1,8 +1,8 @@
 class Serd < Formula
   desc "C library for RDF syntax"
   homepage "https://drobilla.net/software/serd.html"
-  url "https://download.drobilla.net/serd-0.30.12.tar.bz2"
-  sha256 "9f9dab4125d88256c1f694b6638cbdbf84c15ce31003cd83cb32fb2192d3e866"
+  url "https://download.drobilla.net/serd-0.30.16.tar.xz"
+  sha256 "f50f486da519cdd8d03b20c9e42414e459133f5a244411d8e63caef8d9ac9146"
   license "ISC"
 
   livecheck do
@@ -11,21 +11,25 @@ class Serd < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "be91ffb01eaed7dab3bede32474483b0d26a780ad6565cbcc95cc7ba2a80ed18"
-    sha256 cellar: :any,                 arm64_big_sur:  "b4c08728be51e411bcf7cbff886aae172924b90113a1fcc59258b40a136c61c1"
-    sha256 cellar: :any,                 monterey:       "a4af1b773a7587ecca6af264818338371a85679c847c8e218e7d033adef89b8d"
-    sha256 cellar: :any,                 big_sur:        "45c665a31d0d956d94422ea25913d78e675165b43d738dfc3dc61e2863817b7f"
-    sha256 cellar: :any,                 catalina:       "78bf88ae66292c26c07192afb911cad5055d054ce4e8f306bed86a63e9eb1e1a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "feb299d5b99d16463f8104eb2b8df075982afd42ea57f4f3d13fdc23b37d0a71"
+    sha256 cellar: :any,                 arm64_ventura:  "ad22140ee5f263a0f0fac3b6bf9ba7166f1678cf2eb060fc1c2cdbec377c61bf"
+    sha256 cellar: :any,                 arm64_monterey: "e72e4a3fbf4a93915d462e5c2a9d942bc17154ec06a88b71e19c76d9e4fa3672"
+    sha256 cellar: :any,                 arm64_big_sur:  "ea9755059bd3d9d159c3768637b7fa65de0adf03c7ccf24c21e8e6894a43f62e"
+    sha256 cellar: :any,                 ventura:        "80a21b975737e83827f174ff56fac17eb92b621bbe2c1c504e8df10b7fa88259"
+    sha256 cellar: :any,                 monterey:       "dfb5856f93497bf7c137f96031a02d2e0f6a4d2bdc363d2d1e6e605f32c9e83e"
+    sha256 cellar: :any,                 big_sur:        "e7974773f196596a6f57b8200ec8678b8b52d2d8f4e053bd61bb57591ad2f2fe"
+    sha256 cellar: :any,                 catalina:       "5900f1d60c5f2aa684e996793fe1ba35fd1e21e3c11e8ac3959ff1cb8146bf61"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "67f216bd3fb20ef5b9cab23bb734fd25b111b4d66fcbca3801f48bc581a67753"
   end
 
-  depends_on "pkg-config" => :build
-  depends_on "python@3.10" => :build
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
 
   def install
-    system "python3", "./waf", "configure", "--prefix=#{prefix}"
-    system "python3", "./waf"
-    system "python3", "./waf", "install"
+    mkdir "build" do
+      system "meson", *std_meson_args, ".."
+      system "ninja", "-v"
+      system "ninja", "install", "-v"
+    end
   end
 
   test do

@@ -1,13 +1,13 @@
 class OpensslAT11 < Formula
   desc "Cryptography and SSL/TLS Toolkit"
   homepage "https://openssl.org/"
-  url "https://www.openssl.org/source/openssl-1.1.1p.tar.gz"
-  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.1.1p.tar.gz"
-  mirror "http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.1.1p.tar.gz"
-  mirror "https://www.openssl.org/source/old/1.1.1/openssl-1.1.1p.tar.gz"
-  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/old/1.1.1/openssl-1.1.1p.tar.gz"
-  mirror "http://www.mirrorservice.org/sites/ftp.openssl.org/source/old/1.1.1/openssl-1.1.1p.tar.gz"
-  sha256 "bf61b62aaa66c7c7639942a94de4c9ae8280c08f17d4eac2e44644d9fc8ace6f"
+  url "https://www.openssl.org/source/openssl-1.1.1s.tar.gz"
+  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.1.1s.tar.gz"
+  mirror "http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.1.1s.tar.gz"
+  mirror "https://www.openssl.org/source/old/1.1.1/openssl-1.1.1s.tar.gz"
+  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/old/1.1.1/openssl-1.1.1s.tar.gz"
+  mirror "http://www.mirrorservice.org/sites/ftp.openssl.org/source/old/1.1.1/openssl-1.1.1s.tar.gz"
+  sha256 "c5ac01e760ee6ff0dab61d6b2bbd30146724d063eb322180c6f18a6f74e4b6aa"
   license "OpenSSL"
   version_scheme 1
 
@@ -17,15 +17,20 @@ class OpensslAT11 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "47a1bfb4e090a4a21320e809be8744dccc43baf63f251d1501bf8976903bde7d"
-    sha256 arm64_big_sur:  "7d1f778b84d8bd5a0b1d9965855396ae33e80071a29182df1c13db8a6bfd2017"
-    sha256 monterey:       "27465827fc7075be1810380e4000cb6db1055661096750074b0b6658f68831cf"
-    sha256 big_sur:        "16cf7b90ab751d61af3994aaffd8ae64c78a23ef3dd964f97d01a28bb4edb1ce"
-    sha256 catalina:       "db766ee9b75d03ac5bc10a94472136a65b7447c523504a3f9c5e59c474dab8d9"
-    sha256 x86_64_linux:   "c150bde64fdf42a5aa61ff8d4c6a589f17b546ad38d080522d6e604294e069e9"
+    sha256 arm64_ventura:  "3a7812321f40490623859b1c31644c6f3ba1b76c1ca7f780b9413b912e1b1415"
+    sha256 arm64_monterey: "c11b17c8b78efa46dac2d213cd7a7b3fff75f6f5e6d2ef2248345cd4a900b1c6"
+    sha256 arm64_big_sur:  "0d75960c118c72e38800212985d5eb3bec31510c3b65c5f5c0e9cf1e33a0cdc8"
+    sha256 ventura:        "096c5678f17ded6e9e80b9d9d9352c5c398263bac3a8f6ca13dc270ad29372fc"
+    sha256 monterey:       "d915175bedb146e38d7a2c95e86888a60a5058a5cd21f835813d43d1372a29d9"
+    sha256 big_sur:        "5d05ea107240c4ed9dd06e166556063b8910773dddba5b96ccf09d405e6b6771"
+    sha256 catalina:       "210eed5ef3fccfca89ce309648606b1f10a8854a922b8a62ff0dbb23050b46b5"
+    sha256 x86_64_linux:   "b7c45d0cd6d99a60b1fe7511db1dd46bf2c52b2575dbf89ce195b8b078a34a42"
   end
 
   keg_only :shadowed_by_macos, "macOS provides LibreSSL"
+
+  # See: https://www.openssl.org/policies/releasestrat.html
+  deprecate! date: "2023-09-11", because: :unsupported
 
   depends_on "ca-certificates"
 

@@ -1,18 +1,19 @@
 class OhMyPosh < Formula
   desc "Prompt theme engine for any shell"
   homepage "https://ohmyposh.dev"
-  url "https://github.com/JanDeDobbeleer/oh-my-posh/archive/v8.11.2.tar.gz"
-  sha256 "2325e1ff5e00a180e75c3d52ce73e306f4955bf1471f4a9e7d4ac5f3fed7e842"
+  url "https://github.com/JanDeDobbeleer/oh-my-posh/archive/v12.25.2.tar.gz"
+  sha256 "af9585252e5497272ccc787450eec6ed3d0727f8fd71ef3d375c5cd730a73b84"
   license "MIT"
   head "https://github.com/JanDeDobbeleer/oh-my-posh.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2e2a809e83386a40c08b0bb9712c80eb76282f840e5493ed9d147481f8665b76"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a6d3cfac9ba6354476ed887b26a90109c47c072acef8601252f227211c0c5176"
-    sha256 cellar: :any_skip_relocation, monterey:       "a9200ab26485e6af1098e01e0119f61d95fd433e9b39f31271bd04962c3dba8e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f1ba7993d57e2b2fd8cd1af8da3ca1668d79fa2236963ea1038f2c4cf3df7c95"
-    sha256 cellar: :any_skip_relocation, catalina:       "a7ffe92e0908b1d5763f07792578964bf4430a48c66634319bc48d06bb8ea082"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e31f0122c465f141956fa7e1eb57300d05c02fae74801e813c9a6aff641ad812"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "8bb3e9af969d33e0566a41058112668ea7e99c438d6735fe725da78d741c0812"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "63b19819b8b6e1291ac1374284a0a780d2d7f1074b2f7c47011823ef851f794d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b370014800426b00f1ddbe7785360e708f95067826c934d3cb4195474ed165fb"
+    sha256 cellar: :any_skip_relocation, ventura:        "315b5a935aaf25b07fa16522984ee94257de1066637b99e2eb1ad3f2be6eb689"
+    sha256 cellar: :any_skip_relocation, monterey:       "3a35178ce39df19581abfcc5583c1fd5febff55eff84c74fe0d58484486f7a78"
+    sha256 cellar: :any_skip_relocation, big_sur:        "aa91b78319bcecba85a7be9281a1138253661e51a14fd4739e243d86765ff848"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "303b30e431b0ceda5e8dfbfc0017a8312312b3b5a17bcb813c216ea95693f09f"
   end
 
   depends_on "go" => :build

@@ -1,8 +1,8 @@
 class MongoCDriver < Formula
   desc "C driver for MongoDB"
   homepage "https://github.com/mongodb/mongo-c-driver"
-  url "https://github.com/mongodb/mongo-c-driver/releases/download/1.22.0/mongo-c-driver-1.22.0.tar.gz"
-  sha256 "272067f75e7e57c98f90a6f0c42500ef818b4b085539343676b6ce6831655eaf"
+  url "https://github.com/mongodb/mongo-c-driver/releases/download/1.23.1/mongo-c-driver-1.23.1.tar.gz"
+  sha256 "e1e4f59713b2e48dba1ed962bc0e52b00479b009a9ec4e5fbece61bda76a42df"
   license "Apache-2.0"
   head "https://github.com/mongodb/mongo-c-driver.git", branch: "master"
 
@@ -12,12 +12,14 @@ class MongoCDriver < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "20d09916e7109e6b255946b212f99efada06ff00b11bff578c7594fa12e13fb3"
-    sha256 cellar: :any,                 arm64_big_sur:  "b6f9a48b49d59a52ac7dfd12f823240fe5928bbe5ed7d385486d86ef144cb555"
-    sha256 cellar: :any,                 monterey:       "edde69554f45cfa4be3813d02f6d62f97747fb9d11f4052e203c1ae3d31e297d"
-    sha256 cellar: :any,                 big_sur:        "1dd353ef007719d826dcb26d17a16fbf01279bb6ee67a34d9c44358575183ec0"
-    sha256 cellar: :any,                 catalina:       "fdbbed172df855ee08a6d8d579a5d99081cee9dd7d6b843b21637b39ef6b5cd8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "34acfb2a109e11595de3afcc7f4d1fce41ef41f47ab7808ba9cab2a4d7f49e61"
+    sha256 cellar: :any,                 arm64_ventura:  "d482e5d152b02642206a720ee1e41692a96fa2a4c2e2d8abcc75e23832418dea"
+    sha256 cellar: :any,                 arm64_monterey: "6b6b0f30c0ce890524dc32bd9a85c7d1a4b8c56f4bc3fdcc9c2a901c66c92683"
+    sha256 cellar: :any,                 arm64_big_sur:  "ede7a8590fc48119ecb83aa51a7aed6f780872914e95159a20a04f160df60a35"
+    sha256 cellar: :any,                 ventura:        "d6e521550dbccada9e93e5e9b3ecb3b886072aa8d23a005ce33db4968904fe10"
+    sha256 cellar: :any,                 monterey:       "c0971506ffb902b1fb1099a0ed00b4d75f67df0c7333115c69295373bddcc073"
+    sha256 cellar: :any,                 big_sur:        "e97aa453a73f130a7eb8775e5bef8180ab5b9a46b794c47b1e8d440ba92d76e8"
+    sha256 cellar: :any,                 catalina:       "ea52a6972a2fb4004308f9a402c5336fb6fd581fb9c07eb9d6b2a2a8403dcb6f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "659e5cb00ad832dac422564d64257564383c32c40a8346c980170d0f8cd75a19"
   end
 
   depends_on "cmake" => :build

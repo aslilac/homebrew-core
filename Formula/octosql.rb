@@ -1,18 +1,20 @@
 class Octosql < Formula
   desc "SQL query tool to analyze data from different file formats and databases"
   homepage "https://github.com/cube2222/octosql/"
-  url "https://github.com/cube2222/octosql/archive/refs/tags/v0.8.0.tar.gz"
-  sha256 "f2d4ddb5fa4425fa4543f1ec03d1325c64cf4f39c613d927e97ff58244073b6a"
+  url "https://github.com/cube2222/octosql/archive/refs/tags/v0.12.0.tar.gz"
+  sha256 "046f31f1f8e4fc8dbc7c5e5769dae2a1dd249e7f96e61ef30ea1205921afa986"
   license "MPL-2.0"
   head "https://github.com/cube2222/octosql.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "edc95ebaaa7325aeb294feef1f3fe8aaf585dc8228f0a067cdb5b5c23ac78bcc"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f245d262645200e5ad0825dfdc2448d05436b5d68d16cba7805e0ff7b3b4fb0b"
-    sha256 cellar: :any_skip_relocation, monterey:       "2275264855241209c326b1aaf56b0a42ad3b33988233fddf33d6b107b1b4b6cc"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f0a0a7f9451475c56ed08607671318c910f047459d50f5881275bd54dee445d7"
-    sha256 cellar: :any_skip_relocation, catalina:       "f04b1b204be3f900c02efefa28ea6345ff2245db48bfcc26e4c4c539aefe755d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "253067363605f5d11f945f0e167a9547564b66176bbecca5052d6dd932e76d45"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "52b4c13b613637d66e7d0443efe0040ac90442d1d684f8e8884fe6ceb4f56c33"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6156175e4da8c8aadc75a8d0e0d58eae0c168f9980cdf885a0b2bfbd34c907c8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fa962c981b327d7bebf33b92131ef1862dac2276a3611e74ec16f36af0b4d358"
+    sha256 cellar: :any_skip_relocation, ventura:        "877a3cd39081445e58f956c706e46f9cfb0b273f19647b080587b6f4ba32bac5"
+    sha256 cellar: :any_skip_relocation, monterey:       "19811afa112521f3bb76d0af5906399e8305349b134cc6af2dacb89aa7f2a7e3"
+    sha256 cellar: :any_skip_relocation, big_sur:        "184450555f85574e9978f781ef488013a77a4a30d12360fa1d40e4859492e78e"
+    sha256 cellar: :any_skip_relocation, catalina:       "d8da82a4f2204f4a3ab90ab1b35b7e14bdf1d72c230de1cc0e27b2c7cf8b131b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c666326c70572fbc67ff37e07483baec324ef7c2afdbf6b274f477c2a4874bb5"
   end
 
   depends_on "go" => :build
@@ -21,14 +23,7 @@ class Octosql < Formula
     ldflags = "-s -w -X github.com/cube2222/octosql/cmd.VERSION=#{version}"
     system "go", "build", *std_go_args(ldflags: ldflags)
 
-    bash_output = Utils.safe_popen_read(bin/"octosql", "completion", "bash")
-    (bash_completion/"octosql").write bash_output
-
-    zsh_output = Utils.safe_popen_read(bin/"octosql", "completion", "zsh")
-    (zsh_completion/"_octosql").write zsh_output
-
-    fish_output = Utils.safe_popen_read(bin/"octosql", "completion", "fish")
-    (fish_completion/"octosql.fish").write fish_output
+    generate_completions_from_executable(bin/"octosql", "completion")
   end
 
   test do
@@ -41,13 +36,13 @@ class Octosql < Formula
     EOS
 
     expected = <<~EOS
-      +-------------+-------------+--------------------------+
-      | test.field1 | test.field2 |       test.field3        |
-      +-------------+-------------+--------------------------+
-      | 'value'     |          42 | { <null>, 'eulav',       |
-      |             |             | 'value' }                |
-      | 'value'     |          42 | { 'eulav', 24, <null> }  |
-      +-------------+-------------+--------------------------+
+      +---------+--------+--------------------------+
+      | field1  | field2 |          field3          |
+      +---------+--------+--------------------------+
+      | 'value' |     42 | { <null>, 'eulav',       |
+      |         |        | 'value' }                |
+      | 'value' |     42 | { 'eulav', 24, <null> }  |
+      +---------+--------+--------------------------+
     EOS
 
     assert_equal expected, shell_output("#{bin}/octosql \"select * from test.json\"")

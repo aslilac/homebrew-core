@@ -1,27 +1,28 @@
 class Yosys < Formula
   desc "Framework for Verilog RTL synthesis"
   homepage "https://yosyshq.net/yosys/"
-  url "https://github.com/YosysHQ/yosys/archive/yosys-0.19.tar.gz"
-  sha256 "d527fd88a9f7101c6f8e37889b14add0b6d2c74c2c611295f3813db4f397518f"
+  url "https://github.com/YosysHQ/yosys/archive/yosys-0.24.tar.gz"
+  sha256 "6a00b60e2d6bc8df0db1e66aa27af42a0694121cfcd6a3cf6f39c9329ed91263"
   license "ISC"
   head "https://github.com/YosysHQ/yosys.git", branch: "master"
 
   bottle do
-    sha256 arm64_monterey: "34d842e95d993376342a0f349161c4be681aff09b57852d78dcd9d2336efcc13"
-    sha256 arm64_big_sur:  "a78f3eb42563d9af6bf94fa442a68afce7e6b36d9efa2004be2874b45a11c313"
-    sha256 monterey:       "5c207f16b7420f96a63f1519ba0ce703b5c06c3e4cbe9bf8e10c319c12b45ffb"
-    sha256 big_sur:        "76b8d97761b0ead87e40aa515579b77f77af6f740d54ff7a393db7ef45e87dcd"
-    sha256 catalina:       "05e30f9466af45da7bd404bb464df40c2d7af5c66760119fbd5756fba7652bb7"
-    sha256 x86_64_linux:   "01249f327579d0c39ade5acf2a213cd3f71dcb417160214ab2abf5749d41fe9c"
+    sha256 arm64_ventura:  "5aa1a136f305bec4a615d1736b5a4ef29525f699bde225c1e910417742a08776"
+    sha256 arm64_monterey: "a670b84179740106078a3f9b03c7507502e90fec395329b8de010c5ede65e970"
+    sha256 arm64_big_sur:  "578eae4e30996cc1d4fb6d6d0b14ad591e5ea473cca276b97f3d8ae1e52fdd35"
+    sha256 ventura:        "b3997d7447691848f565c354eb3015ffb6c7ec85d4331d47bee65cb06e039e0b"
+    sha256 monterey:       "5efdba6e9a888c1595162e22ab947a02dadae0517d3cb439d343f5541a3e77ff"
+    sha256 big_sur:        "a3281fdd5f456b0fdad89edacfdc1182f83f69bda5b257fd642791be3ecf20c4"
+    sha256 x86_64_linux:   "b439cc7436847e45ba76af2d3b81da3d15ce5d06bc62f6ff701a56b7b5f84de9"
   end
 
   depends_on "bison" => :build
   depends_on "pkg-config" => :build
-  depends_on "libffi"
-  depends_on "python@3.10"
+  depends_on "python@3.11"
   depends_on "readline"
 
   uses_from_macos "flex"
+  uses_from_macos "libffi", since: :catalina
   uses_from_macos "tcl-tk"
 
   def install
@@ -29,6 +30,6 @@ class Yosys < Formula
   end
 
   test do
-    system "#{bin}/yosys", "-p", "hierarchy; proc; opt; techmap; opt;", "-o", "synth.v", "#{pkgshare}/adff2dff.v"
+    system bin/"yosys", "-p", "hierarchy; proc; opt; techmap; opt;", "-o", "synth.v", pkgshare/"adff2dff.v"
   end
 end

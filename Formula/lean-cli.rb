@@ -1,22 +1,23 @@
 class LeanCli < Formula
   desc "Command-line tool to develop and manage LeanCloud apps"
   homepage "https://github.com/leancloud/lean-cli"
-  url "https://github.com/leancloud/lean-cli/archive/v1.0.1.tar.gz"
-  sha256 "d1cd31c4942a1d321ce6c608973f32f513df892b1441930169bc825149f77e98"
+  url "https://github.com/leancloud/lean-cli/archive/v1.1.0.tar.gz"
+  sha256 "2453bd3c89d56c53dc995a2f6eae2161faec41955614601d2e028f95635b6313"
   license "Apache-2.0"
   head "https://github.com/leancloud/lean-cli.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "57f1d0bf072f1a5fbc4f45b97c08c5753d652dd9c5083c4e1b7d9878c0b8ec55"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6483cd942b61c2d5142a979f402ebdeb37287ed10f024aca744001ddd4582a14"
-    sha256 cellar: :any_skip_relocation, monterey:       "4af2cb885986eabd50dab8e2bfac7ad451336b0d220425c21074ad2982284576"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e22531f02ff7ae42d82791a233ea0a172d43f052b6fec06d5aa1a7a6c2caf4b3"
-    sha256 cellar: :any_skip_relocation, catalina:       "20c9d4b37d85edd9ef8f8b2207daa0035e28a13c7b30b6d1cd6ac48b4b0c99c5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3fd405e35b90734570b3fc0c53e6776a9ef0c99f6d7524b07d2718e815b9ae63"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b3f7c6fa12a9de98424bce49c809897cfa3c585cd9da0a873e960d7065728124"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5a59d6806979cfeb03dfb144a7dc1faffbc6ff240022f8da9861bdca66ae2650"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dc016fd06623d63e3a7ba4a517300526b9f43b1dd660b4b125d9b4ec5b7b95bd"
+    sha256 cellar: :any_skip_relocation, ventura:        "91152db2c2b4601cce89f336f7eddc1f872c0aad8678fe080fd7f0d7bbc00e1e"
+    sha256 cellar: :any_skip_relocation, monterey:       "44f0b9fb4047a2c4b4e8f8fd2ed1caa2217dba378697563fe18c83a4c7bdc3d3"
+    sha256 cellar: :any_skip_relocation, big_sur:        "700f97f1dafe246ded16a9c51331c50f85086d0c894e28d4cd68d7c58674a9c5"
+    sha256 cellar: :any_skip_relocation, catalina:       "a671ed40ef27195e163e264b02affad345ff67b048982c06c65bb904360711a7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f89fb965cf2378ddf47cbc3d83f12d09110c33565f760c8775ee9005b571d4ec"
   end
 
-  # Bump to 1.18 on the next release, if possible.
-  depends_on "go@1.17" => :build
+  depends_on "go" => :build
 
   def install
     build_from = build.head? ? "homebrew-head" : "homebrew"
@@ -30,6 +31,7 @@ class LeanCli < Formula
 
   test do
     assert_match "lean version #{version}", shell_output("#{bin}/lean --version")
-    assert_match "Invalid access token.", shell_output("#{bin}/lean login --region us-w1 --token foobar 2>&1", 1)
+    output = shell_output("#{bin}/lean login --region us-w1 --token foobar 2>&1", 1)
+    assert_match "[ERROR] User doesn't sign in.", output
   end
 end

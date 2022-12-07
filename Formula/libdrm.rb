@@ -1,8 +1,8 @@
 class Libdrm < Formula
   desc "Library for accessing the direct rendering manager"
   homepage "https://dri.freedesktop.org"
-  url "https://dri.freedesktop.org/libdrm/libdrm-2.4.111.tar.xz"
-  sha256 "1ad7164f77424de6f4ecba7c262bde196a214c6e19a6fbf497f0815f4d7ab2a9"
+  url "https://dri.freedesktop.org/libdrm/libdrm-2.4.114.tar.xz"
+  sha256 "3049cf843a47d12e5eeefbc3be3496d782fa09f42346bf0b7defe3d1e598d026"
   license "MIT"
 
   livecheck do
@@ -11,7 +11,7 @@ class Libdrm < Formula
   end
 
   bottle do
-    sha256 x86_64_linux: "05ee9e75b98f621137d084935189fabfc0cb411d53ec4793f97ce82fcd330024"
+    sha256 x86_64_linux: "f831178f945c86dd02df7a721a11aa1863513969c2156ea365e1dcf9ccb4760d"
   end
 
   depends_on "docutils" => :build
@@ -22,11 +22,9 @@ class Libdrm < Formula
   depends_on :linux
 
   def install
-    mkdir "build" do
-      system "meson", *std_meson_args, "-Dcairo-tests=false", ".."
-      system "ninja"
-      system "ninja", "install"
-    end
+    system "meson", "setup", "build", "-Dcairo-tests=disabled", "-Dvalgrind=disabled", *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
   end
 
   test do

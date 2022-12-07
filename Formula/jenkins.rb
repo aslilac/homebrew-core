@@ -1,8 +1,8 @@
 class Jenkins < Formula
   desc "Extendable open source continuous integration server"
   homepage "https://www.jenkins.io/"
-  url "https://get.jenkins.io/war/2.357/jenkins.war"
-  sha256 "77317608252ec4365e94a0e5494c242a97191e4110bb556eebe3583d09bac121"
+  url "https://get.jenkins.io/war/2.381/jenkins.war"
+  sha256 "62ca5dcecbf176452d94d4438488662e223ab9594dccb564f065c63832a47302"
   license "MIT"
 
   livecheck do
@@ -11,7 +11,7 @@ class Jenkins < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "1cfe407758b3ceea698ee918c6ff3b93c7922886a995dc4e3b9897fb2efee508"
+    sha256 cellar: :any_skip_relocation, all: "bd6c9fcac184063b047d870ecdee519a24c5b7e62e67ada13b5a4627cff903c6"
   end
 
   head do
@@ -19,17 +19,17 @@ class Jenkins < Formula
     depends_on "maven" => :build
   end
 
-  depends_on "openjdk@11"
+  depends_on "openjdk@17"
 
   def install
     if build.head?
       system "mvn", "clean", "install", "-pl", "war", "-am", "-DskipTests"
     else
-      system "#{Formula["openjdk@11"].opt_bin}/jar", "xvf", "jenkins.war"
+      system "#{Formula["openjdk@17"].opt_bin}/jar", "xvf", "jenkins.war"
     end
     libexec.install Dir["**/jenkins.war", "**/cli-#{version}.jar"]
-    bin.write_jar_script libexec/"jenkins.war", "jenkins", java_version: "11"
-    bin.write_jar_script libexec/"cli-#{version}.jar", "jenkins-cli", java_version: "11"
+    bin.write_jar_script libexec/"jenkins.war", "jenkins", java_version: "17"
+    bin.write_jar_script libexec/"cli-#{version}.jar", "jenkins-cli", java_version: "17"
 
     (var/"log/jenkins").mkpath
   end
@@ -41,8 +41,7 @@ class Jenkins < Formula
   end
 
   service do
-    run [Formula["openjdk@11"].opt_bin/"java", "-Dmail.smtp.starttls.enable=true", "-jar", opt_libexec/"jenkins.war",
-         "--httpListenAddress=127.0.0.1", "--httpPort=8080"]
+    run [opt_bin/"jenkins", "--httpListenAddress=127.0.0.1", "--httpPort=8080"]
     keep_alive true
     log_path var/"log/jenkins/output.log"
     error_log_path var/"log/jenkins/error.log"

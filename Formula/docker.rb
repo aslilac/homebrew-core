@@ -2,8 +2,8 @@ class Docker < Formula
   desc "Pack, ship and run any application as a lightweight container"
   homepage "https://www.docker.com/"
   url "https://github.com/docker/cli.git",
-      tag:      "v20.10.17",
-      revision: "100c70180fde3601def79a59cc3e996aa553c9b9"
+      tag:      "v20.10.21",
+      revision: "baeda1f82a10204ec5708d5fbba130ad76cfee49"
   license "Apache-2.0"
   head "https://github.com/docker/cli.git", branch: "master"
 
@@ -13,12 +13,14 @@ class Docker < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "59d72980cf778e7692c089e0fa5cb0574aaced632904691d86b31dcb925e73a8"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ee26d69f2b0809598012ecf8be99e47d0580561ae44ebaa62a27193b20b85958"
-    sha256 cellar: :any_skip_relocation, monterey:       "0f74d14c67d9a698638e63dfee9c8fd60fc8ea091f6652f8cc06a1b7f921ce59"
-    sha256 cellar: :any_skip_relocation, big_sur:        "fafe17064fb6d51f509c56954bb7c8c29963f750df06f81c572e520041cf00bc"
-    sha256 cellar: :any_skip_relocation, catalina:       "1c24ca42331c71645a531fcf7e94d2f129110cefcd23a240ee1d3b51b751a0c6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "700eb5ad46d661acd3f7539523451df9123728d1d3312f268e378d1827d847ea"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f935599f6d43f4216c9a233eee6ca1898355c46ae428a5303c6417a6fb10eed9"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a9f5089f113806e23b3f127ef50fbf2ea24e6bf13f512c34c5e1d1f1e756d03f"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "20f1415827772111f88619939ce53e0adec09b8e1234cb73e9d6d64f767da6c2"
+    sha256 cellar: :any_skip_relocation, ventura:        "98f22d3d055114e2af3e6e68c6891635a4220c40a5093e3d2f9f60bba26b90cb"
+    sha256 cellar: :any_skip_relocation, monterey:       "1564c197bb14711f8e79a44d42e50a61d8f0129b612cfb127e7cce4428dced19"
+    sha256 cellar: :any_skip_relocation, big_sur:        "23502a2f74f762a97814fa961d1634544ab6fc7bba766526b21e9404eae384e0"
+    sha256 cellar: :any_skip_relocation, catalina:       "4995f40ed2e34e381da74fd333b76d91ceb7a0d47cd6deebc56cee5f2b7425b1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8faecde8f3b1d82f905f846e07d9125bed51682701200b2cb87e44c7e23ceb99"
   end
 
   depends_on "go" => :build

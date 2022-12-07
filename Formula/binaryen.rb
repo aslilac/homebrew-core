@@ -1,38 +1,40 @@
 class Binaryen < Formula
   desc "Compiler infrastructure and toolchain library for WebAssembly"
   homepage "https://webassembly.org/"
-  url "https://github.com/WebAssembly/binaryen/archive/version_109.tar.gz"
-  sha256 "e250310db0ac480cc121c72757816346c946f6c33c788b369a742b690089856a"
+  url "https://github.com/WebAssembly/binaryen/archive/version_111.tar.gz"
+  sha256 "c518b1146713bc2406dd09a1a1b18f31a283f8ac1fe200efa38834dbd95a1997"
   license "Apache-2.0"
   head "https://github.com/WebAssembly/binaryen.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "af46ba9d11c1ca19483641276f8d6dd7c983fa4e4e0e27e833591034cd62a2cb"
-    sha256 cellar: :any,                 arm64_big_sur:  "08765a7a1de7e5233a47c7a54abd63ec64b2f28f179d2390506d764443dc32fd"
-    sha256 cellar: :any,                 monterey:       "3e8cd5e87750296858387afdac008452ce32f9efe449915b4e96c9e46f2949ee"
-    sha256 cellar: :any,                 big_sur:        "c8060eff6afec83c9636a79329b67a67f5bd259e2a999b7e22408a82604a4b2c"
-    sha256 cellar: :any,                 catalina:       "f2afc26acfb849e9843586e61087504736ebe5b444289e67b49bc60fff7dcbf7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b9b1b9f7882c1048b6a61fc9736b4ac05201198a12c3aa84b836ec8371d58d54"
+    sha256 cellar: :any,                 arm64_ventura:  "45807d07e3d16808a911aa0f944c9c8c7a9b0e53990e84f9e37891ea3683b975"
+    sha256 cellar: :any,                 arm64_monterey: "4208e154c9082621e5062866398cdb0ef47eb53bcc73baf224fc48abdbf998d1"
+    sha256 cellar: :any,                 arm64_big_sur:  "278f526822dd520d16ada1755cee0b99720b92f8f954c54d20c208f0153e88d4"
+    sha256 cellar: :any,                 ventura:        "16d90b3aa9fa901835def9892268d4ed827a581a777740de4c78c899d95f47db"
+    sha256 cellar: :any,                 monterey:       "ef5bfee117bf529d6b2825387f426074cf0e1a17b89eb5d80ca57c59a63d0ba8"
+    sha256 cellar: :any,                 big_sur:        "01c7c7bbb9508cf73236b073b92b750f88bd3f3d8fc0367e7bdbb30f6d220550"
+    sha256 cellar: :any,                 catalina:       "3611d115f0bc997f55770c33eb7228aa439ff0b0ddf87c1fcd43c1b63deb4eac"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3366313678d1e80d85c0e7d1420a2145ee00df01e5162c11d3e989eec363e341"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.10" => :build
+  depends_on macos: :mojave # needs std::variant
 
-  on_linux do
-    depends_on "gcc"
+  fails_with :gcc do
+    version "6"
+    cause "needs std::variant"
   end
 
-  fails_with gcc: "5"
-
   def install
-    system "cmake", ".", *std_cmake_args, "-DBUILD_TESTS=false"
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, "-DBUILD_TESTS=false"
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
     pkgshare.install "test/"
   end
 
   test do
-    system "#{bin}/wasm-opt", "-O", "#{pkgshare}/test/passes/O1_print-stack-ir.wast", "-o", "1.wast"
-    assert_match "stacky-help", File.read("1.wast")
+    system bin/"wasm-opt", "-O", pkgshare/"test/passes/O1_print-stack-ir.wast", "-o", "1.wast"
+    assert_match "stacky-help", (testpath/"1.wast").read
   end
 end

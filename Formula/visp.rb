@@ -4,7 +4,7 @@ class Visp < Formula
   url "https://visp-doc.inria.fr/download/releases/visp-3.5.0.tar.gz"
   sha256 "494a648b2570da2a200ba326ed61a14e785eb9ee08ef12d3ad178b2f384d3d30"
   license "GPL-2.0-or-later"
-  revision 2
+  revision 5
 
   livecheck do
     url "https://visp.inria.fr/download/"
@@ -12,19 +12,21 @@ class Visp < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "2be1e7cf74ded2fd9e00db37084d2d4b24979b2e5c836f2e252ba8a9c64a7a20"
-    sha256 cellar: :any,                 arm64_big_sur:  "52084cccc0c25427f9d0c2cb61894fe3479eda09ddb674c4e9aa7fc2fc2c87d0"
-    sha256 cellar: :any,                 monterey:       "9b8bb4cc2515f4dd0a9eddc5412f6824d3a7967e6982eacb7f9a919d3bf3043e"
-    sha256 cellar: :any,                 big_sur:        "2c7892377f9c5c5e3a7e5fd2f267e15410cdc0d80eb4a4852fe014e48ae7a5e2"
-    sha256 cellar: :any,                 catalina:       "a2d50fcad734179417ed92c76cd123f47bb8fe850f68c612715df3fdad8b2fd6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5ece8da0bcca29f0acce383f3c9def0af2bb6dc7062ce861a990767aeab7bf63"
+    sha256 cellar: :any,                 arm64_ventura:  "e56d739d7530d9b7844b8ad1ef881aed0238cefbb5c53c11f162c3fbc68e9d66"
+    sha256 cellar: :any,                 arm64_monterey: "3cb57ff05df4de15a5d94a8d69431f0fbfe7c5ee732565b0d79cdf7625b5b998"
+    sha256 cellar: :any,                 arm64_big_sur:  "16745787b7890d5eb25a45a5dd465a5fc7ae81c4bcb756d5137a3ebee388ed86"
+    sha256 cellar: :any,                 ventura:        "acc27c10119fbaa3d595cb33e2595a6c658c2bd7f9c033dba60e36c33b0002ea"
+    sha256 cellar: :any,                 monterey:       "c3cdea36c932c92464961c614291bc702b96f7374f3078b1b0f6712dcc8e924b"
+    sha256 cellar: :any,                 big_sur:        "d491fdd7d669a019fb3c6eafe63442eabffb7d5ccef762391f3a213723dae0fd"
+    sha256 cellar: :any,                 catalina:       "b6a9d831d8c9e05b407414c1155eae1a14e8ae66543b9a918ce24e13c1a2dc94"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "21158e5a531553c7e3b4efd075b467732cebf98c8ff8f50cfe607a5cb4f93186"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "eigen"
   depends_on "gsl"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libdc1394"
   depends_on "libpng"
   depends_on "opencv"
@@ -35,7 +37,7 @@ class Visp < Formula
   uses_from_macos "zlib"
 
   on_linux do
-    depends_on "gcc"
+    depends_on "libnsl"
   end
 
   fails_with gcc: "5"
@@ -67,8 +69,8 @@ class Visp < Formula
                          "-DGSL_cblas_LIBRARY=#{Formula["gsl"].opt_lib/shared_library("libgslcblas")}",
                          "-DGSL_gsl_LIBRARY=#{Formula["gsl"].opt_lib/shared_library("libgsl")}",
                          "-DUSE_JPEG=ON",
-                         "-DJPEG_INCLUDE_DIR=#{Formula["jpeg"].opt_include}",
-                         "-DJPEG_LIBRARY=#{Formula["jpeg"].opt_lib/shared_library("libjpeg")}",
+                         "-DJPEG_INCLUDE_DIR=#{Formula["jpeg-turbo"].opt_include}",
+                         "-DJPEG_LIBRARY=#{Formula["jpeg-turbo"].opt_lib/shared_library("libjpeg")}",
                          "-DUSE_LAPACK=ON",
                          "-DUSE_LIBUSB_1=OFF",
                          "-DUSE_OPENCV=ON",
@@ -101,7 +103,8 @@ class Visp < Formula
       "unix-install/VISPConfig.cmake",
     ]
     inreplace opencv_references, opencv.prefix.realpath, opencv.opt_prefix
-    system "make", "install"
+    system "cmake", "--build", "."
+    system "cmake", "--install", "."
 
     # Make sure software built against visp don't reference opencv's cellar path either
     inreplace lib/"pkgconfig/visp.pc", opencv.prefix.realpath, opencv.opt_prefix

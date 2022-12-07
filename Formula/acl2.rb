@@ -1,23 +1,28 @@
 class Acl2 < Formula
   desc "Logic and programming language in which you can model computer systems"
   homepage "https://www.cs.utexas.edu/users/moore/acl2/index.html"
-  url "https://github.com/acl2/acl2/archive/8.4.tar.gz"
-  sha256 "b440c0048e2988eeb9f477a37a0443c97037a062c076f86a999433a2c762cd8b"
+  url "https://github.com/acl2/acl2/archive/8.5.tar.gz"
+  sha256 "dcc18ab0220027b90f30cd9e5a67d8f603ff0e5b26528f3aab75dc8d3d4ebc0f"
   license "BSD-3-Clause"
-  revision 2
+  revision 4
 
   bottle do
-    sha256 arm64_monterey: "92d20c471a6e2eb90af1eb1591f85348c4a391b8719bfafc2e445b2063242381"
-    sha256 arm64_big_sur:  "a343ac1505398290e7684d37070de7af6bb28b684f85b0f4b2f46656fcc44400"
-    sha256 monterey:       "75271ea7bdebc5712f193b13a6949072087f19dc672d042be47af046a5df0863"
-    sha256 big_sur:        "75af66ac8a610c78ae4ef5dfe7277983979d73fc2957213502063825253cf583"
-    sha256 catalina:       "bb20280e3e8bd899daa1feba5cecded8fed19a734941bb63d7828f6de22cc4b8"
-    sha256 x86_64_linux:   "a99195c6fc65deb7075cb7650fab416ae0c16f365f0ee35a459a681822f26bc8"
+    sha256 arm64_ventura:  "9a20ffff1c34e7390c77fd9027b3d629b285203fae80bda7990912f70fdc49fa"
+    sha256 arm64_monterey: "d2b4968172ce96301f6ed766eb751ee0151121c456eab0867521e7db12a79ca9"
+    sha256 arm64_big_sur:  "1ce6fd880cdefa123ba6310d2b48bdc48635fdc928b3d5f0718ef16317132a7e"
+    sha256 ventura:        "84603075ad8f6c8ec77a5537ddee2addcfcf494b609311f1d2ab0d48a3ba868b"
+    sha256 monterey:       "264e84666fd09704371b19a99a0920cf2143de55a14ec9a9d5595c2df5a39190"
+    sha256 big_sur:        "54be57b40b5516d3e9a2d1a22131ab6a59f8dd9a0963dbf073fd637e51b24f20"
+    sha256 catalina:       "1b6b47f7379ae6cc89abec107a51647493466fb6cbf2b170eeae0bf957e42484"
+    sha256 x86_64_linux:   "b1a9f012453133df7f80628d974bc36503873534fc3266dc7710fa1f6832a8d4"
   end
 
   depends_on "sbcl"
 
   def install
+    # Remove prebuilt-binary.
+    (buildpath/"books/kestrel/axe/x86/examples/popcount/popcount-macho-64.executable").unlink
+
     system "make",
            "LISP=#{HOMEBREW_PREFIX}/bin/sbcl",
            "ACL2=#{buildpath}/saved_acl2",

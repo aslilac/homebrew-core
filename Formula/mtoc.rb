@@ -1,17 +1,14 @@
 class Mtoc < Formula
   desc "Mach-O to PE/COFF binary converter"
-  homepage "https://opensource.apple.com/source/cctools/cctools-949.0.1/"
-  url "https://opensource.apple.com/tarballs/cctools/cctools-949.0.1.tar.gz"
-  sha256 "830485ac7c563cd55331f643952caab2f0690dfbd01e92eb432c45098b28a5d0"
-
-  livecheck do
-    url "https://opensource.apple.com/tarballs/cctools/"
-    regex(/href=.*?cctools[._-]v?(\d+(?:\.\d+)*)\.t/i)
-  end
+  homepage "https://opensource.apple.com/"
+  url "https://github.com/apple-oss-distributions/cctools/archive/refs/tags/cctools-949.0.1.tar.gz"
+  sha256 "8b2d8dc371a57e42852fa6102efaf324ef004adf86072bf9957e2ac9005326c1"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "04d75f24e8a8dbf876aa37fddd44139c5177b08348210ef3acacedb5ba8e1dc7"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "ebb0ffb0ba60ca6d02f0df9919427bf8a2579632e585a2a6ae851c5fbe858cc5"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "935bfd119379ec4d223830db858a2b2279152709a6e78eba895af5859110d22f"
+    sha256 cellar: :any_skip_relocation, ventura:        "bd70c47294b5c9bee72d0e7d0c2d1b8779eefd367a01ce13409cbb1191919798"
     sha256 cellar: :any_skip_relocation, monterey:       "fd72c247a0ea992a4ab1a645e3a51007331a1bd15fc693e93fc1bd0267f38273"
     sha256 cellar: :any_skip_relocation, big_sur:        "605abc57733add4e0643d6ffa0186df37e1b4adb5461b9fcdd92d1bfb688f649"
     sha256 cellar: :any_skip_relocation, catalina:       "2f60b3731066cf662f3d8e9451ce0f94954980100780c9e79b6e8ea066ad8def"

@@ -3,29 +3,32 @@ class Autopep8 < Formula
 
   desc "Automatically formats Python code to conform to the PEP 8 style guide"
   homepage "https://github.com/hhatto/autopep8"
-  url "https://files.pythonhosted.org/packages/ec/67/564f7d15712a84d4035aa5ad0b97eeafdeccdb7e806d6a822595bf0ffa5f/autopep8-1.6.0.tar.gz"
-  sha256 "44f0932855039d2c15c4510d6df665e4730f2b8582704fa48f9c55bd3e17d979"
+  url "https://files.pythonhosted.org/packages/ac/71/48b7fde78ef09f4636a9b81f926b879d0230f90768483c441f22059d2474/autopep8-2.0.0.tar.gz"
+  sha256 "8b1659c7f003e693199f52caffdc06585bb0716900bbc6a7442fd931d658c077"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d4fe99a1999057aebe94c80b0ed5cfd76d48d2e17bdb162dddc1beb9283fe42d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d4fe99a1999057aebe94c80b0ed5cfd76d48d2e17bdb162dddc1beb9283fe42d"
-    sha256 cellar: :any_skip_relocation, monterey:       "b21a2631ef98d735b04cfbabf9a423d29b4b4dbc437c257a78653d07504513be"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b21a2631ef98d735b04cfbabf9a423d29b4b4dbc437c257a78653d07504513be"
-    sha256 cellar: :any_skip_relocation, catalina:       "b21a2631ef98d735b04cfbabf9a423d29b4b4dbc437c257a78653d07504513be"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b59ff19dfd44121e3842ab7bf0bdf19712687d47dd1109e157d232541cb1282b"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0cc4ff496812ae293c8d18e1b7967d3fc12bacabc3082b29d483e00671c5cdbf"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "cb1048b7bfa074a81ab0bdf9132509e665d08f70b72907818af9d90c58156c17"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "42351a6b5de6406c45724741fd28b136be2796803f00753519a80aaa9a1b4e30"
+    sha256 cellar: :any_skip_relocation, ventura:        "b48928d4f1c8b842c1c2bfa6b5920d1bea99aac713de5298fbc29ee985e2b93a"
+    sha256 cellar: :any_skip_relocation, monterey:       "69dee754220183cf4a7dbd3a61d6b39de2365f24bf5243947891662989433635"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f6f519448f3ecb2180fa46a0fa54cc3f1452f463eeb730705333fa1767772ba3"
+    sha256 cellar: :any_skip_relocation, catalina:       "ce802ecd6af14a892fab7425add9770f42eb69990c6dff60e272e5dd9727bfe2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "465eec33e79530380981c883cc224d68b46636142d15c3b398bc17e2cbfd207d"
   end
 
-  depends_on "python@3.10"
+  depends_on "python@3.11"
 
   resource "pycodestyle" do
-    url "https://files.pythonhosted.org/packages/08/dc/b29daf0a202b03f57c19e7295b60d1d5e1281c45a6f5f573e41830819918/pycodestyle-2.8.0.tar.gz"
-    sha256 "eddd5847ef438ea1c7870ca7eb78a9d47ce0cdb4851a5523949f2601d0cbbe7f"
+    url "https://files.pythonhosted.org/packages/b6/83/5bcaedba1f47200f0665ceb07bcb00e2be123192742ee0edfb66b600e5fd/pycodestyle-2.9.1.tar.gz"
+    sha256 "2c9607871d58c76354b697b42f5d57e1ada7d261c261efac224b664affdc5785"
   end
 
-  resource "toml" do
-    url "https://files.pythonhosted.org/packages/be/ba/1f744cdc819428fc6b5084ec34d9b30660f6f9daaf70eead706e3203ec3c/toml-0.10.2.tar.gz"
-    sha256 "b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"
+  resource "tomli" do
+    url "https://files.pythonhosted.org/packages/c0/3f/d7af728f075fb08564c5949a9c95e44352e23dee646869fa104a3b2060a3/tomli-2.0.1.tar.gz"
+    sha256 "de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"
   end
 
   def install

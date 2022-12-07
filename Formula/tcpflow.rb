@@ -3,7 +3,7 @@ class Tcpflow < Formula
   homepage "https://github.com/simsong/tcpflow"
   url "https://downloads.digitalcorpora.org/downloads/tcpflow/tcpflow-1.6.1.tar.gz"
   sha256 "436f93b1141be0abe593710947307d8f91129a5353c3a8c3c29e2ba0355e171e"
-  license "GPL-3.0"
+  license "GPL-3.0-only"
 
   livecheck do
     url "https://downloads.digitalcorpora.org/downloads/tcpflow/"
@@ -11,39 +11,45 @@ class Tcpflow < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "2e25618ff226f705ee66793309e8f1d01b9adf8e51f1930e5c3ff52fb904cd28"
-    sha256 cellar: :any,                 arm64_big_sur:  "45666c536a212cbc2b76a6663e051f432e4b82910a440d5fa6cebad4562e70f9"
-    sha256 cellar: :any,                 monterey:       "a964e150a0429750379df21f3a1e24b4ac336ca15b66cffdbeaba98e3edc35c4"
-    sha256 cellar: :any,                 big_sur:        "ec65cbfeff09cd48c9accca03cf14a733034b96f0d01d47cbcf43ef9e0e859de"
-    sha256 cellar: :any,                 catalina:       "78b9e40f778060e2a0a277dfa1ff2d3ee720be679f8ade7b98e274ace2a05e7c"
-    sha256 cellar: :any,                 mojave:         "752820d85c73654edd4b2eef81a36d6d3be542e8cb6f7f62af7906b0740ba98f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a0a2015d8bb5ac2ddca983dd577325a59288527fc77309fe628cdf7a6e55922e"
+    rebuild 2
+    sha256 cellar: :any,                 arm64_ventura:  "1f2a7ca46614781861f8c1f9a9d6af8b13320bf9ff03f830fa199ad250a094a3"
+    sha256 cellar: :any,                 arm64_monterey: "a41756ac3931a3f64fba3000f2b86a02f844b69bdd41907ced290b9855f97aec"
+    sha256 cellar: :any,                 arm64_big_sur:  "6e3f95b6a3d009e8f85c0da483e8759b37190710a4b74f1980b751bec54cd42b"
+    sha256 cellar: :any,                 ventura:        "df7deb202cad6e5c8a51ed01ba5fcf16fddc80cccfda4eccc196bce7b6f9b0fd"
+    sha256 cellar: :any,                 monterey:       "73e14653361b7c3276f5f5acd7e79c09982cc0f0d5f9c3f0102c1845bc5e5e95"
+    sha256 cellar: :any,                 big_sur:        "b4bd69530d81550d1a428dff981fc71f5a45fd4cc406e9f10dee030e1b350b90"
+    sha256 cellar: :any,                 catalina:       "96d3ce376bae12013a22db5a49e71bc45a8478a07ba7ef1bfb1dc1daa33e3bac"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e0fb8e4d90327529dca426de617f298ec135fac0fca31e547551774832541aac"
   end
 
   head do
-    url "https://github.com/simsong/tcpflow.git"
+    url "https://github.com/simsong/tcpflow.git", branch: "master"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
   depends_on "boost" => :build
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
 
   uses_from_macos "bzip2"
   uses_from_macos "libpcap"
-
-  on_linux do
-    depends_on "gcc" # For C++17
-  end
+  uses_from_macos "zlib"
 
   fails_with gcc: "5"
 
   def install
     system "bash", "./bootstrap.sh" if build.head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
+    system "./configure", *std_configure_args,
+                          "--disable-silent-rules",
                           "--mandir=#{man}"
     system "make", "install"
+  end
+
+  test do
+    output = shell_output("#{bin}/tcpflow -v -r #{test_fixtures("test.pcap")} 2>&1")
+    assert_match "Total flows processed: 2", output
+    assert_match "Total packets processed: 11", output
+    assert_match "<title>Test</title>", (testpath/"192.168.001.118.00080-192.168.001.115.51613").read
   end
 end

@@ -1,11 +1,20 @@
 class Flashrom < Formula
   desc "Identify, read, write, verify, and erase flash chips"
   homepage "https://flashrom.org/"
-  url "https://download.flashrom.org/releases/flashrom-v1.2.tar.bz2"
-  sha256 "e1f8d95881f5a4365dfe58776ce821dfcee0f138f75d0f44f8a3cd032d9ea42b"
-  license "GPL-2.0"
+  license "GPL-2.0-or-later"
   revision 1
   head "https://review.coreboot.org/flashrom.git", branch: "master"
+
+  stable do
+    url "https://download.flashrom.org/releases/flashrom-v1.2.tar.bz2"
+    sha256 "e1f8d95881f5a4365dfe58776ce821dfcee0f138f75d0f44f8a3cd032d9ea42b"
+
+    # Add https://github.com/flashrom/flashrom/pull/212, to allow flashrom to build on Apple Silicon
+    patch do
+      url "https://github.com/areese/flashrom/commit/0c7b279d78f95083b686f6b1d4ce0f7b91bf0fd0.patch?full_index=1"
+      sha256 "9e1f54f7ae4e67b880df069b419835131f72d166b3893870746fff456b0b7225"
+    end
+  end
 
   livecheck do
     url "https://download.flashrom.org/releases/"
@@ -13,23 +22,20 @@ class Flashrom < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "c5348e8e2eee03d4b47ce1e337c46a0f87495c163b2bf58dfdf5e16ba8d09c1d"
-    sha256 cellar: :any,                 arm64_big_sur:  "fe1293f2942b24f63cc8d1e39b0d61c509bf2c57071e5d009f77f6a7d48390a4"
-    sha256 cellar: :any,                 monterey:       "ba31b7f7e2609f3687ae42843791dcd292bd8535bbbf003272ad7e54bac578e7"
-    sha256 cellar: :any,                 big_sur:        "d4676d20d23ff56628635ddc049721168f0d9ad945ccd09096001d886eed0321"
-    sha256 cellar: :any,                 catalina:       "a3f2b538040d6f64ae7f2d827e298e8eb2e954676920449c7cd71be642597c2e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "175960b96ea9c036dd4062fef8f37d220219b38e840ef1080e1110732a76096a"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "df1dc0950b4c27eba7ca248b0ec0d8f6b72b3b1db87ad4bc6df85f9df36c62cf"
+    sha256 cellar: :any,                 arm64_monterey: "ce92fbb333453ecfa68d81e86b56cee5890df50f3cf25055feda05b3337943fe"
+    sha256 cellar: :any,                 arm64_big_sur:  "569c926b496c0710fb7ba56741ec71b0907225496be2d0e3f00abb31f6f78753"
+    sha256 cellar: :any,                 ventura:        "8ca8600404eb74166fa69d8f3a7a8fa5ca1fdfdda99eb250b888b37ea8bd89e1"
+    sha256 cellar: :any,                 monterey:       "7880c53527b2b99af980f238cd47973f252472440f80ccb33e850f4e8535c292"
+    sha256 cellar: :any,                 big_sur:        "5f87947474ca85777550cb5223e90c5bc9df115432dac3c16a71ac69f47ab3c8"
+    sha256 cellar: :any,                 catalina:       "3d13587cb5057ef4ca331156e13a235cf25517fe7fe65d9c134394be1c408400"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9943440449dc40ac90fca72ba2d125941d60f5d3395ad555422f754bbe0c768b"
   end
 
   depends_on "pkg-config" => :build
   depends_on "libftdi"
   depends_on "libusb"
-
-  # Add https://github.com/flashrom/flashrom/pull/212, to allow flashrom to build on Apple Silicon
-  patch do
-    url "https://github.com/areese/flashrom/commit/0c7b279d78f95083b686f6b1d4ce0f7b91bf0fd0.patch?full_index=1"
-    sha256 "9e1f54f7ae4e67b880df069b419835131f72d166b3893870746fff456b0b7225"
-  end
 
   def install
     ENV["CONFIG_RAYER_SPI"] = "no"

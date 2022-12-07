@@ -1,8 +1,8 @@
 class Cadence < Formula
   desc "Resource-oriented smart contract programming language"
   homepage "https://github.com/onflow/cadence"
-  url "https://github.com/onflow/cadence/archive/v0.24.6.tar.gz"
-  sha256 "a488233735bbcf39f7ac41d53cfb79aa5399af7fd958d853a0bc85332a21e283"
+  url "https://github.com/onflow/cadence/archive/v0.29.0.tar.gz"
+  sha256 "fae78ae0396bba1cdb930fc696cb43951b09dea002eee2cfbbb16972e8749f14"
   license "Apache-2.0"
   head "https://github.com/onflow/cadence.git", branch: "master"
 
@@ -12,12 +12,14 @@ class Cadence < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1802dc6ccc3a8856584ded5d763ae541595044790df6c11ad5104d46988fa7f7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4e62d00ecfd0858e7852098a2e2e19ecfe95703aeb9ae034926b562e2a19e712"
-    sha256 cellar: :any_skip_relocation, monterey:       "145416c7528c1a5cd595a4b4b4d69f2a35d294f55d9f9fe9b831c95014e8650e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8cf68dd8812ad0988d636744abba1e2adc0b681d95cead82e831e7bc3c423d89"
-    sha256 cellar: :any_skip_relocation, catalina:       "1373b3fa6bac5ce7d55d42d85b3e8c09ed48a235c8ad36a3c72bc5d4ac489546"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4d8ed9058ba229956351ddff328ad458fe97638827a81a39b3ce044b87c851f6"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bf0ab51b34c3d6b4eb1181bd256ef8685ef20493a32b97e070c37cf002a5a576"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5c4ee2dac5e977d4314382d02303df862ecea09dc2edab5c3cb7f01fd627c281"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e3380eabcaa43ad1cdafd3d6b20ec6ca08756d710b30e9560cd701249d7c5b5e"
+    sha256 cellar: :any_skip_relocation, ventura:        "6d08e270d85f0092d56ff1b0a7c25f22e26193467a6ceb3e55485bbcdc4435df"
+    sha256 cellar: :any_skip_relocation, monterey:       "293a46b709e0ab058d7d08ec9c3b3170a2583c20db426265c73e519c471885c9"
+    sha256 cellar: :any_skip_relocation, big_sur:        "2314336ca99b7829c075e21f902c6d8df64648598b4c90b3a02940a39e5c5525"
+    sha256 cellar: :any_skip_relocation, catalina:       "0123b80446b7a3148b30adc21beb0ccd071b9cc4f58f237b9167356e4d3062d7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4ab60debdf4a1193e3205f5b927e1a6b5d76dcb45aa7508bc67884ad5791e868"
   end
 
   depends_on "go" => :build
@@ -25,7 +27,7 @@ class Cadence < Formula
   conflicts_with "cadence-workflow", because: "both install a `cadence` executable"
 
   def install
-    system "go", "build", *std_go_args, "./runtime/cmd/main"
+    system "go", "build", *std_go_args(ldflags: "-s -w"), "./runtime/cmd/main"
   end
 
   test do

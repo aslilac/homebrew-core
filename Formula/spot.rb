@@ -1,8 +1,8 @@
 class Spot < Formula
   desc "Platform for LTL and ω-automata manipulation"
   homepage "https://spot.lrde.epita.fr/"
-  url "https://www.lrde.epita.fr/dload/spot/spot-2.10.6.tar.gz"
-  sha256 "c588d1cb53ccea3e592f99402b14c2f4367b349ecef8e17b6d391df146bc8ba4"
+  url "https://www.lrde.epita.fr/dload/spot/spot-2.11.2.tar.gz"
+  sha256 "3e63458f0da4863e1cd0d2cfe851a1015d322205d7e406c6a9d95680b9ea754e"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,19 +11,17 @@ class Spot < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "b1430858b8bb86bf381ce7ce6bdf2ad6353eca969ff76967e5f307ad9e21032c"
-    sha256 cellar: :any,                 arm64_big_sur:  "3446679a5ef8e565deff8aa7cb25b3da156056cd0e96f084e64a920cef428fce"
-    sha256 cellar: :any,                 monterey:       "bedb932f538883e9fad2d64dc00b5185ecc49d44ef99b88ab65d6d0951c76827"
-    sha256 cellar: :any,                 big_sur:        "62b1883615299ed12f9bda54f0b381ce5ffcc4badbc0ba0d8a59301f97d5e60d"
-    sha256 cellar: :any,                 catalina:       "06eefd56dca1c57ddaa883ec4f0985db4b48ee119befa0e18ef7fe67221040e9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ea1d2f111bd18c6b35d808273777d5b3f1c58adb29e5c9d943114f50e67e5440"
+    sha256 cellar: :any,                 arm64_ventura:  "0c403f642c3088aa2383b6315ffb34d28321cb6ecdae0131cd21dbeecccae3e5"
+    sha256 cellar: :any,                 arm64_monterey: "ecbe5a528c52ea17b1515a385a3ca9ee9dbcdaff429c2c77f106bd1e21dc72af"
+    sha256 cellar: :any,                 arm64_big_sur:  "a1c00fce9f54d4de1daf8c18e33e5f7b55a131511ee3004e654e319b5c535dc3"
+    sha256 cellar: :any,                 ventura:        "65e44a75d72ad641d2f88e467e6c86d36700cae77dcfa6fa5f1b45c057da2e2b"
+    sha256 cellar: :any,                 monterey:       "53992a2350103a44b6d0b9421da6548ab806223345ad75babff2d718fde39139"
+    sha256 cellar: :any,                 big_sur:        "c75afe336e8ee43ade8eadb7c6d398e4395ccd705cb47428762a5650c9d40833"
+    sha256 cellar: :any,                 catalina:       "f3ac4a91ded54f3c5343e8591cba5ff3aa7e3fa39b8ee4df4bbff71940cf81f5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "802afd5354c80e5964aa606e61a54d98785d67177821aa80b98518f32dde42d4"
   end
 
   depends_on "python@3.10" => :build
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5" # C++17
 

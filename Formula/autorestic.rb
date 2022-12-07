@@ -1,18 +1,20 @@
 class Autorestic < Formula
   desc "High level CLI utility for restic"
   homepage "https://autorestic.vercel.app/"
-  url "https://github.com/cupcakearmy/autorestic/archive/v1.7.1.tar.gz"
-  sha256 "89ffb11c14eb02bcc66427517a43a42a7e73ea359b579b8c2047c95ce5f9a8d8"
+  url "https://github.com/cupcakearmy/autorestic/archive/v1.7.4.tar.gz"
+  sha256 "253a16dbad709e1e1065222ab0950ded6dc302ebcebba2585eed7759c7b99714"
   license "Apache-2.0"
   head "https://github.com/cupcakearmy/autorestic.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3a82d14065048ff87219e943ebf89f0cd44b48638463164b2e18396797301693"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d09ba325c8d35778a2d3da2dac787209e990af3b4d9c9e99699b13867dcd2d6e"
-    sha256 cellar: :any_skip_relocation, monterey:       "4bfe8dbce83595bcab7a29d21b94c23133664691b34ebb08ed265103bad0c135"
-    sha256 cellar: :any_skip_relocation, big_sur:        "72c0f9a981446a371e4d66c77b8c46d07e376c5c063c9b305c21cca20267f4fa"
-    sha256 cellar: :any_skip_relocation, catalina:       "1e9601d092965a616228cc932ed0f0d594bf094d9a46e3b3d632ab96b7269147"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c799dc957a9e3498292442f66c7153d938f2ee0869cd966c350f5d779e5de97c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "43177f4922b28c496135b9b88a1d5535064ed955112c422d553053d3eaed7c04"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "68c80af5328d9139bc884eb7fe030682e857068f1219aa959564d20d174e5491"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "23f4d518baf2dd7ec4d2e9aa27e725d4855efb8ae252e7c60b57a502282e362a"
+    sha256 cellar: :any_skip_relocation, ventura:        "b78f57daa92f48b59ba132139a73836dc621e01c6f16f5a26f7ce691b1a4ca41"
+    sha256 cellar: :any_skip_relocation, monterey:       "7b17a2f41e3a12bc59022c5d8158070430ee427e04ea4079ae6794419f1f9b2f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "1d7069238dad4ba499ef2e726128678442ddd493166daa2f78d18f20e73469c6"
+    sha256 cellar: :any_skip_relocation, catalina:       "4afa30bd072a153e406fc0e4c02b356a0878a960fcc2f1064ec1a2435ac81a11"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "48ef35b76070f834756d4a34be624350d9f08476dbe0a2f060c429e8e45b1ade"
   end
 
   depends_on "go" => :build
@@ -20,9 +22,7 @@ class Autorestic < Formula
 
   def install
     system "go", "build", *std_go_args, "./main.go"
-    (bash_completion/"autorestic").write Utils.safe_popen_read("#{bin}/autorestic", "completion", "bash")
-    (zsh_completion/"_autorestic").write Utils.safe_popen_read("#{bin}/autorestic", "completion", "zsh")
-    (fish_completion/"autorestic.fish").write Utils.safe_popen_read("#{bin}/autorestic", "completion", "fish")
+    generate_completions_from_executable(bin/"autorestic", "completion")
   end
 
   test do

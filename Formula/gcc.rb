@@ -1,12 +1,21 @@
 class Gcc < Formula
   desc "GNU compiler collection"
   homepage "https://gcc.gnu.org/"
-  url "https://ftp.gnu.org/gnu/gcc/gcc-11.3.0/gcc-11.3.0.tar.xz"
-  mirror "https://ftpmirror.gnu.org/gcc/gcc-11.3.0/gcc-11.3.0.tar.xz"
-  sha256 "b47cf2818691f5b1e21df2bb38c795fac2cfbd640ede2d0a5e1c89e338a3ac39"
   license "GPL-3.0-or-later" => { with: "GCC-exception-3.1" }
-  revision 2
   head "https://gcc.gnu.org/git/gcc.git", branch: "master"
+
+  stable do
+    url "https://ftp.gnu.org/gnu/gcc/gcc-12.2.0/gcc-12.2.0.tar.xz"
+    mirror "https://ftpmirror.gnu.org/gcc/gcc-12.2.0/gcc-12.2.0.tar.xz"
+    sha256 "e549cf9cf3594a00e27b6589d4322d70e0720cdd213f39beb4181e06926230ff"
+
+    # Branch from the Darwin maintainer of GCC, with a few generic fixes and
+    # Apple Silicon support, located at https://github.com/iains/gcc-12-branch
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/1d184289/gcc/gcc-12.2.0-arm.diff"
+      sha256 "a7843b5c6bf1401e40c20c72af69c8f6fc9754ae980bb4a5f0540220b3dcb62d"
+    end
+  end
 
   livecheck do
     url :stable
@@ -14,12 +23,15 @@ class Gcc < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "643b51fe35fd2813fd5d3f74348b48616b1855d095116cf48dea8c9c8081cf9d"
-    sha256 arm64_big_sur:  "5289d3ffd104301a6de322a1e533e510b1ea8a324b1f4cbea35afc7bc776997a"
-    sha256 monterey:       "e717c633558dd70cccf6894892fb8076fab573811a5ef4800fab9aa860b7ba06"
-    sha256 big_sur:        "19d349328fd8305a5e742640e13ecdbc429dd71ed48754f9c1095d9069406fba"
-    sha256 catalina:       "a5dd6948e0b93fff67f626176f5968e22d7c23821a703581f7769c64bb9376e5"
-    sha256 x86_64_linux:   "cb8c0b7acbbd6a13c7cb5b4dda744c76cdfc58b951c92190b0462c64bfb17c9c"
+    rebuild 2
+    sha256                               arm64_ventura:  "d0dd262f7d681d5bbcc39bea85d0dd355f2f962060afe4de16432fbe9596bf8c"
+    sha256                               arm64_monterey: "7bc86ca650f1e2764ed66e6c46852c035a336de89e1a373b6447e3980a4c0d8d"
+    sha256                               arm64_big_sur:  "2d450754fbe7125c9a1e30f8f865fdbd7f3adc730d2c6459fb43256f7bba9042"
+    sha256                               ventura:        "85b24fd8be088fd53cbf596fb98f77d616598e6410e4e48df7b61faf6b41f126"
+    sha256                               monterey:       "0b47a35b2d5405a3b414435b7c00875d349107a8f3f7471088ff183f62a57247"
+    sha256                               big_sur:        "7f97476baa2573f5f8df510b47f4ff5ce725622d1b57f4771b896b1b70d02ddb"
+    sha256                               catalina:       "6ba7396b412441e59eec2b67a349f3f5f7374a9b772eb33e0c4707f6c77f5bc0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d2080ede63b45e711bbb05c474af6affe3edc255fecf81009a85e23429b509e2"
   end
 
   # The bottles are built on systems with the CLT installed, and do not work
@@ -41,15 +53,6 @@ class Gcc < Formula
   # GCC bootstraps itself, so it is OK to have an incompatible C++ stdlib
   cxxstdlib_check :skip
 
-  # Branch from the Darwin maintainer of GCC, with a few generic fixes and
-  # Apple Silicon support, located at https://github.com/iains/gcc-11-branch
-  if Hardware::CPU.arm?
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/07e71538/gcc/gcc-11.3.0-arm.diff"
-      sha256 "857390a7f32dbfc4c7e6163a3b3b9d5e1d392e5d9c74c3ebb98701c1d0629565"
-    end
-  end
-
   def version_suffix
     if build.head?
       "HEAD"
@@ -63,17 +66,17 @@ class Gcc < Formula
     ENV.delete "LD"
 
     # We avoiding building:
-    #  - Ada, which requires a pre-existing GCC Ada compiler to bootstrap
+    #  - Ada and D, which require a pre-existing GCC to bootstrap
     #  - Go, currently not supported on macOS
     #  - BRIG
     languages = %w[c c++ objc obj-c++ fortran]
-    languages << "d" if Hardware::CPU.intel?
 
     pkgversion = "Homebrew GCC #{pkg_version} #{build.used_options*" "}".strip
 
+    # Use `lib/gcc/current` to provide a path that doesn't change with GCC's version.
     args = %W[
       --prefix=#{opt_prefix}
-      --libdir=#{opt_lib}/gcc/#{version_suffix}
+      --libdir=#{opt_lib}/gcc/current
       --disable-nls
       --enable-checking=release
       --with-gcc-major-version-only
@@ -86,24 +89,25 @@ class Gcc < Formula
       --with-zstd=#{Formula["zstd"].opt_prefix}
       --with-pkgversion=#{pkgversion}
       --with-bugurl=#{tap.issues_url}
+      --with-system-zlib
     ]
-    # libphobos is part of gdc
-    args << "--enable-libphobos" if Hardware::CPU.intel?
 
     if OS.mac?
       cpu = Hardware::CPU.arm? ? "aarch64" : "x86_64"
       args << "--build=#{cpu}-apple-darwin#{OS.kernel_version.major}"
-      args << "--with-system-zlib"
 
       # System headers may not be in /usr/include
       sdk = MacOS.sdk_path_if_needed
       args << "--with-sysroot=#{sdk}" if sdk
     else
       # Fix cc1: error while loading shared libraries: libisl.so.15
-      args << "--with-boot-ldflags=-static-libstdc++ -static-libgcc #{ENV["LDFLAGS"]}"
+      args << "--with-boot-ldflags=-static-libstdc++ -static-libgcc #{ENV.ldflags}"
 
       # Fix Linux error: gnu/stubs-32.h: No such file or directory.
       args << "--disable-multilib"
+
+      # Enable to PIE by default to match what the host GCC uses
+      args << "--enable-default-pie"
 
       # Change the default directory name for 64-bit libraries to `lib`
       # https://stackoverflow.com/a/54038769
@@ -114,31 +118,36 @@ class Gcc < Formula
       system "../configure", *args
       system "make"
 
+      # Do not strip the binaries on macOS, it makes them unsuitable
+      # for loading plugins
+      install_target = OS.mac? ? "install" : "install-strip"
+
       # To make sure GCC does not record cellar paths, we configure it with
       # opt_prefix as the prefix. Then we use DESTDIR to install into a
       # temporary location, then move into the cellar path.
-      system "make", "install-strip", "DESTDIR=#{Pathname.pwd}/../instdir"
+      system "make", install_target, "DESTDIR=#{Pathname.pwd}/../instdir"
       mv Dir[Pathname.pwd/"../instdir/#{opt_prefix}/*"], prefix
-
-      bin.install_symlink bin/"gfortran-#{version_suffix}" => "gfortran"
-      bin.install_symlink bin/"gdc-#{version_suffix}" => "gdc" if Hardware::CPU.intel?
-
-      if OS.linux?
-        # Only the newest brewed gcc should install gfortan libs as we can only have one.
-        lib.install_symlink Dir[lib/"gcc/#{version_suffix}/libgfortran.*"]
-      end
     end
+
+    bin.install_symlink bin/"gfortran-#{version_suffix}" => "gfortran"
+
+    # Provide a `lib/gcc/xy` directory to align with the versioned GCC formulae.
+    # We need to create `lib/gcc/xy` as a directory and not a symlink to avoid `brew link` conflicts.
+    (lib/"gcc"/version_suffix).install_symlink (lib/"gcc/current").children
+
+    # Only the newest brewed gcc should install gfortan libs as we can only have one.
+    lib.install_symlink lib.glob("gcc/current/libgfortran.*") if OS.linux?
 
     # Handle conflicts between GCC formulae and avoid interfering
     # with system compilers.
     # Rename man7.
-    Dir.glob(man7/"*.7") { |file| add_suffix file, version_suffix }
+    man7.glob("*.7") { |file| add_suffix file, version_suffix }
     # Even when we disable building info pages some are still installed.
     info.rmtree
 
     # Work around GCC install bug
     # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105664
-    rm_rf Dir[bin/"*-gcc-tmp"]
+    rm_rf bin.glob("*-gcc-tmp")
   end
 
   def add_suffix(file, suffix)
@@ -200,8 +209,8 @@ class Gcc < Formula
       #   * `-idirafter <dir>` instructs gcc to search system header
       #     files after gcc internal header files.
       # For libraries:
-      #   * `-nostdlib -L#{libgcc}` instructs gcc to use brewed glibc
-      #     if applied.
+      #   * `-nostdlib -L#{libgcc} -L#{glibc.opt_lib}` instructs gcc to use
+      #     brewed glibc if applied.
       #   * `-L#{libdir}` instructs gcc to find the corresponding gcc
       #     libraries. It is essential if there are multiple brewed gcc
       #     with different versions installed.
@@ -209,13 +218,13 @@ class Gcc < Formula
       #   * `-L#{HOMEBREW_PREFIX}/lib` instructs gcc to find the rest
       #     brew libraries.
       # Note: *link will silently add #{libdir} first to the RPATH
-      libdir = HOMEBREW_PREFIX/"lib/gcc/#{version_suffix}"
+      libdir = HOMEBREW_PREFIX/"lib/gcc/current"
       specs.write specs_string + <<~EOS
         *cpp_unique_options:
         + -isysroot #{HOMEBREW_PREFIX}/nonexistent #{system_header_dirs.map { |p| "-idirafter #{p}" }.join(" ")}
 
         *link_libgcc:
-        #{glibc_installed ? "-nostdlib -L#{libgcc}" : "+"} -L#{libdir} -L#{HOMEBREW_PREFIX}/lib
+        #{glibc_installed ? "-nostdlib -L#{libgcc} -L#{glibc.opt_lib}" : "+"} -L#{libdir} -L#{HOMEBREW_PREFIX}/lib
 
         *link:
         + --dynamic-linker #{HOMEBREW_PREFIX}/lib/ld.so -rpath #{libdir}
@@ -238,7 +247,7 @@ class Gcc < Formula
       }
     EOS
     system "#{bin}/gcc-#{version_suffix}", "-o", "hello-c", "hello-c.c"
-    assert_equal "Hello, world!\n", `./hello-c`
+    assert_equal "Hello, world!\n", shell_output("./hello-c")
 
     (testpath/"hello-cc.cc").write <<~EOS
       #include <iostream>
@@ -253,7 +262,7 @@ class Gcc < Formula
       }
     EOS
     system "#{bin}/g++-#{version_suffix}", "-o", "hello-cc", "hello-cc.cc"
-    assert_equal "Hello, world!\n", `./hello-cc`
+    assert_equal "Hello, world!\n", shell_output("./hello-cc")
 
     (testpath/"test.f90").write <<~EOS
       integer,parameter::m=10000
@@ -267,19 +276,6 @@ class Gcc < Formula
       end
     EOS
     system "#{bin}/gfortran", "-o", "test", "test.f90"
-    assert_equal "Done\n", `./test`
-
-    if Hardware::CPU.intel?
-      (testpath/"hello_d.d").write <<~EOS
-        import std.stdio;
-        int main()
-        {
-          writeln("Hello, world!");
-          return 0;
-        }
-      EOS
-      system "#{bin}/gdc-#{version_suffix}", "-o", "hello-d", "hello_d.d"
-      assert_equal "Hello, world!\n", `./hello-d`
-    end
+    assert_equal "Done\n", shell_output("./test")
   end
 end

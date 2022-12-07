@@ -2,23 +2,26 @@ class Metricbeat < Formula
   desc "Collect metrics from your systems and services"
   homepage "https://www.elastic.co/beats/metricbeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v8.3.1",
-      revision: "cff0399d80d4b1ac80f0981be846a50d1ec2b995"
+      tag:      "v8.5.2",
+      revision: "1ebd0940bd56943642ea8d63d1fe8227f86e7435"
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f853b594d4f274f051ae737287a046bbce3bd0ecbefa8fc53276e4f52c7264fb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e4346bec1481aeaf3768786c7300e73e808d77f34521546ce4f46183295d56db"
-    sha256 cellar: :any_skip_relocation, monterey:       "f574f9014f2fd1554a17605045fb543e705d4969942658a59a781d2199344de2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "94735d4e8ba3aa658378b51aac32d6e7e14163984f738fe7a382d89f294f979c"
-    sha256 cellar: :any_skip_relocation, catalina:       "909425777cfc16e89b7b99a6352f07aba3f9a1ab93abda7d0db4db1a1a9622a6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8f973998280744eff110ca07c35a8d081f0ee8cec52c2335965f5860fedc02e8"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ce73b5dc6631cccb8e4d2c488303a2d7d4cfecb2901741f66144b9852229bfd9"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "887c5aef33e10348cce0806bb5235cc061903ab7b8594af96d449866d52bb3dc"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9f43caa1ad9d5fa197de7b27b5a0bce5f1d53321efd3740ee5609ab8dcd07a76"
+    sha256 cellar: :any_skip_relocation, ventura:        "5f8a8d079ae08d3b6a1a9b2a623e0ae2f1b8c29f77daaa9d6debc9a0b25c566f"
+    sha256 cellar: :any_skip_relocation, monterey:       "fbabea32556bfddfd4eae7d789c4314a76b2b2040e718260b79e3d2fd70c72b2"
+    sha256 cellar: :any_skip_relocation, big_sur:        "81146f6b6d4fb17b8a138f50c4a24f10ca4bb51c95bd8cec438cf65da42ef2f9"
+    sha256 cellar: :any_skip_relocation, catalina:       "0e21f86c1a6e6efca82b456703080eabd3eee94a26382a6fb97de823f28d7a56"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b2816eefec8240c6a29c4655761eaf7ebac6eeac9cc9a7074aad661f071eb218"
   end
 
   depends_on "go" => :build
   depends_on "mage" => :build
-  depends_on "python@3.10" => :build
+  depends_on "python@3.11" => :build
 
   def install
     # remove non open source files
@@ -47,6 +50,9 @@ class Metricbeat < Formula
         --path.logs #{var}/log/metricbeat \
         "$@"
     EOS
+
+    chmod 0555, bin/"metricbeat" # generate_completions_from_executable fails otherwise
+    generate_completions_from_executable(bin/"metricbeat", "completion", shells: [:bash, :zsh])
   end
 
   service do

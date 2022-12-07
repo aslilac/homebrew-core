@@ -1,18 +1,20 @@
 class EtcdCppApiv3 < Formula
   desc "C++ implementation for etcd's v3 client API, i.e., ETCDCTL_API=3"
   homepage "https://github.com/etcd-cpp-apiv3/etcd-cpp-apiv3"
-  url "https://github.com/etcd-cpp-apiv3/etcd-cpp-apiv3/archive/refs/tags/v0.2.6.tar.gz"
-  sha256 "ef2bee616031316bc4cbc416cf9932fd1b2273f5f8fe9c24d2b3602c14277e8a"
+  url "https://github.com/etcd-cpp-apiv3/etcd-cpp-apiv3/archive/refs/tags/v0.2.9.tar.gz"
+  sha256 "6874643b511a01656b4e4bc9805f911630963718f05807cbebc4b1c8bfb0fdc6"
   license "BSD-3-Clause"
-  revision 3
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "0b3ff796f8f384c630d74fed859dc5b6e093f8a11611e18ba94f7cd94fb412a4"
-    sha256 cellar: :any,                 arm64_big_sur:  "78a49fd2ae226663eb30887e696b531bd83ca57ea223aca63ae496c89b98e0e6"
-    sha256 cellar: :any,                 monterey:       "4c2b98a226dc6c95099b46d8007e86595ae4132c618001452c91e9495e8a6b6f"
-    sha256 cellar: :any,                 big_sur:        "6b7748b3dd248a4bfd4acf48a6d7814be8ff1f10ebe149f09d04a1dcc9afc624"
-    sha256 cellar: :any,                 catalina:       "8866215ace8113afcd75fd54edbf34131a50e900e4ddbd75254ddf9e7fb3394a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "331ac6e0f061212ef36f91eab7f7c4df0aaa5c8c8e5abf59b4c39832bbf231d7"
+    sha256 cellar: :any,                 arm64_ventura:  "c2ca7f7d6163bd00085cff6c638aaaeeab6d5c989ab5cfc2fc8cd1d5fa265207"
+    sha256 cellar: :any,                 arm64_monterey: "52d5d1efe7cea26e46fa2e6c480f975b608fdd286b9553ac1999e9bae9d9a1b5"
+    sha256 cellar: :any,                 arm64_big_sur:  "f43bc27d5097934575234a84b2ba06d3d5d7e99a82a20bcb80fdf847ad5ffeba"
+    sha256 cellar: :any,                 ventura:        "709fb5e6ec697880224ca2426b44d3886b0fd5fa9aeb1ad2be0c079f5c22f36d"
+    sha256 cellar: :any,                 monterey:       "5d6691e57d8e8b1c41c97e4b5bb8b69b39c984e4befb62f6075b78c893ca541e"
+    sha256 cellar: :any,                 big_sur:        "077dc3cb57e5caa7ab246f36f47dcec2104e952d10622708d0bcf393f4cfbf66"
+    sha256 cellar: :any,                 catalina:       "674d32fd9d883ebef3d1b13710cf68982c7c5b7c8d7a6eeb3fcb34e34e989e31"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "46c11b600e4eba310d11d07b5ca101b08bfab8bae3f70749ea280e41810c4c18"
   end
 
   depends_on "cmake" => :build
@@ -23,12 +25,6 @@ class EtcdCppApiv3 < Formula
   depends_on "grpc"
   depends_on "openssl@1.1"
   depends_on "protobuf"
-
-  # grpc requrires high version of gcc and are built with high version of gcc,
-  # thus gcc 5 won't work
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5"
 
@@ -85,13 +81,11 @@ class EtcdCppApiv3 < Formula
 
     # prepare etcd
     etcd_pid = fork do
-      on_macos do
-        if Hardware::CPU.arm?
-          # etcd isn't officially supported on arm64
-          # https://github.com/etcd-io/etcd/issues/10318
-          # https://github.com/etcd-io/etcd/issues/10677
-          ENV["ETCD_UNSUPPORTED_ARCH"]="arm64"
-        end
+      if OS.mac? && Hardware::CPU.arm?
+        # etcd isn't officially supported on arm64
+        # https://github.com/etcd-io/etcd/issues/10318
+        # https://github.com/etcd-io/etcd/issues/10677
+        ENV["ETCD_UNSUPPORTED_ARCH"]="arm64"
       end
 
       exec "#{Formula["etcd"].opt_prefix}/bin/etcd",

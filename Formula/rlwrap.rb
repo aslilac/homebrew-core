@@ -1,8 +1,8 @@
 class Rlwrap < Formula
   desc "Readline wrapper: adds readline support to tools that lack it"
   homepage "https://github.com/hanslub42/rlwrap"
-  url "https://github.com/hanslub42/rlwrap/archive/v0.45.2.tar.gz"
-  sha256 "7197559f193918cc8782421b5b1313abbde5e3b965a5f91f9ee25aee9b172ec5"
+  url "https://github.com/hanslub42/rlwrap/archive/refs/tags/0.46.1.tar.gz"
+  sha256 "c537e8a53df36f1f996601d776203478ad56fab1d67b3c1a63057badb0851cec"
   license "GPL-2.0-or-later"
   head "https://github.com/hanslub42/rlwrap.git", branch: "master"
 
@@ -12,13 +12,14 @@ class Rlwrap < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "2e026b8952dfc5806e289f72d741d03c3a53fa028a5aab2965b4b7793cdd1bf7"
-    sha256 arm64_big_sur:  "d7f6b7527f6b090fe587c18ba314460a84949a81158399ff143521c2bf949e91"
-    sha256 monterey:       "7a3f36bd7365d80d9182e1b1ff9f77177d9203c2358a36794fba1547dadc51fa"
-    sha256 big_sur:        "4776bfe5bf3753463d331b150b37be72f4729aa144d9bb45030c56e9ad16c6a0"
-    sha256 catalina:       "ca0fa52e2eb8649716938dd6d21a15652a7eeaf2ba0acfcb9cbd6cb9a5dae490"
-    sha256 mojave:         "fcfe56a0eac619bcf9d9d1f8f5ddda648e09719c8c78c0db3d599f7edb7a59b7"
-    sha256 x86_64_linux:   "525f35129e98623fbebda88c217862faf363bd9641d20858a9b8c14c120f4458"
+    sha256 arm64_ventura:  "6cc64e120040bde8ff3680d02a5233073756f3a9ecfa159230636574747be809"
+    sha256 arm64_monterey: "800128c200ac5cd3ba45d50a835bd48f9ffb62e04886d1d615604477a599b91b"
+    sha256 arm64_big_sur:  "4273ede2a9d3c9c7812e596db58b7ec36446fb9e26d9fcbe908f8afa68cf8672"
+    sha256 ventura:        "9e480ae1326e022bbec1454240504e1361fb8b62c9df64b378f5072d6e27fb35"
+    sha256 monterey:       "073698b12b6cb3cb5bc9934bd1b0048562ba32b320fcc2cef9b5652b7354f825"
+    sha256 big_sur:        "b4b03c2fa68bfb2210e7fda2153bc6a6866ae3c16105465d14818e3ea87795b6"
+    sha256 catalina:       "a46ae39723ca361493eb0b81e15cd85de9a2b0b9ff26d8de49d0f606b328658c"
+    sha256 x86_64_linux:   "d8ea0283b1103d38b58122b54334229769b61fd78cf1d9f1d4716437389cbc3e"
   end
 
   depends_on "autoconf" => :build

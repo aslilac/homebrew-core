@@ -1,23 +1,26 @@
 class Atmos < Formula
   desc "Universal Tool for DevOps and Cloud Automation"
   homepage "https://github.com/cloudposse/atmos"
-  url "https://github.com/cloudposse/atmos/archive/v1.4.24.tar.gz"
-  sha256 "e1ac784ff4a37ecf87ea1e54456b51bfe535c5900da2965832d172a205f703d8"
+  url "https://github.com/cloudposse/atmos/archive/v1.16.0.tar.gz"
+  sha256 "63dffb8c7bb695ce6e750ec4fc4c196ff4cdb7f165d772bc4a9889ecf5949330"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "80baf682a46a742afc9dcc19e4ce41aa823f4d0e75c7e08b17b3045a317bc698"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "912dd19bbc2305e36812be6003ce32ba87897cfb7122ad53064a7e3dd9208755"
-    sha256 cellar: :any_skip_relocation, monterey:       "31ed4f5419c7e1fdd2b7edc4f0bb98f2f76712cc90d582424c229074f8c5ea2b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f57b9f74e9659b12736958949f59b7528719285fe56f55fad167905fbf7c9d95"
-    sha256 cellar: :any_skip_relocation, catalina:       "58c167aa99b02f15a6bce2f1600ac58aa98b27aa92e0918d8904633fa6bd7a90"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bbb83d31ab990b536b0f0e1491aed9c9b4ac217ff7bd8ec22c626bd5f922fcac"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "693c3e0f00ed561c86cc3e09c7925e9d359f4ebbb70cee842721e1e05aaf3126"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a3678a42f612a8bfac6a68398c8017d020731bac272bb24cfc0716163101153e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6f87e437746a7e646741b2f12b72d8c4dd0cfd0e365b0d35e4edd406c4cda6f9"
+    sha256 cellar: :any_skip_relocation, ventura:        "d3f143f4cf75bb9746cf1dc8b71bd919bfe71512b40559cf7c9ad2d7f00ec0ba"
+    sha256 cellar: :any_skip_relocation, monterey:       "73c626dead84a4bdd70a94980432f718d1e26a44c4965af8468159191959c69e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c84a778a9cd72a09cb9879044a191ad808c48381d9e3da70f35681f02df70c30"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "160619973410a931cc10d42134f2808340cc4e4543fad140116ab2d56909247d"
   end
 
   depends_on "go" => :build
 
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w -X 'github.com/cloudposse/atmos/cmd.Version=#{version}'")
+
+    generate_completions_from_executable(bin/"atmos", "completion")
   end
 
   test do

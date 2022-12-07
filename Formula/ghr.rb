@@ -1,18 +1,19 @@
 class Ghr < Formula
   desc "Upload multiple artifacts to GitHub Release in parallel"
   homepage "https://tcnksm.github.io/ghr"
-  url "https://github.com/tcnksm/ghr/archive/v0.14.0.tar.gz"
-  sha256 "e48f6080f81960ec12dad0d104cb0afe876134bab862a229c9aed91f9f618c1e"
+  url "https://github.com/tcnksm/ghr/archive/v0.16.0.tar.gz"
+  sha256 "c2b1f0a25b3e0b9016418c125441f16615387e32bce5c56049064deffbe1b1c9"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ef5d956b276719ddd21fba7bc706aca4a2c339766f035a483b65f4706caa2a96"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "04afdc255e1db1bd569f7ca0b8a7b38b1bc5394050c12ab9ab31d1ebde5d1726"
-    sha256 cellar: :any_skip_relocation, monterey:       "23f165ccc58dc30062c587043cca2b9044dba8a278f95516711c697451979983"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9daff45d2137be191f4906d69385b64afe3f049dc656475585d1c7589a4dcfc1"
-    sha256 cellar: :any_skip_relocation, catalina:       "af8668bdf5cf37170d1476fdfeb3df0a81c8dcc83e63f22914d037560a096a37"
-    sha256 cellar: :any_skip_relocation, mojave:         "91b37053dae7ad067b16ac4e54a64ce43d71c1c7552b42635012c21a770f4f69"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "63ac6cdfcd910505644cfc262a1462fa10426c1460a0889924887e85fec69e36"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "aaf361b786efae90b48964bc56fd935412c4db14303dd4bdca230331f285fd5c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "aff88f794b79ecc4412ba3f56c3ec835c1ee4d620b2948b918b2d07cc35c18e9"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "52233c065fddeca71a3932cda06c6fc6737675f42f6e9cec325834ba3a1f1d7a"
+    sha256 cellar: :any_skip_relocation, ventura:        "33393c84870f74c92acdaec6294bf5d49a555b354d249d54b8376c23645020b2"
+    sha256 cellar: :any_skip_relocation, monterey:       "d6900cd810ced4aa78c721505833f3b4d06fc75c004c555044c2ed2bd6098063"
+    sha256 cellar: :any_skip_relocation, big_sur:        "71c80121c792b3f62ac50215adfec225022c9f79cc902493792a87e7bcc81c45"
+    sha256 cellar: :any_skip_relocation, catalina:       "b7ad64d380266fa300f33cfb884e40090556065e2b9c59eede706543eac24113"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2f84d33e3ac1358c3a5a36d7d8af0e7ce5990cd1a816de97e304320498a1b38e"
   end
 
   depends_on "go" => :build

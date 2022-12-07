@@ -1,9 +1,9 @@
 class Links < Formula
   desc "Lynx-like WWW browser that supports tables, menus, etc."
   homepage "http://links.twibright.com/"
-  url "http://links.twibright.com/download/links-2.27.tar.bz2"
-  sha256 "d8ddcbfcede7cdde80abeb0a236358f57fa6beb2bcf92e109624e9b896f9ebb4"
-  license "GPL-2.0-or-later"
+  url "http://links.twibright.com/download/links-2.28.tar.bz2"
+  sha256 "2fd5499b13dee59457c132c167b8495c40deda75389489c6cccb683193f454b4"
+  license "GPL-2.0-or-later" => { with: "openvpn-openssl-exception" }
 
   livecheck do
     url "http://links.twibright.com/download.php"
@@ -11,31 +11,28 @@ class Links < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "d144ac3578be1db12a070229f46d39eb34d1cddb8bfc27b425d999be74908237"
-    sha256 cellar: :any,                 arm64_big_sur:  "d4cebe3bfc41563dc8f30bdce62b290d8e4ad014731ea86dcccfd0c0872f1710"
-    sha256 cellar: :any,                 monterey:       "c4c098ab932b778ea8d90eb7f6a9b1059f5d34458f0ea6de65751aaca62fd1fe"
-    sha256 cellar: :any,                 big_sur:        "6127bfa01abcbf37f597d52d8335a68f0a1ea7ef76aa5b304cc5c44bc14d17a6"
-    sha256 cellar: :any,                 catalina:       "b9a844178275ee01275c2f243aa474a2bd33e4f47eb058fb78d2ef1d640312e2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b911c32060a18c19ea4eeae549a60523dc068122ad3df059e4ece6c27d10ecbf"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "94c4e2c60e55c797cba12f8e32e7c16a5e5b0117ba79680c41e5ec8dc587d963"
+    sha256 cellar: :any,                 arm64_monterey: "86447d391cbadebc15d53bdba2dc5e824d7a8fd554ac9e805894f58dab48f6d5"
+    sha256 cellar: :any,                 arm64_big_sur:  "eeb988eb931d99c381b413f7623596aafe8f0c8c573b5291cbaf157115046ee1"
+    sha256 cellar: :any,                 ventura:        "5c15b0dc7ba7ed27f06cf198b2043bbc4a8ce194f42b6b5b56e8453c8643a391"
+    sha256 cellar: :any,                 monterey:       "d472501f6e0e5f18babd9f3f40503d774229ba9476034c7e0eca8455cce2870c"
+    sha256 cellar: :any,                 big_sur:        "4dcfbaad5a0e797b81674c6454912b2a9ab192af1f8e434794a4a3938a6e0d82"
+    sha256 cellar: :any,                 catalina:       "0d676b66beb64c78ba9d6e1e4af1e2c533a3e2ce2c9c6fa826edb525ff86ec5b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4cf574763d64bf60fa5f757fb70c560cc65934cd410e7a581a099e188849578d"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "jpeg"
-  depends_on "librsvg"
-  depends_on "libtiff"
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
+
+  uses_from_macos "bzip2"
+  uses_from_macos "zlib"
 
   def install
-    args = %W[
-      --disable-debug
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-      --mandir=#{man}
-      --with-ssl=#{Formula["openssl@1.1"].opt_prefix}
-      --without-lzma
-    ]
-
-    system "./configure", *args
+    system "./configure", *std_configure_args,
+                          "--mandir=#{man}",
+                          "--with-ssl=#{Formula["openssl@3"].opt_prefix}",
+                          "--without-lzma"
     system "make", "install"
     doc.install Dir["doc/*"]
   end

@@ -1,26 +1,27 @@
 class Libre < Formula
   desc "Toolkit library for asynchronous network I/O with protocol stacks"
   homepage "https://github.com/baresip/re"
-  url "https://github.com/baresip/re/archive/refs/tags/v2.5.0.tar.gz"
-  sha256 "937e4d9d94684159d264d8982bad599d594bef00d62170174dba3026fe2bcdcc"
+  url "https://github.com/baresip/re/archive/refs/tags/v2.10.0.tar.gz"
+  sha256 "4d2b6f8fc73efdbcb5a7b2a98d0b46ac6eb28ede5ae90f9596b49663eec623a9"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "45b366390f5f9ab4212cfb4e09eb1dda47e5a185a9d56396f7936bd36eb311c4"
-    sha256 cellar: :any,                 arm64_big_sur:  "7887639a9d19860ed5610d512d3412abd30f8f4b7bec56d0e5b4cac0389456a7"
-    sha256 cellar: :any,                 monterey:       "8b6f7250c6dbd43471961c8ab50874427e8b0dab8d062f6691b7767d21840d69"
-    sha256 cellar: :any,                 big_sur:        "cd322c026f20d3609b0fc56c2ab61d3edf20d48c171d57291ec1a62e6a475bd0"
-    sha256 cellar: :any,                 catalina:       "5bf146f16f0311e66b1c3ee7843349374305ac46beabebfe9ff9b0f6fe37ac47"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "02e8a406f27f397397f717cfcb2e2d7fbe3a4c3762dd0c2d761d76ba8738fea7"
+    sha256 cellar: :any,                 arm64_ventura:  "c7d463b9a3cd136b2bd71565b1976355145ff79aefefee8e0e2826936d1a6b5e"
+    sha256 cellar: :any,                 arm64_monterey: "c1639d21606975a56d5f0093900f3cffc604f3057f0127e6cc3b3b9b8447cb02"
+    sha256 cellar: :any,                 arm64_big_sur:  "44df50d7545a2d48ef61ec184d776e1c604ef12873723e9128ec99e6088df8f8"
+    sha256 cellar: :any,                 ventura:        "d8738736cdd1c1aaf26df6357fb8d4da0821e3e85e055f2b9abfdce8cee57f8f"
+    sha256 cellar: :any,                 monterey:       "915f96fa9d8346e9e4ff7c8cb271287c122d84eb6347e93059f2d5da154996ec"
+    sha256 cellar: :any,                 big_sur:        "daaa97bbaf3c5acd4464a8a1d8da7e25668434907faf1222b185a7749886e1f2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c0553f193f135f8ca44a3d04bbac3510049b98bff41512f6fc8616ed17150665"
   end
 
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
 
   uses_from_macos "zlib"
 
   def install
     sysroot = "SYSROOT=#{MacOS.sdk_path}/usr" if OS.mac?
-    system "make", *sysroot, "install", "PREFIX=#{prefix}"
+    system "make", *sysroot, "install", "PREFIX=#{prefix}", "RELEASE=1", "V=1"
   end
 
   test do

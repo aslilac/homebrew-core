@@ -1,10 +1,18 @@
 class Rav1e < Formula
   desc "Fastest and safest AV1 video encoder"
   homepage "https://github.com/xiph/rav1e"
-  url "https://github.com/xiph/rav1e/archive/v0.5.1.tar.gz"
-  sha256 "7b3060e8305e47f10b79f3a3b3b6adc3a56d7a58b2cb14e86951cc28e1b089fd"
   license "BSD-2-Clause"
   head "https://github.com/xiph/rav1e.git", branch: "master"
+
+  stable do
+    url "https://github.com/xiph/rav1e/archive/v0.6.1.tar.gz"
+    sha256 "dd12132ad9dac229ce00a9caad132c4ad23d7db2b3ad4b5a59e89658fee04d9a"
+
+    resource "Cargo.lock" do
+      url "https://github.com/xiph/rav1e/releases/download/v0.6.1/Cargo.lock"
+      sha256 "da13dcb2ea6bc0212b077a2e2e2e55b2a674a0ae683b7a2c4cf3e4f137c920cb"
+    end
+  end
 
   livecheck do
     url :stable
@@ -12,17 +20,21 @@ class Rav1e < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "9d48bd483e2d92e70f329a6adf29c93d67af0d6510c3d7163e49000067be4a26"
-    sha256 cellar: :any,                 arm64_big_sur:  "f87657ce277bf69054832d9e628edd18a4f4ea39df298a2e81db0a85f5da0e56"
-    sha256 cellar: :any,                 monterey:       "4cc9765faec8aeca62be987bbcd113fd6227f4ed027dcc64e9b197ec52663c23"
-    sha256 cellar: :any,                 big_sur:        "4464e4eec498522d840e1ef3b919bba86ca7a2eb04d12a9b939005382437b201"
-    sha256 cellar: :any,                 catalina:       "9ce2a8b3dff9374e3a9603fc51e5b26bee38450ad91df06681fcb02f2844f5cd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6e3d6e1b0f3b5e7c1b2a8936eeeb59a24257fa0c71f6c8f70aaf647b4c694cfc"
+    sha256 cellar: :any,                 arm64_ventura:  "781fdba55f672f2808d5a942645de9fe9e032f9c6f4b74a626a1eed77d8d5238"
+    sha256 cellar: :any,                 arm64_monterey: "cf02db9e7de5fde855205de5c4712ea332a6165b155063bca322bfc292704b2d"
+    sha256 cellar: :any,                 arm64_big_sur:  "2a18dfad1d04729a15103f084449a1fa1378e571651ec96d145d59158abb1e45"
+    sha256 cellar: :any,                 ventura:        "a162a9c35f1adb24986a47c654250eee20a5adad72b473c44cf7f3adee821a5e"
+    sha256 cellar: :any,                 monterey:       "c26df3fe0341c72aba9ce445350e6f73bc1e4c1e730a7ada7d6e4b03d7b6a2ac"
+    sha256 cellar: :any,                 big_sur:        "6ed0c0c4c1c8dc2e3da2caec1c70e9866c372813deb1532b4ebc511fbbd5d13c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6298430329a5c5cfdb1d170b2690834a4759aa14515a3a0fac8aa91204b9835f"
   end
 
   depends_on "cargo-c" => :build
-  depends_on "nasm" => :build
   depends_on "rust" => :build
+
+  on_intel do
+    depends_on "nasm" => :build
+  end
 
   resource "bus_qcif_7.5fps.y4m" do
     url "https://media.xiph.org/video/derf/y4m/bus_qcif_7.5fps.y4m"
@@ -30,6 +42,7 @@ class Rav1e < Formula
   end
 
   def install
+    buildpath.install resource("Cargo.lock") if build.stable?
     system "cargo", "install", *std_cargo_args
     system "cargo", "cinstall", "--prefix", prefix
   end

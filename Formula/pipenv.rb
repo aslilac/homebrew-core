@@ -3,35 +3,37 @@ class Pipenv < Formula
 
   desc "Python dependency management tool"
   homepage "https://github.com/pypa/pipenv"
-  url "https://files.pythonhosted.org/packages/14/15/72379e0884455c9b517015e8e5771c69e13749799af460e9199c3c7f6ab9/pipenv-2022.6.7.tar.gz"
-  sha256 "6ac0e7a8bbe02859d46c53c03d3f33136bbf49c8c7d9a6d818409e17a604eda0"
+  url "https://files.pythonhosted.org/packages/74/4f/22ef1aace6d703a7b5bf80d09b8ca3315fd68bcba89bf2d625d8b330310b/pipenv-2022.9.24.tar.gz"
+  sha256 "d682375d6a6edd2f1ed2f76085b7191de149ff8381bce6c1aaf7f55061b04457"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b13deb536e0676b6e40266aa061a78706d2d7be4166a098cd1e7db912ba13778"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "86230b8730d7c14f1c84e57546b42c9d190b385acce8a1918dcc5dac6c974488"
-    sha256 cellar: :any_skip_relocation, monterey:       "65a14e232883fde3c5a6c63f705790a27767950246fbeee06b089423020f86bf"
-    sha256 cellar: :any_skip_relocation, big_sur:        "dff877347de085ef6b97d10bf561a6c86aad0af8f57d4b34a1c2e5e519858330"
-    sha256 cellar: :any_skip_relocation, catalina:       "8af57cf76b2d1168da661d18c72d4ffa751c5bbb79eea6f984b40935c648d7e8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a235f21a870624aca0096f44ef4b6b07da80b88e459bd4b8281dccdee6e7b4a8"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5feb4b172f502861488ae34cfbb2b9ddfa3cc05a1f2ee1801930747025fac424"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "bff34499e6f5386f79d5f3fee666895e5662045d1465eb4795736e2fa063e576"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "af6a0fe6859e36fe4acfc9aa4ed02eac081de51ea501e9316c714c06becef748"
+    sha256 cellar: :any_skip_relocation, ventura:        "ca9884b23a6ae5df06f6dd72ff1c3462e8649027939da0dec8c5e28f01729943"
+    sha256 cellar: :any_skip_relocation, monterey:       "936de89f25774427c285ac88fd3ed82f08e8914ee25b29c911393d1b72f04d7b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "373876aa766fee3f99d7967f520a51e3cda11e2e8096d397ef1ed11e125d74ce"
+    sha256 cellar: :any_skip_relocation, catalina:       "5f725141ac7eff2955a582ac891533ab79f5b165cdecfcfbde4290d6fe6629f9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a49a0e52fe4c5716991d7cb61afe75ffe6dd17b26d862843ee30853afa3d4721"
   end
 
-  depends_on "python@3.10"
-  depends_on "six"
+  depends_on "python@3.11"
 
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/07/10/75277f313d13a2b74fc56e29239d5c840c2bf09f17bf25c02b35558812c6/certifi-2022.5.18.1.tar.gz"
-    sha256 "9c5705e395cd70084351dd8ad5c41e65655e08ce46f2ec9cf6c2c08390f71eb7"
+    url "https://files.pythonhosted.org/packages/cb/a4/7de7cd59e429bd0ee6521ba58a75adaec136d32f91a761b28a11d8088d44/certifi-2022.9.24.tar.gz"
+    sha256 "0d9c601124e5a6ba9712dbc60d9c53c21e34f5f641fe83002317394311bdce14"
   end
 
   resource "distlib" do
-    url "https://files.pythonhosted.org/packages/85/01/88529c93e41607f1a78c1e4b346b24c74ee43d2f41cfe33ecd2e20e0c7e3/distlib-0.3.4.zip"
-    sha256 "e4b58818180336dc9c529bfb9a0b58728ffc09ad92027a3f30b7cd91e3458579"
+    url "https://files.pythonhosted.org/packages/58/07/815476ae605bcc5f95c87a62b95e74a1bce0878bc7a3119bc2bf4178f175/distlib-0.3.6.tar.gz"
+    sha256 "14bad2d9b04d3a36127ac97f30b12a19268f211063d8f8ee4f47108896e11b46"
   end
 
   resource "filelock" do
-    url "https://files.pythonhosted.org/packages/f3/c7/5c1aef87f1197d2134a096c0264890969213c9cbfb8a4102087e8d758b5c/filelock-3.7.1.tar.gz"
-    sha256 "3a0fd85166ad9dbab54c9aec96737b744106dc5f15c0b09a6744a445299fcf04"
+    url "https://files.pythonhosted.org/packages/95/55/b897882bffb8213456363e646bf9e9fa704ffda5a7d140edf935a9e02c7b/filelock-3.8.0.tar.gz"
+    sha256 "55447caa666f2198c5b6b13a26d2084d26fa5b115c00d065664b2124680c4edc"
   end
 
   resource "platformdirs" do
@@ -40,8 +42,8 @@ class Pipenv < Formula
   end
 
   resource "virtualenv" do
-    url "https://files.pythonhosted.org/packages/5f/6c/d44c403a54ceb4ec5179d1a963c69887d30dc5b300529ce67c05b4f16212/virtualenv-20.14.1.tar.gz"
-    sha256 "ef589a79795589aada0c1c5b319486797c03b67ac3984c48c669c0e4f50df3a5"
+    url "https://files.pythonhosted.org/packages/b4/27/b71df0a723d879baa0af1ad897b2498ad78f284ae668b4420092e44c05fa/virtualenv-20.16.6.tar.gz"
+    sha256 "530b850b523c6449406dfba859d6345e48ef19b8439606c5d74d7d3c9e14d76e"
   end
 
   resource "virtualenv-clone" do
@@ -49,11 +51,15 @@ class Pipenv < Formula
     sha256 "418ee935c36152f8f153c79824bb93eaf6f0f7984bae31d3f48f350b9183501a"
   end
 
+  def python3
+    "python3.11"
+  end
+
   def install
     # Using the virtualenv DSL here because the alternative of using
     # write_env_script to set a PYTHONPATH breaks things.
     # https://github.com/Homebrew/homebrew-core/pull/19060#issuecomment-338397417
-    venv = virtualenv_create(libexec, "python3")
+    venv = virtualenv_create(libexec, python3)
     venv.pip_install resources
     venv.pip_install buildpath
 
@@ -66,15 +72,10 @@ class Pipenv < Formula
     }
     (bin/"pipenv").write_env_script(libexec/"bin/pipenv", env)
 
-    output = Utils.safe_popen_read(
-      { "_PIPENV_COMPLETE" => "zsh_source" }, libexec/"bin/pipenv", { err: :err }
-    )
-    (zsh_completion/"_pipenv").write output
-
-    output = Utils.safe_popen_read(
-      { "_PIPENV_COMPLETE" => "fish_source" }, libexec/"bin/pipenv", { err: :err }
-    )
-    (fish_completion/"pipenv.fish").write output
+    (zsh_completion/"_pipenv").write Utils.safe_popen_read({ "_PIPENV_COMPLETE" => "zsh_source" },
+                                                           libexec/"bin/pipenv", { err: :err })
+    (fish_completion/"pipenv.fish").write Utils.safe_popen_read({ "_PIPENV_COMPLETE" => "fish_source" },
+                                                                libexec/"bin/pipenv", { err: :err })
   end
 
   # Avoid relative paths
@@ -92,7 +93,7 @@ class Pipenv < Formula
   test do
     ENV["LC_ALL"] = "en_US.UTF-8"
     assert_match "Commands", shell_output("#{bin}/pipenv")
-    system "#{bin}/pipenv", "--python", Formula["python@3.10"].opt_bin/"python3"
+    system "#{bin}/pipenv", "--python", which(python3)
     system "#{bin}/pipenv", "install", "requests"
     system "#{bin}/pipenv", "install", "boto3"
     assert_predicate testpath/"Pipfile", :exist?

@@ -4,6 +4,7 @@ class Ocp < Formula
   url "https://stian.cubic.org/ocp/ocp-0.2.99.tar.xz"
   sha256 "d00165e206403b876b18edfc264abc8b6ce3d772be7e784fe4d358e37e57affd"
   license "GPL-2.0-or-later"
+  revision 2
   head "https://github.com/mywave82/opencubicplayer.git", branch: "master"
 
   livecheck do
@@ -12,12 +13,14 @@ class Ocp < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "b921004b4dd2cd920438958b4680f1f6a7ec9df6588ef29e02f480633f5b4a6b"
-    sha256 arm64_big_sur:  "42c624611c35001ca2b30b68170d732992e339165ddcbd951cba9d96be3c3b58"
-    sha256 monterey:       "216dc81701f3216ae552223f3ed09d34ddea880143898c8c1a475ce8b33acd0e"
-    sha256 big_sur:        "6ab826f1169833df2eca0cf33f36f88a35d4c12fb9ce8b5d20112ab108740f77"
-    sha256 catalina:       "97ff91ef5b48d7ae05a7ada0ba678dd69b825a025dce6c61e04759645d20bbe4"
-    sha256 x86_64_linux:   "125015cdc649ee1c0c3f1b770ca8cbc4a93ba8123a824687070196aea61da5e6"
+    sha256 arm64_ventura:  "cc1056ad1f983099c556ad8bde36f860abe50fcd5bcd541ab6e4a782b0a5bf32"
+    sha256 arm64_monterey: "9edc28eaa5cf8ed6e167f210507a6a0c3ef4c7d575daf0b4bc92aa07d0164486"
+    sha256 arm64_big_sur:  "82e19216f43ce9d8987fa9d12060dc73a6466b47002406809f3f7576ca618e8e"
+    sha256 ventura:        "c5c00769fa6624fbdf1530d6feb74e1abc9e513ba2c7f86aa4d89d5c748c053f"
+    sha256 monterey:       "ecab66f3af0eafc0d7b07d11c08ef876ef6e4865fe78ca599cda2dc20cfa8288"
+    sha256 big_sur:        "9310045304a8d3c2147c4ed62771fe8b6991f93de5f83d99ea7af7c1d3081cde"
+    sha256 catalina:       "3b6c634729414ba56a28bee50525a1571218066a8ce3814db3d67006527891d4"
+    sha256 x86_64_linux:   "c1e03126316630cba2f978965a17d41f726b9f8105ab74fea5425a185f33efb3"
   end
 
   depends_on "pkg-config" => :build
@@ -31,14 +34,16 @@ class Ocp < Formula
   depends_on "libvorbis"
   depends_on "mad"
 
-  if MacOS.version < :catalina
-    depends_on "sdl"
-  else
-    depends_on "sdl2"
-  end
-
   uses_from_macos "ncurses"
   uses_from_macos "zlib"
+
+  on_mojave :or_older do
+    depends_on "sdl12-compat"
+  end
+
+  on_system :linux, macos: :catalina_or_newer do
+    depends_on "sdl2"
+  end
 
   on_linux do
     depends_on "util-linux" => :build # for `hexdump`
@@ -68,7 +73,7 @@ class Ocp < Formula
       --with-unifontdir=#{share}
     ]
 
-    args << if MacOS.version < :catalina
+    args << if OS.mac? && MacOS.version < :catalina
       "--without-sdl2"
     else
       "--without-sdl"

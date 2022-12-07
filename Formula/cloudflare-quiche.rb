@@ -2,18 +2,20 @@ class CloudflareQuiche < Formula
   desc "Savoury implementation of the QUIC transport protocol and HTTP/3"
   homepage "https://docs.quic.tech/quiche/"
   url "https://github.com/cloudflare/quiche.git",
-      tag:      "0.14.0",
-      revision: "4d411c22413835f2d57f993d1c90c07813f803cd"
+      tag:      "0.16.0",
+      revision: "24a959abf115923910ce18985aa199d85fb602d7"
   license "BSD-2-Clause"
   head "https://github.com/cloudflare/quiche.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0a0cfd96befac15ff1d0d0ffc3470db2d2d122f6a2a9b2020512bf4a0d5bf060"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2be3d9e9a7923c8dff8fc3c686a18cafebd2f48af8b5d34217e9b56135a95caa"
-    sha256 cellar: :any_skip_relocation, monterey:       "bdb628c8562a013335107764358506d7be120e4c08ecf9ea7351e6388d15f022"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e8335baa606202a1f903e6cd046aae6e86366ccf67aacf83a14a57d0f9fc9814"
-    sha256 cellar: :any_skip_relocation, catalina:       "5f983b055f6b0265d34b06e53cf08af00f4c1d3beec9db4afe2f1f1464cde1e1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "667f23ac78dc13cc4f574d95afb1fbc43f04ae82a7ae43dd448a420f65ce855a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b1300fd6bf8ee2d073107dce548a1a56107fdd12f2791e9f96c8e4bf22864cdb"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8797d488886dce292a2b308225ca72358517bf3ded318df8e5c3dcd11f3fb10d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f9de7debc5daffdb5f7f2bbd17839673631a51f50bfc27971eee74b418557fbb"
+    sha256 cellar: :any_skip_relocation, ventura:        "674a27090ef623138559b5ccd546b30025fa4b99fdad1405f86289cc56c0af1b"
+    sha256 cellar: :any_skip_relocation, monterey:       "d9b2c558c1b86d67085c9364e60fcc31ab056eefb7aaa8b9fe856e1fbe68454b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "27fa73d034d8f4acf591901fce1f5c9bf3cb7412082a796a3fbd835521b20576"
+    sha256 cellar: :any_skip_relocation, catalina:       "997fca5140a5192e3721673d17efb46b048bcdb48d56c394880c8f9cd6b90bd3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c70a9670512d2fd5ae19ed4a941d181fc2bd8978e476e18744afcc778bf89694"
   end
 
   depends_on "cmake" => :build

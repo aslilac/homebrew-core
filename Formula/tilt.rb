@@ -2,18 +2,19 @@ class Tilt < Formula
   desc "Define your dev environment as code. For microservice apps on Kubernetes"
   homepage "https://tilt.dev/"
   url "https://github.com/tilt-dev/tilt.git",
-    tag:      "v0.30.4",
-    revision: "50984c5164a16906458154333265da78a6284986"
+    tag:      "v0.30.13",
+    revision: "c4513e8b69a8b64970ee954235f4e3d1ddaee605"
   license "Apache-2.0"
   head "https://github.com/tilt-dev/tilt.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a5acac8aa7df79ac20e3cc8abe6da7bfa336c02be39a132cb84f9aad4cd79403"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d652977660f412104948972770821b1c1f4faee8cbf0861530b926cab97cc403"
-    sha256 cellar: :any_skip_relocation, monterey:       "499a17db531888aef4e68ca2d5af180da9ba60fc6dbaf82ddd4e8e7ece0de09a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5445097d8944ad424643b205df94d5f6e142aa89002b226701b329ddaad69a53"
-    sha256 cellar: :any_skip_relocation, catalina:       "91ff4b949b12659df81317b005ea86f1a780935dcb512428cc35a67fdddcf17a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d5f8ea1350ed50843b86d10fea6b9f20f332f6bf8f15a8532ce2524d1ac65e14"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bbbab2a54b57081649178b9068694ec0e027f96d6be19964b3964db973a3bf21"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "976c269929c14666abbd0f27b26ac28405dd32019f7e73df9d1c55c8c24af534"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1d4fcfaf4277969b6221ff3c4de3516bb33b30c0a5cda10e0cabdbd749558e81"
+    sha256 cellar: :any_skip_relocation, ventura:        "de84b1c16e264efd5ed0835fba8b87a6d81dc2d8d365d58217c7f62ddeda7de2"
+    sha256 cellar: :any_skip_relocation, monterey:       "5f12fdaccadc23355fd7e26ab398495e9951a290099c937c4fc7b36eaeaca74b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b79b0a04589d251a3f483f672ea768aec205a9f2fc15a8a8e9bd92c138f75717"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "23e2ca84da2439859c9250ba381a5f1d5352f34a4df69db51c6a2b67d9c11927"
   end
 
   depends_on "go" => :build
@@ -33,17 +34,8 @@ class Tilt < Formula
       -X main.date=#{time.iso8601}
     ].join(" ")
     system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/tilt"
-    # Install bash completion
-    output = Utils.safe_popen_read("#{bin}/tilt", "completion", "bash")
-    (bash_completion/"tilt").write output
 
-    # Install zsh completion
-    output = Utils.safe_popen_read("#{bin}/tilt", "completion", "zsh")
-    (zsh_completion/"_tilt").write output
-
-    # Install fish completion
-    output = Utils.safe_popen_read("#{bin}/tilt", "completion", "fish")
-    (fish_completion/"tilt.fish").write output
+    generate_completions_from_executable(bin/"tilt", "completion")
   end
 
   test do

@@ -1,8 +1,8 @@
 class Butane < Formula
   desc "Translates human-readable Butane Configs into machine-readable Ignition Configs"
   homepage "https://github.com/coreos/butane"
-  url "https://github.com/coreos/butane/archive/v0.14.0.tar.gz"
-  sha256 "b6328c6186a7f5ddd1337bd75650db5d19f32ab1090f9f9e8893f1acca259a5e"
+  url "https://github.com/coreos/butane/archive/v0.16.0.tar.gz"
+  sha256 "ea6e8bc51bb2f00559c4392fa0e47758a6e84884a6a7b15980dcd3bf53c95b03"
   license "Apache-2.0"
   head "https://github.com/coreos/butane.git", branch: "main"
 
@@ -12,12 +12,14 @@ class Butane < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6283322b4afd8c56cd6b3fd866205ce6c30f4f40c31a4b1b15f8c0a31701bfc4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "19fc49d96b6c42a5c5c67ac62cd4ef036b96c52325eafc4d86b7fb8f75cc777f"
-    sha256 cellar: :any_skip_relocation, monterey:       "44a61e029ddb03358657be0a32fe7cfc4ee7a61123a1246a994b3517f9e4668a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "64fd09f996c130168cfe5486948de57c175d030579ae3d03c5c138c451e3e17f"
-    sha256 cellar: :any_skip_relocation, catalina:       "4e03586e27350f77d63e9796baf84a13c3084c6a026d3db220092a40a3dd9b02"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a2af339ce31bf69bf36dd6c9bd029badc95e615649d9ac5074a8c5f63b371147"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "eb054df104df9e19a96afe50043afcec94d21ab8166f9eb5dd787c970dff535d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7ddf2f33d40903e17244f5ca95c986b163c0b36e9dd06406b679262222c09d21"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2dc165142edf5ebe293a96bc6173fe185ea35c734bbeda53ba0cb683282f8721"
+    sha256 cellar: :any_skip_relocation, ventura:        "22f70b318af07a0834d85c17b9f03d21ed126edde1cebbe01de4113e34aab74c"
+    sha256 cellar: :any_skip_relocation, monterey:       "9451fd6d68e8aeffa29681208bdce36505ea3fe6ee280ecb54e661643fbb3ef7"
+    sha256 cellar: :any_skip_relocation, big_sur:        "2b4930099508447c0d6381184c9149892e56ce17aee21d42147abeffc76f4879"
+    sha256 cellar: :any_skip_relocation, catalina:       "0384931dd47e46541e9fc516f1724b68cef69cfe43d7824f3fc466533b0ecae0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "25b9dfb516dc06d33e1cb3c64a308aad22d0e4e656dc3ea4f4f3791b97babefd"
   end
 
   depends_on "go" => :build

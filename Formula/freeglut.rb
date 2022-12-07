@@ -1,17 +1,19 @@
 class Freeglut < Formula
   desc "Open-source alternative to the OpenGL Utility Toolkit (GLUT) library"
   homepage "https://freeglut.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/freeglut/freeglut/3.2.2/freeglut-3.2.2.tar.gz"
-  sha256 "c5944a082df0bba96b5756dddb1f75d0cd72ce27b5395c6c1dde85c2ff297a50"
+  url "https://github.com/FreeGLUTProject/freeglut/releases/download/v3.4.0/freeglut-3.4.0.tar.gz"
+  sha256 "3c0bcb915d9b180a97edaebd011b7a1de54583a838644dcd42bb0ea0c6f3eaec"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "85f94ee7f0436554c19f3e8f50fda475bdf913c04fec8e23792056adc1e1fb79"
-    sha256 cellar: :any,                 arm64_big_sur:  "b2cbc54b86715fbf75f671e11165d1a2b61ae5185d5d5e73c6fefe1fb36ccd5a"
-    sha256 cellar: :any,                 monterey:       "b4bb0d39e2a2d9d67298665b11cdd28e2e66ab58e6d35ffc2a9f7a3962574273"
-    sha256 cellar: :any,                 big_sur:        "1a218709c3f10ddf43df97c79ee616d7ad9aa5f5c8c10f44060266e3ae641b42"
-    sha256 cellar: :any,                 catalina:       "74a7a0bf713cb2030d4eb0f9d6d234bec221c97d5113ba36b1ebb71df6257d52"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "057c5a28a73b5c225322f4c8fd878f80b632e22e13f294a733e2ce1c9b7c4149"
+    sha256 cellar: :any,                 arm64_ventura:  "ee111ddfa7bdc0a6b3e6857e900d387388264bc5b0c6334d8c5e103b762fec8b"
+    sha256 cellar: :any,                 arm64_monterey: "149209f3f7f7f2d849bfd938ca7da2abe9e1302f41fa1bb107985087c97aa9cc"
+    sha256 cellar: :any,                 arm64_big_sur:  "232cbfd50de1285bbc009e713da698c25d9928b42de042f001a74ef5f83e990f"
+    sha256 cellar: :any,                 ventura:        "7c7e7fe57e38c1f1bdcd52a4ec9e81a217699131bb88ce35f8865963179d288a"
+    sha256 cellar: :any,                 monterey:       "dcebb4520aba3f89fb3662e5d896ac1eef92fd57259e94402d53b2d12ad66a19"
+    sha256 cellar: :any,                 big_sur:        "16825f785a572f580450f63be3c51fd737303ee664b4c774eaea7b7dcf434db3"
+    sha256 cellar: :any,                 catalina:       "ebd335220912ca9e72e40d98358f6e8d6f0d27c4c72024ac1d6a59004301cba6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d7751750942757f330249bf3d6a84c7a6b69fe4a29cbb502832c338ccd1927d7"
   end
 
   depends_on "cmake" => :build

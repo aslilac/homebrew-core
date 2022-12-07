@@ -9,10 +9,18 @@ class Redo < Formula
   revision 2
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "acf6514ab6680a75295138f1fa292008eda79e13059a48f825fb74dd5c24bc06"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1232319e15044a5dbd0e2b0f2608a4bbbad086f07beb2abc33fb7492c4f66204"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1232319e15044a5dbd0e2b0f2608a4bbbad086f07beb2abc33fb7492c4f66204"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1232319e15044a5dbd0e2b0f2608a4bbbad086f07beb2abc33fb7492c4f66204"
+    sha256 cellar: :any_skip_relocation, ventura:        "1232319e15044a5dbd0e2b0f2608a4bbbad086f07beb2abc33fb7492c4f66204"
+    sha256 cellar: :any_skip_relocation, monterey:       "1232319e15044a5dbd0e2b0f2608a4bbbad086f07beb2abc33fb7492c4f66204"
+    sha256 cellar: :any_skip_relocation, big_sur:        "1232319e15044a5dbd0e2b0f2608a4bbbad086f07beb2abc33fb7492c4f66204"
+    sha256 cellar: :any_skip_relocation, catalina:       "1232319e15044a5dbd0e2b0f2608a4bbbad086f07beb2abc33fb7492c4f66204"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3ff5f989f702472df0da1a1a6fa57b1648226cbc302f434f3f89678f39375764"
   end
 
-  depends_on "python@3.10"
+  depends_on "python@3.11"
 
   resource "beautifulsoup4" do
     url "https://files.pythonhosted.org/packages/e8/b0/cd2b968000577ec5ce6c741a54d846dfa402372369b8b6861720aa9ecea7/beautifulsoup4-4.11.1.tar.gz"
@@ -30,15 +38,16 @@ class Redo < Formula
   end
 
   def install
+    python3 = "python3.11"
     # Prevent system Python 2 from being detected
-    inreplace "redo/whichpython.do", " python python3 python2 python2.7;", " python3;"
+    inreplace "redo/whichpython.do", " python python3 python2 python2.7;", " #{python3};"
 
     # Prepare build-only virtualenv for generating manpages.
-    venv = virtualenv_create(buildpath/"venv", "python3")
+    venv = virtualenv_create(buildpath/"venv", python3)
     venv.pip_install resources
 
     # Set PYTHONPATH rather than prepending PATH with venv as shebangs are set to detected python.
-    ENV.prepend_path "PYTHONPATH", buildpath/"venv"/Language::Python.site_packages("python3")
+    ENV.prepend_path "PYTHONPATH", buildpath/"venv"/Language::Python.site_packages(python3)
 
     ENV["DESTDIR"] = ""
     ENV["PREFIX"] = prefix

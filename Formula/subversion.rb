@@ -2,6 +2,7 @@ class Subversion < Formula
   desc "Version control system designed to be a better CVS"
   homepage "https://subversion.apache.org/"
   license "Apache-2.0"
+  revision 1
 
   stable do
     url "https://www.apache.org/dyn/closer.lua?path=subversion/subversion-1.14.2.tar.bz2"
@@ -16,12 +17,14 @@ class Subversion < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "cc7272eb04cb9564921a7479ad81ba0f6af0ac5f27aff9c78666471c999a25a5"
-    sha256 arm64_big_sur:  "6420f6a0aaf382043a6f82510a48c98a8255e36e95960c3212594a288ed04b78"
-    sha256 monterey:       "8e32c2e3a9c0a87a109f78987d1271f0b477a261ec1eadebdb906690f948b8ee"
-    sha256 big_sur:        "c9eead079b25c32aae6dc376ca1e28313f6ff17cfb8cb625c4f018716f24118f"
-    sha256 catalina:       "519405e1ed9e5c0f7b6c962188223b3c2609f6cfd6b47e56b59d46aabd9779a7"
-    sha256 x86_64_linux:   "9c1001ca80d3443d9556f7db973ff2079acd6b8d5b66a865d26d0b868e6610e4"
+    sha256 arm64_ventura:  "feb2c3336172d37bd48015ae6383d643205c811136d7cfd94d5d2a1e09c21056"
+    sha256 arm64_monterey: "ad95b56cba0ee03647508c4763112e759e84f6a24057e4936d11fab781e3122e"
+    sha256 arm64_big_sur:  "0864d99a6b7b2edef137c3f6116a76fc31b0aeca8c227ca094af6cdcdc8278c2"
+    sha256 ventura:        "812c869433acff9ef2330083c3ce3728e7fbcdd7e273bc361b593b52a6ed316f"
+    sha256 monterey:       "45b2f7ab2a1997db75e64357831a1a11de27a9a2cefec97784dd67e8e89b1a04"
+    sha256 big_sur:        "218244b61740174700695368abb9fc8921ea74f404e1dc363ff4e49a6c21b78f"
+    sha256 catalina:       "2307bedfc2da8c3a660cf145b723d51e809278fe212f471dea99bf3f4faee483"
+    sha256 x86_64_linux:   "748afaa6d152ff15fa8fa664adcb748a302d4366e81b92f63d946a87bd6970e9"
   end
 
   head do
@@ -118,8 +121,9 @@ class Subversion < Formula
 
       args << "ZLIB=#{Formula["zlib"].opt_prefix}" if OS.linux?
 
-      system "scons", *args
-      system "scons", "install"
+      scons = Formula["scons"].opt_bin/"scons"
+      system scons, *args
+      system scons, "install"
     end
 
     # Use existing system zlib and sqlite
@@ -145,6 +149,7 @@ class Subversion < Formula
     openjdk = deps.map(&:to_formula).find { |f| f.name.match? "^openjdk" }
     perl = DevelopmentTools.locate("perl")
     ruby = DevelopmentTools.locate("ruby")
+    python3 = "python3.10"
 
     args = %W[
       --prefix=#{prefix}
@@ -166,7 +171,7 @@ class Subversion < Formula
       --without-gpg-agent
       --without-jikes
       PERL=#{perl}
-      PYTHON=#{Formula["python@3.10"].opt_bin}/python3
+      PYTHON=#{python3}
       RUBY=#{ruby}
     ]
     if openjdk
@@ -193,7 +198,7 @@ class Subversion < Formula
 
     system "make", "swig-py"
     system "make", "install-swig-py"
-    (lib/"python3.10/site-packages").install_symlink Dir["#{lib}/svn-python/*"]
+    (prefix/Language::Python.site_packages(python3)).install_symlink Dir["#{lib}/svn-python/*"]
 
     # Java and Perl support don't build correctly in parallel:
     # https://github.com/Homebrew/homebrew/issues/20415
@@ -223,8 +228,12 @@ class Subversion < Formula
           "-DPERL_DARWIN -fno-strict-aliasing -I#{HOMEBREW_PREFIX}/include -I#{perl_core}"
       end
     end
-    system "make", "swig-pl"
-    system "make", "install-swig-pl"
+    system "make", "swig-pl-lib"
+    system "make", "install-swig-pl-lib"
+    cd "subversion/bindings/swig/perl/native" do
+      system perl, "Makefile.PL", "PREFIX=#{prefix}", "INSTALLSITEMAN3DIR=#{man3}"
+      system "make", "install"
+    end
 
     # This is only created when building against system Perl, but it isn't
     # purged by Homebrew's post-install cleaner because that doesn't check

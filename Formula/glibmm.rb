@@ -1,17 +1,19 @@
 class Glibmm < Formula
   desc "C++ interface to glib"
   homepage "https://www.gtkmm.org/"
-  url "https://download.gnome.org/sources/glibmm/2.72/glibmm-2.72.1.tar.xz"
-  sha256 "2a7649a28ab5dc53ac4dabb76c9f61599fbc628923ab6a7dd74bf675d9155cd8"
+  url "https://download.gnome.org/sources/glibmm/2.74/glibmm-2.74.0.tar.xz"
+  sha256 "2b472696cbac79db8e405724118ec945219c5b9b18af63dc8cfb7f1d89b0f1fa"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "c29aa04bc62b03add040f49af1002fdde20d9b4e5eb2cc4f96422cc937fce3c1"
-    sha256 cellar: :any, arm64_big_sur:  "58bfdbea84d605f3fa8ba7825b71e2f9ae6c7bf091fff97c8444a8b31adf54dd"
-    sha256 cellar: :any, monterey:       "c5772c2c3e829d36be16c89a05bb65e429f1558c2b3abe21172749574861220a"
-    sha256 cellar: :any, big_sur:        "aec0ad08f5deb73b234ef8d9ea60889db68429a2e6b037c812aa3b417c9cfcea"
-    sha256 cellar: :any, catalina:       "bfe5a02b9bd0517cb6f58feccd502538a2f4eae548b27509d9bd323ac5502d1e"
-    sha256               x86_64_linux:   "f14a1f30131ecb144ec9d8e615e360573074eb482e03987e0aa2435544ee617a"
+    sha256 cellar: :any, arm64_ventura:  "e49ef477f2779e88d125131dbb474894fdde113cf667630ef8947821d64cb0a4"
+    sha256 cellar: :any, arm64_monterey: "9bed07ed0bc12a9eeb415a900d2a01b5163de1f595cdbdf77523c605410f7b56"
+    sha256 cellar: :any, arm64_big_sur:  "94c4d0b2ef01fa6f52f59e3eac7527f5b28c1aa71ccd60de4479402eefc7b34c"
+    sha256 cellar: :any, ventura:        "ede6b35b4de6f4ac9418f20db8b3249f3c8160257561d6d94c69663c32c62974"
+    sha256 cellar: :any, monterey:       "271bf32165f1e0c4566f7006a3d29346ed9a62f16e1bf14e2ceb710edaec0f0c"
+    sha256 cellar: :any, big_sur:        "ec798cefd26699800dd2ea6a6f0898f3c1f422b75e66eab54099b25f8ba7b0cd"
+    sha256 cellar: :any, catalina:       "7ef9ed7c63ea3d68e26f153b9bf77c1468f6811abead311f9f5c824b5eaa3550"
+    sha256               x86_64_linux:   "af31cc06c35171195312c20dbea1bcf188b6c09e770e160b0c12f64850ee57ec"
   end
 
   depends_on "meson" => :build
@@ -19,10 +21,6 @@ class Glibmm < Formula
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "libsigc++"
-
-  on_linux do
-    depends_on "gcc" => :build
-  end
 
   fails_with gcc: "5"
 

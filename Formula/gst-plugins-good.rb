@@ -4,6 +4,7 @@ class GstPluginsGood < Formula
   url "https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.20.3.tar.xz"
   sha256 "f8f3c206bf5cdabc00953920b47b3575af0ef15e9f871c0b6966f6d0aa5868b7"
   license "LGPL-2.0-or-later"
+  revision 2
   head "https://gitlab.freedesktop.org/gstreamer/gst-plugins-good.git", branch: "master"
 
   livecheck do
@@ -12,12 +13,14 @@ class GstPluginsGood < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "8dffe0671dac26808499922c3b0755836c8e28d14ff3d1c52b9c7a2c87c67ef9"
-    sha256 arm64_big_sur:  "5fd561f27b7eb60ccad37e7f873f3eddd00189bdfcb6a1c7d89bd950cef8a340"
-    sha256 monterey:       "3b9f245f27bdf0cbfe5e316f35ad432fda7149c948249384b88d4aa5a073ac71"
-    sha256 big_sur:        "629e751fc6324db7106be93113f14bf4aed0a4ff50f583ff7680e30aaf3e398e"
-    sha256 catalina:       "ae77c2e72bbe730a5b3dba3cf5c17e0668b9b6423add4e91ac379d7f44544c7d"
-    sha256 x86_64_linux:   "efe269615e2779bfc42de7564cb2cf166095527f21d0d1db469cee490a19e1fd"
+    sha256 arm64_ventura:  "3b4ffd9777e053e50730ede8b2198da1f231d504a2d03d78068127e11eadaeb0"
+    sha256 arm64_monterey: "1e1f7fce251966cd64595eb91954a281c9678bd33ff247fcc876d2ea7e2b31ef"
+    sha256 arm64_big_sur:  "7488f78b9591614a476f42ed065a7a5f238826c5ac941dab6b0dafda70fa7e98"
+    sha256 ventura:        "7fb92551a36943723ab8eb533b79d59dd75cdd78885836f74e2fbf9577415317"
+    sha256 monterey:       "61d30e5fda5a9a6f9b711eaa085d67e2df36186729fc4aada108fdf2fac165de"
+    sha256 big_sur:        "fabb7836a584cde7ea86aa4214201375a5066d93d9a78b9f9a7a07cc4c0f4a5a"
+    sha256 catalina:       "85d8b5ed3db4ddba06afb4e2a817255c0fedd64ad18f1b8a66b30089896e890a"
+    sha256 x86_64_linux:   "0c7665a781a49a80548e4a186ff895ebd2d6a35a9f03a62936e54d739127d110"
   end
 
   depends_on "meson" => :build
@@ -28,7 +31,7 @@ class GstPluginsGood < Formula
   depends_on "gettext"
   depends_on "gst-plugins-base"
   depends_on "gtk+3"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "lame"
   depends_on "libpng"
   depends_on "libshout"
@@ -39,16 +42,9 @@ class GstPluginsGood < Formula
   depends_on "taglib"
 
   def install
-    args = std_meson_args + %w[
-      -Dgoom=disabled
-      -Dximagesrc=disabled
-    ]
-
-    mkdir "build" do
-      system "meson", *args, ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+    system "meson", *std_meson_args, "build", "-Dgoom=disabled", "-Dximagesrc=disabled"
+    system "meson", "compile", "-C", "build", "-v"
+    system "meson", "install", "-C", "build"
   end
 
   test do

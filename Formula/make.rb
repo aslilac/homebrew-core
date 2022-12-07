@@ -1,21 +1,20 @@
 class Make < Formula
   desc "Utility for directing compilation"
   homepage "https://www.gnu.org/software/make/"
-  url "https://ftp.gnu.org/gnu/make/make-4.3.tar.lz"
-  mirror "https://ftpmirror.gnu.org/make/make-4.3.tar.lz"
-  sha256 "de1a441c4edf952521db30bfca80baae86a0ff1acd0a00402999344f04c45e82"
+  url "https://ftp.gnu.org/gnu/make/make-4.4.tar.lz"
+  mirror "https://ftpmirror.gnu.org/make/make-4.4.tar.lz"
+  sha256 "48d0fc0b2a04bb50f2911c16da65723285f7f4804c74fc5a2124a3df6c5f78c4"
   license "GPL-3.0-only"
 
   bottle do
-    rebuild 1
-    sha256 arm64_monterey: "1ba1c273aa4b9c0a2c927c8bdb8a48146ebd8a14dfc8ab6608fdc5cc792eaba1"
-    sha256 arm64_big_sur:  "eab3fbc3688aecec0fe90b8d0fe3cb7beb84ed773ba0411fc2f855c66deaf882"
-    sha256 monterey:       "4349e2c715f78210c29b4c35112e8343402dad5c1e44fe8d6272d9aace6bbdf7"
-    sha256 big_sur:        "2019ba646e4471d42e09c28a0992c59dd82e292bf8275b0b3bfcce3220ef9c1b"
-    sha256 catalina:       "39fc5ebff5ff708c2e3eea597b9f2eb79b910a122d30c3ac9bb93ebe313f030c"
-    sha256 mojave:         "0c0a08eef68bcd78b0345f5f57a6efffcc7be877bcb3b803f39ac8916b882477"
-    sha256 high_sierra:    "429177235322c3209e1657bea36364cd84222075b636939f6ed93a1cd04aeb21"
-    sha256 x86_64_linux:   "dd17cdf0a93ef30324250694ea5baec67c037e1d71c1cab8fe6432d66758fd62"
+    sha256 arm64_ventura:  "1eed07bf3c2d4521eb70271a5ef7be75a8d3401f9d1301a7a2925f217375bd5b"
+    sha256 arm64_monterey: "5d70e49b345e20553a0bb4c85b73ba5da42940de229abf94957784df18f8f71d"
+    sha256 arm64_big_sur:  "f1e067786d1da8f5eb10ef81fc7cd87de0b44417e8b100efd27682036124fb7c"
+    sha256 ventura:        "186e88d292e2439443ad09929244d268a0ca2e2867045f2d0ca63f104e2efd68"
+    sha256 monterey:       "ad56ca0950b6601ae210bc0279c0b35df6e6c3d432da5d93e69e5fe48b7b7690"
+    sha256 big_sur:        "18c9d5fc5ca26000b4e1b470385fe7cbc263ff9193740c5b6055df2504654784"
+    sha256 catalina:       "cd0512e7039014baa26887304f8f6adb01ab0335c7d5e6cf6406f515e4c2926b"
+    sha256 x86_64_linux:   "f2357f38942958a9d49e2d8f7562bd9fc61c2c1e8471239c022240b71b8cbf7d"
   end
 
   conflicts_with "remake", because: "both install texinfo files for make"

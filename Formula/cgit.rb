@@ -4,6 +4,7 @@ class Cgit < Formula
   url "https://git.zx2c4.com/cgit/snapshot/cgit-1.2.3.tar.xz"
   sha256 "5a5f12d2f66bd3629c8bc103ec8ec2301b292e97155d30a9a61884ea414a6da4"
   license "GPL-2.0-only"
+  revision 1
 
   livecheck do
     url "https://git.zx2c4.com/cgit/refs/tags"
@@ -11,17 +12,25 @@ class Cgit < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "bfdbfab0f980e7e67524d20a06eab7f1bb2cf788d32c2d20f9fd7e690e6d2689"
-    sha256 arm64_big_sur:  "1d94a449229b9550a5d76b9d1f0140ea6b267fcd982539d6537fce21447aae12"
-    sha256 monterey:       "bba8ad34b9bf164125a5abf7f7bfbbe93414ff4d0635b47cf1f781d4fdc9efe5"
-    sha256 big_sur:        "43d5a3249276dc89f9b8730b775fab358f9a04adac63fc18dc1257cecb0de2a8"
-    sha256 catalina:       "c5317498aefba5a04343b14929249e42a9ecc1c5da227ae06728102418bf5e49"
-    sha256 mojave:         "261aa49e87d8d4147b0ec838e22d6149f0aa41ee27751df15277b1cdb1df8bd3"
-    sha256 x86_64_linux:   "27e5543ed8c84782d48241262c483a0bec68f27fa09534ff616cda09bfec7098"
+    sha256 arm64_ventura:  "8435a3e97f7d97b0a81af4d65387edba8da214f8d348cac06a0200dfd861ca83"
+    sha256 arm64_monterey: "3e517a8b04d86f340eeba6bdd52d3a187db3e604137b5d0cc3f5a0a5547d65b3"
+    sha256 arm64_big_sur:  "27b3ceaddc63451dd3b57c153dc9f4810326884929e4839ef430d43d2b39d197"
+    sha256 ventura:        "2f2b6641da929056912b8999d35801a707380714abc20dc56d5c38445f017066"
+    sha256 monterey:       "3e955c47ed5c722d9124b1a2efc90b7ac46e5cc89c0bf8772b2dd9061bb54a56"
+    sha256 big_sur:        "9e0084dfe5c75d91bf5b6494f6e15534cff838ac52a866e4c8667062dcdd2eb2"
+    sha256 catalina:       "787b27262a5998a5dba017d0f75bfa3dadef68b7e3730d87719b1ab48536814d"
+    sha256 x86_64_linux:   "472e74b2dec4db2de6714623b092f441e17d9806e5316c3597895329fde2abc3"
   end
 
-  depends_on "gettext"
-  depends_on "openssl@1.1"
+  uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "gettext"
+  end
+
+  on_linux do
+    depends_on "openssl@3" => :build # Uses CommonCrypto on macOS
+  end
 
   # git version is mandated by cgit: see GIT_VER variable in Makefile
   # https://git.zx2c4.com/cgit/tree/Makefile?h=v1.2#n17

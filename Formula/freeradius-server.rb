@@ -5,8 +5,8 @@ class FreeradiusServer < Formula
   head "https://github.com/FreeRADIUS/freeradius-server.git", branch: "master"
 
   stable do
-    url "https://github.com/FreeRADIUS/freeradius-server/archive/refs/tags/release_3_2_0.tar.gz"
-    sha256 "2b8817472847e0b49395facd670be97071133730ffa825bb56386c89c18174f5"
+    url "https://github.com/FreeRADIUS/freeradius-server/archive/refs/tags/release_3_2_1.tar.gz"
+    sha256 "95c18c5489564b5a07ef5e64f6685dbe1415f690ceb46f0706d422b8e8a29b52"
 
     # Fix -flat_namespace being used
     patch do
@@ -21,17 +21,24 @@ class FreeradiusServer < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "2e379d98dca5701d1378fde394f170eb7e8e9ce8b0e03354a2f0f8ebbf85c6a7"
-    sha256 arm64_big_sur:  "995d7ba020eb495a11ff6017580375564425f2b057f676b8be207d3be5e7559e"
-    sha256 monterey:       "9234f76e27239a02cddd360c6952189c78ce9b5af621022da09ec2cd213eaaa0"
-    sha256 big_sur:        "5c2c7208fbedddbc04b2af8eec2ed5e94bcd7faeb6e3bfde3b6816809c7e9993"
-    sha256 catalina:       "be1b8a1d78e7cc9bccb2a6439408297a05a8af2adfef352cc84428c95e3715d6"
-    sha256 x86_64_linux:   "768b37acaefc41960a324a7bf1f1ca41459c44c90a45e4bbd9a05f6bfdf571ca"
+    sha256 arm64_ventura:  "3a9c45b654f9936b59c1dd18fd61dbef5e2c740869f60bb5843dc895c3971b65"
+    sha256 arm64_monterey: "41557555af1157aa2caa71bde5149523405f898b37c303b8c5501c4dd17bc3d8"
+    sha256 arm64_big_sur:  "e4a7493d32a60bd8b58d4896a99e89fd353d59978ecb9d9dbdd5aa14c45384f4"
+    sha256 ventura:        "fe89d6ed617b6b35ce5cea239fbd28bd324aed8d4e661933abe16d1b6484ba16"
+    sha256 monterey:       "3d123e9f63012690a85de802752edd3bc45a0d0985e6368a09c0002efce5263a"
+    sha256 big_sur:        "a6190c53bec5379b83525fcc49a557ea23bb708f816bcdf279e30bed43b96cd7"
+    sha256 catalina:       "4a5ace706738767b3e1dd02a7be32b4474a94797a914090c9ccf2150d670be80"
+    sha256 x86_64_linux:   "a147047b34df9e2bf59d84fb24aef5b70d2e0c1c1b3794d778d677fc395e9fd8"
   end
 
+  depends_on "collectd"
   depends_on "openssl@1.1"
+  depends_on "python@3.10"
   depends_on "talloc"
 
+  uses_from_macos "krb5"
+  uses_from_macos "libpcap"
+  uses_from_macos "libxcrypt"
   uses_from_macos "perl"
   uses_from_macos "sqlite"
 
@@ -51,6 +58,8 @@ class FreeradiusServer < Formula
       --with-talloc-lib-dir=#{Formula["talloc"].opt_lib}
       --with-talloc-include-dir=#{Formula["talloc"].opt_include}
     ]
+
+    args << "--without-rlm_python" if OS.mac?
 
     system "./configure", *args
     system "make"

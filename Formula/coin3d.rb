@@ -2,7 +2,7 @@ class Coin3d < Formula
   desc "Open Inventor 2.1 API implementation (Coin) with Python bindings (Pivy)"
   homepage "https://coin3d.github.io/"
   license all_of: ["BSD-3-Clause", "ISC"]
-  revision 3
+  revision 4
 
   stable do
     url "https://github.com/coin3d/coin/archive/Coin-4.0.0.tar.gz"
@@ -34,12 +34,13 @@ class Coin3d < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "6e90d8890b3fb62e64c230cf6d18e8421cdfeb3f32566f53bd2922d695e30f43"
-    sha256 cellar: :any,                 arm64_big_sur:  "52a07abdd5d902857a565c483dba9873b87e2b62ec76d22f0c7313bddce93b8f"
-    sha256 cellar: :any,                 monterey:       "405ae02aa2ad54e90eaa4a027a293952dd8a275709a103eeb5660cfbb3660fdf"
-    sha256 cellar: :any,                 big_sur:        "a549965ef49f10d7869ea3ff334d7872da6ea7c9c2251900212c2153db235cbf"
-    sha256 cellar: :any,                 catalina:       "993bb8ae8ce7ad3e2622857e73a9a5af18e06b18cd34296f6c028d2a82872edc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "389a8a6add2f83c9ec9a6cbeba3d7f9cc6762c79d7be1ee1b41de4f31c1b0ccb"
+    sha256 cellar: :any,                 arm64_ventura:  "921271da7b44aba66b0ed13c986b849f167c87315206a5dc62dd662bb63afcd4"
+    sha256 cellar: :any,                 arm64_monterey: "428735b5724d44c297805e06e664568b298fc47f169e268398706dc18af362c3"
+    sha256 cellar: :any,                 arm64_big_sur:  "e0ffcfdf4603321f5331caf3f870586f819cb6a8a7c86bf88f621b5b3740ec6b"
+    sha256 cellar: :any,                 ventura:        "575bbf4d248a7e1cd282ea6e4cb34a668515a26cff0cf653a1700a9bc91fe7f1"
+    sha256 cellar: :any,                 monterey:       "22b2ebe3fea27b2c2636bc5e963834a5a4e29b2afb5d2a043f997e7fa5d89454"
+    sha256 cellar: :any,                 big_sur:        "e823c1170d7caceff04fee98a5947a1333e1d67dc75cecf412811a8c01255275"
+    sha256 cellar: :any,                 catalina:       "7cf7ce170be433841406d71f0feba6f0e69ace689986aaa0ce59453ba5294a26"
   end
 
   head do
@@ -61,6 +62,10 @@ class Coin3d < Formula
   on_linux do
     depends_on "mesa"
     depends_on "mesa-glu"
+  end
+
+  def python3
+    "python3.10"
   end
 
   def install
@@ -87,8 +92,7 @@ class Coin3d < Formula
     resource("pivy").stage do
       ENV.append_path "CMAKE_PREFIX_PATH", prefix.to_s
       ENV["LDFLAGS"] = "-Wl,-rpath,#{opt_lib}"
-      system "python3", *Language::Python.setup_install_args(prefix),
-                         "--install-lib=#{prefix/Language::Python.site_packages("python3")}"
+      system python3, *Language::Python.setup_install_args(prefix, python3)
     end
   end
 
@@ -111,12 +115,11 @@ class Coin3d < Formula
     system ENV.cc, "test.cpp", "-L#{lib}", "-lCoin", *opengl_flags, "-o", "test"
     system "./test"
 
-    xy = Language::Python.major_minor_version Formula["python@3.10"].opt_bin/"python3"
-    ENV.append_path "PYTHONPATH", "#{Formula["pyside@2"].opt_lib}/python#{xy}/site-packages"
+    ENV.append_path "PYTHONPATH", Formula["pyside@2"].opt_prefix/Language::Python.site_packages(python3)
     # Set QT_QPA_PLATFORM to minimal to avoid error:
     # "This application failed to start because no Qt platform plugin could be initialized."
     ENV["QT_QPA_PLATFORM"] = "minimal" if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
-    system Formula["python@3.10"].opt_bin/"python3", "-c", <<~EOS
+    system python3, "-c", <<~EOS
       import shiboken2
       from pivy.sogui import SoGui
       assert SoGui.init("test") is not None

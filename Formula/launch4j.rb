@@ -2,10 +2,9 @@ class Launch4j < Formula
   desc "Cross-platform Java executable wrapper"
   homepage "https://launch4j.sourceforge.io/"
   url "https://git.code.sf.net/p/launch4j/git.git",
-      tag:      "Release_launch4j-3_14",
-      revision: "46db737fd1885203fb098f4368cd5cf5c6792373"
+      tag:      "Release_launch4j-3_50",
+      revision: "0b6f1c1ffe4e83dc47fa866a733dbf0125237937"
   license all_of: ["BSD-3-Clause", "MIT"]
-  revision 1
 
   livecheck do
     url :stable
@@ -16,9 +15,10 @@ class Launch4j < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, monterey: "10fe31dd5081fecb626537d801e678e8921c5f8d655f7daee5e6c8dd2e2ef619"
-    sha256 cellar: :any_skip_relocation, big_sur:  "4c6bfb289d9aeca25dbc25ff2f9fe12a49a635bf720fe54b788d4796c25bc108"
-    sha256 cellar: :any_skip_relocation, catalina: "beffc91a157d5958d257adb6844cdde8fa2d375083e58aa89c5db2dbb9fd37c0"
+    sha256 cellar: :any_skip_relocation, ventura:  "15f9a731ba37cfd7cf90365c98f8d59ac5c5e482d2caf7561c83adccb81e8f16"
+    sha256 cellar: :any_skip_relocation, monterey: "65e2841bc477c9fb1368d5fb38fa875a1f4233d75885a4a6e61eadf1e2eea2ae"
+    sha256 cellar: :any_skip_relocation, big_sur:  "23513b54485b601791605269df164cdf4c77c84d122c61fff6db3bb5b65c8e59"
+    sha256 cellar: :any_skip_relocation, catalina: "8c114ad97d89fad8a9a1a9c6e54d1ce0604f28b71929438db26e97bda57eb58e"
   end
 
   depends_on "ant" => :build

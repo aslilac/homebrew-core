@@ -1,25 +1,27 @@
 class Oha < Formula
   desc "HTTP load generator, inspired by rakyll/hey with tui animation"
   homepage "https://github.com/hatoo/oha/"
-  url "https://github.com/hatoo/oha/archive/refs/tags/v0.5.2.tar.gz"
-  sha256 "07df9d54b6103b4fad2e4ff0cff7f70972a5494adc986c5a864ff43cae610b5a"
+  url "https://github.com/hatoo/oha/archive/refs/tags/v0.5.5.tar.gz"
+  sha256 "8af14d4e14373e2c0c0b6473b53e51be1ec186259f5098d11a0241817cf139a8"
   license "MIT"
   head "https://github.com/hatoo/oha.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "88161c8aea0ad2e138d073473a1eb1acdef064eada75dc55b0a211f7de6b8574"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2938efc9220c7972190da3ea9f01df102f785a12a20e66c9076cbb62f425fc90"
-    sha256 cellar: :any_skip_relocation, monterey:       "b40743cb3c92c38beb8c0d3cb64f6356e99e5186a038030364b9dd756312b26a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b37cbcd018e6543787937a64076a6e3d40d89a6a72146eebd66f3370c462e62b"
-    sha256 cellar: :any_skip_relocation, catalina:       "f015d61dbf3b6bfcf5d197caa0106ae751339e49c13ad732e3479669d3795ed8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "24c745a32973f1e6bba2768d0800a0490390c13dbb376cf9c016af4957e10f8b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2dea2337ca5e2a509ba8ad3b99f62c351a06f2e0f5375ed90de51aebda0bfa8c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7a9d722fd579ce96c4bfa3fa9a2db65802b865a55a87c707f86b0b1b4a97698e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d5477596d1003b0f15bff73404810039f90c85250eac7dcfdb77a4b33af251f5"
+    sha256 cellar: :any_skip_relocation, ventura:        "a15391b1c0276a347c073779797a59673c8d1ef9d4630805bb8bd962c912f54e"
+    sha256 cellar: :any_skip_relocation, monterey:       "3dd0ed783ff5d4890d55a13d54ec5b3b5626684f976ece6e6eae1b9870addb22"
+    sha256 cellar: :any_skip_relocation, big_sur:        "eae34bc3ca152f49ceb468e60ddfa215cbba511054e7c2783c321d46535cb93c"
+    sha256 cellar: :any_skip_relocation, catalina:       "d26a9bdd54ef059691f2ee3284b415d50ac39c52909e3942815339dec3f81457"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "03281c9e56ab7ff2ac87079330e191c0de928e6faa5a96193ee18a45a261b39e"
   end
 
   depends_on "rust" => :build
 
   on_linux do
     depends_on "pkg-config" => :build
-    depends_on "openssl@1.1" # Uses Secure Transport on macOS
+    depends_on "openssl@3" # Uses Secure Transport on macOS
   end
 
   def install

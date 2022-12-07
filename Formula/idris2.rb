@@ -1,31 +1,77 @@
 class Idris2 < Formula
   desc "Pure functional programming language with dependent types"
   homepage "https://www.idris-lang.org/"
-  url "https://github.com/idris-lang/Idris2/archive/v0.5.1.tar.gz"
-  sha256 "da44154f6eba5e22ec5ac64c6ba2c28d2df0a57cf620c5b00c11adb51dbda399"
+  url "https://github.com/idris-lang/Idris2/archive/v0.6.0.tar.gz"
+  sha256 "7f5597652ed26abc2d2a6ed4220ec28fafdab773cfae0062a8dfafe7d133e633"
   license "BSD-3-Clause"
-  revision 2
   head "https://github.com/idris-lang/Idris2.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 big_sur:      "39fe90502cd4a8a064b4f69bcc5b4e99295826cad363092b47d3353ed41db2da"
-    sha256 cellar: :any,                 catalina:     "f29bcc24fc1a0581eb3f17823641c5444acc4df10e93c17eae573deab9a18fa7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "fdd19a501c9b80da87fd4519ed43e9ed31647e17e03d582392d2b3d1517f7c74"
+    sha256 cellar: :any,                 arm64_ventura:  "a49f693f52ad42da0ee3f35a9a10e1dcd5f32685fd5451deeaecb23f9ed36f12"
+    sha256 cellar: :any,                 arm64_monterey: "3b82a59689104dda8e87e8199ebc9c0bb432515007cc0d366612edea5808aa33"
+    sha256 cellar: :any,                 arm64_big_sur:  "8bdd7743b96d8c5b770f734e49813eed9d5637382dc734156408795c9e2afe69"
+    sha256 cellar: :any,                 ventura:        "49c4997459befc0a8e895736ac068e216e905b79d71633fd42251606031febd5"
+    sha256 cellar: :any,                 monterey:       "d905ded56aaa8c99d992c3e84e7e02d9d5f9c77089143abce7ddd4d8f8f1f4b2"
+    sha256 cellar: :any,                 big_sur:        "6f4a6e589b386f30801c0cf36ee61cfc35017ded177bcae84235c2562058417c"
+    sha256 cellar: :any,                 catalina:       "ff005be1e9e4fafc1a20f04f51aa4d72ecc918df190b2dac6b2b341bd3e455ac"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6ed08bd3734a40d1ecebc329afdddc7165d894dc043966fcc7e03ea354347194"
   end
 
-  depends_on "coreutils" => :build
   depends_on "gmp" => :build
-  depends_on "chezscheme"
-  uses_from_macos "zsh" => :build, since: :mojave
+
+  on_high_sierra :or_older do
+    depends_on "zsh" => :build
+  end
+
+  # Use Racket fork of Chez Scheme for Apple Silicon support while main formula lacks support.
+  # https://github.com/idris-lang/Idris2/blob/main/INSTALL.md#installing-chez-scheme-on-apple-silicon
+  on_arm do
+    depends_on "lz4"
+
+    resource "chezscheme" do
+      url "https://github.com/racket/ChezScheme.git",
+          tag:      "racket-v8.6",
+          revision: "9383dda64db9f430a95bb5cf014af2afdc71fb0c"
+    end
+  end
+
+  on_intel do
+    depends_on "chezscheme"
+  end
 
   def install
+    scheme = if Hardware::CPU.arm?
+      resource("chezscheme").stage do
+        rm_r %w[lz4 zlib]
+        args = %w[LZ4=-llz4 ZLIB=-lz]
+
+        system "./configure", "--pb", *args
+        system "make", "auto.bootquick"
+        system "./configure", "--disable-x11",
+                              "--installprefix=#{libexec}/chezscheme",
+                              "--installschemename=chez",
+                              "--threads",
+                              *args
+        system "make"
+        system "make", "install"
+      end
+      libexec/"chezscheme/bin/chez"
+    else
+      Formula["chezscheme"].opt_bin/"chez"
+    end
+
     ENV.deparallelize
-    scheme = Formula["chezscheme"].bin/"chez"
+    ENV["CHEZ"] = scheme
     system "make", "bootstrap", "SCHEME=#{scheme}", "PREFIX=#{libexec}"
     system "make", "install", "PREFIX=#{libexec}"
-    bin.install_symlink libexec/"bin/idris2"
-    lib.install_symlink Dir["#{libexec}/lib/#{shared_library("*")}"]
-    (bash_completion/"idris2").write Utils.safe_popen_read(bin/"idris2", "--bash-completion-script", "idris2")
+    if Hardware::CPU.arm?
+      (bin/"idris2").write_env_script libexec/"bin/idris2", CHEZ: "${CHEZ:-#{scheme}}"
+    else
+      bin.install_symlink libexec/"bin/idris2"
+    end
+    lib.install_symlink Dir[libexec/"lib"/shared_library("*")]
+    generate_completions_from_executable(libexec/"bin/idris2", "--bash-completion-script", "idris2",
+                                         shells: [:bash], shell_parameter_format: :none)
   end
 
   test do

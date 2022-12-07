@@ -1,19 +1,21 @@
 class Passenger < Formula
   desc "Server for Ruby, Python, and Node.js apps via Apache/NGINX"
   homepage "https://www.phusionpassenger.com/"
-  url "https://github.com/phusion/passenger/releases/download/release-6.0.14/passenger-6.0.14.tar.gz"
-  sha256 "41cd40acfadca1e8adffca3b23d63a1d6d37f976d8c29e4eff0de6250f4113a2"
+  url "https://github.com/phusion/passenger/releases/download/release-6.0.15/passenger-6.0.15.tar.gz"
+  sha256 "73fa22da5a11e4bc4ad6b95c13a0e393ba18109e6e07bd1953c45b2f0c0aae80"
   license "MIT"
   revision 1
   head "https://github.com/phusion/passenger.git", branch: "stable-6.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "7b2ffbf48d331f47197e0e50b04779563531d4c88ccc3890905c0e15e7e3aff8"
-    sha256 cellar: :any,                 arm64_big_sur:  "37d10f4908d20d225997012b8cd57c4ed7f2b5b6d8402316f8a5ac6c19cb0c43"
-    sha256 cellar: :any,                 monterey:       "eef2a217f47547c7974a67fb937fd094252c6b110fa76d94d1e0d003cd174f96"
-    sha256 cellar: :any,                 big_sur:        "c8ec77b6b1bba12f6e4ede88eefc35f5bce503a5a0c205ba274283a25c7022b8"
-    sha256 cellar: :any,                 catalina:       "d34e48b3012643043dcf1fde3fc9240f7044effd53bc2e6722e55d0473cecd4c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2c31c8d4260fc39744529853dcb86948f050e1bb2af1db8d57cc42531fb95981"
+    sha256 cellar: :any,                 arm64_ventura:  "c484bf21c4d99ca18b4fe53727e7e8dca5be790b5fc3c318136ff3299b7c892c"
+    sha256 cellar: :any,                 arm64_monterey: "fe6fdbc2c4be58efb67a193a871d1c7045322b355dc3b353a95c11096305682c"
+    sha256 cellar: :any,                 arm64_big_sur:  "5a58ee5238d5df54151f9f57d6612a45d2eec28256250cd2e564f37578b03bc2"
+    sha256 cellar: :any,                 ventura:        "e0cea8d3454ef1c4d29c7f0af6b9f7ca5cbbe22770faf478770637451dbf5ff7"
+    sha256 cellar: :any,                 monterey:       "570ae0abdcf3eb3100a011d349b840c934485e3bdff92f6b6d698b24dfc12bae"
+    sha256 cellar: :any,                 big_sur:        "dd7f6e422cdf93a1803c7eecaebe460e50ba433c5e34d47dca15001dbead5403"
+    sha256 cellar: :any,                 catalina:       "7b9f32e433018ed5b2db2bc9a8fc435fcf700c9b7e00248afb9450495b54d93a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7fd7b9e1a4b7d4fc8427a0763554c0afc565446531e1a6b3c91982a2874a43ad"
   end
 
   depends_on "httpd" => :build # to build the apache2 module

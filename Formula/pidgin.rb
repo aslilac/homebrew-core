@@ -4,6 +4,7 @@ class Pidgin < Formula
   url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.14.10/pidgin-2.14.10.tar.bz2"
   sha256 "454b1b928bc6bcbb183353af30fbfde5595f2245a3423a1a46e6c97a2df22810"
   license "GPL-2.0-or-later"
+  revision 2
 
   livecheck do
     url "https://sourceforge.net/projects/pidgin/files/Pidgin/"
@@ -12,12 +13,14 @@ class Pidgin < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "c0c7b49b0fed66c67d876dcf97572248901053bab76f8fe97edf427939b6ce0b"
-    sha256 arm64_big_sur:  "120296125be6258002a38fcfdeb025d8760b05b9ad452e563a74376b213fa429"
-    sha256 monterey:       "55544b3e9be6b23a10131c4d9ca8a4c24c1e641e34ba915296904ffd6344bb99"
-    sha256 big_sur:        "c9169b8b07e4e99df1dbb87804735cc7c75db6312ce6939c529c2489f38194a2"
-    sha256 catalina:       "e3b55fc1d2d26808276dbef83c51daf2c93c455464644b565b4eb7d14dd69651"
-    sha256 x86_64_linux:   "0e9a72f62dd1ef2077e86c1ee50c2a9d6556d70803f1563316b3f5ca65356b35"
+    sha256 arm64_ventura:  "a2263a4ab8eb9b8d65dd48985b1eccc239f9591b8a3d2a3e155562d2bb28c586"
+    sha256 arm64_monterey: "bea177eb299f90f5e261abb69e4a8068602f98ea475f8bee4704e889e6df77db"
+    sha256 arm64_big_sur:  "1f51d85beea0f47d69240edaa693caf35ae7b6f1778c9bd014be7a25feeb2b21"
+    sha256 ventura:        "00e18191a3fb44ac6bfc2e1fd7587a0a08cdc8bd1f58db6820efb5ca2d7d36cb"
+    sha256 monterey:       "d1fb24527eefead0eb6e53f7b1619c9b9aa7a5de8085d686a6636cfaa323238b"
+    sha256 big_sur:        "71b9d4efb1179d93a86af5d2b0d831760371e5208b718dc5edb0f1819200dd3d"
+    sha256 catalina:       "c5d93e454550f509bf52e16c37ebda6b178dbc3e732397f5ff8bb41ca9688148"
+    sha256 x86_64_linux:   "9a8a17e74dba53df0e11abee49fd7ec2f0ab4912506a8c10a32581497a2479a8"
   end
 
   depends_on "intltool" => :build
@@ -50,7 +53,7 @@ class Pidgin < Formula
   end
 
   def install
-    ENV.prepend "PERL5LIB", Formula["intltool"].libexec/"lib/perl5" unless OS.mac?
+    ENV.prepend_path "PERL5LIB", Formula["intltool"].libexec/"lib/perl5" unless OS.mac?
 
     args = %W[
       --disable-debug

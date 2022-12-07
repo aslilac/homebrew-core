@@ -3,6 +3,10 @@ class Dieharder < Formula
   homepage "https://webhome.phy.duke.edu/~rgb/General/dieharder.php"
   url "https://webhome.phy.duke.edu/~rgb/General/dieharder/dieharder-3.31.1.tgz"
   sha256 "6cff0ff8394c553549ac7433359ccfc955fb26794260314620dfa5e4cd4b727f"
+  # This is the "standard Gnu General Public License version 2 or
+  # any later version", with the one minor (humorous) "Beverage"
+  # modification.
+  license "GPL-2.0-or-later"
   revision 3
 
   livecheck do
@@ -31,8 +35,8 @@ class Dieharder < Formula
 
   depends_on "gsl"
 
-  on_linux do
-    patch do
+  patch do
+    on_linux do
       url "https://raw.githubusercontent.com/Homebrew/formula-patches/b5dfa6f2b9c5d44cb4bab93ace2e0d7d58465fb0/dieharder/dieharder-linux.patch"
       sha256 "8c0ab2425c8a315471f809d5ecaebd061985f24019886cba7f856e5aaf72112b"
     end

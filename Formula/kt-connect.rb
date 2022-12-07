@@ -1,18 +1,20 @@
 class KtConnect < Formula
   desc "Toolkit for integrating with kubernetes dev environment more efficiently"
   homepage "https://alibaba.github.io/kt-connect"
-  url "https://github.com/alibaba/kt-connect/archive/refs/tags/v0.3.5.tar.gz"
-  sha256 "b1a2f0f71feb7d8c4418f73048c24687d513dc1cabb1f68ffac3be5baa0e3f5a"
+  url "https://github.com/alibaba/kt-connect/archive/refs/tags/v0.3.7.tar.gz"
+  sha256 "f32a9eebb65bd6c43caaf7219a0424dcf9e70389c9a471dad7dc6c64260f3194"
   license "GPL-3.0-or-later"
   head "https://github.com/alibaba/kt-connect.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5492c3e9ce0c5b6539ab48ce75d4fcceae1da8c2ff3c5997481582580bf34673"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e023697e0f3c07897d0f189d333aff8306b1d1873f1ed4f3c41ebd46954c5129"
-    sha256 cellar: :any_skip_relocation, monterey:       "475aff303eabcfcf387e759c6ec771a7aadefd81a9e1e7bbc813ee7a7d2f737b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "aaaf22ea7dbdf9c691f67739f305add40401b90d703c0b09b1db021a4fe88f3a"
-    sha256 cellar: :any_skip_relocation, catalina:       "3a5caacb691fca4e4f88cc221ad9a99af2bb2af6125b06f9ba8bf28c6d69b551"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bb4ca1617b030781a5a9e50f3dfc2e343f5f7a6254b34f1a6ea0546e10c1e700"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "258847384264aa305e719b37c11785a5eee499b573dc49c6575f85d0967c098b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8b8a229e1d302e406d135f343c9fe5715a23ca8bcd38b9667a760a85e1f99c5e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2f8575133862185735f1026bf8378544e307f84f6d15edadea2a15ae1242064d"
+    sha256 cellar: :any_skip_relocation, ventura:        "7817e46c79b666b37b30c2ed07ac2a9753a4c6affc0f49d1e16caf7a0b817066"
+    sha256 cellar: :any_skip_relocation, monterey:       "6b7c950096ae80e9126b9868e528b98162e9ad42b93b6243f974a4b46a63025b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f9a56194f87cee8113b94578482620c1f152882e49fde3e5121069a702601a1c"
+    sha256 cellar: :any_skip_relocation, catalina:       "83983ce5fca4ef6597ae46664d7494ac2727d7de1c25483d5c4dd036dc2960cc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ea73a5753cf517434033739d0055511adc1fa8786e1d247da71aa7837e72f14d"
   end
 
   depends_on "go" => :build
@@ -21,17 +23,7 @@ class KtConnect < Formula
     ldflags = "-s -w -X main.version=#{version}"
     system "go", "build", *std_go_args(ldflags: ldflags, output: bin/"ktctl"), "./cmd/ktctl"
 
-    # Install bash completion
-    output = Utils.safe_popen_read(bin/"ktctl", "completion", "bash")
-    (bash_completion/"ktctl").write output
-
-    # Install zsh completion
-    output = Utils.safe_popen_read(bin/"ktctl", "completion", "zsh")
-    (zsh_completion/"_ktctl").write output
-
-    # Install fish completion
-    output = Utils.safe_popen_read(bin/"ktctl", "completion", "fish")
-    (fish_completion/"ktctl.fish").write output
+    generate_completions_from_executable(bin/"ktctl", "completion", base_name: "ktctl")
   end
 
   test do

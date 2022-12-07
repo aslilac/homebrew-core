@@ -1,8 +1,8 @@
 class Libbluray < Formula
   desc "Blu-Ray disc playback library for media players like VLC"
   homepage "https://www.videolan.org/developers/libbluray.html"
-  url "https://download.videolan.org/videolan/libbluray/1.3.1/libbluray-1.3.1.tar.bz2"
-  sha256 "c24b0f41c5b737bbb65c544fe63495637a771c10a519dfc802e769f112b43b75"
+  url "https://download.videolan.org/videolan/libbluray/1.3.4/libbluray-1.3.4.tar.bz2"
+  sha256 "478ffd68a0f5dde8ef6ca989b7f035b5a0a22c599142e5cd3ff7b03bbebe5f2b"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -11,12 +11,14 @@ class Libbluray < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "e680c8af00d95066d5ef7894bed7ce94061242ebf6e460184352828b0b312892"
-    sha256 cellar: :any,                 arm64_big_sur:  "d9a4488093c31eadb48532b98fc81681fc8fe6682a75a4d75c8b0d609300b92a"
-    sha256 cellar: :any,                 monterey:       "8f2c34dd07b155183309014a966a9218cb386af5f028681fb2ad5a06319a82f9"
-    sha256 cellar: :any,                 big_sur:        "263d41816556be074b45f72fc3362c953c91c0b98aa61872c83ef1459d8bb611"
-    sha256 cellar: :any,                 catalina:       "e9ca85381212db088482193f9fc598284af4a3ac4d300a7b102f6fd7c202bab4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "950457b5ef1e53c1bb2e59c32e5baf99d9288d56658f39eb7a21f01c71f40960"
+    sha256 cellar: :any,                 arm64_ventura:  "c51fc3248e75d1cf23f9d3d2856d719e6298b913e4b161f066993b2485a79b66"
+    sha256 cellar: :any,                 arm64_monterey: "3369218f1258be668eca6975f82ac25b8a906e984d8a8344e9ed4d93657debfc"
+    sha256 cellar: :any,                 arm64_big_sur:  "b321152d681e4fcd8c7fe06dfbc6f5f2f66460b19bef0faffff975fcd98b791f"
+    sha256 cellar: :any,                 ventura:        "4f07968528f3799faa411a4fc304bb762a4b2d90eda3d0292dc322fcdbeadccf"
+    sha256 cellar: :any,                 monterey:       "675911bf2b50a1f33112fb2fb76acf33c03d56d465477439c34c54088eda848e"
+    sha256 cellar: :any,                 big_sur:        "18490d577635a9975be2e1f06efaa5d7b33fc238af966d3587758f3a13ceb6bf"
+    sha256 cellar: :any,                 catalina:       "ea15b923a467441fd884d25c339e12a5cdd6a71b39d670b301456af6428fcd0e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f5777913be5f68fb71aa0e5ed057ced402b9f8ab119a8ea74623bca2b5475f04"
   end
 
   head do
@@ -47,6 +49,8 @@ class Libbluray < Formula
       #include <libbluray/bluray.h>
       int main(void) {
         BLURAY *bluray = bd_init();
+        bd_close(bluray);
+        return 0;
       }
     EOS
 

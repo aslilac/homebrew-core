@@ -1,26 +1,29 @@
 class Tsduck < Formula
   desc "MPEG Transport Stream Toolkit"
   homepage "https://tsduck.io/"
-  url "https://github.com/tsduck/tsduck/archive/v3.31-2761.tar.gz"
-  sha256 "2e9e7956cd1b47b0b24666619fa0f1b27599eed6dc5f1457e1401679496f7562"
+  url "https://github.com/tsduck/tsduck/archive/v3.32-2983.tar.gz"
+  sha256 "2f0c35422a4f3e8876e9efa2683794336102fc225b826d5d3c4e033c4b666465"
   license "BSD-2-Clause"
-  revision 1
   head "https://github.com/tsduck/tsduck.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "9fd69beedf1bfa47f5a0b20d6d195952d5d6923f16845addb1425da1e06b21ed"
-    sha256 cellar: :any,                 arm64_big_sur:  "f962e717e1e37229879adf75c01b5c8c06515fe00a263c9028b9716bf787b462"
-    sha256 cellar: :any,                 monterey:       "82e38cf2391edc858a6d212b0ca7afd41192fc2eeca55e7bdfed7d15f88acb1a"
-    sha256 cellar: :any,                 big_sur:        "53f2e367f005a2daad65ffc1bd9003ea99fa76f0469ef0d028f17505f865e8a0"
-    sha256 cellar: :any,                 catalina:       "dbbcac32f82480175582f2aa792ddf29d6c26626960becfe980a926fca81b8b9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bd8c52eb5f3d9b54e265596241d77f27b00b1152acdfe4f2b641e337eb5b1d1b"
+    sha256 cellar: :any,                 arm64_ventura:  "b9ae0c79d4aa7ade081b2af21b553e05adf696ffbbaf56dbf772f0d1e822e383"
+    sha256 cellar: :any,                 arm64_monterey: "e21b506dd4ce875c097fbe85b0b26533aca7eb77bed0b664dc26bb8bb982c1c9"
+    sha256 cellar: :any,                 arm64_big_sur:  "87519f07414e36ebf73578f7ab9134a8ea3333b0e60d368e66d6ba44f90bab4b"
+    sha256 cellar: :any,                 ventura:        "a2c29b7b08836bd168100f58c725a9f7e9edb69404ea691e51395bff233e9b99"
+    sha256 cellar: :any,                 monterey:       "e9b07eb36903f4d25ce7a993f07cf0ceaef927a836558de8465de0c524576028"
+    sha256 cellar: :any,                 big_sur:        "9385dd6cb930d3245e21027687adc155d49f10327c788078d8066eee764aef06"
+    sha256 cellar: :any,                 catalina:       "9ef11f4ae882546ee3aab204ea4d5533a31ed304c1dfac91b7f8ce73d5abc4e3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "81c98439b3a25f62fe71eff376ec017bc3705e263cd9ec9e4afae6165592f5f6"
   end
 
   depends_on "dos2unix" => :build
   depends_on "gnu-sed" => :build
   depends_on "grep" => :build
   depends_on "openjdk" => :build
+  depends_on "python@3.10" => :build
   depends_on "librist"
+  depends_on "libvatek"
   depends_on "srt"
   uses_from_macos "curl"
   uses_from_macos "libedit"

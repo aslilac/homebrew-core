@@ -9,11 +9,12 @@
 CODEOWNERS            @MikeMcQuaid @Homebrew/plc @Homebrew/tsc
 CONTRIBUTING.md       @MikeMcQuaid @Homebrew/tsc
 tap_migrations.json   @MikeMcQuaid @Homebrew/tsc
-.github/              @MikeMcQuaid @dawidd6 @Homebrew/tsc
+.github/              @MikeMcQuaid @Homebrew/tsc
 cmd/                  @MikeMcQuaid
 
 LICENSE.txt           @Homebrew/plc @MikeMcQuaid
 
-audit_exceptions/permitted_formula_license_mismatches.json   @Homebrew/plc
-audit_exceptions/provided_by_macos_depends_on_allowlist.json @Homebrew/tsc
-audit_exceptions/universal_binary_allowlist.json             @carlocab @Homebrew/tsc
+audit_exceptions/permitted_formula_license_mismatches.json              @Homebrew/plc
+audit_exceptions/provided_by_macos_depends_on_allowlist.json            @Homebrew/tsc
+audit_exceptions/universal_binary_allowlist.json                        @carlocab @Homebrew/tsc
+audit_exceptions/versioned_formula_dependent_conflicts_allowlist.json   @Homebrew/tsc

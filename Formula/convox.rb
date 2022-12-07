@@ -1,8 +1,8 @@
 class Convox < Formula
   desc "Command-line interface for the Convox PaaS"
   homepage "https://convox.com/"
-  url "https://github.com/convox/convox/archive/3.5.3.tar.gz"
-  sha256 "005b8fef133d80288756e04e5e0ed3a245b1b95cfddc62ec908ca45c91f593f0"
+  url "https://github.com/convox/convox/archive/3.10.1.tar.gz"
+  sha256 "02f2038f84f6dac399077070b2abc61b64de2425b92dfaef28400586419cc072"
   license "Apache-2.0"
   version_scheme 1
 
@@ -12,22 +12,16 @@ class Convox < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fc4acb805af254c3b0dab065a7aa13fd38fd6914197ef0a984d6ddfd840a9e5a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "341425b2ff997b95570b119ec9a8df47ef723fa9c2008972b2a66f6d00240060"
-    sha256 cellar: :any_skip_relocation, monterey:       "abe9548ad5e35c997cdde591f96467375a2df039f35b55a232affd84797934d1"
-    sha256 cellar: :any_skip_relocation, big_sur:        "257b443961e3ea89203a3e1220e6482bbc01570c8446e934a859f8efc4052eff"
-    sha256 cellar: :any_skip_relocation, catalina:       "e38308df39b2b98babaae81e00519b1bbb655a2c2e1119857e6ad0a97624b76f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5406082f79ccacd149bc4a84b8711694a7958984c40cd4663ed39517fae47361"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2fa0ca7ca0cc100d4019e53edfca72428bf4ad2733470ea76643ffa1e544f796"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "dafad33d29fcb50d30ee3231dc5a715407c7fd764ace39fdf384cffb63725fa6"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0b90bf2465a98306acf1bb3d8a1c95c0160170f160aa5094a7f2930ab1c99a57"
+    sha256 cellar: :any_skip_relocation, ventura:        "ecde5d53ec35ec4ccf0634f498c5f8802e6318d8b0699baffa36baedc4725418"
+    sha256 cellar: :any_skip_relocation, monterey:       "9e964ef72a57e0ebd09645a38ac31fa61f70f651e286c85911764762c1d3a527"
+    sha256 cellar: :any_skip_relocation, big_sur:        "4acfb7c78b7b1ded0ce6384132f8880b5a2030f07b7b1683f580881c542fb637"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d44906f7941c848135beb5b3950b74c4a62a07b355fb0ce38d9e53b57fabd6e7"
   end
 
   depends_on "go" => :build
-
-  # Support go 1.17, remove when upstream patch is merged/released
-  # https://github.com/convox/convox/pull/389
-  patch do
-    url "https://github.com/convox/convox/commit/d28b01c5797cc8697820c890e469eb715b1d2e2e.patch?full_index=1"
-    sha256 "a0f94053a5549bf676c13cea877a33b3680b6116d54918d1fcfb7f3d2941f58b"
-  end
 
   def install
     ldflags = %W[

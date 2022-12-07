@@ -2,8 +2,8 @@ class Devspace < Formula
   desc "CLI helps develop/deploy/debug apps with Docker and k8s"
   homepage "https://devspace.sh/"
   url "https://github.com/loft-sh/devspace.git",
-      tag:      "v5.18.5",
-      revision: "025444ad7c568b99faaf524d90b1cd1495185459"
+      tag:      "v6.2.1",
+      revision: "796ab32c275d37158de003e21c018a6a53215aba"
   license "Apache-2.0"
   head "https://github.com/loft-sh/devspace.git", branch: "master"
 
@@ -13,12 +13,13 @@ class Devspace < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fc90548b4efa2c9ce4f1cca9a17a06545be1646cc05c0c2c2a61a5ae9b4506d3"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "feb64268e9148bd71ac8c867ae0c82443cd2c2a156f6d7cbfe33d3d93c42a33b"
-    sha256 cellar: :any_skip_relocation, monterey:       "230692d7ab0d836f6359b0c7e66f5b935d4c3582909c8ab7ed95a5b23db02eb1"
-    sha256 cellar: :any_skip_relocation, big_sur:        "60bb0bc610c206f50943fb00e322de386dcacabc4439cd83e39f00d120df2306"
-    sha256 cellar: :any_skip_relocation, catalina:       "516ac8bfed0d2627bdf239b1b7ae7f619f69f8b4fd1dc9f249005d07da0f6544"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e98e00b8e7de436cccc3417dcd9e74c7adf096352260f265a0ad06de61d16923"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f428288eecf8fb93961c9f6207eb204545329a98f055616d7f6b42a527e6228e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c173e5689feb2f75610ea785012c71e9278fb95cb21c2ada6f960707ac84fc85"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8d670591dfee193ebaf23b5a990bc4a03a2b95063ebd90bd5dec95e084ef2570"
+    sha256 cellar: :any_skip_relocation, ventura:        "b1bb87304485c55c32fd4d890c2f9fa7214bd84c4491e4114d0ae4534744eec5"
+    sha256 cellar: :any_skip_relocation, monterey:       "a52cd8736a56bb40fbe31b2506fbd2fb7985fcdb3a2de47e02cc135866ea7c91"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5a7cb6718fd42aab68dfe3e756b8aac0a82cc458fdd33735b2af09dd35529b79"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4b854e3cf88ee6dd991102131c96ee6ab4a8102af3683abf25eba560210a495b"
   end
 
   depends_on "go" => :build
@@ -31,6 +32,8 @@ class Devspace < Formula
       -X main.version=#{version}
     ]
     system "go", "build", *std_go_args(ldflags: ldflags)
+
+    generate_completions_from_executable(bin/"devspace", "completion")
   end
 
   test do

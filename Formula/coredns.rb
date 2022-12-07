@@ -1,8 +1,8 @@
 class Coredns < Formula
   desc "DNS server that chains plugins"
   homepage "https://coredns.io/"
-  url "https://github.com/coredns/coredns/archive/v1.9.3.tar.gz"
-  sha256 "25e607cb39261050513057534b8d2f33bf55aeb18262218bc9396510fa8958d4"
+  url "https://github.com/coredns/coredns/archive/v1.10.0.tar.gz"
+  sha256 "0fa6631899c0ae93d1b557add54fb18587a5c55627b177eb9f31cdfdf8677184"
   license "Apache-2.0"
   head "https://github.com/coredns/coredns.git", branch: "master"
 
@@ -12,12 +12,14 @@ class Coredns < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fdb8f76795c7e708879903140825480a2254c3e6d0e886e01742431b29db7583"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "46a1002d4fabd1351aba5630450f71eb527b9cc0b234c0860586b74a2710304a"
-    sha256 cellar: :any_skip_relocation, monterey:       "b4998c03fa6aef0333df12d4e8b8fdbeee3cd9ac7e7e3d275ab89b3887d8e3d2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f94c50730bb67a19c9683ca7035d8b5a9d3c0d77f4d377c49281826c8648bd71"
-    sha256 cellar: :any_skip_relocation, catalina:       "85d988db163d25c5ebd51696bf0b942b594442605acaff5454be8ab32d460166"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e6a70eff3a2aefc0fd2a6f4fc83f81f18e694415ea4099b93782159afc16713a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "789ca382bc7bc114051d251bbe1f52ab0b1a34f97dad41a4e8f075c9b99987e4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7297b2db0b0b9605d83284b1003a11a3bda68369136cc71e25efcde8c6ec49a6"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b3ad40a9e6831dd84070f672b08fc8bdb9e0e3b343cac3bc705acbd21a4f4715"
+    sha256 cellar: :any_skip_relocation, ventura:        "3a912425aa5f7678bee06470dffad475ace691467e4cf61ff1d9b2180caf3da0"
+    sha256 cellar: :any_skip_relocation, monterey:       "7e7bd62f170026084a26fe235a190fdc33d1f29d3514f4aa4e523f768edd2e08"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7517447ac64977764985ac74d1027e1a67b1e22798683e22551a80c5965ea441"
+    sha256 cellar: :any_skip_relocation, catalina:       "85d0734f54404298d40a7fc80af544b7549c5e875c525cd03b2725061a671bdf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e05841208c8027e36e53d7e5d91fd609519f3e7305e5bee4afa85c73d15df72e"
   end
 
   depends_on "go" => :build

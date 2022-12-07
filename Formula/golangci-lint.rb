@@ -2,18 +2,20 @@ class GolangciLint < Formula
   desc "Fast linters runner for Go"
   homepage "https://golangci-lint.run/"
   url "https://github.com/golangci/golangci-lint.git",
-      tag:      "v1.46.2",
-      revision: "a3336890904cd3efa4f1c7e3f82ce207fe125a6f"
+      tag:      "v1.50.1",
+      revision: "8926a95fa8e051dca7cc4a9921a5f7f9bebdc8d2"
   license "GPL-3.0-only"
   head "https://github.com/golangci/golangci-lint.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ea0e1168417d037638587997c39961604f5352bea09b6bf126c9f97084176ee7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fa8f329176d1ef12ed671861bf73cb2069c5d43438b3a38221f801a626e99357"
-    sha256 cellar: :any_skip_relocation, monterey:       "c4b73e64134fe32852f1455759785e7f3391775bcc4ecff5f887de18e1a6fbe2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "bcbdac8340a0a1d4519ef5303896b748c70a2c3cf086315f5b6e53e79020a23a"
-    sha256 cellar: :any_skip_relocation, catalina:       "39c2acbab5b65ea37fc9a0dee059aac3fef5c9182ec3d1d600f105932ca598ee"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "271f4e9d87905e6106a57f277e90ae4048b361ee3c621de55c7d633951043112"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "70ac993144ba0e3492009346ad0d743ddcb825269735c9266e52a57c49efd3a4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c917c15c6697f8766f6a3a1c37f6f456f3e2dbc1d9e527177ad135988987fb57"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c09d144a856018030132dcc7d0490a78ded921ecbeaeeb97e456bec4da2ac088"
+    sha256 cellar: :any_skip_relocation, ventura:        "7fd953f85152eed22c03ef734fe137b0f1ce16bbc7c574befd32f1d18e0ddca1"
+    sha256 cellar: :any_skip_relocation, monterey:       "f64fa1c0e95269945e42735e142976770e9b5e15e98ea43f6c2b3650942cdd6b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c7b7076639e6a428f1f67cbac1c2263948c6a3e48618a6c3ec901bffead9fbc7"
+    sha256 cellar: :any_skip_relocation, catalina:       "c4642ab2491b3b392e14838b0acf552a28ec446b39dc41fe5ae6a8d3618b834b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "60ac582f5c1e1fbf5bf8cb54c653a3a2ce4e3099788ed084cfd67a735511a5b9"
   end
 
   depends_on "go"
@@ -28,14 +30,7 @@ class GolangciLint < Formula
 
     system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/golangci-lint"
 
-    output = Utils.safe_popen_read("#{bin}/golangci-lint", "completion", "bash")
-    (bash_completion/"golangci-lint").write output
-
-    output = Utils.safe_popen_read("#{bin}/golangci-lint", "completion", "zsh")
-    (zsh_completion/"_golangci-lint").write output
-
-    output = Utils.safe_popen_read("#{bin}/golangci-lint", "completion", "fish")
-    (fish_completion/"golangci-lint.fish").write output
+    generate_completions_from_executable(bin/"golangci-lint", "completion")
   end
 
   test do

@@ -3,33 +3,36 @@ class Qdae < Formula
   homepage "https://www.seasip.info/Unix/QDAE/"
   url "https://www.seasip.info/Unix/QDAE/qdae-0.0.10.tar.gz"
   sha256 "780752c37c9ec68dd0cd08bd6fe288a1028277e10f74ef405ca200770edb5227"
-  license "GPL-2.0"
-  revision 1
-
-  livecheck do
-    url :homepage
-    regex(/href=.*?qdae[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
+  license "GPL-2.0-or-later"
+  revision 2
 
   bottle do
-    sha256 arm64_monterey: "c02eda593d7a7ac35abf1cd2bf5ec95bb1b1e584decb233e35f8ad4aae314722"
-    sha256 arm64_big_sur:  "fa62d313254002b0ccb853ee858a951e653965931860baf1ec86eec04bb7c5c2"
-    sha256 monterey:       "bd4903d11b7034d223568cdff4418e2898f280cd89e2158c466d0034c7f0a8ee"
-    sha256 big_sur:        "3159379cafe1e96621731f0ec1c7cb3d9dd549785a6405a5ddf764b9fc7fcae1"
-    sha256 catalina:       "055055ee771ea663acbe4babe37f6ebdd9cfaf4c0e4600f8db6ba3b753c2bc36"
-    sha256 x86_64_linux:   "e89eeee0fb9a7b290003f85e0338ab747c18cbd2724737e20cd742bb3c5634ef"
+    sha256 arm64_ventura:  "8a65baa3a3b7a91e50b9b6887e944b365e3fb8675aedae3e5496bdd9dec8a8c9"
+    sha256 arm64_monterey: "e8bb72388f0c79baa7bc75a5820a3a77a6f61c2466c0b6d0ca0cf06073d4eb71"
+    sha256 arm64_big_sur:  "4f51ec56064ae77144a38e80e7bf98cf19399101448f0c5278df2bb292bae59b"
+    sha256 ventura:        "c77cebe85e83aa1ee97945035a55c81aef2210653981cc4688a23cbb6ef71bdd"
+    sha256 monterey:       "6dc2007e7f4cd389c81fcfccdbaec02b12956133e6250614edf374c8ca5c6ebf"
+    sha256 big_sur:        "b2a572238e037b46c2765c32bf92180e1370bd1ba4fae123966d715f2b07f796"
+    sha256 catalina:       "9b52e69dfcbeed51cacae5189cd2833da3bafda73ebb155b7d6a3c57eb8152fd"
+    sha256 x86_64_linux:   "db3a6068e466987b92397d842c2b3ecde2bded442094c3f913333f128758d0c6"
   end
 
-  depends_on "sdl"
+  deprecate! date: "2022-09-23", because: :unmaintained
+
+  depends_on "sdl12-compat"
 
   uses_from_macos "libxml2"
 
   def install
+    # Fix build failure with newer glibc:
+    # /usr/bin/ld: ../lib/.libs/libdsk.a(drvlinux.o): in function `linux_open':
+    # drvlinux.c:(.text+0x168): undefined reference to `major'
+    # /usr/bin/ld: ../lib/.libs/libdsk.a(compress.o): in function `comp_open':
+    # compress.c:(.text+0x268): undefined reference to `major'
+    ENV.append_to_cflags "-include sys/sysmacros.h" if OS.linux?
+
     ENV.cxx11
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "./configure", *std_configure_args, "--disable-silent-rules"
     system "make", "install"
   end
 

@@ -1,17 +1,19 @@
 class Libdeflate < Formula
   desc "Heavily optimized DEFLATE/zlib/gzip compression and decompression"
   homepage "https://github.com/ebiggers/libdeflate"
-  url "https://github.com/ebiggers/libdeflate/archive/v1.12.tar.gz"
-  sha256 "ba89fb167a5ab6bbdfa6ee3b1a71636e8140fa8471cce8a311697584948e4d06"
+  url "https://github.com/ebiggers/libdeflate/archive/v1.14.tar.gz"
+  sha256 "89e7df898c37c3427b0f39aadcf733731321a278771d20fc553f92da8d4808ac"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "b705b568acda1df8d65c46dc14d4738606bda7b7475858c13111a832cec0c3b1"
-    sha256 cellar: :any,                 arm64_big_sur:  "04c038659dee2a06d9eb900f2c6ce197a0313ba5bd14921eac8d0c16b927d9dc"
-    sha256 cellar: :any,                 monterey:       "070dd0f6f6e1213a32c79c5b2f7e13dbc9a4cab06a91802ed09698eb40061aa5"
-    sha256 cellar: :any,                 big_sur:        "84816f7976c5164a0941564da44c07eba70313ffa632b5d2a590441e6e3a4183"
-    sha256 cellar: :any,                 catalina:       "d1d36bb1a1c09bd9ca61eec0531b4b54ecc3859d8f486ae018160e8f8ceced2d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b2869aed0ec20ac527b682c7db3bfea798e7829a68ff04804f75be270faf0a4d"
+    sha256 cellar: :any,                 arm64_ventura:  "e5ee2ffedd51e64581e9bf9bdcc99ef750f7749310584b08a2192cf31b63874b"
+    sha256 cellar: :any,                 arm64_monterey: "324ee7719635c163f1d5fb751a577cf58c0798990982284a047ad8009605bd98"
+    sha256 cellar: :any,                 arm64_big_sur:  "58846f6a35bb709a379aaa0935a3cba7c2a1152496c0ffb3faa92b3e0dcdf684"
+    sha256 cellar: :any,                 ventura:        "b4dadf1d9a1f74a83ece22380554b9512d7a491384cbd5e995cb555364e1426a"
+    sha256 cellar: :any,                 monterey:       "28b420821d6358bf36e4f8be76774bddb04a20b2167f866204df77d12c78680e"
+    sha256 cellar: :any,                 big_sur:        "7c28cefed63f6a4c68c8a923665b4450ea672ca3b83b80bb4a08f3b27e21e0c9"
+    sha256 cellar: :any,                 catalina:       "d0c47d6630933b8c68d2c2c94bd8be47c942f9a96c149e0bb8ddd81cb9e04edd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8ef64ef6bc47bce68ba644f57f598dfbae1b0112ddf477c02facf691ef4dfb8c"
   end
 
   def install

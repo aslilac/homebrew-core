@@ -2,7 +2,7 @@ class Devil < Formula
   desc "Cross-platform image library"
   homepage "https://sourceforge.net/projects/openil/"
   license "LGPL-2.1-only"
-  revision 3
+  revision 5
   head "https://github.com/DentonW/DevIL.git", branch: "master"
 
   stable do
@@ -33,17 +33,18 @@ class Devil < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "0c24bc009c3b7ceaa165052fdf2c92c6834dce0ab8a41f13afbfb6e7b575147a"
-    sha256 cellar: :any,                 arm64_big_sur:  "6048bc8450daae15bd94e4325f8d1e4216da7739c633768a8a6c6400e945d590"
-    sha256 cellar: :any,                 monterey:       "62c65036108abad87da5dbe90d669019080a3e84d8a89f3e8bfd8843942bd43b"
-    sha256 cellar: :any,                 big_sur:        "525f3d0004335ef40af377766aa4ced40ac51f2133dcffc34b2d1c8bdb621e55"
-    sha256 cellar: :any,                 catalina:       "3abd93570cc1ca1026bb064a2f4f5f80540450335b2a01f3c821f11f69afabd6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "046eac1633f75b672b1ad04f3c63b6511aa8b35c466f3b3a92561542b0bedc49"
+    sha256 cellar: :any,                 arm64_ventura:  "b9d1ac5aadc1c29523a0b8eebe8d84eed00078a46b4d3793e4c63727f6c1abfd"
+    sha256 cellar: :any,                 arm64_monterey: "6bc555c4ee3262b3ceb8bba2d0a598463e9ddcdbf59954ef87d3a66a3513006d"
+    sha256 cellar: :any,                 arm64_big_sur:  "625e8a26133ba0830dbbd014fb578f1c4a5cd53421cb84bf187f9778811af25b"
+    sha256 cellar: :any,                 ventura:        "51236fff5aed6438ec8852794faf97a2fdd1a418591cf89a2774a51ddf9f774f"
+    sha256 cellar: :any,                 monterey:       "21bce79dd7ba915985ae9357a7aa481847641ec67db54dd78dc27daa3f69f9f2"
+    sha256 cellar: :any,                 big_sur:        "4e293eab35dc5a76913c7aced1f8b957e691bf346b398ddb7c22ca9625239234"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0b514833cebad2a1c751d4885c1213ac44c0269f780352f79540bba4058cba37"
   end
 
   depends_on "cmake" => :build
   depends_on "jasper"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "little-cms2"
@@ -52,10 +53,9 @@ class Devil < Formula
   patch :DATA
 
   def install
-    cd "DevIL" do
-      system "cmake", ".", *std_cmake_args
-      system "make", "install"
-    end
+    system "cmake", "-S", "DevIL", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

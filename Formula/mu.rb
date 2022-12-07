@@ -4,8 +4,8 @@
 class Mu < Formula
   desc "Tool for searching e-mail messages stored in the maildir-format"
   homepage "https://www.djcbsoftware.nl/code/mu/"
-  url "https://github.com/djcb/mu/releases/download/v1.8.3/mu-1.8.3.tar.xz"
-  sha256 "cfbe8931072a8f0a546630ec2142efad72597e1429151689256ed0bc0c0ea6d2"
+  url "https://github.com/djcb/mu/releases/download/v1.8.13/mu-1.8.13.tar.xz"
+  sha256 "20d69c1a918c1e48e6dbf5375d87ef3ed358bb6b3b7d0a120e93a88b16d5a026"
   license "GPL-3.0-or-later"
   head "https://github.com/djcb/mu.git", branch: "master"
 
@@ -18,12 +18,13 @@ class Mu < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "3712f1b80f4574ea995ed58b3f734827aa9992ae937cd28ae5bf69bfc9d6725b"
-    sha256 arm64_big_sur:  "9ea9878a9f7b20184191f815f828ed3b39b2ab589e6042ff5c5c729e5a7a8bd9"
-    sha256 monterey:       "f5527f3fc8326dd17609a8011efd5c0afa464384970cf76f284ddaf4161b91ca"
-    sha256 big_sur:        "4e46fa41fa74249226f86ddd915a2fbd21f8696b93e2556f6abda9aa4e5ec645"
-    sha256 catalina:       "6f9a28837a6be1303d231c11f201387eae05654d97fce6f2c188a21c828bebce"
-    sha256 x86_64_linux:   "051870f8b275168c342020c19af48bfcb6609e015291644bfef2403af42482a3"
+    sha256 arm64_ventura:  "90fd3e0bf68e9d068837ec62e9c7995820b4d5efdd9c97fe57f0d93f4bcdd91a"
+    sha256 arm64_monterey: "4912edec797751cbcc299c803cc923f9dc43a98c0bebfde4bbda06cd7c11178c"
+    sha256 arm64_big_sur:  "c2f7c55d2d21d0afeb64d1a17e9ad52c3b0dd57790329a401168335c9b1875ab"
+    sha256 ventura:        "c59786b25c71cc1a0e6a12cb27cc1921076aa5f4a98a623dbbf5f697284105cf"
+    sha256 monterey:       "4a6917251e981252fc3d93251811b8c345da6daa769aba17b625b5d78a6cc9b1"
+    sha256 big_sur:        "6aedc6e3fd0cd6dfc1972dc2290decda236c8ec29b935854269e759653fa0c1b"
+    sha256 x86_64_linux:   "e553af9084e9b538e88094978a245b5feaa8414f451de41e3e6edf855e66dc37"
   end
 
   depends_on "emacs" => :build
@@ -37,10 +38,8 @@ class Mu < Formula
   depends_on "gmime"
   depends_on "xapian"
 
-  uses_from_macos "texinfo" => :build
-
-  on_linux do
-    depends_on "gcc"
+  on_system :linux, macos: :ventura_or_newer do
+    depends_on "texinfo" => :build
   end
 
   conflicts_with "mu-repo", because: "both install `mu` binaries"
@@ -49,13 +48,10 @@ class Mu < Formula
 
   def install
     mkdir "build" do
-      system "meson", *std_meson_args, ".."
+      system "meson", *std_meson_args, "-Dlispdir=#{elisp}", ".."
       system "ninja", "-v"
       system "ninja", "install", "-v"
     end
-
-    # fix lisp file install location
-    elisp.install share/"emacs/site-lisp/mu4e"
   end
 
   # Regression test for:

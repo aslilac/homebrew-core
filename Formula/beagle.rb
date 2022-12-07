@@ -1,10 +1,9 @@
 class Beagle < Formula
   desc "Evaluate the likelihood of sequence evolution on trees"
   homepage "https://github.com/beagle-dev/beagle-lib"
-  url "https://github.com/beagle-dev/beagle-lib/archive/v3.1.2.tar.gz"
-  sha256 "dd872b484a3a9f0bce369465e60ccf4e4c0cd7bd5ce41499415366019f236275"
-  license "LGPL-3.0-or-later"
-  revision 1
+  url "https://github.com/beagle-dev/beagle-lib/archive/v4.0.0.tar.gz"
+  sha256 "d197eeb7fe5879dfbae789c459bcc901cb04d52c9cf5ef14fb07ff7a6b74560b"
+  license "MIT"
 
   livecheck do
     url :stable
@@ -13,28 +12,29 @@ class Beagle < Formula
 
   bottle do
     rebuild 1
-    sha256 cellar: :any,                 arm64_monterey: "b3ba59f1f821ffd6b073b24aa1a0c2afcd32cd70ec26959e98fe438626e9732a"
-    sha256 cellar: :any,                 arm64_big_sur:  "98ba4534124ee1b466109ebd4eb59064357edc3094d1cbd7339b3da874b12a9e"
-    sha256 cellar: :any,                 monterey:       "5b0c94a2aa704ef61a443ca0b0750a26980e627b69babcf337c73409d6132364"
-    sha256 cellar: :any,                 big_sur:        "88810a46fa5631d6bc10262ad334dc6039c93045442836fc690b2dc277513690"
-    sha256 cellar: :any,                 catalina:       "a7f09cd317d3bf0bb3993ce46cfe862d92427aedce3c1a68ca60dd3954ae7475"
-    sha256 cellar: :any,                 mojave:         "29c47e508a3e39bce6891219f6ad223b8d8579bd1554ce1382b7dfe3e370e139"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1af7280eaec10e6a5e335326793ca36e36e8b41e507ea891ff3bbfdb3d453d01"
+    sha256 cellar: :any,                 arm64_ventura:  "bba13ae084772efb7e685d560fa444e1395dc8dbb3e60a87a1d3ad038bb13ef0"
+    sha256 cellar: :any,                 arm64_monterey: "d39a3c6afff8db4d34dd5a0e4358793f29aa8c27b0324aaa320ded3ba220f133"
+    sha256 cellar: :any,                 arm64_big_sur:  "b9f67e5318b50445e3d793184750c99a92f746f832f4daff24136f12b33e2172"
+    sha256 cellar: :any,                 ventura:        "d6f56b3a1962718a8d6fc2a3a0f02839a72099ff8e18b3670ac3d7377fa07f25"
+    sha256 cellar: :any,                 monterey:       "080d59dfd1136c9de6816f1c165e4f5889fe5d2177fa6f6f43d27374c285410f"
+    sha256 cellar: :any,                 big_sur:        "402bc5f510cceb63134695fd4a4727dd4b09dded8c9fb1f77309372940e6b378"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "daa2a615224e3cfc0a53fb67a6dbc292b0fb5f766103703ddf4ed0c24c9551be"
   end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "doxygen" => :build
-  depends_on "libtool" => :build
-  depends_on "openjdk" => [:build, :test]
+  depends_on "cmake" => :build
+  depends_on "openjdk@11" => [:build, :test]
+
+  # Reinstate versioning for libhmsbeagle. Remove in the next release
+  patch do
+    url "https://github.com/beagle-dev/beagle-lib/commit/2af91163d48bed8edfbf64af46d5877305546fd1.patch?full_index=1"
+    sha256 "2b16b2441083890bacb85ed082b3a7667a83621564b30a132b7ba8538f7d1d6f"
+  end
 
   def install
-    args = std_configure_args + %w[--without-cuda --disable-libtool-dev]
-    args << "--disable-sse" if Hardware::CPU.arm?
-
-    system "./autogen.sh"
-    system "./configure", *args
-    system "make", "install"
+    ENV["JAVA_HOME"] = Language::Java.java_home
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -51,7 +51,7 @@ class Beagle < Formula
     system ENV.cxx, "-I#{include}/libhmsbeagle-1",
            testpath/"test.cpp", "-o", "test"
     system "./test"
-    system "#{Formula["openjdk"].bin}/javac", "T.java"
-    system "#{Formula["openjdk"].bin}/java", "-Djava.library.path=#{lib}", "T"
+    system "#{Formula["openjdk@11"].bin}/javac", "T.java"
+    system "#{Formula["openjdk@11"].bin}/java", "-Djava.library.path=#{lib}", "T"
   end
 end

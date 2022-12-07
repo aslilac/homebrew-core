@@ -1,20 +1,20 @@
 class Ccache < Formula
   desc "Object-file caching compiler wrapper"
   homepage "https://ccache.dev/"
-  url "https://github.com/ccache/ccache/releases/download/v4.6.1/ccache-4.6.1.tar.xz"
-  sha256 "e5d47bd3cbb504ada864124690e7c0d28ecb1f9aeac22a9976025aed9633f3d1"
+  url "https://github.com/ccache/ccache/releases/download/v4.7.4/ccache-4.7.4.tar.xz"
+  sha256 "df0c64d15d3efaf0b4f6837dd6b1467e40eeaaa807db25ce79c3a08a46a84e36"
   license "GPL-3.0-or-later"
-  revision 1
   head "https://github.com/ccache/ccache.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_monterey: "6c7df26513e64e81bd1c34bdecd3c0f244584de42861edc1a10eb47080a2f36e"
-    sha256 cellar: :any,                 arm64_big_sur:  "47e5973227a3173eb22e18e12b39bc11fbc3b96c59fc2cf3b8b3c2962703f157"
-    sha256 cellar: :any,                 monterey:       "a850bea227e005e5eeb4a06854c3dd409939f0a05921b493c78b0c3a6a4f3179"
-    sha256 cellar: :any,                 big_sur:        "fc86f696e7533bbb5c5cb10e72d508667cd0013ed42a3082eceb5608005b4906"
-    sha256 cellar: :any,                 catalina:       "0f1e9ffd25cdfc59a40b4ff0d4958aebd4ef6a63ec6adf2e59c2dc741a3a5416"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5339cf0bd2c396f3aa646c0bb853b90276255d14a613c8173e888c7f630bf775"
+    sha256 cellar: :any,                 arm64_ventura:  "35341df4e3899eb409b712e1f59826fac4312c78581c016acdcd15515a454209"
+    sha256 cellar: :any,                 arm64_monterey: "ba78c3c27dfe4cfa628d0dd799c289056e848e5cbbbc847117f2fae6e33949a6"
+    sha256 cellar: :any,                 arm64_big_sur:  "237f9ce565fa10a9bd43038bec4bf035cd44b136a849c45a12a00af18397833b"
+    sha256 cellar: :any,                 ventura:        "ff337e38d7d1a17c55bc60325e0fd197aa1f05b42f34f6180e35756a87e05508"
+    sha256 cellar: :any,                 monterey:       "4e58ab93aa6690b1d754154b33c4e2fe457c6c2710aa29c208d1904cdd18f2dc"
+    sha256 cellar: :any,                 big_sur:        "927efbcf6927bd90df8e15f4495ae614f9bce3b98601569dc1158cfc9ed5d4c2"
+    sha256 cellar: :any,                 catalina:       "acde8ffc90a1c59bfe423720193dd8d4059816f850e0fa01caaa92126d96bcab"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cec1be15a66689bff21cdefd5244f13149f89f134398c0f67c38d4a4a75503cb"
   end
 
   depends_on "asciidoctor" => :build
@@ -23,10 +23,6 @@ class Ccache < Formula
 
   depends_on "hiredis"
   depends_on "zstd"
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5"
 

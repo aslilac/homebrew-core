@@ -1,8 +1,8 @@
 class Qmmp < Formula
   desc "Qt-based Multimedia Player"
   homepage "https://qmmp.ylsoftware.com/"
-  url "https://qmmp.ylsoftware.com/files/qmmp/2.1/qmmp-2.1.1.tar.bz2"
-  sha256 "d16fa33d066ec3e4993070b7dee8336df39869560a54a36d5d9659935ef0057f"
+  url "https://qmmp.ylsoftware.com/files/qmmp/2.1/qmmp-2.1.2.tar.bz2"
+  sha256 "53ce8ba00920ea604555afdc801f24a426b92b07644743cc426006bdffca017a"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,12 +11,14 @@ class Qmmp < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "71a53acc1108adc9c918a979ef90d5af0800eb99d7c0293b7e967049f94125fb"
-    sha256 arm64_big_sur:  "e60001ec427e59a06271e08259035db1f8035faede6072ecfe72fec2d93885ed"
-    sha256 monterey:       "34bcff555cd200f2466183c88778a371b8e2336dfa34a99e946b0db97bd949d6"
-    sha256 big_sur:        "4250889ad41fcd66a89c29b02d580b3f5c43d795784c9c184b79cecf12c6f4d1"
-    sha256 catalina:       "b775a1c3af67e426845a72fca215bb66ea3fdfa07d5d492ec6528ce77f639a8e"
-    sha256 x86_64_linux:   "a7e875d93455467c6ab319f96281dd7af62407830596931bc5ebb96cd6aaffdf"
+    sha256 arm64_ventura:  "b3481723b568f28338bab140ea7a0d90a25d8a4bc2ad057145459a6b960af48f"
+    sha256 arm64_monterey: "6372738827571b4b74600eb297afba37ba8fe85e8e3f461b3daa4dba499bbdba"
+    sha256 arm64_big_sur:  "51baec5b0e6266fdb000624a163adadb85ab2de2c38de157b251e30c80b94cec"
+    sha256 ventura:        "e1fff6b8aad6c637408312c75faf724596ecdfb8799304cdd3c9322e50d788b3"
+    sha256 monterey:       "f8efdbaafb771e7ef17c430e80f56baf161439842ded2212e5c691049c649d86"
+    sha256 big_sur:        "3a10022920b829204dd6c95683e7e5ed591241bf32199dba74fc2d7b8a7310dc"
+    sha256 catalina:       "26cfc6ce80cdf54067d9f166e9512904284e143cada1dc10cae94b8b938ca953"
+    sha256 x86_64_linux:   "d0aef96423a3a1ef7f9c08db5a5f33b65dbabd7f6dbfcff518bee8858e8cf951"
   end
 
   depends_on "cmake"      => :build
@@ -59,10 +61,6 @@ class Qmmp < Formula
     # musepack is not bottled on Linux
     # https://github.com/Homebrew/homebrew-core/pull/92041
     depends_on "musepack"
-  end
-
-  on_linux do
-    depends_on "gcc"
   end
 
   fails_with gcc: "5" # ffmpeg is compiled with GCC

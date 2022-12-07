@@ -1,8 +1,8 @@
 class Fnm < Formula
   desc "Fast and simple Node.js version manager"
   homepage "https://github.com/Schniz/fnm"
-  url "https://github.com/Schniz/fnm/archive/v1.31.0.tar.gz"
-  sha256 "c501220d8469f0082c0813d172171f1a19e4d2c4999573bf51a23094773e7041"
+  url "https://github.com/Schniz/fnm/archive/v1.33.1.tar.gz"
+  sha256 "84a2173a47f942d1247a08348a20b3cdf4cb906b9f0a662585dc1784256d73c2"
   license "GPL-3.0-only"
   head "https://github.com/Schniz/fnm.git", branch: "master"
 
@@ -12,12 +12,13 @@ class Fnm < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d4baa49d521ed7121125f96ad0ea31edf6cdee772af0ab7481350fb5a23fcbb0"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "32ed39e829779bc5fb172b5b69a972fb358a7a30a571723efd593fdb957acffc"
-    sha256 cellar: :any_skip_relocation, monterey:       "de56a828f1fe5c66f3960e7314029bfe6efa06db0c94e2b30b2549a62d20cc07"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8b0e69c49e72a15560eef4dca34ff6d61a18b64617b6ea5850a0a6d98c9a8db2"
-    sha256 cellar: :any_skip_relocation, catalina:       "12df0791e22dc4674056e6333e2a1c18d75eb7af796ce9657d462324611674fd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e1a69182a0a061aea437f9ffae2e5d40b8d92eebe318fadb7a5f3b6d7a571602"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b934b7bcace92f5522c5afbc265f4f98eb603520d0badf00d34a180b01f88375"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "09863938f0c2a807b934dfbee0faafb57d9e01c33b4cf0c9ce47e9d475ad7f6c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fdd4644c7f569e85ba12b8f2b20dd1fca764166e506fccaa77d89859a1a1efdd"
+    sha256 cellar: :any_skip_relocation, ventura:        "cf47b704db8c4230bb44f4b5b96637375f1c05d28a8d3a36b9c26ea5bf6eec67"
+    sha256 cellar: :any_skip_relocation, monterey:       "ee9e0eb2a4c9fd6de12a198da932552cd0d1e2a9711f6c49e416bd69e4f7eb20"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f7a88221f93e75572a06523f2b464dd3df14cc4bedda3f3fe267825d38141ba0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "216eadf9087a9c22b10b42274af93fb370e85cb159f894c7a1972ba4bcd74df9"
   end
 
   depends_on "rust" => :build
@@ -27,13 +28,11 @@ class Fnm < Formula
   def install
     system "cargo", "install", *std_cargo_args
 
-    (bash_completion/"fnm").write Utils.safe_popen_read(bin/"fnm", "completions", "--shell=bash")
-    (fish_completion/"fnm.fish").write Utils.safe_popen_read(bin/"fnm", "completions", "--shell=fish")
-    (zsh_completion/"_fnm").write Utils.safe_popen_read(bin/"fnm", "completions", "--shell=zsh")
+    generate_completions_from_executable(bin/"fnm", "completions", "--shell")
   end
 
   test do
-    system bin/"fnm", "install", "12.0.0"
-    assert_match "v12.0.0", shell_output("#{bin}/fnm exec --using=12.0.0 -- node --version")
+    system bin/"fnm", "install", "19.0.1"
+    assert_match "v19.0.1", shell_output("#{bin}/fnm exec --using=19.0.1 -- node --version")
   end
 end

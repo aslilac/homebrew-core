@@ -3,17 +3,19 @@ require "language/node"
 class Httpyac < Formula
   desc "Quickly and easily send REST, SOAP, GraphQL and gRPC requests"
   homepage "https://httpyac.github.io/"
-  url "https://registry.npmjs.org/httpyac/-/httpyac-5.5.1.tgz"
-  sha256 "2da599657e711722d395834c5d828591a91c08e8abc0fa62a177f1511fb0afa8"
+  url "https://registry.npmjs.org/httpyac/-/httpyac-5.8.2.tgz"
+  sha256 "49833eaa4694739141382443fbd48e2a06be1aa3bb967bcb81f525773967bcdc"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c6ccd13db8526cc85f8f27c418d96a899d6d4093bfc2fa67d73a8d140bc6c62d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c6ccd13db8526cc85f8f27c418d96a899d6d4093bfc2fa67d73a8d140bc6c62d"
-    sha256 cellar: :any_skip_relocation, monterey:       "858d31792d92923b5bcf5fb40cf812e51fb21cdb7746fdfa86f37214498c7308"
-    sha256 cellar: :any_skip_relocation, big_sur:        "858d31792d92923b5bcf5fb40cf812e51fb21cdb7746fdfa86f37214498c7308"
-    sha256 cellar: :any_skip_relocation, catalina:       "858d31792d92923b5bcf5fb40cf812e51fb21cdb7746fdfa86f37214498c7308"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "63aa0eaa40a0fafa74b3502d9ea5777f5fe1a04bad3c8c0e5b678dc9980a1a18"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c730807eb8cffdcd525f38f5365c4299c2e39d862f6731cc8931b4ea84855925"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c730807eb8cffdcd525f38f5365c4299c2e39d862f6731cc8931b4ea84855925"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c730807eb8cffdcd525f38f5365c4299c2e39d862f6731cc8931b4ea84855925"
+    sha256 cellar: :any_skip_relocation, ventura:        "20ae7375a727f30d066a2e16e355018f81a1c39a63a9ab3ed02111e80929dbf0"
+    sha256 cellar: :any_skip_relocation, monterey:       "20ae7375a727f30d066a2e16e355018f81a1c39a63a9ab3ed02111e80929dbf0"
+    sha256 cellar: :any_skip_relocation, big_sur:        "20ae7375a727f30d066a2e16e355018f81a1c39a63a9ab3ed02111e80929dbf0"
+    sha256 cellar: :any_skip_relocation, catalina:       "20ae7375a727f30d066a2e16e355018f81a1c39a63a9ab3ed02111e80929dbf0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "09d3be4bbc93222e1b032ff5bed5516f0990b2587885b961a2a6a27658d5cb03"
   end
 
   depends_on "node"

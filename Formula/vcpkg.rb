@@ -1,9 +1,9 @@
 class Vcpkg < Formula
   desc "C++ Library Manager"
   homepage "https://github.com/microsoft/vcpkg"
-  url "https://github.com/microsoft/vcpkg-tool/archive/2022-06-17.tar.gz"
-  version "2022.06.17"
-  sha256 "4b1f477510cde965f230317305b0b111bce20f21e02c1c0e73d7bb6ebec0e783"
+  url "https://github.com/microsoft/vcpkg-tool/archive/2022-11-10.tar.gz"
+  version "2022.11.10"
+  sha256 "627ff5da84e7464a68e154f3903484f9f063cc5141d5e5a9fa250b519be93c6d"
   license "MIT"
   head "https://github.com/microsoft/vcpkg-tool.git", branch: "main"
 
@@ -16,27 +16,25 @@ class Vcpkg < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "80820e827202de1533d2cfcdd221f588e12027986a24f33985542466a53b9a47"
-    sha256 cellar: :any,                 arm64_big_sur:  "0a26d57af1488987e62cad10dbca55bf9034c95e6bf7fd4843e3a4999a8fd3f5"
-    sha256 cellar: :any,                 monterey:       "92a8476fb93392bf818dc56e36c6e8d469e2b2b7d0d1d85f1999254102a6cd74"
-    sha256 cellar: :any,                 big_sur:        "f6a94c99e1e5e22f6a24c7999e97e295216ea70d5561deb367b81e48fd70a98f"
-    sha256 cellar: :any,                 catalina:       "ae2128c1cc8280ce1ec55fdbecdd94e3ffd20169475fe9a216f33e866aa03e1c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2a8170967cb129e69c6e219a9e785582a6e49b160852c8a069b56773c80fc570"
+    sha256 cellar: :any,                 arm64_ventura:  "b23604d494d7828ea34abbfee6ea03cc3b69147a68f0dd02c8577862cb2a1445"
+    sha256 cellar: :any,                 arm64_monterey: "12d265109751aa9a079de8c6e623aaf1ca65cacdd7f1e08aafe487173fd2b848"
+    sha256 cellar: :any,                 arm64_big_sur:  "fe5147872359f40fb7d69f4fbe0bee9955adfd685de36a2cd06aa3d408f4b306"
+    sha256 cellar: :any,                 ventura:        "04aae43207e2e4f23bcde6555b854c72f5b04bf3cb1ceaa7ef61ee9325bc341c"
+    sha256 cellar: :any,                 monterey:       "7168472b517238ee99edcb0af0393955450ddd3fefb7d3ee2b4ac754bb965d20"
+    sha256 cellar: :any,                 big_sur:        "cd10757928f9bca8639dc5076097852bf17f4faa31b31fd07d605f80a67fefe4"
+    sha256 cellar: :any,                 catalina:       "82c8f01574e8eda55e9d5f8b26f8af42163fe6daeaed563c48605ab57ace73a2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "318a04d05f0c87cbeef986557f41ed21f6ce3830f35e9f61e1b1a313416c9556"
   end
 
   depends_on "cmake" => :build
   depends_on "fmt"
   depends_on "ninja" # This will install its own copy at runtime if one isn't found.
 
-  on_linux do
-    depends_on "gcc" # for C++17
-  end
-
   fails_with gcc: "5"
 
   def install
     # Improve error message when user fails to set `VCPKG_ROOT`.
-    inreplace ["src/vcpkg/vcpkgpaths.cpp", "locales/messages.json"],
+    inreplace ["include/vcpkg/base/messages.h", "locales/messages.json"],
               "If you are trying to use a copy of vcpkg that you've built, y", "Y"
 
     system "cmake", "-S", ".", "-B", "build",
@@ -59,7 +57,8 @@ class Vcpkg < Formula
   end
 
   test do
-    message = "error: Could not detect vcpkg-root."
+    # DO NOT CHANGE. If the test breaks then the `inreplace` needs fixing.
+    message = "error: Could not detect vcpkg-root. You must define the VCPKG_ROOT environment variable"
     assert_match message, shell_output("#{bin}/vcpkg search sqlite", 1)
   end
 end

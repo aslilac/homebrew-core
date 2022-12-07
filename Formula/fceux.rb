@@ -5,16 +5,19 @@ class Fceux < Formula
       tag:      "fceux-2.6.4",
       revision: "2b8c61802029721229a26592e4578f92efe814fb"
   license "GPL-2.0-only"
-  revision 1
+  revision 2
   head "https://github.com/TASEmulators/fceux.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "6b487aace664447205f9aa223f343c9b0b40dd46af80faf06f8afade175d6bd2"
-    sha256 cellar: :any,                 arm64_big_sur:  "3a52c3f3c2784ff73890b37a66aebfdb1de0d239a6e909a0656c8beda45534a9"
-    sha256 cellar: :any,                 monterey:       "f5430a054f5eb0bff5797bc71c487943a22ee156815ee39b4f0700c907e28f5a"
-    sha256 cellar: :any,                 big_sur:        "462d04dd0ef169b5e85c80eb2f62443747ab9d3af3ce99e7096a687b01185a50"
-    sha256 cellar: :any,                 catalina:       "ff69736d07f7836d141565d16c682b5f2a5fa8abfd386b63aa373f1736d13895"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "51dfaab2b7752e008015a46c7ff551187d273ad100a1f96a0ea7266859b41605"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "756430ce70feb593346978361c819e30c2c73ce4db936af2a0a0a69979907b73"
+    sha256 cellar: :any,                 arm64_monterey: "4e0229b41383077bc3ff7a3e9e43b4ebf248ebbb09d38078d89d7ea14d943a40"
+    sha256 cellar: :any,                 arm64_big_sur:  "92c1e577709978b28cef7875358b6b5b3643f9301c56b5ae9eac98eaefd51bba"
+    sha256 cellar: :any,                 ventura:        "a06905322aa5c213c721469026cead000d1688f3793519d629027a4b33687f12"
+    sha256 cellar: :any,                 monterey:       "cf55e27f1976a68608667cb3e5c7968c131e6d9a90e0691152784e1024006c19"
+    sha256 cellar: :any,                 big_sur:        "e82e9537ee0427af36473a76b0b26198d22e577716c1e3c73ef6be45514c578d"
+    sha256 cellar: :any,                 catalina:       "ace36678cd5d83047ca0038029e336f1833a80efd5c79ec88c1f02a78c4e1b74"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fdb660e38177e2fa16c4bf9006159238a9d0722e08f40728394f643e719a9b1f"
   end
 
   depends_on "cmake" => :build
@@ -26,7 +29,7 @@ class Fceux < Formula
   depends_on "x264"
 
   on_linux do
-    depends_on "gcc"
+    depends_on "mesa-glu"
   end
 
   fails_with gcc: "5"

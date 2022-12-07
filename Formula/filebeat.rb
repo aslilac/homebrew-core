@@ -2,25 +2,27 @@ class Filebeat < Formula
   desc "File harvester to ship log files to Elasticsearch or Logstash"
   homepage "https://www.elastic.co/products/beats/filebeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v8.3.1",
-      revision: "cff0399d80d4b1ac80f0981be846a50d1ec2b995"
+      tag:      "v8.5.2",
+      revision: "1ebd0940bd56943642ea8d63d1fe8227f86e7435"
   # Outside of the "x-pack" folder, source code in a given file is licensed
   # under the Apache License Version 2.0
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d7cdfdb5dd2cfce14196d4cc4677c66abee46e6f0ccb1e44174d6079371bbb4d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c8e562f6467cada83daa938079290a26931e59e801e26b18d252275324b5dbf0"
-    sha256 cellar: :any_skip_relocation, monterey:       "8e8ccfcce458e59ea8d9ce3c4621d7c07abc26c368886e824ea720bb596bda89"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ffcbc8d5c0cace85a634495115eb2cbd48a2c1e1caee4ec0966290488e3a5086"
-    sha256 cellar: :any_skip_relocation, catalina:       "ed3bc095a5dc63855dbceed4fd2a5fa40e737aba53852006c8721b891569e1c8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3609265cbd1b06a8f01adfca3b6570e2806322816fad83dccf45c6cc0e538fad"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7435eb1e6ef3c58f33cddd92629c78a226b79218ecac374bd3a8cd8ccabe02eb"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "afaa64dba59611b95d78a72a2409a78f699bb014c1ea2177029f64e6339bcef1"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fdeeef20c7be1b693c5092ca9dec6d56f5b028b5c710623e31228cb83e5d4283"
+    sha256 cellar: :any_skip_relocation, ventura:        "2028d099d35787791c76f94329e76f9616f0deb31e1bb0caafba4cb3715d15fa"
+    sha256 cellar: :any_skip_relocation, monterey:       "728da40d4ac0e5e1078f075e1560eb514f808d731a9627a445bedf1993e08909"
+    sha256 cellar: :any_skip_relocation, big_sur:        "db5a92b0d6c0fccea25ce89955e7eef309300b2d0495a5b532ac0ffc31aa962e"
+    sha256 cellar: :any_skip_relocation, catalina:       "8e05ae4b8ec4c7e71767c66392f71cbd650eb1d43a134fb06a6e03b73830f2ad"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "47ae23ee22904fba9a8d2733d4cbc81bef77e89c5e710247ff53825a0f7055b8"
   end
 
   depends_on "go" => :build
   depends_on "mage" => :build
-  depends_on "python@3.10" => :build
+  depends_on "python@3.11" => :build
 
   uses_from_macos "rsync" => :build
 
@@ -54,6 +56,9 @@ class Filebeat < Formula
         --path.logs #{var}/log/filebeat \
         "$@"
     EOS
+
+    chmod 0555, bin/"filebeat" # generate_completions_from_executable fails otherwise
+    generate_completions_from_executable(bin/"filebeat", "completion", shells: [:bash, :zsh])
   end
 
   service do

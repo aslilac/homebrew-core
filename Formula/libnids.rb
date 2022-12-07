@@ -7,8 +7,10 @@ class Libnids < Formula
   revision 2
 
   bottle do
+    sha256 cellar: :any,                 arm64_ventura:  "a9b786affb4887f607fabbe0df202bdf0d1601ae3210afbf6337577a23ca49ef"
     sha256 cellar: :any,                 arm64_monterey: "085e5576236a751d84a975412ef34f206f2eb0c639c826dde4a7298cea4f00d3"
     sha256 cellar: :any,                 arm64_big_sur:  "6c7f242b8c5564eebc95837bf61f5760b88e2e543772357d43132921f20f858d"
+    sha256 cellar: :any,                 ventura:        "38b6e4dea05881c126f5abfaa13e8f4c8e5435cf6e51a135ce1c3fd10c120227"
     sha256 cellar: :any,                 monterey:       "bb00ea7f83f736bb27b63da94cd2fe4ad077c5aab62a357a4e996fa2cc98e123"
     sha256 cellar: :any,                 big_sur:        "0235b5bccac955c60852984ed13fa3213e3ccad9c0fe36ae522b5ac53f1f2a42"
     sha256 cellar: :any,                 catalina:       "0cd6c420a38ea61eb8abe96b6b2f754bddf1ca5583b3dbccfb1b268990426764"
@@ -27,8 +29,8 @@ class Libnids < Formula
   uses_from_macos "libpcap"
 
   # Patch fixes -soname and .so shared library issues. Unreported.
-  on_macos do
-    patch do
+  patch do
+    on_macos do
       url "https://raw.githubusercontent.com/Homebrew/formula-patches/85fa66a9dc80757ba32bf5d818d70fc26bb24b6f/libnids/1.24.patch"
       sha256 "d9339c16f89915a02025f10f26aab5bb77c2af85926d2d9ff52e9c7bf2092215"
     end

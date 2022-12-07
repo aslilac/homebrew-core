@@ -1,11 +1,10 @@
 class TclTk < Formula
   desc "Tool Command Language"
   homepage "https://www.tcl-lang.org"
-  url "https://downloads.sourceforge.net/project/tcl/Tcl/8.6.12/tcl8.6.12-src.tar.gz"
-  mirror "https://fossies.org/linux/misc/tcl8.6.12-src.tar.gz"
-  sha256 "26c995dd0f167e48b11961d891ee555f680c175f7173ff8cb829f4ebcde4c1a6"
+  url "https://downloads.sourceforge.net/project/tcl/Tcl/8.6.13/tcl8.6.13-src.tar.gz"
+  mirror "https://fossies.org/linux/misc/tcl8.6.13-src.tar.gz"
+  sha256 "43a1fae7412f61ff11de2cfd05d28cfc3a73762f354a417c62370a54e2caf066"
   license "TCL"
-  revision 1
 
   livecheck do
     url :stable
@@ -13,12 +12,14 @@ class TclTk < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "8accfee37564f1f390c27ba44a1e501ae3a2ba23fb8ecf126da43c105aa3411c"
-    sha256 arm64_big_sur:  "6097b84f40aded10af8c4bd300e1b82cd89f2f019bf05721cc433a78c553932a"
-    sha256 monterey:       "6dd6e9147cab000f8fee32efb4b7069f8128d2b0eb0f6d45fc96ddcedb936afe"
-    sha256 big_sur:        "ed8b2d7204d9afc96153af7df2954714c4a07af6f2cbd90b60da15f270a82977"
-    sha256 catalina:       "73092f5fab605e4e35c05721d9689c93e728e6005eb2a0c564d5a8c08f9628cc"
-    sha256 x86_64_linux:   "9be465cbb1307669acc2e62c5788611c8ff5917d4007437b1d32796de68de7ad"
+    sha256 arm64_ventura:  "53300b4a5e2d7ef71b25b5ecb7b1b20ae435234dd114d2163e643d5857b1de21"
+    sha256 arm64_monterey: "c5878a4780414050c132dfd8cefaf7f009d8809f55ee3049dd7122a54e50dea9"
+    sha256 arm64_big_sur:  "4cab30160b2e7d926c52ad639c53a1471844b114a15cd19b414829615385ad67"
+    sha256 ventura:        "afd13198b0dbcc0eb4352614129f1cb06a614cea6d7417fefea3e62b852c4935"
+    sha256 monterey:       "e175685883ef770c7220b5c0b3058acd61dedddc8bbefae348828b68cbeb6514"
+    sha256 big_sur:        "3d0f9ac84a5a01f5d9d241005b6fa93e1a4f356b329dd56746242ff402649d7f"
+    sha256 catalina:       "9a0d3538f62527944ea7905d32532ad8239f6a6dd45f94742a3b2cb72d9f1c10"
+    sha256 x86_64_linux:   "7183c92a7b716deaf436a4a468c6866936a9f1f2b145516c7e6d83f323369da0"
   end
 
   keg_only :provided_by_macos
@@ -40,8 +41,8 @@ class TclTk < Formula
   end
 
   resource "tcllib" do
-    url "https://downloads.sourceforge.net/project/tcllib/tcllib/1.20/tcllib-1.20.tar.xz"
-    sha256 "199e8ec7ee26220e8463bc84dd55c44965fc8ef4d4ac6e4684b2b1c03b1bd5b9"
+    url "https://downloads.sourceforge.net/project/tcllib/tcllib/1.21/tcllib-1.21.tar.xz"
+    sha256 "10c7749e30fdd6092251930e8a1aa289b193a3b7f1abf17fee1d4fa89814762f"
   end
 
   resource "tcltls" do
@@ -50,9 +51,9 @@ class TclTk < Formula
   end
 
   resource "tk" do
-    url "https://downloads.sourceforge.net/project/tcl/Tcl/8.6.12/tk8.6.12-src.tar.gz"
-    mirror "https://fossies.org/linux/misc/tk8.6.12-src.tar.gz"
-    sha256 "12395c1f3fcb6bed2938689f797ea3cdf41ed5cb6c4766eec8ac949560310630"
+    url "https://downloads.sourceforge.net/project/tcl/Tcl/8.6.13/tk8.6.13-src.tar.gz"
+    mirror "https://fossies.org/linux/misc/tk8.6.13-src.tar.gz"
+    sha256 "2e65fa069a23365440a3c56c556b8673b5e32a283800d8d9b257e3f584ce0675"
   end
 
   resource "itk4" do
@@ -68,6 +69,7 @@ class TclTk < Formula
       --enable-64bit
     ]
 
+    ENV["TCL_PACKAGE_PATH"] = "#{HOMEBREW_PREFIX}/lib"
     cd "unix" do
       system "./configure", *args
       system "make"
@@ -139,6 +141,7 @@ class TclTk < Formula
   end
 
   test do
+    assert_match "#{HOMEBREW_PREFIX}/lib", pipe_output("#{bin}/tclsh", "puts $auto_path\n")
     assert_equal "honk", pipe_output("#{bin}/tclsh", "puts honk\n").chomp
 
     # Fails with: no display name and no $DISPLAY environment variable

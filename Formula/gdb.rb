@@ -5,27 +5,32 @@ class Gdb < Formula
   mirror "https://ftpmirror.gnu.org/gdb/gdb-12.1.tar.xz"
   sha256 "0e1793bf8f2b54d53f46dea84ccfd446f48f81b297b28c4f7fc017b818d69fed"
   license "GPL-3.0-or-later"
+  revision 2
   head "https://sourceware.org/git/binutils-gdb.git", branch: "master"
 
   bottle do
-    sha256 monterey:     "2a067be29153e334e732082adfaf3f7579d6bc355c75250d2a04e19b6ef6c0e8"
-    sha256 big_sur:      "333e8565b1af77ab81aa531a4f088bbe29fff27b259c909eadc90cc62d75cb36"
-    sha256 catalina:     "4e90533da0983000eca1e41e1d77675df3f4af6d68cd573d1e8f7f53e38763c7"
-    sha256 x86_64_linux: "1219b819cc5d73edb71169c8e5052a69bc79e7a2b54c65d1fccae9d44feb4099"
+    sha256 ventura:      "653c9164e734b074e7688d59250d33ea6a1b52ace2f4da61a1d8e3f666c031a7"
+    sha256 monterey:     "4b3dab2ae56bc0df8de29113b853386a0db29f14035f01af6003bab9195418a1"
+    sha256 big_sur:      "77a26612312e83da76b6fc7eaf14baf71ed62b6565cb87b63c8807897773fc83"
+    sha256 catalina:     "91f4480cfccf02902efc12e30099f899704fb44eac21b96cd5d2e773328cc03b"
+    sha256 x86_64_linux: "79529333571b0bceb8f8307582cc608e597fbed6be24392a0318e25590ebbd51"
   end
 
   depends_on arch: :x86_64 # gdb is not supported on macOS ARM
   depends_on "gmp"
-  depends_on "python@3.10"
+  depends_on "python@3.11"
   depends_on "xz" # required for lzma support
 
-  uses_from_macos "texinfo" => :build
   uses_from_macos "expat"
+  uses_from_macos "libxcrypt"
   uses_from_macos "ncurses"
+
+  on_system :linux, macos: :ventura_or_newer do
+    depends_on "texinfo" => :build
+  end
 
   on_linux do
     depends_on "pkg-config" => :build
-    depends_on "gcc"
     depends_on "guile"
   end
 
@@ -46,7 +51,7 @@ class Gdb < Formula
       --disable-debug
       --disable-dependency-tracking
       --with-lzma
-      --with-python=#{Formula["python@3.10"].opt_bin}/python3
+      --with-python=#{Formula["python@3.11"].opt_bin}/python3.11
       --disable-binutils
     ]
 
@@ -60,12 +65,14 @@ class Gdb < Formula
   end
 
   def caveats
-    <<~EOS
-      gdb requires special privileges to access Mach ports.
-      You will need to codesign the binary. For instructions, see:
+    on_macos do
+      <<~EOS
+        gdb requires special privileges to access Mach ports.
+        You will need to codesign the binary. For instructions, see:
 
-        https://sourceware.org/gdb/wiki/PermissionsDarwin
-    EOS
+          https://sourceware.org/gdb/wiki/PermissionsDarwin
+      EOS
+    end
   end
 
   test do

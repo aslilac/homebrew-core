@@ -1,17 +1,18 @@
 class Ctlptl < Formula
   desc "Making local Kubernetes clusters fun and easy to set up"
   homepage "https://github.com/tilt-dev/ctlptl"
-  url "https://github.com/tilt-dev/ctlptl/archive/v0.8.5.tar.gz"
-  sha256 "54807ab4a23600199c1c624ed630c7bda536d5ef898e272dc91ebbfa17f177c1"
+  url "https://github.com/tilt-dev/ctlptl/archive/v0.8.14.tar.gz"
+  sha256 "b4bf725e9d426ec47eaa27c892739c8af6e427313608db6a966635e920ef600d"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c447abf3f8ec6a4a09015303cf58bc4df666ab8d153a61e08cb4515764bc6f2b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a02c2872916cdeb06a247227fc29091e136bf416c170d2a04721bc1eccb7e4c6"
-    sha256 cellar: :any_skip_relocation, monterey:       "b3b1ab011946cb92e754034a5779d40811aa36094d913e40fe8973b64d8c32b4"
-    sha256 cellar: :any_skip_relocation, big_sur:        "6af149d0876f10903655d100456c72ccbde285a3512fc22d00f26c3e8d8d38bc"
-    sha256 cellar: :any_skip_relocation, catalina:       "9dc766bd024470475a82890fe5bb051074d3244896f628a398d940c60d9c2599"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "303b27ba088fc2e3e1d088a78cdbd91e2e9c7afb7815da8ff942c1a1bdc1cb70"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1c2bd57192c985ca3f0fe091ac612855265f888154784da870fb569cd22a2b19"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8bf8c6ebf4045e396520c2bcee8b97a9b435781dd58b15c2e9a93d9044964215"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "33dabb0f6bf7076204e0aff4d59c1f5f7ca3c851661dd3bd3afb546a9521dd76"
+    sha256 cellar: :any_skip_relocation, ventura:        "d29386486f6db541f8ba120309458e2452838cda6eac9cf80b0d047798484d1e"
+    sha256 cellar: :any_skip_relocation, monterey:       "2a7780fbe2bf87ff24f008246872626ddf30675ad01f86136e251b45bf780db7"
+    sha256 cellar: :any_skip_relocation, big_sur:        "aee1ee1ebab58651aaac716ab315cf7ce1d5478c657641e104d6e96fe8e61b1c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6af98a26b5991fc837bfbf687bcf3d348f77003a51040808675b8b441b2d3706"
   end
 
   depends_on "go" => :build
@@ -24,17 +25,7 @@ class Ctlptl < Formula
     ]
     system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/ctlptl"
 
-    # Install bash completion
-    output = Utils.safe_popen_read(bin/"ctlptl", "completion", "bash")
-    (bash_completion/"ctlptl").write output
-
-    # Install zsh completion
-    output = Utils.safe_popen_read(bin/"ctlptl", "completion", "zsh")
-    (zsh_completion/"_ctlptl").write output
-
-    # Install fish completion
-    output = Utils.safe_popen_read(bin/"ctlptl", "completion", "fish")
-    (fish_completion/"ctlptl.fish").write output
+    generate_completions_from_executable(bin/"ctlptl", "completion")
   end
 
   test do

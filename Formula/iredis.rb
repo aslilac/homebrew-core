@@ -3,22 +3,24 @@ class Iredis < Formula
 
   desc "Terminal Client for Redis with AutoCompletion and Syntax Highlighting"
   homepage "https://iredis.io"
-  url "https://files.pythonhosted.org/packages/43/2a/9a94d3fb93a5666da5e1fbfeb224d2bd5ae1558e9aac884ca856236432c5/iredis-1.12.0.tar.gz"
-  sha256 "c3031094db0aa03d48b6f9be750e32d3e901942a96cc05283029086cb871cd81"
+  url "https://files.pythonhosted.org/packages/8a/a6/80b049052a354b8b922f297634aaea2ca0f9dab866dae5397d39e91f3d9f/iredis-1.12.1.tar.gz"
+  sha256 "9cbc2ee3bc15e50aa0b62ca237d6db2b38e565d81de90b792a30658a9c115b54"
   license "BSD-3-Clause"
   head "https://github.com/laixintao/iredis.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d8dee1529cc666667f220271ed680aba97b9a2f4a692914e03a64c4ff0cd45c2"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e7b96883fae1df6be55cefa0b25d4931a499999ac431b1021503d0eccc345729"
-    sha256 cellar: :any_skip_relocation, monterey:       "b4dafff4a309d12ca3d7e022780b5236b91cd5f919450a2583d54800075bb970"
-    sha256 cellar: :any_skip_relocation, big_sur:        "61220200e7a60c314f71f0c8f1fae243b5fa7d41b1ce4235ab59047bfa2838a3"
-    sha256 cellar: :any_skip_relocation, catalina:       "c91b638ccdd6a88ee840305d252e2c03c2980a87cdb37e6fea6f0c6f89dabfcb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9cabcc91c0fb9c776a5e224856f615da4d47799c29e0ecfc798f9e33c319772d"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2b50ddc33b6ef2fbc534a32680f24473171d575d7d2baa04705a405347762d94"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "59b371854d2f07984f58bceed6578473d1a2e29e3f187f9b15918aa40ebc98e0"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "69caee98a2fd8450ce9ff5131a00ff9a9bd0eb95197e325d60589233dea05292"
+    sha256 cellar: :any_skip_relocation, ventura:        "7dfd26065bcff326df9c7516e9612ece4362dc873cb60ca419400bf91a5bf03b"
+    sha256 cellar: :any_skip_relocation, monterey:       "540602e1e1b59f53d3f09fb095b63ab9f7e938a8d8c97e8c4541791be5b0c3fd"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f488dc95a684fc40623256577d3faf2ed39af413df5b7d9cf91016b6a7e04b96"
+    sha256 cellar: :any_skip_relocation, catalina:       "f6f4d1bc7cf5a412607debbc964e926e71e5e34e9d550bddd9942afab3472b8f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a1f04bccb5bf4291e0cb074689c1e2a5a16f590e1395e3fc579b90226c30aa32"
   end
 
-  depends_on "poetry" => :build
-  depends_on "python@3.10"
+  depends_on "python@3.11"
   depends_on "six"
 
   resource "click" do
@@ -32,13 +34,13 @@ class Iredis < Formula
   end
 
   resource "importlib-resources" do
-    url "https://files.pythonhosted.org/packages/a5/66/b844887f2225049abd75a0c54415d419e334b7a7e2a69c5a5c4968e30906/importlib_resources-5.8.0.tar.gz"
-    sha256 "568c9f16cb204f9decc8d6d24a572eeea27dacbb4cee9e6b03a8025736769751"
+    url "https://files.pythonhosted.org/packages/06/72/6bf0df4fe7a139147f5d6b473f16d5aefb7bc5b719ba5dd33f230d35760f/importlib_resources-5.10.0.tar.gz"
+    sha256 "c01b1b94210d9849f286b86bb51bcea7cd56dde0600d8db721d7b81330711668"
   end
 
   resource "mistune" do
-    url "https://files.pythonhosted.org/packages/33/36/506af4690234e7a84b8b3e0f4aee4dfe5a28b8688a0eec2047af9a078020/mistune-2.0.2.tar.gz"
-    sha256 "6fc88c3cb49dba8b16687b41725e661cf85784c12e8974a29b9d336dd596c3a1"
+    url "https://files.pythonhosted.org/packages/cd/9b/0f98334812f548a5ee4399b76e33752a74fc7bb976f5efb34d962f03d585/mistune-2.0.4.tar.gz"
+    sha256 "9ee0a66053e2267aba772c71e06891fa8f1af6d4b01d5e84e267b4570d4d9808"
   end
 
   resource "packaging" do
@@ -52,13 +54,13 @@ class Iredis < Formula
   end
 
   resource "prompt-toolkit" do
-    url "https://files.pythonhosted.org/packages/59/68/4d80f22e889ea34f20483ae3d4ca3f8d15f15264bcfb75e52b90fb5aefa5/prompt_toolkit-3.0.29.tar.gz"
-    sha256 "bd640f60e8cecd74f0dc249713d433ace2ddc62b65ee07f96d358e0b152b6ea7"
+    url "https://files.pythonhosted.org/packages/c4/6e/6ff7938f47981305a801a4c5b8d8ed282b58a28c01c394d43c1fbcfc810b/prompt_toolkit-3.0.33.tar.gz"
+    sha256 "535c29c31216c77302877d5120aef6c94ff573748a5b5ca5b1b1f76f5e700c73"
   end
 
   resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/59/0f/eb10576eb73b5857bc22610cdfc59e424ced4004fe7132c8f2af2cc168d3/Pygments-2.12.0.tar.gz"
-    sha256 "5eb116118f9612ff1ee89ac96437bb6b49e8f04d8a13b514ba26f620208e26eb"
+    url "https://files.pythonhosted.org/packages/e0/ef/5905cd3642f2337d44143529c941cc3a02e5af16f0f65f81cbef7af452bb/Pygments-2.13.0.tar.gz"
+    sha256 "56a8508ae95f98e2b9bdf93a6be5ae3f7d8af858b43e02c5a2ff083726be40c1"
   end
 
   resource "pyparsing" do
@@ -87,12 +89,14 @@ class Iredis < Formula
   end
 
   def install
-    venv = virtualenv_create(libexec, "python3")
+    venv = virtualenv_create(libexec, "python3.11")
 
-    # Install pytzdata using brewed poetry to avoid build dependency on Rust.
+    # Switch build-system to poetry-core to avoid rust dependency on Linux.
+    # Remove when merged/released: https://github.com/sdispater/pytzdata/pull/13
     resource("pytzdata").stage do
-      system Formula["poetry"].opt_bin/"poetry", "build", "--format", "wheel", "--verbose", "--no-interaction"
-      venv.pip_install_and_link Dir["dist/pytzdata-*.whl"].first
+      inreplace "pyproject.toml", 'requires = ["poetry>=1.0.0"]', 'requires = ["poetry-core>=1.0"]'
+      inreplace "pyproject.toml", 'build-backend = "poetry.masonry.api"', 'build-backend = "poetry.core.masonry.api"'
+      venv.pip_install_and_link Pathname.pwd
     end
 
     venv.pip_install resources.reject { |r| r.name == "pytzdata" }

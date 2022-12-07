@@ -3,18 +3,24 @@ class Libgnomecanvas < Formula
   homepage "https://gitlab.gnome.org/Archive/libgnomecanvas"
   url "https://download.gnome.org/sources/libgnomecanvas/2.30/libgnomecanvas-2.30.3.tar.bz2"
   sha256 "859b78e08489fce4d5c15c676fec1cd79782f115f516e8ad8bed6abcb8dedd40"
+  license all_of: [
+    "LGPL-2.0-or-later", # glide and libgnomecanvas files
+    "LGPL-2.1-or-later", # gail project
+  ]
   revision 5
 
   bottle do
+    sha256 cellar: :any, arm64_ventura:  "4b8105aefd57fa86f23ce651fea0cf2e535fec792c17b8cecc33bf4824e57455"
     sha256 cellar: :any, arm64_monterey: "aef7d6bf446277bc167f620e3cb3da665cbd18a3b118b2234816078525b9d171"
     sha256 cellar: :any, arm64_big_sur:  "ed9d17d2b7100e9c5ef536c547119eb78e8658bc273f958e673d47383290c3d7"
+    sha256 cellar: :any, ventura:        "3b9fe981f867d678e4a4fc87f074afc8f82f3a9bce440fd1816d77fa2ac85350"
     sha256 cellar: :any, monterey:       "496d5c87547b25b2f57f676fd627d58a0663737dbf993e2c11a3d535f87c03d1"
     sha256 cellar: :any, big_sur:        "e2ae279ca7759e74bf93ed0577838d7e80fef134ad5f76c671263d023bca3dd1"
     sha256 cellar: :any, catalina:       "816cd9bf11520fba1126073191c236f2355c45a137905ba978f16a506960fef0"
     sha256 cellar: :any, mojave:         "bedab86245aa4185fc9c009496ec2d0fc0d1ea53074493db08afc81bdf424a60"
   end
 
-  deprecate! date: "2021-11-03", because: :repo_archived
+  disable! date: "2022-11-29", because: :repo_archived
 
   depends_on "intltool" => :build
   depends_on "pkg-config" => :build

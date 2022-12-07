@@ -1,12 +1,13 @@
 class Libnl < Formula
   desc "Netlink Library Suite"
   homepage "https://github.com/thom311/libnl"
-  url "https://github.com/thom311/libnl/releases/download/libnl3_6_0/libnl-3.6.0.tar.gz"
-  sha256 "532155fd011e5a805bd67121b87a01c757e2bb24112ac17e69cb86013b970009"
+  url "https://github.com/thom311/libnl/releases/download/libnl3_7_0/libnl-3.7.0.tar.gz"
+  sha256 "9fe43ccbeeea72c653bdcf8c93332583135cda46a79507bfd0a483bb57f65939"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 x86_64_linux: "2b24a546a772b9abc57a7662eb2f427800e9fbcd744c4709667d0a5b26c88435"
+    rebuild 1
+    sha256 x86_64_linux: "f8763b4ead5dedac63ba5721a5c52981bf14e76ec89ffaafa7e65398f87d54e3"
   end
 
   depends_on "pkg-config" => :test
@@ -16,7 +17,7 @@ class Libnl < Formula
   uses_from_macos "flex" => :build
 
   def install
-    system "./configure", *std_configure_args, "--disable-silent-rules"
+    system "./configure", *std_configure_args, "--disable-silent-rules", "--sysconfdir=#{etc}"
     system "make", "install"
   end
 

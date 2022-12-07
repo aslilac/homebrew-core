@@ -1,8 +1,8 @@
 class Clair < Formula
   desc "Vulnerability Static Analysis for Containers"
   homepage "https://github.com/quay/clair"
-  url "https://github.com/quay/clair/archive/v4.4.4.tar.gz"
-  sha256 "7895442b6c5fb016513b859c4372826008d908ef85d2f506eaf1da301f9f13bc"
+  url "https://github.com/quay/clair/archive/v4.5.1.tar.gz"
+  sha256 "83c8b42fc2ab260de4f73a7954e4e98b51adea38ea07c1d4ce6bbb67c2900818"
   license "Apache-2.0"
 
   livecheck do
@@ -11,12 +11,14 @@ class Clair < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "36353c524900ebcca7fb3324e14d01ab662a40d1cc0a47bdbb69cd226d3185bb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e2d06c88e2b9e21888cded7b3d4e2e2ccbdd43ae02b38655d071dfe929572cbe"
-    sha256 cellar: :any_skip_relocation, monterey:       "d29b85094de70d4b034081f32b5edf893fa1e950663b2b31a3e84584316a6798"
-    sha256 cellar: :any_skip_relocation, big_sur:        "fae5f403b4459e45e5e50edcb1e270f82dbdf18c5b445d52a2aa37b58085d3a4"
-    sha256 cellar: :any_skip_relocation, catalina:       "551e4703b1b444b141e9b9a9745c4b49554ce9482162e1253a175c75f8ad5ce7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "02ecbeaa9fefbd0cb3a9dd8b52da6cf9aaede27ba530d3da808bdf9ca3ef48d3"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3385e3ea407d0e37896de6a9c4162621d2a7c786c8feed6387511eab462fe7f6"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "fe0318b20f8257649db32233d68476358acb4bda3149bf128fbf1b7aa4f28452"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fe6f6ab7ee6984c44c8631339dd881c0486cf0e032fb5b524c254726d691c2df"
+    sha256 cellar: :any_skip_relocation, ventura:        "e68de8dfe963cf4ef345fe58cd8d71ec2b4ff4d60e5e8fec7c40328fd00048fa"
+    sha256 cellar: :any_skip_relocation, monterey:       "dc4e83d6284e510aadc27e87fb6a6f9ac5d260a26a3d3c27946f627e26ff53bb"
+    sha256 cellar: :any_skip_relocation, big_sur:        "eee1ad5f4103bd3a0b4707b451a00e9eeba3e30066d514ed1646abcac74f7450"
+    sha256 cellar: :any_skip_relocation, catalina:       "edcc194f963aa58dbd2d0b77cda92ed351b593cfb85cfb36fbae0df346e27ee6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "222688479b8b7af6794526b1ba69bfbb61bc6ed0b7e927e0d0c1e9e709b0ddd9"
   end
 
   depends_on "go" => :build

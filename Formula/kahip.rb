@@ -4,15 +4,18 @@ class Kahip < Formula
   url "https://github.com/KaHIP/KaHIP/archive/v3.14.tar.gz"
   sha256 "9da04f3b0ea53b50eae670d6014ff54c0df2cb40f6679b2f6a96840c1217f242"
   license "MIT"
+  revision 1
   head "https://github.com/KaHIP/KaHIP.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "3ca758f3123e08b5ca8bdc6d871ac667e4e4c059bf8fa771b4d7b8faea5901e1"
-    sha256 cellar: :any,                 arm64_big_sur:  "7f35c336c78e7d0a8094f97db34533e02755749557d4d91808b5aede4d01e1e5"
-    sha256 cellar: :any,                 monterey:       "cffb766beda21575c6367a0390e6cdcdbe68091ba21352e42dcdf3796726010e"
-    sha256 cellar: :any,                 big_sur:        "05929f1f281044afdb8663cb9a2a7cac66b07181ae2b66f1eb0cff32923ba300"
-    sha256 cellar: :any,                 catalina:       "7d006b6467f459beac409f17ce38a1b800c06e96df08b50d29ed34dc5f822227"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fb760f3de464f04a3341f6ef5b9c00ad8a26702cdf3f0da20957546aace735e8"
+    sha256 cellar: :any,                 arm64_ventura:  "8b999a1be4898c4e40b9aff02b62146505db291dba06db771c238cb37490d1a5"
+    sha256 cellar: :any,                 arm64_monterey: "caefdd4a209465343d4b986895d17278c811acd876f7ecce50388ab0c4e7b250"
+    sha256 cellar: :any,                 arm64_big_sur:  "a393a6470d7569acf1c2e1e0b402d5901cea07c9880a7d6f01423acdaad7262a"
+    sha256 cellar: :any,                 ventura:        "ae1e1f542691906b9321faa0ab5ff338cc3e2b87524fdc4a4e3cedb73c44d120"
+    sha256 cellar: :any,                 monterey:       "8f147b571794bbc87b050e84edaca1eb90be0b7c3ed6f0976f3f22c7a6a6ed96"
+    sha256 cellar: :any,                 big_sur:        "d6ef09d6bde208d85c59ea4d5748a0289a6eddec3e75315766a05e692b857c6d"
+    sha256 cellar: :any,                 catalina:       "f3c5fee2f01f5d4dce03a9f5c43ec8bdb6ba2199aa199c0bb09eefcffe1cb425"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6780ba35f379f397d06db1b6b6f5d1b4a236993959821400d94f5058b1686b83"
   end
 
   depends_on "cmake" => :build
@@ -22,17 +25,14 @@ class Kahip < Formula
     depends_on "gcc"
   end
 
-  def install
-    if OS.mac?
-      gcc_major_ver = Formula["gcc"].any_installed_version.major
-      ENV["CC"] = Formula["gcc"].opt_bin/"gcc-#{gcc_major_ver}"
-      ENV["CXX"] = Formula["gcc"].opt_bin/"g++-#{gcc_major_ver}"
-    end
+  fails_with :clang do
+    cause "needs OpenMP support"
+  end
 
-    mkdir "build" do
-      system "cmake", *std_cmake_args, ".."
-      system "make", "install"
-    end
+  def install
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

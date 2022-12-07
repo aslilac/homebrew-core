@@ -1,17 +1,19 @@
 class Csvtk < Formula
   desc "Cross-platform, efficient and practical CSV/TSV toolkit in Golang"
   homepage "https://bioinf.shenwei.me/csvtk"
-  url "https://github.com/shenwei356/csvtk/archive/refs/tags/v0.24.0.tar.gz"
-  sha256 "d944e55d9555733990783bbe45200da5eaef47a13d4eac242ef084d9384d54f8"
+  url "https://github.com/shenwei356/csvtk/archive/refs/tags/v0.25.0.tar.gz"
+  sha256 "47d244068274ad5070ef50cafee243d1035c51692b025bf074d0b7be3f8a7d1c"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b2d48edb96cf9e1554aea914c9867201729c5ea014d800ca9ba197b793851de2"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5b2f09bb13dc00622c012dfecb1705ee11d1bd2e1ab1a818448aef464876961b"
-    sha256 cellar: :any_skip_relocation, monterey:       "d6c3adf4c7016b4a3b21556045d5539ce3cbc34a1540fe90badd9797adb717b8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "38d46efee033ef17d39fd5e93a0a96cfda0c0ca39a69f3bcb2dbbaf154dc91cc"
-    sha256 cellar: :any_skip_relocation, catalina:       "acea84dd2a22b036bc5e7445e7ddedc2e5dfdeaeac3c42da659c8e171362e36f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "087a5bb6bfcae4ee7278be49e2cb0eddc117878c2393ddf6e11a1c525d043914"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "82ed512905b11fe2de26ca015077e91a87b8d745d49e366ebbf6e42baee3c5c4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "434cd3b6895fdf38adfe0cf83420e8b46f916e2bf18ae1749fea0306d24edebb"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c5a305858fdfc9ca7d36275ffb6906a615df52f9df207efd5b6d67fe78ef9f7a"
+    sha256 cellar: :any_skip_relocation, ventura:        "3ba5ce2275aca60868e552e4e53b4d041d965b0ae4374f146939ad5f2db8a62a"
+    sha256 cellar: :any_skip_relocation, monterey:       "418c568216b92cda592b6971effa8c50e78298030e6f21ce76495b52b167bea5"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d3bd98413d7c2642508d32420afd9448a4817e611e8a97ec2cd96694cd1daaab"
+    sha256 cellar: :any_skip_relocation, catalina:       "70e4f39b714164b44c3e5b55554d78d454db9fcfb185f1f28536aaa1e99f2486"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4630f21fe4e10dfbf6b029930822c1be479b010d8a059a1bd0f6c76ae61d1883"
   end
 
   depends_on "go" => :build

@@ -3,22 +3,24 @@ class S3cmd < Formula
 
   desc "Command-line tool for the Amazon S3 service"
   homepage "https://s3tools.org/s3cmd"
-  url "https://files.pythonhosted.org/packages/65/6c/f51ba2fbc74916f4fe3883228450306135e13be6dcca03a08d3e91239992/s3cmd-2.2.0.tar.gz"
-  sha256 "2a7d2afe09ce5aa9f2ce925b68c6e0c1903dd8d4e4a591cd7047da8e983a99c3"
+  url "https://files.pythonhosted.org/packages/97/10/5ae9b5c69d0482dda2927c67a4db26a3e9e064964577a81be9239a419b3f/s3cmd-2.3.0.tar.gz"
+  sha256 "15330776e7ff993d8ae0ac213bf896f210719e9b91445f5f7626a8fa7e74e30b"
   license "GPL-2.0-or-later"
-  revision 2
   head "https://github.com/s3tools/s3cmd.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bf33ae13c4d9e22ae99b8508db8377c08abf789a3438efd2f768367469111fa0"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0524e011b71b57afc8276cd1df26de6550caf1fddf507abfec590f0f6769dba2"
-    sha256 cellar: :any_skip_relocation, monterey:       "346540c7c9d5898e157df02dfa7b84aef3edd094a06929ca9df7d02a1c4ca9d3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "40be72f6f518aae27bf420abcdb17d04261858b7f66ec58afd89eb56fe03d541"
-    sha256 cellar: :any_skip_relocation, catalina:       "9370607e3fb43d8a466b0daa7c2f4292c6640fa66a4fcfc2802f5980c11712f1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0afba47e264b4a94fc0b6b96f69880d51e3cdf126998f7fd3b1079f149587adb"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5d3197b26ede962687b3f7e44063b70c51b58eafa800578f01c0a716770833ed"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b8ebf2e5482148ab05fb5566a0daf181701b4a8019bd1fba40d1a8854a926c0b"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "62239bfac256904c14d9aa9deccdc54d27f8b97dcf47fbb593386c07ec362c5c"
+    sha256 cellar: :any_skip_relocation, ventura:        "98a569dab7f76373fc587e335f8d705fd46b0a60f773dc8e35477cdae7cae35a"
+    sha256 cellar: :any_skip_relocation, monterey:       "42221c8da5a493e2fdb7e1752603f2de8fd7308f2d8790c7bbdf5bd1b96efef3"
+    sha256 cellar: :any_skip_relocation, big_sur:        "1a6157f2ba122b52f4f8d4f312bf981f621afb4339266c086e24ced420bf43f2"
+    sha256 cellar: :any_skip_relocation, catalina:       "2168e52f58b88cded9291ff6fce6ae6fe5c271d9e4f19aa4b35fc286b7281b5d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "24ff4870317c568b8cdef59aa0c83c587ecd0539a9d231597ace36a25f78a6f0"
   end
 
-  depends_on "python@3.9"
+  depends_on "python@3.11"
   depends_on "six"
 
   resource "python-dateutil" do
@@ -27,8 +29,8 @@ class S3cmd < Formula
   end
 
   resource "python-magic" do
-    url "https://files.pythonhosted.org/packages/f7/46/fecfd32c126d26c8dd5287095cad01356ec0a761205f0b9255998bff96d1/python-magic-0.4.25.tar.gz"
-    sha256 "21f5f542aa0330f5c8a64442528542f6215c8e18d2466b399b0d9d39356d83fc"
+    url "https://files.pythonhosted.org/packages/da/db/0b3e28ac047452d079d375ec6798bf76a036a08182dbb39ed38116a49130/python-magic-0.4.27.tar.gz"
+    sha256 "c1ba14b08e4a5f5c31a302b7721239695b2f0f058d125bd5ce1ee36b9d9d3c3b"
   end
 
   def install

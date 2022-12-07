@@ -1,23 +1,24 @@
 class ImagemagickAT6 < Formula
   desc "Tools and libraries to manipulate images in many formats"
   homepage "https://legacy.imagemagick.org/"
-  url "https://imagemagick.org/archive/releases/ImageMagick-6.9.12-55.tar.xz"
-  sha256 "694f8c4482425de71a09daa46bcadf4bdb09fea0cd71bc6dbdaea9d5a004ef06"
+  url "https://imagemagick.org/archive/releases/ImageMagick-6.9.12-68.tar.xz"
+  sha256 "13aab9179c06249888b9c3995197d553084b700d9b8083e383cf249900cd04f3"
   license "ImageMagick"
   head "https://github.com/imagemagick/imagemagick6.git", branch: "main"
 
   livecheck do
-    url "https://download.imagemagick.org/ImageMagick/download/"
-    regex(/href=.*?ImageMagick[._-]v?(6(?:\.\d+)+(?:-\d+)?)\.t/i)
+    url "https://imagemagick.org/archive/"
+    regex(/href=.*?ImageMagick[._-]v?(6(?:[.-]\d+)+)\.t/i)
   end
 
   bottle do
-    sha256 arm64_monterey: "9f48c9b141bd231f4f2a38171e46a2873ba7b96b76cf7b7736461e317dc69451"
-    sha256 arm64_big_sur:  "df4bf13713e13311788767c5e2881d773fcf21b6dff1d15c8283b162f11c3819"
-    sha256 monterey:       "6b6b4c37be101235b7c145fc97a6fe5314e701680cc08a9840ec1f71e1c09b8c"
-    sha256 big_sur:        "042e378ddac7221442575a6988312347b9a40182a1d66cca265091b66d14c57a"
-    sha256 catalina:       "e47bce6f86e4763e455eb32a7a0d53a68e7e96d641064fb380f1e73cc5cd9860"
-    sha256 x86_64_linux:   "a0b2f9ccba50488ddcf9a7e8b01ec31d6b65a2c5686f84ac5e9e236336530370"
+    sha256 arm64_ventura:  "9da3b9f71c07174b3d336f155b6ef6fa9d2d131c9e1fafa30445780d23b735e3"
+    sha256 arm64_monterey: "fd07fbf1ab916d1a282c8894c83c3fa8d5bfd8e1ebbcd6ca5658eecff72d9121"
+    sha256 arm64_big_sur:  "34429ff1a23f4a9729ec9fccdbdce56ea226de1c630f7975231ed70cf781425c"
+    sha256 ventura:        "eb22055393587871ee955d63a69d4548f28e44bfee6890589b2b46b5d11fe4e5"
+    sha256 monterey:       "5d77b7d29997b4464faac0edd8d45744a1439055e95c24a8f0e337bf6600f2fb"
+    sha256 big_sur:        "fa00efc3a426465b2185e599948d2d23f3b113b2374eb1c2a800b8f40088d9ee"
+    sha256 x86_64_linux:   "0c37d712977c3ae4761aea6bdcddda4e814820fc9128364cf5f9ada8f53c7c43"
   end
 
   keg_only :versioned_formula
@@ -26,7 +27,7 @@ class ImagemagickAT6 < Formula
 
   depends_on "freetype"
   depends_on "ghostscript"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "libtool"
@@ -34,6 +35,8 @@ class ImagemagickAT6 < Formula
   depends_on "openjpeg"
   depends_on "webp"
   depends_on "xz"
+
+  uses_from_macos "libxml2"
 
   skip_clean :la
 

@@ -2,8 +2,8 @@ class Influxdb < Formula
   desc "Time series, events, and metrics database"
   homepage "https://influxdata.com/time-series-platform/influxdb/"
   url "https://github.com/influxdata/influxdb.git",
-      tag:      "v2.3.0",
-      revision: "090f681737896feb99870ee534c9ccc4203b9a6d"
+      tag:      "v2.5.1",
+      revision: "5b6fdbf05dbd196471801927c19d66d071cc1775"
   license "MIT"
   head "https://github.com/influxdata/influxdb.git", branch: "master"
 
@@ -14,12 +14,14 @@ class Influxdb < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "95105d666775e9a4b652a430222da82f15f7bdf11e02508cce1c7e00f6b25ec7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "202bd77fdae7445a217740f9964b07e765cf262a01dea787268ccf4423ed84b3"
-    sha256 cellar: :any_skip_relocation, monterey:       "cbb3dd12f7730b73e5d59c50462e2c252b2e0a2d3360a884e7fd54f5bca125fc"
-    sha256 cellar: :any_skip_relocation, big_sur:        "7921499d12ad9c04673d4d57a4a8c0f0399ae765829de04cf7a192e648514769"
-    sha256 cellar: :any_skip_relocation, catalina:       "48285a09744171ad0ca5b9e95b9e7559388a3deb7c00f5b90febd52d209a25ec"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b5b6262d944954a1396ef7c87b2e712f7fa26c2f3d0de0de0d578c2d7fc26f70"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "fa8ec30e24ac9791a912870092ca5fa7c55e6c6a5396680085009d7b29434306"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b520c3e4b34e493e5eed283883a4cada2bea1c65ae9bd5495f5df7cda154a684"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e912e334f0883c403aa636f010779d36d3c85d045f05a659a30a6012096b8607"
+    sha256 cellar: :any_skip_relocation, ventura:        "50b4344e4b7d62fe5fda2fc917b752b0c820f6de49bb69a43defc8bd099c0bfb"
+    sha256 cellar: :any_skip_relocation, monterey:       "503e38fe42235fd4c1e4fa4e30faae4b5d5b7eac5f36c8bab563bf0a0e4ce960"
+    sha256 cellar: :any_skip_relocation, big_sur:        "da8626163a57bb579c2d07bcd1f9787a748f63cbe28beca1659d30bb417b788b"
+    sha256 cellar: :any_skip_relocation, catalina:       "3bb91162e3de58ce23d0b07b9179d3d60ab0bc339316be94560837a163585205"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c049abe021d340753e9a4d6690138d83a721064762b8617349e02748c251024c"
   end
 
   depends_on "breezy" => :build
@@ -38,8 +40,8 @@ class Influxdb < Formula
   # NOTE: The version/URL here is specified in scripts/fetch-ui-assets.sh in influxdb.
   # If you're upgrading to a newer influxdb version, check to see if this needs upgraded too.
   resource "ui-assets" do
-    url "https://github.com/influxdata/ui/releases/download/OSS-2.1.2/build.tar.gz"
-    sha256 "7d78d284d25f28dfd940d407a17f7f3aee1706b5dabc237eadc3bef0031ce548"
+    url "https://github.com/influxdata/ui/releases/download/OSS-2022-09-16/build.tar.gz"
+    sha256 "3dd9da2a12a5644febff519d5d5a45eaf54dea476613aa20e79596aab31fe715"
   end
 
   def install

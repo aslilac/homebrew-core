@@ -2,36 +2,64 @@ class Hatch < Formula
   include Language::Python::Virtualenv
 
   desc "Modern, extensible Python project management"
-  homepage "https://hatch.pypa.io/latest"
-  url "https://files.pythonhosted.org/packages/5e/3f/401a19f2a48cccaeaeeca99837f75d489fabfcf72bd058d5c0b2067ff6f6/hatch-1.2.1.tar.gz"
-  sha256 "61761e1fe14474fb2be7e264555b99fc343b4e63c0ee32aa3497c651e4cdec03"
+  homepage "https://hatch.pypa.io/latest/"
+  url "https://files.pythonhosted.org/packages/75/60/ea5735ec08a80cbf57ed152bd3544df775812fe5931c3de8937501aae2d6/hatch-1.6.3.tar.gz"
+  sha256 "650e671ba300318e498ef93bbe3b99b32ce14920764fb8753f89993f63eed79a"
   license "MIT"
+  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "53a6cda56b61b0b7f6f6eaeee06890eecde93b655db1f8a3962bdce5d546f2fc"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8d3ac434f0ec794d0b78461aa40bdad03eb748160a7ea9a6962df5a1ad73a4b1"
-    sha256 cellar: :any_skip_relocation, monterey:       "7da16e26a24b23b91b450bceb231bd0bb53ac4a25dc73c59d678080910bf52de"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5d40ae12d705131af2662088878274efab3809384e703321ceb6839e91d6ff7d"
-    sha256 cellar: :any_skip_relocation, catalina:       "ba418bec8593751f606b00239e6e1bdc63ee9726ef406604e0b26a68381196c8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d5a75f2def9f8ac1572cb9940dcef64fffcdf3ed13a1a675e16362eec36289e9"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "11154627ea60b8c75ba8386c99636873371be5f1f0d602772022da0c6590d94e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1163688c3ad19a848fbd74ddea6e6ab55fa73a107f9291a4ebd3bc4a6c5a0826"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b9f2bb7c95f5b463c5d7d799f9590b4d41a28fb56c562ebb46d56c54c9ccf06d"
+    sha256 cellar: :any_skip_relocation, ventura:        "847e1651c9472e2a4a471dc4bada75fe17d52f192ed83fd508be823295a2f453"
+    sha256 cellar: :any_skip_relocation, monterey:       "4d2062bfea51200c422ab793fd3be296f0bdc017c132a9267c3e97ef834ad9fe"
+    sha256 cellar: :any_skip_relocation, big_sur:        "623cef092cbba8c1af33ed1685804532483cec8544f12466fe6661dfcf28c03a"
+    sha256 cellar: :any_skip_relocation, catalina:       "d6b969b305cbc6ab27e966ec8b5c062ef3b18954386db613ca50994928b2b5a9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "47df83977838900f009a5db426a4b02384263af31e3613520de36bc84a91ebe9"
   end
 
-  depends_on "python@3.10"
-  depends_on "six"
+  depends_on "pygments"
+  depends_on "python@3.11"
+  depends_on "virtualenv"
+
+  on_linux do
+    depends_on "rust" => :build
+
+    resource "cffi" do
+      url "https://files.pythonhosted.org/packages/2b/a8/050ab4f0c3d4c1b8aaa805f70e26e84d0e27004907c5b8ecc1d31815f92a/cffi-1.15.1.tar.gz"
+      sha256 "d400bfb9a37b1351253cb402671cea7e89bdecc294e8016a707f6d1d8ac934f9"
+    end
+
+    resource "cryptography" do
+      url "https://files.pythonhosted.org/packages/63/82/a6e21842f2e31b3874f01c112093b8bf8af119f5ed999bbd667a81de720b/cryptography-38.0.2.tar.gz"
+      sha256 "7a022ec87c7a8bdad99f516a4ee6ffcb3a2bc31487577f9eccbc9b2edb1a8fd4"
+    end
+
+    resource "jeepney" do
+      url "https://files.pythonhosted.org/packages/d6/f4/154cf374c2daf2020e05c3c6a03c91348d59b23c5366e968feb198306fdf/jeepney-0.8.0.tar.gz"
+      sha256 "5efe48d255973902f6badc3ce55e2aa6c5c3b3bc642059ef3a91247bcfcc5806"
+    end
+
+    resource "pycparser" do
+      url "https://files.pythonhosted.org/packages/5e/0b/95d387f5f4433cb0f53ff7ad859bd2c6051051cebbb564f139a999ab46de/pycparser-2.21.tar.gz"
+      sha256 "e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206"
+    end
+
+    resource "SecretStorage" do
+      url "https://files.pythonhosted.org/packages/53/a4/f48c9d79cb507ed1373477dbceaba7401fd8a23af63b837fa61f1dcd3691/SecretStorage-3.3.3.tar.gz"
+      sha256 "2403533ef369eca6d2ba81718576c5e0f564d5cca1b58f73a8b23e7d4eeebd77"
+    end
+  end
 
   resource "anyio" do
-    url "https://files.pythonhosted.org/packages/67/c4/fd50bbb2fb72532a4b778562e28ba581da15067cfb2537dbd3a2e64689c1/anyio-3.6.1.tar.gz"
-    sha256 "413adf95f93886e442aea925f3ee43baa5a765a64a0f52c6081894f9992fdd0b"
-  end
-
-  resource "atomicwrites" do
-    url "https://files.pythonhosted.org/packages/55/8d/74a75635f2c3c914ab5b3850112fd4b0c8039975ecb320e4449aa363ba54/atomicwrites-1.4.0.tar.gz"
-    sha256 "ae70396ad1a434f9c7046fd2dd196fc04b12f9e91ffb859164193be8b6168a7a"
+    url "https://files.pythonhosted.org/packages/8b/94/6928d4345f2bc1beecbff03325cad43d320717f51ab74ab5a571324f4f5a/anyio-3.6.2.tar.gz"
+    sha256 "25ea0d673ae30af41a0c442f81cf3b38c7e79fdc7b60335a4c14e05eb0947421"
   end
 
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/07/10/75277f313d13a2b74fc56e29239d5c840c2bf09f17bf25c02b35558812c6/certifi-2022.5.18.1.tar.gz"
-    sha256 "9c5705e395cd70084351dd8ad5c41e65655e08ce46f2ec9cf6c2c08390f71eb7"
+    url "https://files.pythonhosted.org/packages/cb/a4/7de7cd59e429bd0ee6521ba58a75adaec136d32f91a761b28a11d8088d44/certifi-2022.9.24.tar.gz"
+    sha256 "0d9c601124e5a6ba9712dbc60d9c53c21e34f5f641fe83002317394311bdce14"
   end
 
   resource "click" do
@@ -45,8 +73,8 @@ class Hatch < Formula
   end
 
   resource "distlib" do
-    url "https://files.pythonhosted.org/packages/85/01/88529c93e41607f1a78c1e4b346b24c74ee43d2f41cfe33ecd2e20e0c7e3/distlib-0.3.4.zip"
-    sha256 "e4b58818180336dc9c529bfb9a0b58728ffc09ad92027a3f30b7cd91e3458579"
+    url "https://files.pythonhosted.org/packages/58/07/815476ae605bcc5f95c87a62b95e74a1bce0878bc7a3119bc2bf4178f175/distlib-0.3.6.tar.gz"
+    sha256 "14bad2d9b04d3a36127ac97f30b12a19268f211063d8f8ee4f47108896e11b46"
   end
 
   resource "editables" do
@@ -55,8 +83,8 @@ class Hatch < Formula
   end
 
   resource "filelock" do
-    url "https://files.pythonhosted.org/packages/32/0e/e4a925976b09898ca585cdd5497f158daab6ffb59b61dab5108df00416ac/filelock-3.7.0.tar.gz"
-    sha256 "b795f1b42a61bbf8ec7113c341dad679d772567b936fbd1bf43c9a238e673e20"
+    url "https://files.pythonhosted.org/packages/95/55/b897882bffb8213456363e646bf9e9fa704ffda5a7d140edf935a9e02c7b/filelock-3.8.0.tar.gz"
+    sha256 "55447caa666f2198c5b6b13a26d2084d26fa5b115c00d065664b2124680c4edc"
   end
 
   resource "h11" do
@@ -65,8 +93,8 @@ class Hatch < Formula
   end
 
   resource "hatchling" do
-    url "https://files.pythonhosted.org/packages/b0/49/caada91404326c3d4c610afc243e81dd4abc6b8d2caaa39d6954b42d8947/hatchling-1.3.1.tar.gz"
-    sha256 "aaa63019c9d666053d9ff318097335e766123844547c52940155c0401c3c142f"
+    url "https://files.pythonhosted.org/packages/24/20/3e21d2bc57229822ac9fb9b314d7892c16f829f34a0eb247c55fc11e09a8/hatchling-1.11.1.tar.gz"
+    sha256 "9f84361f70cf3a7ab9543b0c3ecc64211ed2ba8a606a71eb6a473c1c9b08e1d0"
   end
 
   resource "httpcore" do
@@ -79,19 +107,34 @@ class Hatch < Formula
     sha256 "f28eac771ec9eb4866d3fb4ab65abd42d38c424739e80c08d8d20570de60b0ef"
   end
 
+  resource "hyperlink" do
+    url "https://files.pythonhosted.org/packages/3a/51/1947bd81d75af87e3bb9e34593a4cf118115a8feb451ce7a69044ef1412e/hyperlink-21.0.0.tar.gz"
+    sha256 "427af957daa58bc909471c6c40f74c5450fa123dd093fc53efd2e91d2705a56b"
+  end
+
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/62/08/e3fc7c8161090f742f504f40b1bccbfc544d4a4e09eb774bf40aafce5436/idna-3.3.tar.gz"
-    sha256 "9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d"
+    url "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz"
+    sha256 "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
   end
 
   resource "importlib-metadata" do
-    url "https://files.pythonhosted.org/packages/35/a8/f2bd0d488c2bf932b4dda0fb91cbb687c0b1132b33130d1cfad4e2b4b963/importlib_metadata-4.11.4.tar.gz"
-    sha256 "5d26852efe48c0a32b0509ffbc583fda1a2266545a78d104a6f4aff3db17d700"
+    url "https://files.pythonhosted.org/packages/7e/ec/97f2ce958b62961fddd7258e0ceede844953606ad09b672fa03b86c453d3/importlib_metadata-5.0.0.tar.gz"
+    sha256 "da31db32b304314d044d3c12c79bd59e307889b287ad12ff387b3500835fc2ab"
+  end
+
+  resource "jaraco.classes" do
+    url "https://files.pythonhosted.org/packages/bf/02/a956c9bfd2dfe60b30c065ed8e28df7fcf72b292b861dca97e951c145ef6/jaraco.classes-3.2.3.tar.gz"
+    sha256 "89559fa5c1d3c34eff6f631ad80bb21f378dbcbb35dd161fd2c6b93f5be2f98a"
   end
 
   resource "keyring" do
-    url "https://files.pythonhosted.org/packages/0b/c6/87aaea22b32a85c1eb786ee77844f826103e65e9c0a0c4df1f95ec23d3be/keyring-23.5.1.tar.gz"
-    sha256 "dee502cdf18a98211bef428eea11456a33c00718b2f08524fd5727c7f424bffd"
+    url "https://files.pythonhosted.org/packages/1c/35/c22960f14f5e17384296b2f09da259f8b5244fb3831eccec71cf948a49c6/keyring-23.11.0.tar.gz"
+    sha256 "ad192263e2cdd5f12875dedc2da13534359a7e760e77f8d04b50968a821c2361"
+  end
+
+  resource "more-itertools" do
+    url "https://files.pythonhosted.org/packages/13/b3/397aa9668da8b1f0c307bc474608653d46122ae0563d1d32f60e24fa0cbd/more-itertools-9.0.0.tar.gz"
+    sha256 "5a6257e40878ef0520b1803990e3e22303a41b5714006c32a3fd8304b26ea1ab"
   end
 
   resource "packaging" do
@@ -100,8 +143,8 @@ class Hatch < Formula
   end
 
   resource "pathspec" do
-    url "https://files.pythonhosted.org/packages/f6/33/436c5cb94e9f8902e59d1d544eb298b83c84b9ec37b5b769c5a0ad6edb19/pathspec-0.9.0.tar.gz"
-    sha256 "e564499435a2673d586f6b2130bb5b95f04a3ba06f81b8f895b651a3c76aabb1"
+    url "https://files.pythonhosted.org/packages/a2/29/959c72e1a6c3c25eaa46b9bfcc7fd401f65af83163d4796af09272c83c8a/pathspec-0.10.2.tar.gz"
+    sha256 "8f6bf73e5758fd365ef5d58ce09ac7c27d2833a8d7da51712eac6e27e35141b0"
   end
 
   resource "pexpect" do
@@ -110,8 +153,8 @@ class Hatch < Formula
   end
 
   resource "platformdirs" do
-    url "https://files.pythonhosted.org/packages/ff/7b/3613df51e6afbf2306fc2465671c03390229b55e3ef3ab9dd3f846a53be6/platformdirs-2.5.2.tar.gz"
-    sha256 "58c8abb07dcb441e6ee4b11d8df0ac856038f944ab98b7be6b27b2a3c7feef19"
+    url "https://files.pythonhosted.org/packages/cb/5f/dda8451435f17ed8043eab5ffe04e47d703debe8fe845eb074f42260e50a/platformdirs-2.5.4.tar.gz"
+    sha256 "1006647646d80f16130f052404c6b901e80ee4ed6bef6792e1f238a8969106f7"
   end
 
   resource "pluggy" do
@@ -122,11 +165,6 @@ class Hatch < Formula
   resource "ptyprocess" do
     url "https://files.pythonhosted.org/packages/20/e5/16ff212c1e452235a90aeb09066144d0c5a6a8c0834397e03f5224495c4e/ptyprocess-0.7.0.tar.gz"
     sha256 "5c5d0a3b48ceee0b48485e0c26037c0acd7d29765ca3fbb5cb3831d347423220"
-  end
-
-  resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/59/0f/eb10576eb73b5857bc22610cdfc59e424ced4004fe7132c8f2af2cc168d3/Pygments-2.12.0.tar.gz"
-    sha256 "5eb116118f9612ff1ee89ac96437bb6b49e8f04d8a13b514ba26f620208e26eb"
   end
 
   resource "pyparsing" do
@@ -145,13 +183,18 @@ class Hatch < Formula
   end
 
   resource "rich" do
-    url "https://files.pythonhosted.org/packages/f5/f3/f87be42279b5cfba09f7f29e2f4a77063ccf5d9075042981e2cf48752d51/rich-12.4.4.tar.gz"
-    sha256 "4c586de507202505346f3e32d1363eb9ed6932f0c2f63184dea88983ff4971e2"
+    url "https://files.pythonhosted.org/packages/11/23/814edf09ec6470d52022b9e95c23c1bef77f0bc451761e1504ebd09606d3/rich-12.6.0.tar.gz"
+    sha256 "ba3a3775974105c221d31141f2c116f4fd65c5ceb0698657a11e9f295ec93fd0"
+  end
+
+  resource "shellingham" do
+    url "https://files.pythonhosted.org/packages/bd/e6/fdf53ebbf08016dba98f2b047d4db95790157f0e2eed3b14bb5754271475/shellingham-1.5.0.tar.gz"
+    sha256 "72fb7f5c63103ca2cb91b23dee0c71fe8ad6fbfd46418ef17dbe40db51592dad"
   end
 
   resource "sniffio" do
-    url "https://files.pythonhosted.org/packages/a6/ae/44ed7978bcb1f6337a3e2bef19c941de750d73243fc9389140d62853b686/sniffio-1.2.0.tar.gz"
-    sha256 "c4666eecec1d3f50960c6bdf61ab7bc350648da6c126e3cf6898d8cd4ddcd3de"
+    url "https://files.pythonhosted.org/packages/cd/50/d49c388cae4ec10e8109b1b833fd265511840706808576df3ada99ecb0ac/sniffio-1.3.0.tar.gz"
+    sha256 "e60305c5e5d314f5389259b7f22aaa33d8f7dee49763119234af3755c55b9101"
   end
 
   resource "tomli" do
@@ -165,8 +208,8 @@ class Hatch < Formula
   end
 
   resource "tomlkit" do
-    url "https://files.pythonhosted.org/packages/24/24/e50be8344fc6e9c9ae55bfcb136b33ad562776d822736da3d1ec0278b18b/tomlkit-0.11.0.tar.gz"
-    sha256 "71ceb10c0eefd8b8f11fe34e8a51ad07812cb1dc3de23247425fbc9ddc47b9dd"
+    url "https://files.pythonhosted.org/packages/ff/04/58b4c11430ed4b7b8f1723a5e4f20929d59361e9b17f0872d69681fd8ffd/tomlkit-0.11.6.tar.gz"
+    sha256 "71b952e5721688937fb02cf9d354dbcf0785066149d2855e44531ebdd2b65d73"
   end
 
   resource "userpath" do
@@ -174,27 +217,25 @@ class Hatch < Formula
     sha256 "04233d2fcfe5cff911c1e4fb7189755640e1524ff87a4b82ab9d6b875fee5787"
   end
 
-  resource "virtualenv" do
-    url "https://files.pythonhosted.org/packages/5f/6c/d44c403a54ceb4ec5179d1a963c69887d30dc5b300529ce67c05b4f16212/virtualenv-20.14.1.tar.gz"
-    sha256 "ef589a79795589aada0c1c5b319486797c03b67ac3984c48c669c0e4f50df3a5"
-  end
-
   resource "zipp" do
-    url "https://files.pythonhosted.org/packages/cc/3c/3e8c69cd493297003da83f26ccf1faea5dd7da7892a0a7c965ac3bcba7bf/zipp-3.8.0.tar.gz"
-    sha256 "56bf8aadb83c24db6c4b577e13de374ccfb67da2078beba1d037c17980bf43ad"
+    url "https://files.pythonhosted.org/packages/8d/d7/1bd1e0a5bc95a27a6f5c4ee8066ddfc5b69a9ec8d39ab11a41a804ec8f0d/zipp-3.10.0.tar.gz"
+    sha256 "7a7262fd930bd3e36c50b9a64897aec3fafff3dfdeec9623ae22b40e93f99bb8"
   end
 
   def install
     virtualenv_install_with_resources
 
-    output = Utils.safe_popen_read({ "_HATCH_COMPLETE" => "zsh_source" }, bin/"hatch")
-    (zsh_completion/"_hatch").write output
+    # we depend on virtualenv, but that's a separate formula, so install a `.pth` file to link them
+    site_packages = Language::Python.site_packages("python3.11")
+    virtualenv = Formula["virtualenv"].opt_libexec
+    (libexec/site_packages/"homebrew-virtualenv.pth").write virtualenv/site_packages
 
-    output = Utils.safe_popen_read({ "_HATCH_COMPLETE" => "fish_source" }, bin/"hatch")
-    (fish_completion/"hatch.fish").write output
+    (zsh_completion/"_hatch").write Utils.safe_popen_read({ "_HATCH_COMPLETE" => "zsh_source" }, bin/"hatch")
+    (fish_completion/"hatch.fish").write Utils.safe_popen_read({ "_HATCH_COMPLETE" => "fish_source" }, bin/"hatch")
   end
 
   test do
+    ENV["HATCH_PYTHON"] = "self"
     system bin/"hatch", "new", "homebrew"
     assert_predicate testpath/"homebrew/pyproject.toml", :exist?
 
@@ -203,7 +244,7 @@ class Hatch < Formula
       system bin/"hatch", "config", "set", "dirs.env.virtual", ".venv"
       system bin/"hatch", "env", "create"
       output = shell_output("#{bin}/hatch env run -- python -c 'import requests;print(requests.__version__)'")
-      assert_equal "2.24.0", output.strip
+      assert_equal "2.24.0", output.strip.lines.last
     end
   end
 end

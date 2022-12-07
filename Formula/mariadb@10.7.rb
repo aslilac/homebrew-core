@@ -1,8 +1,8 @@
 class MariadbAT107 < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "https://downloads.mariadb.com/MariaDB/mariadb-10.7.4/source/mariadb-10.7.4.tar.gz"
-  sha256 "73dd9c9d325520f20ca5e0ef16f94b7be1146bed7e4a78e735c20daebf3a4173"
+  url "https://downloads.mariadb.com/MariaDB/mariadb-10.7.7/source/mariadb-10.7.7.tar.gz"
+  sha256 "fd2f9fa3f135823c1626c9700e3bd736b829bfc09f61f5557d7313a7c9e02c29"
   license "GPL-2.0-only"
 
   # This uses a placeholder regex to satisfy the `PageMatch` strategy
@@ -23,12 +23,14 @@ class MariadbAT107 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "0fff3ecc5b2b819c8e764cb787b5819c47954646b2ec84d25100f3c5dcac84ff"
-    sha256 arm64_big_sur:  "a66f1694566871298c59854a9fd8426a08928ab0a49f3d000fed4b78440ba9ea"
-    sha256 monterey:       "01f2c4a8c440c11decd30f39b8ed8fa20c72b88aace7d5550a534802c1a146a7"
-    sha256 big_sur:        "e58a1cd5cdf49507f5d2ba279ca2e5e307ff1281da33cdcb89ed98acf64a309b"
-    sha256 catalina:       "7ef190ad6414c4e7397c7930f010ef18852b9a0215f3f6c232d6d7d6ba80f139"
-    sha256 x86_64_linux:   "08ab120aa7c45cae0c860f69d3b3d47db6dff1085187b19fed76dad705ca18a4"
+    sha256 arm64_ventura:  "481d4f2d3745b78f6b52eb10b44e50891e245972285cf548cd11298190d35b0e"
+    sha256 arm64_monterey: "8dc6a62320a77717965e233c0294601eb5669355f345b271d6268a6ed61a28d4"
+    sha256 arm64_big_sur:  "0a31dd9ff3942aa9da92b7393a49ab7a632e38fae313904a5277e2bd84a548f3"
+    sha256 ventura:        "9ee136b6bf92f1c3afdb56fb5fc24a4061a9d1935f8bc988d25b254cfdbe0ed1"
+    sha256 monterey:       "5a789087ce5dcae55ad70ce8d712332ad81c0b894c8eee82e89c3b3098316fe8"
+    sha256 big_sur:        "8754fe6648037fb357f5a63e8ab01a36b8d128905ee8a760d83b2deb3b64fe8e"
+    sha256 catalina:       "b91290cba874716503d3ba7acbb67f742c798184c47a542abd05cc49e604889f"
+    sha256 x86_64_linux:   "1f62755617feb9835f54cca82533a10a0aa98dfded0d4ae1b4d8ada72a039ca5"
   end
 
   keg_only :versioned_formula
@@ -48,12 +50,18 @@ class MariadbAT107 < Formula
   uses_from_macos "zlib"
 
   on_linux do
-    depends_on "gcc"
     depends_on "linux-pam"
     depends_on "readline" # uses libedit on macOS
   end
 
   fails_with gcc: "5"
+
+  # fix compilation, remove in 10.7.8
+  patch do
+    url "https://github.com/mariadb-corporation/mariadb-connector-c/commit/44383e3df4896f2d04d9141f640934d3e74e04d7.patch?full_index=1"
+    sha256 "3641e17e29dc7c9bf24bc23e4d68da81f0d9f33b0568f8ff201c4ebc0487d26a"
+    directory "libmariadb"
+  end
 
   def install
     # Set basedir and ldata so that mysql_install_db can find the server

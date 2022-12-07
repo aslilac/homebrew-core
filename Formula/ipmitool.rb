@@ -1,53 +1,42 @@
 class Ipmitool < Formula
   desc "Utility for IPMI control with kernel driver or LAN interface"
   homepage "https://github.com/ipmitool/ipmitool"
-  url "https://downloads.sourceforge.net/project/ipmitool/ipmitool/1.8.18/ipmitool-1.8.18.tar.bz2"
-  mirror "https://deb.debian.org/debian/pool/main/i/ipmitool/ipmitool_1.8.18.orig.tar.bz2"
-  sha256 "0c1ba3b1555edefb7c32ae8cd6a3e04322056bc087918f07189eeedfc8b81e01"
+  url "https://github.com/ipmitool/ipmitool/archive/refs/tags/IPMITOOL_1_8_19.tar.gz"
+  sha256 "48b010e7bcdf93e4e4b6e43c53c7f60aa6873d574cbd45a8d86fa7aaeebaff9c"
   license "BSD-3-Clause"
-  revision 3
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "3223279b0188313a5d87ede24617f6bda5921acc1ce135c30c7c43823f14913f"
-    sha256 cellar: :any,                 monterey:      "498392b8b88c12f88c9e417270b7ba736619070af521750381b487b8c972d37c"
-    sha256 cellar: :any,                 big_sur:       "6dd8c02b3e556949c98d40980dd9c1b456d1fa078d9d7792f36977e7d239a4ac"
-    sha256 cellar: :any,                 catalina:      "926d5c49a0a1b9411e45c54e412403003266c27127059edb50b40e07adaf2260"
-    sha256 cellar: :any,                 mojave:        "3bf8d00d62c2e1dc781493d448062ad365ac8e7c73010ee37ba2040a48513c10"
-    sha256 cellar: :any,                 high_sierra:   "04462f0b4129d34cbf7e8e5c72591360e89dd6d6cef20008567015d57ab611c4"
-    sha256 cellar: :any,                 sierra:        "f08f0e5717ff8ccf031ca738eb4995b39db5d37b802800b6e0b6c154f6fed830"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "34d7e08574ee45e07c513a90b38c7de24636f7889e940daf8f0d87c3a9739977"
+    rebuild 1
+    sha256 arm64_ventura:  "eedcd4c1fce5ff3dabb6dc2ec82edb04d21a1d14d2174976719403e2b8c92f38"
+    sha256 arm64_monterey: "dd6910b46efcf9ff2c57a613204ef21f0c0c51a3aeea353d270824edc8e51d60"
+    sha256 arm64_big_sur:  "ead2f3d6123ca51af690637b4b9a9820bd2c3ce6d9ce2e837c3970fe6bafc2f0"
+    sha256 ventura:        "176c0d710be65afe8949ddb016bdf86c7829e476f06efc49a435001e6d73be8f"
+    sha256 monterey:       "c54b37fb1277bf5bea3be2ea71644864ab8abfbdbe9ab37e27b875116089d439"
+    sha256 big_sur:        "0cc29edd4db4889608169415905299c268dfd44698734a529fdf616b560097a3"
+    sha256 x86_64_linux:   "ed7f7643e9d022a4ebc674018b9ac1731c6bc03fbb3943d6d13e6820ea55a84e"
   end
 
-  depends_on "openssl@1.1"
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "openssl@3"
 
-  # https://sourceforge.net/p/ipmitool/bugs/433/#89ea and
-  # https://sourceforge.net/p/ipmitool/bugs/436/ (prematurely closed):
-  # Fix segfault when prompting for password
-  # Re-reported 12 July 2017 https://sourceforge.net/p/ipmitool/mailman/message/35942072/
+  on_linux do
+    depends_on "readline"
+  end
+
+  # Patch to fix build on ARM
+  # https://github.com/ipmitool/ipmitool/issues/332
   patch do
-    url "https://gist.githubusercontent.com/adaugherity/87f1466b3c93d5aed205a636169d1c58/raw/29880afac214c1821e34479dad50dca58a0951ef/ipmitool-getpass-segfault.patch"
-    sha256 "fc1cff11aa4af974a3be191857baeaf5753d853024923b55c720eac56f424038"
-  end
-
-  # Patch for compatibility with OpenSSL 1.1.1
-  # https://reviews.freebsd.org/D17527
-  patch :p0 do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/10f4f68f/ipmitool/openssl-1.1.diff"
-    sha256 "8ad4e19d7c39d1bf95a0219d03f4d8490727ac79cb297a36639443ef030bb76a"
+    url "https://github.com/ipmitool/ipmitool/commit/a45da6b4dde21a19e85fd87abbffe31ce9a8cbe6.patch?full_index=1"
+    sha256 "98787263c33fe11141a6b576d52f73127b223394c3d2c7b1640d4adc075f14d5"
   end
 
   def install
-    # Fix ipmi_cfgp.c:33:10: fatal error: 'malloc.h' file not found
-    # Upstream issue from 8 Nov 2016 https://sourceforge.net/p/ipmitool/bugs/474/
-    inreplace "lib/ipmi_cfgp.c", "#include <malloc.h>", ""
-
-    args = %W[
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-      --mandir=#{man}
-      --disable-intf-usb
-    ]
-    system "./configure", *args
+    system "./bootstrap"
+    system "./configure", *std_configure_args,
+                          "--mandir=#{man}",
+                          "--disable-intf-usb"
     system "make", "check"
     system "make", "install"
   end

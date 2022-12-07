@@ -1,8 +1,8 @@
 class Xapian < Formula
   desc "C++ search engine library"
   homepage "https://xapian.org/"
-  url "https://oligarchy.co.uk/xapian/1.4.20/xapian-core-1.4.20.tar.xz"
-  sha256 "ce2be5eff72075c8106c0340e70b1093dbcebe2ab42dc1c1be08dd3ad419442d"
+  url "https://oligarchy.co.uk/xapian/1.4.21/xapian-core-1.4.21.tar.xz"
+  sha256 "80f86034d2fb55900795481dfae681bfaa10efbe818abad3622cdc0c55e06f88"
   license "GPL-2.0-or-later"
   version_scheme 1
 
@@ -12,12 +12,14 @@ class Xapian < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "0ad75eb7e4d586167d16c897cea120c5ff4b59693c56fa155099da4f604137c5"
-    sha256 cellar: :any,                 arm64_big_sur:  "25aab82bb25690a71eea73a9b4a06f79b1ae908a2747b8d74414b1f3f2f3a6a0"
-    sha256 cellar: :any,                 monterey:       "21171c4dec26f104a1c9326fe4f694293109c935c444c0d2f0f98ebc66311f0d"
-    sha256 cellar: :any,                 big_sur:        "f617283a4d2d27be246c6ebc926c39bee64934621a2707d117f6f90c9b59b40c"
-    sha256 cellar: :any,                 catalina:       "2a2c3abe14ea1db4183de57020c6c0886e386f3bc72bc8e4b5402a93ac793367"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "942424d10a513a161e32b347e2864fcf19fea5637717baf0db91433f7aec5b69"
+    sha256 cellar: :any,                 arm64_ventura:  "8a0ef8e5d8abca01d46ebefe17202b6051609776e6bb1e08c366d84b1b289974"
+    sha256 cellar: :any,                 arm64_monterey: "e7f41e2d95fbde01dcc4750858cdf152708c963bf92e37fd14c7af35fd57fd5f"
+    sha256 cellar: :any,                 arm64_big_sur:  "bdb29ed6033c31d37f83d77a9800c6ebd3f64f51974ecb0851b0ad5a1ed81e77"
+    sha256 cellar: :any,                 ventura:        "012b2b4e0c3d129b916ed85ccdec448fea36a24ba4a6ee9aece8d457ef3c7080"
+    sha256 cellar: :any,                 monterey:       "54fd260ba675a7429ba9d870a299f24902eabde2758bf4ce65592c6732bdb7e4"
+    sha256 cellar: :any,                 big_sur:        "122d19b6ca19c45af8b9ae46b395370310566c8a920df67b158bfa6c5a975ec4"
+    sha256 cellar: :any,                 catalina:       "2d8add7cc126bb89fb4c6e954a74131df7e5f47c90c1a952de6a698a3bd50a6f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0aed1e2c661ca97ad06db18f16972f7453f20df1f4ed0f775ee0bf317f80c12d"
   end
 
   depends_on "python@3.10" => [:build, :test]
@@ -42,8 +44,12 @@ class Xapian < Formula
     sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
   end
 
+  def python3
+    "python3.10"
+  end
+
   def install
-    python = Formula["python@3.10"].opt_bin/"python3"
+    python = Formula["python@3.10"].opt_bin/python3
     ENV["PYTHON"] = python
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
@@ -69,6 +75,6 @@ class Xapian < Formula
 
   test do
     system bin/"xapian-config", "--libs"
-    system Formula["python@3.10"].opt_bin/"python3", "-c", "import xapian"
+    system Formula["python@3.10"].opt_bin/python3, "-c", "import xapian"
   end
 end

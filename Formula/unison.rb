@@ -1,8 +1,8 @@
 class Unison < Formula
   desc "File synchronization tool for OSX"
   homepage "https://www.cis.upenn.edu/~bcpierce/unison/"
-  url "https://github.com/bcpierce00/unison/archive/v2.52.1.tar.gz"
-  sha256 "ff7d920e1b4ec0872df764130b82a515f6f21a361f31a67b39c3e3ea12bfda80"
+  url "https://github.com/bcpierce00/unison/archive/v2.53.0.tar.gz"
+  sha256 "9364477df4501b9c7377e2ca1a7c4b44c1f16fa7cbc12b7f5b543d08c3f0740a"
   license "GPL-3.0-or-later"
   head "https://github.com/bcpierce00/unison.git", branch: "master"
 
@@ -14,12 +14,14 @@ class Unison < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "45293fd4e83702a4d380e9de6b47d3f783921ff7d808e7210a065781fe1cf3a6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c3f2d8eee01742ac5684b99ebda2279e73e5bd13662432cb119deee550070cd2"
-    sha256 cellar: :any_skip_relocation, monterey:       "cbedbc4e31e0ae5d79d9ad3c1488f5f3a837aa374c2f9491bfbb0bb6e4d5f370"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4d18ef8e7f2847cbce44229fa59f07590ac2d56b2dac1c859d0ba7095932e59c"
-    sha256 cellar: :any_skip_relocation, catalina:       "2b88be10c70130c6a9f0232b00976987fd8378c561dc86fe39805d989eaa28aa"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4364430843f28d8467531315922e607d8da2e05ed17199f30895e659c70d6f9e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4876cf47609bab458e0471701db69e70324ec022cd59baec2b4792ac67afc47f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "07eba0dce086b3c1bfeca8c24046f1744382d8c8b9d7ebb23960a9887e02a870"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f732d4bbeb53c7f2d8fd5f364e358eb63abd351df307f5e18d32e280a081ae2f"
+    sha256 cellar: :any_skip_relocation, ventura:        "545fef29b1cdc4d5cd9b8df29fe6239f2fb504c84d6e0efb1896e767be7e6b3b"
+    sha256 cellar: :any_skip_relocation, monterey:       "27d35992c23abb1c65c6c89d9d4b9e126725c0230f60c7b5d188954e42922800"
+    sha256 cellar: :any_skip_relocation, big_sur:        "27bd65233cafcb9f8f8eb4f4ca8e9339ecc6fcc030a1b463a899a7889d9bc227"
+    sha256 cellar: :any_skip_relocation, catalina:       "9ec0303933a284cde4bd5ffe76ad90b2eaba690c14cc36290d4171487c9374c9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "732b9db81d32a663a8b3f9ec29bee276ded17abf8a2cddbee7adf51b314db42b"
   end
 
   depends_on "ocaml" => :build

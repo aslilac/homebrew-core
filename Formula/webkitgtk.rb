@@ -1,22 +1,27 @@
 class Webkitgtk < Formula
   desc "GTK interface to WebKit"
   homepage "https://webkitgtk.org"
-  url "https://webkitgtk.org/releases/webkitgtk-2.36.3.tar.xz"
-  sha256 "732fcf8c4ec644b8ed28b46ebbd7c1ebab9d9e0afea9bdf5e5d12786afc478d1"
+  url "https://webkitgtk.org/releases/webkitgtk-2.38.2.tar.xz"
+  sha256 "f3eb82899651f583b4d99cacd16af784a1a7710fce9e7b6807bd6ccde909fe3e"
   license "GPL-3.0-or-later"
 
+  livecheck do
+    url "https://webkitgtk.org/releases/"
+    regex(/webkitgtk[._-]v?(\d+\.\d*[02468](?:\.\d+)*)\.t/i)
+  end
+
   bottle do
-    sha256 x86_64_linux: "580a996b665685bf6469f3bc865e90fe3ffe08977900de3c6012c95a80823bab"
+    sha256 x86_64_linux: "212b94920a45595c92deca006aa98c06d734b7ad94c30f5c9171816dd15f12da"
   end
 
   depends_on "cmake" => :build
+  depends_on "gobject-introspection" => :build
   depends_on "pkg-config" => :build
   depends_on "python@3.10" => :build
   depends_on "cairo"
   depends_on "enchant"
   depends_on "fontconfig"
   depends_on "freetype"
-  depends_on "gcc"
   depends_on "glib"
   depends_on "gst-plugins-base"
   depends_on "gstreamer"
@@ -50,20 +55,20 @@ class Webkitgtk < Formula
   fails_with gcc: "5"
 
   def install
-    args = std_cmake_args + %w[
+    args = %w[
       -DPORT=GTK
+      -DENABLE_BUBBLEWRAP_SANDBOX=OFF
+      -DENABLE_DOCUMENTATION=OFF
       -DENABLE_GAMEPAD=OFF
-      -DENABLE_GTKDOC=OFF
       -DENABLE_MINIBROWSER=ON
       -DUSE_AVIF=ON
+      -DUSE_GSTREAMER_GL=OFF
       -DUSE_JPEGXL=ON
       -DUSE_LIBHYPHEN=OFF
       -DUSE_WPE_RENDERER=OFF
-      -DENABLE_BUBBLEWRAP_SANDBOX=OFF
-      -DUSE_GSTREAMER_GL=OFF
     ]
 
-    system "cmake", "-S", ".", "-B", "build", *args
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

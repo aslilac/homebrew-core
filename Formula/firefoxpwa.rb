@@ -1,18 +1,20 @@
 class Firefoxpwa < Formula
   desc "Tool to install, manage and use Progressive Web Apps in Mozilla Firefox"
   homepage "https://github.com/filips123/PWAsForFirefox"
-  url "https://github.com/filips123/PWAsForFirefox/archive/refs/tags/v1.4.2.tar.gz"
-  sha256 "b853af50c6361838a90b50bdedd374571fcc09e7f3fdec436c233f0a316b0327"
+  url "https://github.com/filips123/PWAsForFirefox/archive/refs/tags/v2.1.2.tar.gz"
+  sha256 "ceec8d6a40fef5de29a23abe00ce3e7fa78d14ebc6954ca4e4b733b2c785b7d7"
   license "MPL-2.0"
   head "https://github.com/filips123/PWAsForFirefox.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8d2f7791540a8be090435ce7f07933898cb83215ad2d52ede0e9f72b0b220648"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d7c3bf58234949160e5103642305e285265d499153723f0b0d84c216b20e0bba"
-    sha256 cellar: :any_skip_relocation, monterey:       "e6660b414447b893fe02abd9e8cbb6857a12bfaf91945b1a461e098fe137d2e2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "6e0fdc1dbe490f913c7f82ab80f2f2ee6e9eec4d75bfe2306d36714da2f6135e"
-    sha256 cellar: :any_skip_relocation, catalina:       "60b65765e244d411eb15f37ba4395dbd5e039523fafc1263af728a22211cc326"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "66e68c0006a3612198dccfd0e3cd8c4d6e0d8ca967c214ac014debf734c04498"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "359cb3c82cb976dd86c40e1e4e9415b8cb9eb5f51a6a930fec833e9bb1d4b0a3"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ac6da6c0d7ac79b23d6fd4c8eabc70b1ebff38b2a53394ef630f9f5e409160e5"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b3b5b6f4b0169aa56c29fa2bd5530839d1cc59ec31057bcb0b935d7929a38a5b"
+    sha256 cellar: :any_skip_relocation, ventura:        "940a28a931397ae72918bcaef38c5683a588f81faa68b8cbda0e9229dbfd1337"
+    sha256 cellar: :any_skip_relocation, monterey:       "9a147b672accc91ab54a5623aa891a6c5c68294fe650dac3cde5bb758b89426e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "1bb0707690fe8e5cdc0e413a87ecc3a4deba5adfd1638f2d1cbd3abffe789719"
+    sha256 cellar: :any_skip_relocation, catalina:       "7742304538d9e72dc5003b2f6964699ddbfe251c3389f070ce46f3e45f6e3a0f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "462ca8a6e3338a334da4a2b31c681939d06aed0704a87c71714b80ae5f659c83"
   end
 
   depends_on "rust" => :build
@@ -65,6 +67,6 @@ class Firefoxpwa < Formula
 
     # Test launching non-existing site which should fail
     output = shell_output("#{bin}/firefoxpwa site launch 00000000000000000000000000 2>&1", 1)
-    assert_includes output, "Site does not exist"
+    assert_includes output, "Web app does not exist"
   end
 end

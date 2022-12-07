@@ -1,18 +1,19 @@
 class OpentelemetryCpp < Formula
   desc "OpenTelemetry C++ Client"
   homepage "https://opentelemetry.io/"
-  url "https://github.com/open-telemetry/opentelemetry-cpp/archive/refs/tags/v1.4.1.tar.gz"
-  sha256 "301b1ab74a664723560f46c29f228360aff1e2d63e930b963755ea077ae67524"
+  url "https://github.com/open-telemetry/opentelemetry-cpp/archive/refs/tags/v1.8.1.tar.gz"
+  sha256 "3d640201594b07f08dade9cd1017bd0b59674daca26223b560b9bb6bf56264c2"
   license "Apache-2.0"
   head "https://github.com/open-telemetry/opentelemetry-cpp.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e1a270c5ff34b371ddb39e22f9e493f27a562d1ed295642fd6c1d4b93525fd63"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "95e4e267b395f8eb696e86d0155a6cf1a79e60ce2df03c739f4ad6d4e679dd5b"
-    sha256 cellar: :any_skip_relocation, monterey:       "efc732fbc8fe3b5045e92f6b7f80504e223f4c97ed9b8e88d28ea12a5861ed35"
-    sha256 cellar: :any_skip_relocation, big_sur:        "559836031821e9b2ebf0dfa6d66600807cc24fff3f7ca959188b6a20417a61dd"
-    sha256 cellar: :any_skip_relocation, catalina:       "5aa069f8ea8b21ee9e0f1ae04324bc1aa4e8c9c49d59b7a81b276e7d423756a7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6f96f0cfa004dd1541d8792976400fc700c254b312c462ae1981aa633f9663f6"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ba378e447d2be33d7966a1aefa42ccfc1299bf51e7e10258a14035f576c03b7c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7fad81bc0a03420a9269122db23709133157a07ef8ba0987f2a3931a0c3feda6"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "592e5aabb6a100cd5586482e283487d3248b23365a9eb9ebc15a3aba41970afb"
+    sha256 cellar: :any_skip_relocation, ventura:        "f6d68e6e3c1c654c4d95e6ccb935fd5e81cc40e784747e73f2a4064ccd6284e9"
+    sha256 cellar: :any_skip_relocation, monterey:       "686f48590ecb7a0c79c7fa71464e22973c4e4b9f86da9ed46ce21dd7f016ec2b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "66b27de1d743a740c528687c4f6a4625422af27d463234ab95df99c791485c35"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cd5b6950475d36a9562921c9700ad9a4ea7300f662458a59580babca3ab172b4"
   end
 
   depends_on "cmake" => :build
@@ -49,6 +50,7 @@ class OpentelemetryCpp < Formula
       #include "opentelemetry/sdk/trace/tracer_provider.h"
       #include "opentelemetry/trace/provider.h"
       #include "opentelemetry/exporters/ostream/span_exporter.h"
+      #include "opentelemetry/exporters/otlp/otlp_recordable_utils.h"
 
       namespace trace_api = opentelemetry::trace;
       namespace trace_sdk = opentelemetry::sdk::trace;

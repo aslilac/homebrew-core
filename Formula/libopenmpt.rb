@@ -1,9 +1,9 @@
 class Libopenmpt < Formula
   desc "Software library to decode tracked music files"
   homepage "https://lib.openmpt.org/libopenmpt/"
-  url "https://lib.openmpt.org/files/libopenmpt/src/libopenmpt-0.6.4+release.autotools.tar.gz"
-  version "0.6.4"
-  sha256 "e09fb845c3292700a7ac13c3b31d669ecd3bdbebcbfe1328eba2376cebe40162"
+  url "https://lib.openmpt.org/files/libopenmpt/src/libopenmpt-0.6.6+release.autotools.tar.gz"
+  version "0.6.6"
+  sha256 "6ddb9e26a430620944891796fefb1bbb38bd9148f6cfc558810c0d3f269876c7"
   license "BSD-3-Clause"
 
   livecheck do
@@ -12,12 +12,14 @@ class Libopenmpt < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "ae0ff7a657ec01c58021a43af5b329c475f0aca41a3fbd7732a9f796321a85b8"
-    sha256 cellar: :any,                 arm64_big_sur:  "87abd6b76d93a0ba472036c8c1f28635ea3d24b7976ca6a9920cfb2011167dfa"
-    sha256 cellar: :any,                 monterey:       "4838e76c64ca27cdf6cdc81ca9e9a5250605f2dfe7bd79a027e985429462a6d6"
-    sha256 cellar: :any,                 big_sur:        "793c68af688bf11d6d9fd8657cdcc8ac91da8023112187b6e83a271c78c91dc4"
-    sha256 cellar: :any,                 catalina:       "8eae0f6145e36a73818c516a9ed0099428e467057f3224623b03df47b9c759d4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "446de3b35d25cf8a71bcac2b8466c1ad96f9a41c5b641e2b1921e7ceb6337e5b"
+    sha256 cellar: :any,                 arm64_ventura:  "6b12d801cc1c4746a6eb7f15407b733d8396ec258696a26f71d5aae2abc15d00"
+    sha256 cellar: :any,                 arm64_monterey: "2955f9a5f52dc6a003ad3c2800f1258167d07488386e146fa7503220d2fb77a4"
+    sha256 cellar: :any,                 arm64_big_sur:  "b1cb3909d998bc05e41976de735f83aa15b43848ba4aa5304d7cd512b7b127c1"
+    sha256 cellar: :any,                 ventura:        "8a3ec0b3cd549a9354e393527bdd0389962cd90ef055d41f192a4694c71f7ecd"
+    sha256 cellar: :any,                 monterey:       "f2ff766711aaf89f9d7c45e71f1c6dfaf60ceaee2cf561dfd1baf7a13146a2ba"
+    sha256 cellar: :any,                 big_sur:        "2e53000dcb09f90d5862515855ee7a7496d12f2bba6f931e66bb5d6191575f10"
+    sha256 cellar: :any,                 catalina:       "4f0734db9d7bae065f76bf280681a69706b2472ac874b9be1550278506f4fd3f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "96fc9cbf713f0691acf07dbc7500ceaa6af7090ab2dd98a6e524fdbbb5867636"
   end
 
   depends_on "pkg-config" => :build
@@ -32,7 +34,6 @@ class Libopenmpt < Formula
   uses_from_macos "zlib"
 
   on_linux do
-    depends_on "gcc"
     depends_on "pulseaudio"
   end
 

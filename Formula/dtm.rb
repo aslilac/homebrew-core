@@ -1,17 +1,18 @@
 class Dtm < Formula
   desc "Cross-language distributed transaction manager"
   homepage "https://en.dtm.pub/"
-  url "https://github.com/dtm-labs/dtm/archive/refs/tags/v1.14.4.tar.gz"
-  sha256 "94c53132d6b3679c643178f9db66922f6441e81e8a03094ff95be6bc8bce3cac"
+  url "https://github.com/dtm-labs/dtm/archive/refs/tags/v1.16.6.tar.gz"
+  sha256 "d9b6fa694c506c6b17ee221698ee25e6360555cfd8737483154cedbbdc7cc7b1"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ea5e1d23e08371917dcf44b140263e262c12d3d6a25251161f9f544afae0b039"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f2861f0800c9895d95a569f5f1691c98a3d8b7dd0e1cd77df6f03fc74ccf0f8d"
-    sha256 cellar: :any_skip_relocation, monterey:       "c530422c825601fa541b4666565d91d2ddd2f3a328d4cb48e8521d2260bf9e44"
-    sha256 cellar: :any_skip_relocation, big_sur:        "03725db3cea1d0bdb3802045b2ae9d8abfe030ba44555c56cfc113565ad23b5f"
-    sha256 cellar: :any_skip_relocation, catalina:       "c4d04a3f8d93e3b5072c95c9dd1346e4193e9ca375f44423f7e5ed2332e72188"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9df5669005b45a2b11c602c236146bf6656ae60c7992124e8e21d218e151ce27"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ac1da1b6a5306890eed23f63b311fcc1dce54e62e750ac32cefb1b4c17ae8cb6"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d1c1af5ed6ad5c7d852a871fd15741b2221d4e9674c15bbbe6a7701ee9776682"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e5e4a568b27257f1407c014f602ae9023dea504b16f342566e6544ed34cbefaf"
+    sha256 cellar: :any_skip_relocation, ventura:        "6cfc4940b36cd2534efa09c74a83a73ad9ed73acacb8af2e46a56304476ebf10"
+    sha256 cellar: :any_skip_relocation, monterey:       "aace3f54aaf9e6fce7044cc4bf46022ba6a3a48049c2db126cd636757870690d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "cb283b159268269f2b900bf13b1a15a91d0352cd4dc014721bc8c504d43d79e1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "302d4f3f51823d347aa2c34062eedea9a8e0404ca77d4d9c2f08604512da07ff"
   end
 
   depends_on "go" => :build

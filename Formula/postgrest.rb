@@ -1,8 +1,8 @@
 class Postgrest < Formula
   desc "Serves a fully RESTful API from any existing PostgreSQL database"
   homepage "https://github.com/PostgREST/postgrest"
-  url "https://github.com/PostgREST/postgrest/archive/v9.0.1.tar.gz"
-  sha256 "45ea15e617c209fffbbff90d90f55237cd15d62a4600d1bf86c87693fb973702"
+  url "https://github.com/PostgREST/postgrest/archive/v10.1.1.tar.gz"
+  sha256 "d8479065eddb6ddcd56835e5da4cb2359092b7934a1f56f4080f7d8cb0b24557"
   license "MIT"
   head "https://github.com/PostgREST/postgrest.git", branch: "main"
 
@@ -12,17 +12,18 @@ class Postgrest < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "362080485eb1f0774ce8b55c590c03a492e80b9b335d89e9ba76eca5ff697b65"
-    sha256 cellar: :any,                 arm64_big_sur:  "68b0de62dcba433134d60302e30739ae14aeb34d4ead2b370b96d48fecb0d351"
-    sha256 cellar: :any,                 monterey:       "6070e9de0d2ba5954fb2f85d0ca853d841138b33c7c8ab174c6a9eed023333e0"
-    sha256 cellar: :any,                 big_sur:        "cf0cca247489219a05c38b9dca79b8dd2f83ee23e31eb578c8790ea5c47f0af5"
-    sha256 cellar: :any,                 catalina:       "a3c2c2529b32b090c71e137ccab2cbfddb1c434b14a07e9ca56bb5eab2523913"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a20bb76251eeb3b4a7a4a320e2c1aef4f6c50e634fde423f1c89ecf3c85e9846"
+    sha256 cellar: :any,                 arm64_monterey: "a6e3487057fd0995e25420d30f7350e98da5dda1904b9876175fbe8d7540eb46"
+    sha256 cellar: :any,                 arm64_big_sur:  "a7ce47936920a047e0b9dea9d4faee946527079acef62fc6fab4b9ba1f5d44b1"
+    sha256 cellar: :any,                 ventura:        "c51015920bf8d7738f61123f4f7b89d24ecf50c54ea6622b6b3787161419a6f5"
+    sha256 cellar: :any,                 monterey:       "bf1ea1297d58b652e6ecf15c78991fdeb5dbcd6732e7311281ef032bbc82e89b"
+    sha256 cellar: :any,                 big_sur:        "a078208e36a47e8a54516eb0847b715b86122004a3e23da7fed97c6aeb52063f"
+    sha256 cellar: :any,                 catalina:       "b08dd4bc5e914b85dbdb7ede3dc99696195bd67673ff7b22a9a40cf873b09376"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8673c5cf90a5dcf8a199bd5214cbd537f6bc542c8202cdc721b171d7ad02fffe"
   end
 
   depends_on "cabal-install" => :build
   depends_on "ghc" => :build
-  depends_on "postgresql"
+  depends_on "libpq"
 
   def install
     system "cabal", "v2-update"

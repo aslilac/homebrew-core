@@ -1,17 +1,19 @@
 class LibgrapeLite < Formula
   desc "C++ library for parallel graph processing"
   homepage "https://github.com/alibaba/libgrape-lite"
-  url "https://github.com/alibaba/libgrape-lite/archive/refs/tags/v0.2.0.tar.gz"
-  sha256 "3dd601484a6ef5635ea520c56bca3a029fba382e8aacf3d8d23d12a813defb1e"
+  url "https://github.com/alibaba/libgrape-lite/archive/refs/tags/v0.2.2.tar.gz"
+  sha256 "54edc90a3116e0c1e91dd0027c6d9a1c9f95d1d0c8ded8ca9219b3c16d3a2f5d"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "3659ebee323f96fb3eb64094d02692738d18e235845d7303317d6022636ec3af"
-    sha256 cellar: :any,                 arm64_big_sur:  "9600dc934d922dd409aaf2cca9ade069864a867fa7b44fc89ca23689c047fb8b"
-    sha256 cellar: :any,                 monterey:       "84bd889b150876d23ba0b3834e1dd0660662fb80958ec17f136490da91af3b24"
-    sha256 cellar: :any,                 big_sur:        "5a4e474df5364687ce70746539b89d9777be651367906cc8011bd8858356ffa4"
-    sha256 cellar: :any,                 catalina:       "9c60844dfd8d599b39768fdec71a803ebb3911dc7c2b108ccedfee5d3ecafc11"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ca45dbd81d2069065fb46ef4c10a709d8977bd97dceb3a365c896d5872981164"
+    sha256 cellar: :any, arm64_ventura:  "7e9a16ae49c12c40204931af6c8969025c3ca9e7bbce69cf1d6e6c5e154abde0"
+    sha256 cellar: :any, arm64_monterey: "af672badfe3e04b4e6d3117a11e02eca3629a9dc5dd9f29a6bf229f71d0c4825"
+    sha256 cellar: :any, arm64_big_sur:  "4974c03558cf474c41fe23fd5f35133a495d0147313dd5e53fcf3ebc0594ab40"
+    sha256 cellar: :any, ventura:        "ef7f4c9e910320ccd03ec36390fcf890ec604f789e36c5e1946d99faa1b646b1"
+    sha256 cellar: :any, monterey:       "d5c9311ae450e25c00c791038108065ef84266e7dad87a8a76158c286892fc99"
+    sha256 cellar: :any, big_sur:        "83cb22f7db289f77fa844ed5ebdb914bc5cb5697b5282bd0346a96469ea8b042"
+    sha256 cellar: :any, catalina:       "7737aa0fb767697039141e37f276d0cdbdedc328d431b80bb0d0c2c97a74ed74"
+    sha256               x86_64_linux:   "7688bf1df0466784f1cd798c9cf363226cb0611f5e82496eceacf090decdbc8c"
   end
 
   depends_on "cmake" => :build

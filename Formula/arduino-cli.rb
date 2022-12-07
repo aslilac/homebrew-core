@@ -2,8 +2,8 @@ class ArduinoCli < Formula
   desc "Arduino command-line interface"
   homepage "https://github.com/arduino/arduino-cli"
   url "https://github.com/arduino/arduino-cli.git",
-      tag:      "0.24.0",
-      revision: "c1b10f562f1e1a112e215a69b84e2f2b69e3af2d"
+      tag:      "0.29.0",
+      revision: "76251df9241a7e09108bbc681d7455a024bccd13"
   license "GPL-3.0-only"
   head "https://github.com/arduino/arduino-cli.git", branch: "master"
 
@@ -13,12 +13,14 @@ class ArduinoCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1e715b207fc2ba3cd20121af0024dcc7bd405340b73344ddb30596480057e1b1"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e8f534879f0395a6f047a503b38b9bbd3053895aa0491842564e7b09a8e0c25c"
-    sha256 cellar: :any_skip_relocation, monterey:       "68bcd66529253164fc50c39fe8e9adf894def8532da3dd69a558ebdfbc7b92db"
-    sha256 cellar: :any_skip_relocation, big_sur:        "7d8f93406aa9657cac75e5009e32465b152ea5e6612a9b14377036fb7646e8d8"
-    sha256 cellar: :any_skip_relocation, catalina:       "6d60eb6eb72cb8b048e70174f17772262b29b47a6c2f7f142382046244ee6e85"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d49c31432864c299f6f735f5f345702c6e1f48a9dcfca0c0b62ee55a761f74e7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "8bcc50cdd22e2597174fd83fd7b409680f426074f0535b96d3f52c7787a31f94"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a5aa6eedb692eaa54e9e786af32eea78cd5989ca4e59e3cf499ae4697b7518b7"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7cc0936a702963ac99e131f967cd161122517b549259edab23274a2fa699a45f"
+    sha256 cellar: :any_skip_relocation, ventura:        "9ca09d782af2788ef0518e3482655dd2e97daf510411c2ec859bd640f11c23e3"
+    sha256 cellar: :any_skip_relocation, monterey:       "8bdbd9e026ae143bb3e76866daf6ff9014246e0c909611a17e602c3ce2bf0483"
+    sha256 cellar: :any_skip_relocation, big_sur:        "9651f74409036ca8ae29a80b102aaf3cd2950c0061a887a17ff1c3b0f7e61783"
+    sha256 cellar: :any_skip_relocation, catalina:       "e3975ad2f65997a43ce17adcf9f6f4ce548369893851e8604a21c57eb1a130c3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4262d86f48752b81f86f3c75bef24a1ed2381a3b56b1402d643119ac4e1d9733"
   end
 
   depends_on "go" => :build
@@ -32,14 +34,7 @@ class ArduinoCli < Formula
     ]
     system "go", "build", *std_go_args(ldflags: ldflags)
 
-    output = Utils.safe_popen_read(bin/"arduino-cli", "completion", "bash")
-    (bash_completion/"arduino-cli").write output
-
-    output = Utils.safe_popen_read(bin/"arduino-cli", "completion", "zsh")
-    (zsh_completion/"_arduino-cli").write output
-
-    output = Utils.safe_popen_read(bin/"arduino-cli", "completion", "fish")
-    (fish_completion/"arduino-cli.fish").write output
+    generate_completions_from_executable(bin/"arduino-cli", "completion")
   end
 
   test do

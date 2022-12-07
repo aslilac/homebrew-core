@@ -1,8 +1,8 @@
 class OpenjdkAT17 < Formula
   desc "Development kit for the Java programming language"
   homepage "https://openjdk.java.net/"
-  url "https://github.com/openjdk/jdk17u/archive/jdk-17.0.3-ga.tar.gz"
-  sha256 "9a23da36c4e8f26a7197c6e6b763c7be83bc8788f495ae9dadfabadf8c7d57c2"
+  url "https://github.com/openjdk/jdk17u/archive/jdk-17.0.5-ga.tar.gz"
+  sha256 "a3a72a1897b6c01a68307a80a3b987114b7722f2541debd018e362a7c0917b85"
   license "GPL-2.0-only" => { with: "Classpath-exception-2.0" }
 
   livecheck do
@@ -11,24 +11,26 @@ class OpenjdkAT17 < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "a0f5189a1719c2d6530ee79eb018470e9e86321c745ed73c5e15c8465df0c24d"
-    sha256 cellar: :any, arm64_big_sur:  "caf9fc1ab57cbe96155d11cc4c5076fa05204058c41dab9bee6e79d79aa27192"
-    sha256 cellar: :any, monterey:       "b7cf051662b5d6a7839e6d65010adff4a0c980fa03b56447090996d6052aa569"
-    sha256 cellar: :any, big_sur:        "c47a05de36d684b0b893fb096bc1adfee80b47b47eda4e08204fab0151abe746"
-    sha256 cellar: :any, catalina:       "49bd4a42120737354c356f2ce35c5b65937fdf8970815693b0268c367f5e5de8"
-    sha256               x86_64_linux:   "1c4ff0b196cbe8daa32e0e73d47b5424572a2f641708ae91a9f6fcc8dbb05568"
+    sha256 cellar: :any, arm64_ventura:  "0ad3ce7237dbc948aa314be7cebcc729c30bcd8eef08277fa464287f9211c426"
+    sha256 cellar: :any, arm64_monterey: "0e2244e35a350256474b6eb6e03d11af5c0270ab7ca4e6bc710c6273cb087b24"
+    sha256 cellar: :any, arm64_big_sur:  "911d64028e026092ce9f8f4b1a7d3c95bd7d631941d057afd5fec646a5e968d1"
+    sha256 cellar: :any, ventura:        "5c424f6cf45913e05b1b394c2aff0281c0d4e32982a0ee33e05d16144e1a05af"
+    sha256 cellar: :any, monterey:       "c1ac28437f8c07409f386e1a3d4d1738fc70b80081579efb64dd6e831a2d78fc"
+    sha256 cellar: :any, big_sur:        "b9093c0c83b7964496208e4abb8805c335f2c8fc916c85148c08324c64e26a10"
+    sha256 cellar: :any, catalina:       "9e21c33ba30e623252df8f74a33b8db56d61753a56f1c3c2aa9891f174152439"
+    sha256               x86_64_linux:   "75bfd5b65e8718cc6f2818a78d5d279520901f6f049fcbcbe9928304220b7e60"
   end
 
   keg_only :versioned_formula
 
   depends_on "autoconf" => :build
+  depends_on xcode: :build
 
   on_linux do
     depends_on "pkg-config" => :build
     depends_on "alsa-lib"
     depends_on "cups"
     depends_on "fontconfig"
-    depends_on "gcc"
     depends_on "libx11"
     depends_on "libxext"
     depends_on "libxrandr"
@@ -38,6 +40,9 @@ class OpenjdkAT17 < Formula
     depends_on "unzip"
     depends_on "zip"
 
+    # FIXME: This should not be needed because of the `-rpath` flag
+    #        we set in `--with-extra-ldflags`, but this configuration
+    #        does not appear to have made it to the linker.
     ignore_missing_libraries "libjvm.so"
   end
 
@@ -46,10 +51,11 @@ class OpenjdkAT17 < Formula
   # From https://jdk.java.net/archive/
   resource "boot-jdk" do
     on_macos do
-      if Hardware::CPU.arm?
-        url "https://download.java.net/java/GA/jdk17.0.1/2a2082e5a09d4267845be086888add4f/12/GPL/openjdk-17.0.1_macos-aarch64_bin.tar.gz"
-        sha256 "45acad5647960ecde83dc1fb6dda72e5e274798660fa9acff0fb9cc8a37b5794"
-      else
+      on_arm do
+        url "https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_macos-aarch64_bin.tar.gz"
+        sha256 "602d7de72526368bb3f80d95c4427696ea639d2e0cc40455f53ff0bbb18c27c8"
+      end
+      on_intel do
         url "https://download.java.net/java/GA/jdk16.0.2/d4a915d82b4c4fbb9bde534da945d746/7/GPL/openjdk-16.0.2_osx-x64_bin.tar.gz"
         sha256 "e65f2437585f16a01fa8e10139d0d855e8a74396a1dfb0163294ed17edd704b8"
       end
@@ -83,10 +89,12 @@ class OpenjdkAT17 < Formula
       --without-version-pre
     ]
 
+    ldflags = ["-Wl,-rpath,#{loader_path}/server"]
     args += if OS.mac?
+      ldflags << "-headerpad_max_install_names"
+
       %W[
         --enable-dtrace
-        --with-extra-ldflags=-headerpad_max_install_names
         --with-sysroot=#{MacOS.sdk_path}
       ]
     else
@@ -96,6 +104,7 @@ class OpenjdkAT17 < Formula
         --with-fontconfig=#{HOMEBREW_PREFIX}
       ]
     end
+    args << "--with-extra-ldflags=#{ldflags.join(" ")}"
 
     chmod 0755, "configure"
     system "./configure", *args

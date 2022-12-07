@@ -1,17 +1,49 @@
 class Singular < Formula
   desc "Computer algebra system for polynomial computations"
   homepage "https://www.singular.uni-kl.de/"
-  url "https://www.singular.uni-kl.de/ftp/pub/Math/Singular/SOURCES/4-3-0/singular-4.3.0.tar.gz"
-  sha256 "74f38288203720e3f280256f2f8deb94030dd032b4237d844652aff0faab36e7"
+  url "https://www.singular.uni-kl.de/ftp/pub/Math/Singular/SOURCES/4-3-1/singular-4.3.1p2.tar.gz"
+  version "4.3.1p2"
+  sha256 "95814bba0f0bd0290cd9799ec1d2ecc6f4c8a4e6429d9a02eb7f9c4e5649682a"
   license "GPL-2.0-or-later"
 
+  livecheck do
+    url "https://www.singular.uni-kl.de/ftp/pub/Math/Singular/SOURCES/"
+    regex(%r{href=["']?v?(\d+(?:[.-]\d+)+)/?["' >]}i)
+    strategy :page_match do |page, regex|
+      # Match versions from directories
+      versions = page.scan(regex)
+                     .flatten
+                     .uniq
+                     .map { |v| Version.new(v.tr("-", ".")) }
+                     .reject { |v| v.patch >= 90 }
+                     .sort
+      next versions if versions.blank?
+
+      # Assume the last-sorted version is newest
+      newest_version = versions.last
+
+      # Fetch the page for the newest version directory
+      dir_page = Homebrew::Livecheck::Strategy.page_content(
+        URI.join(@url, "#{newest_version.to_s.tr(".", "-")}/"),
+      )
+      next versions if dir_page[:content].blank?
+
+      # Identify versions from files in the version directory
+      dir_versions = dir_page[:content].scan(/href=.*?singular[._-]v?(\d+(?:\.\d+)+(?:p\d+)?)\.t/i).flatten
+
+      dir_versions || versions
+    end
+  end
+
   bottle do
-    sha256 arm64_monterey: "80ce289ac5c79971b65fdf18c5a6c6b78c0c44b3636363949edf8cc58566e515"
-    sha256 arm64_big_sur:  "4bceb33eeb74adaf30b05c1d610aa72e64fb2b8f681f9f24f434c8e8c06c6e6e"
-    sha256 monterey:       "3af817e502d089fbaa2d83a327def367b22c6b27b2456cc5888c8b3539ece1be"
-    sha256 big_sur:        "ce8293f8d6be94c237d9d07d84ef8e79c48c1cc77b3f4d309e79090632108736"
-    sha256 catalina:       "37f0b59b850a0fedb28369a1e406062205fa827aa137d4b5c1f86f02849ec7d7"
-    sha256 x86_64_linux:   "d1a5dc4656506176c8794108e42717b7f8774fd6924c32296c67d727b54bcf4d"
+    sha256 arm64_ventura:  "5865b0a0e8438696321267a32c154f48d38738cc18cf0afafac606dbec29865b"
+    sha256 arm64_monterey: "7570ef9396f60a13517a9e42735f991f2bd5d08402808633299e43814d40ddb1"
+    sha256 arm64_big_sur:  "c549c126c15a56777dd54e20ee408fa1cf7945bd735fd615ab92c6e369bfaefd"
+    sha256 ventura:        "74246381406ca55b321b9ad7d7ee01d3efdee421166d7af6875d16ca1d5a3a59"
+    sha256 monterey:       "150e76c1e1eb10366afa1aefa3053c171e75e8813eaa4814298db4804659cdd8"
+    sha256 big_sur:        "e1acc9bf2daa815379592b57c3c1cecfcc7e7e2e167bd3c5e6ea90fc5ece2454"
+    sha256 catalina:       "732a3d7fc116f9b896042b73a727d6631f575885449eb5d7f2479d6410afe51f"
+    sha256 x86_64_linux:   "af277c92c81c40b8d53041986baea5713367e80d0d4b85f9dd5edd4e53dd4db6"
   end
 
   head do
@@ -40,7 +72,7 @@ class Singular < Formula
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
-                          "--with-python=#{Formula["python@3.10"].opt_bin}/python3",
+                          "--with-python=#{which("python3.10")}",
                           "CXXFLAGS=-std=c++11"
     system "make", "install"
   end

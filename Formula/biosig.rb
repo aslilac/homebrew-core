@@ -1,8 +1,8 @@
 class Biosig < Formula
   desc "Tools for biomedical signal processing and data conversion"
   homepage "https://biosig.sourceforge.io"
-  url "https://downloads.sourceforge.net/project/biosig/BioSig%20for%20C_C%2B%2B/src/biosig-2.4.2.src.tar.xz"
-  sha256 "eedffd9b9c19ff0be23315b690d66754fdd73c43aacb708a56e803d558271fdb"
+  url "https://downloads.sourceforge.net/project/biosig/BioSig%20for%20C_C%2B%2B/src/biosig-2.4.3.src.tar.xz"
+  sha256 "7b6000e2275c00a67d7a25aaf7ffad229978d124315f5f910844b33a8a61e532"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,12 +11,14 @@ class Biosig < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "eaa2aba06bcf5a18480ad6607f5608bb35a53870bc22ee4e15b70bbcc02c9e48"
-    sha256 cellar: :any,                 arm64_big_sur:  "b826320b92fb86236b12368bf174448f179edb2980f7fb64f37227a909181a61"
-    sha256 cellar: :any,                 monterey:       "1cb34598857ff62cb830a33f65e45406a71101455a452c78c75c8aa90dfe021c"
-    sha256 cellar: :any,                 big_sur:        "47b6bf8d8219f9d51843bbcdbbe91a33605a3681f7d7065f8591f51663cda394"
-    sha256 cellar: :any,                 catalina:       "79ba155dbf5b6d026293fe4247542a75fcf4b2cdc08428067a0fdddb2957fc83"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "928577ad45fa3aa001aff0599bd526f14b097f670ae54ebe397963a2e9e9db98"
+    sha256 cellar: :any,                 arm64_ventura:  "cd18b285cc6363dc0e8dc3ccfa6e61757cc8cf88db8858d29a9ffbced6039276"
+    sha256 cellar: :any,                 arm64_monterey: "666be7197b4b957e663ace06f80d9735db7818769d77023fbede8373b23c0e25"
+    sha256 cellar: :any,                 arm64_big_sur:  "9c7cc801e2e9bcbc69bda4d87ab4b6795f243f06369f8ff116008bb14525007f"
+    sha256 cellar: :any,                 ventura:        "c8a246347d0bae9ee90a400352e176bdfb774df471c77a79ebab2aac321f84b2"
+    sha256 cellar: :any,                 monterey:       "b51b7647888687e69cb49e46eb3d154d14c2baa3ee4c6431a654baa39ab72c50"
+    sha256 cellar: :any,                 big_sur:        "370e02d1a1509b432accedc09a1dd34dc39d011d3ad86182b0927e802165b8b1"
+    sha256 cellar: :any,                 catalina:       "6c5a5b6d1a96cefb397a705a2e299f843566b249c8d1b6c7e6910f3bfaf7bbc4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2c99f7b04bdef479aed3ae4a538dba0e1aac405a956cfafbbc547af2664a3236"
   end
 
   depends_on "gawk" => :build
@@ -27,16 +29,8 @@ class Biosig < Formula
   depends_on "suite-sparse"
   depends_on "tinyxml"
 
-  resource "homebrew-test" do
-    url "https://pub.ist.ac.at/~schloegl/download/TEST_44x86_e1.GDF"
-    sha256 "75df4a79b8d3d785942cbfd125ce45de49c3e7fa2cd19adb70caf8c4e30e13f0"
-  end
-
   def install
-    system "./configure", "--disable-debug",
-           "--disable-dependency-tracking",
-           "--disable-silent-rules",
-           "--prefix=#{prefix}"
+    system "./configure", *std_configure_args, "--disable-silent-rules"
     system "make"
     system "make", "install"
   end
@@ -46,8 +40,5 @@ class Biosig < Formula
     assert_match "mV\t4274\t0x10b2\t0.001\tV", shell_output("#{bin}/physicalunits mV").strip
     assert_match "biosig_fhir provides fhir binary template for biosignal data",
                  shell_output("#{bin}/biosig_fhir 2>&1").strip
-    testpath.install resource("homebrew-test")
-    assert_match "NumberOfChannels", shell_output("#{bin}/save2gdf -json TEST_44x86_e1.GDF").strip
-    assert_match "NumberOfChannels", shell_output("#{bin}/biosig_fhir TEST_44x86_e1.GDF").strip
   end
 end

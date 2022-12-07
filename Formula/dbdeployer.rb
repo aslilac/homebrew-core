@@ -1,18 +1,20 @@
 class Dbdeployer < Formula
   desc "Tool to deploy sandboxed MySQL database servers"
   homepage "https://github.com/datacharmer/dbdeployer"
-  url "https://github.com/datacharmer/dbdeployer/archive/v1.65.2.tar.gz"
-  sha256 "535813d304d3715737bedea8c7cf88b9b3ea565a303d70554218a11d6dd9717a"
+  url "https://github.com/datacharmer/dbdeployer/archive/v1.70.0.tar.gz"
+  sha256 "ad0ff7659e21363132bdc35d72205b723937abcb0b9ffc7623806b3d51b00657"
   license "Apache-2.0"
   head "https://github.com/datacharmer/dbdeployer.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "51d2f0763b851de370dfccb534428f83b0e539a848af4ee470bfd76ee09fcf06"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ff26b8bd946333ea5d2438aaa3ba90271225da70c575f0cf749ea0b2f711efa4"
-    sha256 cellar: :any_skip_relocation, monterey:       "73432001294e8025539d880bf83b1b8591a78bd6c588353b4b00e05d87fff7ce"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c5ba277e6a9a5585ff2407b47df31f2e8c241c28c7cb1bc8e59068b329287657"
-    sha256 cellar: :any_skip_relocation, catalina:       "800d44799f85b1c5a256db78cc12f9edf9118276c90a46eb3b30c04719bcd388"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "51f813908fb2133caa58b6b39d644d93355789e90b7c55df2907596a87d33790"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "31165295ead913ffa7d42122f05007bcf468aecdf0297b1a4674eed42ce398e0"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0e2cd38ff5887c62cde30dae13a9326c6e611030e802ce3c590bda2cfca0cad6"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b9158007e2758f5f89a5a235281c509db13a9bf9b2c7626cced2a882775d2c92"
+    sha256 cellar: :any_skip_relocation, ventura:        "4bca99f39a903f30f8b537361420ec0e65f5ea2e3fc3b734bb5f2b08213b866d"
+    sha256 cellar: :any_skip_relocation, monterey:       "5b80d2d8c561cb9a9850b6809147ccde5df87106a8bff9f9eb75755cd24a98f2"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e3f07a16f5100354f3f41e40d8faed6258e1a1bfabf55320c1df32d652fc7db5"
+    sha256 cellar: :any_skip_relocation, catalina:       "a756634c3f57a2add358e072489172961fa5c9d81d8b9592353079b78e93e10f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "51dec91fb634f07d82b4be43e20fdb74a04bd175e7ba8fb7e365aaeb3643c8ea"
   end
 
   depends_on "go" => :build

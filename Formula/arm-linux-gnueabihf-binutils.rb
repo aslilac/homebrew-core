@@ -1,9 +1,9 @@
 class ArmLinuxGnueabihfBinutils < Formula
   desc "FSF/GNU binutils for cross-compiling to arm-linux"
   homepage "https://www.gnu.org/software/binutils/binutils.html"
-  url "https://ftp.gnu.org/gnu/binutils/binutils-2.38.tar.xz"
-  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.38.tar.xz"
-  sha256 "e316477a914f567eccc34d5d29785b8b0f5a10208d36bbacedcc39048ecfe024"
+  url "https://ftp.gnu.org/gnu/binutils/binutils-2.39.tar.xz"
+  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.39.tar.xz"
+  sha256 "645c25f563b8adc0a81dbd6a41cffbf4d37083a382e02d5d3df4f65c09516d00"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,15 +11,19 @@ class ArmLinuxGnueabihfBinutils < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "729928ef4235b88356212ad30314b0a5543133b87d6a269bd16e609f853d1bc5"
-    sha256 arm64_big_sur:  "affec31d67e52ebf0356255ee7b0b898f333e6019e11cc9004878116ffa266b8"
-    sha256 monterey:       "f3d38b79845de8e16ae966af77f55ec09b137f28731c82b06af0c56bcb94525a"
-    sha256 big_sur:        "00e3c86d150d5b6f31b4ac2b62690a3df9e241a4e35d8f2a5ccbee115873829c"
-    sha256 catalina:       "e7e27fc6eaf46d76fa75111061e6e94b43cda5c3d121b4e9bb4ba946b2f1b501"
-    sha256 x86_64_linux:   "d95ef9a584dec102bc33909ff25ff80e32f6f064f2d9da4b4a85a1ba873ac190"
+    sha256 arm64_ventura:  "59421be26e334cd713243e8470fc0a9407a9061042e2e47f592c7ad770ffb34e"
+    sha256 arm64_monterey: "e7643d1794985d47e31b93873913a8ec7aa8fae723ddfc08e2ebdc0cee53dda7"
+    sha256 arm64_big_sur:  "26a7485076f8532059c77f977386b2d829cedf1577961dcf89dd10418cdbeff6"
+    sha256 ventura:        "dfdfb3a32104f5acb6062cfacbfef72a3e738aad63f87527676f4d631a3a4236"
+    sha256 monterey:       "a5a3177b6827560cb5f0c3a18d16162d162b79c0d9cd829d47d42bc9d406f2ca"
+    sha256 big_sur:        "88514862e122a26ca11dc9f2f21d53883f2150d89d583c6c046b29569d0e855c"
+    sha256 catalina:       "6f8cbd94bf5ba89b49b3547ab29b90e9bcf4b2d6ca2173a88b80751e44160491"
+    sha256 x86_64_linux:   "630a97002e764c3f2a9df69ee344e31ad9ea897da540d0dd5fef97b96ac269a1"
   end
 
-  uses_from_macos "texinfo"
+  on_system :linux, macos: :ventura_or_newer do
+    depends_on "texinfo" => :build
+  end
 
   def install
     ENV.cxx11

@@ -1,18 +1,20 @@
 class When < Formula
   desc "Tiny personal calendar"
   homepage "https://www.lightandmatter.com/when/when.html"
-  url "https://github.com/bcrowell/when/archive/1.1.42.tar.gz"
-  sha256 "85a8ab4df5482de7be0eb5fe1e90f738dfb8c721f2d86725dc19369b89dd839d"
+  url "https://github.com/bcrowell/when/archive/1.1.44.tar.gz"
+  sha256 "de8334d97a106b9e3aad42d0a169e46e276db0935b3e4239403730eadcb41cbb"
   license "GPL-2.0-only"
   head "https://github.com/bcrowell/when.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f6c3589de949639d5c9c678d0d5c908d6e8a2cc2e582c4c2d748888f10a4a69f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f6c3589de949639d5c9c678d0d5c908d6e8a2cc2e582c4c2d748888f10a4a69f"
-    sha256 cellar: :any_skip_relocation, monterey:       "f6c3589de949639d5c9c678d0d5c908d6e8a2cc2e582c4c2d748888f10a4a69f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f6c3589de949639d5c9c678d0d5c908d6e8a2cc2e582c4c2d748888f10a4a69f"
-    sha256 cellar: :any_skip_relocation, catalina:       "791acd90b191f39a522ad0a9552fd90eec08dead44c2ac83e3430c3984ea333a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2cc448886e9bb194144c4881e6be4e3464601da149e3d5de7805f4af5c8d6559"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "005cc29f69bc43959e1702e482c33b6894bc9eec2078a96687dfd09c258fa18e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "005cc29f69bc43959e1702e482c33b6894bc9eec2078a96687dfd09c258fa18e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "005cc29f69bc43959e1702e482c33b6894bc9eec2078a96687dfd09c258fa18e"
+    sha256 cellar: :any_skip_relocation, ventura:        "005cc29f69bc43959e1702e482c33b6894bc9eec2078a96687dfd09c258fa18e"
+    sha256 cellar: :any_skip_relocation, monterey:       "005cc29f69bc43959e1702e482c33b6894bc9eec2078a96687dfd09c258fa18e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "005cc29f69bc43959e1702e482c33b6894bc9eec2078a96687dfd09c258fa18e"
+    sha256 cellar: :any_skip_relocation, catalina:       "6cddc86c59d8cdf0ba79ecc974dd57705c34656891fe402b920baa07d801685c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1a8266c047098f0549959cb83da63bac863f1d9c0c4cd57dff48e2c560255d69"
   end
 
   def install

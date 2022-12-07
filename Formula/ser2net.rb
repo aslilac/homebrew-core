@@ -1,8 +1,8 @@
 class Ser2net < Formula
   desc "Allow network connections to serial ports"
   homepage "https://ser2net.sourceforge.io"
-  url "https://downloads.sourceforge.net/project/ser2net/ser2net/ser2net-4.3.6.tar.gz"
-  sha256 "65515c7e9a5289167ae64c4032450904449a87ce20653241022af4f5db2e9510"
+  url "https://downloads.sourceforge.net/project/ser2net/ser2net/ser2net-4.3.10.tar.gz"
+  sha256 "bfad2b5d98c56f957daf2be975a5a2cefd645f27ef02d54817fadd6e4bf291b3"
   license "GPL-2.0-only"
 
   livecheck do
@@ -11,19 +11,21 @@ class Ser2net < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "5789705f28519128fce9c9e1af6a24aca48f5dee193e9f631065f8372db3a6e5"
-    sha256 cellar: :any,                 arm64_big_sur:  "b69ebf939c28e950724c7a1ccca8275014d6815d84eacd1f7040acd652afad31"
-    sha256 cellar: :any,                 monterey:       "fdf28ab2fd6407cc937c4dfd656f48fce1f3fd65c58b7cd424e224956ff21f96"
-    sha256 cellar: :any,                 big_sur:        "d0f529585752c51874d9719cb57946480546f4fa9117678ffa62f5552a17b212"
-    sha256 cellar: :any,                 catalina:       "2a98a1fd8562223f138046fc75a723510a76a2dbabdf1d9187f4bb76681ebad8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b8894c15d9a8f4dd044d1c39e8eb6f8ae6e230f0fc915d1d3e7120fcc166ee1a"
+    sha256 cellar: :any,                 arm64_ventura:  "0cd19c4d51f4229a049fa9590ee8cc1c9c473cbbf249a3147ee37ba3ef552c68"
+    sha256 cellar: :any,                 arm64_monterey: "a08aea19b56221d59e84f89d93a374bbf273b72bf66a885e0cc40261c30c9337"
+    sha256 cellar: :any,                 arm64_big_sur:  "57058315827d56c4fccf3e203895ec60e6191a250b3c65beee42f570bf6f4599"
+    sha256 cellar: :any,                 ventura:        "dd9787b852f531524268269830a4cdbd463a10549825d2ea6f22bf80342e67f6"
+    sha256 cellar: :any,                 monterey:       "2a7f2f26850a05d31b6db0ff196d9baaaca00b70cf62119467476cbde8559661"
+    sha256 cellar: :any,                 big_sur:        "cd79c15831a196c95faab70f4a1d158917f293ac7dbbaa71c72b72e4d2b48890"
+    sha256 cellar: :any,                 catalina:       "b796023b7cbe8d52c775b0d7dc6afaf32d2b89859b9db0b1fd464db6d37ce37d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0be86f82493afe39e6af69ea4a948d821cee1595f054c657ea487779e8846b5f"
   end
 
   depends_on "libyaml"
 
   resource "gensio" do
-    url "https://downloads.sourceforge.net/project/ser2net/ser2net/gensio-2.3.2.tar.gz"
-    sha256 "0b6333a5546f14396041900bbe5b83575a0e97d200a581a6ddb8fcf6e95adfbd"
+    url "https://downloads.sourceforge.net/project/ser2net/ser2net/gensio-2.4.1.tar.gz"
+    sha256 "949438b558bdca142555ec482db6092eca87447d23a4fb60c1836e9e16b23ead"
 
     # Fix -flat_namespace being used on Big Sur and later.
     patch do

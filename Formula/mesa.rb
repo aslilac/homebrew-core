@@ -3,26 +3,37 @@ class Mesa < Formula
 
   desc "Graphics Library"
   homepage "https://www.mesa3d.org/"
-  url "https://mesa.freedesktop.org/archive/mesa-22.0.5.tar.xz"
-  sha256 "5ee2dc06eff19e19b2867f12eb0db0905c9691c07974f6253f2f1443df4c7a35"
   license "MIT"
-  revision 1
   head "https://gitlab.freedesktop.org/mesa/mesa.git", branch: "main"
 
+  stable do
+    url "https://mesa.freedesktop.org/archive/mesa-22.3.0.tar.xz"
+    sha256 "644bf936584548c2b88762111ad58b4aa3e4688874200e5a4eb74e53ce301746"
+
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/f0a40cf7d70ee5a25639b91d9a8088749a2dd04e/mesa/fix-build-on-macOS.patch"
+      sha256 "a9b646e48d4e4228c3e06d8ca28f65e01e59afede91f58d4bd5a9c42a66b338d"
+    end
+  end
+
   bottle do
-    sha256 arm64_monterey: "b25ea498bb2762d8ddd64e647c47039c5a83ce2d3d6347cc5c91d370d86fbf83"
-    sha256 arm64_big_sur:  "1576db8e33b89a7e647c9f5edbdc14207a647f985242924b4853d69d83ff27a8"
-    sha256 monterey:       "f45bca55e3394c71ad1a7bd5fa538f6c1552b1a0475d6ac334d40be00ba1abcd"
-    sha256 big_sur:        "9a312c0b271faae42c2c9781fdf88ebd0fed6f2d8b5261ad406df6e367ba2f0e"
-    sha256 catalina:       "33f50bb6bceaaaa211e3dd8704223b4ca077ed7c8591cc2eea929e799f011c6a"
-    sha256 x86_64_linux:   "29bc459a87ec012f4bb04407a0c8510baee075c718d6b35825c3164d8e1087fb"
+    sha256 arm64_ventura:  "0ee197a6b33084712c28a0c301459c5b32fcf4ded6549dad3db3c9427ffcc8f3"
+    sha256 arm64_monterey: "ddd377f1027b8ea1c6198e276e66aecf5b28669c46a3972bb0eb5a859fb29c65"
+    sha256 arm64_big_sur:  "ba60c4a68d1619b475fe103fd6461e19977a0be7d5165c9b673f30a724b46d37"
+    sha256 ventura:        "26cb5f6e6216568dccd7ead8607059178f2857e88383c52baa528a4c5c6c66bf"
+    sha256 monterey:       "9deff26e1f7f672384bc4f45b77f8098fdeefd0459afa5b033f550b8f2eb0145"
+    sha256 big_sur:        "da8555800d3a5c1c8f0834fb2d076ae918dd39482dcaf9bafd31e8a7d5cc9b07"
+    sha256 x86_64_linux:   "4d26c18b5827c1097bd502a005c97efe4eda1f081096a9ce9070133b962dcf53"
   end
 
   depends_on "bison" => :build # can't use form macOS, needs '> 2.3'
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+  depends_on "pygments" => :build
   depends_on "python@3.10" => :build
+  depends_on "xorgproto" => :build
+
   depends_on "expat"
   depends_on "gettext"
   depends_on "libx11"
@@ -37,7 +48,7 @@ class Mesa < Formula
 
   on_linux do
     depends_on "elfutils"
-    depends_on "gcc"
+    depends_on "glslang"
     depends_on "gzip"
     depends_on "libdrm"
     depends_on "libva"
@@ -46,7 +57,6 @@ class Mesa < Formula
     depends_on "libxrandr"
     depends_on "libxshmfence"
     depends_on "libxv"
-    depends_on "libxvmc"
     depends_on "libxxf86vm"
     depends_on "lm-sensors"
     depends_on "wayland"
@@ -56,13 +66,8 @@ class Mesa < Formula
   fails_with gcc: "5"
 
   resource "Mako" do
-    url "https://files.pythonhosted.org/packages/50/ec/1d687348f0954bda388bfd1330c158ba8d7dea4044fc160e74e080babdb9/Mako-1.2.0.tar.gz"
-    sha256 "9a7c7e922b87db3686210cf49d5d767033a41d4010b284e747682c92bddd8b39"
-  end
-
-  resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/59/0f/eb10576eb73b5857bc22610cdfc59e424ced4004fe7132c8f2af2cc168d3/Pygments-2.12.0.tar.gz"
-    sha256 "5eb116118f9612ff1ee89ac96437bb6b49e8f04d8a13b514ba26f620208e26eb"
+    url "https://files.pythonhosted.org/packages/05/5f/2ba6e026d33a0e6ddc1dddf9958677f76f5f80c236bd65309d280b166d3e/Mako-1.2.4.tar.gz"
+    sha256 "d60a3903dc3bb01a18ad6a89cdbe2e4eadc69c0bc8ef1e3773ba53d44c3f7a34"
   end
 
   resource "MarkupSafe" do
@@ -76,17 +81,15 @@ class Mesa < Formula
   end
 
   resource "gl_wrap.h" do
-    url "https://gitlab.freedesktop.org/mesa/demos/-/raw/ea99b861a256e63d029f0d476bf452681d821dd6/src/util/gl_wrap.h"
+    url "https://gitlab.freedesktop.org/mesa/demos/-/raw/ddc35ca0ea2f18c5011c5573b4b624c128ca7616/src/util/gl_wrap.h"
     sha256 "41f5a84f8f5abe8ea2a21caebf5ff31094a46953a83a738a19e21c010c433c88"
   end
 
   def install
-    ENV.prepend_path "PATH", Formula["python@3.10"].opt_libexec/"bin"
-
     venv_root = buildpath/"venv"
-    venv = virtualenv_create(venv_root, "python3")
+    venv = virtualenv_create(venv_root, "python3.10")
 
-    %w[Mako Pygments MarkupSafe].each do |res|
+    %w[Mako MarkupSafe].each do |res|
       venv.pip_install resource(res)
     end
 
@@ -106,15 +109,17 @@ class Mesa < Formula
         -Dopengl=true
         -Dgles1=enabled
         -Dgles2=enabled
-        -Dgallium-xvmc=disabled
         -Dvalgrind=false
-        -Dtools=drm-shim,etnaviv,freedreno,glsl,nir,nouveau,xvmc,lima
+        -Dtools=drm-shim,etnaviv,freedreno,glsl,nir,nouveau,lima
       ]
     end
 
     system "meson", "build", *args, *std_meson_args
     system "meson", "compile", "-C", "build"
     system "meson", "install", "-C", "build"
+    inreplace lib/"pkgconfig/dri.pc" do |s|
+      s.change_make_var! "dridriverdir", HOMEBREW_PREFIX/"lib/dri"
+    end
 
     if OS.linux?
       # Strip executables/libraries/object files to reduce their size

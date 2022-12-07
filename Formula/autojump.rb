@@ -8,26 +8,25 @@ class Autojump < Formula
   head "https://github.com/wting/autojump.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fd70efcdedc3195f8f1a1bdc92d24fd8077e26c848c453de5e3eef2b92f5c8c4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fd70efcdedc3195f8f1a1bdc92d24fd8077e26c848c453de5e3eef2b92f5c8c4"
-    sha256 cellar: :any_skip_relocation, monterey:       "25469a543ea749b071f258a046449bbbc5ee24630ecc9c3eee91cc26af0cee8a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "25469a543ea749b071f258a046449bbbc5ee24630ecc9c3eee91cc26af0cee8a"
-    sha256 cellar: :any_skip_relocation, catalina:       "25469a543ea749b071f258a046449bbbc5ee24630ecc9c3eee91cc26af0cee8a"
-    sha256 cellar: :any_skip_relocation, mojave:         "25469a543ea749b071f258a046449bbbc5ee24630ecc9c3eee91cc26af0cee8a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fd70efcdedc3195f8f1a1bdc92d24fd8077e26c848c453de5e3eef2b92f5c8c4"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, all: "4d351b7fec964e67bd52e43d457b573edaa772f345f06fb66e6d74c03a4bfa55"
   end
 
-  depends_on "python@3.10"
+  depends_on "python@3.11"
 
   def install
-    system Formula["python@3.10"].opt_bin/"python3", "install.py", "-d", prefix, "-z", zsh_completion
+    python_bin = Formula["python@3.11"].opt_libexec/"bin"
+    system python_bin/"python", "install.py", "-d", prefix, "-z", zsh_completion
+
+    # ensure uniform bottles
+    inreplace prefix/"etc/profile.d/autojump.sh", "/usr/local", HOMEBREW_PREFIX
 
     # Backwards compatibility for users that have the old path in .bash_profile
     # or .zshrc
     (prefix/"etc").install_symlink prefix/"etc/profile.d/autojump.sh"
 
     libexec.install bin
-    (bin/"autojump").write_env_script libexec/"bin/autojump", PATH: "#{Formula["python@3.10"].libexec}/bin:$PATH"
+    (bin/"autojump").write_env_script libexec/"bin/autojump", PATH: "#{python_bin}:$PATH"
   end
 
   def caveats

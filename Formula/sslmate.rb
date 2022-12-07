@@ -9,6 +9,7 @@ class Sslmate < Formula
   url "https://packages.sslmate.com/other/sslmate-1.9.1.tar.gz"
   sha256 "179b331a7d5c6f0ed1de51cca1c33b6acd514bfb9a06a282b2f3b103ead70ce7"
   license "MIT"
+  revision 1
 
   livecheck do
     url "https://packages.sslmate.com/other/"
@@ -16,15 +17,18 @@ class Sslmate < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "46c13c2b430a8d3621478a3bd84732bb885f61a11519ac643fce209c72fe17b1"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "46c13c2b430a8d3621478a3bd84732bb885f61a11519ac643fce209c72fe17b1"
-    sha256 cellar: :any_skip_relocation, monterey:       "0b9be005d0b52d40b4a8459bf899c891b8a221b177d070fbed649ef42b10a018"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0b9be005d0b52d40b4a8459bf899c891b8a221b177d070fbed649ef42b10a018"
-    sha256 cellar: :any_skip_relocation, catalina:       "0b9be005d0b52d40b4a8459bf899c891b8a221b177d070fbed649ef42b10a018"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f8e10a44ff520b1ca52330a788ab15a99fa2ad40805946369dd18addf299df54"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d082114fb209257176956b1aebdad10478fc597de6604a5d9999e1c432e8e793"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d082114fb209257176956b1aebdad10478fc597de6604a5d9999e1c432e8e793"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d082114fb209257176956b1aebdad10478fc597de6604a5d9999e1c432e8e793"
+    sha256 cellar: :any_skip_relocation, ventura:        "ffcccf2b3dfba7bb454eec781fdda76a8e15ee958d3631c5cf5e2c0401bf30c2"
+    sha256 cellar: :any_skip_relocation, monterey:       "ffcccf2b3dfba7bb454eec781fdda76a8e15ee958d3631c5cf5e2c0401bf30c2"
+    sha256 cellar: :any_skip_relocation, big_sur:        "ffcccf2b3dfba7bb454eec781fdda76a8e15ee958d3631c5cf5e2c0401bf30c2"
+    sha256 cellar: :any_skip_relocation, catalina:       "ffcccf2b3dfba7bb454eec781fdda76a8e15ee958d3631c5cf5e2c0401bf30c2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c8cf9d5a489518810246c59334f5f0b2855888075b421698746f08391d965eb7"
   end
 
-  depends_on "python@3.10"
+  depends_on "python@3.11"
 
   uses_from_macos "perl"
 
@@ -48,7 +52,7 @@ class Sslmate < Formula
   def install
     ENV.prepend_create_path "PERL5LIB", libexec/"vendor/lib/perl5"
 
-    venv = virtualenv_create(libexec, "python3")
+    venv = virtualenv_create(libexec, "python3.11")
     venv.pip_install resource("boto")
 
     resources.each do |r|

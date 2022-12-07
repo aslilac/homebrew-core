@@ -1,8 +1,8 @@
 class IncludeWhatYouUse < Formula
   desc "Tool to analyze #includes in C and C++ source files"
   homepage "https://include-what-you-use.org/"
-  url "https://include-what-you-use.org/downloads/include-what-you-use-0.18.src.tar.gz"
-  sha256 "9102fc8419294757df86a89ce6ec305f8d90a818d1f2598a139d15eb1894b8f3"
+  url "https://include-what-you-use.org/downloads/include-what-you-use-0.19.src.tar.gz"
+  sha256 "2b10157b60ea08adc08e3896b4921c73fcadd5ec4eb652b29a34129d501e5ee0"
   license "NCSA"
   head "https://github.com/include-what-you-use/include-what-you-use.git", branch: "master"
 
@@ -16,12 +16,14 @@ class IncludeWhatYouUse < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "3527218d2eacc7dcc420cd610c455cbb2a8556712d3c0edd9943c114554d3af9"
-    sha256 cellar: :any,                 arm64_big_sur:  "a4a0cf7834febad16d2f2c793fe6e9c6ef2d71227e4d66941dc2dd8e43cefd17"
-    sha256 cellar: :any,                 monterey:       "705ff7b615f3826575ac01d379ed2a4215a39f3db525f0a2443f6078376e0e3f"
-    sha256 cellar: :any,                 big_sur:        "f99fe6d8b02faf20f94a08b1b3b916e7cf309ce6b6f0485d50ac4e463d3b6517"
-    sha256 cellar: :any,                 catalina:       "4f5bf00fc530be42f12975e6c4a5235fb109a5ab85951c855c1060d4cd46909a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "49a667ebb31d836688ee1b5a1ee4140909566917bd03fbb3f04411c2eb7bf153"
+    sha256 cellar: :any,                 arm64_ventura:  "9cd980ebf2328c24e34e5b8f383f845e8c5de2d29d5904f61d5c1ec1e5f7758f"
+    sha256 cellar: :any,                 arm64_monterey: "74bffb0dc7dce47d0dc66a334ae2f97d706832527d8238d87b1b55ac7f774426"
+    sha256 cellar: :any,                 arm64_big_sur:  "395a9b31cb4e9024488e33dff157836d6c833cdda34b57f1882aa18140027870"
+    sha256 cellar: :any,                 ventura:        "5055c407f01109a7c2791335c3ae8d49cf5e43eb30d8d39a99c83a582da088e7"
+    sha256 cellar: :any,                 monterey:       "a3c265161618434e2f7309e3a40d4450a52be8a2ad10ad6866b3fbc489a62ede"
+    sha256 cellar: :any,                 big_sur:        "d468ab80a9508cd22dc08d5fba619209aef43d3b527db3522fc2a13dfaabec27"
+    sha256 cellar: :any,                 catalina:       "7c460a64c73fc4b03690b68c1928b2a0bd8afb1aa4a62a11ba2f28898a47833f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3518a3e1f2fa504af9571c3988f626df0b3b0842f2c811d9b3c89d85e1c011eb"
   end
 
   depends_on "cmake" => :build
@@ -33,7 +35,7 @@ class IncludeWhatYouUse < Formula
   fails_with gcc: "5" # LLVM is built with GCC
 
   def llvm
-    deps.map(&:to_formula).find { |f| f.name.match? "^llvm(@\d+(\.\d+)*)?$" }
+    deps.map(&:to_formula).find { |f| f.name.match?(/^llvm(@\d+(\.\d+)*)?$/) }
   end
 
   def install

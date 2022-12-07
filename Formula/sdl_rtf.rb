@@ -3,6 +3,7 @@ class SdlRtf < Formula
   homepage "https://www.libsdl.org/projects/SDL_rtf/"
   url "https://www.libsdl.org/projects/SDL_rtf/release/SDL_rtf-0.1.0.tar.gz"
   sha256 "3dc0274b666e28010908ced24844ca7d279e07b66f673c990d530d4ea94b757e"
+  license "LGPL-2.0-or-later"
 
   bottle do
     sha256 cellar: :any,                 arm64_monterey: "c9d79a0cf619950aa552e22404c7105c41083f106acf9bc48437f4d53c41a879"
@@ -26,9 +27,9 @@ class SdlRtf < Formula
   end
 
   # SDL 1.2 is deprecated, unsupported, and not recommended for new projects.
-  deprecate! date: "2013-08-17", because: :deprecated_upstream
+  disable! date: "2022-07-31", because: :deprecated_upstream
 
-  depends_on "sdl"
+  depends_on "sdl12-compat"
 
   def install
     system "./autogen.sh" if build.head?

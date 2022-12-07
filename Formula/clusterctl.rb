@@ -2,29 +2,29 @@ class Clusterctl < Formula
   desc "Home for the Cluster Management API work, a subproject of sig-cluster-lifecycle"
   homepage "https://cluster-api.sigs.k8s.io"
   url "https://github.com/kubernetes-sigs/cluster-api.git",
-      tag:      "v1.1.5",
-      revision: "d488bdb875d302eba85221fa35c9f13c00df4ae7"
+      tag:      "v1.3.0",
+      revision: "72aa9d1e68971b5b489aa4dfa4c0687fca0d4f4a"
   license "Apache-2.0"
-  head "https://github.com/kubernetes-sigs/cluster-api.git", branch: "master"
+  head "https://github.com/kubernetes-sigs/cluster-api.git", branch: "main"
 
   # Upstream creates releases on GitHub for the two most recent major/minor
   # versions (e.g., 0.3.x, 0.4.x), so the "latest" release can be incorrect. We
-  # don't check the Git tags because, for this project, a version may not be
-  # considered released until the GitHub release is created. The first-party
-  # website doesn't clearly list the latest version and we have to isolate it
-  # from a GitHub URL used in a curl command in the installation instructions.
+  # don't check the Git tags for this project because a version may not be
+  # considered released until the GitHub release is created.
   livecheck do
-    url "https://cluster-api.sigs.k8s.io/user/quick-start.html"
-    regex(%r{/cluster-api/releases/download/v?(\d+(?:\.\d+)+)/}i)
+    url "https://github.com/kubernetes-sigs/cluster-api/releases?q=prerelease%3Afalse"
+    regex(%r{href=["']?[^"' >]*?/tag/v?(\d+(?:\.\d+)+)["' >]}i)
+    strategy :page_match
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "af4e8dc165be54703b7c5a8f5df436d2f399bc6a3aad64769ae305715fcc7a7e"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a36a1c230424be6e4042aaccde4fd9721141fee2f93367922ce3b149c9a4f498"
-    sha256 cellar: :any_skip_relocation, monterey:       "5eec16e3eac37a9145fe75e9ce7f9357747a7cda5ff1af595890e1648debb973"
-    sha256 cellar: :any_skip_relocation, big_sur:        "63cf203484eac53392a04cf4db083d93394513626c283415b1c68819a3fd7af6"
-    sha256 cellar: :any_skip_relocation, catalina:       "e58214c2d67a4b52a452a0c2cc06451f3eae8d9a181881c4b60701db46ae3bc7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b8bf080903fa6ca8058a2c2784e6aee5418724251dd5ca91437be86924a773e5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "08b1b3ac03720d12cc7b742af4ac1f19655d555d9c21581d8a4a84274b22bc10"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1a1a4ad63dc24b04dad8ebb9f6cb28e6a36eb1268ca4c815ed6b96fcb9bdebef"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1d10fee7359d462be79ba15f1cd85ff488c9a31839850de25bea0701df375f70"
+    sha256 cellar: :any_skip_relocation, ventura:        "f785e18f10429848af0778724a838976cee226a81f9e1be6ab42cf4bfaede05a"
+    sha256 cellar: :any_skip_relocation, monterey:       "af4b577f4552efdb757c90aa959538fb64784315e0731427705e44aca59e3633"
+    sha256 cellar: :any_skip_relocation, big_sur:        "879a96f0cd53502617335e312c4faf7cb669600cd9cfeda34572f18b625672b5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4f98debbe2b845fc1d1a8bb60abedb649754313a8981b0b54d44f3b6e6325adb"
   end
 
   depends_on "go" => :build
@@ -36,11 +36,7 @@ class Clusterctl < Formula
     system "make", "clusterctl"
     prefix.install "bin"
 
-    bash_output = Utils.safe_popen_read(bin/"clusterctl", "completion", "bash")
-    (bash_completion/"clusterctl").write bash_output
-
-    zsh_output = Utils.safe_popen_read(bin/"clusterctl", "completion", "zsh")
-    (zsh_completion/"_clusterctl").write zsh_output
+    generate_completions_from_executable(bin/"clusterctl", "completion", shells: [:bash, :zsh])
   end
 
   test do

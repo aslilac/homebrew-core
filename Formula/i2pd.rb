@@ -1,23 +1,24 @@
 class I2pd < Formula
   desc "Full-featured C++ implementation of I2P client"
   homepage "https://i2pd.website/"
-  url "https://github.com/PurpleI2P/i2pd/archive/2.42.1.tar.gz"
-  sha256 "d52b55cf144a6eedbb3433214c035161c07f776090074daba0e5e83c01d09139"
+  url "https://github.com/PurpleI2P/i2pd/archive/2.44.0.tar.gz"
+  sha256 "b653c845ac7a16fefab2ace78e3ae496c12b05304bb66e41e776071635d4e070"
   license "BSD-3-Clause"
-  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "9f7800b89ff5c1aabd77d70469644c35d0f88b3c1f94ce80756afa42743c40d5"
-    sha256 cellar: :any,                 arm64_big_sur:  "219e4dd3f3413c8dbe7e84aae283d01f926a0349beaf017ad997b7e0fb25df40"
-    sha256 cellar: :any,                 monterey:       "a9c42df467116aecab5accdeb390633d638e8277461e71a58f8ae47cad56c9f5"
-    sha256 cellar: :any,                 big_sur:        "8409e6c6f2894746d6b86187c0dbd8b74126cabe65319ec45a00a745b96187a4"
-    sha256 cellar: :any,                 catalina:       "096a3b46f7eab0b883fa54ec184b427d1f50d15491b1097b78e189014af983d4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d1c6ee762c2c05261bd4a1efe7962b5424974b22e79d69c1fa0aa0e61a3b9a89"
+    sha256 cellar: :any,                 arm64_ventura:  "428523046ee5eb138bf0d745c7adc20604a2b8348dfd37952226c09ef717db6c"
+    sha256 cellar: :any,                 arm64_monterey: "e2a7c0001e541b027b7b969c417aa07fe66b979cd42f4f91ff94d545d92ed608"
+    sha256 cellar: :any,                 arm64_big_sur:  "fd309abd53ba63105aa276b5b5d27d561095057d9c71da25ae8fb2b1e0464933"
+    sha256 cellar: :any,                 ventura:        "5b203af6f4a7a871b49b2da92261e179f557efdefa9190889c7b64dd0de6f816"
+    sha256 cellar: :any,                 monterey:       "7da92d874561d362b3fd66a2fd413a3464c86137fe94b1cd599925b752835617"
+    sha256 cellar: :any,                 big_sur:        "55b2608f0ab14401ea035344687c757c346714a5aee34d54909c9c0d7e0910c4"
+    sha256 cellar: :any,                 catalina:       "11a7435ef5962ba2fc2f8836faa5494fa9a80780e279df004d7045a77ad96bfe"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fe5ef7064d6ba3018e64288510c5d5fd59bafd79af8ef817d51177528f767286"
   end
 
   depends_on "boost"
   depends_on "miniupnpc"
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
 
   def install
     args = %W[
@@ -25,12 +26,11 @@ class I2pd < Formula
       HOMEBREW=1
       USE_UPNP=yes
       PREFIX=#{prefix}
+      BREWROOT=#{HOMEBREW_PREFIX}
+      SSLROOT=#{Formula["openssl@3"].opt_prefix}
     ]
-
     args << "USE_AESNI=no" if Hardware::CPU.arm?
 
-    # Homebrew-specific fix to make sure documentation is installed in `share`.
-    inreplace "Makefile.linux", "${PREFIX}/usr/share", "${PREFIX}/share"
     system "make", "install", *args
 
     # preinstall to prevent overwriting changed by user configs

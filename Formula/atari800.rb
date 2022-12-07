@@ -4,6 +4,7 @@ class Atari800 < Formula
   url "https://github.com/atari800/atari800/releases/download/ATARI800_5_0_0/atari800-5.0.0-src.tgz"
   sha256 "eaa2df7b76646f1e49d5e564391707e5a4b56d961810cff6bc7c809bfa774605"
   license "GPL-2.0"
+  revision 1
 
   livecheck do
     url :stable
@@ -12,16 +13,18 @@ class Atari800 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "83245b94b9fc95252009f5d281e486cb47e136f8e025dc962f6e6dcb2032ce5f"
-    sha256 cellar: :any,                 arm64_big_sur:  "25416c8f1ee08b394cd45d2a1d0df54bf63d4efb2b5130bfcdd708fe49beb118"
-    sha256 cellar: :any,                 monterey:       "2c91aa0ebc884126de90b5c0ee30531be759cb62b459eae926f48496bebf7057"
-    sha256 cellar: :any,                 big_sur:        "0eb0c4e94debd54def88467d20e73b8834ba93abbe632d096bf5ccd1842dd845"
-    sha256 cellar: :any,                 catalina:       "ad31bf587c7ebdd1d86a05dcb62a9c8c10c24c82fb152e235ad0f103e1243451"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f7f59c0b6841f5a25efa197bdc9d654010474867c8ea40cfd78515bc54919e6a"
+    sha256 cellar: :any,                 arm64_ventura:  "4bcc92710eebd07c09b0701d6722f838a4bd2d6c7c79386f5b2e01d6ec2e9d4e"
+    sha256 cellar: :any,                 arm64_monterey: "f49c2cf42413abdd1ba0d7b5fd3e628b794eb806c2248a0f50c4c6661d04a064"
+    sha256 cellar: :any,                 arm64_big_sur:  "aa9c15ae0bf8bd5ab442836b71297d802abed3e3c7ba63ea2651dc15accd9c79"
+    sha256 cellar: :any,                 ventura:        "ff0725ca690bf0e9bb6148498420d979e626aab303a8782dca4e825ec21d1a61"
+    sha256 cellar: :any,                 monterey:       "a427841ac1585534dfe1e1692a662720d6ff8936cef1ca9649316ffc3099189c"
+    sha256 cellar: :any,                 big_sur:        "452c89fa2cb96c4bd68939bf5f0db5cad245367e152d93721d964cf548fb18cf"
+    sha256 cellar: :any,                 catalina:       "d05b2717c26e4ddf292f4ad85df1485a735e7522f965533de0856978bd9b093e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ffe078392f7bbbf2753bb4e42b9e02fdd85b14d60816ef8f873ffb9741aca9bb"
   end
 
   depends_on "libpng"
-  depends_on "sdl"
+  depends_on "sdl12-compat"
 
   def install
     system "./configure", "--prefix=#{prefix}",

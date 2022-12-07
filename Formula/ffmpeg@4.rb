@@ -1,12 +1,12 @@
 class FfmpegAT4 < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-4.4.2.tar.xz"
-  sha256 "af419a7f88adbc56c758ab19b4c708afbcae15ef09606b82b855291f6a6faa93"
+  url "https://ffmpeg.org/releases/ffmpeg-4.4.3.tar.xz"
+  sha256 "6c5b6c195e61534766a0b5fe16acc919170c883362612816d0a1c7f4f947006e"
   # None of these parts are used by default, you have to explicitly pass `--enable-gpl`
   # to configure to activate them. In this case, FFmpeg's license changes to GPL v2+.
   license "GPL-2.0-or-later"
-  revision 3
+  revision 1
 
   livecheck do
     url "https://ffmpeg.org/download.html"
@@ -14,12 +14,13 @@ class FfmpegAT4 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "45fe3d6bcbed4a82661897100313edef0985cbbfd31c8a26e3d0e8d0cff4ae80"
-    sha256 arm64_big_sur:  "6be8e7871edbbdc8ac4ed06c30aaf0b2ce885a06d228f25b212e8133ae251034"
-    sha256 monterey:       "97d4a31d4b3273635c38fd06d3dcf6476564517c8b8d25e172d97823ceb08cea"
-    sha256 big_sur:        "48bd7a081bda5fa6fa355611e3a2ca7e1b58c34296df821fcaad79bd2068ecf4"
-    sha256 catalina:       "1249b1db3fd4bb13354a11db67c3546f81ef74eafc0b13b671be3828a51ff903"
-    sha256 x86_64_linux:   "d7a6a6e7ed2ce7ad954f05ecd16324c79ffa6cdb7d8a1699c3b8afa6837b675f"
+    sha256 arm64_ventura:  "f59ada15200bae0998b487377e34dbd9b97f5dc52ec6734277bccae898cc3fb2"
+    sha256 arm64_monterey: "866e74fcddfe78b064e839872aa8ff9c29b8046b9d82b7613e338cf0adc58eb5"
+    sha256 arm64_big_sur:  "86649a496cae264602a534c628d2cfd8d94035e0680a14e18997bdc0b86ab064"
+    sha256 ventura:        "d7f86718441d476388177ccd6acf66964713963d6cd57ae882e5cb58a201658f"
+    sha256 monterey:       "da78405348e33a059341e4803a13b153454e2bda2892948fe3fd0e94a0974361"
+    sha256 big_sur:        "04eb4a744cb8374098ea628536aeec08dc1d04544db6cb3c65dde549dab1266c"
+    sha256 x86_64_linux:   "fb266a9fb41e781dfe270dce34ca9de12ae2c5956b9f93b43e7c14c0df630b66"
   end
 
   keg_only :versioned_formula
@@ -65,8 +66,8 @@ class FfmpegAT4 < Formula
   uses_from_macos "zlib"
 
   on_linux do
+    depends_on "alsa-lib"
     depends_on "libxv"
-    depends_on "gcc" # because rubberband is compiled with gcc
   end
 
   fails_with gcc: "5"

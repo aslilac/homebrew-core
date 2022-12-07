@@ -1,17 +1,20 @@
 class Youtubedr < Formula
   desc "Download Youtube Video in Golang"
   homepage "https://github.com/kkdai/youtube"
-  url "https://github.com/kkdai/youtube/archive/v2.7.15.tar.gz"
-  sha256 "093246256d8f0ef719cb1bd5a5548b56031b686c553f44f84236bd62b0519357"
+  url "https://github.com/kkdai/youtube/archive/v2.7.18.tar.gz"
+  sha256 "d87fc03455b5b3c1dde4ca2b119c33279e3b4dae92fc2d161e64b04152619ac3"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "eaa869be01efa3d0ae8300b1704700cc65904438784e112941c7dfc0529cf837"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "eaa869be01efa3d0ae8300b1704700cc65904438784e112941c7dfc0529cf837"
-    sha256 cellar: :any_skip_relocation, monterey:       "95b83c67af793112b1f18197971a1a4cfcfbb3056bab45a7c07c91c2947eb1b2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "95b83c67af793112b1f18197971a1a4cfcfbb3056bab45a7c07c91c2947eb1b2"
-    sha256 cellar: :any_skip_relocation, catalina:       "95b83c67af793112b1f18197971a1a4cfcfbb3056bab45a7c07c91c2947eb1b2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "790dda94568b605b0c3464dbd0c7ee98c0fbe7d9d7603d7a6f801f974ada52a4"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c954d5d7093b8b2d31e38ec6124e74871a47346c0d813afadf036a46f0bbfa1f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c954d5d7093b8b2d31e38ec6124e74871a47346c0d813afadf036a46f0bbfa1f"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c954d5d7093b8b2d31e38ec6124e74871a47346c0d813afadf036a46f0bbfa1f"
+    sha256 cellar: :any_skip_relocation, ventura:        "62a051a3cc2211b15006dc5311ceaad1a5c2c320a5116702a21f6f1b0a10f1a1"
+    sha256 cellar: :any_skip_relocation, monterey:       "62a051a3cc2211b15006dc5311ceaad1a5c2c320a5116702a21f6f1b0a10f1a1"
+    sha256 cellar: :any_skip_relocation, big_sur:        "62a051a3cc2211b15006dc5311ceaad1a5c2c320a5116702a21f6f1b0a10f1a1"
+    sha256 cellar: :any_skip_relocation, catalina:       "62a051a3cc2211b15006dc5311ceaad1a5c2c320a5116702a21f6f1b0a10f1a1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ae317c60a48d6cd8d54c0e51a55918b5b4154322eb3618f215dc0fa59b0690f5"
   end
 
   depends_on "go" => :build
@@ -25,6 +28,8 @@ class Youtubedr < Formula
 
     ENV["CGO_ENABLED"] = "0"
     system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/youtubedr"
+
+    generate_completions_from_executable(bin/"youtubedr", "completion")
   end
 
   test do

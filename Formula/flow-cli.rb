@@ -1,8 +1,8 @@
 class FlowCli < Formula
   desc "Command-line interface that provides utilities for building Flow applications"
   homepage "https://onflow.org"
-  url "https://github.com/onflow/flow-cli/archive/v0.37.1.tar.gz"
-  sha256 "f311f3378798a6e7f57b4bc6012b93d5ef8678e38d5904a73a143c422860a93e"
+  url "https://github.com/onflow/flow-cli/archive/v0.42.0.tar.gz"
+  sha256 "c40be063242a7ca3c271020c7f1e8d32830c5a1b752d9abcd6531cbb3db69e59"
   license "Apache-2.0"
   head "https://github.com/onflow/flow-cli.git", branch: "master"
 
@@ -12,12 +12,14 @@ class FlowCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fd4f219671c81337cad7dff789a942f294da89fab6c16cdc4158fadf043a6e94"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "934d8ad8ffe39c6b6ad985ae21a7236b66df56050eab5cf4e7e35ae469d5c756"
-    sha256 cellar: :any_skip_relocation, monterey:       "dc097b26dc36dc36cb93b64f47b0387dc27a30040e96d10c5acab230892b91a1"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b17a5e3561a13fc3fde773b19fb8286839115d8706428643a5ff1e82818b367e"
-    sha256 cellar: :any_skip_relocation, catalina:       "f20063a204f34845c54142a995fcb3df849f49c8a55bae40ad20f618c51eef69"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "635759e0583cb12f5d9829c5cb1740ba035d4a2ab3422e9a1882cadccba25309"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a8d3227b19d0733b4903545caef0383b09defd3caffe67fbbd85724a0878da7c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b47b1dce404ba061aa0d8689bc7d1cc980a528c8452eb9f12f23e3b8cf39dbb2"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a867ca1d814b6b89b63ff5325cc64ac4abc39b3c5e64f21fcc9fd69d618a3b35"
+    sha256 cellar: :any_skip_relocation, ventura:        "9199e32e91a60a7e41bf4417eb6d70100cd0b803ace7089206d4fd27a3b7ad65"
+    sha256 cellar: :any_skip_relocation, monterey:       "eabaf27e8720e420a72521de4121651ef6d25af9cda30f2258c6e0e87610fadf"
+    sha256 cellar: :any_skip_relocation, big_sur:        "1e5a9eb03c47b607d708bd741e0338d5a5519a6320ace62a8ebf8a3e82532459"
+    sha256 cellar: :any_skip_relocation, catalina:       "9bd44f6d449ab8596b996ee7dcc66dcdbeaa1e398c854d496c097f2cbd715370"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "58124dca39f6e6531801be7c12bb9584cded9b55c4455825afc34530e22e7787"
   end
 
   depends_on "go" => :build
@@ -25,6 +27,8 @@ class FlowCli < Formula
   def install
     system "make", "cmd/flow/flow", "VERSION=v#{version}"
     bin.install "cmd/flow/flow"
+
+    generate_completions_from_executable(bin/"flow", "completion", base_name: "flow")
   end
 
   test do

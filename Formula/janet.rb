@@ -1,26 +1,28 @@
 class Janet < Formula
   desc "Dynamic language and bytecode vm"
   homepage "https://janet-lang.org"
-  url "https://github.com/janet-lang/janet/archive/v1.23.0.tar.gz"
-  sha256 "0b4d5d3632e0d376d9512ea8ea262f31f75c132b488dd7870f472acae709a865"
+  url "https://github.com/janet-lang/janet/archive/v1.25.1.tar.gz"
+  sha256 "0f8a4afaf7b58091e0a61c972ddd959bd61acb2a6306d3120492dee936bf751e"
   license "MIT"
   head "https://github.com/janet-lang/janet.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "9d8b3c4f58edeeaf9edb18136bce805f0013a0e334853a51570551847980fdbb"
-    sha256 cellar: :any,                 arm64_big_sur:  "c09ba1d9ebf8d4d0b9711c7c57497284d3a0d0fbab77ca639962d07193bc3142"
-    sha256 cellar: :any,                 monterey:       "0e47873696cdefb25e15fd47082135f2cf97d101cd06aa6237369ffc8c3a4734"
-    sha256 cellar: :any,                 big_sur:        "8249be1f62d79ebc226c5cde147c3ec2f1b264e429bb806283b8588e92f49808"
-    sha256 cellar: :any,                 catalina:       "15e8579d7cba3a789ae7a2388c8c96a2a21e0de6824f7b4190ae7d2cc9f06629"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ee04cae362695afc923c7dd12e2be88d14ba3f76bb8dc5f38c0afe8cbde1e9f1"
+    sha256 cellar: :any,                 arm64_ventura:  "c6deaf13e3401ec0b929324224b04e94948c0b219855997652a690a4e1d190bf"
+    sha256 cellar: :any,                 arm64_monterey: "da6a5175726641da200ca353bc3b3cb0311161b61f17918177396e3eca1ef30c"
+    sha256 cellar: :any,                 arm64_big_sur:  "e74fe5fbaa37a6a3fd1972daea26cf783aff534e249d4f7cdac49aacd3b59f87"
+    sha256 cellar: :any,                 ventura:        "3b9a6cda60e70eac143ade05592ad4e1f24a007a015e9d8afa1dfd5e46ec34e0"
+    sha256 cellar: :any,                 monterey:       "5e99427c6720819e26fff4c0e6353348499bdf9f762cae9e033e9dd70b5be197"
+    sha256 cellar: :any,                 big_sur:        "469af239c98f99bc0b38a2fbb09e6ccc9c585874f27a329debea283945c24ab8"
+    sha256 cellar: :any,                 catalina:       "52801cff99c35dfa418cf4acb6030c8d486bdedcc4bea49a3b98e9fc2ac7aa61"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c654c3f46a43de2034bdf19ee183c4262005b163cf4ba143da145465d54c3564"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
 
   resource "jpm" do
-    url "https://github.com/janet-lang/jpm/archive/refs/tags/v1.0.0.tar.gz"
-    sha256 "858d4ef2f6ac78222c53154dd91f8fb5994e3c3cbe253c9b0d3b9d52557eeb9b"
+    url "https://github.com/janet-lang/jpm/archive/refs/tags/v1.1.0.tar.gz"
+    sha256 "337c40d9b8c087b920202287b375c2962447218e8e127ce3a5a12e6e47ac6f16"
   end
 
   def install

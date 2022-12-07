@@ -1,17 +1,19 @@
 class Opensearch < Formula
   desc "Open source distributed and RESTful search engine"
   homepage "https://github.com/opensearch-project/OpenSearch"
-  url "https://github.com/opensearch-project/OpenSearch/archive/2.0.1.tar.gz"
-  sha256 "b573ad74ce36618ca11e36289618653df507e53dc3cada89352ae1630dcf8851"
+  url "https://github.com/opensearch-project/OpenSearch/archive/2.4.0.tar.gz"
+  sha256 "a1c1c9105b3fe259aac2a7b1abc3cad0453e1cc5e0baf8535ca69375e8ab448e"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "dc28542fb1dc8231ea20d6d1aab5049d21a52a112de55e3ad461efc9331c9794"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dc28542fb1dc8231ea20d6d1aab5049d21a52a112de55e3ad461efc9331c9794"
-    sha256 cellar: :any_skip_relocation, monterey:       "aae67392096668e171c26fb41ba4b02ae14bca44f2e2375d51321ef076ad70e1"
-    sha256 cellar: :any_skip_relocation, big_sur:        "aae67392096668e171c26fb41ba4b02ae14bca44f2e2375d51321ef076ad70e1"
-    sha256 cellar: :any_skip_relocation, catalina:       "aae67392096668e171c26fb41ba4b02ae14bca44f2e2375d51321ef076ad70e1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "65c64f19fb0d4b4d300f50ae82ef12a3b28654da6a64decdaf40b157863c767d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1f7f361c67e838d435da4ac0985525e52993ad6f7a2c93b24c3bf6361442d45d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1f7f361c67e838d435da4ac0985525e52993ad6f7a2c93b24c3bf6361442d45d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1f7f361c67e838d435da4ac0985525e52993ad6f7a2c93b24c3bf6361442d45d"
+    sha256 cellar: :any_skip_relocation, ventura:        "ec0f8d465b277f1213c388ad4f4083846419f17f1820a6ce22355fc20fe08543"
+    sha256 cellar: :any_skip_relocation, monterey:       "ec0f8d465b277f1213c388ad4f4083846419f17f1820a6ce22355fc20fe08543"
+    sha256 cellar: :any_skip_relocation, big_sur:        "ec0f8d465b277f1213c388ad4f4083846419f17f1820a6ce22355fc20fe08543"
+    sha256 cellar: :any_skip_relocation, catalina:       "ec0f8d465b277f1213c388ad4f4083846419f17f1820a6ce22355fc20fe08543"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "34da305ad5937ff395c86a0d3ec85163c759203bd7b3f861787b63e1c313e6cc"
   end
 
   depends_on "gradle" => :build

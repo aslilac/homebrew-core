@@ -1,8 +1,8 @@
 class RancherCli < Formula
   desc "Unified tool to manage your Rancher server"
   homepage "https://github.com/rancher/cli"
-  url "https://github.com/rancher/cli/archive/v2.6.5.tar.gz"
-  sha256 "fd55429e52ffe645438347ba5b9fe6962bfedc1cd40285c7b365a0cad69f1fb5"
+  url "https://github.com/rancher/cli/archive/v2.7.0.tar.gz"
+  sha256 "90c6345263d36580b5c6fc7eb7932ad47c438e09e01fc6be80cac27073e19761"
   license "Apache-2.0"
   head "https://github.com/rancher/cli.git", branch: "master"
 
@@ -12,12 +12,14 @@ class RancherCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c0225466c88e4867a729e322ee6a7a49f1da83c779dfe0b28eb51b15ae2e6aa5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9d64d36c29eace79927b96420fab9661ce9fd2980ab0483c31064a1fc8f612a9"
-    sha256 cellar: :any_skip_relocation, monterey:       "93c8b3e25e64ac2cda6077e370f48455f1c870b33ac24c20e9ee36a178bcb0d6"
-    sha256 cellar: :any_skip_relocation, big_sur:        "3a4e9b7ba18f350c72f60898bd1b1b58c4eaa8dc08adb0c2c15ff9a4c4260f3d"
-    sha256 cellar: :any_skip_relocation, catalina:       "17e024d06a0db93557545eb45cdf9d7cb36c808b73ccdf069e61639395e5db31"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "171d33bed64a5a17f0212c5a01d4454f8f217d13e46e7f65c3181f27bfcaec39"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "fbb3bbca755757fc43c2fc4e61743d53123202e9920121d4e2d71ec6fb890396"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8cbcc9707997701fb30257de8808959c1d17b3ce30a7330dd0ecb82ada8c342d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dca5a3c31a9e583bc3344ac97a1a8ece975a793451098da80791d959e48ee18c"
+    sha256 cellar: :any_skip_relocation, ventura:        "dfc8c88aca0890bbc192d0344690f998a8eed87c96fd61f43bdf7c42814e4515"
+    sha256 cellar: :any_skip_relocation, monterey:       "985c82bdf3f7f17ca2bdd702888115793b13d0798966cf92c668d3c4d65b1c3f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "0d75a614a0b563f7be50623b7c204c2ce098113ddf7af7bc77b704a5aff84b4f"
+    sha256 cellar: :any_skip_relocation, catalina:       "64902d60fedd97bf942ec0004b0a4c1aa2d1e1f026f7a010e3d07d12ff294bf4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "520bfa3dfe24f0d9570210ce6ffcadb51ae24d3c75c9254f027ea22f17d0fa4a"
   end
 
   depends_on "go" => :build

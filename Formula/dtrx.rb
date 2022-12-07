@@ -3,23 +3,26 @@ class Dtrx < Formula
 
   desc "Intelligent archive extraction"
   homepage "https://pypi.org/project/dtrx/"
-  url "https://files.pythonhosted.org/packages/25/cb/1ef093d762f4d5963e9e571daec239acc5f4971eb9daeda77b131d7cf39f/dtrx-8.3.1.tar.gz"
-  sha256 "5587258e762074d5395a6824fd7968ca4f4a1dc481f4852fb84d14e7624433fb"
+  url "https://files.pythonhosted.org/packages/3b/3b/426aacf32cfc661b1adbb61f3285367e9aff083252fd369a76bd3f565876/dtrx-8.5.0.tar.gz"
+  sha256 "66e2e1d5bf98401aec70c44e78192ca478d2138c7a6395863e51d07b085355b0"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7ca7a9b060a281c5e3483bff43d8311291530a28756a4ea2d4c6c5621839d58c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "da738e87e28fcd982398d9e6692b48f4f2cefc559c36c398263247d159441b79"
-    sha256 cellar: :any_skip_relocation, monterey:       "84cd22f24bbb11aa0dbfcb4861878e6c3c4dbf1e61d0e8f04271b6cf40be1f9b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "94b86cd5d6573b013ba01c25e621b20001cf1fb7059f62a6e923896003281909"
-    sha256 cellar: :any_skip_relocation, catalina:       "c3f597698b93f8a454b6b36d5dca0bf69f8fa32477a893a3f2125014f681cccf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "922c1a0c5b010798328531ba30313d2f461d0458abf7b7d11fa0d365dc86b6fc"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "79d57f98e77e7db091fca4366b4ba5b802dd6701f8f6cdd2319e33b97bce6e99"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ee4717644293fb60d28aa52cba2e97377942553a935fe244298630e8186673c1"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d7b411cf09d028d15d21385f5ecf776ab2dcf0d0266d8645fba5e89bd0ae68a6"
+    sha256 cellar: :any_skip_relocation, ventura:        "04ec6cffb870d361258a407cd9c3902b4958e648884a4e73b24b0f8f7b797e3d"
+    sha256 cellar: :any_skip_relocation, monterey:       "2f5c95bff48c1abf26d3f9f50af103b6637bd83fd99c55e27e1a0c96e30011ab"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c2a9e723f04f09663bc8f46c90932dd5d75a7c4f1ab9ed78b62f5cb6a9910656"
+    sha256 cellar: :any_skip_relocation, catalina:       "3043ce0dcaacd4f746682a7c2c31b914e2942adebed523409087579c6e1b7707"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d5acc79a0c95cc06c9bd6154330218642fdba6bb676817f153eaf6fa45036de1"
   end
 
   # Include a few common decompression handlers in addition to the python dep
   depends_on "p7zip"
-  depends_on "python@3.10"
+  depends_on "python@3.11"
   depends_on "xz"
+
   uses_from_macos "zip" => :test
   uses_from_macos "bzip2"
   uses_from_macos "unzip"

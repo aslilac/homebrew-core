@@ -1,8 +1,8 @@
 class Exercism < Formula
   desc "Command-line tool to interact with exercism.io"
   homepage "https://exercism.io/cli/"
-  url "https://github.com/exercism/cli/archive/v3.0.13.tar.gz"
-  sha256 "ecc27f272792bc8909d14f11dd08f0d2e9bde4cc663b3769e00eab6e65328a9f"
+  url "https://github.com/exercism/cli/archive/v3.1.0.tar.gz"
+  sha256 "34653a6a45d49daef10db05672c9b4e36c3c30e09d57c3c0f737034d071ae4f6"
   license "MIT"
   head "https://github.com/exercism/cli.git", branch: "main"
 
@@ -12,15 +12,14 @@ class Exercism < Formula
   end
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0964396dda88698b4a8871b2f99a42b612ca63b156aa9b73155a67b7dc936ee2"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b67c57c567b36681731de3a6fa14fcc163aba8d063432dc3fd4fe9866ba7dfb4"
-    sha256 cellar: :any_skip_relocation, monterey:       "1158f1a109a2cbe3c861950b009499df8a3dc52f5bd63b809d504cb7b3adcca1"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2b67328f03633996542bda37f25a7cf84e74732445cb89e64d2e3ae1fdf07b9e"
-    sha256 cellar: :any_skip_relocation, catalina:       "9a4080f7e35f37dc4eb15e733692314cec32cba7e0f76e8f58eb99850f708cb1"
-    sha256 cellar: :any_skip_relocation, mojave:         "7319920cfd6779984dfabbecdf3e15a37603f6bfbecfc1121bfa2a044fb8ed17"
-    sha256 cellar: :any_skip_relocation, high_sierra:    "b094a8441575b02f312f04760589f94d9f2b1d76330c07a67f7d07a40ad561a9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "47b5b810e2eb74fa8d73c9ffca02e789f115faaab3a7547b3ded1b945bb96ba1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e9f6946f7740e007824512ee1f7e6b8e49620152eb97973d1938cac21ac7ab47"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f331bfd82579f2356b72722d8850035d5905d707d747f7a1b63cc5e53abd71aa"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "075fc4add6d1783a3a971471c4b79c75c90cbeae13b3c29165d61df28f5094ef"
+    sha256 cellar: :any_skip_relocation, ventura:        "f04d40ef95fa6ae6374eecd1e924fc3ff51929c57562d1265fe5838cf32cac02"
+    sha256 cellar: :any_skip_relocation, monterey:       "2f4614b05b44e912d099a47da1ccbcbfd95c0126ffe1e0247ecda2068ee54afd"
+    sha256 cellar: :any_skip_relocation, big_sur:        "13121cfeda4cbddb26c71c5684b3bae1666dfcd1f424b6bc3cac4c772b8aa853"
+    sha256 cellar: :any_skip_relocation, catalina:       "6a31fc46b6ffa519cad9d81796188c6e60cf902496ed563a111871d157e229c9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "04d5c2b7b433cc529576311cbe9b9ef9d8060f50abbdaf21736aaf5e6f3e450b"
   end
 
   depends_on "go" => :build

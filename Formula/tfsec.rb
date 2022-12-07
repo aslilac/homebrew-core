@@ -1,8 +1,8 @@
 class Tfsec < Formula
   desc "Static analysis security scanner for your terraform code"
   homepage "https://tfsec.dev/"
-  url "https://github.com/aquasecurity/tfsec/archive/v1.26.0.tar.gz"
-  sha256 "7d6cf04dc132e1c24044953d761aaa579e2c09bd807a2e376d8a79c821fead26"
+  url "https://github.com/aquasecurity/tfsec/archive/v1.28.1.tar.gz"
+  sha256 "17c12304ae34bdb0cc9de916203a45077a96a2786084edc6bebf7b769dc430e8"
   license "MIT"
   head "https://github.com/aquasecurity/tfsec.git", branch: "master"
 
@@ -12,12 +12,14 @@ class Tfsec < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6651eea77cd9f15fdba070a471d99a61a0a9cc85b91dbcce43fb8b4f97d104c5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ca16587e93d5825ceff9dc957339fb3e7f3c8ed7bead52a1c738b14a4e4fae7b"
-    sha256 cellar: :any_skip_relocation, monterey:       "4be2425f7ee3e0999f8d08b6fd614f37944cf67e7bf992bc9bb86151937cfb01"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e55b3c2a4498a845d8734d42fb0a68ba491bf9243614376f2a4a197f92fd68ee"
-    sha256 cellar: :any_skip_relocation, catalina:       "10e4e2ee181cbff5b9f32d2fba8cdccf643e6355bc5c89d0324571b221df1297"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "66a226aff0c56be706fb197bde8fe6123831e91a38c5b4467ac6e46ffdccbd79"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "96c613d8e9870a22de28adcc65fa7a2a1d7ddaeedfd14cc8966c11f057ea5364"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "28e873bae875501992643842e3d37b39b38bc50da2de354d7444c9d65c74c4dd"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e520df9e90c9bf4604705fa16d416fd54f0f02ccdc1faab8395a8fe375f192bb"
+    sha256 cellar: :any_skip_relocation, ventura:        "c9672ad68b8c040eb6935b7cdb07b62485f4aef3773c630ff1dee2c8d174571c"
+    sha256 cellar: :any_skip_relocation, monterey:       "21becf100e3e147ef5811701e2fda70b3b5b5affdebe9d90bfcf415b6e6a85c5"
+    sha256 cellar: :any_skip_relocation, big_sur:        "65c603b1e4c85f3951a9295fdab06469b73837ba64dfcb4f915e435e8208c94f"
+    sha256 cellar: :any_skip_relocation, catalina:       "175dd35759be01a52471ed985c03ff7981a2c0e95cbfeb8cc42821e130060311"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9b4f23d9e8878a3da734303381305611634d7bc833a2b9fd4f336a89e6c0806d"
   end
 
   depends_on "go" => :build

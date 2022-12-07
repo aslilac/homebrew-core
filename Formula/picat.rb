@@ -1,9 +1,9 @@
 class Picat < Formula
   desc "Simple, and yet powerful, logic-based multi-paradigm programming language"
   homepage "http://picat-lang.org/"
-  url "http://picat-lang.org/download/picat320_src.tar.gz"
-  version "3.2"
-  sha256 "b72edbb3b81e1e74f6a5dc994587a2b0fe2b3ed123d809ca0fd6b0c171bcbbb0"
+  url "http://picat-lang.org/download/picat333_src.tar.gz"
+  version "3.3#3"
+  sha256 "2cc9801c218a8289ffc0d6eb5d3507f61887c86570c120e9075db7eb16b0cd7b"
   license "MPL-2.0"
 
   livecheck do
@@ -12,10 +12,14 @@ class Picat < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, monterey:     "1f33bf6c7ae83490260df3703be639f24c02d2a86fb28b689de981e8c53eecad"
-    sha256 cellar: :any_skip_relocation, big_sur:      "ba375b86a0e972b1d0b23eea30507c4103456c6a3d37dc838ac96d3f6d52c515"
-    sha256 cellar: :any_skip_relocation, catalina:     "aa7d37c3007a693e4a48926cda378833add85084698f57dadf193c9e04494145"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "56f52e028eed98e9d09609ea7536d33a2e8cb7dfdd712454ca097a86ee967762"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "30409974b9777b675712198b9b8a499daff506455f1a7de4e4e6fa9c0627ccdc"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "bb15b9fc5cd72a1655e835bbf7539b44c4d06aae826374b4b9facd0d0f185901"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1ea1072e34b8d14bbe64a3622c76a8abd71fdfcdfcf477b2f8334159b4b42433"
+    sha256 cellar: :any_skip_relocation, ventura:        "512b22b7af44b2ff93f3b169ff54b5b8145e0cb7e2874c343fffd66431860815"
+    sha256 cellar: :any_skip_relocation, monterey:       "7a62131b226b15b0eb792895a9f1dc0e5220dd045a929ff39d5a7d660f890762"
+    sha256 cellar: :any_skip_relocation, big_sur:        "451b2e2431baa3d77a34ef1a9779bb574a7193674ca3970749ca95d073b12b09"
+    sha256 cellar: :any_skip_relocation, catalina:       "69189ead9fd784662f8422de508885de6aa9a8594551551a374f2a7700fa7a4f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6b0f858e04946742e6b2ad741cc9a0e02d8c302cdf1d285d74e6b1267fb0e7fe"
   end
 
   def install

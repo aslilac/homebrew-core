@@ -2,27 +2,28 @@ class DroneCli < Formula
   desc "Command-line client for the Drone continuous integration server"
   homepage "https://drone.io"
   url "https://github.com/harness/drone-cli.git",
-      tag:      "v1.5.0",
-      revision: "92e84c4e2452f82ad093722d87ad054e1821805e"
+      tag:      "v1.6.2",
+      revision: "24bea58512640de52ef16c45f48645e255d8b46c"
   license "Apache-2.0"
   head "https://github.com/harness/drone-cli.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e7db30f414e4fed8855cdf0ebfd23704ca5d98481c1e4b9cce1c432c818c39c6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c3fa702e5a13f34f1dc989c216b84147ad896112fe503932aa34d5b911157a73"
-    sha256 cellar: :any_skip_relocation, monterey:       "0acbad2a3c296d8c07606aff9f246675fe04bca6e801900ec26b4b9a310d3690"
-    sha256 cellar: :any_skip_relocation, big_sur:        "65cc3a62fabbb34266675510fa01c9a924b3aa158231404d6ed440e519fc0b97"
-    sha256 cellar: :any_skip_relocation, catalina:       "cf0e94994336f4345837b93628ab2b70e17211eccd7d581eb2704469307597ab"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f6ed05521633d4cb92588ad4adb811f2c86ecd0c388f01b4cc2de183af643f55"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "66172d41d0d98db6f993146668fb40701f2da05a66f9b359ad12ef51dbd7af90"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "66172d41d0d98db6f993146668fb40701f2da05a66f9b359ad12ef51dbd7af90"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "66172d41d0d98db6f993146668fb40701f2da05a66f9b359ad12ef51dbd7af90"
+    sha256 cellar: :any_skip_relocation, ventura:        "0972102d85e71a67a2488480584d28b118805f68cfb384ec6bdb436c3b1bedb7"
+    sha256 cellar: :any_skip_relocation, monterey:       "0972102d85e71a67a2488480584d28b118805f68cfb384ec6bdb436c3b1bedb7"
+    sha256 cellar: :any_skip_relocation, big_sur:        "0972102d85e71a67a2488480584d28b118805f68cfb384ec6bdb436c3b1bedb7"
+    sha256 cellar: :any_skip_relocation, catalina:       "0972102d85e71a67a2488480584d28b118805f68cfb384ec6bdb436c3b1bedb7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9d58eb66b4f3a159821ddd80051873d60288b0cb3903a2b83f6163e321798f44"
   end
 
   depends_on "go" => :build
 
   def install
     ENV["CGO_ENABLED"] = "0"
-    system "go", "build", "-ldflags", "-s -w -X main.version=#{version}", "-trimpath", "-o",
-           bin/"drone", "drone/main.go"
-    prefix.install_metafiles
+    ldflags = "-s -w -X main.version=#{version}"
+    system "go", "build", *std_go_args(output: bin/"drone", ldflags: ldflags), "drone/main.go"
   end
 
   test do

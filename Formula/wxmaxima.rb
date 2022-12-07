@@ -1,19 +1,19 @@
 class Wxmaxima < Formula
   desc "Cross platform GUI for Maxima"
   homepage "https://wxmaxima-developers.github.io/wxmaxima/"
-  url "https://github.com/wxMaxima-developers/wxmaxima/archive/Version-22.05.0.tar.gz"
-  sha256 "a0140b9f6171540556bd40c6b5617eb9ea224debe592014cbfabd0c095594b93"
+  url "https://github.com/wxMaxima-developers/wxmaxima/archive/Version-22.11.1.tar.gz"
+  sha256 "54c7f2959fe3f0eac0db9083462d81f9058cc488bd0a86feb97683cfbc131f13"
   license "GPL-2.0-or-later"
-  revision 1
   head "https://github.com/wxMaxima-developers/wxmaxima.git", branch: "main"
 
   bottle do
-    sha256 arm64_monterey: "778a293f94761b9bfd05ff83b1560b6995cecd2b3aba90eaefc8859e76f2a310"
-    sha256 arm64_big_sur:  "ea2d3a5c1966fa12f8f100086234b1a3b2fa1bd862a728d4ed2c63cde975033d"
-    sha256 monterey:       "0d26505bd559f98e95df34be56bfe9d05bd794bd4d28d64268b92cb34056feae"
-    sha256 big_sur:        "7e00267d843814c571690d8357cb59e6c05b14c2a0dd8095893bcab1b8d87524"
-    sha256 catalina:       "81849af465fc704e934ccd5bd47f2f7db36985c503047ce42b9b4adea632b985"
-    sha256 x86_64_linux:   "e2658a29828d6b86fcbe3722251f06034b3a1b7ef3a786a1529ea01ccaa8ece4"
+    sha256 arm64_ventura:  "dbb7ac08d3134a56fb5cbef97c57c74b41906351608319e7914b039d8d814cf6"
+    sha256 arm64_monterey: "1dcda0c8102846676817d9e7029a86b71ce432ce8b0c8396e88db81dfcc40423"
+    sha256 arm64_big_sur:  "34b1f015bd3c70af65beed3ea9afef59dcea05f641b43ccf4f0c9028d4956c25"
+    sha256 ventura:        "2a3b4315d6af5d2522ec32f1cd74734754398cbb933ef3fc29e4b543fe043239"
+    sha256 monterey:       "f5c909f5019eb059bf1840ece98230c0e08f78865f129010b9b48d7c230a6ea3"
+    sha256 big_sur:        "c974e8b7ffa9199c461f48eaa41715d381841b67225f1d03f5a2d65505582daf"
+    sha256 catalina:       "d5135b75f2644e282e85966d2259ba9f798da813e1de3f19039ec42cbeba092c"
   end
 
   depends_on "cmake" => :build
@@ -23,17 +23,15 @@ class Wxmaxima < Formula
   depends_on "wxwidgets"
 
   def install
-    mkdir "build-wxm" do
-      system "cmake", "..", "-GNinja", *std_cmake_args
-      system "ninja"
-      system "ninja", "install"
-
-      prefix.install "src/wxMaxima.app" if OS.mac?
-    end
-
+    system "cmake", "-S", ".", "-B", "build-wxm", "-G", "Ninja", *std_cmake_args
+    system "cmake", "--build", "build-wxm"
+    system "cmake", "--install", "build-wxm"
     bash_completion.install "data/wxmaxima"
 
-    bin.write_exec_script "#{prefix}/wxMaxima.app/Contents/MacOS/wxmaxima" if OS.mac?
+    return unless OS.mac?
+
+    prefix.install "build-wxm/src/wxMaxima.app"
+    bin.write_exec_script prefix/"wxMaxima.app/Contents/MacOS/wxmaxima"
   end
 
   def caveats

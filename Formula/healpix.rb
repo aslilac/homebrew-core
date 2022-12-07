@@ -1,18 +1,20 @@
 class Healpix < Formula
   desc "Hierarchical Equal Area isoLatitude Pixelization of a sphere"
   homepage "https://healpix.jpl.nasa.gov"
-  url "https://downloads.sourceforge.net/project/healpix/Healpix_3.81/Healpix_3.81_2022Jan25.tar.gz"
-  version "3.81"
-  sha256 "82d92bb21626371f9d280e59e82ad0f47d9ae62c70d86ccd1026e0310f193551"
+  url "https://downloads.sourceforge.net/project/healpix/Healpix_3.82/Healpix_3.82_2022Jul28.tar.gz"
+  version "3.82"
+  sha256 "47629f057a2daf06fca3305db1c6950edb9e61bbe2d7ed4d98ff05809da2a127"
   license "GPL-2.0-or-later"
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "dfeb28524f12bedc1dc9175497320abdcd8acff8f3c993d4bfb66ccc93cebd84"
-    sha256 cellar: :any,                 arm64_big_sur:  "ba652ecb444db9af1ac44a9c63b45d97471f7f74a668dc1f4c5021da9501bbbf"
-    sha256 cellar: :any,                 monterey:       "35518051713cd4a78e21496aa1118c35b5ff0c1806238bde84694b99d463fe58"
-    sha256 cellar: :any,                 big_sur:        "59b6fc418e6e12988fb3e8a76ebaeaf009c03475da7a1f1d00835adea06e5087"
-    sha256 cellar: :any,                 catalina:       "3572c5ccdc1ee37e02990a6f3b666b4c9a0653e746284d95119efb37ecaa3f66"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ebc0c6a9b81fdda8de5d1ef805042126fc6d2da0720e0a7df1caeb8fe56d6557"
+    sha256 cellar: :any,                 arm64_ventura:  "cee714500355c2f6d2974df7c1942d7d04dc1a99e7c6b729d2c0dfb3e346d680"
+    sha256 cellar: :any,                 arm64_monterey: "2c20fec2724b39f5216682928570fa0b397bde0b5967fcdba09220381900211e"
+    sha256 cellar: :any,                 arm64_big_sur:  "60149b975f08c9843300573050067fff1cd11c0cb37dfcd622099c2b71094791"
+    sha256 cellar: :any,                 ventura:        "f668b103ad5eac9949f2bd52c1a694056cc7e716ace0d4b66829b856f86aa068"
+    sha256 cellar: :any,                 monterey:       "b69b3a3ea09a205f5f753f2984e29de6052fae940b31d8a97dc3f6c502a78ed5"
+    sha256 cellar: :any,                 big_sur:        "b4d35b6aedb577fa29673b4f5e6211c61675683fc9a328bcf186826d67a0dc1e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "21947253baf912a6367c4ee798a53c6b3b517c4e8774bd9b3edc2aeb2bff3de5"
   end
 
   depends_on "autoconf" => :build

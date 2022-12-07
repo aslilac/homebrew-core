@@ -1,26 +1,24 @@
 class Libxcrypt < Formula
   desc "Extended crypt library for descrypt, md5crypt, bcrypt, and others"
   homepage "https://github.com/besser82/libxcrypt"
-  url "https://github.com/besser82/libxcrypt/releases/download/v4.4.28/libxcrypt-4.4.28.tar.xz"
-  sha256 "9e936811f9fad11dbca33ca19bd97c55c52eb3ca15901f27ade046cc79e69e87"
+  url "https://github.com/besser82/libxcrypt/releases/download/v4.4.33/libxcrypt-4.4.33.tar.xz"
+  sha256 "e87acf9c652c573a4713d5582159f98f305d56ed5f754ce64f57d4194d6b3a6f"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "c9167b6a2004c17ae0e8c2bfa87b836f46117e2feaf11e81bceb4f10f88a1797"
-    sha256 cellar: :any,                 arm64_big_sur:  "379a8c183e939aae7c2cf36e8e4d6f0d4a48663bfd6ba0a07685840a8644ede7"
-    sha256 cellar: :any,                 monterey:       "10efe49691ec1185d451d7525597fb8f74de2cad09901d0b0e0ea02b2efffb7c"
-    sha256 cellar: :any,                 big_sur:        "bd3ae4e71a255aca43f3ec06111094b6f8d245552388f734c6e4ee2f33089333"
-    sha256 cellar: :any,                 catalina:       "bcda7c42bf3a2021aa83bd00a8fcb3158f02e791f792eccceda4257bda67cb6a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "84269a82afe1a9e94ba6828c983a4b8e65d8d672d36d88232daac832017ab327"
+    sha256 cellar: :any,                 arm64_ventura:  "4ee3bf38db315e567b4bab44ac9c00c4426a639fbf927504c41e71696c35909a"
+    sha256 cellar: :any,                 arm64_monterey: "5b05ce5f75fecd782e3ba5f79e6374366e387aafc2bcd3a3be2f62f8f5630ebd"
+    sha256 cellar: :any,                 arm64_big_sur:  "e2ab1dd4cf1eb83ae294eea6573a5cea05b2256369be2ca4648c53e72fa1be60"
+    sha256 cellar: :any,                 ventura:        "11fe5967447401b73f5ed9e4354b728b71fb9c7b80cacedce61cb78aea76d117"
+    sha256 cellar: :any,                 monterey:       "51cdca6f5314291e1567693e36e79a8f520bb5286b9dcc0a9ac8263679c792ba"
+    sha256 cellar: :any,                 big_sur:        "d5fcb26fdfc1c8fe8971593a370795b065845792d9339327c7b79b186a7f7c54"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "809ff345c8f0d705ea1d84f086fe5b19f590b540db3902784db6f6c3c8ecf0b1"
   end
 
   keg_only :provided_by_macos
 
-  # Fix -flat_namespace being used on Big Sur and later.
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
-    sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
-  end
+  link_overwrite "include/crypt.h"
+  link_overwrite "lib/libcrypt.so"
 
   def install
     system "./configure", *std_configure_args,

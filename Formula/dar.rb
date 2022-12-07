@@ -1,8 +1,8 @@
 class Dar < Formula
   desc "Backup directory tree and files"
   homepage "http://dar.linux.free.fr/doc/index.html"
-  url "https://downloads.sourceforge.net/project/dar/dar/2.7.6/dar-2.7.6.tar.gz"
-  sha256 "3d5e444891350768109d7e9051e26039bdeb906de30294e7e0d71105b87d6daa"
+  url "https://downloads.sourceforge.net/project/dar/dar/2.7.8/dar-2.7.8.tar.gz"
+  sha256 "74eadc5e657315b4f6aee018c95b625f04bdbbee39e5ec9ec4663533ee950fe9"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,19 +11,23 @@ class Dar < Formula
   end
 
   bottle do
-    sha256               arm64_monterey: "07fb29f0d1099bed6ebb8f1704dba22dd2be8e9f709c83d5eb790a52234cafbc"
-    sha256               arm64_big_sur:  "38a24276c643cf51652048b63d4d25ed766b46a5895137e3079420ad726315cd"
-    sha256 cellar: :any, monterey:       "c791caab3de9c794d4c8e8fbaf928a550bc819b343bf10d086e758c26d6d2d27"
-    sha256 cellar: :any, big_sur:        "1471725ed4a9718c3b8c98690963c327c96fa3e3f66823711938e68e56df59e5"
-    sha256 cellar: :any, catalina:       "2c1d03575a50d09cf9290b9e0bfae2677308f0bfed36c2b72a7989f7008df5d7"
-    sha256               x86_64_linux:   "c66a42b6b25ceeef4304473a7347ec3a62ac5b0bd2dbd79ba7227d2d69b21d03"
+    sha256               arm64_ventura:  "7cbef1d93078441e341963f6d45f98b7548066e3c27c9ec864d8860a81f94a05"
+    sha256               arm64_monterey: "0c3f050775bdb3802d0ca63e819f1d31794d6353e2daa3152a26eb4c26d33b53"
+    sha256               arm64_big_sur:  "3acc199f9fdb2533766a853cc2397a60a79fd8781908748e1a81745fd995c4d1"
+    sha256 cellar: :any, monterey:       "607115ea92bf853dcc42bb82ff5740ae2f921afec71a29f82382a4f34cb4eca2"
+    sha256 cellar: :any, big_sur:        "cf7783da36b47a0bd54dfd8954c01f79b7b1f30eea8eee95f02a79edbba15d89"
+    sha256 cellar: :any, catalina:       "2704638c041551e2f887ed52d5ddae588a5953e8c22ba3184750b51736ae2164"
+    sha256               x86_64_linux:   "d662471b6c1d22bbb4388e8256e26d528eb34c4d8496ceb7e7ac1cc9e7078f99"
   end
 
-  depends_on "upx" => :build unless Hardware::CPU.arm?
   depends_on "libgcrypt"
   depends_on "lzo"
 
   uses_from_macos "zlib"
+
+  on_intel do
+    depends_on "upx" => :build
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}",

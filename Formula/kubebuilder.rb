@@ -2,18 +2,19 @@ class Kubebuilder < Formula
   desc "SDK for building Kubernetes APIs using CRDs"
   homepage "https://github.com/kubernetes-sigs/kubebuilder"
   url "https://github.com/kubernetes-sigs/kubebuilder.git",
-      tag:      "v3.5.0",
-      revision: "26d12ab1134964dbbc3f68877ebe9cf6314e926a"
+      tag:      "v3.8.0",
+      revision: "184ff7465947ced153b031db8de297a778cecf36"
   license "Apache-2.0"
   head "https://github.com/kubernetes-sigs/kubebuilder.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a2c96e90d8cc4d3850bcb6cbad7d4a073c8b74661428647309c2faf8d4f6568f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f08d09f64f159570c1e5c7a8b3182f587cb0d2f0ec7235cce346ff2501c0dd02"
-    sha256 cellar: :any_skip_relocation, monterey:       "433a6c4388a39abbd22983d3f8a59b23d4695f8f686151e19eaf49bd105ce1ef"
-    sha256 cellar: :any_skip_relocation, big_sur:        "012a16ce93c67889e0dd434b5d1fb7ac16b3038d7f603be9d1a5f615882b8821"
-    sha256 cellar: :any_skip_relocation, catalina:       "2edc0f4cbabdbb5014761bded7e89548ccaa5d0714c4902629daa8a40df0c326"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1d4afe06eb6fec4495e2fb00fc753f1feead9a76cfb74aabb4cead6cb820608e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "171b33ef310797f5dbf60df8f29889d21aad8f424d8e192baad9a1d2c43b63fb"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "68354c935b40113c2256708993db3ead763d3a1edd45d3190c4514aea220aec4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "69731f736bda318e59c1a02ca8427bd931924e10af7ac00ddf53d203109151f2"
+    sha256 cellar: :any_skip_relocation, ventura:        "08d8b57f99e72e49e0ab889ee1402c60ae14cf86bd9f6b5e2773d41e93d9a155"
+    sha256 cellar: :any_skip_relocation, monterey:       "9680e3b12de2bc2c9ddc270b7b996b56d8e8451ba5c255f0a8c8c99135f1c22f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a344d07b3a0b9a8cd84782bb1ca8b4abb5a5e73630af158935c021e11e013f20"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1c902c0e6f4cb8cd0494c723fe69b031327bea8383e2f464feeab635cd02eadf"
   end
 
   depends_on "git-lfs" => :build
@@ -31,12 +32,7 @@ class Kubebuilder < Formula
     ]
     system "go", "build", *std_go_args(ldflags: ldflags), "./cmd"
 
-    output = Utils.safe_popen_read(bin/"kubebuilder", "completion", "bash")
-    (bash_completion/"kubebuilder").write output
-    output = Utils.safe_popen_read(bin/"kubebuilder", "completion", "zsh")
-    (zsh_completion/"_kubebuilder").write output
-    output = Utils.safe_popen_read(bin/"kubebuilder", "completion", "fish")
-    (fish_completion/"kubebuilder.fish").write output
+    generate_completions_from_executable(bin/"kubebuilder", "completion")
   end
 
   test do

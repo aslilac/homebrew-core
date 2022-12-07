@@ -3,8 +3,8 @@
 class Mercurial < Formula
   desc "Scalable distributed version control system"
   homepage "https://mercurial-scm.org/"
-  url "https://www.mercurial-scm.org/release/mercurial-6.1.4.tar.gz"
-  sha256 "f361f9802b36e357ac019ceb712ca11de8332b07deadeed8dfa904f05bf7ca78"
+  url "https://www.mercurial-scm.org/release/mercurial-6.3.1.tar.gz"
+  sha256 "6c39ab8732948d89cf1208751dd7d85d4042aa82153977451b9eb13367585072"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -13,38 +13,36 @@ class Mercurial < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "737ceba26e04326ea6b70c06d5ff14400c3cb7af5dd123d2445e7a816d47f0db"
-    sha256 arm64_big_sur:  "36452fa78b494b30f71cb1799ec4c3c612f7f6d2e2e89721f12f037128ca4b6f"
-    sha256 monterey:       "7f7d98d3e6f77fd87d64b496bcbc8ee942ad0264cea915ad5ddc307149953a84"
-    sha256 big_sur:        "e0b72286e4578b8a0775026e38a630597acdae17ca3da34fc725e97554d65877"
-    sha256 catalina:       "8a14ec66a7c520775e1e93d9097bf45a1707daf5cb10d39dd41693f3be71616e"
-    sha256 x86_64_linux:   "28ae090d3c606c984cc35a5ef1ed23889a6f3f1a0638a38bdc283a80afb3bf88"
+    sha256 arm64_ventura:  "0ffb8b179aa7557fc22da21da69e1627ad515241e2ebd450941e695a421b4841"
+    sha256 arm64_monterey: "25d88c7f8c59c40f6fb0719041d14ceb79de888e9750d8d57db61d6541a484b5"
+    sha256 arm64_big_sur:  "b303d2f44d6a40c46aadb006da944a3b27518d5379cf234bf031f8f88ac3e937"
+    sha256 ventura:        "c6559ed597d308ddb0a224e257f8af33364cc1cf1e05672677d27f4029418cb3"
+    sha256 monterey:       "5bf2ea3e097a6dd9d904a13a11ac3866dc786efeae060a967792e121d136e18c"
+    sha256 big_sur:        "5ad92094b41ecb6d8fa96b9f5ecf3d928fa670426b07052f96cea0e70042db6f"
+    sha256 catalina:       "a370e26e8c81a663ab3ddff0b89b4a24a4661975e40e36d401ebd8310cade85e"
+    sha256 x86_64_linux:   "0d100f0b6ba45981c21f9f1ba6bd4a9f76881f288cf6a44eaf9edb0330d34bd3"
   end
 
-  depends_on "python@3.10"
+  depends_on "python@3.11"
 
   def install
     ENV["HGPYTHON3"] = "1"
+    ENV["PYTHON"] = python3 = which("python3.11")
 
-    # FIXME: python@3.10 formula's "prefix scheme" patch tries to install into
+    # FIXME: python@3.11 formula's "prefix scheme" patch tries to install into
     # HOMEBREW_PREFIX/{lib,bin}, which fails due to sandbox. As workaround,
     # manually set the installation paths to behave like prior python versions.
-    site_packages = prefix/Language::Python.site_packages("python3")
-    inreplace "Makefile",
-              "--prefix=\"$(PREFIX)\"",
-              "\\0 --install-lib=\"#{site_packages}\" --install-scripts=\"#{prefix}/bin\""
+    setup_install_args = %W[
+      --install-lib="#{prefix/Language::Python.site_packages(python3)}"
+      --install-scripts="#{bin}"
+      --install-data="#{prefix}"
+    ]
+    inreplace "Makefile", / setup\.py .* --prefix="\$\(PREFIX\)"/, "\\0 #{setup_install_args.join(" ")}"
 
-    system "make", "PREFIX=#{prefix}",
-                   "PYTHON=#{which("python3")}",
-                   "install-bin"
+    system "make", "install-bin", "PREFIX=#{prefix}"
 
     # Install chg (see https://www.mercurial-scm.org/wiki/CHg)
-    cd "contrib/chg" do
-      system "make", "PREFIX=#{prefix}",
-                     "PYTHON=#{which("python3")}",
-                     "HGPATH=#{bin}/hg", "HG=#{bin}/hg"
-      bin.install "chg"
-    end
+    system "make", "-C", "contrib/chg", "install", "PREFIX=#{prefix}", "HGPATH=#{bin}/hg", "HG=#{bin}/hg"
 
     # Configure a nicer default pager
     (buildpath/"hgrc").write <<~EOS
@@ -58,9 +56,8 @@ class Mercurial < Formula
     man1.install "doc/hg.1"
     man5.install "doc/hgignore.5", "doc/hgrc.5"
 
-    # install the completion scripts
-    bash_completion.install "contrib/bash_completion" => "hg-completion.bash"
-    zsh_completion.install "contrib/zsh_completion" => "_hg"
+    # Move the bash completion script
+    bash_completion.install share/"bash-completion/completions/hg"
   end
 
   def caveats

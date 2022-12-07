@@ -1,34 +1,35 @@
 class Fd < Formula
   desc "Simple, fast and user-friendly alternative to find"
   homepage "https://github.com/sharkdp/fd"
-  url "https://github.com/sharkdp/fd/archive/v8.4.0.tar.gz"
-  sha256 "d0c2fc7ddbe74e3fd88bf5bb02e0f69078ee6d2aeea3d8df42f508543c9db05d"
+  url "https://github.com/sharkdp/fd/archive/v8.5.3.tar.gz"
+  sha256 "45a6444cf5bbfcf4ee4836d9a2ff2106d31e67da77341183392225badc87cd35"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/sharkdp/fd.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "36b39bc7e13e611becfb81cc6ce843abd36fc678be07bcb4823664f1af4fa3e3"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "63a7d40d5a608f9e48eddfc96db5ded5064b3545aa69763d40d940cd8339a2c3"
-    sha256 cellar: :any_skip_relocation, monterey:       "7b041441406fa3756c85a1d071f1393637de64b4f368611f195cbb86346c96a6"
-    sha256 cellar: :any_skip_relocation, big_sur:        "bfa44b52a5cc4ba4a7df0d2f90b3bd3ab47239c226af859b2af0b5cba2bb2900"
-    sha256 cellar: :any_skip_relocation, catalina:       "cf873adca8ee04602b8daba2ae7889ff4753b8d04b6d733faec2c4e14fb0bbe4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "82c72a51adf671dec67e8906be0198303a5babb6a101949362ac3935e428f3a2"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7ed464d2b4fe2ca141e532b001b0e5c1ab2579fc6e53a2b78f75772483036ca1"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2aaf07cd8636a9e110f7d21f2e14c3ca8d47041248897bda57edcdf876f3fd85"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2b43cfc97e23061fd573acd571e41dd02c849c5d1c0c237f3cd0737a737a252f"
+    sha256 cellar: :any_skip_relocation, ventura:        "b741bd5c98bfd8fb5d7f40fcb48488316753784f496cf2f7d0e513b82c948129"
+    sha256 cellar: :any_skip_relocation, monterey:       "ac29c5b233e3db78b774ae34feab864f7ad1cf1578a0c6d90474c00963c2f300"
+    sha256 cellar: :any_skip_relocation, big_sur:        "61d5b5be009114f07a1f306fbc7636a99d9cff88a58ea4c6986aca74a50c9272"
+    sha256 cellar: :any_skip_relocation, catalina:       "08fab3dd84b298c2a32617608d2154cfd6c2e57bbc8147a6bddb9560ce6d20a4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "caf5cdc827f3c05037f9639228a4807b6aefd7a79576b63f83c765e7981dc021"
   end
 
   depends_on "rust" => :build
 
   def install
-    ENV["SHELL_COMPLETIONS_DIR"] = buildpath
     system "cargo", "install", *std_cargo_args
     man1.install "doc/fd.1"
-    bash_completion.install "fd.bash"
-    fish_completion.install "fd.fish"
+    generate_completions_from_executable(bin/"fd", "--gen-completions", shells: [:bash, :fish])
     zsh_completion.install "contrib/completion/_fd"
   end
 
   test do
     touch "foo_file"
     touch "test_file"
-    assert_equal "./test_file", shell_output("#{bin}/fd test").chomp
+    assert_equal "test_file", shell_output("#{bin}/fd test").chomp
   end
 end

@@ -2,8 +2,8 @@ class Mmctl < Formula
   desc "Remote CLI tool for Mattermost server"
   homepage "https://github.com/mattermost/mmctl"
   url "https://github.com/mattermost/mmctl.git",
-      tag:      "v7.0.1",
-      revision: "62266d165f180f6ab158026ff4931e1ba7138483"
+      tag:      "v7.5.1",
+      revision: "724e2fd64d753afbd7295ba86641db6aed21496d"
   license "Apache-2.0"
   head "https://github.com/mattermost/mmctl.git", branch: "master"
 
@@ -13,12 +13,14 @@ class Mmctl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "63f385864ee453c3f5808c836b095129e18066b1e400465a6a7a772e85ff8793"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9ca0a0b2dcddb427e4a5ed76bb8c6ae7ee81e00844b685d558b2e1398c34e0b3"
-    sha256 cellar: :any_skip_relocation, monterey:       "b6491758d0de6ac44e95d6cfa380284cee91884a21a5da13df36bec3e0bc119c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "069150e8c82e89452b2d1f8554806205f136412c584f92686ef2e8ce7556307d"
-    sha256 cellar: :any_skip_relocation, catalina:       "48cc7b41e474554758c6f0a79a72d333cb52d6aa6c31b6b5f3afcdca113b2841"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "eece21a9ae57960c948a49f5ac0df8db1548893f4a7b11394ef8935c59bd21df"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5bb3aeb5cdd7f0d491989914e77d0f8e6f562580d4620bba3bb2f850da0a2601"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e6f17258ed83e9bb9a3726e5c44f3fb019a3d6c713b68f90cffe6575780b1898"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9c85a7eee05c8376a0e2d8754e5c5d5bb341a2a32f1955ec3268602f8cafa76a"
+    sha256 cellar: :any_skip_relocation, ventura:        "766fbe689977c2c534aab4d95e8c4cf22b9a6138881595cbc6f6cb97b92ce207"
+    sha256 cellar: :any_skip_relocation, monterey:       "fd9dd341b7b20d953f47b560b1b906d4db57dd7560bca1d861ad5f63daf7b94d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "94a80b883e2418a70216c3b7e98a8e7a5d9bf2e23761adf0f12611853a7c8de2"
+    sha256 cellar: :any_skip_relocation, catalina:       "985e2382ea7a9a51d592448447b005316f7d3b7f9d3270000e0580e3d326aa3a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1bc83c17bfe7d03f6fb1a6e504d5dbc39566869225afb067a5798becab288bae"
   end
 
   depends_on "go" => :build
@@ -28,10 +30,7 @@ class Mmctl < Formula
     system "go", "build", *std_go_args(ldflags: ldflags), "-mod=vendor"
 
     # Install shell completions
-    output = Utils.safe_popen_read(bin/"mmctl", "completion", "bash")
-    (bash_completion/"mmctl").write output
-    output = Utils.safe_popen_read(bin/"mmctl", "completion", "zsh")
-    (zsh_completion/"_mmctl").write output
+    generate_completions_from_executable(bin/"mmctl", "completion", shells: [:bash, :zsh])
   end
 
   test do

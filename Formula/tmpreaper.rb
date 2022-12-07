@@ -1,18 +1,25 @@
 class Tmpreaper < Formula
   desc "Clean up files in directories based on their age"
   homepage "https://packages.debian.org/sid/tmpreaper"
-  url "https://deb.debian.org/debian/pool/main/t/tmpreaper/tmpreaper_1.6.16.tar.gz"
-  mirror "https://fossies.org/linux/misc/tmpreaper_1.6.16.tar.gz"
-  sha256 "e543acdd55bb50102c42015e6d399e8abb36ad818cbd3ca6cb1c905b5781e202"
+  url "https://deb.debian.org/debian/pool/main/t/tmpreaper/tmpreaper_1.6.17.tar.gz"
+  mirror "https://fossies.org/linux/misc/tmpreaper_1.6.17.tar.gz"
+  sha256 "1ca94d156eb68160ec9b6ed8b97d70fbee996de21437f0cf7d0c3b46709fecbc"
   license "GPL-2.0-only"
 
+  livecheck do
+    url "https://deb.debian.org/debian/pool/main/t/tmpreaper/"
+    regex(/href=.*?tmpreaper[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3f4f03eff7847b9b95990d19a92ce37a4c713526e9f8bc757499f87e4403d114"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3b42c830efc19dd09b2c329d20512521bf32a050faaccd4a959b51cc63fd0273"
-    sha256 cellar: :any_skip_relocation, monterey:       "fd319cab825b31c8009633fa518762e94e1f37cd8930aee53506aa61ebcd40bf"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f8252d7a640ef1e750723d91308cec36a281e04179ab119ec454164afca8a378"
-    sha256 cellar: :any_skip_relocation, catalina:       "484c58aff60e28e698cd6e04cac1974a75316d2fce0028f78b4b720c443a27f6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0f437e1f006c0a44a6e6c92b7de0f932d63cdadd32bc07f5f1866163632c60a3"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6f9987a8435e18ce63b2214cd6bedbb56902c09c8cf88614c0dfab73d418c003"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0b17b5648f769f3c80d2d596deecd90a5af28bdd9b3317944f933bf7b469627a"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f3c26e98c4ec6ccd7d0f4d8724732009a657c6d147d3343bec352cd3e9fc6805"
+    sha256 cellar: :any_skip_relocation, ventura:        "714d2ff483bc2027650c7fd229d3244fae4213e7d1a26a73e14e75f4fa1c61b2"
+    sha256 cellar: :any_skip_relocation, monterey:       "ff0057f9690d3aa599b4a9d7c5fbeb9f40b1ac9034883609c15945d0e23fe9f6"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d01353b90faaf5008d624b4230578610b957db76447b48e03f67a53b8b5f7a11"
+    sha256 cellar: :any_skip_relocation, catalina:       "f93c52bb2db3eab2e179e1184847d867a008300c7d00cee89f868e60a161eec2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4c41062bf046a8d1ca4d6cbb1a9ee38133d4e50d85d83ccac9afcd812139a164"
   end
 
   depends_on "autoconf" => :build

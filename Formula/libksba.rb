@@ -1,8 +1,8 @@
 class Libksba < Formula
   desc "X.509 and CMS library"
   homepage "https://www.gnupg.org/related_software/libksba/"
-  url "https://gnupg.org/ftp/gcrypt/libksba/libksba-1.6.0.tar.bz2"
-  sha256 "dad683e6f2d915d880aa4bed5cea9a115690b8935b78a1bbe01669189307a48b"
+  url "https://gnupg.org/ftp/gcrypt/libksba/libksba-1.6.2.tar.bz2"
+  sha256 "fce01ccac59812bddadffacff017dac2e4762bdb6ebc6ffe06f6ed4f6192c971"
   license any_of: ["LGPL-3.0-or-later", "GPL-2.0-or-later"]
 
   livecheck do
@@ -11,22 +11,17 @@ class Libksba < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "0352df73a00db8db517c8a5e48ed15f9a90ea51fc526269a5e7363a45615ce5f"
-    sha256 cellar: :any,                 arm64_big_sur:  "d7eae0a2f8294b8515e2c68ad16a898998828d8d63fe2a434fd304af49cc7fb9"
-    sha256 cellar: :any,                 monterey:       "cf75a7581708d1b0f22e94fbfe3082598fe7cb34b5f43fd7e415fae6bf6cf1c7"
-    sha256 cellar: :any,                 big_sur:        "3b2917e9ee9d7accc72f8366773406c7721b6085b6993bb92a696b8ac38ff866"
-    sha256 cellar: :any,                 catalina:       "3065405373d29d0542eccad99df604559572e03fa6af5c95599704f98365cf34"
-    sha256 cellar: :any,                 mojave:         "adce4966a82c538788b73fc22b56d8ed9d876a7610746aac35c37cf430381088"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "52f1929b0e22ddc0526c64af5306dc2ebfcb0c8d02ce565f9576fdea96c2b2e1"
+    sha256 cellar: :any,                 arm64_ventura:  "2c09ce09a6e6f5e09dd8a84cf255b061afb2c9f9f0f91851a8ce6c186cfbdf95"
+    sha256 cellar: :any,                 arm64_monterey: "2042f59a89e3a727c9c9121d7d027cd44b1edb16453dce2d2c9d47c3b8e6aa4f"
+    sha256 cellar: :any,                 arm64_big_sur:  "db844c848945c79498bddf79b6ceb60c1cc45c684b501cf3ff2fe57f9937b976"
+    sha256 cellar: :any,                 ventura:        "dec49cecb234e5c092ad1d38ce068b8ca04cf639c5548661201dce22b4ba2532"
+    sha256 cellar: :any,                 monterey:       "8128c13f0baf8d082a45a173060aba740105fdc4acda53d8aae6501a3612bd4a"
+    sha256 cellar: :any,                 big_sur:        "d632c840b68cd06544f1fe942cd075985aa17b046379c4fb8508a85f4eda0241"
+    sha256 cellar: :any,                 catalina:       "288938ed99cf5ed6b99b56db8bf41ddcacf373acc459ef1c495082200ce9a1a8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c743fb137f06e9d98612227e3da403281f8ec30e9725560222481d9c2de6db0a"
   end
 
   depends_on "libgpg-error"
-
-  # Fix -flat_namespace being used on Big Sur and later.
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-pre-0.4.2.418-big_sur.diff"
-    sha256 "83af02f2aa2b746bb7225872cab29a253264be49db0ecebb12f841562d9a2923"
-  end
 
   def install
     system "./configure", "--disable-dependency-tracking",

@@ -1,19 +1,20 @@
 class Siril < Formula
   desc "Astronomical image processing tool"
   homepage "https://www.siril.org"
-  url "https://free-astro.org/download/siril-1.0.2.tar.bz2"
-  sha256 "4973bd7ad6d3cb7ad279ef27bb5c79f37ca1f914c7b6ad8fe689e1d59189f2db"
+  url "https://free-astro.org/download/siril-1.0.6.tar.bz2"
+  sha256 "f89604697ffcd43f009f8b4474daafdef220a4f786636545833be1236f38b561"
   license "GPL-3.0-or-later"
   revision 1
   head "https://gitlab.com/free-astro/siril.git", branch: "master"
 
   bottle do
-    sha256 arm64_monterey: "22d4024bdf6c6a92f69cc4785de754a63a4fc3a3e8c434fe231baec95cb5d441"
-    sha256 arm64_big_sur:  "a05177bad10efd318449482d5b5e4b824def6bebefd0645d8b0b824c0ad06181"
-    sha256 monterey:       "9f9b607d8a6522d7a6c6cd0c3a38e1f93738347821f454b8fc71ea908ead12f3"
-    sha256 big_sur:        "f46751fc469b4ffb7d34ea0b132e35d7ef22eb90ec761422cd237ff683b0d101"
-    sha256 catalina:       "0564b4640b9a0288b5ca94c25703d3f707ca1059798e42d30c5aa39a757910bf"
-    sha256 x86_64_linux:   "1c840bd41181faee8564415560e711b0ce0a35e231f17cf5a420ddc3396bd90c"
+    sha256 arm64_ventura:  "cd93b7044de56214d131a00cd9990e5c3acb4f3f2c1eb6d9c957f4cdbdf9e4f3"
+    sha256 arm64_monterey: "14487c6749ab1206916d60a18edc7b23c1b9204b457e6506729dd52a6d6d286b"
+    sha256 arm64_big_sur:  "336e2300d8fcae3bc023baf331f62d6a7cc8e215c6e089d2c9f5c1de0e1be0fa"
+    sha256 ventura:        "ebb53c1dac1b57cc67b038afa629d17ceea962602aac551c549ae74d5e439785"
+    sha256 monterey:       "422072d115df5a3cd3d434269530e27de88b1e027e96081b0c1a69b3f2e34bdc"
+    sha256 big_sur:        "83fdedd785718177b778a5c1ffb40389481eeb587f0a39c680256173bb6aac1e"
+    sha256 x86_64_linux:   "1464bf2d8ba64c3d259f179a7c1770ca8582a44183069c07f6482af92f9c111d"
   end
 
   depends_on "autoconf" => :build
@@ -30,7 +31,7 @@ class Siril < Formula
   depends_on "gnuplot"
   depends_on "gsl"
   depends_on "gtk+3"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "json-glib"
   depends_on "libconfig"
   depends_on "libraw"
@@ -38,16 +39,13 @@ class Siril < Formula
   depends_on "netpbm"
   depends_on "opencv"
   depends_on "openjpeg"
+  depends_on "wcslib"
 
   uses_from_macos "perl" => :build
 
   on_macos do
     depends_on "gtk-mac-integration"
     depends_on "libomp"
-  end
-
-  on_linux do
-    depends_on "gcc"
   end
 
   fails_with gcc: "5" # ffmpeg is compiled with GCC
@@ -66,6 +64,6 @@ class Siril < Formula
   end
 
   test do
-    system "#{bin}/siril", "-v"
+    system bin/"siril", "-v"
   end
 end

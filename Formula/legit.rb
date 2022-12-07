@@ -10,15 +10,18 @@ class Legit < Formula
   head "https://github.com/frostming/legit.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "847baf64af8d13e960572ecfe5e4aac56e011f4d8311a49b78ac8d1f83db34e3"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "45fe51b376a34449cd93199646182637bd355132b276150a0ff0dab5cb305ed3"
-    sha256 cellar: :any_skip_relocation, monterey:       "138610115001e54555a0ca056678dea41bb0f748b69196e4e5b0f90c73d79dbb"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c1680d88e27172e7952ee5c3cc0636c69ecc4bd93bbf1b1d3dc2f7d9de034009"
-    sha256 cellar: :any_skip_relocation, catalina:       "15f21ba855fb569cd3d71a6afd8eb251c9ff9543a7259b064095a5a81d911da9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "365418618f6dd01471cd8f7e96666f30df2245056313fb0b406b462cd73f78d1"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f4a2b7df7b4eb30d69b9e02efa46e5a1bc27482b8d27dfdac51b05bada80a3e2"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "61bdf4d2367da08fe2f4fe316f03242725de6ac46e4d0e9b69572d9e12affe67"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e11124b41954a35784ba268114952d30738b5db6fef6beef8ba7dc5ef4523b26"
+    sha256 cellar: :any_skip_relocation, ventura:        "b7fcd3cb170762d0b55e6fa7c2b0c5aabf574bf7efd4ee233973e9fe859f75c1"
+    sha256 cellar: :any_skip_relocation, monterey:       "9e09bba4b62da8a3c7db65b3b975d3ffec2957dbab000e3d5cd8eac441c20390"
+    sha256 cellar: :any_skip_relocation, big_sur:        "301fca4bdf92f6b9f72e115158ed9db588319e3eeb0965a911552e143bbb18cc"
+    sha256 cellar: :any_skip_relocation, catalina:       "2b902ec1395bf89ebdf0e65d46fb5d8b337043a019aa4abc1e898c245cc9f44f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "df1cc671bd12cf8063ca5d924661b706fb9a71e249e6f3cc271fc81b73297cc8"
   end
 
-  depends_on "python@3.10"
+  depends_on "python@3.11"
   depends_on "six"
 
   resource "args" do
@@ -37,8 +40,8 @@ class Legit < Formula
   end
 
   resource "colorama" do
-    url "https://files.pythonhosted.org/packages/1f/bb/5d3246097ab77fa083a61bd8d3d527b7ae063c7d8e8671b1cf8c4ec10cbe/colorama-0.4.4.tar.gz"
-    sha256 "5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"
+    url "https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz"
+    sha256 "08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"
   end
 
   resource "crayons" do
@@ -52,8 +55,8 @@ class Legit < Formula
   end
 
   resource "GitPython" do
-    url "https://files.pythonhosted.org/packages/d6/39/5b91b6c40570dc1c753359de7492404ba8fe7d71af40b618a780c7ad1fc7/GitPython-3.1.27.tar.gz"
-    sha256 "1c885ce809e8ba2d88a29befeb385fcea06338d3640712b59ca623c220bb5704"
+    url "https://files.pythonhosted.org/packages/22/ab/3dd8b8a24399cee9c903d5f7600d20e8703d48904020f46f7fa5ac5474e9/GitPython-3.1.29.tar.gz"
+    sha256 "cc36bfc4a3f913e66805a28e84703e419d9c264c1077e537b54f0e1af85dbefd"
   end
 
   resource "smmap" do

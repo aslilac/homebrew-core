@@ -7,16 +7,18 @@ class Idris < Formula
   head "https://github.com/idris-lang/Idris-dev.git", branch: "master"
 
   bottle do
-    sha256 monterey:     "704add14a985699c70650b364a9069f1a2b4ad52f9238890067d695744db63e4"
-    sha256 big_sur:      "19ad0c1b5aed35799c1a7199418e96b509b19b5fdad8dcf6492ca0ec10b14676"
-    sha256 catalina:     "c38a0f42b48ace8818f060ed26834d9e395e614f12fe6449b1e48513c73dcec8"
-    sha256 x86_64_linux: "f85bad06ae4d62578f441d915a3c0d47e3bb1064c1615883ebaa90f2a51c106c"
+    rebuild 2
+    sha256 arm64_monterey: "9150e74cf8c82c309d033dca9040789ca64994c0c761b192c44a067741f2418a"
+    sha256 arm64_big_sur:  "f2769fc400bf64efe5acc9597580941ac41e9c5b5a0f06e2ac5102e5700d9bd6"
+    sha256 ventura:        "64efdce9b9e7028223996595ddfbbdec7938a59109c68f997dd5f686239d5b4f"
+    sha256 monterey:       "71135b6676bee0321a1d1725cf546385a6019abca0dac7503f76683d3cc5cf3c"
+    sha256 big_sur:        "750f4c74007ad366853262c6617321443e2ae3cf20e404ca825b5b9ca13d3b19"
+    sha256 x86_64_linux:   "864094063e7ad6971b4e121b6b4debb38fecaa338be1b829d6c8e626f8b0f8b9"
   end
 
   depends_on "cabal-install" => :build
   depends_on "pkg-config" => :build
-  depends_on "ghc@8.8"
-  depends_on "libffi"
+  depends_on "ghc@8.10"
 
   uses_from_macos "ncurses"
   uses_from_macos "zlib"

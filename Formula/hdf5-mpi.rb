@@ -4,6 +4,7 @@ class Hdf5Mpi < Formula
   url "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.2/src/hdf5-1.12.2.tar.bz2"
   sha256 "1a88bbe36213a2cea0c8397201a459643e7155c9dc91e062675b3fb07ee38afe"
   license "BSD-3-Clause"
+  revision 1
   version_scheme 1
 
   livecheck do
@@ -11,12 +12,14 @@ class Hdf5Mpi < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "96d7d0f32b821081cdbd920382bb34d1f471b605398728df44856ebf1e59c02c"
-    sha256 cellar: :any,                 arm64_big_sur:  "c5feaafe7c1c189ff6602ba87c5cfd6decc96c66809ce6711beba7adfc566de4"
-    sha256 cellar: :any,                 monterey:       "241a9bdcdd9e9fcdc6a34b7f51f675f2f2e92887ef62c1050c33f7fbc2a6e42f"
-    sha256 cellar: :any,                 big_sur:        "263e9991c617d994b27f1742c65db7298c81490666b075f029c53bd446e4cc0e"
-    sha256 cellar: :any,                 catalina:       "7aef610d657f341ea1635beda9e407b4464fd2f883c269671303e465be4990c2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a7cbbd52005686565066567193577a8b19e8622c42b090f8ec8c7aa1992af357"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "bf95d9b6d60d42e207485b164894d2fbd0a46bfbec3a7fb8a98a682b627d7b2c"
+    sha256 cellar: :any,                 arm64_monterey: "eedbdbfa8bc9a676568608959c58b869f54357442e11b4a1a3c2db874886c37e"
+    sha256 cellar: :any,                 arm64_big_sur:  "0476498c73b37cb11e5aa210de3e2af561e5107bf25757b38bf9a38a0cd08104"
+    sha256 cellar: :any,                 ventura:        "2d340092cdd0005126d5a4b3c38b7a2bb4946de3175ba2fff674f280da775e11"
+    sha256 cellar: :any,                 monterey:       "235763dc893a23b56caa69c5c61b0322d31ff57584830c095ffc8b886c27f482"
+    sha256 cellar: :any,                 big_sur:        "8c355fe37ff6a3ede90114ccbda7b60f4028a800d5bb0cd75515ecf02cc21800"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a6cff00a383bfba4e85fcb40f00e3942a6de4c90b45fa9f51a7e6487dc454e5b"
   end
 
   depends_on "autoconf" => :build

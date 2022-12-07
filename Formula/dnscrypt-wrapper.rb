@@ -8,6 +8,7 @@ class DnscryptWrapper < Formula
   head "https://github.com/Cofyc/dnscrypt-wrapper.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any,                 ventura:      "61e6dfcf7a47b5eef4fb86464e366c3bba8b6f04cb9505342115862e5b29480b"
     sha256 cellar: :any,                 monterey:     "95c31e73ffe3e10426f4859731e62d1c29bd1d8454bdc4b822828e5cf5f57ba8"
     sha256 cellar: :any,                 big_sur:      "6a4ce514c0ec1c41cf197b6201cba95ded39f0e7018755ec1bf42824aa8675d6"
     sha256 cellar: :any,                 catalina:     "ea344feb10cc87d14e8b30cd3fcbbabed2b55f5c76014fcdc18aff49cb9fc5cd"
@@ -18,6 +19,7 @@ class DnscryptWrapper < Formula
   end
 
   depends_on "autoconf" => :build
+  depends_on arch: :x86_64 # https://github.com/cofyc/dnscrypt-wrapper/issues/177
   depends_on "libevent"
   depends_on "libsodium"
 

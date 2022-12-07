@@ -11,8 +11,10 @@ class Gitg < Formula
   end
 
   bottle do
+    sha256 arm64_ventura:  "f2ddb91d679e3cce264f52960a7e30e2a5267dbcd85e64b02c8706cfd3a5479c"
     sha256 arm64_monterey: "f68e86061156ba405410156aa3e4066015cdb9227162d68f2581664a6a7b4ba9"
     sha256 arm64_big_sur:  "a2bf23c4cb3fdfdcdb05f250b5bf62d33bc60d01072f182f1209a40b604674df"
+    sha256 ventura:        "5309cb3218437eb04e8f635a281f2e027cce2132fc172625da6647e2b95ab76d"
     sha256 monterey:       "70d587c967403aafdff322736896ad013be0b1bc0a4a9fbe60329913a4f07fad"
     sha256 big_sur:        "45de0fdc63fdd84c90e4ccfcbd99e7f2338b5d5510f7b8364fc32b49d6335528"
     sha256 catalina:       "6243ae261e1994f5b72c79bb469c23270c67e25a1e0f1a4a1fa39f1f248fd3f4"
@@ -37,7 +39,6 @@ class Gitg < Formula
   depends_on "libgit2-glib"
   depends_on "libpeas"
   depends_on "libsecret"
-  depends_on "libsoup@2"
 
   # Apply upstream commit to fix build.  Remove with next release.
   patch do
@@ -47,12 +48,9 @@ class Gitg < Formula
 
   def install
     ENV["DESTDIR"] = "/"
-
-    mkdir "build" do
-      system "meson", *std_meson_args, "-Dpython=false", ".."
-      system "ninja"
-      system "ninja", "install"
-    end
+    system "meson", *std_meson_args, "build", "-Dpython=false"
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
   end
 
   def post_install
@@ -89,7 +87,6 @@ class Gitg < Formula
     libgit2 = Formula["libgit2"]
     libgit2_glib = Formula["libgit2-glib"]
     libpng = Formula["libpng"]
-    libsoup = Formula["libsoup@2"]
     pango = Formula["pango"]
     pixman = Formula["pixman"]
     flags = %W[
@@ -112,7 +109,6 @@ class Gitg < Formula
       -I#{libgit2}/include
       -I#{libgit2_glib.opt_include}/libgit2-glib-1.0
       -I#{libpng.opt_include}/libpng16
-      -I#{libsoup.opt_include}/libsoup-2.4
       -I#{pango.opt_include}/pango-1.0
       -I#{pixman.opt_include}/pixman-1
       -DGIT_SSH=1
@@ -127,7 +123,6 @@ class Gitg < Formula
       -L#{libgee.opt_lib}
       -L#{libgit2.opt_lib}
       -L#{libgit2_glib.opt_lib}
-      -L#{libsoup.opt_lib}
       -L#{lib}
       -L#{pango.opt_lib}
       -latk-1.0

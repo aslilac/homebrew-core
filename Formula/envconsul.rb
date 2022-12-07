@@ -2,17 +2,19 @@ class Envconsul < Formula
   desc "Launch process with environment variables from Consul and Vault"
   homepage "https://github.com/hashicorp/envconsul"
   url "https://github.com/hashicorp/envconsul.git",
-      tag:      "v0.12.1",
-      revision: "265f933f17eb918e38b24fd1a7b1eab1fc723df5"
+      tag:      "v0.13.1",
+      revision: "3111d811578b1c7f6c8af032a9d97234621e2b0a"
   license "MPL-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "898985bf53d71aea16b24cb485e546891eab5d44004fbc7f4ee5e973cddd27cd"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "29e0145aba0f31eed7a338270691de3b3169be26ada9c6e310f0e0d304e7f4b3"
-    sha256 cellar: :any_skip_relocation, monterey:       "12f0d468fcc3ed95048f85333142b0ad3c7818a854c2376cdaa6c4010933ec2d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "51678e734960789113eb9a5f006b51c6dda61e34344263ed9fd3c960cf3afd1b"
-    sha256 cellar: :any_skip_relocation, catalina:       "01f9234248e8634e2b010a6cde300d2c1c42d80218b95ade22ff003b71b527f2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b05d32bffd8d9435e52402079c04c01b69ab92f15bd7794519c8d9679b1641e6"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b4da4f61b039ec8ff4cd8eb37166a9b337b4bb68d194da5897257a005f2a1dcd"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c4c1b48f0ee4bf5ae510177ce3a9e5c785b7c515a21efc1383d93b03525634ac"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f75ee73c50f5050be219e82e9b00e7db5021e0a842cdaf3fbb97f558b9cbb6bc"
+    sha256 cellar: :any_skip_relocation, ventura:        "9a11bddb7fef6952f459fc3cc7aa20288b2d5371c00a68a5f51cc3f476308ce6"
+    sha256 cellar: :any_skip_relocation, monterey:       "bab521f33f53f6e438ffb6ec0242b000cb77afdc6f2aa169db4f96522b6b84ad"
+    sha256 cellar: :any_skip_relocation, big_sur:        "8bf147b061f72477077fed4278be1ae0a95db5ad7422f96536925e0256e343e0"
+    sha256 cellar: :any_skip_relocation, catalina:       "b7fe23483d90a0556e10fd933b663ed17290672a878ead5b772dbadc1fed01fc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9b1e427c2757e0aa96f32794e3d89c4cd5cd6d3d080c2786d86cd966d46915ac"
   end
 
   depends_on "go" => :build

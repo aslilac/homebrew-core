@@ -1,8 +1,8 @@
 class Babl < Formula
   desc "Dynamic, any-to-any, pixel format translation library"
   homepage "https://www.gegl.org/babl/"
-  url "https://download.gimp.org/pub/babl/0.1/babl-0.1.92.tar.xz"
-  sha256 "f667735028944b6375ad18f160a64ceb93f5c7dccaa9d8751de359777488a2c1"
+  url "https://download.gimp.org/pub/babl/0.1/babl-0.1.98.tar.xz"
+  sha256 "f3b222f84e462735de63fa9c3651942f2b78fd314c73a22e05ff7c73afd23af1"
   license "LGPL-3.0-or-later"
   # Use GitHub instead of GNOME's git. The latter is unreliable.
   head "https://github.com/GNOME/babl.git", branch: "master"
@@ -13,12 +13,13 @@ class Babl < Formula
   end
 
   bottle do
-    sha256                               arm64_monterey: "33d2559001ddbc2cc4063a36243d63d5a3bedbde4735259473248c54f661f9bd"
-    sha256                               arm64_big_sur:  "bcb2fdea80e000e6c464926068e118f62f853863e95a8e10d74d31abfa9ddd03"
-    sha256                               monterey:       "4720fb8e970fc98ca17f5e16606d56c4198015beb7569a6cd54ed5213e760a65"
-    sha256                               big_sur:        "4835558673e20b770f9d86e4be991e5cf3e28b9796a5f4f687a8a202834a37d5"
-    sha256                               catalina:       "193b0672fc31c02feb32100f3bfcdeb130877e65bbc96b874df2d50b4ac3c562"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0de13877cc45551c2c7e037401f9339a2bdc243ca134412dca77ac851c468674"
+    sha256                               arm64_ventura:  "84568f1aef9f12ea0b0a17985cdcd48d7b592882b1cbe1242b37b54211e4469f"
+    sha256                               arm64_monterey: "d2db35d55cad4608af300198c59743726ea50e179de77d7d7d9786dc85a49dec"
+    sha256                               arm64_big_sur:  "926919275642427848e680b805cc2e0d8ae13aae618d2a9daa5be9f6b2be265c"
+    sha256                               ventura:        "0b6056b98919e2ba5302a3679bc7e38d991ec53a37d300b344410f563fa8f4e9"
+    sha256                               monterey:       "5a0c71b38f144754e54ef692fcf3e93aaecd5cdc2d1dc1b90ef5045f39d71182"
+    sha256                               big_sur:        "4aa16bf88b8c731c37a96d56ef60ceb1a754a31f563e857618bc18e72a825176"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "81a74b8ead443e96eaea886db4d376261d15d43eaa2da1b1c099a3badaabf6c3"
   end
 
   depends_on "glib" => :build # for gobject-introspection
@@ -29,19 +30,10 @@ class Babl < Formula
   depends_on "vala" => :build
   depends_on "little-cms2"
 
-  # https://gitlab.gnome.org/GNOME/babl/-/merge_requests/45
-  # Can be removed on next version
-  patch do
-    url "https://gitlab.gnome.org/GNOME/babl/-/commit/b05b2826365a7dbc6ca1bf0977b848055cd0cbb6.diff"
-    sha256 "e428f1f11ee1456f4b630c193dca7448059c160418cccbd0ec1d28105db7bfc6"
-  end
-
   def install
-    mkdir "build" do
-      system "meson", *std_meson_args, "-Dwith-docs=false", ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+    system "meson", "setup", "build", *std_meson_args, "-Dwith-docs=false"
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
   end
 
   test do

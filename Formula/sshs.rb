@@ -1,17 +1,19 @@
 class Sshs < Formula
   desc "Graphical command-line client for SSH"
   homepage "https://github.com/quantumsheep/sshs"
-  url "https://github.com/quantumsheep/sshs/archive/refs/tags/3.2.0.tar.gz"
-  sha256 "8b3127178c7bff19c1ea1a5fd2c5758137863c7e7cfbc4900cdf3fa2f13007a6"
+  url "https://github.com/quantumsheep/sshs/archive/refs/tags/3.4.0.tar.gz"
+  sha256 "f46f9185f97e35cf3b02286631df715027c3b0d374959c7e402a21bd30208f74"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "25ddb81546acf421a7314d16e113049b92247e6f5d9ef82d21b616c9c9b203dd"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2d99b452bc112129f2cd1c0db08c54b89cc6c9d6efa12ad7d9a6eab77d514869"
-    sha256 cellar: :any_skip_relocation, monterey:       "a94fbcb2090a8762122c6ebfed9f2b5fcbfdfbda259293ebeb5dfdd7919262f1"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4523020639af5422641feec22d3ff6c5b2027fc65d13c3ac1563e0d5e0a3e407"
-    sha256 cellar: :any_skip_relocation, catalina:       "bcf3b701609f1a4eb851178d6e97ba0f18a8becd5e5537b046ffb79d32052bac"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fde91b2d26c5147e1f2a97a2e26f7755419e9c1861ac68e591fc1662e49ba6f4"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "88005c530ba21ad0e8870787ad1895f88a231ea4de1c6f4d20d1688ee8778f5f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f83f76d1d83819e5708c518a9cdc852432263531f6bc6c6cec49d4837ffc74ee"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "41715e062f739e5345013f1accc1f07adccdc26628f3bdd312350cb369af984e"
+    sha256 cellar: :any_skip_relocation, ventura:        "a5f305f6c5a0f348a684fd049c455df58d2c2e77f5f012f9dde095b63d2f3d5e"
+    sha256 cellar: :any_skip_relocation, monterey:       "8ef82182fed86751f6b60f4ab83cf101f99daa2a08c5041b008823ec38704bba"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c22e1abf1d3e2223cff9e4717a49f9317b0649dadc9efd9ce414a6bbd4641290"
+    sha256 cellar: :any_skip_relocation, catalina:       "3571f62b144e746d7c63c71d9b63128393867039165c884c81e94b55843eb9c5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0db2b2dec20f5fd9bdc5d9b18f5e6f7780352991dd9c4b025346b3ad1da3c6a2"
   end
 
   depends_on "go" => :build

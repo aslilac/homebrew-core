@@ -1,9 +1,9 @@
 class Nopoll < Formula
   desc "Open-source C WebSocket toolkit"
   homepage "https://www.aspl.es/nopoll/"
-  url "https://www.aspl.es/nopoll/downloads/nopoll-0.4.7.b429.tar.gz"
-  version "0.4.7.b429"
-  sha256 "d5c020fec25e3fa486c308249833d06bed0d76bde9a72fd5d73cfb057c320366"
+  url "https://www.aspl.es/nopoll/downloads/nopoll-0.4.8.b429.tar.gz"
+  version "0.4.8.b429"
+  sha256 "4031f2afd57dbcdb614dd3933845be7fcf92a85465b6228daab3978dc5633678"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -12,21 +12,21 @@ class Nopoll < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "c430aa6bc3ce0eaf8b470cfaa7bd4f38dae90982ba24484f2c85d8ad803706f5"
-    sha256 cellar: :any,                 arm64_big_sur:  "56ca477a877be4c8fd8ad870f5a3b026e683b45e72b2d46446c9253ed4d458b1"
-    sha256 cellar: :any,                 monterey:       "7a66b289344d2489ef37a1781200cf563fa6a689d550b68197988d771ef9150b"
-    sha256 cellar: :any,                 big_sur:        "fa5ab01cd0a602131ef14964775eabfc6307b9f10fd98b4a92b18c32ea4d9cb5"
-    sha256 cellar: :any,                 catalina:       "53d32b361a7e9a2e7b5c6a302483145130a338e2348b9da0193375d2ccb4b049"
-    sha256 cellar: :any,                 mojave:         "ee81d7f293699e3a2cb8a5587d362c2236b321f291841718cc93c54fe0ccd19f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "abbd47332ae6aa89803c11bff2f625ccaac60805dc200af683592d7d0dd3eef9"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "506b43f4c6599606a2d963ebc96fbb6fe0d513227a241bdf2be7645dce62fb62"
+    sha256 cellar: :any,                 arm64_monterey: "67fa34a544afa84b26e296f7c5614eb4f5d676f907a83048ee5912d256d80e9a"
+    sha256 cellar: :any,                 arm64_big_sur:  "549c85f59b6565f42734f55c461ddf7c6d6d5a501456d99bbae0baae769bc258"
+    sha256 cellar: :any,                 ventura:        "6f6519530b264e20b7f569d15a409d000fa1aa1eddaf0d8c148e08b0a9bb2066"
+    sha256 cellar: :any,                 monterey:       "9ef66c711085d89346b8982c3f637aa6d97b8bfcb82fc3a69112c980c435b930"
+    sha256 cellar: :any,                 big_sur:        "786ad31fb592a5d8c9ea666714417e157833a68d639061466b283e744b06ce93"
+    sha256 cellar: :any,                 catalina:       "963a65db0b4c29a2c00e434b405d4dabc766b9179d4cd3765493af5f72668625"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "34cef30326e6770bf5ed11ee2a1788f5ec7cee86ce39c36cfcf419909073b337"
   end
 
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "./configure", *std_configure_args, "--disable-silent-rules"
     system "make", "install"
   end
 

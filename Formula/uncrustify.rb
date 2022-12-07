@@ -1,26 +1,23 @@
 class Uncrustify < Formula
   desc "Source code beautifier"
   homepage "https://uncrustify.sourceforge.io/"
-  url "https://github.com/uncrustify/uncrustify/archive/uncrustify-0.75.1.tar.gz"
-  sha256 "fd14acc0a31ed88b33137bdc26d32964327488c835f885696473ef07caf2e182"
+  url "https://github.com/uncrustify/uncrustify/archive/uncrustify-0.76.0.tar.gz"
+  sha256 "32e2f95485a933fc5667880f1a09a964ae83132c235bb606abbb0a659453acb3"
   license "GPL-2.0-or-later"
   head "https://github.com/uncrustify/uncrustify.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7eb7fec9fa0613684ce387cd7f139b50247ca224c971606c2496c5e4a1a75265"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a0c32a534c3fd8de75d6496b0d104ad160e8751c2a2f74640bd3b415b6c75a02"
-    sha256 cellar: :any_skip_relocation, monterey:       "cac15eb7c3979bf75b6a24c2f57a366878ea6a98befbdde5912798a4b1b4ea20"
-    sha256 cellar: :any_skip_relocation, big_sur:        "185507a328eaba61d4cf56ffeecd728aedbc800d6d84b8ea6a5f749f25c32e8b"
-    sha256 cellar: :any_skip_relocation, catalina:       "efb42357c245fc69f64d000b33043504e67d28c587df47ce5b1c237e7e6e11b5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "61ecc6df45fafbe1c44b02c154bf1a0aed9dad0e9694d20209ed16aed392ad88"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2ba4acfdf54afafa7883864e311026846ccd119665a512e400dffed64b5d8486"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "05b95d644b7c095a5ddbc54773bb024325e29e64c5188083e230c5cfb15c5a5e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e0ab5da87cbf8beb72eb110b73ad91526f2b1eeecfedac631e0c4fbf9a59c715"
+    sha256 cellar: :any_skip_relocation, ventura:        "26be305003899221811223af07c84f627e5b403bfb93f8656e1cb251fe9e0afd"
+    sha256 cellar: :any_skip_relocation, monterey:       "2d7c0e4d84531eca1c8d4075d20b5eb6e5a93487ddf45722bb6a53f4e10a6e30"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d29b8bfafa9f7344327644ce2450000097bf1393c6d0bfe0c1f8b3cb0d3a24ce"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a5e5efe644b8f259fcdd6235b9f6fbcd356dc009990d2770a0de03d5e7056238"
   end
 
   depends_on "cmake" => :build
   uses_from_macos "python" => :build
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5"
 

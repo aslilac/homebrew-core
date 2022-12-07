@@ -1,8 +1,8 @@
 class Modules < Formula
   desc "Dynamic modification of a user's environment via modulefiles"
   homepage "https://modules.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/modules/Modules/modules-5.1.1/modules-5.1.1.tar.bz2"
-  sha256 "28354dd1ab2ff25e9fb9ce759c77eeefec21f22a112d579fbf3cc802174ec944"
+  url "https://downloads.sourceforge.net/project/modules/Modules/modules-5.2.0/modules-5.2.0.tar.bz2"
+  sha256 "65f6537e770c66036c8adcad57c51a389f805d19fe942c963bd9f29337832b6e"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,19 +11,19 @@ class Modules < Formula
   end
 
   bottle do
-    sha256                               arm64_monterey: "2005834a21f066f38329001986c72f6d573fbdd76aefe8260ab479929a32dc61"
-    sha256                               arm64_big_sur:  "b4b13c216d76fcc9cbfa735d2745ce08241779efeded492f47e564242b7ffa01"
-    sha256                               monterey:       "aea8ee2737cefa69cdb09f39cd4fa16b30f913a817671828d748b356f260ab74"
-    sha256                               big_sur:        "6cbec1b70253d7a38fa308dd3a1eea3ceadb884f3f959c8fd56d9ee4320adbe7"
-    sha256 cellar: :any,                 catalina:       "6ded93be3b9acdabd905c95b21a784c0ae497b03901738fad026bd30edeef7e4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "60fec8d3cd399e851436459e79b62f4ee627dc0e5a59fb6ed62bc25a4cee8b22"
+    sha256 cellar: :any,                 arm64_ventura:  "28f48e73799b77fc44482be6a3e36f6078d54deb13140611fd9d8455444e6d29"
+    sha256 cellar: :any,                 arm64_monterey: "791424338ae1b6512e57fec61ebf175961c6efc323b310742e860f569fe8500f"
+    sha256 cellar: :any,                 arm64_big_sur:  "5d1a9750b042c2b6a24712d68be78d0ef7522ef1b2244efbb717cd948220a2db"
+    sha256 cellar: :any,                 ventura:        "dd049ee6b80b34148d5dcb69c9d78d7a7089cf120d32b67f5c2d7fedab220e57"
+    sha256 cellar: :any,                 monterey:       "0b48ad16c1b83bf9067e609ed9d85284d2529e652a8783eaacd41cf75706e3ac"
+    sha256 cellar: :any,                 big_sur:        "ce1a177c6cb3ee5cb42943d67038902c8a597111801a8f1e67d9257ef1398672"
+    sha256 cellar: :any,                 catalina:       "1db25335f94079e82f9992efb2c2ff92cac93a848ca36f3ba3a30f86ac024bd0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f71aacad8abf8e5e3d40310cd00bb305a3363d57796c07704d593a6a420db65d"
   end
 
   depends_on "tcl-tk"
 
-  on_linux do
-    depends_on "less"
-  end
+  uses_from_macos "less"
 
   def install
     args = %W[

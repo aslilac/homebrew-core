@@ -1,8 +1,8 @@
 class Gromacs < Formula
   desc "Versatile package for molecular dynamics calculations"
   homepage "https://www.gromacs.org/"
-  url "https://ftp.gromacs.org/pub/gromacs/gromacs-2022.2.tar.gz"
-  sha256 "656404f884d2fa2244c97d2a5b92af148d0dbea94ad13004724b3fcbf45e01bf"
+  url "https://ftp.gromacs.org/pub/gromacs/gromacs-2022.4.tar.gz"
+  sha256 "c511be602ff29402065b50906841def98752639b92a95f1b0a1060d9b5e27297"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -11,12 +11,14 @@ class Gromacs < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "811821e119968e1fb1125200645e402c969a925f9fd5fbc953536f3473fafd68"
-    sha256 arm64_big_sur:  "c0beeb395dc1582a838914f7b12ba2981fcdf35a482d46429da1e70032db2e45"
-    sha256 monterey:       "fd3d06a268275658c85d039948c6c7a53cf877c2269ed2de0b2d6198b948e3ed"
-    sha256 big_sur:        "b2610e10eef60e42e89e7190f352eddea1326583536d69fc12e93fe3a48bee17"
-    sha256 catalina:       "fc15c84c0cf871458578e3704117f4401ad624a661b139ac30de695beb80b6d5"
-    sha256 x86_64_linux:   "bdadc0ffd5100e158d6cecd418691a9becb37cca2bac62d864e5d235df8e1a00"
+    sha256 arm64_ventura:  "4c11b01249186a6984cdaf3062969c457d59438e42eb9497ffa73adb7836395b"
+    sha256 arm64_monterey: "06c18fe289340416d188eb55fff50a2808d223f16b690fff1bb02ba233cd0a5f"
+    sha256 arm64_big_sur:  "61c09e6ba0d3799ff637dc7c0af1b781dcbf4c102c205081803b044265931848"
+    sha256 ventura:        "1d429bb615beba8b5007eb42bf060a56bd367667acc3a8a8a215e86261a1ad77"
+    sha256 monterey:       "ba1472ad7282316737271f920c9c1dbebf7c157119a957813727e8f7cf68e67b"
+    sha256 big_sur:        "741c47df9987fac450f9fce8984f0fcc918983e3e522bc7524f9dd2fcc8b3505"
+    sha256 catalina:       "de3e440a66779a4dcbc55c4190d7bca01d8bb44170206339c1647ee85e8447b8"
+    sha256 x86_64_linux:   "6aa6b4b23b8ce02729917cb948c25ff156186f5ecce07e89870bd4ed4357944a"
   end
 
   depends_on "cmake" => :build

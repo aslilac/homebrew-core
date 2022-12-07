@@ -3,8 +3,8 @@ class Qt < Formula
 
   desc "Cross-platform application and UI framework"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/6.3/6.3.1/single/qt-everywhere-src-6.3.1.tar.xz"
-  sha256 "51114e789485fdb6b35d112dfd7c7abb38326325ac51221b6341564a1c3cc726"
+  url "https://download.qt.io/official_releases/qt/6.4/6.4.0/single/qt-everywhere-src-6.4.0.tar.xz"
+  sha256 "8936b0354d95fa26e87be65cc9c840495360ad93fd09b069bc780cbcab4a2ca1"
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
   revision 1
   head "https://code.qt.io/qt/qt5.git", branch: "dev"
@@ -17,12 +17,12 @@ class Qt < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "abe333d16ba99fd91be9c5b6d836ec1f3a2a3c91a0b4b2874e106cd05900513b"
-    sha256 cellar: :any,                 arm64_big_sur:  "0ea27b68a9c32f4a9fe3488fe368b9f3af3a404b7ccd543904ed75d652ceccd7"
-    sha256 cellar: :any,                 monterey:       "bef1b0427824669fd0cf4ce29022bd21e1c2b0ab38d4556847088ad9a753806a"
-    sha256 cellar: :any,                 big_sur:        "90b88656e47c78b0c5dcc50ef4eebfa9d2a0b623bbaa6eac6e5a3d4e1b3b1d81"
-    sha256 cellar: :any,                 catalina:       "ee612c10a25bf9dfb461a85c929bafa0e5056eb3cc1a923a0e043372408158d8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1354122fcd611c4a332658e83adc098f844b3f8041fce3ad2003ac142352ed41"
+    sha256 cellar: :any, arm64_ventura:  "baaaaf98fa9ac6e5210d630ad19f6a0b82ffc39e647338ca509d663bfc4a17c5"
+    sha256 cellar: :any, arm64_monterey: "19021d3bb7fa377ad7b370aac9f85b4dda351e0ec02dccf3ce2a7c2826cb330f"
+    sha256 cellar: :any, arm64_big_sur:  "29e80510d2ee8b984395f1161aa4a9172dbabd9157988640a4f7858aa1f74143"
+    sha256 cellar: :any, ventura:        "901e25e661782fa22c49d82bb8ca4ac170c24d08535a4e943a5f2ebe0c37e8c3"
+    sha256 cellar: :any, monterey:       "8a14e5481f0353f19b05a287b95562c969137b1c2ccd2251fbd0e2475a7901aa"
+    sha256 cellar: :any, big_sur:        "5f175ab9db8eb3358fb2c5ac1fa366bafe7cf81cf942823046a46b931ca7d529"
   end
 
   depends_on "cmake"      => [:build, :test]
@@ -48,6 +48,7 @@ class Qt < Formula
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "md4c"
+  depends_on "openssl@1.1"
   depends_on "pcre2"
   depends_on "sqlite"
   depends_on "webp"
@@ -57,6 +58,7 @@ class Qt < Formula
   uses_from_macos "flex"  => :build
   uses_from_macos "gperf" => :build
   uses_from_macos "perl"  => :build
+  uses_from_macos "llvm" => :test # Our test relies on `clang++` in `PATH`.
 
   uses_from_macos "cups"
   uses_from_macos "krb5"
@@ -69,7 +71,6 @@ class Qt < Formula
     # TODO: depends_on "bluez"
     # TODO: depends_on "ffmpeg"
     depends_on "fontconfig"
-    depends_on "gcc"
     depends_on "gstreamer"
     # TODO: depends_on "gypsy"
     depends_on "harfbuzz"
@@ -93,22 +94,22 @@ class Qt < Formula
     depends_on "sdl2"
     depends_on "snappy"
     depends_on "systemd"
+    depends_on "wayland"
     depends_on "xcb-util"
     depends_on "xcb-util-image"
     depends_on "xcb-util-keysyms"
     depends_on "xcb-util-renderutil"
     depends_on "xcb-util-wm"
-    depends_on "wayland"
   end
 
   fails_with gcc: "5"
 
-  resource("html5lib") do
+  resource "html5lib" do
     url "https://files.pythonhosted.org/packages/ac/b6/b55c3f49042f1df3dcd422b7f224f939892ee94f22abcf503a9b7339eaf2/html5lib-1.1.tar.gz"
     sha256 "b2e5b40261e20f354d198eae92afc10d750afb487ed5e50f9c4eaf07c184146f"
   end
 
-  resource("webencodings") do
+  resource "webencodings" do
     url "https://files.pythonhosted.org/packages/0b/02/ae6ceac1baeda530866a85075641cec12989bd8d31af6d5ab4a3e8c92f47/webencodings-0.5.1.tar.gz"
     sha256 "b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923"
   end
@@ -121,23 +122,25 @@ class Qt < Formula
     directory "qtbase"
   end
 
-  # Apply patch to fix chromium build with glibc < 2.27. See here for details:
-  # https://libc-alpha.sourceware.narkive.com/XOENQFwL/add-fcntl-sealing-interfaces-from-linux-3-17-to-bits-fcntl-linux-h
-  patch :DATA
+  # Fix build with LLVM 15 (QTBUG-107074).
+  # Remove with 6.4.1.
+  patch do
+    url "https://github.com/qt/qttools/commit/01cae372619369d1a5a04f4d0f87817011029b78.patch?full_index=1"
+    sha256 "2ec45719fcc5b12c97040b4f30fdbb5d4c1dc1dded15f02f271ac7c668f5a2a0"
+    directory "qttools"
+  end
 
   def install
+    python = "python3.10"
     # Install python dependencies for QtWebEngine
-    venv = virtualenv_create(buildpath/"venv", "python3")
-    resources.each do |r|
-      venv.pip_install r
-    end
-    xy = Language::Python.major_minor_version "python3"
-    ENV.prepend_path "PYTHONPATH", buildpath/"venv/lib/python#{xy}/site-packages"
-    ENV.prepend_path "PATH", Formula["python@3.10"].libexec/"bin"
+    venv_root = buildpath/"venv"
+    venv = virtualenv_create(venv_root, python)
+    venv.pip_install resources
+    ENV.prepend_path "PYTHONPATH", venv_root/Language::Python.site_packages(python)
 
     # FIXME: GN requires clang in clangBasePath/bin
     inreplace "qtwebengine/src/3rdparty/chromium/build/toolchain/apple/toolchain.gni",
-       'rebase_path("$clang_base_path/bin/", root_build_dir)', '""'
+              'rebase_path("$clang_base_path/bin/", root_build_dir)', '""'
 
     # FIXME: See https://bugreports.qt.io/browse/QTBUG-89559
     # and https://codereview.qt-project.org/c/qt/qtbase/+/327393
@@ -145,14 +148,15 @@ class Qt < Formula
     # because on macOS `/tmp` -> `/private/tmp`
     inreplace "qtwebengine/src/3rdparty/gn/src/base/files/file_util_posix.cc",
               "FilePath(full_path)", "FilePath(input)"
-    %w[
+    realpath_files = %w[
       qtwebengine/cmake/Gn.cmake
       qtwebengine/cmake/Functions.cmake
       qtwebengine/src/core/api/CMakeLists.txt
       qtwebengine/src/CMakeLists.txt
       qtwebengine/src/gn/CMakeLists.txt
       qtwebengine/src/process/CMakeLists.txt
-    ].each { |s| inreplace s, "REALPATH", "ABSOLUTE" }
+    ]
+    inreplace realpath_files, "REALPATH", "ABSOLUTE"
 
     config_args = %W[
       -release
@@ -173,16 +177,7 @@ class Qt < Formula
       -no-sql-psql
     ]
 
-    if OS.mac?
-      config_args << "-sysroot" << MacOS.sdk_path.to_s
-      # NOTE: `chromium` should be built with the latest SDK because it uses
-      # `___builtin_available` to ensure compatibility.
-      config_args << "-skip" << "qtwebengine" if DevelopmentTools.clang_build_version <= 1200
-    end
-
-    cmake_args = std_cmake_args(install_prefix: HOMEBREW_PREFIX, find_framework: "FIRST") + %W[
-      -DCMAKE_OSX_DEPLOYMENT_TARGET=#{MacOS.version}
-
+    cmake_args = std_cmake_args(install_prefix: HOMEBREW_PREFIX, find_framework: "FIRST") + %w[
       -DINSTALL_MKSPECSDIR=share/qt/mkspecs
 
       -DFEATURE_pkg_config=ON
@@ -193,7 +188,13 @@ class Qt < Formula
       -DQT_FEATURE_webengine_kerberos=ON
     ]
 
-    unless OS.mac?
+    if OS.mac?
+      cmake_args << "-DCMAKE_OSX_DEPLOYMENT_TARGET=#{MacOS.version}.0"
+      config_args << "-sysroot" << MacOS.sdk_path.to_s
+      # NOTE: `chromium` should be built with the latest SDK because it uses
+      # `___builtin_available` to ensure compatibility.
+      config_args << "-skip" << "qtwebengine" if DevelopmentTools.clang_build_version <= 1200
+    else
       # Explicitly specify QT_BUILD_INTERNALS_RELOCATABLE_INSTALL_PREFIX so
       # that cmake does not think $HOMEBREW_PREFIX/lib is the install prefix.
       cmake_args << "-DQT_BUILD_INTERNALS_RELOCATABLE_INSTALL_PREFIX=#{prefix}"
@@ -219,10 +220,6 @@ class Qt < Formula
         -DQT_FEATURE_webengine_system_pulseaudio=ON
         -DQT_FEATURE_webengine_system_zlib=ON
       ]
-
-      # Change default mkspec for qmake on Linux to use brewed GCC
-      inreplace "qtbase/mkspecs/common/g++-base.conf", "$${CROSS_COMPILE}gcc", ENV.cc
-      inreplace "qtbase/mkspecs/common/g++-base.conf", "$${CROSS_COMPILE}g++", ENV.cxx
     end
 
     system "./configure", *config_args, "--", *cmake_args
@@ -231,7 +228,7 @@ class Qt < Formula
 
     rm bin/"qt-cmake-private-install.cmake"
 
-    inreplace lib/"cmake/Qt6/qt.toolchain.cmake", Superenv.shims_path, ""
+    inreplace lib/"cmake/Qt6/qt.toolchain.cmake", "#{Superenv.shims_path}/", ""
 
     # The pkg-config files installed suggest that headers can be found in the
     # `include` directory. Make this so by creating symlinks from `include` to
@@ -245,11 +242,11 @@ class Qt < Formula
       include.install_symlink f/"Headers" => f.stem
     end
 
-    if OS.mac?
-      bin.glob("*.app") do |app|
-        libexec.install app
-        bin.write_exec_script libexec/app.basename/"Contents/MacOS"/app.stem
-      end
+    return unless OS.mac?
+
+    bin.glob("*.app") do |app|
+      libexec.install app
+      bin.write_exec_script libexec/app.basename/"Contents/MacOS"/app.stem
     end
   end
 
@@ -334,25 +331,3 @@ class Qt < Formula
     system "./test"
   end
 end
-
-__END__
---- a/qtwebengine/src/3rdparty/chromium/base/macros.h
-+++ b/qtwebengine/src/3rdparty/chromium/base/macros.h
-@@ -36,6 +36,17 @@
- // work around this bug, wrap the entire expression in this macro...
- #define CR_EXPAND_ARG(arg) arg
-
-+// Add constants from linux/fcntl.h which were not copied to glibc
-+// bits/fcntl-linux.h until glibc 2.27.
-+#ifndef F_ADD_SEALS
-+#define F_ADD_SEALS 1033
-+#define F_GET_SEALS 1034
-+#define F_SEAL_SEAL 0x0001
-+#define F_SEAL_SHRINK 0x0002
-+#define F_SEAL_GROW 0x0004
-+#define F_SEAL_WRITE 0x0008
-+#endif
-+
- // Used to explicitly mark the return value of a function as unused. If you are
- // really sure you don't want to do anything with the return value of a function
- // that has been marked WARN_UNUSED_RESULT, wrap it with this. Example:

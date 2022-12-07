@@ -1,36 +1,35 @@
 class FontUtil < Formula
   desc "X.Org: Font package creation/installation utilities"
   homepage "https://www.x.org/"
-  url "https://www.x.org/archive/individual/font/font-util-1.3.2.tar.bz2"
-  sha256 "3ad880444123ac06a7238546fa38a2a6ad7f7e0cc3614de7e103863616522282"
+  url "https://www.x.org/archive/individual/font/font-util-1.3.3.tar.xz"
+  sha256 "e791c890779c40056ab63aaed5e031bb6e2890a98418ca09c534e6261a2eebd2"
   license "MIT"
+  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c542bbf9e2f5c1a791410c07f88136a1b642689294caf984f7ea3f71870134d5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8cf0aaa2a8712798806bf33f3c08a50a4fd0a71f131e405f0559f133d2bec281"
-    sha256 cellar: :any_skip_relocation, monterey:       "a81bd61997b6bd8769d6c2e441dc8da68278b8663008db7d0ead5d89a0d86113"
-    sha256 cellar: :any_skip_relocation, big_sur:        "880e773166f076fee6ed2b66aa46ccd786adcdffcb62867d0453f5fb0306fc8d"
-    sha256 cellar: :any_skip_relocation, catalina:       "3b1ccaebd2a3efc9cd2daac2e9e740362349a1847e4c169ebe3d475ff3b31a8d"
-    sha256 cellar: :any_skip_relocation, mojave:         "c606e6261604b92184fad13ea3fa0cdf377fe09bd3280389ae3c2b32b15b4785"
-    sha256 cellar: :any_skip_relocation, high_sierra:    "e5a86e6341ec516e06c3c22cc347ef5329add351e8aeb1f3aac3cf981dd81d51"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0bdf7a30d254fd3e0d6c6df366dc79b0c32ce1fe1aa07350d58548822f21b55e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e12c0d135ebb8f71ca2a975689b82f89779b4a2b2147c38e6a9a5fbcd489864e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "57edda9390b2123b1f9b31651b5ad03e8888ccd7a1f5409d7795c18f9fa6a31d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c668bc56ced30ffb6ac8838ed40fd219538b2155cd810d5978ac5ce4b34d6992"
+    sha256 cellar: :any_skip_relocation, ventura:        "db0993a605544bcffd74440bbc1c322768afa11fc6fcb9abe82c2141b34bb1f7"
+    sha256 cellar: :any_skip_relocation, monterey:       "cd192a5dfbc1dc6667caacc87445fb028905141d059c33c61124f544a17f6838"
+    sha256 cellar: :any_skip_relocation, big_sur:        "6b7d236e3d49b24292959ccfd78bf2479887eef9d7c0a7ac670008c9f410af5b"
+    sha256 cellar: :any_skip_relocation, catalina:       "198d4383e2e254f2c81f0227e416635a8435ea4cf2fd6a8ce814315ecadd2a80"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1225cda3cc0e81f7a85285b12ebba475b219041749de9b0e8a31af87ef651f46"
   end
 
   depends_on "pkg-config" => [:build, :test]
   depends_on "util-macros" => :build
 
   def install
-    args = %W[
-      --prefix=#{prefix}
+    args = std_configure_args + %W[
       --sysconfdir=#{etc}
       --localstatedir=#{var}
-      --disable-dependency-tracking
-      --disable-silent-rules
+      --with-fontrootdir=#{HOMEBREW_PREFIX}/share/fonts/X11
     ]
 
     system "./configure", *args
     system "make"
-    system "make", "install"
+    system "make", "fontrootdir=#{share}/fonts/X11", "install"
   end
 
   def post_install

@@ -1,8 +1,8 @@
 class Git < Formula
   desc "Distributed revision control system"
   homepage "https://git-scm.com"
-  url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.37.0.tar.xz"
-  sha256 "9f7fa1711bd00c4ec3dde2fe44407dc13f12e4772b5e3c72a58db4c07495411f"
+  url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.38.1.tar.xz"
+  sha256 "97ddf8ea58a2b9e0fbc2508e245028ca75911bd38d1551616b148c1aa5740ad9"
   license "GPL-2.0-only"
   head "https://github.com/git/git.git", branch: "master"
 
@@ -12,12 +12,14 @@ class Git < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "a90bf8025d0b5e9eb153f5cf96a95c0b0bbbb486b2b2fca2833a656ed88c7e8a"
-    sha256 arm64_big_sur:  "348320ad2c512bfa66e56d8902c917fd982af98e4916fa8b2bd8d8f3eee047f9"
-    sha256 monterey:       "a0b2ede51798b50401a15e169a9fa0c9628d5d4ab049d74924fb2950f9e2cb56"
-    sha256 big_sur:        "147f30f8520d8f74b36557a1491b1a3b61ac4ffa9ac6461f6e00fc044126f0cc"
-    sha256 catalina:       "91fc848f4e66e37e1f1bb5c5de9476c3af913f7319f92ee1f777a6f3ac986be0"
-    sha256 x86_64_linux:   "c026f243cd73ffd292c158c1c6dab47180edd06109072dd04fad7e11a0e3a203"
+    sha256 arm64_ventura:  "2cf3590acc995ed7d5e3fe06431c7224b6d3e87a55420c9e66d591387148ea01"
+    sha256 arm64_monterey: "2bb13b0b8ac3c1c88679750e79f658dfc4a29b0925145d28d434089528015b7a"
+    sha256 arm64_big_sur:  "ce2fd93df6676fdae23592b182853ff08decf49eb4aa3f0d1c0470bb612b2e06"
+    sha256 ventura:        "a30232c801f694a5cc99944882d0b8c7d1fe2b295eee4c8ad6bc3a4cf94695e9"
+    sha256 monterey:       "d938a6f7023775ca5e4f38766087d60c991efecf705925fe816ba1665a59ecf3"
+    sha256 big_sur:        "7ed8f4e5e282e11a56926115e69d9cdae56c4fb6a752f69e7d93f4445acaf835"
+    sha256 catalina:       "aee350c1b369aad9aaaa22685321f5993cf656026be153f7b573a77f5f8d5446"
+    sha256 x86_64_linux:   "bdde1efa650eb07f21e0050ffb15968eb29ac0838946d15498c152427caf7aba"
   end
 
   depends_on "gettext"
@@ -28,18 +30,18 @@ class Git < Formula
   uses_from_macos "zlib", since: :high_sierra
 
   on_linux do
-    depends_on "linux-headers@4.4"
+    depends_on "linux-headers@5.15" => :build
     depends_on "openssl@1.1" # Uses CommonCrypto on macOS
   end
 
   resource "html" do
-    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-htmldocs-2.37.0.tar.xz"
-    sha256 "4611d17d75ceb1f164dfc8e725705dece43b1011c6b4b78a7c7a609753c196c1"
+    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-htmldocs-2.38.0.tar.xz"
+    sha256 "704826a1bc8c80505f85658724f71be1a84373a784e8f982bdf60fcbb2d1d6ad"
   end
 
   resource "man" do
-    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-manpages-2.37.0.tar.xz"
-    sha256 "80119359072c8dd01fd4bed09e5d11de54f469e952fb2b7def57d97f97adc8e0"
+    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-manpages-2.38.0.tar.xz"
+    sha256 "4820d9056a8bfe0d54d48464b715da2e30212645ac4d7021f850d3c56136d6e3"
   end
 
   resource "Net::SMTP::SSL" do
@@ -132,7 +134,6 @@ class Git < Formula
     zsh_completion.install "contrib/completion/git-completion.zsh" => "_git"
     cp "#{bash_completion}/git-completion.bash", zsh_completion
 
-    elisp.install Dir["contrib/emacs/*.el"]
     (share/"git-core").install "contrib"
 
     # We could build the manpages ourselves, but the build process depends

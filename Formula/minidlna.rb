@@ -4,15 +4,17 @@ class Minidlna < Formula
   url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.3.0/minidlna-1.3.0.tar.gz"
   sha256 "47d9b06b4c48801a4c1112ec23d24782728b5495e95ec2195bbe5c81bc2d3c63"
   license "GPL-2.0-only"
-  revision 2
+  revision 5
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "cbe84dc9d2a120e54adfac02535fa45f8ef563f652c5045f4f70ad149d6c038f"
-    sha256 cellar: :any,                 arm64_big_sur:  "17fbf29b2147f239fb8735d045982503aa02ad5754ae8d594db0dd8c04ea072a"
-    sha256 cellar: :any,                 monterey:       "932bd20744ba7651d52fe94c30d22ba3e516262ba3a30fabeaf7df4bd8aa38b7"
-    sha256 cellar: :any,                 big_sur:        "74997619d4be6c977bc2897df4ac94ee73a27bbe691993a44920f919e7812556"
-    sha256 cellar: :any,                 catalina:       "227628b6e6547aad4698fe39234868a2ad3ef9b72a4bffbb60b8a482de7fe219"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "684149c230fa8e599513de4ede63d9eed17dd9d0726a04ac421e8e76a166d22d"
+    sha256 cellar: :any,                 arm64_ventura:  "f557c99e2c4cffde970fe96d6b2410bdb4f340adff508d2925d196484ca70840"
+    sha256 cellar: :any,                 arm64_monterey: "d6e515b1672040010f55f8b0c10321c1d90ef3923201f724d37878b45eab7f8e"
+    sha256 cellar: :any,                 arm64_big_sur:  "c501682a37f168c7fc6c69e97ff5ef327f95fe478e404199a83027c629a20622"
+    sha256 cellar: :any,                 ventura:        "b20d2959a3e91f24d00339a1fd481e3197f36306b414886479a21d1b6a8118b0"
+    sha256 cellar: :any,                 monterey:       "64a43285b054c1c20b54f02ea18396905d7c75ffec2d9085f8c4dd9ece0f2360"
+    sha256 cellar: :any,                 big_sur:        "527a15ab85b5f20ab0d82d3b25109dcbbb5254c1245df114772dc7e56d4cf6dc"
+    sha256 cellar: :any,                 catalina:       "31a0327514763858e81f17e6de6d63d0a4fcf531704e31d3a834cfc84ad6d6b7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c083e8fa0d622dbcffb47617f1c4acc5a4dad8af098cbe047f680d5224f23d0b"
   end
 
   head do
@@ -26,7 +28,7 @@ class Minidlna < Formula
 
   depends_on "ffmpeg"
   depends_on "flac"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libexif"
   depends_on "libid3tag"
   depends_on "libogg"
@@ -37,7 +39,7 @@ class Minidlna < Formula
 
   def install
     system "./autogen.sh" if build.head?
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 

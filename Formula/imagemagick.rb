@@ -1,8 +1,8 @@
 class Imagemagick < Formula
   desc "Tools and libraries to manipulate images in many formats"
   homepage "https://imagemagick.org/index.php"
-  url "https://imagemagick.org/archive/releases/ImageMagick-7.1.0-40.tar.xz"
-  sha256 "445286dd6b5ec3e23d386c9bb4f7a6d7746c126a78088671a853a088efed446a"
+  url "https://imagemagick.org/archive/releases/ImageMagick-7.1.0-53.tar.xz"
+  sha256 "0b24f64969d725977f14b345a18890b5091fb94c9f02b61e2ad03c4bddca842c"
   license "ImageMagick"
   head "https://github.com/ImageMagick/ImageMagick.git", branch: "main"
 
@@ -12,18 +12,19 @@ class Imagemagick < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "538f7c99fc20fb372ee57c5639ed44e93000851c1e8f4fd8af4538c68f7f6d36"
-    sha256 arm64_big_sur:  "a39f680162eb75a350a7845ea84b09e81131dfad11b1c4351cad4f6484b34b52"
-    sha256 monterey:       "c30aaca67e37c6e33386ca25ce3a4040f9e2226d79e78eb7e097af5c27b1e350"
-    sha256 big_sur:        "4675fe25b65798b66ec5bf306682e9e2ee219da2b3bbec1538d7f42652820dc1"
-    sha256 catalina:       "f9e0e76ad21ca4959b9e48f8b08e7bd6ccb52c1b775e600301a5fe25bf788303"
-    sha256 x86_64_linux:   "9b4589c0a4fd7ae22efed5940aace54df068fc8c9ab66e10467f1d2d1414e704"
+    sha256 arm64_ventura:  "dd69bc52f545df7852c0c6f56985e7c664bcb9935d61873cb444ea0703062c29"
+    sha256 arm64_monterey: "7b726bee4d9de00a90a89481142c1610a286b4d463f54bb44785d5d7ddb16b00"
+    sha256 arm64_big_sur:  "90cfb1588d25860682c137e2cfcbac8e3ec4040056d4d5ddbce4abdea98b55bf"
+    sha256 ventura:        "038bdaede4a8addc2b10c41c72d6837bf42b617c0bc12e77b4bff574c8985a66"
+    sha256 monterey:       "36c62e795a0d3159129a423269bd4c3db15480833730d3781eb584c66244de98"
+    sha256 big_sur:        "813ca97ae574c95e8e981abccefe32a78cf14005396d41dd86414e2e9583b6ad"
+    sha256 x86_64_linux:   "43626a9690fc1ebfeb012d3812bba2d38e24c0b2011129cdcb1fab7eec2851fb"
   end
 
   depends_on "pkg-config" => :build
   depends_on "freetype"
   depends_on "ghostscript"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libheif"
   depends_on "liblqr"
   depends_on "libpng"
@@ -45,13 +46,10 @@ class Imagemagick < Formula
   end
 
   on_linux do
-    depends_on "gcc"
     depends_on "libx11"
   end
 
   skip_clean :la
-
-  fails_with gcc: "5" # ghostscript is built with GCC
 
   def install
     # Avoid references to shim

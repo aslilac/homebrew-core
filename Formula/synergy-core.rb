@@ -1,6 +1,8 @@
 class SynergyCore < Formula
   desc "Synergy, the keyboard and mouse sharing tool"
   homepage "https://symless.com/synergy"
+  url "https://github.com/symless/synergy-core/archive/refs/tags/1.14.5.17.tar.gz"
+  sha256 "ed48717ad664773aa3492e34f085873cab43fb84e8fe3717db485588b67ae1d1"
 
   # The synergy-core/LICENSE file contains the following preamble:
   #   This program is released under the GPL with the additional exemption
@@ -16,13 +18,7 @@ class SynergyCore < Formula
   #   audit_exceptions/permitted_formula_license_mismatches.json
   # That exception can be removed if the nonfree GitHub Licenses API is fixed.
   license :cannot_represent
-
   head "https://github.com/symless/synergy-core.git", branch: "master"
-
-  stable do
-    url "https://github.com/symless/synergy-core/archive/refs/tags/v1.14.4.37-stable.tar.gz"
-    sha256 "081735f032a2909c65322d43bcaf463bca05f88a05882c706762c959cd4bbec6"
-  end
 
   # This repository contains old 2.0.0 tags, one of which uses a stable tag
   # format (`v2.0.0-stable`), despite being marked as "pre-release" on GitHub.
@@ -35,12 +31,14 @@ class SynergyCore < Formula
   end
 
   bottle do
-    sha256                               arm64_monterey: "93130d9add2ff477b7ab848e0f4b4336031ca0ff50dddc2b67cfaef51040bd56"
-    sha256                               arm64_big_sur:  "5d3fab34b90a58e079012cc8d2b7f441ad098214161d83894558177b356ed2ed"
-    sha256                               monterey:       "2fcafb9115be3180db650acf09ba588ebfadb9c0f8c4a0ecde4d56f9df458206"
-    sha256                               big_sur:        "ea0c6b24239d0e24a28cc5a8668cf85b956f3d4d2f43d0102c5a43742a07d49b"
-    sha256                               catalina:       "f1666f47106ce89f7607d0e24ed2dd9d1d5d3ac0dce72357ff81c0f4b55612ec"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cbab7cd07ce0f831b70812149aba63de79a8ab7cf998396e44742065249082b6"
+    sha256                               arm64_ventura:  "1b4a2490a8037d024db0d276cae2e8bc285aee8a103db5342ccbe10771199e3c"
+    sha256                               arm64_monterey: "725f0f1fa1dfe02c9a1c7263475e56ea7ddd1851db82f7105713e722ac8a8420"
+    sha256                               arm64_big_sur:  "4029385d37cae098379287bf401afdcfd0e7255956644ca9698066997ac8e662"
+    sha256                               ventura:        "1e8ef42fdc16ec61502ddc2e505fb3068cf3676d1f5139bf33c820cc732d6f2c"
+    sha256                               monterey:       "24f862db876c623f46ad44fcc14350586783e84c1f0dd79bd17e37b2ab861280"
+    sha256                               big_sur:        "f125834a8999cb0a9392e4a4f7085b9168b206e8b596929981426eb92a658036"
+    sha256                               catalina:       "9d82863c4c7c1bb6dcd62d9cfb5eeb4abd05d9c360bf08b0b5408b2e90dde516"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cac6f9f95676a8ec29f97d17612c1e523ddb912f36c23ded04330b1c2a73a371"
   end
 
   depends_on "cmake" => :build
@@ -50,7 +48,6 @@ class SynergyCore < Formula
 
   on_linux do
     depends_on "pkg-config" => :build
-    depends_on "gcc" # For C++17 support.
     depends_on "gdk-pixbuf"
     depends_on "glib"
     depends_on "libnotify"

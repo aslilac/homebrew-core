@@ -4,15 +4,17 @@ class Gambit < Formula
   url "https://github.com/gambitproject/gambit/archive/v16.0.2.tar.gz"
   sha256 "49837f2ccb9bb65dad2f3bba9c436c7a7df8711887e25f6bf54b074508a682d4"
   license all_of: ["GPL-2.0-or-later", "Zlib"]
-  revision 2
+  revision 3
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "5de5e2b1de2ed63312ece5a6f674df1d38d01b720910c89ab12e732d3de56e40"
-    sha256 cellar: :any,                 arm64_big_sur:  "c97e03ee045fc6cb0df0f0cfb3812b9037524765a3adcda3ffa47358b8c242b4"
-    sha256 cellar: :any,                 monterey:       "b4a0e0e82274595c8be7e31229cd8fd2eee7db7eccc3519c9c06b243dc7d33e2"
-    sha256 cellar: :any,                 big_sur:        "c3f908600efd465c3857f5f0a9f14367e057f37119c554fdf165632fc87ed777"
-    sha256 cellar: :any,                 catalina:       "908361fb788eb07b5eb5d4d54377c23ad995ee55b509d5f40b75b988ff1bd445"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "05dfaa8cfe56c8c444af6ee95abf4a04ba00ab69db38cb877f0c1d0812e336d0"
+    sha256 cellar: :any,                 arm64_ventura:  "183dc5a8d5d31cd73296b04216727a1049cebb34788f1b58c421536a6d9d9d36"
+    sha256 cellar: :any,                 arm64_monterey: "9e8a6532979a76099a1aec227b3b581f72ace90d5d6df95ef92a9aee4695ea91"
+    sha256 cellar: :any,                 arm64_big_sur:  "8095ee116fc0670d6f2a162851c65bcfd975bafdb728c3a7748a09a59f09c72b"
+    sha256 cellar: :any,                 ventura:        "7c088cdd93af9aa729243909d2f0d1b6b4d04e2893c5b49293f22ea1b75a9059"
+    sha256 cellar: :any,                 monterey:       "bcfcbfc39abea04e9a9f724ac800042003ce9d3dd56a9bab77615825032e0ef0"
+    sha256 cellar: :any,                 big_sur:        "57c1e208efcda541d09673f8852ef2903a5bae47ddfcaccfcfa5b42b9f46070a"
+    sha256 cellar: :any,                 catalina:       "a05c834248ab760aeffe219b232ef13c10e002350e91bde1bfa4259bbb879d7c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d1ebe528c6a77da1d27ad4460732d11bc0daddaf4a7afe2a4db0e0af96991f0f"
   end
 
   depends_on "autoconf" => :build

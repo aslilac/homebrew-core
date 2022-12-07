@@ -4,20 +4,23 @@ class Px < Formula
   desc "Ps and top for human beings (px / ptop)"
   homepage "https://github.com/walles/px"
   url "https://github.com/walles/px.git",
-      tag:      "3.0.0",
-      revision: "0d4cee0070587acf85a5e64fd60c60ea98f4035a"
+      tag:      "3.1.0",
+      revision: "01b9e5fa0a1e378185cdc38adb52155f5c4dc1db"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ab10d83be0502992f66656dfb01e8f173ef84ef1b5e456e2467d9f92334da17c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ac825e157064afb3ce94397cb95d553a32a6b6f59801f2fdbba29d48f483804d"
-    sha256 cellar: :any_skip_relocation, monterey:       "5fa1106e3c95d0fef2e31aa684b21b4cf5ba6110937825980f4c555f3abb11c1"
-    sha256 cellar: :any_skip_relocation, big_sur:        "848726613a9ad25d57ba11a2cc60b18c3b4412725ff7eaa14e270ee61d6bb4f5"
-    sha256 cellar: :any_skip_relocation, catalina:       "b9ce4a8a7ce08f5c856ee7d56aa60b978787bb8ef8dd5469d9484d51fa0ab601"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4f59d945825dbf8106c9cba45435f12b12231bee3a05014aee4f6d1585d0305e"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "56e6093ab47302a9d3b23cde2662860e408988d0a1c37d64d7f40111ad152e9c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5f31e7ad8a9756e216ffa798d1eb3f72b6287696d0e141b84d68442883099bcf"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0d6fba41606ec28108dff1ae620033ea698bcf8dbb838a7b3f49d175684dc8b8"
+    sha256 cellar: :any_skip_relocation, ventura:        "587459333a35b5ad557c2adedf5cbd7d4317065e206edb1ebe9dc46549222ce7"
+    sha256 cellar: :any_skip_relocation, monterey:       "97a6828c35501ed73e8a4a46eb3e3e3b580e94453a32bf3ed0c9d449fb330e37"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7d290178f607e07f603ea8a8d70db6d62eb313ab44e1f0b796dc527be3982a72"
+    sha256 cellar: :any_skip_relocation, catalina:       "153f67ba5e9f0cbd76f5ea56a8ee296c9a2783dc0b0151e78f65ce10400b0007"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4ad4b6a38f6494c2f049231c87cf463a24a32ac5b6c417a847563b15765e55d0"
   end
 
-  depends_on "python@3.10"
+  depends_on "python@3.11"
   depends_on "six"
 
   uses_from_macos "lsof"
@@ -30,6 +33,7 @@ class Px < Formula
 
   def install
     virtualenv_install_with_resources
+    man1.install Dir["doc/*.1"]
   end
 
   test do

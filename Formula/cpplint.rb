@@ -3,20 +3,23 @@ class Cpplint < Formula
 
   desc "Static code checker for C++"
   homepage "https://pypi.org/project/cpplint/"
-  url "https://files.pythonhosted.org/packages/c5/0f/4f2de12a37b1cbfefabff29ef8d529336c2ceec3226e270b369e8e52c735/cpplint-1.6.0.tar.gz"
-  sha256 "8af99f95ed1af2d18e60467cdc13ee0441c2a14d693b7d2dbb71ad427074e491"
+  url "https://files.pythonhosted.org/packages/18/72/ea0f4035bcf35d8f8df053657d7f3370d56ff4d4e6617021b6544b9958d4/cpplint-1.6.1.tar.gz"
+  sha256 "d430ce8f67afc1839340e60daa89e90de08b874bc27149833077bba726dfc13a"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e53df3b51b59581f188be6f0256d28c85609e43b06ed5e098d7031dd5ae90db4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e53df3b51b59581f188be6f0256d28c85609e43b06ed5e098d7031dd5ae90db4"
-    sha256 cellar: :any_skip_relocation, monterey:       "292ac43454d919bb8cdb7192ca564efcade87bff64ee74ef49838d881f95a4c4"
-    sha256 cellar: :any_skip_relocation, big_sur:        "292ac43454d919bb8cdb7192ca564efcade87bff64ee74ef49838d881f95a4c4"
-    sha256 cellar: :any_skip_relocation, catalina:       "292ac43454d919bb8cdb7192ca564efcade87bff64ee74ef49838d881f95a4c4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a7fb23f2c8ae546bf1a8555c6a55c6822a884f63002fae33e72efe229de89aca"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bdd27cfe1e885629d384959cb649c133ae6f9102522294e68c6ee23732dcc4e5"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "bdd27cfe1e885629d384959cb649c133ae6f9102522294e68c6ee23732dcc4e5"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bdd27cfe1e885629d384959cb649c133ae6f9102522294e68c6ee23732dcc4e5"
+    sha256 cellar: :any_skip_relocation, ventura:        "39d32c6b83bba93c843dfd6b3f90a427970212ebc83352b96973f28425e9c6bb"
+    sha256 cellar: :any_skip_relocation, monterey:       "39d32c6b83bba93c843dfd6b3f90a427970212ebc83352b96973f28425e9c6bb"
+    sha256 cellar: :any_skip_relocation, big_sur:        "39d32c6b83bba93c843dfd6b3f90a427970212ebc83352b96973f28425e9c6bb"
+    sha256 cellar: :any_skip_relocation, catalina:       "39d32c6b83bba93c843dfd6b3f90a427970212ebc83352b96973f28425e9c6bb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e2e0f14d6f474777b906407a39771c7a0ae66aaf49069079f4852498babffc56"
   end
 
-  depends_on "python@3.10"
+  depends_on "python@3.11"
 
   def install
     virtualenv_install_with_resources

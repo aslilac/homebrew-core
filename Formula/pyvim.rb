@@ -8,15 +8,18 @@ class Pyvim < Formula
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d15f32fb0a34a55dc463c295c8128850cdf204943e7131a9a3dc9a9fdae3ecdf"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dfc63addea95214544eda8ef234bd2b4a20ccecda3eb456d4b9074334650fb79"
-    sha256 cellar: :any_skip_relocation, monterey:       "bc7d8400d12f030798fed3248e94f6e10f37cca3b39988a4d2a3d32c8686daab"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b92f0c634710abccc00652d23f09a89e47cc30bf52f314b45967075d395c097c"
-    sha256 cellar: :any_skip_relocation, catalina:       "2d3021b4381d4953a397b284a4291b1e2c50e5632975dd914ba6b03750e78ae7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7e74725182c80d2c3d325e7dd6d7cfd71bb72e94c32552246206d006d94dd889"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "84271d72d5e192730afe696ff8befbd09ed45c9ebb495fdc2a5675ef9e363f32"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6998e350ae758b15aa2db8198001bc8a8124ed1c86a74e32ff3901359bb193b5"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "59c15aa998f7b3961dd042fd1e32bf09eb59510dd1774e348ceb4d297a36cf09"
+    sha256 cellar: :any_skip_relocation, ventura:        "e2971047d47ad67e4a6a28afac14094a5dc6addf200880b24607da3730b46618"
+    sha256 cellar: :any_skip_relocation, monterey:       "8968b45fc990d804c0fb406dcfd19f5a459e0a65bf06152c763bc5d9a147c4d6"
+    sha256 cellar: :any_skip_relocation, big_sur:        "3ea53ff35fdcdace23d6d95d67ddae50da86b64e63cac5a4796235f24df404b2"
+    sha256 cellar: :any_skip_relocation, catalina:       "1a18a3f4743b90fc41e4fad362eaf4a5fbb050874ab6fcebf61058ceb014d12c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "709d795900c4098c90892135c0859c0c93f8aa18868eeeb023bc4357bace19b6"
   end
 
-  depends_on "python@3.10"
+  depends_on "python@3.11"
   depends_on "six"
 
   resource "docopt" do
@@ -25,23 +28,18 @@ class Pyvim < Formula
   end
 
   resource "prompt-toolkit" do
-    url "https://files.pythonhosted.org/packages/59/68/4d80f22e889ea34f20483ae3d4ca3f8d15f15264bcfb75e52b90fb5aefa5/prompt_toolkit-3.0.29.tar.gz"
-    sha256 "bd640f60e8cecd74f0dc249713d433ace2ddc62b65ee07f96d358e0b152b6ea7"
+    url "https://files.pythonhosted.org/packages/e2/d9/1009dbb3811fee624af34df9f460f92b51edac528af316eb5770f9fbd2e1/prompt_toolkit-3.0.32.tar.gz"
+    sha256 "e7f2129cba4ff3b3656bbdda0e74ee00d2f874a8bcdb9dd16f5fec7b3e173cae"
   end
 
   resource "pyflakes" do
-    url "https://files.pythonhosted.org/packages/15/60/c577e54518086e98470e9088278247f4af1d39cb43bcbd731e2c307acd6a/pyflakes-2.4.0.tar.gz"
-    sha256 "05a85c2872edf37a4ed30b0cce2f6093e1d0581f8c19d7393122da7e25b2b24c"
+    url "https://files.pythonhosted.org/packages/07/92/f0cb5381f752e89a598dd2850941e7f570ac3cb8ea4a344854de486db152/pyflakes-2.5.0.tar.gz"
+    sha256 "491feb020dca48ccc562a8c0cbe8df07ee13078df59813b83959cbdada312ea3"
   end
 
   resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/59/0f/eb10576eb73b5857bc22610cdfc59e424ced4004fe7132c8f2af2cc168d3/Pygments-2.12.0.tar.gz"
-    sha256 "5eb116118f9612ff1ee89ac96437bb6b49e8f04d8a13b514ba26f620208e26eb"
-  end
-
-  resource "six" do
-    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
-    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
+    url "https://files.pythonhosted.org/packages/e0/ef/5905cd3642f2337d44143529c941cc3a02e5af16f0f65f81cbef7af452bb/Pygments-2.13.0.tar.gz"
+    sha256 "56a8508ae95f98e2b9bdf93a6be5ae3f7d8af858b43e02c5a2ff083726be40c1"
   end
 
   resource "wcwidth" do

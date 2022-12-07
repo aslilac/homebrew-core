@@ -3,24 +3,25 @@ class PipTools < Formula
 
   desc "Locking and sync for Pip requirements files"
   homepage "https://pip-tools.readthedocs.io"
-  url "https://files.pythonhosted.org/packages/1f/79/1a4eee18c8ab0afc3b8f39460684951769053a0eda7d4d319af965e5701a/pip-tools-6.8.0.tar.gz"
-  sha256 "39e8aee465446e02278d80dbebd4325d1dd8633248f43213c73a25f58e7d8a55"
+  url "https://files.pythonhosted.org/packages/a5/4b/3b2cc29962f306210ee7bbc1b4305af81dd5289f3d163204f43a6df9f26f/pip-tools-6.11.0.tar.gz"
+  sha256 "90c5dc150e3856e4463b81ccc99307ccf9554e5db8393eb273705cb0b8f71c60"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4a3e708801550704a85aacbc865dc2f4283afb6820b06a3955eded31c6651894"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8fd5da21e3f73a8cec73aed9b7b8e522cb0682d8ad398494318be930a672af9f"
-    sha256 cellar: :any_skip_relocation, monterey:       "2c80cb01ad89e72c13395f86cf5f6120846c9a8957f8cdf63f61589ea1942fe3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "17091b9466fa82e7dbb9604fbe57c66adff0ff5c7ade61aacd459084650b4911"
-    sha256 cellar: :any_skip_relocation, catalina:       "882ed3ab31a4dda7e7a944a8bb5defc6ca2fd233904fecf3044c605ffd564148"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e50415e09d10d535fd7162f714d36af59e04b72b17994453604c97f8678ebdc1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4dfa38dbaf51eac9e4b0ef64f6a0aa64e3f5385975f4ed8fc23220d11dbf7dbd"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "86cd89560b10178c99e9c97535102c7fdc8971f7dfa0980ebbb56c0cb11f3ca8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bc0f11aae18f8c0bda9d10cf279b7a39df1223f2de12f30f76af3062fc3e5463"
+    sha256 cellar: :any_skip_relocation, ventura:        "870412e6dfc95c827c5705318a452a404065087fa831bb6f3f16c25535955e4c"
+    sha256 cellar: :any_skip_relocation, monterey:       "07b147704328bad09ed8c9e85328f28b4accba38651baaa46bd14b94093a7422"
+    sha256 cellar: :any_skip_relocation, big_sur:        "ee9a253e6f9e529a1188dc6ad14521b12bb281e28ae52fa572b4c14d7ea0f28d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3d3e7070882df6507b6d52b4150b2158c86c6f732bc05d87db563153cd3404d8"
   end
 
-  depends_on "python@3.10"
+  depends_on "python@3.11"
 
   resource "build" do
-    url "https://files.pythonhosted.org/packages/52/fa/931038182be739955cf83179d9b9a6ce9832bc5f9a917a006f765cb53a1f/build-0.8.0.tar.gz"
-    sha256 "887a6d471c901b1a6e6574ebaeeebb45e5269a79d095fe9a8f88d6614ed2e5f0"
+    url "https://files.pythonhosted.org/packages/0f/61/aaf43fbb36cc4308be8ac8088f52db9622b0dbf1f0880c1016ae6aa03f46/build-0.9.0.tar.gz"
+    sha256 "1a07724e891cbd898923145eb7752ee7653674c511378eb9c7691aab1612bc3c"
   end
 
   resource "click" do
@@ -34,8 +35,8 @@ class PipTools < Formula
   end
 
   resource "pep517" do
-    url "https://files.pythonhosted.org/packages/0a/65/6e656d49c679136edfba25f25791f45ffe1ea4ae2ec1c59fe9c35e061cd1/pep517-0.12.0.tar.gz"
-    sha256 "931378d93d11b298cf511dd634cf5ea4cb249a28ef84160b3247ee9afb4e8ab0"
+    url "https://files.pythonhosted.org/packages/4d/19/e11fcc88288f68ae48e3aa9cf5a6fd092a88e629cb723465666c44d487a0/pep517-0.13.0.tar.gz"
+    sha256 "ae69927c5c172be1add9203726d4b84cf3ebad1edcd5f71fcdc746e66e829f59"
   end
 
   resource "pyparsing" do
@@ -43,14 +44,9 @@ class PipTools < Formula
     sha256 "2b020ecf7d21b687f219b71ecad3631f644a47f01403fa1d1036b0c6416d70fb"
   end
 
-  resource "tomli" do
-    url "https://files.pythonhosted.org/packages/c0/3f/d7af728f075fb08564c5949a9c95e44352e23dee646869fa104a3b2060a3/tomli-2.0.1.tar.gz"
-    sha256 "de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"
-  end
-
   resource "wheel" do
-    url "https://files.pythonhosted.org/packages/c0/6c/9f840c2e55b67b90745af06a540964b73589256cb10cc10057c87ac78fc2/wheel-0.37.1.tar.gz"
-    sha256 "e9a504e793efbca1b8e0e9cb979a249cf4a0a7b5b8c9e8b65a5e39d49529c1c4"
+    url "https://files.pythonhosted.org/packages/a2/b8/6a06ff0f13a00fc3c3e7d222a995526cbca26c1ad107691b6b1badbbabf1/wheel-0.38.4.tar.gz"
+    sha256 "965f5259b566725405b05e7cf774052044b1ed30119b5d586b2703aafe8719ac"
   end
 
   def install

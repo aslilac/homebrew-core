@@ -1,16 +1,19 @@
+require "language/node"
+
 class CodeServer < Formula
   desc "Access VS Code through the browser"
   homepage "https://github.com/coder/code-server"
-  url "https://registry.npmjs.org/code-server/-/code-server-4.5.0.tgz"
-  sha256 "9c689bfdbf4bcf57317f32b18427b7fe7418d7623ff9faf2107fc513a93eb326"
+  url "https://registry.npmjs.org/code-server/-/code-server-4.9.0.tgz"
+  sha256 "f12169cebe46a1707b64b7e07ec21ff129f1e4e6877e83fdac8c4f09257bcfe1"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a9791ca5469ed779157ee86a7e037a792ed0216f07574b09b9340838244419bf"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bd6829248ec4bd703088f405fa12c0362e0b6a63b7004a161d22b42f8df611eb"
-    sha256 cellar: :any_skip_relocation, monterey:       "27b30d37ecf0e2aac1654444d48b8678f1496bfdea51dff02dff2bb04db1d5b9"
-    sha256 cellar: :any_skip_relocation, big_sur:        "282995a9250d4df3d6b0aea36c67ad3ffb7ad300b92546b4e9db8ec8098f8314"
-    sha256 cellar: :any_skip_relocation, catalina:       "e66abbb8d38b8e2d9a75ff96f829364915f4ea3221e5ee04217d387da9682717"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "850f52a2c1187318a8c7fa56095d81a53bb359d6189598487be808329d45e874"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d06aeff370ef6490d8367100f8bc6e0c2d47c87d1603afc3fb6c21cd3fec5387"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9ce48c164de460341a0f9ce69ec2c705c7bfd77454df11f487a24cec01b23679"
+    sha256 cellar: :any_skip_relocation, ventura:        "8e1040d6e480ad930b247fd7bd61cc9cc505a04c6782c859e5c592c2c4f4a94b"
+    sha256 cellar: :any_skip_relocation, monterey:       "79319a53f0fa3972d5b9546d264a754a2c551d543fb69f93d3aaa783504f47d8"
+    sha256 cellar: :any_skip_relocation, big_sur:        "81fb68ea2de2177b93e13f44f51691d6a47e6973509a0b721a15008d9f7d46b5"
   end
 
   depends_on "bash" => :build
@@ -27,7 +30,7 @@ class CodeServer < Formula
 
   def install
     node = Formula["node@16"]
-    system "yarn", "--production", "--frozen-lockfile"
+    system "npm", "install", *Language::Node.local_npm_install_args, "--unsafe-perm", "--omit", "dev"
     # @parcel/watcher bundles all binaries for other platforms & architectures
     # This deletes the non-matching architecture otherwise brew audit will complain.
     prebuilds = buildpath/"lib/vscode/node_modules/@parcel/watcher/prebuilds"

@@ -2,17 +2,20 @@ class Tepl < Formula
   desc "GNOME Text Editor Product Line"
   homepage "https://gitlab.gnome.org/swilmet/tepl"
   url "https://gitlab.gnome.org/swilmet/tepl.git",
-      tag:      "6.1.1",
-      revision: "a3538fdee2f3518541bfc4041286143e6c8e16de"
+      tag:      "6.2.0",
+      revision: "34973a0d48ba5a0dd0a776c66bfc0c3f65682d9c"
   license "LGPL-2.1-or-later"
+  revision 1
 
   bottle do
-    sha256 arm64_monterey: "b7d0c579d0edc4c75dc7af9e858046a4fb8adf883848ec73ea25807cf39bcd29"
-    sha256 arm64_big_sur:  "369a9ddfff9b925e3a0ac8a35d3a6b4b2029920338e276f0e27a6ee6ee6f5636"
-    sha256 monterey:       "b2fbda07e78db6f17c33c7f032a6098b1718be700ad0ffc4e738fb0045232b9e"
-    sha256 big_sur:        "fe377fa92b4797a892cdc1f5d19c01f44ace1b40c4bba5367b5da2f6d964f3b2"
-    sha256 catalina:       "94c51c2737f734b9ec19cda81d70fb4d79a6c352488b1e70d023abfd609d4061"
-    sha256 x86_64_linux:   "e4e9628ba8d89a340e2f7cfa00d18d7c30d40cb223554836edca1f0c913c85a5"
+    sha256 arm64_ventura:  "1c9ec2723d505a5d66d701753cf2d318cb956cb702f3a66790d200b5d865cf34"
+    sha256 arm64_monterey: "afd66c86e1724521d508e6b78e6e1b698f601570197bd0cd5ad717b660f44f0a"
+    sha256 arm64_big_sur:  "1217ede948528c5817ebf00c6f45fbc67dc55f6d7f407fefed254a35b0bfca2b"
+    sha256 ventura:        "5ec0008849dad4e3475f84ab26f52388ea56d198ad96b3fdcf1f81f2e2086609"
+    sha256 monterey:       "f99e1794bd7a04a432f770e41913e5ac59041441be8281dd1389b6e8ff580d15"
+    sha256 big_sur:        "54f0f0e7d72108b6fa2475e64b32907dd56740d4300e13cfbddd441d99636072"
+    sha256 catalina:       "876e9bacac01b7e9c8d5e11ceb81cf82a25f81b0316eb12f427f786c89f7894c"
+    sha256 x86_64_linux:   "a1e7fb602eb95892bd9c12a6b4c141d1b44eecda2f01127a7b9d418c51636604"
   end
 
   depends_on "gobject-introspection" => :build
@@ -25,11 +28,9 @@ class Tepl < Formula
   depends_on "uchardet"
 
   def install
-    mkdir "build" do
-      system "meson", *std_meson_args, "-Dgtk_doc=false", ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+    system "meson", *std_meson_args, "build", "-Dgtk_doc=false"
+    system "meson", "compile", "-C", "build", "-v"
+    system "meson", "install", "-C", "build"
   end
 
   test do

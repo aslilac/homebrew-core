@@ -1,24 +1,28 @@
 class Phpstan < Formula
   desc "PHP Static Analysis Tool"
   homepage "https://github.com/phpstan/phpstan"
-  url "https://github.com/phpstan/phpstan/releases/download/1.8.0/phpstan.phar"
-  sha256 "b28cef94dd5d2b109cd4cd6012bd12f806233b90c34d71db830fca29919628b9"
+  url "https://github.com/phpstan/phpstan/releases/download/1.9.2/phpstan.phar"
+  sha256 "34695f0aab2a3e271a78bc157c05bc6cd347f6d5a5f3eb019797f84aba469c6c"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "682c23cadd05db3a640fcfe43a1b3e2f46cebd7e6b3335f9dfada8e99ed8f070"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "682c23cadd05db3a640fcfe43a1b3e2f46cebd7e6b3335f9dfada8e99ed8f070"
-    sha256 cellar: :any_skip_relocation, monterey:       "f90a99d4d32be393671cc123588791a5b6c2b980beb319cdb2bb10806fdcabf6"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f90a99d4d32be393671cc123588791a5b6c2b980beb319cdb2bb10806fdcabf6"
-    sha256 cellar: :any_skip_relocation, catalina:       "f90a99d4d32be393671cc123588791a5b6c2b980beb319cdb2bb10806fdcabf6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "682c23cadd05db3a640fcfe43a1b3e2f46cebd7e6b3335f9dfada8e99ed8f070"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "cc5597806f12a02f9f2c29c23578d41ba36a1264a61dfe4796662018bc229cae"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "cc5597806f12a02f9f2c29c23578d41ba36a1264a61dfe4796662018bc229cae"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cc5597806f12a02f9f2c29c23578d41ba36a1264a61dfe4796662018bc229cae"
+    sha256 cellar: :any_skip_relocation, ventura:        "7b8207f2ea89aab436e4322648338df2d9fadb6f3e39d08cadac5d5ff578d584"
+    sha256 cellar: :any_skip_relocation, monterey:       "7b8207f2ea89aab436e4322648338df2d9fadb6f3e39d08cadac5d5ff578d584"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7b8207f2ea89aab436e4322648338df2d9fadb6f3e39d08cadac5d5ff578d584"
+    sha256 cellar: :any_skip_relocation, catalina:       "7b8207f2ea89aab436e4322648338df2d9fadb6f3e39d08cadac5d5ff578d584"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cc5597806f12a02f9f2c29c23578d41ba36a1264a61dfe4796662018bc229cae"
   end
 
   depends_on "php" => :test
 
   # Keg-relocation breaks the formula when it replaces `/usr/local` with a non-default prefix
   on_macos do
-    pour_bottle? only_if: :default_prefix if Hardware::CPU.intel?
+    on_intel do
+      pour_bottle? only_if: :default_prefix
+    end
   end
 
   def install

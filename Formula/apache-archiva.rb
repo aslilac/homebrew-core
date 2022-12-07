@@ -1,18 +1,20 @@
 class ApacheArchiva < Formula
   desc "Build Artifact Repository Manager"
   homepage "https://archiva.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=archiva/2.2.8/binaries/apache-archiva-2.2.8-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/archiva/2.2.8/binaries/apache-archiva-2.2.8-bin.tar.gz"
-  sha256 "8ef2c2b866260de1102db39929902d6f8365492a0ac12c1300f937ae9f65da31"
+  url "https://www.apache.org/dyn/closer.lua?path=archiva/2.2.9/binaries/apache-archiva-2.2.9-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/archiva/2.2.9/binaries/apache-archiva-2.2.9-bin.tar.gz"
+  sha256 "183f00be4b05564e01c9a4687b59d81828d9881c55289e0a2a9c1f903afb0c93"
   license all_of: ["Apache-2.0", "GPL-2.0-only"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "26714e5d6850b4e9636407601d0c3abd7c66e010c8c7ce47ad1f3930309eedb9"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "26714e5d6850b4e9636407601d0c3abd7c66e010c8c7ce47ad1f3930309eedb9"
-    sha256 cellar: :any_skip_relocation, monterey:       "26714e5d6850b4e9636407601d0c3abd7c66e010c8c7ce47ad1f3930309eedb9"
-    sha256 cellar: :any_skip_relocation, big_sur:        "26714e5d6850b4e9636407601d0c3abd7c66e010c8c7ce47ad1f3930309eedb9"
-    sha256 cellar: :any_skip_relocation, catalina:       "26714e5d6850b4e9636407601d0c3abd7c66e010c8c7ce47ad1f3930309eedb9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0df59cf09aa5511494063569457fcc82c256b53e87005be3101455fc737b5b6c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ef05037f1f5a15705135782387ebf8f96b0f10d00ccf682ead0dc2ff2c58e5ab"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ef05037f1f5a15705135782387ebf8f96b0f10d00ccf682ead0dc2ff2c58e5ab"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ef05037f1f5a15705135782387ebf8f96b0f10d00ccf682ead0dc2ff2c58e5ab"
+    sha256 cellar: :any_skip_relocation, ventura:        "ef05037f1f5a15705135782387ebf8f96b0f10d00ccf682ead0dc2ff2c58e5ab"
+    sha256 cellar: :any_skip_relocation, monterey:       "ef05037f1f5a15705135782387ebf8f96b0f10d00ccf682ead0dc2ff2c58e5ab"
+    sha256 cellar: :any_skip_relocation, big_sur:        "ef05037f1f5a15705135782387ebf8f96b0f10d00ccf682ead0dc2ff2c58e5ab"
+    sha256 cellar: :any_skip_relocation, catalina:       "ef05037f1f5a15705135782387ebf8f96b0f10d00ccf682ead0dc2ff2c58e5ab"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "887eb08cf917193dc9c0b72823baeff7fcd8a9f9eefd95ca7714e09e01b764cd"
   end
 
   depends_on "ant" => :build

@@ -5,8 +5,8 @@ class Vault < Formula
   desc "Secures, stores, and tightly controls access to secrets"
   homepage "https://vaultproject.io/"
   url "https://github.com/hashicorp/vault.git",
-      tag:      "v1.11.0",
-      revision: "ea296ccf58507b25051bc0597379c467046eb2f1"
+      tag:      "v1.12.1",
+      revision: "e34f8a14fb7a88af4640b09f3ddbb5646b946d9c"
   license "MPL-2.0"
   head "https://github.com/hashicorp/vault.git", branch: "main"
 
@@ -16,12 +16,13 @@ class Vault < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "152353389c862269a421ea7d5b8529dcbe37228eb7ea6ab39dd1813b03f45852"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f8bf80a56b92bf7a720baf9e977db5268f6b2f62944445846ac957954feb1f93"
-    sha256 cellar: :any_skip_relocation, monterey:       "748162441ee47a1f7e9b4fb79bf6b5e4c61145c0c1bb6688b6930f7f5cb642e6"
-    sha256 cellar: :any_skip_relocation, big_sur:        "fa7531271441084ea7dbccc19d76680de3614e71ff3fbac569f4eadcf5be9364"
-    sha256 cellar: :any_skip_relocation, catalina:       "191e2418eb1063cad138b1ecbf2696f910582a37c0c721942216e6c7f194dc5d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a40b2327ff34d7e76975377c1e91ce1aed6d84cb32ce4708228df57b7404c317"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5b0a7a7eba07f26f188c5a10de6bd83611bd6e0baa2893d4204a0c99e0bcb914"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b2fbbf7859218673df8703e4050abddbb5b3cde0a53f528ba6c05e4e718f92e1"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a001e1e9fd5d66b53871801a21aebaa1d3cdb1a873b940df5d8b6ce587be2e10"
+    sha256 cellar: :any_skip_relocation, monterey:       "98c85fb6380b1924acf01880be668369e94a6ee5db902d5f4164b1977bc5812e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a2fc2dbf5a1121d9ae9b442e06d608c8282876baf323406e087d465ffcc332a5"
+    sha256 cellar: :any_skip_relocation, catalina:       "2d524bb1d5c007a4e898e6a72dbc07ddef1e0e874477b07a00a12a6c04d0b12c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a535d86af01b5b3eb9226a002ab7b11cd792a0b6ba4bf3ad15ec324478e610ca"
   end
 
   depends_on "go" => :build

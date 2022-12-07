@@ -2,7 +2,7 @@ class Sysdig < Formula
   desc "System-level exploration and troubleshooting tool"
   homepage "https://sysdig.com/"
   license "Apache-2.0"
-  revision 2
+  revision 8
 
   stable do
     url "https://github.com/draios/sysdig/archive/0.29.3.tar.gz"
@@ -22,12 +22,14 @@ class Sysdig < Formula
   end
 
   bottle do
-    sha256                               arm64_monterey: "06e34fd767dc12d7c499ccee17bf91733d3b6f38acfe3330002720e4d7bad065"
-    sha256                               arm64_big_sur:  "4eca138524dfaa7cd7b349b2c7911bdfda257e45e58e67bb20ab6bea368a9b40"
-    sha256                               monterey:       "4e1574e57c1046553ad8010f6a3bbadf407d5ebf4cb680fd002fe4ef65d09fb4"
-    sha256                               big_sur:        "3aa0db9ffece1e9b36613eb02d705da58dcb4a9d6e0afc60f06fc30443c04d56"
-    sha256                               catalina:       "70ba582ec2a3d05308926aaca27d063b8f0774c2fc36d1a86341027a091ec024"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6161679b5dbbe7a38b39a2d0e8f2f917e9693fa4028c5f4e279abcae348ed8c2"
+    sha256                               arm64_ventura:  "56f06fce0f517306e085ecaad7ce6d4e5a0fa2e4dbb9e21263c4d023ea715ed6"
+    sha256                               arm64_monterey: "ff684cddac03d6c30fd4b2ceae492eb5528d5c22b3b32324303b15c31be662a4"
+    sha256                               arm64_big_sur:  "65114a1660c646dfbaa095cd922f6840f8e8b2658fbb4b3e7890fa82f566484f"
+    sha256                               ventura:        "9ecf14d8ce20e8859e239ad7497e244a15c459e4110e4277245ce34d2cfcb7bf"
+    sha256                               monterey:       "cbc6554ef1ea6abeafca41cf198287725570b4e42a81c649537197897c87fd08"
+    sha256                               big_sur:        "4e2198aed7509c1367e63fbec1e6a1f46bead140e2ea4c1cde3b60a421269dfd"
+    sha256                               catalina:       "ddacde082b4e2b358cd7602ee1826fb777f132f36d733a7f57bc1f6572873660"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1da482af1e21d340040bcf3c21863438052dad58feb1fd644c503f4273a630a0"
   end
 
   head do
@@ -42,7 +44,7 @@ class Sysdig < Formula
   depends_on "nlohmann-json" => :build
   depends_on "c-ares"
   depends_on "jsoncpp"
-  depends_on "luajit-openresty"
+  depends_on "luajit"
   depends_on "openssl@1.1"
   depends_on "tbb"
   depends_on "yaml-cpp"
@@ -54,7 +56,6 @@ class Sysdig < Formula
   on_linux do
     depends_on "libb64" => :build
     depends_on "elfutils"
-    depends_on "gcc"
     depends_on "grpc"
     depends_on "jq"
     depends_on "protobuf"

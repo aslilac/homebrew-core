@@ -4,7 +4,7 @@ class Oclgrind < Formula
   url "https://github.com/jrprice/Oclgrind/archive/v21.10.tar.gz"
   sha256 "b40ea81fcf64e9012d63c3128640fde9785ef4f304f9f876f53496595b8e62cc"
   license "BSD-3-Clause"
-  revision 1
+  revision 2
 
   livecheck do
     url :homepage
@@ -12,49 +12,60 @@ class Oclgrind < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "5499b3da0a526ff49c99dee81fd3ee5741a826ffabe8caac9d84beb5e22456db"
-    sha256 cellar: :any, arm64_big_sur:  "6b3987f87ae3fcdc235e3720cf74cfa6c040edb1d64d748399d0c5154771697a"
-    sha256 cellar: :any, monterey:       "76232b405325846dc572ecb4afb4a972d8775e5da5637760583c297b4afd42e7"
-    sha256 cellar: :any, big_sur:        "b062cc2e561df81cd43152a81504e9619c7dafee8dfdba92cb9906587263a1d6"
-    sha256 cellar: :any, catalina:       "12c44f51700c3c5a36640e5d740a0187b1dce35433639170841d2abfcdad89e3"
+    sha256 cellar: :any,                 arm64_ventura:  "89a927ac8cfbfe82e860a05347a7d7ca61bf3d426e2e3c6ab8c3ff93358230de"
+    sha256 cellar: :any,                 arm64_monterey: "952c3159099400839aaadcebec2c20f08bce32dc7de9e507d8435df6a5ba2e9a"
+    sha256 cellar: :any,                 arm64_big_sur:  "b56d81e7e93e41f6e339f216392541d1270a3c309d57d83328cf531802bc483c"
+    sha256 cellar: :any,                 ventura:        "c5c442f08c52f8a2a3ba70c9def1ce6b15d618c1952aefd3acb4b221be0cf7b9"
+    sha256 cellar: :any,                 monterey:       "4c9b7d599bde78dd00085ff802b84b499008e5800fc9c91a11901c9b0fec5c75"
+    sha256 cellar: :any,                 big_sur:        "37bf40f81471fedbeb7c295c7c6ecf22f2f2d32c28dd8d8e273922a66a959129"
+    sha256 cellar: :any,                 catalina:       "52da235facbe5b6d02b0990c8d987223ba8bd18e003820c4860b4fa5475179b3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "658070a3826a514c4d72109792dfb85d5d79d6d4df5f79fee780f29edf0842b7"
   end
 
   depends_on "cmake" => :build
   depends_on "llvm@13"
+  depends_on "readline"
+
+  on_linux do
+    depends_on "opencl-headers" => :test
+  end
 
   def install
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args, "-DCMAKE_INSTALL_RPATH=#{rpath}"
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
+    # Install the optional ICD into #{prefix}/etc rather than #{etc} as it contains realpath
+    # to the shared library and needs to be kept up-to-date to work with an ICD loader.
+    # This relies on `brew link` automatically creating and updating #{etc} symlinks.
+    (prefix/"etc/OpenCL/vendors").install "build/oclgrind.icd"
   end
 
   test do
-    (testpath/"rot13.c").write <<~'EOS'
+    (testpath/"rot13.c").write <<~EOS
       #include <stdio.h>
       #include <stdlib.h>
       #include <string.h>
+      #include <#{OS.mac? ? "OpenCL" : "CL"}/cl.h>
 
-      #include <OpenCL/cl.h>
-
-      const char rot13_cl[] = "                         \
-      __kernel void rot13                               \
-          (   __global    const   char*    in           \
-          ,   __global            char*    out          \
-          )                                             \
-      {                                                 \
-          const uint index = get_global_id(0);          \
-                                                        \
-          char c=in[index];                             \
-          if (c<'A' || c>'z' || (c>'Z' && c<'a')) {     \
-              out[index] = in[index];                   \
-          } else {                                      \
-              if (c>'m' || (c>'M' && c<'a')) {          \
-                out[index] = in[index]-13;              \
-              } else {                                  \
-                out[index] = in[index]+13;              \
-              }                                         \
-          }                                             \
-      }                                                 \
+      const char rot13_cl[] = "                         \\
+      __kernel void rot13                               \\
+          (   __global    const   char*    in           \\
+          ,   __global            char*    out          \\
+          )                                             \\
+      {                                                 \\
+          const uint index = get_global_id(0);          \\
+                                                        \\
+          char c=in[index];                             \\
+          if (c<'A' || c>'z' || (c>'Z' && c<'a')) {     \\
+              out[index] = in[index];                   \\
+          } else {                                      \\
+              if (c>'m' || (c>'M' && c<'a')) {          \\
+                out[index] = in[index]-13;              \\
+              } else {                                  \\
+                out[index] = in[index]+13;              \\
+              }                                         \\
+          }                                             \\
+      }                                                 \\
       ";
 
       void rot13 (char *buf) {
@@ -109,7 +120,7 @@ class Oclgrind < Formula
           char *log=(char *)malloc(logsize);
           clGetProgramBuildInfo(prog, device, CL_PROGRAM_BUILD_LOG, logsize, log, NULL);
 
-          fprintf(stderr, "%s\n", log);
+          fprintf(stderr, "%s\\n", log);
           free(log);
 
           return 1;
@@ -136,7 +147,7 @@ class Oclgrind < Formula
       }
     EOS
 
-    system ENV.cc, "rot13.c", "-o", "rot13", "-framework", "OpenCL"
+    system ENV.cc, "rot13.c", "-o", "rot13", "-L#{lib}", "-loclgrind-rt"
     output = shell_output("#{bin}/oclgrind ./rot13 2>&1").chomp
     assert_equal "Hello, World!", output
   end

@@ -1,24 +1,26 @@
 class SqlxCli < Formula
   desc "Command-line utility for SQLx, the Rust SQL toolkit"
   homepage "https://github.com/launchbadge/sqlx"
-  url "https://github.com/launchbadge/sqlx/archive/v0.6.0.tar.gz"
-  sha256 "54cd83dfbc09e689a97f06d42359400b9301570e9adf4f891fea53c0382d9dcd"
+  url "https://github.com/launchbadge/sqlx/archive/v0.6.2.tar.gz"
+  sha256 "d8bf6470f726296456080ab9eef04ae348323e832dd10a20ec25d82fbb48c39a"
   license any_of: ["Apache-2.0", "MIT"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d8ad28ec7dfad8dbedf9d1fbd5df9ae24a71a35a3e97b9c78ec196e061725101"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "be858c81c7820fa6df90bd45f11b68f4ec190a2615178704a7f15ffae7028fc8"
-    sha256 cellar: :any_skip_relocation, monterey:       "2de74d80fee9b908c5a6711b3832103e62b8b5ae8242e7c39a638f6e89bec053"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4069aa94340b7fa3c524c8033bdd63779637f26a57e7a471c604fbae9edabaa7"
-    sha256 cellar: :any_skip_relocation, catalina:       "6124ddd0f52e8a9c90ed9430928212b8a44b46843c40dadc62d4a6336bfd8c83"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "118d5c3821d8abfda535a3e44b6925bc304065e62cd8e34bf2da592b9899305c"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9d795c06ea78a790188c80549289ccb5753a8ab0b9fe0f9588bcd366c8431399"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b9b4dd160c054bcf007083793f0b0e30f5a4b66f058c1ac2df295f1860f0a288"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0c7e5e050a955a294574b7f25603625bae94710a17f29e20a9975d1e512ff8a5"
+    sha256 cellar: :any_skip_relocation, monterey:       "3795ca460b8f0c215ac7dcc88de69fd6ba966d07d28a224bf6a4ef49d823a818"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a452538164cdb9845f4d0b539462674d924392889d253ef30498249ccbef94ab"
+    sha256 cellar: :any_skip_relocation, catalina:       "fc5953247af6e6cd904e77506d7efcc0a89675b5e2049ba5dae141df5bbe8d05"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b125a7455d03bbfba352ccdf2d1fea9c9632c616c8bf92020e41c53268ad0113"
   end
 
   depends_on "rust" => :build
 
   on_linux do
     depends_on "pkg-config" => :build
-    depends_on "openssl@1.1"
+    depends_on "openssl@3"
   end
 
   def install

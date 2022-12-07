@@ -1,8 +1,8 @@
 class Libgsm < Formula
   desc "Lossy speech compression library"
   homepage "http://www.quut.com/gsm/"
-  url "http://www.quut.com/gsm/gsm-1.0.20.tar.gz"
-  sha256 "b0e6cf4d5ac81387cf74cbe431f77302db3b2f62fc7cb5e21a5670ac30963979"
+  url "http://www.quut.com/gsm/gsm-1.0.22.tar.gz"
+  sha256 "f0072e91f6bb85a878b2f6dbf4a0b7c850c4deb8049d554c65340b3bf69df0ac"
   license "TU-Berlin-2.0"
 
   livecheck do
@@ -11,18 +11,17 @@ class Libgsm < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "dcfb808cefed20861e0b01599e8ecd4e481ca027f01f95375374282bd79dc2db"
-    sha256 cellar: :any,                 arm64_big_sur:  "61809769fd4dfa2861d124adff592cb0ddf6cafe5c811e234a301e9308904b22"
-    sha256 cellar: :any,                 monterey:       "875886ea26fffce6b0bf2fc8714fbd1957057b935bebfbdf377e13a72cc01f00"
-    sha256 cellar: :any,                 big_sur:        "6e06bdf7008ab6528ea64717987f7776feeecd2ae5096d0beff91d2489ea2e48"
-    sha256 cellar: :any,                 catalina:       "8311bfbdfa498a544f1af991a6b944d9fdce02080526415acd31ffb897ee1857"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d71debd75bd7890a991a2d03965f0e26ca6cd390cb48a1b8cda496674ead9a26"
+    sha256 cellar: :any,                 arm64_ventura:  "99fc0cf57ca6ccb2fca847f53f5201347e58c10b2a50c9f766319029d57a6556"
+    sha256 cellar: :any,                 arm64_monterey: "3adbd0618b07bd0546aed790ae76275b5a5c4ea4f822f5375b358339f8c73e53"
+    sha256 cellar: :any,                 arm64_big_sur:  "a65d58777535fd4113ba3d9b667d4b7710e51311e218b947f0977d279288fcda"
+    sha256 cellar: :any,                 ventura:        "17604726bbc6db357dfb44a26a2c8ca4cde02c7ff11fc547b940e15c6ae68350"
+    sha256 cellar: :any,                 monterey:       "b7746165e220e043311776189b8739dd8bc6c2b83cb101d409b563a647195ad6"
+    sha256 cellar: :any,                 big_sur:        "60591d316a866bb64d58b718627103ffe1adf71d4665baf491c9c5454bc172ca"
+    sha256 cellar: :any,                 catalina:       "fc559f8e94bc509708df438b830ec4276260e108f91ece47b5a7d3a1293fa498"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2398c2265658796adac35f2494dc97e0bd4fa6e20d1fd7bd70d15ea389782a05"
   end
 
   def install
-    # Use symlinks instead of hardlinks.
-    inreplace "Makefile", "ln $? $@", "$(LN) $? $@"
-
     # Only the targets for which a directory exists will be installed
     bin.mkpath
     lib.mkpath
@@ -55,6 +54,8 @@ class Libgsm < Formula
     ]
     args << "CC=#{ENV.cc} -fPIC" if OS.linux?
 
+    # We need to `make all` to avoid a parallelisation error.
+    system "make", "all", *args
     system "make", "install", *args
 
     # Our shared library is erroneously installed as `libgsm.a`

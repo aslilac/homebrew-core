@@ -1,9 +1,9 @@
 class Gnutls < Formula
   desc "GNU Transport Layer Security (TLS) Library"
   homepage "https://gnutls.org/"
-  url "https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7/gnutls-3.7.6.tar.xz"
-  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.7/gnutls-3.7.6.tar.xz"
-  sha256 "77065719a345bfb18faa250134be4c53bef70c1bd61f6c0c23ceb8b44f0262ff"
+  url "https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7/gnutls-3.7.8.tar.xz"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.7/gnutls-3.7.8.tar.xz"
+  sha256 "c58ad39af0670efe6a8aee5e3a8b2331a1200418b64b7c51977fb396d4617114"
   license all_of: ["LGPL-2.1-or-later", "GPL-3.0-only"]
 
   livecheck do
@@ -12,12 +12,14 @@ class Gnutls < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "23bf1632f4690a1674f87802590e397b64b72c6b0dfea1cbe4515f6f7f19d026"
-    sha256 arm64_big_sur:  "6c5428d026ae41c3b35dc709aeec17778b29ddccf379fb2858a16e4fa96ced38"
-    sha256 monterey:       "2b8debcdd406402ce7894b418b40ff5daea69ac3075a1dc0e8e47508be2e8b93"
-    sha256 big_sur:        "3439b2b048d1242e14ba8eb10e9e55ed4f0a69c8d58f334279cc4cbfeb0d26c2"
-    sha256 catalina:       "8072b6902e177bd75f6d00989adf07b5a482057ce8193025700ce44198bf4d56"
-    sha256 x86_64_linux:   "daafcb2b610958021e9997b314d1cd437fd5bd562026c6dd7844b6721e10dc82"
+    sha256 arm64_ventura:  "be387b61bde3f06d690ab88984d1d8490163f5341d9190cc7d7e40f7afac73df"
+    sha256 arm64_monterey: "2de64828679245123f641ecdc5b166b444f24586184d0d5717b4ac446406009f"
+    sha256 arm64_big_sur:  "4792aaa463b7f12a7ea0ec855f47a37970797b578083a717356a16cd4a4fdad6"
+    sha256 ventura:        "02b9851e94840641c2016e4c04150bee1b6f728163e963197f53138ef185233f"
+    sha256 monterey:       "6bd29803c8373834e2a202a1998fe8b278b65a0dcd828e9b05d76b9be1d5a623"
+    sha256 big_sur:        "838253c281b1e3b9d6381ab37ed31721c77a31efd6afcff7c778bc28ce653f9f"
+    sha256 catalina:       "90fec765342bfc3776982274521d27841557555a7b4eec3dc9740344b988366e"
+    sha256 x86_64_linux:   "c35d31c338bae2286575eee494fc6792b2a3cb7835d2ce3cc984ce9df52f66ed"
   end
 
   depends_on "pkg-config" => :build

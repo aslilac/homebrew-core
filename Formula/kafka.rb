@@ -1,10 +1,11 @@
 class Kafka < Formula
   desc "Open-source distributed event streaming platform"
   homepage "https://kafka.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=kafka/3.2.0/kafka_2.13-3.2.0.tgz"
-  mirror "https://archive.apache.org/dist/kafka/3.2.0/kafka_2.13-3.2.0.tgz"
-  sha256 "cf1599bf4d1e235fb5772f74642fc66643b9ba0749694fbc75299e38a5ced63b"
+  url "https://www.apache.org/dyn/closer.lua?path=kafka/3.3.1/kafka_2.13-3.3.1.tgz"
+  mirror "https://archive.apache.org/dist/kafka/3.3.1/kafka_2.13-3.3.1.tgz"
+  sha256 "18ad8a365fb111de249d3bb8bf3c96cd1af060ec8fb3e3d1fc4a7ae10d9042de"
   license "Apache-2.0"
+  revision 1
 
   livecheck do
     url "https://kafka.apache.org/downloads"
@@ -12,12 +13,15 @@ class Kafka < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a9952d0b9669f253332aba682afbcc9580cecef33bd00eb2b73fdd04e9d6a535"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a9952d0b9669f253332aba682afbcc9580cecef33bd00eb2b73fdd04e9d6a535"
-    sha256 cellar: :any_skip_relocation, monterey:       "c540696b2edfa9d39bb0c422c4f5c4bc6c5554fb3bdd43ab2ce7785ec8d81277"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c540696b2edfa9d39bb0c422c4f5c4bc6c5554fb3bdd43ab2ce7785ec8d81277"
-    sha256 cellar: :any_skip_relocation, catalina:       "c540696b2edfa9d39bb0c422c4f5c4bc6c5554fb3bdd43ab2ce7785ec8d81277"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a9952d0b9669f253332aba682afbcc9580cecef33bd00eb2b73fdd04e9d6a535"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "703d6007e0d87c035bfbbe3805114dd98b9a7fa2ef5b699d8f0201122601facc"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "703d6007e0d87c035bfbbe3805114dd98b9a7fa2ef5b699d8f0201122601facc"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "703d6007e0d87c035bfbbe3805114dd98b9a7fa2ef5b699d8f0201122601facc"
+    sha256 cellar: :any_skip_relocation, ventura:        "95ee3d9f53d3acb9943084057487f2a6a061c4c6175edc43d21487cf52f9b806"
+    sha256 cellar: :any_skip_relocation, monterey:       "95ee3d9f53d3acb9943084057487f2a6a061c4c6175edc43d21487cf52f9b806"
+    sha256 cellar: :any_skip_relocation, big_sur:        "95ee3d9f53d3acb9943084057487f2a6a061c4c6175edc43d21487cf52f9b806"
+    sha256 cellar: :any_skip_relocation, catalina:       "95ee3d9f53d3acb9943084057487f2a6a061c4c6175edc43d21487cf52f9b806"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "703d6007e0d87c035bfbbe3805114dd98b9a7fa2ef5b699d8f0201122601facc"
   end
 
   depends_on "openjdk"
@@ -28,6 +32,15 @@ class Kafka < Formula
     inreplace "config/server.properties",
       "log.dirs=/tmp/kafka-logs", "log.dirs=#{data}/kafka-logs"
 
+    inreplace "config/kraft/server.properties",
+      "log.dirs=/tmp/kraft-combined-logs", "log.dirs=#{data}/kraft-combined-logs"
+
+    inreplace "config/kraft/controller.properties",
+      "log.dirs=/tmp/kraft-controller-logs", "log.dirs=#{data}/kraft-controller-logs"
+
+    inreplace "config/kraft/broker.properties",
+      "log.dirs=/tmp/kraft-broker-logs", "log.dirs=#{data}/kraft-broker-logs"
+
     inreplace "config/zookeeper.properties",
       "dataDir=/tmp/zookeeper", "dataDir=#{data}/zookeeper"
 
@@ -37,7 +50,7 @@ class Kafka < Formula
     libexec.install "libs"
 
     prefix.install "bin"
-    bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env)
+    bin.env_script_all_files(libexec/"bin", Language::Java.overridable_java_home_env)
     Dir["#{bin}/*.sh"].each { |f| mv f, f.to_s.gsub(/.sh$/, "") }
 
     mv "config", "kafka"

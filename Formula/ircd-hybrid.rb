@@ -1,8 +1,8 @@
 class IrcdHybrid < Formula
   desc "High-performance secure IRC server"
   homepage "https://www.ircd-hybrid.org/"
-  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.40/ircd-hybrid-8.2.40.tgz"
-  sha256 "3c3d2373487a60f76552a69d5249530ce3f57bf67338d52a9a341e14884e89a1"
+  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.43/ircd-hybrid-8.2.43.tgz"
+  sha256 "bd0373c780e308c1a6f6989015ff28e1c22999ef764b7b68636b628573c251ef"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,15 +11,17 @@ class IrcdHybrid < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "0f6c13a829545e5a796acba88ad42678dd2f4908a965bf5cf89619455a8ae6b4"
-    sha256 arm64_big_sur:  "c8adfa269bbfe8f34d94a2542dc9680e21cb42a2bbbb01e9b8477deee29ba60f"
-    sha256 monterey:       "81cb7493f3bd8bded4c0bbbb64d57feba05945a0de83379c8204bd7e3d7a1f02"
-    sha256 big_sur:        "6b459c58b58c78f890cf0353d5e39b2d00db17ff26c2f399f46533e8ab01e80a"
-    sha256 catalina:       "af39380538d12d8956ac1cf349698c0c19fa6b24d45f1155a70eac6b7c12a1c2"
-    sha256 x86_64_linux:   "6fcde9901e6be907170d00bce83f718739ba871b6a901d2b505b814a0a6c8722"
+    sha256 arm64_ventura:  "6a81e2c060cd566f402869f96af0ed8c64a0ed34bab832d647e7376b55b208ff"
+    sha256 arm64_monterey: "8278654b1edca6191c1d549e796919b6836e524feb4a59b44860f817965b81da"
+    sha256 arm64_big_sur:  "b3927d1e5ddbfb44800b02eee5fd9fe88fc597589f3810fd1fd41deb20713f4a"
+    sha256 ventura:        "5a528cd1893e00df7ccbfe9b9fb324dc3574da86c6a358113ded14fe7e2407bb"
+    sha256 monterey:       "c7ffbfb6de2e476e248bd63c2b963abee68e684ce4aac3042c9406e12ecad09e"
+    sha256 big_sur:        "2eea0b23275797fe30f9095cbaebb167d707a08250bc66f5a0c729851bba7776"
+    sha256 catalina:       "2a1ce03715e20c3fb69c1716362471a7d1ee2ed4230c8db80347c7ef42986b7e"
+    sha256 x86_64_linux:   "e2bd735a173dbb77da8bb51a30b82844d4225f4ee2e3056c2afbc5c624c623be"
   end
 
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
 
   uses_from_macos "libxcrypt"
 
@@ -36,7 +38,7 @@ class IrcdHybrid < Formula
                           "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
                           "--sysconfdir=#{etc}",
-                          "--enable-openssl=#{Formula["openssl@1.1"].opt_prefix}"
+                          "--enable-openssl=#{Formula["openssl@3"].opt_prefix}"
     system "make", "install"
     etc.install "doc/reference.conf" => "ircd.conf"
   end

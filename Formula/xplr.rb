@@ -1,18 +1,19 @@
 class Xplr < Formula
   desc "Hackable, minimal, fast TUI file explorer"
   homepage "https://github.com/sayanarijit/xplr"
-  url "https://github.com/sayanarijit/xplr/archive/v0.19.0.tar.gz"
-  sha256 "3ffd1c6caf6d77b50744ba0c4166c149c8bb4bf66ad3012292bc54b4064d3779"
+  url "https://github.com/sayanarijit/xplr/archive/v0.20.1.tar.gz"
+  sha256 "5a1fcc5929c4ec0f2852a8582e378df4c80ec9e75eedb04370457430aee6a697"
   license "MIT"
   head "https://github.com/sayanarijit/xplr.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fce72347ae7ce788a19528dbf273fca08f3640e6346d97f5075f803e5fb7c8eb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7cbeb5c6e0426879f3a9a8e0cb29c4bddbe07c5ce12480c99b504bffcb80f8b2"
-    sha256 cellar: :any_skip_relocation, monterey:       "eb83c45e01a9acf43f1d828b9c5759e57bb582dd44c3d29077e57ae7e571860e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "1ec024983b2061891472ebf67427b315095b17bc02fc263b3fc722f0bba8d56e"
-    sha256 cellar: :any_skip_relocation, catalina:       "6f1d12c9d764fd9bfd90e0f641ea86b478390d44a5253989621c5b7da373b08c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "43387b5167054d1d7ce6a76bbd267a274279172ab7c5ab97506d534c13bc06ea"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "aaca13180ea8a8fda0b5cebf660ad7de5c95610db02c4dfb31c5b85648012308"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ffccfdec9f64ae0397a3743c4289bc8e11c8f05e74f21efcd254cb4162303d81"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5d5ff27c118c46acce0f97d43122998acf7fdab21db7b36ea46e68e558bcacf1"
+    sha256 cellar: :any_skip_relocation, ventura:        "c9db10c0ce23450b413d0e42ed9f68c7d76dda86eb0992d5499629c156198aba"
+    sha256 cellar: :any_skip_relocation, monterey:       "08a6f0435835fe7a9b1ab3c16e7af0eaba5f96274e204f836b46f090cdeb9e68"
+    sha256 cellar: :any_skip_relocation, big_sur:        "0f05fb68868c4fd0eb61943cfaff3a5e26503bc0b5d9e0c50e2d16e5723c645f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "68e2277479bc67932d61aee527a417ce6c5a0953392816fc3519e48ff40de42d"
   end
 
   depends_on "rust" => :build

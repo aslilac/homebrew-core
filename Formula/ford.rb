@@ -3,22 +3,24 @@ class Ford < Formula
 
   desc "Automatic documentation generator for modern Fortran programs"
   homepage "https://github.com/Fortran-FOSS-Programmers/ford"
-  url "https://files.pythonhosted.org/packages/1c/80/a8750198772c8647aa2c8d1459d5d8dbedd317a2ba18fdad73802073e1d5/FORD-6.1.13.tar.gz"
-  sha256 "95b743ea25c5a9c6a9e13db3633e04f91e11d1debb69f48ca3ef7fefc51f0559"
+  url "https://files.pythonhosted.org/packages/14/89/156df5d59836a39a5d11d65f81135d0338a33023188ff8aa5e7b29764919/FORD-6.1.17.tar.gz"
+  sha256 "10f8cc19517ea6b8308251e59286a793c9bc47098c33da3528aca16a08143908"
   license "GPL-3.0-or-later"
   head "https://github.com/Fortran-FOSS-Programmers/ford.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e30c75bc66985872ca061915d73c6a0fbb5acf8d2a357429c666b40cb7238796"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4090c066a1046d91e2717929e3d934a852427b5e8e6932d5c58a1f149a2f0932"
-    sha256 cellar: :any_skip_relocation, monterey:       "97f6fc98e88524c1d6483501f4a80d59eff476510c6c3eab95ccb4f726af0b68"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d2202d8ab39f1aae07eceed1400e3fa002df838d84e41fcd8a6af62546803399"
-    sha256 cellar: :any_skip_relocation, catalina:       "7d56b3bc4f14b283ad116f2376e68b94e0dff0bf9ffb1b52571dd05e15987f9c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "12e38adb4a3d2b4eed5d9852a70d663ce6938e2d74ee86e7c586183266cc85a7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "293fa584b1cb58340f1eedf51ec8bed77cde2ee1510b0e033172f4e8a5ac059b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "17223b93b09b2c55907b63f0bf10ecbcbe3c8c8eb3ad3f613a8900ef7786c95a"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "36fe3fc113050595e8aec53cf4af937b4bfdb4bda034492b34e6eb51126c0ede"
+    sha256 cellar: :any_skip_relocation, ventura:        "cf807db6995c308a486aefdfee4ed1b712b9af63f654ee8e47799dd324587f02"
+    sha256 cellar: :any_skip_relocation, monterey:       "75687c3aa866ec1c93119ac3a4279fc5e5ec7dc136688d6f1d9d8eb73d0dd21d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "28c8d7b6db281d2f4c7870567226d15ac71d48df3fa91fa298eb1d4ca6f5fa9a"
+    sha256 cellar: :any_skip_relocation, catalina:       "f5d1c31c54375c2d48ae50310e1fa87850732fad5bd7e77c255a966c6710a04f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "19504bb39904011a6d09d4cef63c810ead970f458aa22a2b4c82a12abc4db809"
   end
 
   depends_on "graphviz"
-  depends_on "python@3.9"
+  depends_on "python@3.11"
 
   uses_from_macos "libxml2"
   uses_from_macos "libxslt"
@@ -29,13 +31,8 @@ class Ford < Formula
   end
 
   resource "graphviz" do
-    url "https://files.pythonhosted.org/packages/43/ae/a0ee0dbddc06dbecfaece65c45c8c4729c394b5eb62e04e711e6495cdf64/graphviz-0.20.zip"
-    sha256 "76bdfb73f42e72564ffe9c7299482f9d72f8e6cb8d54bce7b48ab323755e9ba5"
-  end
-
-  resource "importlib-metadata" do
-    url "https://files.pythonhosted.org/packages/3e/1d/964b27278cfa369fbe9041f604ab09c6e99556f8b7910781b4584b428c2f/importlib_metadata-4.11.3.tar.gz"
-    sha256 "ea4c597ebf37142f827b8f39299579e31685c31d3a438b59f469406afd0f2539"
+    url "https://files.pythonhosted.org/packages/a5/90/fb047ce95c1eadde6ae78b3fca6a598b4c307277d4f8175d12b18b8f7321/graphviz-0.20.1.zip"
+    sha256 "8c58f14adaa3b947daf26c19bc1e98c4e0702cdc31cf99153e6f06904d492bf8"
   end
 
   resource "Jinja2" do
@@ -44,13 +41,14 @@ class Ford < Formula
   end
 
   resource "Markdown" do
-    url "https://files.pythonhosted.org/packages/d6/58/79df20de6e67a83f0d0bbfe6c19bb82adf68cdf362885257eb01099f930a/Markdown-3.3.7.tar.gz"
-    sha256 "cbb516f16218e643d8e0a95b309f77eb118cb138d39a4f27851e6a63581db874"
+    url "https://files.pythonhosted.org/packages/85/7e/133e943e97a943d2f1d8bae0c5060f8ac50e6691754eb9dbe036b047a9bb/Markdown-3.4.1.tar.gz"
+    sha256 "3b809086bb6efad416156e00a0da66fe47618a5d6918dd688f53f40c8e4cfeff"
   end
 
+  # upstream issue with pypi artifact, https://github.com/cmacmackin/markdown-include/issues/35
   resource "markdown-include" do
-    url "https://files.pythonhosted.org/packages/34/ce/289d5d459c274a59379f79af95f3f36ae29cb9d787206ad9b45dda48e3ce/markdown-include-0.6.0.tar.gz"
-    sha256 "6f5d680e36f7780c7f0f61dca53ca581bd50d1b56137ddcd6353efafa0c3e4a2"
+    url "https://github.com/cmacmackin/markdown-include/archive/refs/tags/v0.7.0.tar.gz"
+    sha256 "5944cac326e3f071188ce902c6edeacbf5ae7c33273875594debf93e5d850a72"
   end
 
   resource "MarkupSafe" do
@@ -79,13 +77,8 @@ class Ford < Formula
   end
 
   resource "tqdm" do
-    url "https://files.pythonhosted.org/packages/98/2a/838de32e09bd511cf69fe4ae13ffc748ac143449bfc24bb3fd172d53a84f/tqdm-4.64.0.tar.gz"
-    sha256 "40be55d30e200777a307a7585aee69e4eabb46b4ec6a4b4a5f2d9f11e7d5408d"
-  end
-
-  resource "zipp" do
-    url "https://files.pythonhosted.org/packages/cc/3c/3e8c69cd493297003da83f26ccf1faea5dd7da7892a0a7c965ac3bcba7bf/zipp-3.8.0.tar.gz"
-    sha256 "56bf8aadb83c24db6c4b577e13de374ccfb67da2078beba1d037c17980bf43ad"
+    url "https://files.pythonhosted.org/packages/c1/c2/d8a40e5363fb01806870e444fc1d066282743292ff32a9da54af51ce36a2/tqdm-4.64.1.tar.gz"
+    sha256 "5f4f682a004951c1b450bc753c710e9280c5746ce6ffedee253ddbcbf54cf1e4"
   end
 
   def install
@@ -161,7 +154,7 @@ class Ford < Formula
         end program
       EOS
     end
-    system "#{bin}/ford", testpath/"test-project.md"
+    system bin/"ford", testpath/"test-project.md"
     assert_predicate testpath/"doc"/"index.html", :exist?
   end
 end

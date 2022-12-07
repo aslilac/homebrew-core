@@ -1,8 +1,8 @@
 class Netdata < Formula
   desc "Diagnose infrastructure problems with metrics, visualizations & alarms"
   homepage "https://netdata.cloud/"
-  url "https://github.com/netdata/netdata/releases/download/v1.35.1/netdata-v1.35.1.tar.gz"
-  sha256 "587f6cce421015f8e0a527e3964a4de8cc17085c354498150bc3ade21606bbf9"
+  url "https://github.com/netdata/netdata/releases/download/v1.37.1/netdata-v1.37.1.tar.gz"
+  sha256 "2caa042d43ca61007a61294a5ececa037d83a1973bd38032233760341eb1706b"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,12 +11,13 @@ class Netdata < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "b453a9a214be03bd782fd5e5e405e4bb1cb33fbe45d1ed5b665717c74ad287c1"
-    sha256 arm64_big_sur:  "9e3ccea3115802299c8fec5742acb89a893f52369265eaf331586789c9c5b6d8"
-    sha256 monterey:       "b8bcea223e3e6d3d38e5308ab7a7046abe494ab4b2ea994a0cf86431d2b7f147"
-    sha256 big_sur:        "32dbfce916b9214d3f269b7a90ac1c346d4c0162b3902552e1d3f9a3489918c0"
-    sha256 catalina:       "e79b608cda465dc40823cbbf3b12256c4fa54e82ac51116909dde86d82980748"
-    sha256 x86_64_linux:   "6cc6cb7ae6e33c338d07877b12008bd88d34dca6b8e3c96fd7bc2969cd29c283"
+    sha256 arm64_ventura:  "c1fe430f5ce88d9ea72fcf0493c0582a689bacd15507e1b7b5799f8dee662a99"
+    sha256 arm64_monterey: "3de0b861ac33fd618b0838e8c6c9dadd12ceca54029ad324a37d6a7edf18bd68"
+    sha256 arm64_big_sur:  "c656b23f80a25c748c8b2037b5bc9b47441b064d03d5d62b0b06e509eb7fe01b"
+    sha256 ventura:        "2f2ef21920aefbcb8f153814ad98ac0131bd6531292d450ff5fa620a4b4cef77"
+    sha256 monterey:       "98853a637787115a4ebdd12f29c87003630d51b8ca1d322610ca5d791820f6e7"
+    sha256 big_sur:        "85c3e741ae039fde4c90907143745a15fa669ea4691c36a07660ce9a0cf4bcbe"
+    sha256 x86_64_linux:   "534611878c9a565efbd45c1ea6c23744af699576b72786b274b8a4caf0cface8"
   end
 
   depends_on "autoconf" => :build
@@ -25,7 +26,7 @@ class Netdata < Formula
   depends_on "json-c"
   depends_on "libuv"
   depends_on "lz4"
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
   depends_on "protobuf-c"
 
   uses_from_macos "zlib"
@@ -40,6 +41,9 @@ class Netdata < Formula
   end
 
   def install
+    # https://github.com/protocolbuffers/protobuf/issues/9947
+    ENV.append_to_cflags "-DNDEBUG"
+
     # We build judy as static library, so we don't need to install it
     # into the real prefix
     judyprefix = "#{buildpath}/resources/judy"

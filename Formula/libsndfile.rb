@@ -4,6 +4,7 @@ class Libsndfile < Formula
   url "https://github.com/libsndfile/libsndfile/releases/download/1.1.0/libsndfile-1.1.0.tar.xz"
   sha256 "0f98e101c0f7c850a71225fb5feaf33b106227b3d331333ddc9bacee190bcf41"
   license "LGPL-2.1-or-later"
+  revision 1
 
   livecheck do
     url :stable
@@ -12,12 +13,14 @@ class Libsndfile < Formula
 
   bottle do
     rebuild 1
-    sha256 cellar: :any,                 arm64_monterey: "230aeebecdac8844737f4d4a83ad6c337b2fe58866dbaf140f9b94d72405c86c"
-    sha256 cellar: :any,                 arm64_big_sur:  "6d19ec5ab5743e79fd49ae7155d062c262c324809e24f798e7be02c386a3b058"
-    sha256 cellar: :any,                 monterey:       "ac4657b0a1614c0eec103a32d1ddc01a357272995cb72beaa7df9568d1ecf78d"
-    sha256 cellar: :any,                 big_sur:        "0878aea928e51a22ba735372f4c3a6f2a144b8b63481c5a4667161747acc2e2f"
-    sha256 cellar: :any,                 catalina:       "a16623865682e6fd8bfe3751d2f1f72eedba36b90cd09dde3d5d5e378b669f74"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d628a31397f0c0f7bf691b526f05fbac3167705d6f6cd9a474a84621eeeefda9"
+    sha256 cellar: :any,                 arm64_ventura:  "7cdb108767e5974753eaf68d0b709d309d46c4aa4dfe997ca9b7d88f7c8d4f87"
+    sha256 cellar: :any,                 arm64_monterey: "6355d1153204ae329ffdd4573a5585acf3658ef37d25dc28583c6451d7b014e0"
+    sha256 cellar: :any,                 arm64_big_sur:  "0f7cbb29a5fe0c69ce74965ed33ac66455b7e849954c102e58566d9101144491"
+    sha256 cellar: :any,                 ventura:        "1db3fa5ec99cc7d615bf8e3345ad05442ee469915830999a603e82cfa81560b9"
+    sha256 cellar: :any,                 monterey:       "39def1916e1e36ea8ed47dbcaf57bd858f57e5ac2153a3304a2785f666a25d64"
+    sha256 cellar: :any,                 big_sur:        "90d04f9535380ce27d3bd064fceaaa246c6ecc5d31d0885a4dda1c8da6335ddf"
+    sha256 cellar: :any,                 catalina:       "d0e19056bec6f6cf698996f4909d8e5bb61114498c51b36cf23a1d87414a6967"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bc1b43c72b5fd140d1d4292918d2e3ba5e4d8b911e094473d6f3739d18a1b97f"
   end
 
   depends_on "autoconf" => :build
@@ -25,9 +28,13 @@ class Libsndfile < Formula
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
   depends_on "flac"
+  depends_on "lame"
   depends_on "libogg"
   depends_on "libvorbis"
+  depends_on "mpg123"
   depends_on "opus"
+
+  uses_from_macos "python" => :build
 
   # Fix unsubstituted variable @EXTERNAL_MPEG_LIBS@ in sndfile.pc
   # PR ref: https://github.com/libsndfile/libsndfile/pull/828
@@ -39,7 +46,7 @@ class Libsndfile < Formula
 
   def install
     system "autoreconf", "-fvi"
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 

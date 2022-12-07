@@ -1,27 +1,32 @@
 class Texinfo < Formula
   desc "Official documentation format of the GNU project"
   homepage "https://www.gnu.org/software/texinfo/"
-  url "https://ftp.gnu.org/gnu/texinfo/texinfo-6.8.tar.xz"
-  mirror "https://ftpmirror.gnu.org/texinfo/texinfo-6.8.tar.xz"
-  sha256 "8eb753ed28bca21f8f56c1a180362aed789229bd62fff58bf8368e9beb59fec4"
-  license "GPL-3.0"
+  url "https://ftp.gnu.org/gnu/texinfo/texinfo-7.0.1.tar.xz"
+  mirror "https://ftpmirror.gnu.org/texinfo/texinfo-7.0.1.tar.xz"
+  sha256 "bcd221fdb2d807a8a09938a0f8d5e010ebd2b58fca16075483d6fcb78db2c6b2"
+  license "GPL-3.0-or-later"
 
   bottle do
-    sha256 arm64_monterey: "6b185cadbb07d199bf703390b6e3f0ca33ee7a4c2aa7efa685ebaeee9609323a"
-    sha256 arm64_big_sur:  "d83beb6d79c93216c6f33021cd23aeea041d9691d4d5efc0bf43ab15562a3fed"
-    sha256 monterey:       "0ba38973389c7e3c37241a4d1730c2686feb51ddfd3f275059af268f44302aff"
-    sha256 big_sur:        "93c4e7f7aa503611ad5907b1c702bb89d7fc9a5cfc0866b78378b7bef7a72480"
-    sha256 catalina:       "8cd8f1a20368b94f4de10dbfc4c39429cc9d1ad7680dcb160635be49afc598af"
-    sha256 mojave:         "9d2c152bff37873f4ac78165161c6f3e338599c3ae55782690f3f9a8a6d8d749"
-    sha256 x86_64_linux:   "9addf0b22ab845a8071f0d3dc742c65de4fde1a06a7f41df5cccb2e1c9f6afe2"
+    sha256 arm64_ventura:  "2ad2c341570b96e5d1d139abe0c7070c03b731645da4c1a3aa14b02516372c6e"
+    sha256 arm64_monterey: "594597765c2aa357c136322606b1bd5bf04465cc0330c698269e8ad3cb9d5875"
+    sha256 arm64_big_sur:  "57f426550721aacfe39fb53fc7d88c341c8670d2e738028495cea98d1a716277"
+    sha256 ventura:        "d34cea65a60480591758dded9219f6a145c5778aac009bb84f62b1289a2ef380"
+    sha256 monterey:       "66f27d06a7b00f627d677d35b1309ef3c2c4dd2eb2420904e451d56027eadeac"
+    sha256 big_sur:        "2fa5239618395f422b1554a15f1ed45933bbc621dc4439792aa46315a38f842f"
+    sha256 x86_64_linux:   "01afbaca71a6acb6dd68bec6e97ff75c3d66833036a8d64523810def13bb34fd"
   end
-
-  depends_on "gettext" if MacOS.version <= :high_sierra
-
-  keg_only :provided_by_macos
 
   uses_from_macos "ncurses"
   uses_from_macos "perl"
+
+  # texinfo has been removed from macOS Ventura.
+  on_monterey :or_older do
+    keg_only :provided_by_macos
+  end
+
+  on_system :linux, macos: :high_sierra_or_older do
+    depends_on "gettext"
+  end
 
   def install
     system "./configure", "--disable-dependency-tracking",

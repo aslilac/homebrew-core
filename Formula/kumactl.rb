@@ -1,8 +1,8 @@
 class Kumactl < Formula
   desc "Kuma control plane command-line utility"
   homepage "https://kuma.io/"
-  url "https://github.com/kumahq/kuma/archive/1.7.0.tar.gz"
-  sha256 "6c62b9f8d34c53cd3eb92914e5828ed9a4036251c8d812c47fcdbdcf56fc4aa8"
+  url "https://github.com/kumahq/kuma/archive/2.0.1.tar.gz"
+  sha256 "6af898d0df501c8398667f0f127bb77c379022a488c20fec7892b740377e6a88"
   license "Apache-2.0"
 
   livecheck do
@@ -11,12 +11,13 @@ class Kumactl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c1737f54d79bb9b13f129d467e629e8dbd3d48767f08695df57a3862b3c1a225"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a46df0ed8dcb4bc791245bd6d98a42c6d3baac74990e7d45d26eddf4ff012d11"
-    sha256 cellar: :any_skip_relocation, monterey:       "0cbd339e275645f07407567f23d1425921bb1db9f397ae3fa4bf39f8ffe549bf"
-    sha256 cellar: :any_skip_relocation, big_sur:        "6bf0f70c291bde3d0f62acbfd4e230ca8307daaa1242fb4eecfd268005b35982"
-    sha256 cellar: :any_skip_relocation, catalina:       "9495203eba813725b643798cd04adb7f78282f82d1fc59b5b8e8d70faa307239"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1aaa59c7e5b3592d2c15c47664c2ba87d2c0e3f61e53666835fa47fdb7a758bf"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e14008c416ade9db640e0e9bfabfc5a3c20c15087e8a715d668418bf6d47c838"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "16bd0223de49d22b7b54a794999bc569debaf58d54f596851419106c8a56c6a9"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3f0d5b990849944508a65aa6ef911415929a4d1c15dd27251299d8e98bb669f1"
+    sha256 cellar: :any_skip_relocation, ventura:        "f6e9a500142abfaba0b0a601b0b8a39395f0a0b6653d5c9869cfc13b387b7357"
+    sha256 cellar: :any_skip_relocation, monterey:       "c14e4ac73bb5d6e5929ad7916b3756fab8665954fdbc204b53ab99e86776b1b3"
+    sha256 cellar: :any_skip_relocation, big_sur:        "09d84200916201dd16fde96e9e0a7d8d778958f33bdbce698f5a1cb23bbddbc3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a6b34fe1267919190befaeb34df99d7d3abc549411be8e2d2aee72270d2b5d37"
   end
 
   depends_on "go" => :build
@@ -31,14 +32,7 @@ class Kumactl < Formula
 
     system "go", "build", *std_go_args(ldflags: ldflags), "./app/kumactl"
 
-    output = Utils.safe_popen_read("#{bin}/kumactl", "completion", "bash")
-    (bash_completion/"kumactl").write output
-
-    output = Utils.safe_popen_read("#{bin}/kumactl", "completion", "zsh")
-    (zsh_completion/"_kumactl").write output
-
-    output = Utils.safe_popen_read("#{bin}/kumactl", "completion", "fish")
-    (fish_completion/"kumactl.fish").write output
+    generate_completions_from_executable(bin/"kumactl", "completion")
   end
 
   test do

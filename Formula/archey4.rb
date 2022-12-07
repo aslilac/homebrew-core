@@ -3,26 +3,29 @@ class Archey4 < Formula
 
   desc "Simple system information tool written in Python"
   homepage "https://github.com/HorlogeSkynet/archey4"
-  url "https://files.pythonhosted.org/packages/be/f1/48885ef271b76ac590e239c04531af48009b85b54b60c1d2afba9b0bf463/archey4-4.13.4.tar.gz"
-  sha256 "9813ed0a1d5131756375e4113e6b158723d299353dab3d51b6ac0420af402e2c"
+  url "https://files.pythonhosted.org/packages/7e/6b/ccab7e74a8c9cf79a82912508d741bbb78219c307cc0daef219c2dc802c9/archey4-4.14.0.1.tar.gz"
+  sha256 "349e462d530491f17526441261bea3d0cd1b2430b69f5eaa03054961b918e1d1"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "41ddb1507784fabcc850020343fd218a3550a45b837a3ef67467cb52945c873c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "45e747c8cdf4b78d7600910803f3651694472044a6228222507bf07c99ec3a12"
-    sha256 cellar: :any_skip_relocation, monterey:       "954a64e2166de9a4819c80b5af70de71c466ac4266116580ade432d31bcb564d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "af7eaa81198e4469d4f929dfb0710f17cb9071201929791c6e5b107343c6e86a"
-    sha256 cellar: :any_skip_relocation, catalina:       "2d54f4f054f4c28b2622c158cf30ad023100994e245490eea9307fda36529ba2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ac16d29ad8c1354679cebb649399298c6b01975f75fe6cc601076343d712b83a"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e671e4010ac734aeea3a07bd8c73f112e4b7e2ec63c56d0a604e9270897c3f7d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "82e733ff22e9672f4c481ffba502e8b91e3dc417857e5ee004948cdebbe864e7"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8c15c7c4c86f81cb92cafde76dce1bde8887a0b42aecc674ffc5b24603c4efbd"
+    sha256 cellar: :any_skip_relocation, ventura:        "eb70e113b2746752602a8fd3baa347d2aac1760a921b0096b22079ae2c4784a5"
+    sha256 cellar: :any_skip_relocation, monterey:       "e37569399a3494c36af12545a0d11220a772770feb8817b8e93a6e82315b20cb"
+    sha256 cellar: :any_skip_relocation, big_sur:        "351ec9affc5272bf3b4ca9a16f27bd113f61c526f495488aff3c13872b1b6fef"
+    sha256 cellar: :any_skip_relocation, catalina:       "e6fac4e403690a15257ae925992f0b6ce496994de2ad3fc35128b4918598b789"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0d08071b13a32148196c4affa001eb5c9c3684571e09e22b0ebbbc89112994ab"
   end
 
-  depends_on "python@3.10"
+  depends_on "python@3.11"
 
   conflicts_with "archey", because: "both install `archey` binaries"
 
   resource "distro" do
-    url "https://files.pythonhosted.org/packages/b5/7e/ddfbd640ac9a82e60718558a3de7d5988a7d4648385cf00318f60a8b073a/distro-1.7.0.tar.gz"
-    sha256 "151aeccf60c216402932b52e40ee477a939f8d58898927378a02abbe852c1c39"
+    url "https://files.pythonhosted.org/packages/4b/89/eaa3a3587ebf8bed93e45aa79be8c2af77d50790d15b53f6dfc85b57f398/distro-1.8.0.tar.gz"
+    sha256 "02e111d1dc6a50abb8eed6bf31c3e48ed8b0830d1ea2a1b78c61765c2513fdd8"
   end
 
   resource "netifaces" do

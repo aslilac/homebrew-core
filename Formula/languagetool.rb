@@ -2,8 +2,8 @@ class Languagetool < Formula
   desc "Style and grammar checker"
   homepage "https://www.languagetool.org/"
   url "https://github.com/languagetool-org/languagetool.git",
-      tag:      "v5.8",
-      revision: "82e790a7d6aee95ca68e8212cd68706f5e6378ea"
+      tag:      "v5.9",
+      revision: "f8931bebf2f654974620baa179ce856f94dc776a"
   license "LGPL-2.1-or-later"
   head "https://github.com/languagetool-org/languagetool.git", branch: "master"
 
@@ -13,12 +13,14 @@ class Languagetool < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2831fd09e7f8c64a12c5292d6f7e8864a92001516b71e33e82ee5ffd81166760"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7f79d56a4e846aa59f7b46530f11d14cdc73e8551fba2d51d144fa8a7357002e"
-    sha256 cellar: :any_skip_relocation, monterey:       "5e5d57f0b5741976fc58927498cc8a71de4d846fc336f71f42a22138aa7d2b3d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9929cedd8f5632101e4b71eea5ccb69dd0f5ff94698aad9eaf0edf3193806ea3"
-    sha256 cellar: :any_skip_relocation, catalina:       "b9717fbbfdc8bbf42053ffc01f7bde2cbedb5960474a848c5ec8043ae4d9e1e8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a25e2b80d402d560f6f5c0c456c36348b28340f6c22e02225a66157026655d6e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7acf8bc0f9ce92f28d9eaa8b9e0f277155723c0d340e602084eff8f5c299ae1b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a547119fbcadfa0929159a2e21fbc70d3c767aaa45c731e2cf98cc8bea0ee182"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0511102dd9fe9218e35dd89dd76cc5625d331d6c9d31f36bf4c2fe6d7bfdc709"
+    sha256 cellar: :any_skip_relocation, ventura:        "5ec6d3e5d177ee966d1a73e63bb5d74f448d01a956f5b41a979c79cbdffabc6e"
+    sha256 cellar: :any_skip_relocation, monterey:       "832468757ace167aa5948b5b67d9e525666328a1ec715d8fb17be477baddb167"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d8183f7c15a75d3a712a02c0e579e08bfe1ba2f0d6d91adb37775dce7f0cf4cf"
+    sha256 cellar: :any_skip_relocation, catalina:       "cc9e47cf0a201c68c2a0565a41621c0448a3fbf92006c1c0fb1f4ceca32047aa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0dce46230a1c6d197402f69d2d2c686728899c0356f1073c5464d58d1395ca60"
   end
 
   depends_on "maven" => :build

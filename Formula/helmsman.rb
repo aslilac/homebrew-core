@@ -2,18 +2,20 @@ class Helmsman < Formula
   desc "Helm Charts as Code tool"
   homepage "https://github.com/Praqma/helmsman"
   url "https://github.com/Praqma/helmsman.git",
-      tag:      "v3.12.0",
-      revision: "981c30db4d85918fa8912944d0cc9a383b1bb522"
+      tag:      "v3.15.1",
+      revision: "a7c9de866fb34d97034d41bcc281ea40ab256988"
   license "MIT"
   head "https://github.com/Praqma/helmsman.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "75b7d221b0e0c7173e20046e0ec77bcdabb5d763041d8fc47b4995790314dced"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8692d7b607a83476108ae63ff14ab573d607913ca54b5e4f797fe7210e692f93"
-    sha256 cellar: :any_skip_relocation, monterey:       "eaf8895969daab38b3dc8fdaa22948df366028b3caeb869a65f8899b412adc2a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0f8fd77200bde73a98bcf287a5505aff8d520f94f71257ee88907db3e6098b06"
-    sha256 cellar: :any_skip_relocation, catalina:       "2e4c7d22522009eae87aa3327cc85b78482d1e7fd0a2e80212d8065a348fe7c7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f2c0f7c45c760442b7948517938fe2c4508df1fd3ce770e0cef4ff4ae589b4ad"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "460697110b26cf9da4d31c9ab41d927fb25a2ca1e936ba007193c1f595eb059c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "599d7a3c44e940f7f035600fefd463e03f8b395d350f27cb9d73ac805cd19fd4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "88aeb301df5606aef7dbcfb6720bcd3bd2ff1735cdab992f762c88d24a2e5d95"
+    sha256 cellar: :any_skip_relocation, ventura:        "9b47ccf2181781672283a4c0c4e822b6633012b55bde32f5d678647702b62f3d"
+    sha256 cellar: :any_skip_relocation, monterey:       "5182f383a67e16e22b076f6ae12162a1c05e5798d106778b3f298518ff7a1e97"
+    sha256 cellar: :any_skip_relocation, big_sur:        "0875d3c35d730f21396c81d541fce6e4047e0da9a47d2b1b01a35d490b9df99c"
+    sha256 cellar: :any_skip_relocation, catalina:       "e5a6a961f24f3a1a8c0f4b5cbac24566224bef68c1ec8eb9de414660f68cd276"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1404ff1fc139efb8467e22ddbf9d399f997994ebd375ad6bda628ab6a233b324"
   end
 
   depends_on "go" => :build

@@ -2,18 +2,19 @@ class Chezmoi < Formula
   desc "Manage your dotfiles across multiple diverse machines, securely"
   homepage "https://chezmoi.io/"
   url "https://github.com/twpayne/chezmoi.git",
-      tag:      "v2.18.1",
-      revision: "89f8b0ea0aa4e3add6e1bd2706d3db22373968c8"
+      tag:      "v2.27.3",
+      revision: "feab4e788831e803d84a544739dfb8188245deae"
   license "MIT"
   head "https://github.com/twpayne/chezmoi.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1d9ddc70c9e675345a6b32e904ca0e8ab7d3271cb8462bc39b36d62112385621"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bc6d681e1ddffce1b1fd92b91facbdd5207882ad662c14a3aefa0d8d8a927e9c"
-    sha256 cellar: :any_skip_relocation, monterey:       "b4ec9d4b9f6311a5536d1f5471b033e8f6b82eda86872c6c352c42f5e1a0d865"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c22778fe212a04002ce9fa05e7c5a458685c0364641f25e320348cc64d6de2dd"
-    sha256 cellar: :any_skip_relocation, catalina:       "96b3870a78a351d9ca511f25432570403f2d8ac59fda44ceac7d4547ee11828c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6b791d08a2003ac634c4fed8ad8e96532b94737ed041ad5f253101a74c11c90a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ca5c2d696ce7f7d9b196087a31f95a6d8109682f6e73fcb64105c8f354745a3f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2e9c613f2a5e9c8a470cf20bc0b5341e6a45b232917904f2d2f00ce9f304aa9e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "24206bf79c36a80355df6b5544f27b4f42a5818b47e166e9ff34b8493491272e"
+    sha256 cellar: :any_skip_relocation, ventura:        "07de307ff68eaa0a18321027cba9f026276a24b37331966c3fbf427950b1b917"
+    sha256 cellar: :any_skip_relocation, monterey:       "476d3e330d72ae0388710aec9004bc392b4c0441fd1522c076d1b67a5ce4887e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "2662f381c9acc248298f1cdef9be94f47185997f000221d597a417c643d54468"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2d998e93d981356d285318f9a636ccba64b44f74c44e7cd3462e1c300b2954f0"
   end
 
   depends_on "go" => :build

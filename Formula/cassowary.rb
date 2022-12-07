@@ -1,18 +1,20 @@
 class Cassowary < Formula
   desc "Modern cross-platform HTTP load-testing tool written in Go"
   homepage "https://github.com/rogerwelin/cassowary"
-  url "https://github.com/rogerwelin/cassowary/archive/refs/tags/v0.14.1.tar.gz"
-  sha256 "1f10e23af218d661e8493e111d425da0ef6f4408d845a473fdbaf45dd6e2d94d"
+  url "https://github.com/rogerwelin/cassowary/archive/refs/tags/v0.16.0.tar.gz"
+  sha256 "672981232e2ae859f831de5d3e5a9f0c749739bcc41c0b17d511ca186ff56b93"
   license "MIT"
   head "https://github.com/rogerwelin/cassowary.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "51cc4994f99f679935450d266d095b3181a6ea881ed3557ba8de708666dca0cc"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "35468f258ee836f1aea6b6e6bdf540fb50ae475c1af3e5d164fc9058088ddd7d"
-    sha256 cellar: :any_skip_relocation, monterey:       "0d2b43d7d17e11efdab072de93497b89ed93416cf2682c3c721ef77d2aa8b778"
-    sha256 cellar: :any_skip_relocation, big_sur:        "26959efc426320546612ddefe82338fae95639304e5bdd881285e0ca1c947ef5"
-    sha256 cellar: :any_skip_relocation, catalina:       "bc565d13bc8df0a15533bb64db4c545e7b532304d9b6cb997363858f2253dda0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e3d321b0a788a95f9f955a6ce212c4a025248cbfb8a1793232062d132e852c0a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4a7fa7dd4130946381ec6fae85f04e7584ddc52563ad2ff61670613909f1f53b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "36b12418eaf761da0ed6592e46a0ad78ed781fbc46fa3abec1123b36d3ec0985"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "60941c6169e96da32bd6de8db7a4071da6dd3beb7feeb484595d365a313ef387"
+    sha256 cellar: :any_skip_relocation, ventura:        "86be507a0d8efe77533d1bfd9d1fb6011b42f2de3d63ee48183bc265f7a2b582"
+    sha256 cellar: :any_skip_relocation, monterey:       "f3e41c09597e682425d016c56a1599cb8c60426bf5d13ee33636b94c3eea38e4"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5d6d2762f20c5872189c16444b9d7933a7d6c90e9fc667fa6f79fd1047652d78"
+    sha256 cellar: :any_skip_relocation, catalina:       "170d7c5338973244e7cb0fb14643855282999d85000b7eefbd1b91d876103035"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "29d378796b909ede67c6aedac411fc4bc533c57a72a292b84d9f863b8259f43c"
   end
 
   depends_on "go" => :build

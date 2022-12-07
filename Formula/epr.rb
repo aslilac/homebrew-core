@@ -3,21 +3,24 @@ class Epr < Formula
 
   desc "Command-line EPUB reader"
   homepage "https://github.com/wustho/epr"
-  url "https://files.pythonhosted.org/packages/c6/d7/3af4967567358fc5e6573a961ebe262179950fd5030ea1d4ee5efda1a76a/epr-reader-2.4.13.tar.gz"
-  sha256 "e9fc3a8053e307cbf6aa1298c78678786329eb405f14e971f9888f69a7950212"
+  url "https://files.pythonhosted.org/packages/39/20/d647083aa86ec9da89b4f04b62dd6942aabb77528fd2efe018ff1cd145d2/epr-reader-2.4.15.tar.gz"
+  sha256 "a5cd0fbab946c9a949a18d0cb48a5255b47e8efd08ddb804921aaaf0caa781cc"
   license "MIT"
   head "https://github.com/wustho/epr.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1d98c74561ea423741be4268845a86035d5ece2730e8f070330d79eeff5c66b7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d6d908ffbaf2d86e5138e8eb54cef8ec3d002f53d3fa39df700031dba83f34df"
-    sha256 cellar: :any_skip_relocation, monterey:       "230ae4c3ae853bb2a5e389ffc3a086a19da828b94b0f08cc35d7716419865e7e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e2c5e041abeae7147bffac8a6c361583e7c990ba64695fd1d976799b47c09153"
-    sha256 cellar: :any_skip_relocation, catalina:       "8c2ae4638d6814fdfdd9444bce8991a85d515a265f4bc1c988e770a4cf4d4b8c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4f303eb1374e664808e445a7aca7b81589240beb4205a7fd1a05cfaa6fb4f565"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "879a6cf3a9bf93dbe26818545a2c3d14b32065f5500939a787bbc7fdadecec39"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6590c8a5bcd690eef80fe2e1c4241475f8d4649afe1fda485bd58262eaaab36e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cab822e488b93156e6166ba4fb8592458d60d5ad3e9f3d2572a54d07f78deaec"
+    sha256 cellar: :any_skip_relocation, ventura:        "c0ec75767ccc034fdd6d9e8ca8c441109f6c4de4f44f0b4417024ec70dfe3133"
+    sha256 cellar: :any_skip_relocation, monterey:       "f2fa989bccad3f6b182357d457207cfef1ce01a430704c3cae128699e9b8d81b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "cc47dda988c3a2e2f61e9870f028b29ebb8ab405fff91eb858333cfa81df7834"
+    sha256 cellar: :any_skip_relocation, catalina:       "b287ba360f24f04f56ad892fccb8b8b8ed7754227dfcf2d98132ed3a24e539e8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "31bad4f5113de503a4b0deb4d1714744d88de1f6939337aa0f066f5fe65510ee"
   end
 
-  depends_on "python@3.10"
+  depends_on "python@3.11"
 
   def install
     virtualenv_install_with_resources

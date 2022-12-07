@@ -4,14 +4,17 @@ class Hdf5AT110 < Formula
   url "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.8/src/hdf5-1.10.8.tar.bz2"
   sha256 "66ec544b195a4cb9f6ffed034fd82e52429d6112747c2996ab69853f606e546b"
   license "BSD-3-Clause"
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "4da7acce76c469df0bd29df9e3a682d72dfe5ed950aee37fe3157c9cd1b8b7e5"
-    sha256 cellar: :any,                 arm64_big_sur:  "43cad7526963c383835fd0e52dd238ddcfd45f02476f68ee757d47a0370d4c9e"
-    sha256 cellar: :any,                 monterey:       "a2ff25daabbc921a95cb6bebc2417a4f107a2a76aa700bdf77603ce90fb39a9a"
-    sha256 cellar: :any,                 big_sur:        "7872feb58d22896f72fd47e9c11fa95b20c08d132babcb7044df2f8ddb7cf277"
-    sha256 cellar: :any,                 catalina:       "6f7f756739d2b264501e6eae163fa9efd6f5c2829379d688d46768d12e416a27"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e979cf53d92cc4a117d9e229c1c5914bda258a919c1b551972574f70b0a4a8f1"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "befeefbfcff47b7997ee6e7eda2369d5ee20a582eb78c58221c9570ed968c316"
+    sha256 cellar: :any,                 arm64_monterey: "490d7bc56417f31bf761bbc3dffd23c3123cf67099048fab728a27dc2a0684f1"
+    sha256 cellar: :any,                 arm64_big_sur:  "6ffe3a34dfdefec620aa4ddab9a129e7960a1df5fad0199c5b1842a9b9dee1c8"
+    sha256 cellar: :any,                 ventura:        "2be77115b4bc7fced0a2ecd5f5aea468ae5f70c3a4917971e87339d70d6d9cf5"
+    sha256 cellar: :any,                 monterey:       "b634aa30af2ba672e9b240b12b6242ea87a17d1b64943d9434f2344432ebdc86"
+    sha256 cellar: :any,                 big_sur:        "00ae5e5407ae574f2a9ae10ccb0d52de9a56650bde53c9328cc2e444a847b3f6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "79a9c42606ceebd728d1c7d2373f0a117e0f45a3f64db6fc00d4dc57a23d7624"
   end
 
   keg_only :versioned_formula

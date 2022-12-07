@@ -1,17 +1,22 @@
 class HapiFhirCli < Formula
   desc "Command-line interface for the HAPI FHIR library"
   homepage "https://hapifhir.io/"
-  url "https://github.com/hapifhir/hapi-fhir/releases/download/v6.0.1/hapi-fhir-6.0.1-cli.zip"
-  sha256 "9779b9ac721a93ec59fe88c202290682c79bf6f23fc2f5e55b652aafac004f66"
+  url "https://github.com/hapifhir/hapi-fhir/releases/download/v6.2.2/hapi-fhir-6.2.2-cli.zip"
+  sha256 "d7b5cbccfb6026d2de230c8504309d0df4bbe0104208f9723953f516741a8521"
   license "Apache-2.0"
 
+  # The "latest" release on GitHub is sometimes for an older major/minor, so we
+  # can't rely on it being the newest version. The formula's `stable` URL is a
+  # release archive, so it's also not appropriate to check the Git tags here.
+  # Instead we have to check tags of releases (omitting pre-release versions).
   livecheck do
-    url :stable
-    strategy :github_latest
+    url "https://github.com/hapifhir/hapi-fhir/releases?q=prerelease%3Afalse"
+    regex(%r{href=["']?[^"' >]*?/tag/v?(\d+(?:\.\d+)+)["' >]}i)
+    strategy :page_match
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "d04f74807861d4f532d851c9a909a0bbf47989db96a0cd5d1fd428718ac30d1e"
+    sha256 cellar: :any_skip_relocation, all: "88cefe80021f70ea3d2f44832c33168b724ef60df14eb1c1f5f3299d8baa09bf"
   end
 
   depends_on "openjdk"

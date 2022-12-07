@@ -3,26 +3,29 @@ class Regipy < Formula
 
   desc "Offline registry hive parsing tool"
   homepage "https://github.com/mkorman90/regipy"
-  url "https://files.pythonhosted.org/packages/ad/e2/4672cf499a1122e160227d8cbd821e46cdff5f16adb1c311b105f3c582b9/regipy-2.6.0.tar.gz"
-  sha256 "a11812a8599221b6e6b2e4054d44abe5198c84a35dd4c3b9ff7d11325284ec4e"
+  url "https://files.pythonhosted.org/packages/cd/bd/1c168ee5bd3cb11f157befe9e498ff8d70013d0c239f918a1e8cbd345d12/regipy-3.1.0.tar.gz"
+  sha256 "7d65ed76eb0232fd37537751e5ae54264afdeae5678807eee6b6006387ee0377"
   license "MIT"
+  revision 1
   head "https://github.com/mkorman90/regipy.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e17b363e86bcfca9f4e202a78fd37a4809d944947b5b809c00aa89c8cb48628d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a316910e71d903310d743cccab1d7a28418027a79f3323ca2577a01028d8ea87"
-    sha256 cellar: :any_skip_relocation, monterey:       "b38b94624a4d64c633c20f6f457e9dcf35a291f30fac032317773f288f85b843"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9291939b5105009e75d1f910a09869dc02207ee7eca1d06f2afb723cf906571c"
-    sha256 cellar: :any_skip_relocation, catalina:       "5c72f8d5d45249156765d4a901a4b63b1d2a945309ce4f21422a91ad1c82d736"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7e4b1018f3d2d532dd8c74af31a87a0c1918ef5f55ef719f5007b80bbb2023fa"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "cbfb8724d5721d1bb81bdb1e297dcee1f6a603720646eb99ebd83da12224c873"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c7de87cf658e974f95c945be83d4e1219124bbd2f0f2e4579a5342ec8874a260"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "56cd72cec9d0b3b5f420578100ebcafb525d8104ae79306697a2f5198a34e992"
+    sha256 cellar: :any_skip_relocation, ventura:        "a3c3d28ded44cdf7be27c61398be44bbd4c408a9b71b5c572cb23a759b9ccaaf"
+    sha256 cellar: :any_skip_relocation, monterey:       "939220ac2c3ee667d2140f3afa3cf36d747be731262d408b1329cc96f554fe49"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a6e4b6f208fd5d87db01c91d3793a444f5bf681e3b1ad4bfb8bf6ef11a3e7e7b"
+    sha256 cellar: :any_skip_relocation, catalina:       "89826d2878c0d9096d3f426aec0e6a117581e43ae7857cc8d7199adb9dff3e6b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "da777e062e07a686bd6fb0ba1cafbb19b88881b3cb762bcc0a7abf63c8154232"
   end
 
-  depends_on "libpython-tabulate"
-  depends_on "python@3.10"
+  depends_on "python-tabulate"
+  depends_on "python@3.11"
 
   resource "attrs" do
-    url "https://files.pythonhosted.org/packages/d7/77/ebb15fc26d0f815839ecd897b919ed6d85c050feeb83e100e020df9153d2/attrs-21.4.0.tar.gz"
-    sha256 "626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"
+    url "https://files.pythonhosted.org/packages/1a/cb/c4ffeb41e7137b23755a45e1bfec9cbb76ecf51874c6f1d113984ecaa32c/attrs-22.1.0.tar.gz"
+    sha256 "29adc2665447e5191d0e7c568fde78b21f9672d344281d0c6e1ab085429b22b6"
   end
 
   resource "click" do
@@ -40,14 +43,9 @@ class Regipy < Formula
     sha256 "1a29730d366e996aaacffb2f1f1cb9593dc38e2ddd30c91250c6dde09ea9b417"
   end
 
-  resource "libfwsi-python" do
-    url "https://files.pythonhosted.org/packages/63/c8/47a7197167a11da6a68704f08053057922c1f73a91441824207099310b90/libfwsi-python-20220123.tar.gz"
-    sha256 "faef9fb8e76faf6ad43a785a9129a110d80eb7d540c1382349ed5cec07714873"
-  end
-
   resource "pytz" do
-    url "https://files.pythonhosted.org/packages/2f/5f/a0f653311adff905bbcaa6d3dfaf97edcf4d26138393c6ccd37a484851fb/pytz-2022.1.tar.gz"
-    sha256 "1e760e2fe6a8163bc0b3d9a19c4f84342afa0a2affebfaa84b01b978a02ecaa7"
+    url "https://files.pythonhosted.org/packages/76/63/1be349ff0a44e4795d9712cc0b2d806f5e063d4d34631b71b832fac715a8/pytz-2022.6.tar.gz"
+    sha256 "e89512406b793ca39f5971bc999cc538ce125c0e51c27941bef4568b460095e2"
   end
 
   resource "test_hive" do
@@ -56,7 +54,7 @@ class Regipy < Formula
   end
 
   def install
-    venv = virtualenv_create(libexec, "python3")
+    venv = virtualenv_create(libexec, "python3.11")
     venv.pip_install resources.reject { |r| r.name == "test_hive" }
     venv.pip_install_and_link buildpath
   end

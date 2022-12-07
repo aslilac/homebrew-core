@@ -1,12 +1,12 @@
 class Bindfs < Formula
   desc "FUSE file system for mounting to another location"
   homepage "https://bindfs.org/"
-  url "https://bindfs.org/downloads/bindfs-1.15.1.tar.gz"
-  sha256 "04dd3584a6cdf9af4344d403c62185ca9fab31ce3ae5a25d0101bc10936c68ab"
+  url "https://bindfs.org/downloads/bindfs-1.17.1.tar.gz"
+  sha256 "edb4989144d28f75affc4f5b18074fb97a58d6ee35ad6919ac75eb6a4cbfe352"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "735ffeec80a1525bfcfe246c699b2a2890f900694b741a1646efeb0f5ba918bf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "591b1b620631425439e0d7ecca9b9ad6b7427dc501a7417535accaea60bc404a"
   end
 
   head do
@@ -18,14 +18,8 @@ class Bindfs < Formula
   end
 
   depends_on "pkg-config" => :build
-
-  on_macos do
-    disable! date: "2021-04-08", because: "requires closed-source macFUSE"
-  end
-
-  on_linux do
-    depends_on "libfuse"
-  end
+  depends_on "libfuse"
+  depends_on :linux # on macOS, requires closed-source macFUSE
 
   def install
     args = %W[
@@ -41,18 +35,6 @@ class Bindfs < Formula
     end
 
     system "make", "install"
-  end
-
-  def caveats
-    on_macos do
-      <<~EOS
-        The reasons for disabling this formula can be found here:
-          https://github.com/Homebrew/homebrew-core/pull/64491
-
-        An external tap may provide a replacement formula. See:
-          https://docs.brew.sh/Interesting-Taps-and-Forks
-      EOS
-    end
   end
 
   test do

@@ -5,10 +5,9 @@ class PerconaToolkit < Formula
 
   desc "Command-line tools for MySQL, MariaDB and system tasks"
   homepage "https://www.percona.com/software/percona-toolkit/"
-  url "https://www.percona.com/downloads/percona-toolkit/3.3.1/source/tarball/percona-toolkit-3.3.1.tar.gz"
-  sha256 "60fc106b195b6716f1ebb3ca16b401692228c1a2a885da72111a93391fd12090"
+  url "https://www.percona.com/downloads/percona-toolkit/3.5.0/source/tarball/percona-toolkit-3.5.0.tar.gz"
+  sha256 "302cf8beb4add0421b0b3c9355ac9946ca1c6b40d45a1993d33e112bf98c5f15"
   license any_of: ["GPL-2.0-only", "Artistic-1.0-Perl"]
-  revision 1
   head "lp:percona-toolkit", using: :bzr
 
   livecheck do
@@ -17,12 +16,13 @@ class PerconaToolkit < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "8f6bb6f309b86e299dd07068d8ffbc4f522211710c583256c5b7528ee24eb436"
-    sha256 cellar: :any,                 arm64_big_sur:  "c4894d911c4f3e0adad36c3f2aa3a67e74dd309faadb6dffb7c9ce543944bc2e"
-    sha256 cellar: :any,                 monterey:       "344ba40041a33e4b8daf56129ebf4523b5c198d43ea064c5aebb59c997183497"
-    sha256 cellar: :any,                 big_sur:        "9274b60c27cacce29aec88b890899ab988f003ae440108fe919692d0f852ea57"
-    sha256 cellar: :any,                 catalina:       "93c759128255833a67e8b365610eb8ccb4877d82f1bf66176ad4b597b90217fd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bccfdd6284fc9a2c1226cb148a446180209d48b7b9070ea5b4779f429a31c984"
+    sha256 cellar: :any,                 arm64_ventura:  "9c493b81d20cab1851d6e5f923dd23f3cec879b8ba46c3574b2786eda1c9c953"
+    sha256 cellar: :any,                 arm64_monterey: "f849be8d3203e63701b95b3cfa6d9aba36a24ed88f526b9863e35173b46f0b7c"
+    sha256 cellar: :any,                 arm64_big_sur:  "87080f02e2653b0f093b5356bbb7f4d06f64ed0ad5e4f11d227d06f7e7377d8a"
+    sha256 cellar: :any,                 ventura:        "56709b1894a9664adad7d6f460fa190dbe8d739da6833d1c76ab60c0bab6ed4b"
+    sha256 cellar: :any,                 monterey:       "afcef465e217bfc2a944878be9056476d5f3df418d91f8e0ea63240cb8812f77"
+    sha256 cellar: :any,                 big_sur:        "cc83ed13cbbc25ae172fe051a34031404726b4b5b0fd90774628ef0e3d76bdad"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5ef2f96cd5871f0a9a82636fca63229391a6c7788a9006a1405c0efb89c6e1e7"
   end
 
   depends_on "mysql-client"
@@ -32,8 +32,8 @@ class PerconaToolkit < Formula
 
   # Should be installed before DBD::mysql
   resource "Devel::CheckLib" do
-    url "https://cpan.metacpan.org/authors/id/M/MA/MATTN/Devel-CheckLib-1.14.tar.gz"
-    sha256 "f21c5e299ad3ce0fdc0cb0f41378dca85a70e8d6c9a7599f0e56a957200ec294"
+    url "https://cpan.metacpan.org/authors/id/M/MA/MATTN/Devel-CheckLib-1.16.tar.gz"
+    sha256 "869d38c258e646dcef676609f0dd7ca90f085f56cf6fd7001b019a5d5b831fca"
   end
 
   resource "DBI" do
@@ -47,8 +47,8 @@ class PerconaToolkit < Formula
   end
 
   resource "JSON" do
-    url "https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/JSON-4.03.tar.gz"
-    sha256 "e41f8761a5e7b9b27af26fe5780d44550d7a6a66bf3078e337d676d07a699941"
+    url "https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/JSON-4.10.tar.gz"
+    sha256 "df8b5143d9a7de99c47b55f1a170bd1f69f711935c186a6dc0ab56dd05758e35"
   end
 
   def install

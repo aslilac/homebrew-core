@@ -1,21 +1,24 @@
 class Libpq < Formula
   desc "Postgres C API library"
   homepage "https://www.postgresql.org/docs/14/libpq.html"
-  url "https://ftp.postgresql.org/pub/source/v14.4/postgresql-14.4.tar.bz2"
-  sha256 "c23b6237c5231c791511bdc79098617d6852e9e3bdf360efd8b5d15a1a3d8f6a"
+  url "https://ftp.postgresql.org/pub/source/v15.1/postgresql-15.1.tar.bz2"
+  sha256 "64fdf23d734afad0dfe4077daca96ac51dcd697e68ae2d3d4ca6c45cb14e21ae"
   license "PostgreSQL"
 
   livecheck do
-    formula "postgresql"
+    url "https://ftp.postgresql.org/pub/source/"
+    regex(%r{href=["']?v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
   bottle do
-    sha256 arm64_monterey: "61472d266573d7c2b9f4f0486c308893162ce8e523c448ac8bb7fe02d17b6eef"
-    sha256 arm64_big_sur:  "2a2c3a32356dd1e36b43d529efa41d62ab95889e86cf584efb739a067b0c0b31"
-    sha256 monterey:       "21f60743dabe663a0897836462530221707a56e21b18fb7f83d0634da6ecfcde"
-    sha256 big_sur:        "5347200def4077d9cf7580835dc17b01329aa0f8c93fa658c32a43d79680abdb"
-    sha256 catalina:       "be31c70ff23af4cdf06d475a43072a885a4f8a166620b19dfb6235657e248db5"
-    sha256 x86_64_linux:   "cd6846a68309bdbeff13827d150aa0ced3956bac55bde21fa5015a5ff0b9b026"
+    sha256 arm64_ventura:  "11c790baa5278d46dbb8b7d608f8b6923b15ea088316cce195a5884e80722fe6"
+    sha256 arm64_monterey: "93be59131fe599125fbab83e21a0f954d866957a8fd139f8e822b21d5300befe"
+    sha256 arm64_big_sur:  "a5511600bb6cbaa3a3390e28a71af479a5b8029acf1f983dd4d13a689adb7061"
+    sha256 ventura:        "ade5f847fb8983c90925de5af9b6b31fff56a7bd1f7df48f6163aeb8915a0f1f"
+    sha256 monterey:       "604c9dd5993ae0714368de1a0650fe64a080344036e0cad01dcdde4f2269ffda"
+    sha256 big_sur:        "e00d7a4108c1711fde8e7cf8135ccfff3a6be35c4164ae5e9c9ffd24bd7affa2"
+    sha256 catalina:       "4bbee3b57e052af467ed9cfd57980a029949ff1aa34fed453109bf7fac60fc1f"
+    sha256 x86_64_linux:   "873dc20eecf1bf1263bd0ccf00762cd5869459dd4b320faf7ba97441c0a35d8a"
   end
 
   keg_only "conflicts with postgres formula"
@@ -25,6 +28,8 @@ class Libpq < Formula
   depends_on "krb5"
 
   depends_on "openssl@1.1"
+
+  uses_from_macos "zlib"
 
   on_linux do
     depends_on "readline"

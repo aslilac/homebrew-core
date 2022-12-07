@@ -4,6 +4,10 @@ class Liblzf < Formula
   url "http://dist.schmorp.de/liblzf/liblzf-3.6.tar.gz"
   mirror "https://deb.debian.org/debian/pool/main/libl/liblzf/liblzf_3.6.orig.tar.gz"
   sha256 "9c5de01f7b9ccae40c3f619d26a7abec9986c06c36d260c179cedd04b89fb46a"
+  license all_of: [
+    "BSD-2-Clause",
+    any_of: ["BSD-2-Clause", "GPL-2.0-or-later"], # lzf.c lzf.h lzfP.h lzf_c.c lzf_d.c
+  ]
 
   livecheck do
     url "http://dist.schmorp.de/liblzf/"
@@ -12,8 +16,10 @@ class Liblzf < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "adadf4ce163424818b3b0ff1d983494d271f1b7124f5310a8f7b51cc32cb4dcf"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "a929d667239b01aae65391c9bdb50b8979cf00746728274801dfcb69e7dba54b"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e321946e647108f4f478e84270ef6a49463e18d412fc94a4bc260c5009bd2dba"
+    sha256 cellar: :any_skip_relocation, ventura:        "0dbb4a635931edee6c07fb09133f60a9a6fda37130a066d0e9ca25cf69e91e64"
     sha256 cellar: :any_skip_relocation, monterey:       "c0a3c8f9311082eb797c848798f98da622a9ec648669298090fa7ef5cdec6b52"
     sha256 cellar: :any_skip_relocation, big_sur:        "1eb80ac962ecb5b94ba1ed3dc86d2baa8a13f231d113a77428879e0a8423ebaf"
     sha256 cellar: :any_skip_relocation, catalina:       "9aa8a1495947fe1fd6249abe33de7245f9ae4a58dcf900276253b013f7f148e8"

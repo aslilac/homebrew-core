@@ -1,8 +1,8 @@
 class TerraformLs < Formula
   desc "Terraform Language Server"
   homepage "https://github.com/hashicorp/terraform-ls"
-  url "https://github.com/hashicorp/terraform-ls/archive/v0.28.1.tar.gz"
-  sha256 "0fdb2ca6800849ae97ded291f50342accfa5b9ed2362dbdc77d0dee465df205d"
+  url "https://github.com/hashicorp/terraform-ls/archive/v0.30.1.tar.gz"
+  sha256 "34e875f555d7fe2456d332f0dd36dd38bc9c0a219d4d904a8c437e90eff53022"
   license "MPL-2.0"
   head "https://github.com/hashicorp/terraform-ls.git", branch: "main"
 
@@ -12,18 +12,24 @@ class TerraformLs < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "05f6e33abd60f52ba2e64b02994744604c578e32bc2e67b6ec0da6aabd896cd1"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "831ae305fd250e8ae58b9a6ff3e6ab3d15b87adf1f92f13a03fbaecd28c04500"
-    sha256 cellar: :any_skip_relocation, monterey:       "e91a107bd608cc9fa8108b51d89bfeff726e216fb51067e75756e4e580b71e0a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "25bf9afbcb3afa0aa121b7ed8a38e33ab5e596aad8fa5644a3b59eb1c97cf0b3"
-    sha256 cellar: :any_skip_relocation, catalina:       "bd10d6e6b667b2fa594c80a8737c75223c36bf26d93b904a9b6f2c91a934931e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f88ddbd672bd5e694f726edfecd9e6cd2ebf8e6d3df401b69be1063fcfa86dcf"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "579b75052257a42fce6b68c452bff5e9f07979cfd0211d005254415a70846d17"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4a5e9a977e74df26c7efc5baa6fca9f34c269a0d7cb575e61452304bd42dc8cf"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b52fe6d0db9f233d67b9b51d41ee4dfb26ec7a2a9500cb774889509e30592113"
+    sha256 cellar: :any_skip_relocation, ventura:        "0915f4bd21bc4ea1a4e039638be2bd498333c826e96d37fbf0aa771c33049cb0"
+    sha256 cellar: :any_skip_relocation, monterey:       "7d16fbaf8a588072178d14ba0f411331d752ee0a52c44285a581aea831fc3f45"
+    sha256 cellar: :any_skip_relocation, big_sur:        "02f5de096f52091d2b4faf60e361d275c56db7de766aec2c0f46dad6a2a53b50"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "98b562f1b407dca23fa5d260f5f31e18ef14e586a5a77cd4a7e1ae373f8f87e3"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-s -w")
+    ldflags = %W[
+      -s -w
+      -X main.version=#{version}
+      -X main.versionPrerelease=#{tap.user}
+    ]
+    system "go", "build", *std_go_args(ldflags: ldflags.join(" "))
   end
 
   test do

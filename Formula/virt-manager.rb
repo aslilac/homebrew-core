@@ -3,17 +3,20 @@ class VirtManager < Formula
 
   desc "App for managing virtual machines"
   homepage "https://virt-manager.org/"
-  url "https://virt-manager.org/download/sources/virt-manager/virt-manager-4.0.0.tar.gz"
-  sha256 "515aaa2021a4bf352b0573098fe6958319b1ba8ec508ea37e064803f97f17086"
+  url "https://virt-manager.org/download/sources/virt-manager/virt-manager-4.1.0.tar.gz"
+  sha256 "950681d7b32dc61669278ad94ef31da33109bf6fcf0426ed82dfd7379aa590a2"
   license "GPL-2.0-or-later"
+  revision 3
   head "https://github.com/virt-manager/virt-manager.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "76cb1ea36b592fd72e34a8ad9fe3321a274743c9c28f8eec4104367339a9e9f8"
-    sha256 cellar: :any, arm64_big_sur:  "845721080bf5aac2d52e1664ca7029b95dde4ac53cd8da89181dad14b170fe4c"
-    sha256 cellar: :any, monterey:       "0acb75ff2736767a3f6d8624b2be4ef6ca05a9887b7d83ef8065222301029fea"
-    sha256 cellar: :any, big_sur:        "6636accdad0ba50846db76c09bd79dfc33c022aee30c6f9a333f88b81fedc788"
-    sha256 cellar: :any, catalina:       "9a46cafc595ea56468c7b690f78ac12a4426f20ba02b772b88212c48bad19f32"
+    sha256 cellar: :any, arm64_ventura:  "6ac9d407cca582a4aeaa5f82e23cb5115d05003bb658c4bd5ca89722ee3ecbcb"
+    sha256 cellar: :any, arm64_monterey: "5c8a05881b2d8700e85101802e6c907793f00daba10444caad1fc45043deb68f"
+    sha256 cellar: :any, arm64_big_sur:  "c8a1922dced9bb9862d74b9347bbedccc5f9261c8a7767e48441a9916ff91565"
+    sha256 cellar: :any, ventura:        "0f87365d83203fb78b6ce962843d68787afbcb0d4c7ec18db60a306a5d0d3f61"
+    sha256 cellar: :any, monterey:       "460116c676caa375b1ff7f40d6e126273fc080548b99e618175e9643a48d55ec"
+    sha256 cellar: :any, big_sur:        "f572380b0bc30f4e867c7f41568098d1437cdab76c5775382aa3aa62e4318f14"
+    sha256 cellar: :any, catalina:       "2b2f1ed405d164f88a82a9d79bdcd8c38ebd0fcf45e9559ee63836a26d1a197e"
   end
 
   depends_on "docutils" => :build
@@ -31,66 +34,52 @@ class VirtManager < Formula
   depends_on "osinfo-db"
   depends_on "py3cairo"
   depends_on "pygobject3"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
   depends_on "spice-gtk"
   depends_on "vte3"
 
+  # Resources are for Python `libvirt-python` and `requests` packages
+
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/6c/ae/d26450834f0acc9e3d1f74508da6df1551ceab6c2ce0766a593362d6d57f/certifi-2021.10.8.tar.gz"
-    sha256 "78884e7c1d4b00ce3cea67b44566851c4343c120abd683433ce934a68ea58872"
+    url "https://files.pythonhosted.org/packages/cb/a4/7de7cd59e429bd0ee6521ba58a75adaec136d32f91a761b28a11d8088d44/certifi-2022.9.24.tar.gz"
+    sha256 "0d9c601124e5a6ba9712dbc60d9c53c21e34f5f641fe83002317394311bdce14"
   end
 
-  resource "chardet" do
-    url "https://files.pythonhosted.org/packages/ee/2d/9cdc2b527e127b4c9db64b86647d567985940ac3698eeabc7ffaccb4ea61/chardet-4.0.0.tar.gz"
-    sha256 "0d6f53a15db4120f2b08c94f11e7d93d2c911ee118b6b30a04ec3ee8310179fa"
-  end
-
-  resource "docutils" do
-    url "https://files.pythonhosted.org/packages/57/b1/b880503681ea1b64df05106fc7e3c4e3801736cf63deffc6fa7fc5404cf5/docutils-0.18.1.tar.gz"
-    sha256 "679987caf361a7539d76e584cbeddc311e3aee937877c87346f31debc63e9d06"
+  resource "charset-normalizer" do
+    url "https://files.pythonhosted.org/packages/fe/77/6d5d367b7cfee812a88573e80bbe25cea2d015ed2c3490e4464951ff3232/charset-normalizer-3.0.0.tar.gz"
+    sha256 "b27d10ad15740b45fd55f76e6901a4391e6dca3917ef48ecdcf17edf6e00d770"
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/62/08/e3fc7c8161090f742f504f40b1bccbfc544d4a4e09eb774bf40aafce5436/idna-3.3.tar.gz"
-    sha256 "9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d"
+    url "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz"
+    sha256 "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
   end
 
   resource "libvirt-python" do
-    url "https://files.pythonhosted.org/packages/2a/74/919462bed158ccc2a8061f31d82c157740c2e597ff50490526336e8aa688/libvirt-python-8.1.0.tar.gz"
-    sha256 "a21ecfab6d29ac1bdd1bfd4aa3ef58447f9f70919aefecd03774613f65914e43"
+    url "https://files.pythonhosted.org/packages/0e/b2/abf88509a6763050462b14811d47e912eece981c21e3c6103b7b303645d9/libvirt-python-8.9.0.tar.gz"
+    sha256 "2e1cfc3b9bd288b3cac400a6b03593633814236dbd1ecf5a900057bb90181c65"
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/60/f3/26ff3767f099b73e0efa138a9998da67890793bfa475d8278f84a30fec77/requests-2.27.1.tar.gz"
-    sha256 "68d7c56fd5a8999887728ef304a6d12edc7be74f1cfa47714fc8b414525c9a61"
+    url "https://files.pythonhosted.org/packages/a5/61/a867851fd5ab77277495a8709ddda0861b28163c4613b011bc00228cc724/requests-2.28.1.tar.gz"
+    sha256 "7c5599b102feddaa661c826c56ab4fee28bfd17f5abca1ebbe3e7f19d7c97983"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/1b/a5/4eab74853625505725cefdf168f48661b2cd04e7843ab836f3f63abf81da/urllib3-1.26.9.tar.gz"
-    sha256 "aabaf16477806a5e1dd19aa41f8c2b7950dd3c746362d7e3223dbe6de6ac448e"
+    url "https://files.pythonhosted.org/packages/b2/56/d87d6d3c4121c0bcec116919350ca05dc3afd2eeb7dc88d07e8083f8ea94/urllib3-1.26.12.tar.gz"
+    sha256 "3fa96cf423e6987997fc326ae8df396db2a8b7c667747d47ddd8ecba91f4a74e"
   end
 
   def install
-    venv = virtualenv_create(libexec, "python3")
+    python = "python3.10"
+    venv = virtualenv_create(libexec, python)
     venv.pip_install resources
 
-    # virt-manager uses distutils, doesn't like --single-version-externally-managed
-    system libexec/"bin/python", "setup.py",
-                   "configure",
-                   "--prefix=#{libexec}"
-    system libexec/"bin/python", "setup.py",
-                     "--no-user-cfg",
-                     "--no-update-icon-cache",
-                     "--no-compile-schemas",
-                     "install"
+    args = Language::Python.setup_install_args(prefix, python)
+    args.insert((args.index "install"), "--no-update-icon-cache", "--no-compile-schemas")
 
-    # install virt-manager commands with PATH set to Python virtualenv environment
-    bin.install libexec.glob("bin/virt-*")
-    bin.env_script_all_files(libexec/"bin", PATH: "#{libexec}/bin:$PATH")
-
-    share.install libexec/"share/man"
-    share.install libexec/"share/glib-2.0"
-    share.install libexec/"share/icons"
+    system libexec/"bin/python", "setup.py", "configure", "--prefix=#{prefix}"
+    system libexec/"bin/python", *args
   end
 
   def post_install

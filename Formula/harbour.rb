@@ -2,15 +2,17 @@ class Harbour < Formula
   desc "Portable, xBase-compatible programming language and environment"
   homepage "https://harbour.github.io"
   license "GPL-2.0"
-  revision 1
+  revision 2
   head "https://github.com/harbour/core.git", branch: "master"
 
-  # Missing a header that was deprecated by libcurl @ version 7.12.0 and
-  # deleted sometime after Harbour 3.0.0 release.
   stable do
-    patch :DATA
     url "https://downloads.sourceforge.net/project/harbour-project/source/3.0.0/harbour-3.0.0.tar.bz2"
     sha256 "4e99c0c96c681b40c7e586be18523e33db24baea68eb4e394989a3b7a6b5eaad"
+
+    # Missing a header that was deprecated by libcurl @ version 7.12.0 and
+    # deleted sometime after Harbour 3.0.0 release.
+    # Also backport upstream changes in src/rtl/arc4.c for glibc 2.30+.
+    patch :DATA
   end
 
   livecheck do
@@ -19,13 +21,14 @@ class Harbour < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 monterey:     "2c9986d437787a68730f663836f5d38ecc1003aa46db0bb8d5d4acb5348e5a20"
-    sha256 cellar: :any,                 big_sur:      "5828169bfbec03a59c9f5ea87c8783d3408d5ebe62516900f859095ea295ae52"
-    sha256 cellar: :any,                 catalina:     "b54c72219d366319ce929e8dea8c22b9a36feb331a3e196007f73c88bbd33638"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "2330a003c48032b3504fc358a704cccc0e3d8b02e2c10abc79d4481413bf1204"
+    sha256 cellar: :any,                 ventura:      "13fe75a5b0b0a3608f7b096525179800dda87cfb391642cd786b59e01220f2e3"
+    sha256 cellar: :any,                 monterey:     "1bf87ebc6134674eb11edfe42cdfc03b06c21ea915b038a6a2a8add2126ad4f4"
+    sha256 cellar: :any,                 big_sur:      "47f824bb06b67e53dddff036c7d193680a9ab3ce54fb3c887edf37baee3000ba"
+    sha256 cellar: :any,                 catalina:     "a36cdb7043bb20f9aafac0ee9a5a88843b93e585fde0a8556ac5ba44821b89da"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "99139cf0fc916c5af14279c6ae2def30a96b27b373450f3d9a99571ada9533f3"
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libharu"
   depends_on "libpng"
   depends_on "libxdiff"
@@ -59,7 +62,7 @@ class Harbour < Formula
     # The vendored version of minilzo is used because the Homebrew version of lzo does not include minilzo.
     ENV["HB_INSTALL_PREFIX"] = prefix
     ENV["HB_WITH_X11"] = "no"
-    ENV["HB_WITH_JPEG"] = Formula["jpeg"].opt_include
+    ENV["HB_WITH_JPEG"] = Formula["jpeg-turbo"].opt_include
     ENV["HB_WITH_LIBHARU"] = Formula["libharu"].opt_include
     ENV["HB_WITH_MINIZIP"] = Formula["minizip"].opt_include/"minizip"
     ENV["HB_WITH_PCRE"] = Formula["pcre"].opt_include
@@ -127,3 +130,24 @@ index 00caaa8..53618ed 100644
 
  #include "hbapi.h"
  #include "hbapiitm.h"
+diff --git a/src/rtl/arc4.c b/src/rtl/arc4.c
+index 8a3527c..69b4e8b 100644
+--- a/src/rtl/arc4.c
++++ b/src/rtl/arc4.c
+@@ -54,7 +54,15 @@
+ /* XXX: Check and possibly extend this to other Unix-like platforms */
+ #if ( defined( HB_OS_BSD ) && ! defined( HB_OS_DARWIN ) ) || \
+     ( defined( HB_OS_LINUX ) && ! defined ( HB_OS_ANDROID ) && ! defined ( __WATCOMC__ ) )
+-#  define HAVE_SYS_SYSCTL_H
++    /*
++     * sysctl() on Linux has fallen into depreciation. Not available in current
++     * runtime C libraries, like musl and glibc >= 2.30.
++     */
++#  if ( ! defined( HB_OS_LINUX ) || \
++      ( ( defined( __GLIBC__ ) && ! ( ( __GLIBC__ > 2 ) || ( ( __GLIBC__ == 2 ) && ( __GLIBC_MINOR__ >= 30 ) ) ) ) ) || \
++      defined( __UCLIBC__ ) )
++#     define HAVE_SYS_SYSCTL_H
++#  endif
+ #  define HAVE_DECL_CTL_KERN
+ #  define HAVE_DECL_KERN_RANDOM
+ #  if defined( HB_OS_LINUX )

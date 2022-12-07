@@ -1,8 +1,8 @@
 class Ace < Formula
   desc "ADAPTIVE Communication Environment: OO network programming in C++"
   homepage "https://www.dre.vanderbilt.edu/~schmidt/ACE.html"
-  url "https://github.com/DOCGroup/ACE_TAO/releases/download/ACE%2BTAO-7_0_8/ACE+TAO-7.0.8.tar.bz2"
-  sha256 "a050ffef2b2780f8e4fbc7250c20460b48bec3ea80064575d554cc36eb666cf4"
+  url "https://github.com/DOCGroup/ACE_TAO/releases/download/ACE%2BTAO-7_0_10/ACE+TAO-7.0.10.tar.bz2"
+  sha256 "cba005e2d267884ba9634414bd39c2a72b8717eb9f7a7a293298f3b2a05c841e"
   license "DOC"
 
   livecheck do
@@ -14,12 +14,14 @@ class Ace < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "1d7cdca57f5f17952a4fec4c8256bd12c3253334f8f33ff0e44085e822c37ba3"
-    sha256 cellar: :any,                 arm64_big_sur:  "80bf0478c8a50658d45af23dfc60407435386952670cd1d0fd4dc7db44a2f390"
-    sha256 cellar: :any,                 monterey:       "91e1921808d72dd92c2105909a32ec012777a3b4cc01c50e422169a4c2965e3e"
-    sha256 cellar: :any,                 big_sur:        "59e10285e1f0cea510ce248000dcc1dce05d6962778f549f74efcdaa6550024a"
-    sha256 cellar: :any,                 catalina:       "075c33922ec132c7cd0941e80f7e593a4fb48b3b9e163745fdba7734e0d88e29"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fec7514588fe20d0c3150f9b935ce84925be69cd7de9e21857e658d862df0026"
+    sha256 cellar: :any,                 arm64_ventura:  "cfa80b485f1d51d1eb09d60d7df7d5ffce40351a0197ae21dc8db39e8504f2af"
+    sha256 cellar: :any,                 arm64_monterey: "60fd82a1971945ab538e4d046be59667b36ff54939dd589212b7589f781841f9"
+    sha256 cellar: :any,                 arm64_big_sur:  "95d068587e3b225c2e89f6c5eb3ee90392e668016a3fd9d64bbae5b2e8536fbb"
+    sha256 cellar: :any,                 ventura:        "93d0e289a4eebeb869f05a1c72c30e3943acd3420d47e190f7ff32137d0afdf7"
+    sha256 cellar: :any,                 monterey:       "949e91832d66f4847962b442b432bb65d38e9684e9356a4b71ec7fbe242ede68"
+    sha256 cellar: :any,                 big_sur:        "4aff94f9451f642832fbd149f3ce46f478ff3a551cda1c21a5ef950ef52a5281"
+    sha256 cellar: :any,                 catalina:       "05cd85dccaae52ac12fb0451b3eac1d989bee1939d45cb9676b96cee8823356b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "88910f3b96b2d1636dbf299aa48dafa7cabf3858f6d6a9d6262bcc6b8490e516"
   end
 
   def install

@@ -1,17 +1,19 @@
 class Snapraid < Formula
   desc "Backup program for disk arrays"
   homepage "https://www.snapraid.it/"
-  url "https://github.com/amadvance/snapraid/releases/download/v12.1/snapraid-12.1.tar.gz"
-  sha256 "49337d9bafa96c2beac0125463bd22622be2fc00f3b4dee7e4b0e864d2a49661"
+  url "https://github.com/amadvance/snapraid/releases/download/v12.2/snapraid-12.2.tar.gz"
+  sha256 "9d30993aef7fd390369dcaf422ac35f3990e8c91f0fb26151f5b84ccb73d3e01"
   license "GPL-3.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "78708e3a4c2f93c56e0af8441aa35282d20b258f7dfc2fd5ba6a3f78ff12cf24"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "16d757885ce58f495b0ab7c210c32385a998d5731e42ed32267df2365c564a88"
-    sha256 cellar: :any_skip_relocation, monterey:       "912787b43bdf380ca5689fe5df0e751cd22721c8e09bbad5bf036037fdd896e8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "fa18547de5904d3f9a109e340b98ce6290e3ebbb9324178697838205e7f340e4"
-    sha256 cellar: :any_skip_relocation, catalina:       "282d78894d7e897e7d9a1d1c348ff3e6113db1a75e4cba21f05d9764d379cc34"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ad355309464e57e016e38ac9d93eeff4d18582c32ab90f6e097ec93dab8f162c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6a12c659bfe1a8ee981eb3bfae72b2d8ba469cb411a2596d856537a1ace55788"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b915f177268a0caf218c61839f0094fbce74d1ce02a8fd91c0f5be947e0a4ac2"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3d61d8bd872a854145c3204dd03b15ea5975437bf6041deded16a724449374a6"
+    sha256 cellar: :any_skip_relocation, ventura:        "38c6ec82977fd77980a5bf3883c41e1f95236223385b10aa7345504eea522e79"
+    sha256 cellar: :any_skip_relocation, monterey:       "34530bba9f9d233b699c4b618190d09e245eedad765bf790b0aee213f5c6907d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "73bb540ade6633bc5483250e534decb865ff205c7df5662a854c6edb05d181d6"
+    sha256 cellar: :any_skip_relocation, catalina:       "d3075caa16f4fc7afc551656065590b94b251268f16fa4d023594b070f0732ed"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "262bb8b67f06eb4d938c5fa2554a2dcd8142ef545b0a62c625e237a0fad77bcd"
   end
 
   head do

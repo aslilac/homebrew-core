@@ -1,18 +1,20 @@
 class Libfabric < Formula
   desc "OpenFabrics libfabric"
   homepage "https://ofiwg.github.io/libfabric/"
-  url "https://github.com/ofiwg/libfabric/releases/download/v1.15.1/libfabric-1.15.1.tar.bz2"
-  sha256 "cafa3005a9dc86064de179b0af4798ad30b46b2f862fe0268db03d13943e10cd"
+  url "https://github.com/ofiwg/libfabric/releases/download/v1.16.1/libfabric-1.16.1.tar.bz2"
+  sha256 "53f992d33f9afe94b8a4ea3d105504887f4311cf4b68cea99a24a85fcc39193f"
   license any_of: ["BSD-2-Clause", "GPL-2.0-only"]
   head "https://github.com/ofiwg/libfabric.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "4ec2879d4e59932f371eeded1eb79f0d332b69300b8fb92da0ac5dd6657ac15c"
-    sha256 cellar: :any,                 arm64_big_sur:  "5b02b095816fb64890a7ce0ed1e6ba9facee73af9d36b9acfeec7a4d944e9b58"
-    sha256 cellar: :any,                 monterey:       "0b6595dc9b66cb9fdb1cc68549921364f9802b748f8121d16a7fbfaef1f8060d"
-    sha256 cellar: :any,                 big_sur:        "f0d68642c119986c6ec4adecda4fb740481e9182687888d5d3a7625c567491c9"
-    sha256 cellar: :any,                 catalina:       "835b225e92d2e42b2b6f5e1afa45d3befa07b4a847a4891116fdd2aa8a2b5f66"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8a65daa2e7509cffcbef63dbe18b46f13883c68a92d1e2d458c7603620a251e9"
+    sha256 cellar: :any,                 arm64_ventura:  "27fcdd0efd7e8cb9c9c3ab2bd753652aea58797ab5d5e1dc21ea78965df2f416"
+    sha256 cellar: :any,                 arm64_monterey: "d0ef41555d16ef392456abd4f7adc4d836ae986d6142265dc967089b5ddfd654"
+    sha256 cellar: :any,                 arm64_big_sur:  "dd53fa0772b081652dbd851a9c9021221b973012a41daf99f4066fbb9921c592"
+    sha256 cellar: :any,                 ventura:        "6626d21e58c0cc8b7ea66e50bb1f6326a863aa13812b9d5dbfa295674959ab60"
+    sha256 cellar: :any,                 monterey:       "112ca924b5cca67d91f1ec102e68db13a8a1c934df43f48d78a5319635e2ffbe"
+    sha256 cellar: :any,                 big_sur:        "66cffcac1e77eebf6a7b395f46d8726eba1feb5892a94ef60653a672de95760f"
+    sha256 cellar: :any,                 catalina:       "591163806258adc24cc89a71eeff81ba85dfb67799012bf63facb8febc5f6abf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a5bb8f38d64ddc25ec8662866d3b23f46aaae450c8c83c6d214d0e4cd7b81f3a"
   end
 
   depends_on "autoconf" => :build

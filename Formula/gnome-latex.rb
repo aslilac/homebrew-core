@@ -2,17 +2,20 @@ class GnomeLatex < Formula
   desc "LaTeX editor for the GNOME desktop"
   homepage "https://gitlab.gnome.org/swilmet/gnome-latex"
   url "https://gitlab.gnome.org/swilmet/gnome-latex.git",
-      tag:      "3.41.1",
-      revision: "4be3578e8fd81ca6593c4927760076ea1acd90f0"
+      tag:      "3.42.0",
+      revision: "5041d5c3dcef3116a05bca58239503664ffbcdf2"
   license "GPL-3.0-or-later"
+  revision 1
 
   bottle do
-    sha256 arm64_monterey: "2512bc0320e672d89d5e8453b3bfc4ccdae8c8da53789e87c1e4f9d71b96132a"
-    sha256 arm64_big_sur:  "29cda278f13333a36822f226ab004ca6c0631f05c422ff82f24719051eae5476"
-    sha256 monterey:       "6846a21dcfca6c5c7ab2c664174e19e777a7e1fd340f3d8d7a3be3a187533dd2"
-    sha256 big_sur:        "7ceff4652331ae25ca2de90ed4e57840a11e5e78e59cbcadcb4dd546b603e312"
-    sha256 catalina:       "fb219b67458501d6d4d9ed2e72da6996e91f86095ebefdf008892f257ac2c8d5"
-    sha256 x86_64_linux:   "4d4578faf140e4ac55a7e267a9bc130a3cb7d2a1ce8482ac83280707740fcf81"
+    sha256 arm64_ventura:  "2ce74461c6544307ce6ef78ca8ee4a041955401dadb131f95cf28df1d11a9ac4"
+    sha256 arm64_monterey: "ed4db46967ee4e4a49617ccb1bab481aaf8c01c772fe98f4b09cec1374715ea8"
+    sha256 arm64_big_sur:  "65daa605789bb193d0fcb02e45207c4ee200c28213dc923b2b0c6c2d3f64884b"
+    sha256 ventura:        "66e8b36170eb1ea6355b31f76e761e79e8809eb09bd53c5a55d9d10be2b595db"
+    sha256 monterey:       "e6faaf0aff9d05e3c60261a37f65dba8036903c718cd40f9057825901b513498"
+    sha256 big_sur:        "9fc46312b67c240185ef1929a3e3660aaead71cbd0ede56aaaf6422cc3429b8a"
+    sha256 catalina:       "224ac8c01214d4b9171a7dd7432b441fe3631ad48b8f7bafa1a306bf894e31c2"
+    sha256 x86_64_linux:   "ec254c8a93ae75f3fa3c3af37415c051731090348db585b7e2b99869812aee5f"
   end
 
   depends_on "appstream-glib" => :build

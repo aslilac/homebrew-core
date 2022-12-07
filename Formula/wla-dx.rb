@@ -1,9 +1,9 @@
 class WlaDx < Formula
   desc "Yet another crossassembler package"
   homepage "https://github.com/vhelin/wla-dx"
-  url "https://github.com/vhelin/wla-dx/archive/v10.2.tar.gz"
-  sha256 "c02045c70a26c224f1921dde67acd38eb570d2fb3fc4d5c19119cce7f62114db"
-  license "GPL-2.0"
+  url "https://github.com/vhelin/wla-dx/archive/v10.4.tar.gz"
+  sha256 "421af537097f4afef4b1b2357a28072dba392597d97572ad751250b98d7ea62d"
+  license "GPL-2.0-or-later"
 
   livecheck do
     url :stable
@@ -12,12 +12,14 @@ class WlaDx < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4dd0d8e647041706963447aa6b70fd385bde5b13b29ce925207959b3e09d52ad"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cbc3401b65ebeca507ecb491cc05b420c596085ddab9963acf1ae2e0e8db8abd"
-    sha256 cellar: :any_skip_relocation, monterey:       "e6a585c2eb86f50a02ee9400e7b82a9b37ee239d1d4407290e8e3754b3a8979a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9a6066360b0528114e08d32d351aed73d2174942c113e0df2afcb72f2de3d1b7"
-    sha256 cellar: :any_skip_relocation, catalina:       "8376b0ac8abbc1d064aea081c5075f6efac6a7495d66c014fcc10b972a5a53e9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "79f4a7da2db6adb1277e2d4d9c7566694a26e0000a76de8264eb8b93fc09dbf2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "be3cdd93a0f78c02acc8ac279afa23a0d075b7d4139f86838333dfbccc21395b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4a7e583aa16af9fa4a98ea1f655b8f5572ca24822919f0ac591cbbf9c1e08c10"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8fd6821a07e38ef4ccb90410bbcddb3344f4fd8c6641bd0eeda7f749c33de69b"
+    sha256 cellar: :any_skip_relocation, ventura:        "6dda1329ee7ac4d58cc260c972c1cce92d3f4fa0b649bec13e30c229510fc2c6"
+    sha256 cellar: :any_skip_relocation, monterey:       "68c89844890eba4f05779678572e095e02e6747f1189c5906918f2c0975070f1"
+    sha256 cellar: :any_skip_relocation, big_sur:        "52e9230b232698ef8cf0737848b62cdc7b76da8c4d675e427e1d6dd91e0a25c9"
+    sha256 cellar: :any_skip_relocation, catalina:       "3ef932aee92aaeaf5655ee785ab28a926b0b276b8aefab293d5c11248bb7d84d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "908498831e2ce6f1ecf36bb83122ee986f479440fe760d1470f2dc574fdee3be"
   end
 
   depends_on "cmake" => :build

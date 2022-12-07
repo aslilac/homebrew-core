@@ -1,19 +1,20 @@
 class QuickLintJs < Formula
   desc "Find bugs in your JavaScript code"
   homepage "https://quick-lint-js.com/"
-  url "https://c.quick-lint-js.com/releases/2.6.0/source/quick-lint-js-2.6.0.tar.gz"
-  sha256 "6fd402e1d0743adb9e862532e25b2be09f637d4c45cb964251ac0f52a1eb5d5c"
+  url "https://c.quick-lint-js.com/releases/2.10.0/source/quick-lint-js-2.10.0.tar.gz"
+  sha256 "e5b480dc3ebb68ae767afbf6b35e340c0fe75c0730908a078386fdedfc0874c7"
   license "GPL-3.0-or-later"
-  revision 3
   head "https://github.com/quick-lint/quick-lint-js.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "12108ca1f7680f37d5554e167688cc8b3dcc45d3218a5ead3aaa3368d00933b6"
-    sha256 cellar: :any,                 arm64_big_sur:  "b58448d800e585607b1601df169442dbfb61bc533f38f01f294453571fd7615e"
-    sha256 cellar: :any,                 monterey:       "69cd1977b006efe350c56d4895547f7302141a75e49f056c9b904cd78a01af2e"
-    sha256 cellar: :any,                 big_sur:        "eca1f6d79c2d65dce07d27cc2a63b5d2646f728a31e37c27dd5e3757b71aed0e"
-    sha256 cellar: :any,                 catalina:       "63625efae03df8562639e75cd354169d60909da71f5f817fb149e65332c37589"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "549dbff26a0c88ac3f5f986ccdf570976982171195a4a928eb460bfc546bb498"
+    sha256 cellar: :any,                 arm64_ventura:  "101e8e67f127771ea448c661faa1c43696649940aac9d2607a6c02260e6f2f6e"
+    sha256 cellar: :any,                 arm64_monterey: "49f6234901bff48ac7655e4ccd3ebe3537c04877d3bc5add5e7aabb9964df3fb"
+    sha256 cellar: :any,                 arm64_big_sur:  "75becb2742c84477cc3d455298e728381e0cde0c10e3ed7c0f2880d417f2cd57"
+    sha256 cellar: :any,                 ventura:        "3ab50cf8c861f5c64a46493b5bc4c6b6b5cd3280a8a188575126e5f4ef8c1e07"
+    sha256 cellar: :any,                 monterey:       "ef1b51d496634b92dbe8cf78cdd5f4de38c5d1ac69e9ae1e682791ce2c343344"
+    sha256 cellar: :any,                 big_sur:        "6ae879827826b5dab7d724c8ef6c00df109c613116029de5207c3e1c52247d57"
+    sha256 cellar: :any,                 catalina:       "4cc0d70ce91b9ab13fac0123a07d8c9fed4722ca83539291e83606214ae466b7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a00b52f5ac8787a3f03244ec27fc93cbfb72409cc87801cfac70f98fb98404de"
   end
 
   depends_on "cmake" => :build
@@ -22,23 +23,9 @@ class QuickLintJs < Formula
   depends_on "boost"
   depends_on "simdjson"
 
-  on_linux do
-    # Use Homebrew's C++ compiler in case the host's C++
-    # compiler is too old.
-    depends_on "gcc"
-  end
-
-  # quick-lint-js requires some C++17 features, thus
-  # requires GCC 8 or newer.
-  fails_with gcc: "5"
-  fails_with gcc: "6"
-  fails_with gcc: "7"
-
-  # Fix build with simdjson 2.2.0.
-  # https://github.com/quick-lint/quick-lint-js/pull/779
-  patch do
-    url "https://github.com/quick-lint/quick-lint-js/commit/a82c706ef4b8d1e7aa71b6ff0d244670a50d69ee.patch?full_index=1"
-    sha256 "445b11501ab08613a90f0107df965b9e7b420ad2e0139a47deb0453ced5b86f8"
+  fails_with :gcc do
+    version "7"
+    cause "requires C++17"
   end
 
   def install
@@ -53,9 +40,7 @@ class QuickLintJs < Formula
                     "-DQUICK_LINT_JS_USE_BUNDLED_SIMDJSON=OFF",
                     *std_cmake_args
     system "cmake", "--build", "build"
-    chdir "build" do
-      system "ctest", "-V"
-    end
+    system "ctest", "--verbose", "--parallel", ENV.make_jobs, "--test-dir", "build"
     system "cmake", "--install", "build"
   end
 

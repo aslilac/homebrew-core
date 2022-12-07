@@ -1,18 +1,19 @@
 class Dasel < Formula
   desc "JSON, YAML, TOML, XML, and CSV query and modification tool"
   homepage "https://github.com/TomWright/dasel"
-  url "https://github.com/TomWright/dasel/archive/v1.25.0.tar.gz"
-  sha256 "49f7a34b31c87d27ef5c5a32b87a603ac6d7d4d1a52533942676429b747e1f7e"
+  url "https://github.com/TomWright/dasel/archive/v2.0.1.tar.gz"
+  sha256 "259746d844ee11d15a76b8c6e143572a5fd0b233e3e19b70b78694179a33d0fc"
   license "MIT"
   head "https://github.com/TomWright/dasel.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c995601547782c77e85eafd21bf14ada71ee1841eb38640154c4548be50d14f3"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c94d4c79cb73e16df67e4eeb565a4953baea12c606f159fe2c2e968e4ff701ca"
-    sha256 cellar: :any_skip_relocation, monterey:       "3d45db1036ece790e2320d9b38d8b1ba5ad9435026fe593f36bb97cd3a789a81"
-    sha256 cellar: :any_skip_relocation, big_sur:        "497f0d5b87efe8934b844caa49278dffae5de0f67063fc4dc0c99d0d56c6cb2a"
-    sha256 cellar: :any_skip_relocation, catalina:       "9a7341e4279919d1f390dfbb386c86d5ce991a0d81d4ed5e661e40c5d7ad2119"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a0b917d73e21964aa438c0782be7aa4975a967f7020b4b9a6be95f9da8715b2b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "109b5b95230947686b6d254f4051c3f49ed404caf22a6dccd76be553526aaff3"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "967fa999f2889627a0e6bf72a1590dd224f8dbb33bb94f9f5251bb6eab7cdfe9"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1b8a8e893ee0530822b38cd00549b30d1986f0ff03ee3a3747742a3401d4e727"
+    sha256 cellar: :any_skip_relocation, ventura:        "de86fe7c11b1042af26c1be0943074f69976a36d0739d742a135d9fc3609711b"
+    sha256 cellar: :any_skip_relocation, monterey:       "dfc9aa89159382bd8bad5880e3443632b444e351da24eed602b6992889e5d8c4"
+    sha256 cellar: :any_skip_relocation, big_sur:        "81641b92325f5a287646fc4164a7d9b311c9b405a4a51b89de9f1e996ea882e8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "563f554a0cb1c748c93212b5f5c99d57e47fe24e513ccac4b07aefa145646e1f"
   end
 
   depends_on "go" => :build
@@ -20,10 +21,12 @@ class Dasel < Formula
   def install
     ldflags = "-X 'github.com/tomwright/dasel/internal.Version=#{version}'"
     system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/dasel"
+
+    generate_completions_from_executable(bin/"dasel", "completion")
   end
 
   test do
-    json = "[{\"name\": \"Tom\"}, {\"name\": \"Jim\"}]"
-    assert_equal "Tom\nJim", pipe_output("#{bin}/dasel --plain -p json -m '.[*].name'", json).chomp
+    assert_equal "\"Tom\"", shell_output("echo '{\"name\": \"Tom\"}' | #{bin}/dasel -r json 'name'").chomp
+    assert_match version.to_s, shell_output("#{bin}/dasel --version")
   end
 end

@@ -1,25 +1,29 @@
 class Onefetch < Formula
-  desc "Git repository summary on your terminal"
+  desc "Command-line Git information tool"
   homepage "https://github.com/o2sh/onefetch"
-  url "https://github.com/o2sh/onefetch/archive/v2.12.0.tar.gz"
-  sha256 "f57b16dfa2bb95dd1fb805257a1761baa20d69eb9ce7c311d369609894c53897"
+  url "https://github.com/o2sh/onefetch/archive/2.14.2.tar.gz"
+  sha256 "df5e10aac076369bbbdeb94eef286dbde8d10859fd8f47af7e2748fadef0622c"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7bde32546297e98275c6fbacf28dbc3ad18e3f3a90deac0bc1fdf092d8383c13"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5474070a72fd6aab344dae1da7397824ed7a033601d7ddeb5cc95d07ad5fd3e8"
-    sha256 cellar: :any_skip_relocation, monterey:       "bbaaa0e844d51459467094c46d7a80e99ba91f1d98bc14a5d2ee7477a34ef57e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0ea304b224a67b84b3b69f1b03686cd57b9653c79e436e2e3e3e2d2e29016d67"
-    sha256 cellar: :any_skip_relocation, catalina:       "e51937d3e851a076c7900ae0402e5a9a988fd8af0bdca63038cc52eb8b35f54c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b6fba076a2d577312cc34fb2eabaca97e4767cf822f6e7698578f624f1f4e1d8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9f1a30918f552243064de48d676cad0b42353b8900442c4767aaf8169e6f72f8"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a7a53e763435559e4d49a7c151b873f8ecdbc01745d0234e19c4b4203d4d194a"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fe975449c82a21ec7e4ff5331656fb437861c1c78c186fd7a6842fb86b562c42"
+    sha256 cellar: :any_skip_relocation, ventura:        "2118047958912a722ad2b05b41a0e9e4041d0dc973f02042d7cbf3bf5a18cfc1"
+    sha256 cellar: :any_skip_relocation, monterey:       "ffc838300aa4c52191823aeff02ca82b9da9aa502e8534160208b6a4173d9a00"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d8c266f7035e51370267d6d807636f9974b198bbb93d8411fd6f0bfbd84de7e5"
+    sha256 cellar: :any_skip_relocation, catalina:       "6110c913a91bf796f2fa31e22078250a6a2babdd90e14ba434ee102b5f94d085"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9e1b803fb49c420337bc81479eae56a954d6b98c22aa3f5b6f0d3b9ab6c886a2"
   end
 
+  depends_on "cmake" => :build
   depends_on "rust" => :build
-
-  uses_from_macos "zlib"
 
   def install
     system "cargo", "install", *std_cargo_args
+
+    man1.install "docs/onefetch.1"
+    generate_completions_from_executable(bin/"onefetch", "--generate")
   end
 
   test do

@@ -1,36 +1,41 @@
 class DosboxX < Formula
   desc "DOSBox with accurate emulation and wide testing"
   homepage "https://dosbox-x.com/"
-  url "https://github.com/joncampbell123/dosbox-x/archive/dosbox-x-v0.84.0.tar.gz"
-  sha256 "564fbf8f0ab090c8b32bc38637c8204358c386b9cbffcb4f99a81bc82fddbad7"
+  url "https://github.com/joncampbell123/dosbox-x/archive/dosbox-x-v0.84.1.tar.gz"
+  sha256 "d5ba5b3d87b0dc69d70f6c9701eec36772bbc3716e0b201b74ec73d4b3ff38cc"
   license "GPL-2.0-or-later"
   version_scheme 1
   head "https://github.com/joncampbell123/dosbox-x.git", branch: "master"
 
   livecheck do
     url :stable
-    regex(/^dosbox-x[._-]v?(\d+(?:\.\d+)+)$/i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "b1c66b44ffa6f942475c7d8a2d3e4ce093d49d8ed748268f55f6c71b38913cbd"
-    sha256 cellar: :any, arm64_big_sur:  "c2b2ebcca8be7bd85024a2c54ba4c5a6c003a27c7de12231f77a0625e2c5bb1c"
-    sha256 cellar: :any, monterey:       "a99a3ebfb082da87d164c495aee67bd84260a6141e21149ecb671d5e7673c084"
-    sha256 cellar: :any, big_sur:        "bba10b3909c8703519bacf0563a1f5140b3b1f0ac649e9708ce0b37a77b994d9"
-    sha256 cellar: :any, catalina:       "909a17f658c7f92a5e774a0ae911c3e00689295637b1a932b7c776b0c8e4691c"
-    sha256               x86_64_linux:   "0a6f6e937a82baf7fbee8067ab11cfbb57d690a17785e25678a8ce9db7aa79c6"
+    sha256 arm64_ventura:  "d8d48cde31652f38141989d47761f98ca9244ebaa76b983219f4a47b9890db37"
+    sha256 arm64_monterey: "ba141298043ea53e91b2b5e848cdafbba932522c2a4378f516ed00c8e7900f86"
+    sha256 arm64_big_sur:  "857458e42569a07bd3672c737ada1d74c2f4540508781c7bdea836419d32f116"
+    sha256 ventura:        "05bb7c5945061bc2f6ad72591062ed598e208dc5b084559494eb1792efac586f"
+    sha256 monterey:       "48a99fb912507bfea08cb32d6d06b314ae2dd3d5d255da2a16b17e2dcf8b493b"
+    sha256 big_sur:        "897591473da3931085825289853adbf8f860c438207a0cf66f343ab51721c946"
+    sha256 catalina:       "22a718ddb857157def467dfff8d08bdb6272741d920ca05ccf6215190f5c9983"
+    sha256 x86_64_linux:   "8e685d8d1494efa8b6ded6b1fd4346cdc786cf81976e1d1d1868c35c1f63a099"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
   depends_on "fluid-synth"
+  depends_on "freetype"
+  depends_on "libpng"
+  depends_on "libslirp"
   depends_on macos: :high_sierra # needs futimens
+  depends_on "sdl2"
+  uses_from_macos "zlib"
 
   on_linux do
-    depends_on "linux-headers@4.15" => :build
-    depends_on "gcc"
-    depends_on "sdl2"
+    depends_on "linux-headers@5.15" => :build
   end
 
   fails_with gcc: "5"
@@ -38,13 +43,18 @@ class DosboxX < Formula
   def install
     ENV.cxx11
 
-    args = %W[
-      --prefix=#{prefix}
-      --disable-dependency-tracking
+    # See flags in `build-macos-sdl2`.
+    args = %w[
+      --enable-core-inline
+      --enable-sdl2
+      --disable-sdl2test
+      --disable-sdl
       --disable-sdltest
     ]
-    build_script = OS.mac? ? "./build-macosx" : "./build"
-    system build_script, *args
+
+    system "./autogen.sh"
+    system "./configure", *std_configure_args, *args
+    system "make" # Needs to be called separately from `make install`.
     system "make", "install"
   end
 

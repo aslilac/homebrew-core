@@ -2,8 +2,8 @@ class GitlabRunner < Formula
   desc "Official GitLab CI runner"
   homepage "https://gitlab.com/gitlab-org/gitlab-runner"
   url "https://gitlab.com/gitlab-org/gitlab-runner.git",
-      tag:      "v15.1.0",
-      revision: "76984217c7ef0bf669da0eb0d6337a54ba1ff14a"
+      tag:      "v15.6.1",
+      revision: "133d7e769491ed802f3d0bed68338d74357f6159"
   license "MIT"
   head "https://gitlab.com/gitlab-org/gitlab-runner.git", branch: "main"
 
@@ -13,16 +13,17 @@ class GitlabRunner < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "29e742eddcdd1692ec3bc8ca847210bf9c7df47fc17f710b0924d412b92e8614"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cf51de0e33baa813f230099555591e5ddfb26be70919558b336e06f562727848"
-    sha256 cellar: :any_skip_relocation, monterey:       "a3aac69cbb5d587718cd850e7a9ab1c63ca99b6699740234b5e3ad9cf445a703"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e6c2994ee60080bbb263867ebb311e449b3818b67407a2aa71783311413791a0"
-    sha256 cellar: :any_skip_relocation, catalina:       "4e9803b0db3622b31de5175a57969422bc2f7f894ebb6a71e00642f283a7ff08"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a70552aa27f87a8de1cd77186f32398eb7e9371f25368f3dd6403e396ebe88ac"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "874ebb925c04d86a733280e3e6dbf1fac3cd174490d92906d6aac0f2303b36d4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "08bdd01d1fe3be0716ad5eac56a0acc6010df4f18d3e431e46a003ea9da13144"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "42810815b6b64a65046eb3cda9691ce2247e490a278a7a88edd8bd1c44318db7"
+    sha256 cellar: :any_skip_relocation, ventura:        "60f552404eaf275a379f1599c2b39fa3f3b348d686a801ba636790f040e9a52a"
+    sha256 cellar: :any_skip_relocation, monterey:       "7306436288118bac19f6c668531de621fc33ca1602be7d572e4e48cf8b9a4fda"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b2b568d01aeb0268d2d2bb0748c97ca82a72f965ea6259146916fabaf583e80e"
+    sha256 cellar: :any_skip_relocation, catalina:       "5029a21da509d8f366d3e8d8f5dd922cf631b2ded5d9b762755218e31e50f969"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "61ffcfacbe3104d07215514252e0b1a16bdbcee245bdf9d14092f8f7e1a3f9db"
   end
 
-  # Bump to 1.18 when x/sys is updated (likely 14.9).
-  depends_on "go@1.17" => :build
+  depends_on "go" => :build
 
   def install
     proj = "gitlab.com/gitlab-org/gitlab-runner"

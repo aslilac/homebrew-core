@@ -4,15 +4,18 @@ class DiffPdf < Formula
   url "https://github.com/vslavik/diff-pdf/releases/download/v0.5/diff-pdf-0.5.tar.gz"
   sha256 "e7b8414ed68c838ddf6269d11abccdb1085d73aa08299c287a374d93041f172e"
   license "GPL-2.0-only"
-  revision 4
+  revision 5
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "6221f00c375eebe4d356c14dec2b7b28a8486636a10333c8ef99d0fb8c9f95b1"
-    sha256 cellar: :any,                 arm64_big_sur:  "f6b1b97f6a30c4318e2c38526887bd4f6dc92dc3badef15e9af39df27819eb96"
-    sha256 cellar: :any,                 monterey:       "acc8ff103fa29c4c2f42efc1010f5cfadc364b735a4b6b1750091502c69696be"
-    sha256 cellar: :any,                 big_sur:        "07ca313f26653f86bc93318ef6c8c544331837ef46f592f95c4b436f29c9b4e9"
-    sha256 cellar: :any,                 catalina:       "5623153835d7e0f13cd40f691b8a28d795e9157991c8ffef01b75ea7fc3c082b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "37f48305aae394028a8a12f3e82b1e1b0a19771e8735c104e554875e0abde3e7"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "a0977dfd009954ba4428e60a954efa92eaa3202eb2061e6a60aaa3c16faf2fc4"
+    sha256 cellar: :any,                 arm64_monterey: "0616440421b45bca4494c5eaf90640d61b4f70ef77fb4a811fcebda766f07957"
+    sha256 cellar: :any,                 arm64_big_sur:  "0e01c107b0949a6d3baeefaf15899461a8b7ac886efdba9d2960a52a3e62d59a"
+    sha256 cellar: :any,                 ventura:        "234055d5afe5c54ac619aa3a14d802507fa771d3f6c9cf8856f1ddcb7e937c4e"
+    sha256 cellar: :any,                 monterey:       "439c5722731ba71ccff2e07de2c7b38262c47f8532c9949f606e9e12419682ea"
+    sha256 cellar: :any,                 big_sur:        "2e11ac7650d5cfe77922aa0deb7c036b708d370e5c748688b1538bfe3606ca54"
+    sha256 cellar: :any,                 catalina:       "aa5bfc82668e41fb44c6a5ed7e83b9c1a59ecd7ce4c76a67530713767e95902f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b3b271e5a61d685e2fd6357b90e62f4849daae2de3759f58aa9a85563b3d4e94"
   end
 
   depends_on "autoconf" => :build
@@ -22,10 +25,6 @@ class DiffPdf < Formula
   depends_on "cairo"
   depends_on "poppler"
   depends_on "wxwidgets"
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5"
 

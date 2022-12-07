@@ -1,8 +1,8 @@
 class NodeAT14 < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v14.19.3/node-v14.19.3.tar.xz"
-  sha256 "5cf45b1f1aca77523acf36240c1d53a999279070a7711eabf23346f88b0cc994"
+  url "https://nodejs.org/dist/v14.21.1/node-v14.21.1.tar.xz"
+  sha256 "3db95d6ca728957bf090b6301a7a9d2d80714b2a06d898a1db65c6e42b1da7ac"
   license "MIT"
 
   livecheck do
@@ -11,15 +11,20 @@ class NodeAT14 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "3887b21bad6630db6cadbda77a28c4d426be9e9223584e54025876315ecfa3df"
-    sha256 cellar: :any,                 arm64_big_sur:  "7136a0a7dfe5c0ae2fe97bfd530cd2e649172f4887486d076a7ad283a56b1d7f"
-    sha256 cellar: :any,                 monterey:       "7552042ab27893957554b8eb38f204eb072527cb60f401b54530e3b774ba1b96"
-    sha256 cellar: :any,                 big_sur:        "03d428f146009b987141dd5dca7a763d250af5be7e87eab6a8fcf7faf78e92ce"
-    sha256 cellar: :any,                 catalina:       "66d2551f4f6bf33cbf26d2e6baf7de8bfc7b8176a2f663b2362bc6566be1b527"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d9655db65f68bfc49ed365cfc4201603dc229e972d5f9b88f07791b9e471b4e2"
+    sha256 cellar: :any,                 arm64_ventura:  "cbe86d5c0f1c021ce41529f8e335c3832b711b8687759d7f5527afb0da6fe260"
+    sha256 cellar: :any,                 arm64_monterey: "5c6e81a3969c6e95c3a273697a5acf8d744f9e76d6d408e01e1a4ad1cda908c3"
+    sha256 cellar: :any,                 arm64_big_sur:  "868acabcda32d060dca96f1b3299f3c35fde3e37ab68c0f516636dca0d9027fa"
+    sha256 cellar: :any,                 ventura:        "a8f01ea53e89d6d995a6153b4dc028554dbbb28dd233a2b4908ac5b5ea4ebfd6"
+    sha256 cellar: :any,                 monterey:       "073257f3276e543a37117aa9d5553b9383607c1168c82f9b330f3d50ff86b4a3"
+    sha256 cellar: :any,                 big_sur:        "61f063876cbb7b3c8222116fe977fa6354caea76a5a697e148b2324755718d66"
+    sha256 cellar: :any,                 catalina:       "2b6f03f7caaea96b27fad538ec1600c0c7619195ee16c53a7d81081d6fe0f185"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "31700b31d1d02aede35bb5fcb817667a6c12da6ca2b9e47c4a4bf25ae70a7a31"
   end
 
   keg_only :versioned_formula
+
+  # https://nodejs.org/en/about/releases/
+  # disable! date: "2023-04-30", because: :unsupported
 
   depends_on "pkg-config" => :build
   depends_on "brotli"
@@ -37,9 +42,13 @@ class NodeAT14 < Formula
     depends_on "macos-term-size"
   end
 
+  def python3
+    Formula["python@3.10"]
+  end
+
   def install
     # make sure subprocesses spawned by make are using our Python 3
-    ENV["PYTHON"] = which("python3")
+    ENV["PYTHON"] = python = python3.opt_bin/"python3.10"
 
     args = %W[
       --prefix=#{prefix}
@@ -62,7 +71,7 @@ class NodeAT14 < Formula
       --shared-cares-libpath=#{Formula["c-ares"].lib}
       --openssl-use-def-ca-store
     ]
-    system "python3", "configure.py", *args
+    system python, "configure.py", *args
     system "make", "install"
 
     term_size_vendor_dir = lib/"node_modules/npm/node_modules/term-size/vendor"
@@ -94,7 +103,7 @@ class NodeAT14 < Formula
 
     # make sure npm can find node and python
     ENV.prepend_path "PATH", opt_bin
-    ENV.prepend_path "PATH", Formula["python@3.10"].opt_libexec/"bin" if OS.mac?
+    ENV.prepend_path "PATH", python3.opt_libexec/"bin" if OS.mac?
     ENV.delete "NVM_NODEJS_ORG_MIRROR"
     assert_equal which("node"), opt_bin/"node"
     assert_predicate bin/"npm", :exist?, "npm must exist"

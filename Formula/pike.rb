@@ -6,6 +6,7 @@ class Pike < Formula
   # Homepage has an expired SSL cert as of 16/12/2020, so we add a Debian mirror
   sha256 "1033bc90621896ef6145df448b48fdfa342dbdf01b48fd9ae8acf64f6a31b92a"
   license any_of: ["GPL-2.0-only", "LGPL-2.1-only", "MPL-1.1"]
+  revision 1
 
   livecheck do
     url "https://pike.lysator.liu.se/download/pub/pike/latest-stable/"
@@ -13,19 +14,26 @@ class Pike < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "ffc4be44537cbfdee288908954eba9770285f1125605d1572ae07cc5cb957e74"
-    sha256 arm64_big_sur:  "f0b5027d1b973ae8032a248b61a947a0310c0aad40d973cfa55ed0f0f21444cf"
-    sha256 monterey:       "c8a4f96f3d11502a5b8f86cc50c2fcad1785bb5319989b7812b3bd9354a7a7ac"
-    sha256 big_sur:        "ba630c7d573cb8079a2493a22ee092061ea7c041ceb61c7c2264fd23ebb7de97"
-    sha256 catalina:       "ac8c57905aaa692ecd95f716a4e5daab9d7b030470cefd99a3b2043ceb19e5de"
-    sha256 x86_64_linux:   "d1b09df6210744180a51992d93ba0d4344fea5fff256b6434486f909f0457a94"
+    rebuild 1
+    sha256 arm64_ventura:  "3ff13701ed6f1b07323df232c6fcd35125fea646fd0a78ec29c06a1bd3eab29c"
+    sha256 arm64_monterey: "49738b5e4a0c626992a93f2ea98bca84ba1cd5c4a3f5bb1dec3aa76b8f7f9320"
+    sha256 arm64_big_sur:  "966941419e0ad6d79afe1c06cbf5c6426987a4fb044118efaf639db74ecf9f74"
+    sha256 ventura:        "1650ccd2417aa16e7a70b1677ff6524de9461c6e11d69aac0f17d3d8943a1bb2"
+    sha256 monterey:       "67a354ed3a0cbc132c61fb3042b9f3dfbcaadad7f43fc43aaa70c4c60ac90838"
+    sha256 big_sur:        "f7d73f5d026696f371a577db4e34a271b9f4844df9a5671a78f7e00f1373311b"
+    sha256 catalina:       "fba4b09bca334abbbfb682151ca87e173d31250cf1f2682cb84f171c47d0723f"
+    sha256 x86_64_linux:   "1681d64d3aa898314870cc8f2838ee7b56e87d41d431c655526c04424166891d"
   end
 
+  depends_on "gettext"
   depends_on "gmp"
+  depends_on "jpeg-turbo"
   depends_on "libtiff"
   depends_on "nettle"
   depends_on "pcre"
+  depends_on "webp"
 
+  uses_from_macos "krb5"
   uses_from_macos "libxcrypt"
 
   on_macos do
@@ -33,7 +41,7 @@ class Pike < Formula
   end
 
   on_linux do
-    depends_on "jpeg"
+    depends_on "libnsl"
   end
 
   def install

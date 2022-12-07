@@ -3,9 +3,9 @@ class Simgrid < Formula
 
   desc "Studies behavior of large-scale distributed systems"
   homepage "https://simgrid.org/"
-  url "https://framagit.org/simgrid/simgrid/uploads/caf09286c8e698d977f11e8f8451ba46/simgrid-3.31.tar.gz"
-  sha256 "4b44f77ad40c01cf4e3013957c9cbe39f33dec9304ff0c9c3d9056372ed4c61d"
-  revision 1
+  url "https://framagit.org/simgrid/simgrid/uploads/c45f7fd6872b3b0d26b9ba2e607d6e3a/simgrid-3.32.tar.gz"
+  sha256 "837764eb81562f04e49dd20fbd8518d9eb1f94df00a4e4555e7ec7fa8aa341f0"
+  license "LGPL-2.1-only"
 
   livecheck do
     url :homepage
@@ -13,31 +13,23 @@ class Simgrid < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "ab8ee6aa628b82f2cc628cb4a8f0299cbab390b79d0e1dfa8a09b475c7503bad"
-    sha256 arm64_big_sur:  "6b1e082b4ba8e6585877d3b6def0ca57e1fc24abb7c5aa84389be5329105b741"
-    sha256 monterey:       "82263db7ab647377a8bf118d3b593c0d29d54fb6a779f8fcda51f574a327b32d"
-    sha256 big_sur:        "86cacdcbf82d4b9ac7e924f616056e6896d16cd7296f07ca9e35711c4927700e"
-    sha256 catalina:       "0dbce7e370ad6966cdd07969af51228614d592ec0abacb02921abde25a833d1c"
-    sha256 x86_64_linux:   "0e9b0fc791be94df18265aa74e59e469451866f48cbf323318302b151b75766f"
+    sha256 arm64_ventura:  "b74f6093252d75c5a740206d86304fd1fdbd469195bb721633b06728fdf7a1de"
+    sha256 arm64_monterey: "33cd6310a7561485629e64827eadb35ddcbbb0183a82fa26fb2a0afaf3aac42a"
+    sha256 arm64_big_sur:  "8cdde2925ecc32a83433b1b077cc114471c3cbf1d5046022872719c0bc34a8cb"
+    sha256 ventura:        "8dc7954e386e31c0f63987aaabb41d6e53549a63ab91f423c9fa8f56df3e5032"
+    sha256 monterey:       "f2af0a304c585be6c96ce0ad91d1a42f8064788575076945ab5158b43242b1cf"
+    sha256 big_sur:        "b01a3a6c1282a3cec1c34bbe413906b4035ff240d77728f6b2b9d29d4b1c1cb1"
+    sha256 catalina:       "63276e960125d3e3a7ad3f505c86fbce9c867a9ee7661fa5c4e7374f71af7838"
+    sha256 x86_64_linux:   "aa55ed3f96e318693e5e71fcd780a5bfd7bbc85b6269dd29cbdb3e04c9ef03ab"
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
   depends_on "boost"
   depends_on "graphviz"
-  depends_on "python@3.9"
-
-  on_linux do
-    depends_on "gcc"
-  end
+  depends_on "python@3.10"
 
   fails_with gcc: "5"
-
-  # Fix build with graphviz>=3 as headers no longer define NIL macros
-  patch do
-    url "https://framagit.org/simgrid/simgrid/-/commit/33ef49cf9e1ad1aeea86dca9a009d5a6e15e2920.diff"
-    sha256 "3bf50df79fd1f58e1919d0c3fa1cd808d50ed0133712e8d596805f25e27933ea"
-  end
 
   def install
     # Avoid superenv shim references

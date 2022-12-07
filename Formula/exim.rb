@@ -4,6 +4,7 @@ class Exim < Formula
   url "https://ftp.exim.org/pub/exim/exim4/exim-4.96.tar.xz"
   sha256 "299a56927b2eb3477daafd3c5bda02bc67e5c4e5898a7aeaf2740875278cf1a3"
   license "GPL-2.0-or-later"
+  revision 2
 
   # Maintenance releases are kept in a `fixes` subdirectory, so it's necessary
   # to check both the main `exim4` directory and the `fixes` subdirectory to
@@ -29,16 +30,18 @@ class Exim < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "5f2204bc0b518d60cb48faab04f357bb2733dccc4a0e208eeb5655c9a204b4f4"
-    sha256 arm64_big_sur:  "64610ea9910c5faff8285e73194930d6b43bf0cbd9ba32ef2d14924f0a2ffd61"
-    sha256 monterey:       "da4fb14104a0fd40aaeadf9ecfaab6cb8530e8dc3210d3b115bc23146909f176"
-    sha256 big_sur:        "d4cdbb1b7f6e949a3e4d923f95b320d37065b0ee86f3142d19d5824f73091651"
-    sha256 catalina:       "70a67635e064e233da5b95ce8e11a61ed4b5bb1001d460ab96755712f8acf629"
-    sha256 x86_64_linux:   "03b233d5f4c5c4c0c3cc4cfde54260177d241084152d927ae02cb6bb478f2673"
+    sha256 arm64_ventura:  "02bbfd3d923e23dd8b9d605ff9f3079b9cbe29150b77c9ee10004c5d4de483ba"
+    sha256 arm64_monterey: "1dcfe9e8ff31d30c8c03c2f6db86d29199e3ad3884626e24a202dbf10da5b815"
+    sha256 arm64_big_sur:  "9a376535eb48485e2cf30910da5da8fbc422f20790639f643f60195a29ad4bba"
+    sha256 ventura:        "7d030fce1ff8c9326ce679d95f07c1ae1ad429e5b54c3363de23e3b207bf25db"
+    sha256 monterey:       "8212b900afb9970de0ea5a666d1fdf524d74f638d8233d3edf375ce13668678a"
+    sha256 big_sur:        "2380ffa1a08a087a4ccc85c776fabc661cc377f32cd3fba3ebf79d042ae53727"
+    sha256 catalina:       "e49195d49265f2e1941c71c39811d92a329ae04b5ea33c34116bdb1c0723307c"
+    sha256 x86_64_linux:   "c189cd50a88e4494a00520e2ce63066cea2bcbe8ed3fa1435fcadb73b0d11d29"
   end
 
-  depends_on "berkeley-db@4"
-  depends_on "openssl@1.1"
+  depends_on "berkeley-db@5"
+  depends_on "openssl@3"
   depends_on "pcre2"
   uses_from_macos "libxcrypt"
 
@@ -65,15 +68,15 @@ class Exim < Formula
       s << "LOOKUP_LIBS=-L#{HOMEBREW_PREFIX}/lib\n"
     end
 
-    bdb4 = Formula["berkeley-db@4"]
+    bdb5 = Formula["berkeley-db@5"]
 
     cp "OS/unsupported/Makefile-Darwin", "OS/Makefile-Darwin"
     cp "OS/unsupported/os.h-Darwin", "OS/os.h-Darwin"
     inreplace "OS/Makefile-Darwin" do |s|
       s.remove_make_var! %w[CC CFLAGS]
-      # Add include and lib paths for BDB 4
-      s.gsub! "# Exim: OS-specific make file for Darwin (Mac OS X).", "INCLUDE=-I#{bdb4.include}"
-      s.gsub! "DBMLIB =", "DBMLIB=#{bdb4.lib}/libdb-4.dylib"
+      # Add include and lib paths for BDB 5
+      s.gsub! "# Exim: OS-specific make file for Darwin (Mac OS X).", "INCLUDE=-I#{bdb5.include}"
+      s.gsub! "DBMLIB =", "DBMLIB=#{bdb5.lib}/libdb-5.dylib"
     end
 
     # The compile script ignores CPPFLAGS

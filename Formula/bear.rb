@@ -1,19 +1,21 @@
 class Bear < Formula
   desc "Generate compilation database for clang tooling"
   homepage "https://github.com/rizsotto/Bear"
-  url "https://github.com/rizsotto/Bear/archive/3.0.19.tar.gz"
-  sha256 "2fcfe2c6e029182cfc54ed26b3505c0ef12b0f43df03fb587f335afdc2ca9431"
+  url "https://github.com/rizsotto/Bear/archive/3.0.20.tar.gz"
+  sha256 "45cfcdab07f824f6c06c9776701156f7a04b23eadd25ecbc88c188789a447cc7"
   license "GPL-3.0-or-later"
-  revision 3
+  revision 6
   head "https://github.com/rizsotto/Bear.git", branch: "master"
 
   bottle do
-    sha256 arm64_monterey: "250481294463503dc2fbc9594bfc5d93b4f6bc3a58661e77b41bfd2fa4843f08"
-    sha256 arm64_big_sur:  "f20ac1cb9818bbb141162b3bc4af6ffdc42855805be48b51f46f646cb6218dae"
-    sha256 monterey:       "8331f1c657ecf1a8e8c6325bea7a6737e57f5c165fab4d5b9aa4688a0c87f886"
-    sha256 big_sur:        "954e98dec61b42f5478b98429f93308449d07a64dcf483736b23142f8422cf24"
-    sha256 catalina:       "188a0986aaaaf9a474a09ced1583843fef08ecfd906e8f8504ad7f0825d3702d"
-    sha256 x86_64_linux:   "b91c9ba37be9a1228c8ee374313f1215a4b14c1b71661aa77edf183a2f4ae495"
+    sha256 arm64_ventura:  "aa1b5209eb105bd971cc09abb04750b1ab4e0c2970b9f2185303d12cb09b8541"
+    sha256 arm64_monterey: "101f9d25f59ee4bcd74de1d3457f965e660c3fcf2115b1ee995698f6f9a3a872"
+    sha256 arm64_big_sur:  "4326a6ee84dbfe462fbb77730f54f7b9e5de33af507a493f7b22a72db7f55d6a"
+    sha256 ventura:        "d5cf0431105e9fceef9e079521f4ebe7054f610e6c85f119d2a9f8bd147ec3f9"
+    sha256 monterey:       "14b09d9f926bb3e9b7fbf8a0be2217c7f78c9051e5bd301db3c839d51807e50e"
+    sha256 big_sur:        "87e639286fb4227eb72c2aedfd079a82383fb8b54b68e46a90e3dc08d4be1a78"
+    sha256 catalina:       "94a12d1cc3b7946c4bf40e2736277686922492fd1563ddff8aab5609ef1550fe"
+    sha256 x86_64_linux:   "b2792136b24c9d193611ce806af7163fed3ab952089119251f0a1792cbc61db8"
   end
 
   depends_on "cmake" => :build
@@ -27,10 +29,6 @@ class Bear < Formula
 
   on_macos do
     depends_on "llvm" if DevelopmentTools.clang_build_version <= 1100
-  end
-
-  on_linux do
-    depends_on "gcc"
   end
 
   fails_with gcc: "5" # needs C++17
@@ -51,11 +49,9 @@ class Bear < Formula
       -DENABLE_FUNC_TESTS=OFF
     ]
 
-    mkdir "build" do
-      system "cmake", "..", *args, *std_cmake_args
-      system "make", "all"
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

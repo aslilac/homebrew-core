@@ -1,9 +1,10 @@
 class Cherrytree < Formula
   desc "Hierarchical note taking application featuring rich text and syntax highlighting"
   homepage "https://www.giuspen.com/cherrytree/"
-  url "https://www.giuspen.com/software/cherrytree_0.99.48.tar.xz"
-  sha256 "4bba4f19d23560e8aa59f2ab1e76f128f7f02adaebb5813e826e1753ee5d81fa"
+  url "https://www.giuspen.com/software/cherrytree_0.99.52.tar.xz"
+  sha256 "3a0ef5b2e821e2b5635888f063e47bfb1263e46b571371037daf473771d4ab5b"
   license "GPL-3.0-or-later"
+  revision 1
 
   livecheck do
     url :homepage
@@ -11,12 +12,14 @@ class Cherrytree < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "e0574b7af797089b4a3a46a86a82c0b40bf44fbf6486e36cd84ccbf69651b617"
-    sha256 arm64_big_sur:  "df1e46f6ec1efb9ff63b1c08796c9b267d9d442b56de1bee387579e7f6ca1a7c"
-    sha256 monterey:       "cc658c25a8d8019a5df4ca2ec5e3e6cdf2981dff3f5045a2b09765c40c5ac9e2"
-    sha256 big_sur:        "0ccce6347da37ae691a9d2a9cc20557154963e92a0e7c3cae6e3eee46d6a980a"
-    sha256 catalina:       "d2703a787f0078f80f69a341be0cf253db847842a0703a97c9eeafd67d22cd73"
-    sha256 x86_64_linux:   "a434bd129bd597a36dee54f97284cb2ca1ef8b3ad99dbd47cf4054d3016ae560"
+    sha256 arm64_ventura:  "010123e08fb61d49c224fa8cc4b011e38ccb044fa11ee27ee865f23631bc9172"
+    sha256 arm64_monterey: "e7fec930578634cfb67051784cbabd1313430361c7cb63f52fac92e1cc435662"
+    sha256 arm64_big_sur:  "de51e8449e023cd0c4051647c60ea540091bf819804a5644bf610580a9e243f9"
+    sha256 ventura:        "c3eaa287459bd297f8d9fed5f161e11f923aeff2e380743373d24e4e2ff38d36"
+    sha256 monterey:       "d631b372cd5b651951739b3969a2aee8d108da1647dbc92e4eea37ebc1407604"
+    sha256 big_sur:        "fba2e38c08337ff5cfc2ef20f6ff9d8fb74ec8f2fc5d8a37e584abd17b0bb557"
+    sha256 catalina:       "7ddb0e27ae9bf7546e1b1f0d0fa548ded0477c495252ffaad3f9f8fe7dba112e"
+    sha256 x86_64_linux:   "b6d0cc9cef0d7c837a1750a627015c35c043f249e7c755f7d51402f2de1b8b44"
   end
 
   depends_on "cmake" => :build
@@ -29,13 +32,11 @@ class Cherrytree < Formula
   depends_on "gtksourceviewmm3"
   depends_on "libxml++"
   depends_on "spdlog"
+  depends_on "sqlite" # try to change to uses_from_macos after python is not a dependency
   depends_on "uchardet"
+  depends_on "vte3"
 
   uses_from_macos "curl"
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5" # Needs std::optional
 

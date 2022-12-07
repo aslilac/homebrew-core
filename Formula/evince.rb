@@ -6,8 +6,10 @@ class Evince < Formula
   license "GPL-2.0-or-later"
 
   bottle do
+    sha256 arm64_ventura:  "4840d249d14080acc571e9d6d7ebcf85c64da7652d4a8329d3142c03ecde2959"
     sha256 arm64_monterey: "743b9157e90ae9315e58dd0001dc8b904a813f7377b108cf9719aeec323f6573"
     sha256 arm64_big_sur:  "ef441a3b5296bd0fc410c86258f777d1219c7c0f7d9a2a125f59a592df64b870"
+    sha256 ventura:        "a8dd95596a6d30fc59f7809be672e09cb3fb0650d32d76822fd6c7c21d635f15"
     sha256 monterey:       "e98f0e196356c8adc2de8c4f2c6462ae503c865f04ce027f575d9e2f0f155f41"
     sha256 big_sur:        "c04ea8f76ddc2406b1a3281ae4d9566fa343fd77d8c434243eea6da87a5cfdcf"
     sha256 catalina:       "b2363f06633f3373afc78a360cab08f11c45b1a23d6294103887c869ff0e7a00"
@@ -30,30 +32,23 @@ class Evince < Formula
   depends_on "libsecret"
   depends_on "libspectre"
   depends_on "poppler"
-  depends_on "python@3.9"
 
   def install
     ENV["DESTDIR"] = "/"
-
-    args = %w[
-      -Dnautilus=false
-      -Dcomics=enabled
-      -Ddjvu=enabled
-      -Dpdf=enabled
-      -Dps=enabled
-      -Dtiff=enabled
-      -Dxps=enabled
-      -Dgtk_doc=false
-      -Dintrospection=true
-      -Ddbus=false
-      -Dgspell=enabled
-    ]
-
-    mkdir "build" do
-      system "meson", *std_meson_args, *args, ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+    system "meson", *std_meson_args, "build",
+                    "-Dnautilus=false",
+                    "-Dcomics=enabled",
+                    "-Ddjvu=enabled",
+                    "-Dpdf=enabled",
+                    "-Dps=enabled",
+                    "-Dtiff=enabled",
+                    "-Dxps=enabled",
+                    "-Dgtk_doc=false",
+                    "-Dintrospection=true",
+                    "-Ddbus=false",
+                    "-Dgspell=enabled"
+    system "meson", "compile", "-C", "build", "-v"
+    system "meson", "install", "-C", "build"
   end
 
   def post_install

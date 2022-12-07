@@ -1,8 +1,8 @@
 class Deark < Formula
   desc "File conversion utility for older formats"
   homepage "https://entropymine.com/deark/"
-  url "https://entropymine.com/deark/releases/deark-1.6.2.tar.gz"
-  sha256 "199f5cd6c65cd23af9323bc464f0d33f53d22686135695b4aa4ddf2ec43534ae"
+  url "https://entropymine.com/deark/releases/deark-1.6.3.tar.gz"
+  sha256 "23e1c05c88417a27dd339895dd4e63b913a5593bc036406c2e81742c17757669"
   license "MIT"
 
   livecheck do
@@ -11,12 +11,14 @@ class Deark < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8e560bcecac579e61c6e55dd4fedf07831d7f14ca84731feb672bc92b17ffaf5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "41b5fe260d01e8520ebfa31a9df1545be5aabeafc7def39e565691a2be5736d5"
-    sha256 cellar: :any_skip_relocation, monterey:       "df89df680d31ba928a3f41a6c8beafd19310db780551ba4e9c64eecdc3488aac"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c8b135424c8da134b51def027de5207150ab81329fb999cb347d4fe0b7d4f7b1"
-    sha256 cellar: :any_skip_relocation, catalina:       "823e4f833b2c843c5ffda4cf393f3baebd6e6bd19432187b47346166e6217555"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b84a83ac5ac0b5b06aadeb3bb744a08cff912630610b9f13dc4c7ab6a79e4a8b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "66e48cf6efeb8aea069324cf2d7b2de043774301d5f83695890f7bee9f947c61"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8571ab11b57e2e90d68906b9a930c8f9667cbe4176bcd3d80a82bd7c3cadc597"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ba55a7b86b72f8de1ff901c2f927c07dde145e1f21281ff5bfd848120df7f5c0"
+    sha256 cellar: :any_skip_relocation, ventura:        "55dcf74ebde1b73b86714670a3d19aebcb37b54fb2f55362955e458dc94cbb20"
+    sha256 cellar: :any_skip_relocation, monterey:       "84180e4b5798017745f3fd80b93e098d58b71ac187021d2adff329c0865eabf3"
+    sha256 cellar: :any_skip_relocation, big_sur:        "94d21e0cd0b11731d5c57e972a70b4119fe7a38bc29c4d201faf15aefe4f8e8f"
+    sha256 cellar: :any_skip_relocation, catalina:       "2a66f100c4cedef2a12624884f2cb321b34a81a62e458296be66dc308bd78d08"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "03470cea3de90c84d08119ec61defdb5a49315c02edc5d28f1c3836ff8e89bca"
   end
 
   def install

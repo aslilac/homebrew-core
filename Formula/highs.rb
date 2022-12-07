@@ -1,17 +1,18 @@
 class Highs < Formula
   desc "Linear optimization software"
   homepage "https://www.maths.ed.ac.uk/hall/HiGHS/"
-  url "https://github.com/ERGO-Code/HiGHS/archive/refs/tags/v1.2.2.tar.gz"
-  sha256 "e849276134eb0e7d876be655ff5fe3aa6ecf1030d605edee760620469f9e97cf"
+  url "https://github.com/ERGO-Code/HiGHS/archive/refs/tags/v1.4.1.tar.gz"
+  sha256 "9890e02ff2d1607ed4d0708a0f2e3a2dc64da1f4301bb85cf1f2c924aa1fee7b"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "26d2d8fbeae81df91fe3348636e97d641c1dc0989ec892aaa235ae4c296b7093"
-    sha256 cellar: :any,                 arm64_big_sur:  "61e7c4d8b1e6d4aa7f1b104e1f6709603a438d2845893c7fdd84c59d5e525a4b"
-    sha256 cellar: :any,                 monterey:       "82b3ca6fd49a1d5df8d813c6c399c4c4448c78282f3cadd8c92c2aec4ff22bd6"
-    sha256 cellar: :any,                 big_sur:        "b9a13ed6b3a4808b9844311025b268c2b2183ed95e0de7317086b9268e7639ba"
-    sha256 cellar: :any,                 catalina:       "abb55d89a64ae65f39c3bbf1e803d8d8c50e9aef392956f3ae4afb18abfa0f40"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a2ec1937168d4834292359728815f13643fe832d878b59ee56976d2ffc01636b"
+    sha256 cellar: :any,                 arm64_ventura:  "99d84f9503723aa94d494bfd5822fb47682c0d2a5f367ad6f62620eee2929696"
+    sha256 cellar: :any,                 arm64_monterey: "4f40fcd5160c5eff1467f73c7472ef045973530e31a0adb3b486fb1cdfc8db9d"
+    sha256 cellar: :any,                 arm64_big_sur:  "cdc09f5a1b582099b30d76980d0526579546ea8d626c264dee8dfc15049f1f2d"
+    sha256 cellar: :any,                 ventura:        "93f06ef7febdb7d40eca38d4986c1820b7899e56ebb1825fca79f7540244ad30"
+    sha256 cellar: :any,                 monterey:       "84cb0d8c138cecdf025bb6d6ed38322e9232dc3a1aefd26c9e967ce2b3208a9c"
+    sha256 cellar: :any,                 big_sur:        "a50c1abc5c0b796bc28545a3781764a064c3ed79e1a8fcebda4443ec17b2c5bf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6c6b47c9dd833f6adcb9e0db6a4b29b9a35cf42b177821f947ce1dd57ab8ac3e"
   end
 
   depends_on "cmake" => :build
@@ -22,7 +23,7 @@ class Highs < Formula
   uses_from_macos "zlib"
 
   def install
-    system "cmake", "-B", "build", *std_cmake_args
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
     pkgshare.install "check", "examples"
@@ -33,7 +34,7 @@ class Highs < Formula
     assert_match "Optimal", output
 
     cp pkgshare/"examples/call_highs_from_cpp.cpp", testpath/"test.cpp"
-    system ENV.cxx, "-std=c++11", "test.cpp", "-L#{lib}", "-lhighs", "-o", "test"
+    system ENV.cxx, "-std=c++11", "test.cpp", "-I#{include}/highs", "-L#{lib}", "-lhighs", "-o", "test"
     assert_match "Optimal", shell_output("./test")
   end
 end

@@ -1,9 +1,19 @@
 class Protobuf < Formula
   desc "Protocol buffers (Google's data interchange format)"
   homepage "https://github.com/protocolbuffers/protobuf/"
-  url "https://github.com/protocolbuffers/protobuf/releases/download/v3.19.4/protobuf-all-3.19.4.tar.gz"
-  sha256 "ba0650be1b169d24908eeddbe6107f011d8df0da5b1a5a4449a913b10e578faf"
   license "BSD-3-Clause"
+  revision 1
+
+  stable do
+    url "https://github.com/protocolbuffers/protobuf/releases/download/v21.9/protobuf-all-21.9.tar.gz"
+    sha256 "c00f05e19e89b04ea72e92a3c204eedda91f871cd29b0bbe5188550d783c73c7"
+
+    # Fix build with Python 3.11. Remove in the next release.
+    patch do
+      url "https://github.com/protocolbuffers/protobuf/commit/da973aff2adab60a9e516d3202c111dbdde1a50f.patch?full_index=1"
+      sha256 "911925e427a396fa5e54354db8324c0178f5c602b3f819f7d471bb569cc34f53"
+    end
+  end
 
   livecheck do
     url :stable
@@ -11,16 +21,18 @@ class Protobuf < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "a467da7231471d7913ed291e83852e1ca950db86d142b2a67e0839743dc132b7"
-    sha256 cellar: :any,                 arm64_big_sur:  "188863a706dd31a59ce0f4bdcf7d77d46e681ed8e72a8ab9ba28e771b52b58fd"
-    sha256 cellar: :any,                 monterey:       "ca9840b58a314543c0f45490e6a543eb330eb772f0db385ef005d82b6b169047"
-    sha256 cellar: :any,                 big_sur:        "a6e39ca1c9418561aa2e576a62c86fe11674b81c922a8f610c75aa9211646863"
-    sha256 cellar: :any,                 catalina:       "5cc145bfca99db8fbe89d8b24394297bde7075aaa3d564cd24478c5762563ef6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7c3e53cb5448c38183693262da84e5e100a11c3d08de6b5088ed2d1a7f00e106"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "7b26ae5359fb989cd6fc50e05d4fcf622f2291a9241885a0f01860734cceebdd"
+    sha256 cellar: :any,                 arm64_monterey: "3d958a45ab58b6a3365d9db8bef59f37c3d89ffb9e33362a2ea82f8d80626c50"
+    sha256 cellar: :any,                 arm64_big_sur:  "09d1eb17559a50e6e072566af5557bb27f6b9b8e61217d05603f59736e02b3ef"
+    sha256 cellar: :any,                 monterey:       "86daf1d5f0503a8be1465b7a668d0e3d36a634f5a3d4d02d23adf07a8359a881"
+    sha256 cellar: :any,                 big_sur:        "ef7203b8626f6f9f8a7ac1916a26c1f0840eefc2984754cc6b345f78704a99a5"
+    sha256 cellar: :any,                 catalina:       "f6728218308e96b523a173e1ad2c7b706bd1225657df20968cc50cc6e32284a8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "064f8ca12c10601729bb4f54818a042ae571348adc2cf89000e506fdfb1d933a"
   end
 
   head do
-    url "https://github.com/protocolbuffers/protobuf.git"
+    url "https://github.com/protocolbuffers/protobuf.git", branch: "main"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -28,10 +40,15 @@ class Protobuf < Formula
   end
 
   depends_on "python@3.10" => [:build, :test]
-  # The Python3.9 bindings can be removed when Python3.9 is made keg-only.
-  depends_on "python@3.9" => [:build, :test]
+  depends_on "python@3.11" => [:build, :test]
 
   uses_from_macos "zlib"
+
+  def pythons
+    deps.map(&:to_formula)
+        .select { |f| f.name.match?(/^python@\d\.\d+$/) }
+        .map { |f| f.opt_libexec/"bin/python" }
+  end
 
   def install
     # Don't build in debug mode. See:
@@ -41,8 +58,7 @@ class Protobuf < Formula
     ENV.cxx11
 
     system "./autogen.sh" if build.head?
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--with-zlib"
+    system "./configure", *std_configure_args, "--with-zlib", "--with-pic"
     system "make"
     system "make", "check"
     system "make", "install"
@@ -55,11 +71,8 @@ class Protobuf < Formula
     ENV.append_to_cflags "-L#{lib}"
 
     cd "python" do
-      ["3.9", "3.10"].each do |xy|
-        site_packages = prefix/Language::Python.site_packages("python#{xy}")
-        system "python#{xy}", *Language::Python.setup_install_args(prefix),
-                              "--install-lib=#{site_packages}",
-                              "--cpp_implementation"
+      pythons.each do |python|
+        system python, *Language::Python.setup_install_args(prefix, python), "--cpp_implementation"
       end
     end
   end
@@ -77,7 +90,9 @@ class Protobuf < Formula
     EOS
     (testpath/"test.proto").write testdata
     system bin/"protoc", "test.proto", "--cpp_out=."
-    system Formula["python@3.9"].opt_bin/"python3", "-c", "import google.protobuf"
-    system Formula["python@3.10"].opt_bin/"python3", "-c", "import google.protobuf"
+
+    pythons.each do |python|
+      system python, "-c", "import google.protobuf"
+    end
   end
 end

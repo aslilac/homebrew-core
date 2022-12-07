@@ -1,8 +1,8 @@
 class Werf < Formula
   desc "Consistent delivery tool for Kubernetes"
   homepage "https://werf.io/"
-  url "https://github.com/werf/werf/archive/refs/tags/v1.2.119.tar.gz"
-  sha256 "36c990229a21631a19c9bd46d90398bed0450a444c2876e45175e5956c803d45"
+  url "https://github.com/werf/werf/archive/refs/tags/v1.2.191.tar.gz"
+  sha256 "d38a0daddc839f919318d92721f7fd46f9e940b8542ea6118debb1028392d7db"
   license "Apache-2.0"
   head "https://github.com/werf/werf.git", branch: "main"
 
@@ -15,29 +15,44 @@ class Werf < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8eb3e6efeaabc6aebb9df12c8485e1c9c6cdb9a34e0f81e274aa89ff3074b1a7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1cfc2312461ca6ceba0bf2878d518b7d3e9a29be51be6eaf5b334b18b9622b51"
-    sha256 cellar: :any_skip_relocation, monterey:       "3480366b4c86828187086319cc3ea7c6fe3d20758fecf47912c65e8b19998bfc"
-    sha256 cellar: :any_skip_relocation, big_sur:        "34b0d385b1f83bc6c478ea46a2353ad8e87892fe2d3cf49f70b1b01737cf0ed6"
-    sha256 cellar: :any_skip_relocation, catalina:       "5299ef57b66380da9f5490f23fa34cec07f8fd8e5a2dfb418b8445cd792b9e3c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7162cd1d2029431f9f8520b3c798309c44b381c0a1c3dd4ec3ef1c4215671dae"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ad294ebabed26263a8cda1065cd6cc758be4ece854ffd6706c125aa7fabcb00c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "76df6cc792c0a5f7ff3555d214e90dd237fe04fea3d43272740e27340f2ce8c7"
+    sha256 cellar: :any_skip_relocation, ventura:        "b521d092d29da10a519bbe5fac7919d793bc14153fd800626507dae5c646fc41"
+    sha256 cellar: :any_skip_relocation, monterey:       "4f9fcb3a468d36da71f0817f31689532be9131d98844b38c3f07976078b8fb83"
+    sha256 cellar: :any_skip_relocation, big_sur:        "17f0d7679b9a572e4d5d6f68cee7f610ace1aed0a3ee69e507ecdb10059d6da4"
+    sha256 cellar: :any_skip_relocation, catalina:       "80ef73817b223196bb6a28a126ec7fe4e45ef233ab1d94dc7abd05dd86b62671"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c01e21ccd112a7e668e0e8b897b4a269668aee0b57d59d3a8b00e8c7175bb9c5"
   end
 
   depends_on "go" => :build
-  # due to missing libbtrfs headers, only supports macos at the moment
-  depends_on :macos
+
+  on_linux do
+    depends_on "pkg-config" => :build
+    depends_on "btrfs-progs"
+    depends_on "device-mapper"
+  end
 
   def install
-    ldflags = "-s -w -X github.com/werf/werf/pkg/werf.Version=#{version}"
-    tags = "dfrunmount dfssh containers_image_openpgp"
+    if OS.linux?
+      ldflags = %W[
+        -linkmode external
+        -extldflags=-static
+        -s -w
+        -X github.com/werf/werf/pkg/werf.Version=#{version}
+      ]
+      tags = %w[
+        dfrunsecurity dfrunnetwork dfrunmount dfssh containers_image_openpgp
+        osusergo exclude_graphdriver_devicemapper netgo no_devmapper static_build
+      ].join(" ")
+    else
+      ldflags = "-s -w -X github.com/werf/werf/pkg/werf.Version=#{version}"
+      tags = "dfrunsecurity dfrunnetwork dfrunmount dfssh containers_image_openpgp"
+    end
 
     system "go", "build", *std_go_args(ldflags: ldflags), "-tags", tags, "./cmd/werf"
 
-    bash_output = Utils.safe_popen_read(bin/"werf", "completion", "bash")
-    (bash_completion/"werf").write bash_output
-    zsh_output = Utils.safe_popen_read(bin/"werf", "completion", "zsh")
-    (zsh_completion/"_werf").write zsh_output
-    fish_output = Utils.safe_popen_read(bin/"werf", "completion", "fish")
-    (fish_completion/"werf.fish").write fish_output
+    generate_completions_from_executable(bin/"werf", "completion")
   end
 
   test do

@@ -1,8 +1,8 @@
 class Rebar3 < Formula
   desc "Erlang build tool"
   homepage "https://github.com/erlang/rebar3"
-  url "https://github.com/erlang/rebar3/archive/3.19.0.tar.gz"
-  sha256 "ff9ef42c737480477ebdf0dd9d95ece534a14c96f05edafbf32e9af973280bc3"
+  url "https://github.com/erlang/rebar3/archive/3.20.0.tar.gz"
+  sha256 "53ed7f294a8b8fb4d7d75988c69194943831c104d39832a1fa30307b1a8593de"
   license "Apache-2.0"
 
   livecheck do
@@ -11,12 +11,14 @@ class Rebar3 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ef92a8046c3586e56ea4dc2d06c2f4c820cdf089501fd3d7a23f7d88d3bf1d52"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e0f5455219769c8b3b161ab5513bb596cd10099d627c95914772d57f8f0d125a"
-    sha256 cellar: :any_skip_relocation, monterey:       "0b30b3ae4f97383f843db7d700cbe035cfa4f4e0e29c925f8d27ea7786775a5a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "7d39403a69b6be80a8393ee1f457a2f223744d3ef640a3fc5875ba0059a853c3"
-    sha256 cellar: :any_skip_relocation, catalina:       "38ac0151429d49ee6317c7dfa80a7ff210fd3c346b0828900f02b8fa77ecc5f5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1fd5dc3126cebbd682d6f95911c0e433fdb43eaf0824f9b9aa2c28b93dbeef03"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "428fe27effe929170a25f8a264b23aed6b2df8d4492f48d1bf6c8e52bd4dee63"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "9be10eb4b18e099da77c5eee41aa24107876186dbdb6958673c35c1ebbedd118"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "17151aa510303762cff34780c34464745f1551c7d04dfd2bc568d54939af733d"
+    sha256 cellar: :any_skip_relocation, ventura:        "b06a667d2fa16df3c23b78bc38209623480730e14724b19f29472ffac0172926"
+    sha256 cellar: :any_skip_relocation, monterey:       "3c92b9865dbe05302dba84137f77911d4fd70935aa08a73fa3dd562290c56057"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b0f516ac6da5a6268209828217a732bbacfa40d72c6eb789deccbc3d50a8339a"
+    sha256 cellar: :any_skip_relocation, catalina:       "62220af0fc653d4fa07ba816ca9c7d6d34414335a77e93c30249b6720d9896f9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "104183846eb43eabb519e987a303b9ba08983faa70ba0c3bce519079e9632caa"
   end
 
   depends_on "erlang"
@@ -25,9 +27,9 @@ class Rebar3 < Formula
     system "./bootstrap"
     bin.install "rebar3"
 
-    bash_completion.install "priv/shell-completion/bash/rebar3"
-    zsh_completion.install "priv/shell-completion/zsh/_rebar3"
-    fish_completion.install "priv/shell-completion/fish/rebar3.fish"
+    bash_completion.install "apps/rebar/priv/shell-completion/bash/rebar3"
+    zsh_completion.install "apps/rebar/priv/shell-completion/zsh/_rebar3"
+    fish_completion.install "apps/rebar/priv/shell-completion/fish/rebar3.fish"
   end
 
   test do

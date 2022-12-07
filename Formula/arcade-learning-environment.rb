@@ -4,70 +4,74 @@ class ArcadeLearningEnvironment < Formula
   desc "Platform for AI research"
   homepage "https://github.com/mgbellemare/Arcade-Learning-Environment"
   url "https://github.com/mgbellemare/Arcade-Learning-Environment.git",
-      tag:      "v0.7.5",
-      revision: "db3728264f382402120913d76c4fa0dc320ef59f"
+      tag:      "v0.8.0",
+      revision: "d59d00688b58c5c14dff5fc79db5c22e86987f5d"
   license "GPL-2.0-only"
   head "https://github.com/mgbellemare/Arcade-Learning-Environment.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "69b3c918b471d86a15ddc33ca7d8788b7df97cdb37c24b0f9bf278acea044a92"
-    sha256 cellar: :any,                 arm64_big_sur:  "b91365dd433a5aaa6c63e1930fa485a0c7d8f30aee4709f77d47a1c227aad39c"
-    sha256 cellar: :any,                 monterey:       "928deddbfd6b71a6683d9baabb34e95e42b2426e306d050cf785e5aa0ea45c07"
-    sha256 cellar: :any,                 big_sur:        "385f3c78c9926ea3cf5fb5ea44d0ef363d3c097058e039e822a127d3f7f031f1"
-    sha256 cellar: :any,                 catalina:       "6b4982ba66a1dae92d8894c64d10413eefe553bcb3e368770d49a4ea66b6af3b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "11739052d50db05aac650a0d23c46aeb04535b9ff97b982c3687bb5baac0fbbc"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1f33932e7707d642c4fdc38f5474d8ee82c6cd7c31491081e947d5df4445a8a4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c26a068c64184f700b8b638e37c978b9e4b611e74fb5834016982706c7dd4009"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "35debc9b99e3b5142b5f626a8fa370c8025ba2f09f8d64c7948e4387d84beb2a"
+    sha256 cellar: :any_skip_relocation, ventura:        "afc216243c7e72bbc41c9c2b1c9e5b0ec3c7efe5bd55b091202f441cbce03f90"
+    sha256 cellar: :any_skip_relocation, monterey:       "efb722d0b171efa9869925d762361d301a98181d8dd053972cbff2b1dad80ef4"
+    sha256 cellar: :any_skip_relocation, big_sur:        "cb7e5a9f35472e9b25499a5163cea73b27026908bee527aee9e521229676db00"
+    sha256 cellar: :any_skip_relocation, catalina:       "6c9f67f4b5653089a35e6d50df593bd93ed60078cbce10ca815f2aca176a6f58"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "63248a068444838a906590b26dabe111465a225de384c50c7f89faac0be16c92"
   end
 
   depends_on "cmake" => :build
   depends_on macos: :catalina # requires std::filesystem
   depends_on "numpy"
-  depends_on "python@3.10"
+  depends_on "python@3.11"
   depends_on "sdl2"
 
   uses_from_macos "zlib"
 
-  on_linux do
-    depends_on "gcc" # for C++17
-  end
-
   fails_with gcc: "5"
 
-  # Issue building with older setuptools currently included with Python 3.10.4.
-  # TODO: remove after next python update
-  resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/4a/25/ec29a23ef38b9456f9965c57a9e1221e6c246d87abbf2a31158799bca201/setuptools-62.3.2.tar.gz"
-    sha256 "a43bdedf853c670e5fed28e5623403bad2f73cf02f9a2774e91def6bda8265a7"
+  resource "importlib-resources" do
+    url "https://files.pythonhosted.org/packages/06/72/6bf0df4fe7a139147f5d6b473f16d5aefb7bc5b719ba5dd33f230d35760f/importlib_resources-5.10.0.tar.gz"
+    sha256 "c01b1b94210d9849f286b86bb51bcea7cd56dde0600d8db721d7b81330711668"
   end
 
-  resource "importlib-resources" do
-    url "https://files.pythonhosted.org/packages/07/3c/4e27ef7d4cea5203ed4b52b7fe96ddd08559d9f147a2a4307e7d6d98c035/importlib_resources-5.7.1.tar.gz"
-    sha256 "b6062987dfc51f0fcb809187cffbd60f35df7acb4589091f154214af6d0d49d3"
+  def python3
+    "python3.11"
   end
 
   def install
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args,
-                    "-DCMAKE_INSTALL_NAME_DIR=#{opt_lib}",
-                    "-DCMAKE_BUILD_WITH_INSTALL_NAME_DIR=ON",
+    system "cmake", "-S", ".", "-B", "build",
                     "-DSDL_SUPPORT=ON",
-                    "-DSDL_DYNLOAD=ON"
+                    "-DSDL_DYNLOAD=ON",
+                    *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
     pkgshare.install "tests/resources/tetris.bin"
 
-    venv = virtualenv_create(libexec, "python3")
+    venv = virtualenv_create(libexec, python3)
     venv.pip_install resources
 
     # error: no member named 'signbit' in the global namespace
     inreplace "setup.py", "cmake_args = [", "\\0\"-DCMAKE_OSX_SYSROOT=#{MacOS.sdk_path}\"," if OS.mac?
 
     # `venv.pip_install_and_link buildpath` fails to install scripts, so manually run setup.py instead
-    bin_before = Dir[libexec/"bin/*"].to_set
-    system libexec/"bin/python3", *Language::Python.setup_install_args(libexec)
-    bin.install_symlink (Dir[libexec/"bin/*"].to_set - bin_before).to_a
+    bin_before = (libexec/"bin").children.to_set
+    venv_python = libexec/"bin/python"
+    system venv_python, *Language::Python.setup_install_args(libexec, venv_python)
+    bin.install_symlink ((libexec/"bin").children.to_set - bin_before).to_a
 
-    site_packages = Language::Python.site_packages("python3")
+    site_packages = Language::Python.site_packages(python3)
     pth_contents = "import site; site.addsitedir('#{libexec/site_packages}')\n"
     (prefix/site_packages/"homebrew-ale-py.pth").write pth_contents
+
+    # Replace vendored `libSDL2` with a symlink to our own.
+    libsdl2 = Formula["sdl2"].opt_lib/shared_library("libSDL2")
+    vendored_libsdl2_dir = libexec/site_packages/"ale_py"
+    (vendored_libsdl2_dir/shared_library("libSDL2")).unlink
+
+    # Use `ln_s` to avoid referencing a Cellar path.
+    ln_s libsdl2.relative_path_from(vendored_libsdl2_dir), vendored_libsdl2_dir
   end
 
   test do
@@ -90,7 +94,7 @@ class ArcadeLearningEnvironment < Formula
       assert len(ale.getLegalActionSet()) == 18
     EOS
 
-    output = shell_output("#{Formula["python@3.10"].opt_bin}/python3 test.py 2>&1")
+    output = shell_output("#{python3} test.py 2>&1")
     assert_match <<~EOS, output
       Game console created:
         ROM file:  tetris.bin

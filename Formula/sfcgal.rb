@@ -4,15 +4,17 @@ class Sfcgal < Formula
   url "https://gitlab.com/Oslandia/SFCGAL/-/archive/v1.4.1/SFCGAL-v1.4.1.tar.gz"
   sha256 "1800c8a26241588f11cddcf433049e9b9aea902e923414d2ecef33a3295626c3"
   license "LGPL-2.0-or-later"
-  revision 2
+  revision 3
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "f833b030cc55538c801f0b569c36f9b7b5303de882a5f46c8478a4b27550fd9c"
-    sha256 cellar: :any,                 arm64_big_sur:  "04ff2155b259479a1f3e3b31fcb6881062ea29c18e955279f525bca5b4509b7d"
-    sha256 cellar: :any,                 monterey:       "14083513643fe64312a098842a3fc3e8c8f9ee3fb923307e73792d14d634d66b"
-    sha256 cellar: :any,                 big_sur:        "0c96f4ff9ef0df19ed37ea0845e2d2ee212aefb880027595fe5d678c4a384fe5"
-    sha256 cellar: :any,                 catalina:       "79611e06698fc3e7ffcebba3f228f66937eb66420e75514d1d72274b580f4b5b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5fb92b0564f3f78f081ad9880e68a9dae1e2963ff5884f9039dddaa9145a3e4d"
+    sha256 cellar: :any,                 arm64_ventura:  "2fe4702eb22021be4e88cdf4a2b0de7ef63354838d3efbbf932d2421fe574462"
+    sha256 cellar: :any,                 arm64_monterey: "ce56024a7fe7128cc0c46d38c9d0ebc7b884ca45b515e53c855e50082c8bf78c"
+    sha256 cellar: :any,                 arm64_big_sur:  "a277214793c453cfe4238c0c764f64e1cec3a3ebd9b67185a452289717ea5f7a"
+    sha256 cellar: :any,                 ventura:        "98227ad7c6790297273b0908ac90ff3fc545daa29dd7651c25b1535628f41dc3"
+    sha256 cellar: :any,                 monterey:       "2b3e3d6bc3c0b3f0a1e4d60c006150ffaabb8ce94320334c2c098de90e838a9e"
+    sha256 cellar: :any,                 big_sur:        "afb6e18acaa58068cee76d2a0034c8a21e12dc6f1bda5ff35a2338e2a02befa0"
+    sha256 cellar: :any,                 catalina:       "e2a48b73d1fc26ec367a863199ff145c6258edadb1c9e2d63c90d64a27721f33"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8839f174f0bcb73c6e608bb0f2473c6b9c1bdeac6db8769fd9bb02a02159c49c"
   end
 
   depends_on "cmake" => :build
@@ -20,10 +22,6 @@ class Sfcgal < Formula
   depends_on "cgal"
   depends_on "gmp"
   depends_on "mpfr"
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   # error: array must be initialized with a brace-enclosed initializer
   fails_with gcc: "5"

@@ -2,8 +2,8 @@ class Juju < Formula
   desc "DevOps management tool"
   homepage "https://juju.is/"
   url "https://github.com/juju/juju.git",
-      tag:      "juju-2.9.32",
-      revision: "917a8f1033561ce28a73ff81d71da75aec6e0785"
+      tag:      "juju-3.0.2",
+      revision: "8bf53dc35b25145ef39051fe4136135a3dd53d5d"
   license "AGPL-3.0-only"
   version_scheme 1
   head "https://github.com/juju/juju.git", branch: "develop"
@@ -14,12 +14,14 @@ class Juju < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d49f93840a7457bd0ff722e7d567be3dd072416c93dd612729fbebbab284f42c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a6ad4aa6a8abf662cd8e0a7d5f07786d84bb6d9fc47fda14a3b09d10b99b4bdb"
-    sha256 cellar: :any_skip_relocation, monterey:       "4763360264aaa67f9f7fffc4800d04387c1eeda98023697118152ee8cd14f9eb"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d9a99ee6585f014dfcd2ee4a2cc6f5ad7c4765820dfff7978b8f2688bbbd68f8"
-    sha256 cellar: :any_skip_relocation, catalina:       "daca242ad1b6190b044ec5479c45aaf94023da8166aae140a1a45eeda3632063"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "746e62f2957e27f64b31b147b3b88604e259c432d4c5b1ba0b7890a14096a425"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7080119ffb41e36f11e42c9645edc231381a7f8f299be375dea8249324f6a9f9"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e1d504a7893af0552007ac3b9fdb8c9380482f6b3b1f43d7f7d1ceca6479ad80"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b0dddd35d64a8090b8ac9c51716f0b7af858bcaa6d82291a8513653b749b2047"
+    sha256 cellar: :any_skip_relocation, ventura:        "4bdbd30d3b480ac656c70a436f28839ea7f697d856778cdca9c592468106785c"
+    sha256 cellar: :any_skip_relocation, monterey:       "66c13349be3a70902a1978a55c276855393231072adb47ac210e04399f1fb761"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b37311ebb1a302af60a867036e4b0c82aea57c741123821ee32f3fe07e79fddd"
+    sha256 cellar: :any_skip_relocation, catalina:       "4397d949c37e99bec5272ce283b8c406dafe04c13dcea21fc3059d867bd67c1c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3fbff94f3dab3836594a69f77ce8de90a96659f266b15c41ec7b64bc1eab4312"
   end
 
   depends_on "go" => :build

@@ -1,10 +1,10 @@
 class Cmake < Formula
   desc "Cross-platform make"
   homepage "https://www.cmake.org/"
-  url "https://github.com/Kitware/CMake/releases/download/v3.23.2/cmake-3.23.2.tar.gz"
-  mirror "http://fresh-center.net/linux/misc/cmake-3.23.2.tar.gz"
-  mirror "http://fresh-center.net/linux/misc/legacy/cmake-3.23.2.tar.gz"
-  sha256 "f316b40053466f9a416adf981efda41b160ca859e97f6a484b447ea299ff26aa"
+  url "https://github.com/Kitware/CMake/releases/download/v3.25.1/cmake-3.25.1.tar.gz"
+  mirror "http://fresh-center.net/linux/misc/cmake-3.25.1.tar.gz"
+  mirror "http://fresh-center.net/linux/misc/legacy/cmake-3.25.1.tar.gz"
+  sha256 "1c511d09516af493694ed9baf13c55947a36389674d657a2d5e0ccedc6b291d8"
   license "BSD-3-Clause"
   head "https://gitlab.kitware.com/cmake/cmake.git", branch: "master"
 
@@ -16,18 +16,19 @@ class Cmake < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "46711ae9d567064916561c472b94cba0e939ae72479f6f51ebe98dc6995c4422"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "023ee5973e188773685ac3103a87302a0a107de46b9140f9bcfc79f9e36ebbe4"
-    sha256 cellar: :any_skip_relocation, monterey:       "7460c9de7872e142b6f813383c2247ae9bddde7525fdfad89967098c65bb71ad"
-    sha256 cellar: :any_skip_relocation, big_sur:        "93665558080df1dce04ad328e3ccb3166fa9077d5ce20a5723760fb8558d3092"
-    sha256 cellar: :any_skip_relocation, catalina:       "183a79de83330f0c518f94494579dc94feeeea7615bc0735759377fca5713f58"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9d424e4ab59606d02805aa5fa4c05ef3a9558cce67415d602f1e6781e2aa70ee"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "98f8c449c90fcadd16eb563457fd86b1ddc6198115d14508b8c8390621949758"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1fc7d44f45ab5ad6eac933469376e190ba84d155b6cefe0a81de8be18bca3b64"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d576796c7c628dfd3e3b366c72a7a644f8845fc6a3b79fda773dcadd7db15f48"
+    sha256 cellar: :any_skip_relocation, ventura:        "226398832271d389f3e0e8df50ef2c6d94bddb3a982878fd69bdc42101d41790"
+    sha256 cellar: :any_skip_relocation, monterey:       "0f9dd2bac1f973de965f81b5a320d8da326bd2cc7c2fa2fccf4ae009f98490f8"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7cd2f4246c20790eb0f1e763766362dcfb2ffdac5bac99dbeb44613439a4e8fe"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "20805e85cbc6dc7e4e5b3a4727345e6cfb4bd265e6f56b39b299b313c74db6ed"
   end
 
   uses_from_macos "ncurses"
 
   on_linux do
-    depends_on "openssl@1.1"
+    depends_on "openssl@3"
   end
 
   # The completions were removed because of problems with system bash
@@ -54,6 +55,7 @@ class Cmake < Formula
     end
 
     system "./bootstrap", *args, "--", *std_cmake_args,
+                                       "-DCMake_INSTALL_BASH_COMP_DIR=#{bash_completion}",
                                        "-DCMake_INSTALL_EMACS_DIR=#{elisp}",
                                        "-DCMake_BUILD_LTO=ON"
     system "make"

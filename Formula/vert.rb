@@ -3,6 +3,7 @@ class Vert < Formula
   homepage "https://github.com/Masterminds/vert"
   url "https://github.com/Masterminds/vert/archive/v0.1.0.tar.gz"
   sha256 "96e22de4c03c0a5ae1afb26c717f211c85dd74c8b7a9605ff525c87e66d19007"
+  license "MIT"
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_monterey: "ca2bb8a7baed5c1492df0b25d59fe36c64322eafd1e88e68b6c8c59461ecf392"
@@ -17,7 +18,7 @@ class Vert < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ed8cfcf0ce2cb0fcf0ad6bccea62e3726009131681e68c85e60d88b9135d10b6"
   end
 
-  deprecate! date: "2021-07-29", because: :unmaintained
+  disable! date: "2022-09-14", because: :unmaintained
 
   depends_on "dep" => :build
   depends_on "go" => :build

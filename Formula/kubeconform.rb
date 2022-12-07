@@ -1,18 +1,20 @@
 class Kubeconform < Formula
   desc "FAST Kubernetes manifests validator, with support for Custom Resources!"
   homepage "https://github.com/yannh/kubeconform"
-  url "https://github.com/yannh/kubeconform/archive/v0.4.13.tar.gz"
-  sha256 "e6d161de050afa205454fd4660c465e35632ba6ee209a3481baacf410f250688"
+  url "https://github.com/yannh/kubeconform/archive/v0.5.0.tar.gz"
+  sha256 "c93d091a4abf3ea5245a281a0b7d977833c361af0840cd6cc5c2a638b98f1f9e"
   license "Apache-2.0"
   head "https://github.com/yannh/kubeconform.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "74dd1d995e736daa504ef1368e4f7a4ba541c944cb8e3b476dbda52d36e08595"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "aa049949d32864521c74edd74c9d375d3e2eb4858014bfbb7ea0a9fadb777f78"
-    sha256 cellar: :any_skip_relocation, monterey:       "78a8ab92ad7fda829a09aa68c4fa1414a59c18bfe2f33f22ab2557c17a45b6fc"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8e542f30ed6a67d429ed2747252e7de8bb2b0d4ea7fa1be2221c8559c84acec7"
-    sha256 cellar: :any_skip_relocation, catalina:       "fad2ce7e4674c30adef19bdb85c77010c2eb6d0f6b897c98b2fd6d45448b2d0b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1cdb8becf0620eb5cb8b1dc1e7caaaf06183047c61ba97bb430057af4077ab7b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "77e0e0130ca33ff8b8d612ddb8f33ccbb682fa4e96444f277a40ba1bd8891138"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1b9ff374d9b81312bfb4f3ef747cd199dea68b30d0f9936a6355f70735c9141c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f89943724bf63b9312f728cca4bbfb7911043e38751b5d601d65d2cf41bc295a"
+    sha256 cellar: :any_skip_relocation, ventura:        "e0e96b27bed26729c644c31e908372147e969c776f3b792d57d8a536a7338b84"
+    sha256 cellar: :any_skip_relocation, monterey:       "877d92203a7ca17ef46bc34d1d83da53c83a8374147b8917332dae28c2814507"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5e4b9b605518b3f746217ed3a8079ca9f2e2d9cd7011d8e08fd173dae269faa4"
+    sha256 cellar: :any_skip_relocation, catalina:       "097d1fe5597804e13fe037f855cc1d703e473836b5bf8afbf1a8a7ac8ccc259f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b6d46b781aaeedd609a381c2ee8d621541188801fd09f9d2cd13d94f7bd374b8"
   end
 
   depends_on "go" => :build

@@ -1,18 +1,26 @@
 class Tendermint < Formula
   desc "BFT state machine replication for applications in any programming languages"
   homepage "https://tendermint.com/"
-  url "https://github.com/tendermint/tendermint/archive/v0.35.7.tar.gz"
-  sha256 "d56fa85c67239c156f849d8295a5f8c660eabecf3407674f0fc49fe68b1d3748"
+  url "https://github.com/tendermint/tendermint/archive/v0.35.9.tar.gz"
+  sha256 "8385fb075e81d4d4875573fdbc5f2448372ea9eaebc1b18421d6fb497798774b"
   license "Apache-2.0"
   head "https://github.com/tendermint/tendermint.git", branch: "master"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b4a2b7f5fe4bf975f6b4a5b9247304c892dace84cb37c02d43447bb5c0d1212d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b4a2b7f5fe4bf975f6b4a5b9247304c892dace84cb37c02d43447bb5c0d1212d"
-    sha256 cellar: :any_skip_relocation, monterey:       "c4d4784a84eb1b5499e3140660fa1933ae8536da4e596134b986e1676ddf8c45"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c4d4784a84eb1b5499e3140660fa1933ae8536da4e596134b986e1676ddf8c45"
-    sha256 cellar: :any_skip_relocation, catalina:       "c4d4784a84eb1b5499e3140660fa1933ae8536da4e596134b986e1676ddf8c45"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "34156bf52a395bebf22fe3273f0341f023725731f35574ba7234f0fdcc916d8c"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "fa03d9507cc713dc1d85b03a5374f52f0b1fa9a8bdeff7f04fabb0ce54158ac4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "fa03d9507cc713dc1d85b03a5374f52f0b1fa9a8bdeff7f04fabb0ce54158ac4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fa03d9507cc713dc1d85b03a5374f52f0b1fa9a8bdeff7f04fabb0ce54158ac4"
+    sha256 cellar: :any_skip_relocation, ventura:        "c764c958d1586a5fcf8a8ba7ede5c8edd7f350dec38689c13fd61d6e00154a3d"
+    sha256 cellar: :any_skip_relocation, monterey:       "c764c958d1586a5fcf8a8ba7ede5c8edd7f350dec38689c13fd61d6e00154a3d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c764c958d1586a5fcf8a8ba7ede5c8edd7f350dec38689c13fd61d6e00154a3d"
+    sha256 cellar: :any_skip_relocation, catalina:       "c764c958d1586a5fcf8a8ba7ede5c8edd7f350dec38689c13fd61d6e00154a3d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fad00242ca40a9571b66d96a4f31268ee81fa317726834d82475630267d9ef13"
   end
 
   depends_on "go" => :build
@@ -20,6 +28,11 @@ class Tendermint < Formula
   def install
     system "make", "build", "VERSION=#{version}"
     bin.install "build/tendermint"
+
+    generate_completions_from_executable(bin/"tendermint", "completion",
+                                         shells: [:bash], shell_parameter_format: :none)
+    generate_completions_from_executable(bin/"tendermint", "completion", "--zsh",
+                                         shells: [:zsh], shell_parameter_format: :none)
   end
 
   test do

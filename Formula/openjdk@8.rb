@@ -1,24 +1,29 @@
 class OpenjdkAT8 < Formula
   desc "Development kit for the Java programming language"
   homepage "https://openjdk.java.net/"
-  url "https://openjdk-sources.osci.io/openjdk8/openjdk8u322-ga.tar.xz"
-  version "1.8.0+322"
-  sha256 "e1ce7fc5def4446ca62df355f70548b2deb53fdcad548b0b3550ceaa96395247"
+  url "https://github.com/openjdk/jdk8u/archive/refs/tags/jdk8u352-b07.tar.gz"
+  version "1.8.0+352"
+  sha256 "6d4553325795bea1cea6d28bef886ad6f9ca2bd44442c6d36a6b5d736945f8b8"
   license "GPL-2.0-only"
 
   bottle do
-    sha256 cellar: :any,                 monterey:     "2fe2f45f60039781d805766bce7cf91f35fdd7e816ab45a3f9421c35c72ee0ad"
-    sha256 cellar: :any,                 big_sur:      "8969ae63046dffea04c92479627a6b605f2f05039c58aa9f88cac36e1be2159b"
-    sha256 cellar: :any,                 catalina:     "00f033ef2901ecf05c7a0f3aac5c7d877883e61222d463913eb9d274c3a24526"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "1c8bedf5c49dc837b0f54917bf0aec58287334d20e887150970cefd42b698c11"
+    sha256 cellar: :any,                 ventura:      "90907fd77191ae5c5e4352f299a3a8216af684b0913352c4ce38a181cf4c43dd"
+    sha256 cellar: :any,                 monterey:     "5c3014bad94438f2f02901c53e63bef392f2a14ea22a497e75ccd8d1a5a599de"
+    sha256 cellar: :any,                 big_sur:      "1f1905dc9f4c2c370d49e69cca9344a7d96f08870b41f6e022cd443944c6ac45"
+    sha256 cellar: :any,                 catalina:     "9a0dff54e2f2b87e5b6318b0f3f76df3454ecec52c205462d2b1634824e5d71e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "75cd074c0e1b5b91247c2fbb6f95e3f62a8d3fe5e990f094dff62f373aeece2c"
   end
 
   keg_only :versioned_formula
 
   depends_on "autoconf" => :build
-  depends_on "gawk" => :build if MacOS.version > :big_sur
   depends_on "pkg-config" => :build
+  depends_on arch: :x86_64
   depends_on "freetype"
+
+  on_monterey :or_newer do
+    depends_on "gawk" => :build
+  end
 
   on_linux do
     depends_on "alsa-lib"
@@ -39,12 +44,12 @@ class OpenjdkAT8 < Formula
   # Oracle doesn't serve JDK 7 downloads anymore, so use Zulu JDK 7 for bootstrapping.
   resource "boot-jdk" do
     on_macos do
-      url "https://cdn.azul.com/zulu/bin/zulu7.50.0.11-ca-jdk7.0.322-macosx_x64.tar.gz"
-      sha256 "085af056bfa3cbba63992a388c4eadebb1e3ae6f88822bee17520488592d7726"
+      url "https://cdn.azul.com/zulu/bin/zulu7.56.0.11-ca-jdk7.0.352-macosx_x64.tar.gz"
+      sha256 "31909aa6233289f8f1d015586825587e95658ef59b632665e1e49fc33a2cdf06"
     end
     on_linux do
-      url "https://cdn.azul.com/zulu/bin/zulu7.50.0.11-ca-jdk7.0.322-linux_x64.tar.gz"
-      sha256 "68ac226429904f208a9b873898d2aa6fce3c900c4da8304d589d0b753634bb10"
+      url "https://cdn.azul.com/zulu/bin/zulu7.56.0.11-ca-jdk7.0.352-linux_x64.tar.gz"
+      sha256 "8a7387c1ed151474301b6553c6046f865dc6c1e1890bcf106acc2780c55727c8"
     end
   end
 
@@ -75,7 +80,7 @@ class OpenjdkAT8 < Formula
       # Fix Xcode 13 detection.
       inreplace "common/autoconf/toolchain.m4",
                 "if test \"${XC_VERSION_PARTS[[0]]}\" != \"6\"",
-                "if test \"${XC_VERSION_PARTS[[0]]}\" != \"13\""
+                "if test \"${XC_VERSION_PARTS[[0]]}\" != \"#{MacOS::Xcode.version.major}\""
     end
 
     if OS.linux?

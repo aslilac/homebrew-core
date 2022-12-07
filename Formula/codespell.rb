@@ -3,22 +3,23 @@ class Codespell < Formula
 
   desc "Fix common misspellings in source code and text files"
   homepage "https://github.com/codespell-project/codespell"
-  url "https://files.pythonhosted.org/packages/26/37/c524f1750635cb8806240013af1fd4147a60019f9a80e788759e3d2fb644/codespell-2.1.0.tar.gz"
-  sha256 "19d3fe5644fef3425777e66f225a8c82d39059dcfe9edb3349a8a2cf48383ee5"
+  url "https://files.pythonhosted.org/packages/42/57/2b07dc5eb131d34a820bbc08a4437ca2ddfff7a47476bffd1822437de910/codespell-2.2.2.tar.gz"
+  sha256 "c4d00c02b5a2a55661f00d5b4b3b5a710fa803ced9a9d7e45438268b099c319c"
   license "GPL-2.0-only"
-  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d9d367b3e09c1e4df7739bc65740f06efb028f211decf69aa548bfdd4f39b337"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d9d367b3e09c1e4df7739bc65740f06efb028f211decf69aa548bfdd4f39b337"
-    sha256 cellar: :any_skip_relocation, monterey:       "3b046193f1b253adfc14e6d8e4a312a45b7625345723a0adb9e638fa8f602c6b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "3b046193f1b253adfc14e6d8e4a312a45b7625345723a0adb9e638fa8f602c6b"
-    sha256 cellar: :any_skip_relocation, catalina:       "3b046193f1b253adfc14e6d8e4a312a45b7625345723a0adb9e638fa8f602c6b"
-    sha256 cellar: :any_skip_relocation, mojave:         "3b046193f1b253adfc14e6d8e4a312a45b7625345723a0adb9e638fa8f602c6b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fbd96b41878ac452cb7c3eaae676a52c5f6ac552918f57b1b6e5e675a00eb2d4"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "31f9c1485c7ab8c1d744e4dc28047c1f6f40bedf1a9cb2a3ab682ec8ff1c1ede"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f51e3819592396550ca7dc8a3f6d5996cba1ff506cc9bb0c5a548431dda67747"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "717cb11e6266a0eadd80c1bb7714b0f63b82cd495831794fee6327194c09ee2b"
+    sha256 cellar: :any_skip_relocation, ventura:        "51359239211f6da5cc1f868704d79d8e80a75239840c99144434c8e1de0ebdee"
+    sha256 cellar: :any_skip_relocation, monterey:       "08ea60c93946a042a5a3f45b990634ea91ab38019a7cfa44802ee458c1cf4e90"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a3b4d5bcc19047c990b5fbfac7b07f2e6c4f4397a33bb763898526664e7d0f3e"
+    sha256 cellar: :any_skip_relocation, catalina:       "4f385712a7b4d05b553731e2040f940f30202c668dc8acac85def37bc10226a0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "14e7c7923c08ed1145ee63380e859b40046bee3432d6e01f823725efef72670d"
   end
 
-  depends_on "python@3.10"
+  depends_on "python@3.11"
 
   def install
     virtualenv_install_with_resources

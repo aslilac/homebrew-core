@@ -1,8 +1,8 @@
 class Dolt < Formula
   desc "Git for Data"
   homepage "https://github.com/dolthub/dolt"
-  url "https://github.com/dolthub/dolt/archive/v0.40.15.tar.gz"
-  sha256 "6052ab2997fa5eca871bf425987afecbd35c20bcb3d70c2337941320982fd5af"
+  url "https://github.com/dolthub/dolt/archive/v0.51.9.tar.gz"
+  sha256 "994b8bdcb02c1bd39cfb584263e488dfd199a0e4cbe309f7a30029ef30a4e55f"
   license "Apache-2.0"
 
   livecheck do
@@ -11,12 +11,13 @@ class Dolt < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0311068b7a23aae3d8d8740154bee4f47017a3498dad24345b84e79da855a203"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d2e8377db3f107cdb91df56fb740cca6d5be9e91ae03d17454e309f2f0d313df"
-    sha256 cellar: :any_skip_relocation, monterey:       "2bf37ff45119ec6ee2e17e6776504aff7b5de1167428f6ad783c2a426b45d692"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2a6b648c598a74215140b2929f6e9a4bcd11c9cb1459447f200a658b32c10660"
-    sha256 cellar: :any_skip_relocation, catalina:       "950cf3e059d288f5ffacba84a5085cb01337936bd7ad1196f4d3261dde6b04df"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "67492c8a408b54c81b9a1176ddc27c9834c4d235c1d537c0f51a9a6bfb73c413"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f089752b3ee36ac7224cdfc935dcf58f7f77d5483d1d242353acb1549fbd4af4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5c54a5a469aec0880c919791b0f7d0f566fd42f4e74eaa681d909b0b5593e640"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "75904997ff407d22bc943157258b42f60c900e3ed002632966264cd3ffa366f1"
+    sha256 cellar: :any_skip_relocation, ventura:        "e01dda0f845f2494efc9aa736141180235dffed227ab57ec9c1f4f805ec9b49a"
+    sha256 cellar: :any_skip_relocation, monterey:       "6a4c31809d0245932cd251f499ec312fbf258602395056f3d9b3700181d8a52b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "ecb81dabfc3da6060a1654abda49988c2821a91ee50b4a61aa39b119c8428dbe"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fc10ce653833effafae2469826061ae2c4f739f919199d9269eefc640d6d26f8"
   end
 
   depends_on "go" => :build
@@ -24,8 +25,6 @@ class Dolt < Formula
   def install
     chdir "go" do
       system "go", "build", *std_go_args, "./cmd/dolt"
-      system "go", "build", *std_go_args(output: bin/"git-dolt"), "./cmd/git-dolt"
-      system "go", "build", *std_go_args(output: bin/"git-dolt-smudge"), "./cmd/git-dolt-smudge"
     end
   end
 

@@ -1,9 +1,9 @@
 class Druid < Formula
   desc "High-performance, column-oriented, distributed data store"
   homepage "https://druid.apache.org/"
-  url "https://dlcdn.apache.org/druid/0.23.0/apache-druid-0.23.0-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/druid/0.23.0/apache-druid-0.23.0-bin.tar.gz"
-  sha256 "6a00187fb6eaf7fa03148b01900bc92302fff9c809c02ae7584029c1c028d3d4"
+  url "https://dlcdn.apache.org/druid/24.0.1/apache-druid-24.0.1-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/druid/24.0.1/apache-druid-24.0.1-bin.tar.gz"
+  sha256 "00c62e127c4d360c39d077a9f0b0d9e9f50e8b801cffa65307ca6118487a824f"
   license "Apache-2.0"
 
   livecheck do
@@ -12,12 +12,14 @@ class Druid < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "13c6d41fb0acc0f371666d0dd274bc42d2b3dd8ecd863f0c8f25699df8b59870"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "13c6d41fb0acc0f371666d0dd274bc42d2b3dd8ecd863f0c8f25699df8b59870"
-    sha256 cellar: :any_skip_relocation, monterey:       "331bc1799f1dc1d2aa11314b60b6a9ad296a29048ffdff6627052b34c3fee9c6"
-    sha256 cellar: :any_skip_relocation, big_sur:        "331bc1799f1dc1d2aa11314b60b6a9ad296a29048ffdff6627052b34c3fee9c6"
-    sha256 cellar: :any_skip_relocation, catalina:       "331bc1799f1dc1d2aa11314b60b6a9ad296a29048ffdff6627052b34c3fee9c6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "13c6d41fb0acc0f371666d0dd274bc42d2b3dd8ecd863f0c8f25699df8b59870"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "54225275ad138758cb95403b42002dad5e8897c100123f2ffd79f7e5b10f6766"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "54225275ad138758cb95403b42002dad5e8897c100123f2ffd79f7e5b10f6766"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "54225275ad138758cb95403b42002dad5e8897c100123f2ffd79f7e5b10f6766"
+    sha256 cellar: :any_skip_relocation, ventura:        "773bd26aa96f80d8a215d36b8415f5eef50188eae7b73a4b594c0e515d84a24e"
+    sha256 cellar: :any_skip_relocation, monterey:       "773bd26aa96f80d8a215d36b8415f5eef50188eae7b73a4b594c0e515d84a24e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "773bd26aa96f80d8a215d36b8415f5eef50188eae7b73a4b594c0e515d84a24e"
+    sha256 cellar: :any_skip_relocation, catalina:       "773bd26aa96f80d8a215d36b8415f5eef50188eae7b73a4b594c0e515d84a24e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "54225275ad138758cb95403b42002dad5e8897c100123f2ffd79f7e5b10f6766"
   end
 
   depends_on "zookeeper" => :test
