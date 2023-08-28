@@ -108,12 +108,12 @@ jobs:
             - label: legacy
               path: Formula/.+@.+
               except:
-                - Formula/bash-completion@2.rb
-                - Formula/openssl@3.rb
-                - Formula/postgresql@15.rb
-                - Formula/python@3.11.rb
-                - Formula/python-gdbm@3.11.rb
-                - Formula/python-tk@3.11.rb
+                - Formula/b/bash-completion@2.rb
+                - Formula/o/openssl@3.rb
+                - Formula/p/postgresql@15.rb
+                - Formula/p/python@3.11.rb
+                - Formula/p/python-gdbm@3.11.rb
+                - Formula/p/python-tk@3.11.rb
 
             - label: missing license
               path: Formula/.+
@@ -197,23 +197,23 @@ jobs:
               content: system "swift", "build"
 
             - label: long build
-              path: Formula/(agda|arangodb|boost|deno|dotnet|emscripten|envoy|freetype|gcc|ghc|graph-tool|harfbuzz|libtensorflow|llvm|metashell|node|pango|ponyc|rav1e|rust|semgrep|suite-sparse|swift|texlive|qt|v8|verilator|vtk|xz|zstd)(@[0-9]+)?.rb
+              path: Formula/.+/(agda|arangodb|aws-sdk-cpp|boost|deno|dotnet|emscripten|envoy|freetype|gcc|ghc|graph-tool|harfbuzz|libtensorflow|llvm|metashell|node|pango|ponyc|rav1e|rust|suite-sparse|swift|texlive|qt|v8|verilator|vtk|xz|zstd)(@[0-9]+)?.rb
               keep_if_no_match: true
 
             - label: CI-build-dependents-from-source
-              path: Formula/(cabal-install|docbook-xsl|emscripten|erlang|ghc|go|ocaml|ocaml-findlib|ocaml-num|openjdk|rust).rb
+              path: Formula/.+/(cabal-install|docbook-xsl|emscripten|erlang|ghc|go|ocaml|ocaml-findlib|ocaml-num|openjdk|rust).rb
               keep_if_no_match: true
 
             - label: CI-skip-recursive-dependents
-              path: Formula/(ca-certificates|curl|gettext|openssl@(3|1.1)|sqlite).rb
+              path: Formula/.+/(ca-certificates|curl|gettext|openssl@(3|1.1)|sqlite).rb
               keep_if_no_match: true
 
             - label: CI-linux-self-hosted
-              path: Formula/(envoy|freetype|gdbm|gtk4|harfbuzz|json-c|libarchive|libsndfile|libssh2|libtiff|libxcrypt|libxml2|llvm|pygments|python@3.11|systemd|qt(@5)?|utf8cpp|xz|zstd).rb
+              path: Formula/.+/(envoy|freetype|gdbm|gmp|gtk4|gzip|harfbuzz|hdf5|json-c|krb5|libarchive|libsndfile|libssh2|libtiff|libxcrypt|libxml2|llvm|minizip|openexr|pygments|python@3.11|systemd|qt(@5)?|utf8cpp|util-linux|xz|zlib|zstd).rb
               keep_if_no_match: true
 
             - label: large-bottle-upload
-              path: Formula/texlive.rb
+              path: Formula/.+/texlive.rb
               keep_if_no_match: true
 
             - label: bump-formula-pr

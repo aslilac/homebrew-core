@@ -2,18 +2,29 @@ class Argocd < Formula
   desc "GitOps Continuous Delivery for Kubernetes"
   homepage "https://argoproj.github.io/cd"
   url "https://github.com/argoproj/argo-cd.git",
-      tag:      "v2.8.0",
-      revision: "804d4b8ca6bc4c2cf02c5c971aa923ec5b8623f0"
+      tag:      "v2.8.2",
+      revision: "dbdfc712702ce2f781910a795d2e5385a4f5a0f9"
   license "Apache-2.0"
 
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check releases instead of the Git
+  # tags. Upstream maintains multiple major/minor versions and the "latest"
+  # release may be for an older version, so we have to check multiple releases
+  # to identify the highest version.
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :github_releases
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3cac8b1eb73747e1ca686f8ce880fb8842f50de73338f3d7d6972bba78cd49dd"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "92864d7bf933d943b6c653c9b94507578f45776d760adbc424a2e8ee0f9b3463"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "28969d5ba72e451687b5663f04113cb9e6f5030b1b648afffc73768fbc5097d5"
-    sha256 cellar: :any_skip_relocation, ventura:        "42c2f75193a70ee3f6549c830b1cd5311dca59e3d9b9eb09f4ea47357642cdcc"
-    sha256 cellar: :any_skip_relocation, monterey:       "29ae83bdb8fb88b3926653a7ad3b57a944a0142418ed23db48a59605db8bc563"
-    sha256 cellar: :any_skip_relocation, big_sur:        "49631fcd8c94e6be062b8536ef0fe574154e08b67c9b68a274936956d241641b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "03769be29d7876b51ef9205bf3960a16a03ae2a4e482c3a351d977fb0fd6a861"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "548ab997f3827a322e3916eda7724630361bf0a09aa4326cae0f6b5f563c2f2b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ea3a838d35de600e623d5b7f44ac4f6bb3be932db6d70edda498a70212a26464"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e4686794d51efcd1f1cedaabc4a9b0bbd298158fded8dcdd62da72c4fb05d4cf"
+    sha256 cellar: :any_skip_relocation, ventura:        "c600c70911f394107aba1a60f9c1181a9b72f805cb8808ea3d8cbfcb6650905f"
+    sha256 cellar: :any_skip_relocation, monterey:       "185415a3888b429c8a066a65fbd9b2c9a1cc55d472f88ecd6c18c79897f23053"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a935af2a15bd881d7fe75396581dfbbac231648d3fa715367521b8724d50cb82"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a642f87eee1baa7e219db9043e6334c316a31f7ee9d57ffc144cd16ed1811fc1"
   end
 
   depends_on "go" => :build

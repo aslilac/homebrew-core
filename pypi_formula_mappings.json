@@ -1,4 +1,7 @@
 {
+  "aerleon": {
+    "exclude_packages": ["pyyaml", "typing-extensions"]
+  },
   "airshare": {
     "exclude_packages": ["certifi"]
   },
@@ -110,7 +113,7 @@
     "exclude_packages": ["certifi", "six"]
   },
   "bilix": {
-    "exclude_packages": ["certifi", "typing-extensions", "pygments"]
+    "exclude_packages": ["certifi", "typing-extensions", "Pygments"]
   },
   "black": "black[d]",
   "borgmatic": {
@@ -148,6 +151,9 @@
   "coconut": {
     "exclude_packages": ["Pygments", "typing-extensions"]
   },
+  "codelimit": {
+    "exclude_packages": ["certifi", "Pygments", "typing-extensions", "six"]
+  },
   "conda-lock" : {
     "exclude_packages": [
       "certifi", "cffi", "cryptography", "importlib-metadata", "jaraco-classes",
@@ -180,7 +186,7 @@
     "exclude_packages": ["certifi", "six", "PyYAML", "typing-extensions"]
   },
   "charm-tools": {
-    "exclude_packages": ["certifi", "cffi", "cryptography", "pycparser", "six"],
+    "exclude_packages": ["certifi", "cffi", "cryptography", "pycparser", "PyYAML", "six"],
     "extra_packages": ["wheel"]
   },
   "chatblade": {
@@ -257,6 +263,9 @@
   },
   "doitlive": {
     "exclude_packages": ["six"]
+  },
+  "dolphie": {
+    "exclude_packages": ["certifi", "cffi", "cryptography", "pycparser", "Pygments", "typing-extensions"]
   },
   "dooit": {
     "exclude_packages": ["six", "PyYAML", "virtualenv", "Pygments", "typing-extensions"]
@@ -413,6 +422,9 @@
     "package_name": "huggingface-hub",
     "exclude_packages": ["certifi", "PyYAML", "typing-extensions"]
   },
+  "hyfetch": {
+    "exclude_packages": ["typing-extensions"]
+  },
   "instalooter": {
     "exclude_packages": ["certifi", "six"]
   },
@@ -432,7 +444,7 @@
     "exclude_packages": ["Pygments"]
   },
   "jenkins-job-builder": {
-    "exclude_packages": ["six", "PyYAML"]
+    "exclude_packages": ["certifi", "PyYAML", "six"]
   },
   "jinja2-cli": {
     "package_name": "jinja2-cli[yaml,toml,xml]",
@@ -652,7 +664,7 @@
     "exclude_packages": ["certifi", "cffi", "pycparser", "six", "virtualenv"]
   },
   "pre-commit": {
-    "exclude_packages": ["six", "PyYAML", "virtualenv"]
+    "exclude_packages": ["PyYAML", "virtualenv"]
   },
   "principalmapper": {
     "exclude_packages": ["six"]
@@ -805,7 +817,7 @@
     "exclude_packages": ["six"]
   },
   "shodan": {
-    "exclude_packages": ["certifi"]
+    "exclude_packages": ["certifi", "six"]
   },
   "shub": {
     "exclude_packages": ["certifi", "pyyaml", "six"]
@@ -927,7 +939,7 @@
     "extra_packages": ["capstone", "pycryptodome", "yara-python", "jsonschema"]
   },
   "vulture": {
-    "extra_packages": ["toml"]
+    "exclude_packages": ["toml"]
   },
   "watson": {
     "exclude_packages": ["certifi", "six"]
@@ -944,6 +956,9 @@
   "woob": {
     "exclude_packages": ["pillow", "Pygments", "PyYAML", "six"],
     "extra_packages": ["certifi", "colorama"]
+  },
+  "wtfis": {
+    "exclude_packages": ["certifi", "pygments", "typing-extensions"]
   },
   "wxpython": {
     "exclude_packages": ["numpy", "pillow", "six"]
