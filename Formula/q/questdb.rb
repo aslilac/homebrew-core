@@ -1,8 +1,8 @@
 class Questdb < Formula
   desc "Time Series Database"
   homepage "https://questdb.io"
-  url "https://github.com/questdb/questdb/releases/download/7.3.1/questdb-7.3.1-no-jre-bin.tar.gz"
-  sha256 "6e79ee228011afb6b0c1dc43a3d3432b2d47109565db8613a98841a6673c9ffa"
+  url "https://github.com/questdb/questdb/releases/download/8.2.0/questdb-8.2.0-no-jre-bin.tar.gz"
+  sha256 "0d11db7b3c916989ec209bbf1f9fdb232ec9a99cb2990321fb396c805a450217"
   license "Apache-2.0"
 
   livecheck do
@@ -11,15 +11,15 @@ class Questdb < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "fcb7141a0dd2000172389686e39bc0b5684bd3c30ac7a76ca07c4ebf39676a00"
+    sha256 cellar: :any_skip_relocation, all: "b1c6bcb26fb3403ab66a61dd5e10338c5de981d8994e0f63e8f3c15cdc3d18cc"
   end
 
-  depends_on "openjdk@17"
+  depends_on "openjdk"
 
   def install
-    rm_rf "questdb.exe"
+    rm_r("questdb.exe")
     libexec.install Dir["*"]
-    (bin/"questdb").write_env_script libexec/"questdb.sh", Language::Java.overridable_java_home_env("17")
+    (bin/"questdb").write_env_script libexec/"questdb.sh", Language::Java.overridable_java_home_env
     inreplace libexec/"questdb.sh", "/usr/local/var/questdb", var/"questdb"
   end
 
@@ -37,17 +37,21 @@ class Questdb < Formula
   end
 
   test do
+    # questdb.sh uses `ps | grep` to verify server is running, but output is truncated to COLUMNS
+    # See https://github.com/Homebrew/homebrew-core/pull/133887#issuecomment-1679907729
+    ENV.delete "COLUMNS" if OS.linux?
+
     mkdir_p testpath/"data"
     begin
       fork do
-        exec "#{bin}/questdb start -d #{testpath}/data"
+        exec bin/"questdb", "start", "-d", testpath/"data"
       end
       sleep 30
       output = shell_output("curl -Is localhost:9000/index.html")
-      sleep 4
+      sleep 8
       assert_match "questDB", output
     ensure
-      system "#{bin}/questdb", "stop"
+      system bin/"questdb", "stop"
     end
   end
 end

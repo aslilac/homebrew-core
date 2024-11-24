@@ -1,19 +1,19 @@
 class XcbProto < Formula
   desc "X.Org: XML-XCB protocol descriptions for libxcb code generation"
   homepage "https://www.x.org/"
-  url "https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.16.0.tar.xz"
-  sha256 "a75a1848ad2a89a82d841a51be56ce988ff3c63a8d6bf4383ae3219d8d915119"
+  url "https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.17.0.tar.xz"
+  sha256 "2c1bacd2110f4799f74de6ebb714b94cf6f80fb112316b1219480fd22562148c"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "1b6168c2541cdc925dcb4de03e071365e60ed74d39173c8bc136424b01d2ecb2"
+    sha256 cellar: :any_skip_relocation, all: "e85c8d57ca43017674ecd1dadce614289e8790768087a73ceef981e65310003e"
   end
 
-  depends_on "pkg-config" => [:build, :test]
-  depends_on "python@3.11" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
+  depends_on "python@3.12" => [:build, :test]
 
   def python3
-    "python3.11"
+    "python3.12"
   end
 
   def install
@@ -32,10 +32,10 @@ class XcbProto < Formula
 
   test do
     assert_match "#{share}/xcb", shell_output("pkg-config --variable=xcbincludedir xcb-proto").chomp
-    system python3, "-c", <<~EOS
+    system python3, "-c", <<~PYTHON
       import collections
       output = collections.defaultdict(int)
       from xcbgen import xtypes
-    EOS
+    PYTHON
   end
 end

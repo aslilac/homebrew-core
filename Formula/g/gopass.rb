@@ -1,18 +1,19 @@
 class Gopass < Formula
   desc "Slightly more awesome Standard Unix Password Manager for Teams"
   homepage "https://github.com/gopasspw/gopass"
-  url "https://github.com/gopasspw/gopass/releases/download/v1.15.7/gopass-1.15.7.tar.gz"
-  sha256 "a836a6beffe19fe394dc18e6aa333c93a8122d60e63ee07e18b2c10878efadfd"
+  url "https://github.com/gopasspw/gopass/releases/download/v1.15.14/gopass-1.15.14.tar.gz"
+  sha256 "70e66461b872843312897e86208b23e3202c70ee182ad1d2bfda245db9d3680e"
   license "MIT"
   head "https://github.com/gopasspw/gopass.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d1e27e6990ef4b7133eca2dbe81f8ab5bc6b6d74318535f16cfbc0e476c6fc9e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c89742a801cf634442a422a87d4697d45aa5399279315f18af4129f8bd4b5208"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1a9e762272a90f804aec0bc98885cf71aac8c24a38419b9e9944659c150527dc"
-    sha256 cellar: :any_skip_relocation, ventura:        "0dab0983954fc239356bc4c153640453f7b9881940db346815c764d5dbaa660e"
-    sha256 cellar: :any_skip_relocation, monterey:       "5abc039557d2bd6e932e4ba6074827bb59945f0f3b20f246ce673f2f05ba12a6"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5316ff61e8f6200b33f612d21cfa51e94875c7325e27fa8124f0447db1bf494f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "da43f853ea2c5bd2dec9a797579d833e0c03c853dff0c6d77bf3a0cc21d40595"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "074ccedcbf498e9428b3aa34ffe051bd9c3782e72f6ee5dd0ff6113a0d19a437"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b735453e9525f1bc900f13436fd53310fa83ae0c18ac2a7c50722fbbed3d777d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5d2dea9f7da5cf404982b1db827834a98f157e2e0c805d6f3d0030be960965ef"
+    sha256 cellar: :any_skip_relocation, sonoma:         "601afa57475bf3645a3f2486d34dca22a28896ae1d629e6f215e6d022bfc6351"
+    sha256 cellar: :any_skip_relocation, ventura:        "b892b968cb60306d29bc2320932dfd573063c4c037931b407677156969d46f06"
+    sha256 cellar: :any_skip_relocation, monterey:       "5bfae2bd096de6b616bd8aefe62acbb9ceb3bc0733cba19fd1c0832fe4d11cef"
   end
 
   depends_on "go" => :build

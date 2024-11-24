@@ -1,13 +1,14 @@
 class Homeshick < Formula
   desc "Git dotfiles synchronizer written in bash"
   homepage "https://github.com/andsens/homeshick"
-  url "https://github.com/andsens/homeshick/archive/v2.0.1.tar.gz"
+  url "https://github.com/andsens/homeshick/archive/refs/tags/v2.0.1.tar.gz"
   sha256 "949f5de3c7f235ceb37c08e0cc8f3f7ad166f741a8fd01bf4b935a2031e37557"
   license "MIT"
   head "https://github.com/andsens/homeshick.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "60179f544c6746930785a0e8d0b3ee5fb27372e3823a88d802d50b40bbbea9f2"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "619e2b433b3d43170b65dff75fa3f204a021a166a54d96c0e07e3ee3523c0efd"
   end
 
   def install

@@ -8,9 +8,12 @@ class JingTrang < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "6ba111db4e46a0a73cc94b00c7a4798df91a9374fe5c87664a3c581a210aa3df"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "803f5da50d3fccc25832a42c5ec7a450a4be08b8f75ef5567291b9bc249af93e"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "5dcb20d5192ca4d965c42beae8adab82fc8b919ee96a11d2d315a06e7aa214d6"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "ee7b261bf84183f59e0c0b8d37c8fe8802297eaf894a5d132cf58a15b66c57ba"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a22bf4effa32d1b17b54a975e7b8dc7ca08b9991696fee7e9d95d649d6a021ec"
+    sha256 cellar: :any_skip_relocation, sonoma:         "95a0085303525d8fbd7a2909888049139e32f8cdfdd3c6ef9bf12e7817ddfc37"
     sha256 cellar: :any_skip_relocation, ventura:        "fe895e7b7d28c66cf7853b53658c4d972756a33072d98039f306f70ea537f3d6"
     sha256 cellar: :any_skip_relocation, monterey:       "6e5d22a93244e1234b68ff9aec22c9f757def6cdfd127f00ecf9c426071f321c"
     sha256 cellar: :any_skip_relocation, big_sur:        "c44cb54e793d544152dd0cb28564d52a731da574aa704e4197f21c04097875a1"
@@ -50,7 +53,7 @@ class JingTrang < Formula
         element core:slug { xsd:string }?
       }
     EOS
-    (testpath/"test.xml").write <<~EOS
+    (testpath/"test.xml").write <<~XML
       <?xml version="1.0" encoding="UTF-8"?>
       <response xmlns:core="http://www.bbc.co.uk/ontologies/coreconcepts/">
         <results>
@@ -70,7 +73,7 @@ class JingTrang < Formula
           </thing>
         </results>
       </response>
-    EOS
+    XML
 
     system bin/"jing", "-c", "test.rnc", "test.xml"
     system bin/"trang", "-I", "rnc", "-O", "rng", "test.rnc", "test.rng"

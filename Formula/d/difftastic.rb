@@ -1,18 +1,17 @@
 class Difftastic < Formula
   desc "Diff that understands syntax"
   homepage "https://github.com/Wilfred/difftastic"
-  url "https://github.com/Wilfred/difftastic/archive/refs/tags/0.51.1.tar.gz"
-  sha256 "90e12f89ec992c71c9288003de4b41914186b64f1cfa51667b9496afb99ae082"
+  url "https://github.com/Wilfred/difftastic/archive/refs/tags/0.61.0.tar.gz"
+  sha256 "8e85001e32f1fe7b2c6d164f3a654cb589c6e48b6350421df27a56919da7a185"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9da8a88883e259d33d56c0d59c8ad71a29ef87751e03a00ad9be48bce56f4808"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a6723330e3b3c7de2d2253c9b8fb98360931dd5339b80cccb266830e96708f13"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "71155a27fedee1b2e6d8986b3145ec966b624590f982517217d2e4c65c434171"
-    sha256 cellar: :any_skip_relocation, ventura:        "c23195b52440106cb7988b73e3ba16479bc14dd5ceb65c6e127071358a0d51b7"
-    sha256 cellar: :any_skip_relocation, monterey:       "eda3304d1b567d0a7b1fd0a84137d75fc256230f4eeb7504cadfaed0adaabd6d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "94a5876e92f5bc7ded8578bd8208b2ccb8ce9ab6dc9de419f7177a3b6efd21b7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4972a3086b346880fc38eea582438bbe0377ce417fcb1c1674fc019e24b21c78"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f2b7f3f27a64c660bb67144a436ba14260dcb1e8971cfe0f81f395f1d864916c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5f25870db5ae08c753c5f08f41ee7d68afadbc1632bdaaeefbd08832af7e0cd1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "777bd7bf276467e41840c1549b792ff80abb656fc98724d133d44d0bda7eaedd"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f992243103e51e8c0d6214594a18b33b5ade70dc3814cd2581b57ad588dfe6c0"
+    sha256 cellar: :any_skip_relocation, ventura:       "e21c8dff05fde08d4f80cb2434cf9f9f5e1c86d56311d7ed4dfe6fa6d47c54e9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b5be52d55835ae0a9309e486d1a646dc1f2d8bf0d5e6e6757cc2891d9a961b15"
   end
 
   depends_on "rust" => :build
@@ -21,6 +20,7 @@ class Difftastic < Formula
 
   def install
     system "cargo", "install", *std_cargo_args
+    man1.install "difft.1"
   end
 
   test do
@@ -28,7 +28,7 @@ class Difftastic < Formula
     (testpath/"b.py").write("print(43)\n")
     expected = <<~EOS
       b.py --- Python
-      1 print(42)                             1 print(43)\n
+      1 print(42)                   1 print(43)\n
     EOS
     assert_equal expected, shell_output("#{bin}/difft --color never --width 80 a.py b.py")
   end

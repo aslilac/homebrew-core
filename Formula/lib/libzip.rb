@@ -1,8 +1,8 @@
 class Libzip < Formula
   desc "C library for reading, creating, and modifying zip archives"
   homepage "https://libzip.org/"
-  url "https://libzip.org/download/libzip-1.10.1.tar.xz", using: :homebrew_curl
-  sha256 "dc3c8d5b4c8bbd09626864f6bcf93de701540f761d76b85d7c7d710f4bd90318"
+  url "https://libzip.org/download/libzip-1.11.2.tar.xz", using: :homebrew_curl
+  sha256 "5d471308cef4c4752bbcf973d9cd37ba4cb53739116c30349d4764ba1410dfc1"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,30 +11,27 @@ class Libzip < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_ventura:  "cd7bda731a8b2e5d1a3cdf5be6b515718c56d55d16a5b45faa1a91daf9c0ca2b"
-    sha256 cellar: :any,                 arm64_monterey: "a0d8bae54df1068c92ad894eddca0cd7465ecbaa3ef875c07c46bcea764bac71"
-    sha256 cellar: :any,                 arm64_big_sur:  "6549fda9b8f6ac3904b55bc0b8c601ecf15773eb4c97c40091148559d69bfec1"
-    sha256 cellar: :any,                 ventura:        "4fca00c15a69f25064b40b12e37a6f552edd632f77e2947e076745b55aaeffd3"
-    sha256 cellar: :any,                 monterey:       "5fbb0e2a2cd9b17a416d518d324d9eb3eac88626851bad41d9fb144ccebd8757"
-    sha256 cellar: :any,                 big_sur:        "db6453b117d39f0fe310f30e0d92124c453dd1568edd5800fd886bdb2b35e9df"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a5c180236137518d040277c1310e4b7c34337a0d396053e9a2534861453f70bc"
+    sha256 cellar: :any,                 arm64_sequoia: "2494bafc73a82fa1b2529edfa5fcfe182b8106224667cdf04ae5421d98c4d467"
+    sha256 cellar: :any,                 arm64_sonoma:  "ab4af5a2277a7fc98299be889a18b8a234025ab728415128029e50de2e3a68c9"
+    sha256 cellar: :any,                 arm64_ventura: "66813828486a24c74a23ccf43775c31933cc45cf6b1dbf52ac5c3348bd20adb6"
+    sha256 cellar: :any,                 sonoma:        "fdc878d65b2da686d8eb3177313766edeb70c2ddd0d25cf3f18d5d479dcdf30c"
+    sha256 cellar: :any,                 ventura:       "7e6909a3b89b416f531f3e1f4bc5f0d78f346c057fade881e81cf700c8bb6fdf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "98a73f6968abe482c71683d07d069e098b4f7b4163f187eaa85fb8f956877dbd"
   end
 
   depends_on "cmake" => :build
+  depends_on "xz"
   depends_on "zstd"
 
   uses_from_macos "zip" => :test
   uses_from_macos "bzip2"
-  uses_from_macos "xz"
   uses_from_macos "zlib"
 
   on_linux do
     depends_on "openssl@3"
   end
 
-  conflicts_with "libtcod", "minizip-ng",
-    because: "libtcod, libzip and minizip-ng install a `zip.h` header"
+  conflicts_with "libtcod", because: "libtcod and libzip install a `zip.h` header"
 
   def install
     crypto_args = %w[

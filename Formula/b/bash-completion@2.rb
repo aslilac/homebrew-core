@@ -1,9 +1,9 @@
 class BashCompletionAT2 < Formula
   desc "Programmable completion for Bash 4.2+"
   homepage "https://github.com/scop/bash-completion"
-  url "https://github.com/scop/bash-completion/releases/download/2.11/bash-completion-2.11.tar.xz"
-  sha256 "73a8894bad94dee83ab468fa09f628daffd567e8bef1a24277f1e9a0daf911ac"
-  license "GPL-2.0"
+  url "https://github.com/scop/bash-completion/releases/download/2.14.0/bash-completion-2.14.0.tar.xz"
+  sha256 "5c7494f968280832d6adb5aa19f745a56f1a79df311e59338c5efa6f7285e168"
+  license "GPL-2.0-or-later"
 
   livecheck do
     url :stable
@@ -11,16 +11,14 @@ class BashCompletionAT2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c4551dd2b4efcc64fe37febc7471365cba49648a46437972aeb57bb3ca0a3b08"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c4551dd2b4efcc64fe37febc7471365cba49648a46437972aeb57bb3ca0a3b08"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "336f04248a6da8c65291ef74c35430f843ae10b5c29d092ab463803fa14b2014"
-    sha256 cellar: :any_skip_relocation, ventura:        "606996545b7e56cb10c51052b0dc811d3c3e4c2246e4cf2c2fdfe78a97b0113d"
-    sha256 cellar: :any_skip_relocation, monterey:       "606996545b7e56cb10c51052b0dc811d3c3e4c2246e4cf2c2fdfe78a97b0113d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "27ccf1267d18fcd3e6018ec80363d003d07f750182bdef61150371532100bfc9"
-    sha256 cellar: :any_skip_relocation, catalina:       "3fe7e4021769be9a92eac055496e6189996c3527270db1dfdd4b0eb8cd7b4192"
-    sha256 cellar: :any_skip_relocation, mojave:         "3fe7e4021769be9a92eac055496e6189996c3527270db1dfdd4b0eb8cd7b4192"
-    sha256 cellar: :any_skip_relocation, high_sierra:    "3fe7e4021769be9a92eac055496e6189996c3527270db1dfdd4b0eb8cd7b4192"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c4551dd2b4efcc64fe37febc7471365cba49648a46437972aeb57bb3ca0a3b08"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "35c3dfec6b25b505f6d44bc650a7be26a3a66619759d8c0df22591cf8a3163f5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ddd730a4ec0c0fe21ffa9c0d48009b8d32c32ca3f4babb61a5b9aa8513432019"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "59600ca38f753a80adf4cd18262e7c1715e48594d7ed0a5158478b7bb5150e41"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0c6e0b32b4f7ba34a1e601b200d8d6fd82178ba10d10c9933acec4156342f97a"
+    sha256 cellar: :any_skip_relocation, sonoma:         "f9ce334d3e044c6a45ea6560397624a2ba3fcf46d2424663b41f63c67540423c"
+    sha256 cellar: :any_skip_relocation, ventura:        "4613fd0d18d2dd5609238cae627980a5bff8b8d5a24c055b13b5163c04b760ee"
+    sha256 cellar: :any_skip_relocation, monterey:       "a5613d8b636cf1cf4a40e8ea02d035310ea184648e2f616b6f1f9cbea8d701a9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cd97d8e15058a780ce9b0e2b411b50911009e00a97d1504ac653ea1557d70aa6"
   end
 
   head do
@@ -37,9 +35,11 @@ class BashCompletionAT2 < Formula
 
   def install
     inreplace "bash_completion" do |s|
-      s.gsub! "readlink -f", "readlink"
+      # `/usr/bin/readlink -f` exists since macOS 12.3. Older systems
+      # (including earlier Monterey releases) do not support this option.
+      s.gsub! "readlink -f", "readlink" if OS.mac? && MacOS.version <= :monterey
       # Automatically read Homebrew's existing v1 completions
-      s.gsub! ":-/etc/bash_completion.d", ":-#{etc}/bash_completion.d"
+      s.gsub! "(/etc/bash_completion.d)", "(#{etc}/bash_completion.d)"
     end
 
     system "autoreconf", "-i" if build.head?

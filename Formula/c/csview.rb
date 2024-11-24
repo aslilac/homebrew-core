@@ -1,20 +1,20 @@
 class Csview < Formula
   desc "High performance csv viewer for cli"
   homepage "https://github.com/wfxr/csview"
-  url "https://github.com/wfxr/csview/archive/v1.2.2.tar.gz"
-  sha256 "c8c4d1207b225e4257f301af6333d28cfee611781cfa51bf8227b742b043105a"
+  url "https://github.com/wfxr/csview/archive/refs/tags/v1.3.3.tar.gz"
+  sha256 "de84f181a6b89101ed150a378eff9583d8f8cbcc4025d06adc4bc3c48085df95"
   license any_of: ["MIT", "Apache-2.0"]
   head "https://github.com/wfxr/csview.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6e42c9e597ae8be86fb856bb117a9342495b3813f06b930efb14333ceb54c44d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2bcb6b524bfbe7d4cee5a4ed47eb9fbe6e460165b8a3b1e5b47391e3ccea588c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "714f0dcb10d7d0a00f0c234f999eb1b18521f1f6443a4f781bf192b5603f8100"
-    sha256 cellar: :any_skip_relocation, ventura:        "6f62c3017653188b898c1aea5376ffe1ccbf0041aad78cf85c2b5266d0841d54"
-    sha256 cellar: :any_skip_relocation, monterey:       "165a69b5e284288f82e0e70e1a33755c3545a6fa19ef5e2511d21d90fbb22796"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0a0a21831088d78cb6d28567fda931d01a242e5b77eefb21cdf420a4f8db351c"
-    sha256 cellar: :any_skip_relocation, catalina:       "bda29a8d29c3a9263f35151c347b9791b45eb8f40e9709f76d623472c015a6d2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "47d0c394c85f711c1c98dbbe724f7d0e1820725fffc8a716b9f0fb73c87d34d3"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8341aac84bf3742c76c2a4e869f76de7b45b89a058d1f864b26f81a98e5bccd0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "55c57ffe5e4de2111bbdcfcce022b99415fc892547c593d6111426226db06321"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1383555c54c01abbd0a2338b1c6434240a1fdbd2a185acc82fd90008c07a447f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "bfc7e3e335b6dd3079310a339fcc7d71df6fdfb522db1dada174940504e64996"
+    sha256 cellar: :any_skip_relocation, sonoma:         "610bc3a181d58402bc7b70a296032bbb774446175f90f52346a9e3438720db41"
+    sha256 cellar: :any_skip_relocation, ventura:        "cef9950a72034e572b6bc7b02d688ad0c2cbfbd2732223d7853714c91d335c1f"
+    sha256 cellar: :any_skip_relocation, monterey:       "14dafba5b224e069fd7b0ccadaae032eacea098b46c43e2ef56fcfb1be9be2ce"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "52f4ece6bbdd1cfb6b61ffb0ab44b6ad72b426479cf8612d7dfa6d5fba816a57"
   end
 
   depends_on "rust" => :build

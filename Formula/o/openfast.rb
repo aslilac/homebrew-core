@@ -1,18 +1,17 @@
 class Openfast < Formula
   desc "NREL-supported OpenFAST whole-turbine simulation code"
   homepage "https://openfast.readthedocs.io"
-  url "https://github.com/openfast/openfast/archive/v3.5.0.tar.gz"
-  sha256 "159bdd00d8483da77146c7a2d316e65150eee027a5a63dd1efbbbddee677e793"
+  url "https://github.com/openfast/openfast/archive/refs/tags/v3.5.4.tar.gz"
+  sha256 "3186b78574de6482fb483d44b7908aa25a0c146a9902c7bee41e1090c0a7c9b8"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "3c8114d72bf6297b402e24113f948419dcdd603be737bddd6f17757fea49bdea"
-    sha256 cellar: :any,                 arm64_monterey: "08decbbe549849dc949075318d4414a16dcb6be5adaa54e160336005a15ba651"
-    sha256 cellar: :any,                 arm64_big_sur:  "02843b0d2e40c708bcf3637ef418eb774fb6aa8d67c0a83e3c79ee4ad93905a6"
-    sha256 cellar: :any,                 ventura:        "ff00385872ac1c9131cbbb0360763062c34a812f841ece0f5066b7b2145b949d"
-    sha256 cellar: :any,                 monterey:       "4f6fa51b03eda107bf2da080c957dcbba22c60a3ada674845f3e68cf4d195484"
-    sha256 cellar: :any,                 big_sur:        "252d26505307ce0e6943acc0c96663a3a69cb5421d3ebc0aa107bd94d1d8b0f0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "debd0d0cbbbd5ee5895cb23157322cf38490fe7eb7f3ba0256fc8fb924e557bb"
+    sha256 cellar: :any,                 arm64_sequoia: "009869a4430799eee06f121c3dc6537b1dd575b1b27e2c6887f1ff9b3eebe71a"
+    sha256 cellar: :any,                 arm64_sonoma:  "1eff221757a7862c0a41afb5ea0182cf8c699ec579cba61c74c73bbc4394876b"
+    sha256 cellar: :any,                 arm64_ventura: "58241c4ff9977948c656b36d5037072129f6a72ae7e4b5b09043514602dc4208"
+    sha256 cellar: :any,                 sonoma:        "de75e1ee9ee6ca69f129e61e2c1a6b627f68bf8a6c8cbff306940ab04d93345b"
+    sha256 cellar: :any,                 ventura:       "b0083d81f536476696fb1baa1248872e1e44c8546712474de2f729e092c84fda"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8e1eb0b2fd3f8a516d4dc03864e36cec6c9fb250eab9004c8762c4d9142a74a2"
   end
 
   depends_on "cmake" => :build
@@ -20,16 +19,14 @@ class Openfast < Formula
   depends_on "openblas"
 
   def install
-    args = std_cmake_args + %w[
+    args = %w[
       -DDOUBLE_PRECISION=OFF
       -DBLA_VENDOR=OpenBLAS
     ]
 
-    mkdir "build" do
-      system "cmake", "..", *args
-      system "make", "openfast"
-      bin.install "glue-codes/openfast/openfast"
-    end
+    system "cmake", "-S", ".", "-B", ".", *args, *std_cmake_args
+    system "cmake", "--build", ".", "--target", "openfast"
+    bin.install "glue-codes/openfast/openfast"
   end
 
   test do

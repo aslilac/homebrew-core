@@ -3,23 +3,23 @@ class PassGitHelper < Formula
 
   desc "Git credential helper interfacing with pass"
   homepage "https://github.com/languitar/pass-git-helper"
-  url "https://github.com/languitar/pass-git-helper/archive/v1.3.0.tar.gz"
-  sha256 "9600bba2e7ac389a45a8222478c4fb2a4b1722682868df7dc7daa991828d851c"
+  url "https://github.com/languitar/pass-git-helper/archive/refs/tags/v3.0.0.tar.gz"
+  sha256 "3b0cda7a5eae2e93cc1ccec0ea02716db5a2ce3105c6d631f20fa20152b7a163"
   license "LGPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "096a1079c9aff6cd26748511bb063471d213ba7864f2c5f8ef35b3a72c721c6d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "98cbfad039d46dae12c8d9b047f67cddc1861ef2e1bd9a9c4dd729ba0e994844"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2f9d4fd7aafb8714b71e6f7c0a71afe9def4e380d5fd7a8da11baeea61f745cf"
-    sha256 cellar: :any_skip_relocation, ventura:        "6fe0bf8854884e104906d3e906e3f91b64f7ce7a001f6ecc85b65e8283a3ee6c"
-    sha256 cellar: :any_skip_relocation, monterey:       "6cd8680f0b5c9c1bd32ab74bc1ace7cef5ace2d382c240509abdcd04f9d8c188"
-    sha256 cellar: :any_skip_relocation, big_sur:        "67830f4ad1bd4b50186ea747685cadd738d7c3b471ac030b818181b0f9a6608d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f2330b6069770b1620418485c1436fe348e9acbd74bf4b49e12ffabf54b1f009"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "87dc6116d4f0e827ab30ad03e7eeebefbc100959d4fed6f0b4af724db871b9d1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "cc49479ad804837704f42f901f352a8b1b12c05eca21abb8bc20c51022cd51a1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "cc49479ad804837704f42f901f352a8b1b12c05eca21abb8bc20c51022cd51a1"
+    sha256 cellar: :any_skip_relocation, sonoma:        "352862920179610c7c5414fff296d3f5c373f0cc983bbddc42c64a49306f8bbb"
+    sha256 cellar: :any_skip_relocation, ventura:       "352862920179610c7c5414fff296d3f5c373f0cc983bbddc42c64a49306f8bbb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1317d6bf961f2a4ca1b114e526d292153b332bbebba6c8b78682f075a04154c5"
   end
 
   depends_on "gnupg" => :test
   depends_on "pass"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
   resource "pyxdg" do
     url "https://files.pythonhosted.org/packages/b0/25/7998cd2dec731acbd438fbf91bc619603fc5188de0a9a17699a781840452/pyxdg-0.28.tar.gz"

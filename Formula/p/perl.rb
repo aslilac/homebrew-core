@@ -1,21 +1,10 @@
 class Perl < Formula
   desc "Highly capable, feature-rich programming language"
   homepage "https://www.perl.org/"
+  url "https://www.cpan.org/src/5.0/perl-5.40.0.tar.xz"
+  sha256 "d5325300ad267624cb0b7d512cfdfcd74fa7fe00c455c5b51a6bd53e5e199ef9"
   license any_of: ["Artistic-1.0-Perl", "GPL-1.0-or-later"]
   head "https://github.com/perl/perl5.git", branch: "blead"
-
-  stable do
-    url "https://www.cpan.org/src/5.0/perl-5.36.1.tar.xz"
-    sha256 "bd91217ea8a8c8b81f21ebbb6cefdf0d13ae532013f944cdece2cd51aef4b6a7"
-
-    # Apply upstream commit to remove nsl from libswanted:
-    # https://github.com/Perl/perl5/commit/7e19816aa8661ce0e984742e2df11dd20dcdff18
-    # Remove with next tagged release that includes the change.
-    patch do
-      url "https://github.com/Perl/perl5/commit/7e19816aa8661ce0e984742e2df11dd20dcdff18.patch?full_index=1"
-      sha256 "03f64cf62b9b519cefdf76a120a6e505cf9dc4add863b9ad795862c071b05613"
-    end
-  end
 
   livecheck do
     url "https://www.cpan.org/src/"
@@ -23,16 +12,15 @@ class Perl < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "95806fc97a4d19f592e9fc265e2a79a3183463306c41b665cea9f69d0d748d41"
-    sha256 arm64_monterey: "4ab6b71b6068bf7efa35d9ec0c175b2de73917b9fe3bc2e47c25f4975c102c06"
-    sha256 arm64_big_sur:  "6046f055d4e8c188726e73a5c6961618d6796c41b0f5b8ccbf874618fe546342"
-    sha256 ventura:        "12a8c480c692775bf24c4ba802103982299e899c9d949ec4bc288ecab661a42d"
-    sha256 monterey:       "624ccf8b182aabb60ec7bf1ded9177e4085253c53eab3cdecb30b694efc5ca97"
-    sha256 big_sur:        "61baac39c1834ec0f7a026d639b6008eaf893090ebb57f947068e143e29ee556"
-    sha256 x86_64_linux:   "db9590fceed0e461c2d01977d0d314f3d1696147dd1489c775e9ca415e2aee9a"
+    sha256 arm64_sequoia: "af1f2117729613b32d9c6bb4269a14022fdc51ceab4bd76da9452e9d39577283"
+    sha256 arm64_sonoma:  "668e1b34a46982e4a0712fcdf7f73fd1fbce74efd52dea9c7fb1ab30dda415bd"
+    sha256 arm64_ventura: "37d29cde5809f66afee15192d8a59b20a9304b22ba4c100a7bf9b5d58947d3a6"
+    sha256 sonoma:        "ce1b7ee92c9e17d49181e89b280ab20bb529edda5c0e82610a6fec80390a3a8b"
+    sha256 ventura:       "223dd89f9b872b018434c7ce67dfda7cbb2874c7ecb13074b7b49c5fa9d92ab4"
+    sha256 x86_64_linux:  "6ea16b075cfcbb386ebfbf9da400092e953df71b0743c323b4a7ca8e3db3c50d"
   end
 
-  depends_on "berkeley-db"
+  depends_on "berkeley-db@5" # keep berkeley-db < 6 to avoid AGPL-3.0 restrictions
   depends_on "gdbm"
 
   uses_from_macos "expat"
@@ -94,6 +82,6 @@ class Perl < Formula
 
   test do
     (testpath/"test.pl").write "print 'Perl is not an acronym, but JAPH is a Perl acronym!';"
-    system "#{bin}/perl", "test.pl"
+    system bin/"perl", "test.pl"
   end
 end

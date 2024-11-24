@@ -1,19 +1,18 @@
 class F2 < Formula
   desc "Command-line batch renaming tool"
   homepage "https://github.com/ayoisaiah/f2"
-  url "https://github.com/ayoisaiah/f2/archive/v1.9.1.tar.gz"
-  sha256 "fbeb4540c4afe4aa25565685ee7ef7498449da7fc5f5b70a0e303b15c6e35f71"
+  url "https://github.com/ayoisaiah/f2/archive/refs/tags/v2.0.3.tar.gz"
+  sha256 "164e1282ae1f2ea6a8af93c785d7bb214b09919ad8537b8fbab5b5bc8ee1a396"
   license "MIT"
   head "https://github.com/ayoisaiah/f2.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "05a3ff917d9aaab41874915d0270151d14b03d2b45b30346338ba0bc6bbe7aa8"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "05a3ff917d9aaab41874915d0270151d14b03d2b45b30346338ba0bc6bbe7aa8"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "05a3ff917d9aaab41874915d0270151d14b03d2b45b30346338ba0bc6bbe7aa8"
-    sha256 cellar: :any_skip_relocation, ventura:        "640ad76f6012ed3c7d4dcc4f054e6edfa44621f3594303d32c3cd3c8763351ed"
-    sha256 cellar: :any_skip_relocation, monterey:       "640ad76f6012ed3c7d4dcc4f054e6edfa44621f3594303d32c3cd3c8763351ed"
-    sha256 cellar: :any_skip_relocation, big_sur:        "640ad76f6012ed3c7d4dcc4f054e6edfa44621f3594303d32c3cd3c8763351ed"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "00ebec8aaa2a5d08b8516bc009e658923f3a55eb9df0d92ee8effd98207fabed"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "102beebfbd41758b97daf1e7046d8f5447e3851f507a07b8fe113c81e96e80f6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "102beebfbd41758b97daf1e7046d8f5447e3851f507a07b8fe113c81e96e80f6"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "102beebfbd41758b97daf1e7046d8f5447e3851f507a07b8fe113c81e96e80f6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c6a7dd847b9498a136b9680531cd4d99e1faaf320f30a2c51d8b8f31e1998d6f"
+    sha256 cellar: :any_skip_relocation, ventura:       "c6a7dd847b9498a136b9680531cd4d99e1faaf320f30a2c51d8b8f31e1998d6f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8c197664eb13a389ea69c122ea8dbe4aaeb426c7db9724400631f4aca9a1dd6a"
   end
 
   depends_on "go" => :build

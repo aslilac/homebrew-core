@@ -1,11 +1,20 @@
 class Stp < Formula
   desc "Simple Theorem Prover, an efficient SMT solver for bitvectors"
   homepage "https://stp.github.io/"
-  url "https://github.com/stp/stp/archive/refs/tags/2.3.3.tar.gz"
-  sha256 "ea6115c0fc11312c797a4b7c4db8734afcfce4908d078f386616189e01b4fffa"
   license "MIT"
-  revision 6
+  revision 1
   head "https://github.com/stp/stp.git", branch: "master"
+
+  stable do
+    url "https://github.com/stp/stp/archive/refs/tags/2.3.4.tar.gz"
+    sha256 "dc197e337c058dc048451b712169a610f7040b31d0078b6602b831fbdcbec990"
+
+    # Replace distutils for python 3.12+
+    patch do
+      url "https://github.com/stp/stp/commit/fb185479e760b6ff163512cb6c30ac9561aadc0e.patch?full_index=1"
+      sha256 "7e50f26901e31de4f84ceddc1a1d389ab86066a8dcbc5d88e9ec1f0809fa0909"
+    end
+  end
 
   livecheck do
     url :stable
@@ -13,13 +22,14 @@ class Stp < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "11f98021c059c0b510d2a7d0245037832b3b3a7348a43b15f19a849d5a11e9d6"
-    sha256 cellar: :any,                 arm64_monterey: "6daedfc806728ad067500b9cce8aae26b76c2026317b90f6aeb9cdadd3979f95"
-    sha256 cellar: :any,                 arm64_big_sur:  "cd1329b5f9035e9add08a7cbd12b5ed644cd49dfbb9c5468377ef423cebedd93"
-    sha256 cellar: :any,                 ventura:        "bd2c430c8ab7bc3bedff913245869da6c3b6715cdb6329ea077a497c67301f01"
-    sha256 cellar: :any,                 monterey:       "f17957b6ca37ee88003ea4d66b98b409d0c2bb39116089858742fe5496082060"
-    sha256 cellar: :any,                 big_sur:        "8f4b0d7f28d70fd02d5b7afef3d1efec1b0313e3477c96274c7e7aab35757cb4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6e43192bd96fd4143fe4dce2055eeec42be74c8775ede475bd0a87b5b1e79081"
+    sha256 cellar: :any,                 arm64_sequoia:  "b9b31350b44ffe11b365eaf5d9937481a97489a178412478da2bd4663ae94482"
+    sha256 cellar: :any,                 arm64_sonoma:   "95e15af6a14beb3660a270b7686a6d80e5ce0bad483137dd8f6e55b9e084776d"
+    sha256 cellar: :any,                 arm64_ventura:  "46a50b47c60a22bdc702279dd8e87670192255e1512ce9f925a067c049daa0c7"
+    sha256 cellar: :any,                 arm64_monterey: "225bd9e76bdcf19d25386a9987d15aa2a4750581ea44d05cac8e29beb729560c"
+    sha256 cellar: :any,                 sonoma:         "a4db0af253a912c9164c3b1142a98740f2947c1997638d6b85a299afcfd87128"
+    sha256 cellar: :any,                 ventura:        "2fbab5de52f21a9422a222328fa052708e5fd63905519ce91370be39e138b46b"
+    sha256 cellar: :any,                 monterey:       "7622e6bedcc64986cd9a712f524c30971aa277704bf8871c9ea6c5fe90da257e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "277f72788a93cd7f9eb2585b48b864bc15d40ae055c4569ac7faa6f5e435b061"
   end
 
   # stp refuses to build with system bison and flex
@@ -28,19 +38,20 @@ class Stp < Formula
   depends_on "flex" => :build
   depends_on "boost"
   depends_on "cryptominisat"
+  depends_on "gmp"
   depends_on "minisat"
-  depends_on "python@3.11"
+  depends_on "python@3.12"
 
   uses_from_macos "perl"
 
   def install
-    python = "python3.11"
+    python = "python3.12"
     site_packages = prefix/Language::Python.site_packages(python)
     site_packages.mkpath
     inreplace "lib/Util/GitSHA1.cpp.in", "@CMAKE_CXX_COMPILER@", ENV.cxx
 
     system "cmake", "-S", ".", "-B", "build",
-                    "-DPYTHON_EXECUTABLE=#{Formula["python@3.11"].opt_bin}/#{python}",
+                    "-DPYTHON_EXECUTABLE=#{which(python)}",
                     "-DPYTHON_LIB_INSTALL_DIR=#{site_packages}",
                     *std_cmake_args
     system "cmake", "--build", "build"
@@ -56,7 +67,7 @@ class Stp < Formula
     EOS
     assert_equal "sat", shell_output("#{bin}/stp --SMTLIB2 prob.smt").chomp
 
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include "stp/c_interface.h"
       #include <assert.h>
       int main() {
@@ -73,7 +84,7 @@ class Stp < Formula
         vc_Destroy(vc);
         return 0;
       }
-    EOS
+    C
 
     expected_output = <<~EOS
       COUNTEREXAMPLE BEGIN:\s

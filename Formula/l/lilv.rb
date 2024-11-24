@@ -1,8 +1,8 @@
 class Lilv < Formula
   desc "C library to use LV2 plugins"
   homepage "https://drobilla.net/software/lilv.html"
-  url "https://download.drobilla.net/lilv-0.24.20.tar.xz"
-  sha256 "4fb082b9b8b286ea92bbb71bde6b75624cecab6df0cc639ee75a2a096212eebc"
+  url "https://download.drobilla.net/lilv-0.24.24.tar.xz"
+  sha256 "6bb6be9f88504176d0642f12de809b2b9e2dc55621a68adb8c7edb99aefabb4f"
   license "ISC"
 
   livecheck do
@@ -12,27 +12,27 @@ class Lilv < Formula
 
   bottle do
     rebuild 1
-    sha256 cellar: :any, arm64_ventura:  "130b4e53fd8079fc21e38a76b8e313a63e2812c195066f46bfaddc665dbdb50b"
-    sha256 cellar: :any, arm64_monterey: "b5582d65b08f1ba6287b1257e9338e8b4aa54d04d25909630313a04511c3c2f1"
-    sha256 cellar: :any, arm64_big_sur:  "a82cc9f0fad3d3200eab9747d3aefa9e74dcbeb8a8fea5af89bb8dcd6ce65e78"
-    sha256 cellar: :any, ventura:        "8281ac099bcec8c94bd4c6a55a8398b180854125f4626ef8bdf484a36726d82c"
-    sha256 cellar: :any, monterey:       "4eb1cd9188565a4ebcbc2f15e6f2c5a4ccc4e4b86fe6728448e06723cd73fffb"
-    sha256 cellar: :any, big_sur:        "0c615040bed3ee0cdc6d7cc99868c62a51e9febfeefa9ffefd26694bd8a3a09d"
-    sha256               x86_64_linux:   "2b32ee9b947c597d1ec17d2095121ac09035bd73d3da3f01e414171fec955f85"
+    sha256 cellar: :any, arm64_sequoia: "f4c262eea637d27903706d2eb1ebcebce75123130de7b51da51ff426883551f5"
+    sha256 cellar: :any, arm64_sonoma:  "1045abb56144f25a09abc8df96bba71b6d922d7bf5faf00743cb5cb7f4bd8166"
+    sha256 cellar: :any, arm64_ventura: "cda3ce542b0d80a69df22f658b7bb6a7dbde951a363beb263eec45f8d0ce8007"
+    sha256 cellar: :any, sonoma:        "50242c1f81ae19f619981e340e693b1f73eea8c2725273c0764e97b9b990b9b8"
+    sha256 cellar: :any, ventura:       "f8beefdca7ba8d9ca17ad7aa61aff046d5f9e806459fefadb1b5a11081b0f332"
+    sha256               x86_64_linux:  "4ef397a92193d1fca05675bedb76a82ef8ec713e0ab176b1023024a1006f4ad7"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.11" => [:build, :test]
+  depends_on "python@3.13" => [:build, :test]
   depends_on "libsndfile"
   depends_on "lv2"
   depends_on "serd"
   depends_on "sord"
   depends_on "sratom"
+  depends_on "zix"
 
   def python3
-    "python3.11"
+    "python3.13"
   end
 
   def install
@@ -50,14 +50,14 @@ class Lilv < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <lilv/lilv.h>
 
       int main(void) {
         LilvWorld* const world = lilv_world_new();
         lilv_world_free(world);
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-I#{include}/lilv-0", "-L#{lib}", "-llilv-0", "-o", "test"
     system "./test"
 

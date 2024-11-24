@@ -1,8 +1,8 @@
 class Moco < Formula
   desc "Stub server with Maven, Gradle, Scala, and shell integration"
   homepage "https://github.com/dreamhead/moco"
-  url "https://search.maven.org/remotecontent?filepath=com/github/dreamhead/moco-runner/1.4.0/moco-runner-1.4.0-standalone.jar"
-  sha256 "c51892b292fdcf37cf69368625adfa22f9a851b931bc89142933a2754ca167d7"
+  url "https://search.maven.org/remotecontent?filepath=com/github/dreamhead/moco-runner/1.5.0/moco-runner-1.5.0-standalone.jar"
+  sha256 "67fffbf936877012e7ecd754cb72c6e1908ca38cf1cc0140c79fd6ab81da2ef1"
   license "MIT"
 
   livecheck do
@@ -11,7 +11,8 @@ class Moco < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "0fb213ecaed30f0f05c038e927f1b773d1de0e4312702e3141d2da6ff515eb48"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "521d8b998c0312dccbb48389843c42e5c3f3edb17618eaa8b017038d040a420c"
   end
 
   depends_on "openjdk"
@@ -22,7 +23,7 @@ class Moco < Formula
   end
 
   test do
-    (testpath/"config.json").write <<~EOS
+    (testpath/"config.json").write <<~JSON
       [
         {
           "response" :
@@ -31,7 +32,7 @@ class Moco < Formula
           }
         }
       ]
-    EOS
+    JSON
 
     port = free_port
     begin

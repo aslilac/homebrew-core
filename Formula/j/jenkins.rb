@@ -1,8 +1,8 @@
 class Jenkins < Formula
   desc "Extendable open source continuous integration server"
   homepage "https://www.jenkins.io/"
-  url "https://get.jenkins.io/war/2.420/jenkins.war"
-  sha256 "c9e0778a6eb54e652658ee757848d792bfbd702f7af14a8c2e05978155facc62"
+  url "https://get.jenkins.io/war/2.486/jenkins.war"
+  sha256 "a5a913dfcf0314087267a79337a441949f2193a6c39e29da7b6be5c8676f52dc"
   license "MIT"
 
   livecheck do
@@ -11,13 +11,7 @@ class Jenkins < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ed3f6f1f0c52b724c8e2c2ca10c1b1b63a3f37c33ce2bab65c5850bbc027b68f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ed3f6f1f0c52b724c8e2c2ca10c1b1b63a3f37c33ce2bab65c5850bbc027b68f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ed3f6f1f0c52b724c8e2c2ca10c1b1b63a3f37c33ce2bab65c5850bbc027b68f"
-    sha256 cellar: :any_skip_relocation, ventura:        "ed3f6f1f0c52b724c8e2c2ca10c1b1b63a3f37c33ce2bab65c5850bbc027b68f"
-    sha256 cellar: :any_skip_relocation, monterey:       "ed3f6f1f0c52b724c8e2c2ca10c1b1b63a3f37c33ce2bab65c5850bbc027b68f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ed3f6f1f0c52b724c8e2c2ca10c1b1b63a3f37c33ce2bab65c5850bbc027b68f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "123962831ebecf275eb2a33a46889450d3d16017a8a21e87195a6dbef31e9d31"
+    sha256 cellar: :any_skip_relocation, all: "4050fd82da74631aa46671e017853ed955b63a3552c66cc092345cebc4097259"
   end
 
   head do
@@ -25,17 +19,17 @@ class Jenkins < Formula
     depends_on "maven" => :build
   end
 
-  depends_on "openjdk@17"
+  depends_on "openjdk@21"
 
   def install
     if build.head?
       system "mvn", "clean", "install", "-pl", "war", "-am", "-DskipTests"
     else
-      system "#{Formula["openjdk@17"].opt_bin}/jar", "xvf", "jenkins.war"
+      system "#{Formula["openjdk@21"].opt_bin}/jar", "xvf", "jenkins.war"
     end
     libexec.install Dir["**/jenkins.war", "**/cli-#{version}.jar"]
-    bin.write_jar_script libexec/"jenkins.war", "jenkins", java_version: "17"
-    bin.write_jar_script libexec/"cli-#{version}.jar", "jenkins-cli", java_version: "17"
+    bin.write_jar_script libexec/"jenkins.war", "jenkins", java_version: "21"
+    bin.write_jar_script libexec/"cli-#{version}.jar", "jenkins-cli", java_version: "21"
 
     (var/"log/jenkins").mkpath
   end

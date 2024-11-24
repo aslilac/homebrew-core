@@ -1,27 +1,27 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/index.html"
-  url "https://www.sqlite.org/2023/sqlite-autoconf-3430000.tar.gz"
-  version "3.43.0"
-  sha256 "49008dbf3afc04d4edc8ecfc34e4ead196973034293c997adad2f63f01762ae1"
+  url "https://www.sqlite.org/2024/sqlite-autoconf-3470000.tar.gz"
+  version "3.47.0"
+  sha256 "83eb21a6f6a649f506df8bd3aab85a08f7556ceed5dbd8dea743ea003fc3a957"
   license "blessing"
 
   livecheck do
     url :homepage
     regex(%r{href=.*?releaselog/v?(\d+(?:[._]\d+)+)\.html}i)
     strategy :page_match do |page, regex|
-      page.scan(regex).map { |match| match&.first&.gsub("_", ".") }
+      page.scan(regex).map { |match| match&.first&.tr("_", ".") }
     end
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "e6a7d708ca874fc883696409b8319d9ed9376ebfbe911739b50a202d3392fdad"
-    sha256 cellar: :any,                 arm64_monterey: "92045cc54f60f0a5bb614eafa7f32bda112f63ca74cb546c2c6a3435c46b501f"
-    sha256 cellar: :any,                 arm64_big_sur:  "1d46596e4c46cd560de16d9b9000fa282e7fcb4f7512e45f4ffd3a238a9de26b"
-    sha256 cellar: :any,                 ventura:        "d2d619eaa851c53646f5e056733e467cd777e1d753b616c2437a876f9e02b13d"
-    sha256 cellar: :any,                 monterey:       "9a30e2f13cece39c54235aee4b52eab97074e2381f1711106df962c36c83e93c"
-    sha256 cellar: :any,                 big_sur:        "4c06f8a5234f56bb382d953ba8c2906fc66cf74e31d859dfcfb5fda9446ce345"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "35dcead7390fef5dd96c80f876b32fd988836e5820c1a6744edf10c7e95a004c"
+    sha256 cellar: :any,                 arm64_sequoia: "f4716de629ecdf2acf41951e753e7d5f10d154915fad2ce4484231e36f13ade0"
+    sha256 cellar: :any,                 arm64_sonoma:  "3c1e59085e104ef0c1ea1e867300797329c403f46cd4cf15cb7c1a0b19bb1b4a"
+    sha256 cellar: :any,                 arm64_ventura: "4a4312a5da0dea4e6be511f3581ce11f166c20d34f327b62686ff1c6f5c22b59"
+    sha256 cellar: :any,                 sequoia:       "a36aaf898c49bdc6ab939f323dad41502c9773d5f4d92f028023d62b64d68acf"
+    sha256 cellar: :any,                 sonoma:        "dfc775408f49afdaf1238e2428c292336bcd20d5ff152dcb83d55b1646649748"
+    sha256 cellar: :any,                 ventura:       "5756aaabf9cf51b3ba263fd38aeeac189fae38d2d281a0fd48e7f47fb95bd5ac"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "876ee5b13d16e4147a7ed7df891037188dba92d016d3aeb922eb785bd2f5a816"
   end
 
   keg_only :provided_by_macos
@@ -34,13 +34,19 @@ class Sqlite < Formula
     # Default value of MAX_VARIABLE_NUMBER is 999 which is too low for many
     # applications. Set to 250000 (Same value used in Debian and Ubuntu).
     ENV.append "CPPFLAGS", %w[
+      -DSQLITE_ENABLE_API_ARMOR=1
       -DSQLITE_ENABLE_COLUMN_METADATA=1
+      -DSQLITE_ENABLE_DBSTAT_VTAB=1
       -DSQLITE_ENABLE_FTS3=1
       -DSQLITE_ENABLE_FTS3_PARENTHESIS=1
+      -DSQLITE_ENABLE_FTS5=1
       -DSQLITE_ENABLE_JSON1=1
+      -DSQLITE_ENABLE_MEMORY_MANAGEMENT=1
       -DSQLITE_ENABLE_RTREE=1
+      -DSQLITE_ENABLE_STAT4=1
       -DSQLITE_ENABLE_UNLOCK_NOTIFY=1
       -DSQLITE_MAX_VARIABLE_NUMBER=250000
+      -DSQLITE_USE_URI=1
     ].join(" ")
 
     args = %W[

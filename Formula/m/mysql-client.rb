@@ -1,8 +1,8 @@
 class MysqlClient < Formula
   desc "Open source relational database management system"
-  homepage "https://dev.mysql.com/doc/refman/8.0/en/"
-  url "https://cdn.mysql.com/Downloads/MySQL-8.1/mysql-boost-8.1.0.tar.gz"
-  sha256 "cb19648bc8719b9f6979924bfea806b278bd26b8d67740e5742c6f363f142188"
+  homepage "https://dev.mysql.com/doc/refman/9.0/en/"
+  url "https://cdn.mysql.com/Downloads/MySQL-9.0/mysql-9.0.1.tar.gz"
+  sha256 "18fa65f1ea6aea71e418fe0548552d9a28de68e2b8bc3ba9536599eb459a6606"
   license "GPL-2.0-only" => { with: "Universal-FOSS-exception-1.0" }
 
   livecheck do
@@ -10,13 +10,14 @@ class MysqlClient < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "26cc03e4ecbdca77644657c7f16bf1f8cc9053ce3e1795c91b138ce4b988811c"
-    sha256 arm64_monterey: "1b4a8c3636ea4378b2e80fb1b9cf2fabe82db758f67f1cc9a2321022181d7077"
-    sha256 arm64_big_sur:  "5053ade43d5655b3b0021339e8167b599ec7958feed5c93d48334e2914c65777"
-    sha256 ventura:        "a5eda4da71b0c93b1f36084e7a90de8abc04d57079b27963cc1489cccf6f233c"
-    sha256 monterey:       "1f0746024a167fb1248326e65bc066323d1742d370b6190f3daeb4dfc7616a82"
-    sha256 big_sur:        "400d81112130d6b8dcbe693b84757aeef6c2cab77c882a808545b42dcf44684d"
-    sha256 x86_64_linux:   "f6e9c107c0f14e28d8ea1a7e3de7564a3c2e0bb964bae1b5b3574135df1b484d"
+    sha256 arm64_sequoia:  "b1476498505c15afd4734528f8d5611c2ba823c023b6313cb603c76eb79203fa"
+    sha256 arm64_sonoma:   "a60550ca6925d3ad75ffefb38b782800f58511f586e607faa73273a41355841d"
+    sha256 arm64_ventura:  "4fc42b3455b6dc68ed0a83b38eae48eee8c907b72974ff4c76a00ec7a0d08997"
+    sha256 arm64_monterey: "1b3b1f059ad68568f70d142d48f132501327aa376d8bea673bf1900834a1b094"
+    sha256 sonoma:         "5971074a3003479b0781bd4a44b1b009cc7c790357cc549b5d45074ee74572b8"
+    sha256 ventura:        "876135b9828ec40320e1a5c5ce082c85307732a212ba79027f39216a238cd765"
+    sha256 monterey:       "6ea086c4b5b684ff226b6d588d535dc0313e987c9e65cb7b42945262720af528"
+    sha256 x86_64_linux:   "e1d9c62f5e9c2111062a388403b2149259014fd0213bb1f82d1619c9b5e88d2a"
   end
 
   keg_only "it conflicts with mysql (which contains client libraries)"
@@ -29,16 +30,12 @@ class MysqlClient < Formula
   # GCC is not supported either, so exclude for El Capitan.
   depends_on macos: :sierra if DevelopmentTools.clang_build_version < 900
   depends_on "openssl@3"
-  depends_on "zlib" # Zlib 1.2.12+
+  depends_on "zlib" # Zlib 1.2.13+
   depends_on "zstd"
 
   uses_from_macos "libedit"
 
   fails_with gcc: "5"
-
-  # Fix for "Cannot find system zlib libraries" even though they are installed.
-  # https://bugs.mysql.com/bug.php?id=110745
-  patch :DATA
 
   def install
     # -DINSTALL_* are relative to `CMAKE_INSTALL_PREFIX` (`prefix`)
@@ -66,37 +63,9 @@ class MysqlClient < Formula
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
-
-    # Fix bad linker flags in `mysql_config`.
-    # https://bugs.mysql.com/bug.php?id=111011
-    inreplace bin/"mysql_config", "-lzlib", "-lz"
   end
 
   test do
     assert_match version.to_s, shell_output("#{bin}/mysql --version")
   end
 end
-
-__END__
-diff --git a/cmake/zlib.cmake b/cmake/zlib.cmake
-index 460d87a..36fbd60 100644
---- a/cmake/zlib.cmake
-+++ b/cmake/zlib.cmake
-@@ -50,7 +50,7 @@ FUNCTION(FIND_ZLIB_VERSION ZLIB_INCLUDE_DIR)
-   MESSAGE(STATUS "ZLIB_INCLUDE_DIR ${ZLIB_INCLUDE_DIR}")
- ENDFUNCTION(FIND_ZLIB_VERSION)
-
--FUNCTION(FIND_SYSTEM_ZLIB)
-+MACRO(FIND_SYSTEM_ZLIB)
-   FIND_PACKAGE(ZLIB)
-   IF(ZLIB_FOUND)
-     ADD_LIBRARY(zlib_interface INTERFACE)
-@@ -61,7 +61,7 @@ FUNCTION(FIND_SYSTEM_ZLIB)
-         ${ZLIB_INCLUDE_DIR})
-     ENDIF()
-   ENDIF()
--ENDFUNCTION(FIND_SYSTEM_ZLIB)
-+ENDMACRO(FIND_SYSTEM_ZLIB)
-
- MACRO (RESET_ZLIB_VARIABLES)
-   # Reset whatever FIND_PACKAGE may have left behind.

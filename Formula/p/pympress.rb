@@ -3,19 +3,20 @@ class Pympress < Formula
 
   desc "Simple and powerful dual-screen PDF reader designed for presentations"
   homepage "https://github.com/Cimbali/pympress/"
-  url "https://files.pythonhosted.org/packages/0c/83/fb7ee0393a6b200b2344ffa0c6e6c2dbf8444fa4169207bd87d805ed3f12/pympress-1.8.3.tar.gz"
-  sha256 "4e3699f4318416f480f930be0c0fb18d4d2a36d11becf964aa80182382984ddd"
+  url "https://files.pythonhosted.org/packages/fb/e2/91827c485aae28d69f0b40c6d366b9f6eb96d8208a98af0345e0ade3fbbd/pympress-1.8.5.tar.gz"
+  sha256 "29bd39115d05f254da993abba42d54a0e9187f4e2ce7c363324b15136c530bf6"
   license "GPL-2.0-or-later"
-  head "https://github.com/Cimbali/pympress.git", branch: "master"
+  head "https://github.com/Cimbali/pympress.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "271f2deb743361d30104a8bd212b89a003396d29c0a62f9c87f7162061cee5a4"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bc68c5f47c42a0615da03a20e189f27db0a36c189e328947d8b3b1f0de8dd432"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "20a8f86bd1eebbb5b0f819c06106200ed98a15adb1523fa101edc9f9a83c0eca"
-    sha256 cellar: :any_skip_relocation, ventura:        "497de69911b227fa982c1ca762819364c805770332811bd14a094c8126d1c916"
-    sha256 cellar: :any_skip_relocation, monterey:       "e37c1a1d8f97207618d24469d7001e4b59e1bf8f423ffe79ad062d129e51742d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ca76312ef16c5ef9bb6a89bcb8859bda35c81e08b63163162367c35b35db8a5d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "821ab3272ad9db45fb1da5a775f7d0512a22df8e777804d678e144ad3ebe18d5"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4c31a6a6630736627a851380e3cef8a2fcbbe4cfd473d865a4a1bfc813a42684"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "69b9150080604dcea831794aba78f785ce6743ad41847f6e9bb90cf02356eaf7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ca5aa79ede4a81614c5b486733e22d476edf9993d8d1f1871bc870320b4dd692"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "75cad3e04e36900ff767e57e8a17f37cf07d571bba104443b50ba0d34e1530b1"
+    sha256 cellar: :any_skip_relocation, sonoma:         "74d1a9e816d885ca0bbb0641143aa0daf326778dd909f450fcd3e18e97db8ce6"
+    sha256 cellar: :any_skip_relocation, ventura:        "49204cf7f3d5a4b81d29ba9087100660d1fd78bdfd00f56edca3a157011271e4"
+    sha256 cellar: :any_skip_relocation, monterey:       "39c3d273f17f03ab27012d327e00c80e6866d084fffa22f27c82e9d934671ddb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aa9926be82452150807a6a20f2726ef0a0ba5495f83d468cf335a52022cd0c3c"
   end
 
   depends_on "gobject-introspection"
@@ -24,7 +25,7 @@ class Pympress < Formula
   depends_on "libyaml"
   depends_on "poppler"
   depends_on "pygobject3"
-  depends_on "python@3.11"
+  depends_on "python@3.12"
 
   resource "watchdog" do
     url "https://files.pythonhosted.org/packages/95/a6/d6ef450393dac5734c63c40a131f66808d2e6f59f6165ab38c98fbe4e6ec/watchdog-3.0.0.tar.gz"
@@ -33,12 +34,13 @@ class Pympress < Formula
 
   def install
     virtualenv_install_with_resources
-    bin.install_symlink libexec/"bin/pympress"
   end
 
   test do
     # (pympress:48790): Gtk-WARNING **: 13:03:37.080: cannot open display
     ENV["PYMPRESS_HEADLESS_TEST"]="1" if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
+
+    (testpath/"Library/Preferences").mkpath
 
     system bin/"pympress", "--quit"
 

@@ -1,8 +1,8 @@
 class Dnscontrol < Formula
   desc "Synchronize your DNS to multiple providers from a simple DSL"
   homepage "https://dnscontrol.org/"
-  url "https://github.com/StackExchange/dnscontrol/archive/v4.2.0.tar.gz"
-  sha256 "2e95199961d19bd48c6c22cbde1ea9bb597dfd56127ee32ee93ecfd4ea60882d"
+  url "https://github.com/StackExchange/dnscontrol/archive/refs/tags/v4.14.3.tar.gz"
+  sha256 "47c06beb07ea7376588a40d23f73d8455a6ac13d5885b092bc29fb04fe3d6709"
   license "MIT"
   version_scheme 1
 
@@ -15,33 +15,31 @@ class Dnscontrol < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b4e339c5327f44b90a37935ccb1649533fe4662264f9de1529b45e8f41b1189b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c7322219541422e4faede138ef36d367f9d04a8bc3090eb2e1326c7019b6f47c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b62f9da86f7ce1fc763937009652d8e6f8946ebf1b65f6edb6c702fbc3f22777"
-    sha256 cellar: :any_skip_relocation, ventura:        "91b4e7f7861bbb12163e88ef5cef9ee60e55a054ac596c3f0266043e21567a28"
-    sha256 cellar: :any_skip_relocation, monterey:       "e302ca865eb7091350bd70593298743be44c5c41e281b6f234913ee7cc8b7983"
-    sha256 cellar: :any_skip_relocation, big_sur:        "814ffbc5487dd8f4a663978d2ffbb3af7459e11e0c3c1f8e0932cc14ed9ce772"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9bf0eedd2859646534f07a945655df4972f78fdb0e881ddbbdd9136a80a5c770"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "68a92087051f603c20115ecd9fd972747d4960210d49bb012a9af2976011dd40"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "68a92087051f603c20115ecd9fd972747d4960210d49bb012a9af2976011dd40"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "68a92087051f603c20115ecd9fd972747d4960210d49bb012a9af2976011dd40"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b4521e9651b532a27d402cf690f3721b0001474a80ca0ba060d0ce619d1e34f2"
+    sha256 cellar: :any_skip_relocation, ventura:       "b4521e9651b532a27d402cf690f3721b0001474a80ca0ba060d0ce619d1e34f2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4e00bc4deb96c83dfa54983078295babefb37f4b9622b8bbe3c97c833358bae3"
   end
 
   depends_on "go" => :build
 
   def install
-    go_ldflags = %W[
-      -s -w
-      -X main.SHA=#{tap.user}
-      -X main.Version=#{version}
-      -X main.BuildTime=#{time.iso8601}
-    ]
-    system "go", "build", *std_go_args(ldflags: go_ldflags)
+    system "go", "build", *std_go_args(ldflags: "-s -w -X main.version=#{version}")
+
+    generate_completions_from_executable(bin/"dnscontrol", "shell-completion", shells: [:bash, :zsh])
+  end
+
+  def caveats
+    "dnscontrol bash completion depends on the bash-completion package."
   end
 
   test do
     version_output = shell_output("#{bin}/dnscontrol version")
     assert_match version.to_s, version_output
-    assert_match tap.user, version_output
 
-    (testpath/"dnsconfig.js").write <<~EOS
+    (testpath/"dnsconfig.js").write <<~JS
       var namecom = NewRegistrar("name.com", "NAMEDOTCOM");
       var r53 = NewDnsProvider("r53", "ROUTE53")
 
@@ -51,7 +49,7 @@ class Dnscontrol < Formula
         MX("@",5,"mail.myserver.com."),
         A("test", "5.6.7.8")
       )
-    EOS
+    JS
 
     output = shell_output("#{bin}/dnscontrol check #{testpath}/dnsconfig.js 2>&1").strip
     assert_equal "No errors.", output

@@ -1,25 +1,30 @@
 class Highway < Formula
   desc "Performance-portable, length-agnostic SIMD with runtime dispatch"
   homepage "https://github.com/google/highway"
-  url "https://github.com/google/highway/archive/refs/tags/1.0.6.tar.gz"
-  sha256 "d89664a045a41d822146e787bceeefbf648cc228ce354f347b18f2b419e57207"
+  url "https://github.com/google/highway/archive/refs/tags/1.2.0.tar.gz"
+  sha256 "7e0be78b8318e8bdbf6fa545d2ecb4c90f947df03f7aadc42c1967f019e63343"
   license "Apache-2.0"
   head "https://github.com/google/highway.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "0a38d434438a7796911d318b8508855c8a2002437c6e0fb41caf40504a912192"
-    sha256 cellar: :any,                 arm64_monterey: "a45c755d16d2b0a471dfa6d537a93b7e210d7f5a9cedc7a16ed536ba88c16e5b"
-    sha256 cellar: :any,                 arm64_big_sur:  "a8c510a558d8a12d584416f1258bd8f72dd6228ee6bbec0487d5bf0aabc2c692"
-    sha256 cellar: :any,                 ventura:        "0319016ec210c2a77fa10e75f25f34420925dccc8819f81d622d13eace7194b9"
-    sha256 cellar: :any,                 monterey:       "7b32dac3298fbaf576db43b560690d540b232e19377398512a0ac58cde37f4c2"
-    sha256 cellar: :any,                 big_sur:        "ea7e37c4cf96e99ae53ba1e598833281e9d15b56ba25417b9465cf16df5fc6fc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9612fab636e5735798f8fb564e1c42b2485a5291f66d26271b75867f786c1fd2"
+    sha256 cellar: :any,                 arm64_sequoia:  "8a3327629482279fdff46b5bf3324cb6379a975b271d1ecc4a901a3cdb7e7f5a"
+    sha256 cellar: :any,                 arm64_sonoma:   "406c96cf28555eb84e1c67788db50223a6af2fd488ce91e831068e60981d128a"
+    sha256 cellar: :any,                 arm64_ventura:  "26b4d20fb463b4a30a66a9bb8bf0e6bdac663b6c2ffe741652e671d20142a07b"
+    sha256 cellar: :any,                 arm64_monterey: "7895ad60eb76fe27a6e954f30f00db408883a5fc90965d8802b6094d62b98bff"
+    sha256 cellar: :any,                 sonoma:         "dd94650f29c85c1e1ed4343d1b3689161671586d2c19d14a42409c383ff0f456"
+    sha256 cellar: :any,                 ventura:        "30ed68093b0816c5f0de2e504c299fb0981004b165dc75cae08a669f7cecfbbe"
+    sha256 cellar: :any,                 monterey:       "4f27b99b7df6a54abf3aad7e2636f8947001518a057f385920f5d3c26b742e00"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7dfee6723c0915e37b9253347c24bca7a2e37f0823a2e2883449c58a77ff32b6"
   end
 
   depends_on "cmake" => :build
 
   # These used to be bundled with `jpeg-xl`.
   link_overwrite "include/hwy/*", "lib/pkgconfig/libhwy*"
+
+  # Avoid compiling ARM SVE on Apple Silicon
+  # Issue ref: https://github.com/google/highway/issues/2317
+  patch :DATA
 
   def install
     ENV.runtime_cpu_detection
@@ -40,3 +45,23 @@ class Highway < Formula
     system "./a.out"
   end
 end
+
+__END__
+diff --git a/hwy/detect_targets.h b/hwy/detect_targets.h
+index a8d4a13f..e0ffb33a 100644
+--- a/hwy/detect_targets.h
++++ b/hwy/detect_targets.h
+@@ -223,8 +223,12 @@
+ #endif
+
+ // SVE[2] require recent clang or gcc versions.
++//
++// SVE is not supported on Apple arm64 CPUs and also crashes the compiler:
++// https://github.com/llvm/llvm-project/issues/97198
+ #if (HWY_COMPILER_CLANG && HWY_COMPILER_CLANG < 1100) || \
+-    (HWY_COMPILER_GCC_ACTUAL && HWY_COMPILER_GCC_ACTUAL < 1000)
++    (HWY_COMPILER_GCC_ACTUAL && HWY_COMPILER_GCC_ACTUAL < 1000) || \
++    (HWY_OS_APPLE && HWY_ARCH_ARM_A64)
+ #define HWY_BROKEN_SVE (HWY_SVE | HWY_SVE2 | HWY_SVE_256 | HWY_SVE2_128)
+ #else
+ #define HWY_BROKEN_SVE 0

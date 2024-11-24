@@ -1,20 +1,20 @@
 class Sheldon < Formula
   desc "Fast, configurable, shell plugin manager"
   homepage "https://sheldon.cli.rs"
-  url "https://github.com/rossmacarthur/sheldon/archive/0.7.3.tar.gz"
-  sha256 "cf8844dce853156d076a6956733420ad7a9365e16a928e419b11de8bc634fc67"
+  url "https://github.com/rossmacarthur/sheldon/archive/refs/tags/0.8.0.tar.gz"
+  sha256 "71c6c27b30d1555e11d253756a4fce515600221ec6de6c06f9afb3db8122e5b5"
   license any_of: ["Apache-2.0", "MIT"]
-  revision 1
   head "https://github.com/rossmacarthur/sheldon.git", branch: "trunk"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "1b24b3fee34c0c3238a23b78d8232629a92bc4264f954f1e6eaa2fdd16330df1"
-    sha256 cellar: :any,                 arm64_monterey: "7b6a23932b20209f6b42659e2b4444f9dca2b2f63b51791a7cf7752a5a739e4a"
-    sha256 cellar: :any,                 arm64_big_sur:  "c6d86976e495da8790c18254cc10dafadfacbf17b4b9098c2547697451b8a3f8"
-    sha256 cellar: :any,                 ventura:        "0b2588ca3661de9c4e3a158bb00ddaa110c32d4aafc441e7e303308558697cc8"
-    sha256 cellar: :any,                 monterey:       "b5c654a04fba02a7930c78ba5587a89a401ced8840af80d217c48117b5e0ad57"
-    sha256 cellar: :any,                 big_sur:        "0c360e431327824b762897b0396d267d7e2c04039451aceeb24a75e8dbe5c9a3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3c2e08181dcf2ea7b34ce3e6c1174fb90ac60f89f9d1006b4206cd3f71a028af"
+    sha256 cellar: :any,                 arm64_sequoia:  "cef072269673d984ad6652c14124942d829d6c09ae97e717d044b12950fae909"
+    sha256 cellar: :any,                 arm64_sonoma:   "92282f5ae930b2bab08f86cf2baaffb54eb88c94847b5c1abd29a08addf9007d"
+    sha256 cellar: :any,                 arm64_ventura:  "2224e9f9e5ddcf6239dfe92b269ef06d942c4cd5d548dcd31d1d235fe03617e5"
+    sha256 cellar: :any,                 arm64_monterey: "7f7f7970cf7c2fcd1b10972db6ac9a2ce1fe98114d051158d775c92986cd8e1e"
+    sha256 cellar: :any,                 sonoma:         "3a40d9b78e571efbff661f8e19f61bad8d2337c120395489a7ac1d530b88a552"
+    sha256 cellar: :any,                 ventura:        "9741bf2aaa1e807893582ace21f69a93f529633d9641022accd890e58eb65bd6"
+    sha256 cellar: :any,                 monterey:       "053bd969792bf0ff6ab3c8b7447bc15e1fb787cb1e51312b9aa54e4d47e1b168"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "484a82b6474cbc25d40ce7a9a3f0fd562438fb6dbd218bc3e0d856167235a4a5"
   end
 
   depends_on "pkg-config" => :build
@@ -30,9 +30,9 @@ class Sheldon < Formula
     ENV["OPENSSL_NO_VENDOR"] = "1"
 
     # Replace vendored `libgit2` with our formula
-    inreplace "Cargo.toml", /features = \["vendored-libgit2"\]/, "features = []"
+    ENV["LIBGIT2_NO_VENDOR"] = "1"
 
-    system "cargo", "install", *std_cargo_args
+    system "cargo", "install", "--no-default-features", *std_cargo_args
 
     bash_completion.install "completions/sheldon.bash" => "sheldon"
     zsh_completion.install "completions/sheldon.zsh" => "_sheldon"
@@ -48,7 +48,7 @@ class Sheldon < Formula
 
   test do
     touch testpath/"plugins.toml"
-    system "#{bin}/sheldon", "--config-dir", testpath, "--data-dir", testpath, "lock"
+    system bin/"sheldon", "--config-dir", testpath, "--data-dir", testpath, "lock"
     assert_predicate testpath/"plugins.lock", :exist?
 
     [

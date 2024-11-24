@@ -3,40 +3,45 @@ class TranslateToolkit < Formula
 
   desc "Toolkit for localization engineers"
   homepage "https://toolkit.translatehouse.org/"
-  url "https://files.pythonhosted.org/packages/9e/4d/eb097ebdaec2944420c463eeae47fc20d3a27eecd677b5286f424b97de6a/translate-toolkit-3.10.0.tar.gz"
-  sha256 "e3690caeef90dab491e6a8426c1d920aab265ef5f5bc7fe004a04e73560c4a3b"
+  url "https://files.pythonhosted.org/packages/30/32/d5ec62e080b454554c06a3557aa0969e0036c28149da8a7ac53b7ee65800/translate_toolkit-3.14.1.tar.gz"
+  sha256 "2148c437c529d4eaf89c5a3bd5690376eabee97c3c39b7d4824001a7cf333e86"
   license "GPL-2.0-or-later"
   head "https://github.com/translate/translate.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1e0c95d2979c9304b006076d0a698ace15c6b9af50cafe1c8bda4e92ba4bb04f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3bc369500785df030e4e2c6677f827f223385f836ee6d890c6b00d8945897e01"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e1b9d9552c21d7c4c4b15b71656addeb4a2effa84c6ca7e7a6d8b6b22769cdad"
-    sha256 cellar: :any_skip_relocation, ventura:        "117f21f4ae2c6f2fec2963381ee7e761afdd7f61c856cc3cb41cfcdd5280c208"
-    sha256 cellar: :any_skip_relocation, monterey:       "6c4be1fbab7d91478a80cc6697bdcffa490e72de4efc3172caa0f716a0c5bc87"
-    sha256 cellar: :any_skip_relocation, big_sur:        "045881d6da77ae4bde40ffb12d1e98e8fea8166f9d6ebad09cfccfb4588bbb2e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8c196993079297049b8af635b689b9b226ae925dcf7435643c07713820e59929"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "eae6d2cc2e897a02a78f54f79edd72e731f9c3749fb3f52106e6ac0f5e1b82c6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7c2a0cabbdbfbe74b43250fda9bb2092bdc1a309fd703c7daacc7560f90b376f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "867308913f6ccaf8f996da7f8867caeb766da397680b7f77b1877603ae16f76b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d0235351a0dfcacc2922c175d87d4d48d4efdc29cea0124632a14abb9abf5c26"
+    sha256 cellar: :any_skip_relocation, ventura:       "bcbd271c0b75bd0b16a06cac62ecd1de23eb26ec3a6729742a1cba57daa8cfa3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9d80ff8da916c4c7a4255109bb18d23f313badb512b86bffa9fee7f51b566bce"
   end
 
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
-  uses_from_macos "libxml2"
+  uses_from_macos "libxml2", since: :ventura
   uses_from_macos "libxslt"
 
   resource "lxml" do
-    url "https://files.pythonhosted.org/packages/30/39/7305428d1c4f28282a4f5bdbef24e0f905d351f34cf351ceb131f5cddf78/lxml-4.9.3.tar.gz"
-    sha256 "48628bd53a426c9eb9bc066a923acaa0878d1e86129fd5359aee99285f4eed9c"
+    url "https://files.pythonhosted.org/packages/e7/6b/20c3a4b24751377aaa6307eb230b66701024012c29dd374999cc92983269/lxml-5.3.0.tar.gz"
+    sha256 "4e109ca30d1edec1ac60cdbe341905dc3b8f55b16855e03a54aaf59e51ec8c6f"
+  end
+
+  resource "wcwidth" do
+    url "https://files.pythonhosted.org/packages/6c/63/53559446a878410fc5a5974feb13d31d78d752eb18aeba59c7fef1af7598/wcwidth-0.2.13.tar.gz"
+    sha256 "72ea0c06399eb286d978fdedb6923a9eb47e1c486ce63e9b4e64fc18303972b5"
   end
 
   def install
-    # Workaround to avoid creating libexec/bin/__pycache__ which gets linked to bin
-    ENV["PYTHONPYCACHEPREFIX"] = buildpath/"pycache"
-
     virtualenv_install_with_resources
   end
 
   test do
-    system bin/"pretranslate", "-h"
-    system bin/"podebug", "-h"
+    test_file = testpath/"test.po"
+    touch test_file
+    assert_match "Processing file : #{test_file}", shell_output("#{bin}/pocount --no-color #{test_file}")
+
+    assert_match version.to_s, shell_output("#{bin}/pretranslate --version")
+    assert_match version.to_s, shell_output("#{bin}/podebug --version")
   end
 end

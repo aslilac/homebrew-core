@@ -4,10 +4,9 @@ class Swift < Formula
   desc "High-performance system programming language"
   homepage "https://www.swift.org"
   # NOTE: Keep version in sync with resources below
-  url "https://github.com/apple/swift/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-  sha256 "f65381a9dfea4579323e5aff04d4224f2d8f505fcc6e3e83022e734d4f54575f"
+  url "https://github.com/swiftlang/swift/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+  sha256 "e5e3ccd357744478b7b8aa793576a8d66d38265c6aa3bf04e35fa55dd2f998dd"
   license "Apache-2.0"
-  revision 1
 
   # This uses the `GithubLatest` strategy because a `-RELEASE` tag is often
   # created several days before the version is officially released.
@@ -18,13 +17,13 @@ class Swift < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "35b2ce7246acacfeea4a7a377c865c9185e059eeb0d5a3d39133cbf13021963c"
-    sha256 cellar: :any,                 arm64_monterey: "914cd349b8f0cb6f0c2c984f606a744a431f874f22a670f4d04b8249ed3819f7"
-    sha256 cellar: :any,                 arm64_big_sur:  "2e165fd763a602bce118aaae3a92d7edf719c61de8ad41aeccad553d6df8da73"
-    sha256 cellar: :any,                 ventura:        "b89f0ae6fc3736acb146fc6f91e500c1a044d6ee0947475c20b22326abdacbe5"
-    sha256 cellar: :any,                 monterey:       "dc265ad2bdf088e34bd9d0ca826ccf59ede6a5538d4fd485908e3e7ec467b728"
-    sha256 cellar: :any,                 big_sur:        "6db009f0cedd51ed5355046870ec843b2c9a71eb5c37b41d0b4bfcb23cc024f8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5856963e79848044fa78280760a45bfb494a868fb21dd9d1d06d7a19564cf7e8"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "a32040d74979d5364c75b8d630d149ee13cee52b24e683b009d0a2d577e1e298"
+    sha256 cellar: :any,                 arm64_sonoma:  "e7b49374fd31cb7cb7088b3e9d25a136dd4937c0522e0d62996284be6acf4e95"
+    sha256 cellar: :any,                 arm64_ventura: "086917c9bdbed6e152f67aa8c3cdeaee988fcb95ab93cd43057fac1f7de06f52"
+    sha256 cellar: :any,                 sonoma:        "64a22002bbe10c05e05a49906eb6866ceb6ee9d049fb2b600b7576c9d6a05f8a"
+    sha256 cellar: :any,                 ventura:       "77083bae180de55072e3a7d0354af8f56ce9cc1d644879ad7a9817ee975995aa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "92ddf888e22eee066d4335770d89fe96f840cc9de79e15dd614bc455f15d0075"
   end
 
   keg_only :provided_by_macos
@@ -32,12 +31,13 @@ class Swift < Formula
   depends_on "cmake" => :build
   depends_on "ninja" => :build
 
-  # Has strict requirements on the minimum version of Xcode. See _SUPPORTED_XCODE_BUILDS:
-  # https://github.com/apple/swift/tree/swift-#{version}-RELEASE/utils/build-script
-  # This is mostly community sourced, so may be not necessarily be accurate.
-  depends_on xcode: ["13.0", :build]
+  # As a starting point, check `minimum_version` in `validate_xcode_compatibility`:
+  # https://github.com/swiftlang/swift/tree/swift-#{version}-RELEASE/utils/build-script
+  # This is community-sourced so may not be accurate. If the version in this formula
+  # is higher then that is likely why.
+  depends_on xcode: ["14.3", :build]
 
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
   # HACK: this should not be a test dependency but is due to a limitation with fails_with
   uses_from_macos "llvm" => [:build, :test]
@@ -50,21 +50,53 @@ class Swift < Formula
   uses_from_macos "zlib"
 
   on_linux do
-    depends_on "icu4c" # Used in swift-corelibs-foundation
+    depends_on "python-setuptools" => :build # for distutils in lldb build
+    depends_on "util-linux"
+    depends_on "zstd" # implicit via curl; not important but might as well
+
+    # Doesn't have to be in sync but does need to be no older than X.(Y - 1).0
+    resource "bootstrap" do
+      on_intel do
+        url "https://download.swift.org/swift-5.10.1-release/ubuntu2204/swift-5.10.1-RELEASE/swift-5.10.1-RELEASE-ubuntu22.04.tar.gz"
+        sha256 "cab1bfffd33b79ebd49f4b7475bef6c7eb2d60cf3948cbc693d61afabd23c282"
+      end
+
+      on_arm do
+        url "https://download.swift.org/swift-5.10.1-release/ubuntu2204-aarch64/swift-5.10.1-RELEASE/swift-5.10.1-RELEASE-ubuntu22.04-aarch64.tar.gz"
+        sha256 "871b00f0a7f96e0d28da53b232181c900a7540cb4be37fe4916c15ab411f83c9"
+      end
+    end
 
     resource "swift-corelibs-foundation" do
-      url "https://github.com/apple/swift-corelibs-foundation/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-      sha256 "b71505ae557a15481c05bbfaaeee83047e109c285ce4c4c7e06ba79b1aea3f2c"
+      url "https://github.com/apple/swift-corelibs-foundation/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+      sha256 "66c27bb9fc2d8886902fac20d38e1645d4de3329089414ccc833296341a71b99"
+    end
+
+    resource "swift-foundation" do
+      url "https://github.com/apple/swift-foundation/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+      sha256 "ad5907c83f14a883e86cb566bcc1036358775e601860a3425ca5bf7c926a7315"
+
+      # Fix RPATH on Linux.
+      # Remove with Swift 6.0.2.
+      patch do
+        url "https://github.com/swiftlang/swift-foundation/commit/a3c2f108592da51bb645dd50feaac7d88e61df31.patch?full_index=1"
+        sha256 "83ddc5087646797ef020b34c75b43b4e75101fd352b5851b7d65fd7561accb93"
+      end
+    end
+
+    resource "swift-foundation-icu" do
+      url "https://github.com/apple/swift-foundation-icu/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+      sha256 "d223d31f2d37da7ec10c0c580e648e70cc448a41fb7e23b8b60aaaf3c5f03a8b"
     end
 
     resource "swift-corelibs-libdispatch" do
-      url "https://github.com/apple/swift-corelibs-libdispatch/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-      sha256 "ec27aabf9b0500ad2abcc53b8902a7673d9871106097851ce226e2aa817d1b0e"
+      url "https://github.com/apple/swift-corelibs-libdispatch/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+      sha256 "150066ba341e49b8518a0b879ba82941d6d8734ab37cb76683f2a155369e5030"
     end
 
     resource "swift-corelibs-xctest" do
-      url "https://github.com/apple/swift-corelibs-xctest/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-      sha256 "194180362ba8a18f60f4cc371ada705be2a51d317364055b17024bf9ae405e26"
+      url "https://github.com/apple/swift-corelibs-xctest/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+      sha256 "332e013ecab5649e501f960bb0aa91aceff86420260f93cf6736929dc46b5396"
     end
   end
 
@@ -72,128 +104,174 @@ class Swift < Formula
   fails_with :gcc
 
   resource "llvm-project" do
-    url "https://github.com/apple/llvm-project/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-    sha256 "f4b6a4b1589d48fa2295d2709b99d1bfbbc6bfb2778dc72a4d72da3c25ff5d92"
+    url "https://github.com/swiftlang/llvm-project/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+    sha256 "8f026177a2378e4fc141e9284a5b4567b92cd50070e29a3eab5cabb8252aa72a"
 
-    # Fix finding Homebrew Python executable on Linux.
-    # Remove with Swift 5.10+.
+    # Fix copmatibility with macOS 15 SDK.
+    # Remove with Swift 6.0.3.
     patch do
-      url "https://github.com/apple/llvm-project/commit/9e84e038447e283d020ae01aebb15e0e66ef3642.patch?full_index=1"
-      sha256 "a46a6e9bf5309c1cb9c387e9648c6604a60f9cb3880463993ed72df4404f14ca"
+      url "https://github.com/swiftlang/llvm-project/commit/a566c12aded130264a1e07e6c1718884ab1d9dc8.patch?full_index=1"
+      sha256 "6f165b41390051098c0b4ea5bd333c49a7fd93740a015b99db72f096283ae434"
+    end
+
+    # Support Python 3.13.
+    # Remove with Swift 6.1.
+    patch do
+      url "https://github.com/swiftlang/llvm-project/commit/b202bacbaf2be144dfd51d083eb2e4fe687a3803.patch?full_index=1"
+      sha256 "a7368e3b91a3dc4ebfd78f61e865a621eee37c176ac88bea68f1327151e695cc"
     end
   end
 
   resource "cmark" do
-    url "https://github.com/apple/swift-cmark/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-    sha256 "89ad876b686192b806c61b390b076cf3cbb6459af6acdd3e93cd1e3d8a74c7f6"
+    url "https://github.com/swiftlang/swift-cmark/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+    sha256 "9d295dcd09fd4fd7110545cd097ec4ad36309c1138bac161414a2c98c2531621"
   end
 
   resource "llbuild" do
-    url "https://github.com/apple/swift-llbuild/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-    sha256 "2df6fa3d92a351df97f228148405462e3aebcd4f0077b17e0ee5f5514575aa68"
+    url "https://github.com/swiftlang/swift-llbuild/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+    sha256 "702c94a4c6474ae3c33c314ac289661ba982d9e5c070b92f4219be767d5f50d1"
+
+    # Workaround Homebrew sqlite3 not being found.
+    # Needs paired inreplace for @@HOMEBREW_PREFIX@@.
+    # https://github.com/swiftlang/swift-llbuild/issues/901
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/0080c7317c51d16b17671640c5db665516402d2f/swift/llbuild-sqlite3.patch"
+      sha256 "97329a525dabf4a7a13d3e3237965e66ae456887776e0101e82b6ca125a97591"
+    end
   end
 
   resource "swiftpm" do
-    url "https://github.com/apple/swift-package-manager/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-    sha256 "51967163d971aac66f9667d2a9387da3c25b70118bc1e82cef309759f7b1d272"
+    url "https://github.com/swiftlang/swift-package-manager/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+    sha256 "71e5713adfef574d0d9de0299edc313714c1fc73fe0ea7d1e11c26b61f98006d"
   end
 
   resource "indexstore-db" do
-    url "https://github.com/apple/indexstore-db/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-    sha256 "d9ff209be9a43109a80f1b2948fd34f203e1d55a944b1a2ea34439a75e218dc1"
+    url "https://github.com/swiftlang/indexstore-db/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+    sha256 "f97b09a9e4218ab09c115b15be67f0bedba28b5abf265d9f674b90e8489029c5"
+
+    # Fix compile with Clang 19.
+    # Remove with Swift 6.1.
+    patch do
+      url "https://github.com/swiftlang/indexstore-db/commit/6120b53b1e8774ef4e2ad83438d4d94961331e72.patch?full_index=1"
+      sha256 "1726948896ff5def5e3eb925cddd4ee24e488568ad6815023b43aa49f34874d6"
+    end
   end
 
   resource "sourcekit-lsp" do
-    url "https://github.com/apple/sourcekit-lsp/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-    sha256 "abc341ac3e05c01fe93949cdd72ee9aefc3b785a9f91ead32169764a1af6625e"
+    url "https://github.com/swiftlang/sourcekit-lsp/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+    sha256 "11f585fe36cc2bc055feb82e8de2e58ce2dba51ce31e67a884a7cf3a4307c0ca"
   end
 
   resource "swift-driver" do
-    url "https://github.com/apple/swift-driver/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-    sha256 "576ba0b330f2dc1fde6979dcecfccbb13c43d76b118bc8b43ecef9e62332df84"
+    url "https://github.com/swiftlang/swift-driver/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+    sha256 "1375ef1e37c10e9de7f09379cd3150a64537e11b399794e7e9d68037ae5709f8"
   end
 
   resource "swift-tools-support-core" do
-    url "https://github.com/apple/swift-tools-support-core/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-    sha256 "914c697ded28be930f5afc844bc5712d2f47c14c83fae945ecca0f49af200f70"
+    url "https://github.com/swiftlang/swift-tools-support-core/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+    sha256 "8478074f848a6059571056dd77b821638484b5b544d7b1c4e351332b29c9c104"
+
+    # Fix "close error" when compiling SwiftPM.
+    # https://github.com/swiftlang/swift-tools-support-core/pull/456
+    patch do
+      url "https://github.com/Bo98/swift-tools-support-core/commit/dca5ee70e302df065178cc8a75a2d6ea00886c40.patch?full_index=1"
+      sha256 "e5e2e7cec7b7bd9ef0def5cfc9b1308fe1f25f6228973031c9821b2c4475c8a1"
+    end
   end
 
   resource "swift-docc" do
-    url "https://github.com/apple/swift-docc/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-    sha256 "95ba75c40eaa3571250f7f0769b6784a50a3a45796be9c71362635f88a5d09b7"
+    url "https://github.com/swiftlang/swift-docc/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+    sha256 "4f1de0f06f89faa3fe803cf593394992e6146d20b1871b7ed9cd8e7943f0846d"
   end
 
   resource "swift-lmdb" do
-    url "https://github.com/apple/swift-lmdb/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-    sha256 "75d7760749e9d7a263aa428ef5867026a07f6baf290e190f440115a4faf55e56"
+    url "https://github.com/swiftlang/swift-lmdb/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+    sha256 "2becae3a09421421d6c482de43c926a9aee3b3c6a84e86a1f418d01bce6f9ed8"
   end
 
   resource "swift-docc-render-artifact" do
-    url "https://github.com/apple/swift-docc-render-artifact/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-    sha256 "024bb04690a49654b9bf901c42eb406d1ff255add45cc2655e31819eea841b4a"
+    url "https://github.com/swiftlang/swift-docc-render-artifact/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+    sha256 "52b8c83fe8cff9a512170bd9db2ffc944e7effe62d069b1b7c6ab665e2f40091"
   end
 
   resource "swift-docc-symbolkit" do
-    url "https://github.com/apple/swift-docc-symbolkit/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-    sha256 "0d478cd7ba78e28175e93d1cf195c876fd97ae816f99d6981a398577be723a41"
+    url "https://github.com/swiftlang/swift-docc-symbolkit/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+    sha256 "f99e0ac5c12f744bdb56201e54364ce3c49b671d97e2acb887fea2916b598b18"
   end
 
   resource "swift-markdown" do
-    url "https://github.com/apple/swift-markdown/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-    sha256 "49aee3b5f2a90cda656191de41752d21b62e170ed5abbabd8078a82c67554e71"
+    url "https://github.com/swiftlang/swift-markdown/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+    sha256 "49e2e75c6c6ec97fbaae7ce90f105230a6c7dca56e43f2fd043561deba6e4760"
   end
 
   resource "swift-experimental-string-processing" do
-    url "https://github.com/apple/swift-experimental-string-processing/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-    sha256 "83714d2178d2a02de35e75dbe11ff2443695a65aaf1136e5a7b9f152716e75a6"
+    url "https://github.com/swiftlang/swift-experimental-string-processing/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+    sha256 "0242e75b1a7ea4f7135bc73b64e014288ad37c637273b8ab0b1086b1d6f07ef0"
   end
 
   resource "swift-syntax" do
-    url "https://github.com/apple/swift-syntax/archive/refs/tags/swift-5.8.1-RELEASE.tar.gz"
-    sha256 "5885ad4e0ac448c6d4be85b17c5dd28e825aedf3664cf1b928017fb81938f52a"
+    url "https://github.com/swiftlang/swift-syntax/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+    sha256 "7384e064368b7c172477292d64adb08e0609e9aa8d89b1e6a39537487557e015"
+  end
+
+  resource "swift-testing" do
+    url "https://github.com/swiftlang/swift-testing/archive/refs/tags/swift-6.0.1-RELEASE.tar.gz"
+    sha256 "926961fc3898d4e5573ec721a612b46a1911d7d9ee754d48b06640ce3a0b865f"
   end
 
   # To find the version to use, check the release/#{version.major_minor} entry of:
-  # https://github.com/apple/swift/blob/swift-#{version}-RELEASE/utils/update_checkout/update-checkout-config.json
+  # https://github.com/swiftlang/swift/blob/swift-#{version}-RELEASE/utils/update_checkout/update-checkout-config.json
   resource "swift-argument-parser" do
-    url "https://github.com/apple/swift-argument-parser/archive/refs/tags/1.0.3.tar.gz"
-    sha256 "a4d4c08cf280615fe6e00752ef60e28e76f07c25eb4706a9269bf38135cd9c3f"
+    url "https://github.com/apple/swift-argument-parser/archive/refs/tags/1.2.3.tar.gz"
+    sha256 "4a10bbef290a2167c5cc340b39f1f7ff6a8cf4e1b5433b68548bf5f1e542e908"
   end
 
   # As above: refer to update-checkout-config.json
   resource "swift-atomics" do
-    url "https://github.com/apple/swift-atomics/archive/refs/tags/1.0.2.tar.gz"
-    sha256 "c8b88186db4902dc5109340f4a745ea787cb2aa9533c7e6d1e634549f9e527b1"
+    url "https://github.com/apple/swift-atomics/archive/refs/tags/1.2.0.tar.gz"
+    sha256 "33d9f4fbaeddee4bda3af2be126791ee8acf3d3c24a2244457641a20d39aec12"
   end
 
   # As above: refer to update-checkout-config.json
   resource "swift-collections" do
-    url "https://github.com/apple/swift-collections/archive/refs/tags/1.0.1.tar.gz"
-    sha256 "575cf0f88d9068411f9acc6e3ca5d542bef1cc9e87dc5d69f7b5a1d5aec8c6b6"
+    url "https://github.com/apple/swift-collections/archive/refs/tags/1.1.2.tar.gz"
+    sha256 "cd30d2f93c72424df48d182006417abdeebe74d250cb99d1cda78daf40aca569"
   end
 
   # As above: refer to update-checkout-config.json
   resource "swift-crypto" do
-    url "https://github.com/apple/swift-crypto/archive/refs/tags/2.2.3.tar.gz"
-    sha256 "84cec042505e1c5bf3dd14a1bb18d0c06c5a9435b7b10a69709101b602285ff5"
+    url "https://github.com/apple/swift-crypto/archive/refs/tags/3.0.0.tar.gz"
+    sha256 "5c860c0306d0393ff06268f361aaf958656e1288353a0e23c3ad20de04319154"
+  end
+
+  # As above: refer to update-checkout-config.json
+  resource "swift-certificates" do
+    url "https://github.com/apple/swift-certificates/archive/refs/tags/1.0.1.tar.gz"
+    sha256 "fcaca458aab45ee69b0f678b72c2194b15664cc5f6f5e48d0e3f62bc5d1202ca"
+  end
+
+  # As above: refer to update-checkout-config.json
+  resource "swift-asn1" do
+    url "https://github.com/apple/swift-asn1/archive/refs/tags/1.0.0.tar.gz"
+    sha256 "e0da995ae53e6fcf8251887f44d4030f6600e2f8f8451d9c92fcaf52b41b6c35"
   end
 
   # As above: refer to update-checkout-config.json
   resource "swift-numerics" do
-    url "https://github.com/apple/swift-numerics/archive/refs/tags/1.0.1.tar.gz"
-    sha256 "3ff05bb89c907d70f51dfff794ea3354a2630488925bf53382246d25089ec742"
+    url "https://github.com/apple/swift-numerics/archive/refs/tags/1.0.2.tar.gz"
+    sha256 "786291c6ff2a83567928d3d8f964c43ff59bdde215f9dedd0e9ed49eb5184e59"
   end
 
   # As above: refer to update-checkout-config.json
   resource "swift-system" do
-    url "https://github.com/apple/swift-system/archive/refs/tags/1.1.1.tar.gz"
-    sha256 "865b8c380455eef27e73109835142920c60ae4c4f4178a3d12ad04acc83f1371"
+    url "https://github.com/apple/swift-system/archive/refs/tags/1.3.0.tar.gz"
+    sha256 "02e13a7f77887c387f5aa1de05f4d4b8b158c35145450e1d9557d6c42b06cd1f"
   end
 
   # As above: refer to update-checkout-config.json
   resource "yams" do
-    url "https://github.com/jpsim/Yams/archive/refs/tags/5.0.1.tar.gz"
-    sha256 "ec1ad699c30f0db45520006c63a88cc1c946a7d7b36dff32a96460388c0a4af2"
+    url "https://github.com/jpsim/Yams/archive/refs/tags/5.0.6.tar.gz"
+    sha256 "a81c6b93f5d26bae1b619b7f8babbfe7c8abacf95b85916961d488888df886fb"
   end
 
   # As above: refer to update-checkout-config.json
@@ -208,11 +286,11 @@ class Swift < Formula
     sha256 "9ab1f0e347fad651ed5ccadc13d54c4306e6f5cd21908a4ba7d1334278a4cd55"
   end
 
-  # Fix Linux build on CMake 3.25+
-  # https://github.com/apple/swift/issues/65028
+  # Fix build with Xcode 16.
+  # Remove with Swift 6.1 (or earlier if it gets cherry-picked).
   patch do
-    url "https://github.com/apple/swift/commit/112681f7f5927588569b225d926ca9f5f9ec98b3.patch?full_index=1"
-    sha256 "8e4f0fd946f40726d0d14745f3dba888a0f334599589f1817002df54e91684ac"
+    url "https://github.com/swiftlang/swift/commit/c8d7e94fdd2c8ceb276a6dc363861872f13104ba.patch?full_index=1"
+    sha256 "aa012b9522ddbe92da9ab6a491dd43097b723e7807e813c57edd458f4baf3b12"
   end
 
   # Homebrew-specific patch to make the default resource directory use opt rather than Cellar.
@@ -237,13 +315,6 @@ class Swift < Formula
     ln_sf buildpath, workspace/"swift"
     resources.each { |r| r.stage(workspace/r.name) }
 
-    # Fix C++ header path. It wrongly assumes that it's relative to our shims.
-    if OS.mac?
-      inreplace workspace/"swift/utils/build-script-impl",
-                "HOST_CXX_DIR=$(dirname \"${HOST_CXX}\")",
-                "HOST_CXX_DIR=\"#{MacOS::Xcode.toolchain_path}/usr/bin\""
-    end
-
     # Disable invoking SwiftPM in a sandbox while building some projects.
     # This conflicts with Homebrew's sandbox.
     helpers_using_swiftpm = [
@@ -264,52 +335,46 @@ class Swift < Formula
               "-DCMAKE_CXX_COMPILER:=clang++",
               "-DCMAKE_CXX_COMPILER:=#{which(ENV.cxx)}"
 
-    # Build SwiftPM and dependents in release mode
-    inreplace workspace/"swiftpm/Utilities/bootstrap",
-              "-DCMAKE_BUILD_TYPE:=Debug",
-              "-DCMAKE_BUILD_TYPE:=Release"
+    # Fix lldb Python module not being installed (needed for `swift repl`)
+    inreplace workspace/"llvm-project/lldb/cmake/caches/Apple-lldb-macOS.cmake",
+              "repl_swift",
+              "lldb-python-scripts \\0"
 
-    if OS.mac?
-      # String processing is only available on macOS 13+ SDK, concurrency on macOS 12+ SDK
-      swiftpm_interface_build_scripts = [
-        workspace/"swiftpm/Sources/PackageDescription/CMakeLists.txt",
-        workspace/"swiftpm/Sources/PackagePlugin/CMakeLists.txt",
-      ]
-      inreplace swiftpm_interface_build_scripts,
-                "-enable-library-evolution>",
-                "\\0 " \
-                '"$<$<COMPILE_LANGUAGE:Swift>:SHELL:-Xfrontend -disable-implicit-concurrency-module-import>" ' \
-                '"$<$<COMPILE_LANGUAGE:Swift>:SHELL:-Xfrontend -disable-implicit-string-processing-module-import>"'
-
-      inreplace workspace/"swiftpm/Package.swift",
-                '"999.0"]),',
-                '\\0 ' \
-                '.unsafeFlags(["-Xfrontend", ' \
-                '"-disable-implicit-concurrency-module-import"], .when(platforms: [.macOS])), ' \
-                '.unsafeFlags(["-Xfrontend", ' \
-                '"-disable-implicit-string-processing-module-import"], .when(platforms: [.macOS])),'
+    # Fix Linux RPATH for Swift Foundation
+    if OS.linux?
+      inreplace [
+        workspace/"swift-corelibs-foundation/Sources/FoundationNetworking/CMakeLists.txt",
+        workspace/"swift-corelibs-foundation/Sources/FoundationXML/CMakeLists.txt",
+      ], '"$ORIGIN"', "\"$ORIGIN:#{ENV["HOMEBREW_RPATH_PATHS"]}\""
     end
 
-    # Fix lldb Python module not being installed (needed for `swift repl`)
-    lldb_cmake_caches = [
-      workspace/"llvm-project/lldb/cmake/caches/Apple-lldb-macOS.cmake",
-      workspace/"llvm-project/lldb/cmake/caches/Apple-lldb-Linux.cmake",
-    ]
-    inreplace lldb_cmake_caches, "repl_swift", "lldb-python-scripts \\0"
+    extra_cmake_options = if OS.mac?
+      %W[
+        -DSQLite3_INCLUDE_DIR=#{MacOS.sdk_for_formula(self).path}/usr/include
+        -DSQLite3_LIBRARY=#{MacOS.sdk_for_formula(self).path}/usr/lib/libsqlite3.tbd
+      ]
+    else
+      []
+    end
+
+    # Inject our CMake args into the SwiftPM build
+    inreplace workspace/"swiftpm/Utilities/bootstrap",
+              '"-DCMAKE_BUILD_TYPE:=Debug",',
+              "\"-DCMAKE_BUILD_TYPE:=Release\", \"#{extra_cmake_options.join('", "')}\","
 
     mkdir build do
       # List of components to build
       swift_components = %w[
         autolink-driver compiler clang-resource-dir-symlink
-        tools editor-integration toolchain-tools license
-        sourcekit-xpc-service swift-remote-mirror
+        libexec tools editor-integration toolchain-tools
+        license sourcekit-xpc-service swift-remote-mirror
         swift-remote-mirror-headers stdlib
         static-mirror-lib
       ]
       llvm_components = %w[
-        llvm-ar llvm-cov llvm-profdata IndexStore
+        llvm-ar llvm-ranlib llvm-cov llvm-profdata IndexStore
         clang clang-resource-headers compiler-rt
-        clangd clang-features-file
+        clangd clang-features-file lld
       ]
 
       if OS.mac?
@@ -321,17 +386,17 @@ class Swift < Formula
           sdk-overlay
           sourcekit-inproc
         ]
-        llvm_components << "lld"
       end
 
       args = %W[
         --host-cc=#{which(ENV.cc)}
         --host-cxx=#{which(ENV.cxx)}
-        --release --assertions
+        --release --no-assertions
         --no-swift-stdlib-assertions
         --build-subdir=#{build}
         --lldb --llbuild --swiftpm --swift-driver
         --swiftdocc --indexstore-db --sourcekit-lsp
+        --swift-testing --swift-testing-macros
         --jobs=#{ENV.make_jobs}
         --verbose-build
 
@@ -341,6 +406,8 @@ class Swift < Formula
         --install-prefix=#{install_prefix}
         --swift-include-tests=0
         --llvm-include-tests=0
+        --lldb-configure-tests=0
+        --lldb-extra-cmake-args=-DPython3_EXECUTABLE=#{which("python3.13")}
         --skip-build-benchmarks
         --build-swift-private-stdlib=0
         --install-swift
@@ -349,29 +416,35 @@ class Swift < Formula
         --llvm-install-components=#{llvm_components.join(";")}
         --install-lldb
         --install-llbuild
+        --install-static-linux-config
         --install-swiftpm
         --install-swift-driver
         --install-swiftsyntax
         --install-swiftdocc
         --install-sourcekit-lsp
+        --install-swift-testing
+        --install-swift-testing-macros
       ]
-      extra_cmake_options = []
+
+      extra_cmake_options << "-DSWIFT_INCLUDE_TEST_BINARIES=OFF"
 
       if OS.mac?
         args += %W[
           --host-target=macosx-#{Hardware::CPU.arch}
           --darwin-deployment-version-osx=#{MacOS.version}
-          --build-swift-dynamic-stdlib=0
-          --build-swift-dynamic-sdk-overlay=0
-          --stdlib-deployment-targets=
           --swift-darwin-supported-archs=#{Hardware::CPU.arch}
-          --swift-darwin-module-archs=#{Hardware::CPU.arch}
+          --swift-darwin-module-archs=x86_64;arm64
           --lldb-use-system-debugserver
         ]
+        args << "--swift-enable-backtracing=0" if MacOS.version < :sonoma
         extra_cmake_options += %W[
-          -DLLDB_FRAMEWORK_COPY_SWIFT_RESOURCES=0
-          -DCMAKE_INSTALL_RPATH=#{loader_path}
+          -DSWIFT_STANDARD_LIBRARY_SWIFT_FLAGS=-disable-sandbox
+          -DLLDB_FRAMEWORK_COPY_SWIFT_RESOURCES=OFF
+          -DSWIFT_HOST_LIBRARIES_RPATH=#{loader_path}
         ]
+
+        ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["sqlite"].opt_lib
+        ENV.remove "PKG_CONFIG_PATH", Formula["sqlite"].opt_lib/"pkgconfig"
       end
       if OS.linux?
         args += %W[
@@ -379,8 +452,6 @@ class Swift < Formula
           --foundation
           --libdispatch
           --xctest
-          --skip-early-swift-driver
-          --skip-early-swiftsyntax
 
           --host-target=linux-#{Hardware::CPU.arch}
           --stdlib-deployment-targets=linux-#{Hardware::CPU.arch}
@@ -390,15 +461,16 @@ class Swift < Formula
           --install-libdispatch
           --install-xctest
         ]
+
+        # For XCTest (https://github.com/swiftlang/swift-corelibs-xctest/issues/432) and sourcekitd-repl
         rpaths = [loader_path, rpath, rpath(target: lib/"swift/linux")]
         extra_cmake_options << "-DCMAKE_INSTALL_RPATH=#{rpaths.join(":")}"
 
-        ENV["CMAKE_Swift_COMPILER"] = "" # Ignore our shim
+        ENV.prepend_path "PATH", workspace/"bootstrap/usr/bin"
       end
 
       args << "--extra-cmake-options=#{extra_cmake_options.join(" ")}"
 
-      ENV["SKIP_XCODE_VERSION_CHECK"] = "1"
       system "#{workspace}/swift/utils/build-script", *args
     end
 
@@ -406,10 +478,6 @@ class Swift < Formula
       # Prebuild modules for faster first startup.
       ENV["SWIFT_EXEC"] = "#{prefix}#{install_prefix}/bin/swiftc"
       MacOS.sdk_locator.all_sdks.each do |sdk|
-        next if sdk.version < :big_sur
-        # https://github.com/apple/swift/issues/62765
-        next if sdk.version == :ventura
-
         system "#{prefix}#{install_prefix}/bin/swift", "build-sdk-interfaces",
                "-sdk", sdk.path,
                "-o", "#{prefix}#{install_prefix}/lib/swift/macosx/prebuilt-modules",
@@ -449,12 +517,6 @@ class Swift < Formula
     module_cache = testpath/"ModuleCache"
     module_cache.mkdir
 
-    # Temporary hack while macOS 13 SDK prebuilding is disabled.
-    if MacOS.version == :ventura
-      ENV.remove_macosxsdk
-      ENV["SDKROOT"] = "/Library/Developer/CommandLineTools/SDKs/MacOSX12.sdk"
-    end
-
     (testpath/"test.swift").write <<~'EOS'
       let base = 2
       let exponent_inner = 3
@@ -483,16 +545,16 @@ class Swift < Formula
     assert_match "www.swift.org\n", output
 
     # Test compiler
-    system "#{bin}/swiftc", "-module-cache-path", module_cache, "-v", "foundation-test.swift", "-o", "foundation-test"
-    output = shell_output("./foundation-test")
-    assert_match "www.swift.org\n", output
+    system bin/"swiftc", "-module-cache-path", module_cache, "-v", "foundation-test.swift", "-o", "foundation-test"
+    output = shell_output("./foundation-test 2>&1") # check stderr too for dyld errors
+    assert_equal "www.swift.org\n", output
 
     # Test Swift Package Manager
     ENV["SWIFTPM_MODULECACHE_OVERRIDE"] = module_cache
     mkdir "swiftpmtest" do
-      system "#{bin}/swift", "package", "init", "--type=executable"
+      system bin/"swift", "package", "init", "--type=executable"
       cp "../foundation-test.swift", "Sources/main.swift"
-      system "#{bin}/swift", "build", "--verbose", "--disable-sandbox"
+      system bin/"swift", "build", "--verbose", "--disable-sandbox"
       assert_match "www.swift.org\n", shell_output("#{bin}/swift run --disable-sandbox")
     end
 

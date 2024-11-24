@@ -4,20 +4,41 @@ class Amber < Formula
   url "https://github.com/amberframework/amber/archive/refs/tags/v1.4.1.tar.gz"
   sha256 "92664a859fb27699855dfa5d87dc9bf2e4a614d3e54844a8344196d2807e775c"
   license "MIT"
+  revision 1
 
   bottle do
-    sha256 arm64_ventura:  "9c3ad755b1bd22beae98dbc088df82b80180f04b1d541d3b708c1af29a502c41"
-    sha256 arm64_monterey: "c00f64c38a9edbcc84fcba1f7ac17674e5b9d48066e95bc838e31d495ae7035f"
-    sha256 arm64_big_sur:  "0474b1b3726aaec6f8ad34e7d7d1fbd7ea6d0ec1bfa627cd213ce5e50468f44d"
-    sha256 ventura:        "d529f79e1baff921927446fb6ad72469042e595720531334c164036a73b11c23"
-    sha256 monterey:       "584480426c743539cb3f70dfcb55625f6e27977248e2e747366e3dcd547039af"
-    sha256 big_sur:        "951253c81419f90acab9fa226d5b5ec4c858e4c6837b78c9490ae085b76fc008"
-    sha256 x86_64_linux:   "3f79958bab0aeb33079eaddd9f5481756d1803d55ef861d8f07b632229d4bcfc"
+    rebuild 1
+    sha256 arm64_sequoia:  "316df6cc7883f0019a4d8b7cea12981c76558ee23c91ce802d8a5a27f4e1dae3"
+    sha256 arm64_sonoma:   "149fc485a57fe986e601b0072476fc7b52de0feb888dcac0e7c153459290f548"
+    sha256 arm64_ventura:  "d9e1818484cce9f61edffedeb494e01f69a07d137880179f84dabef6b48b063f"
+    sha256 arm64_monterey: "3b8de888365014ecb18fc427906bf5121c6f5c0b6eceaf8311ede6030b22334d"
+    sha256 sonoma:         "bce2680561c7ce0a84ee72e598e4569382fe29ec44a156517c1dfd9bcc936951"
+    sha256 ventura:        "e16a952e1ed4e62ab4512dbd678a85d45031a2157898d033b1a95de311619a7a"
+    sha256 monterey:       "a662a8236dbfedeb36a8e291243fcd6c2c76fcb4c7aa1a2f34f7cdad6badc4f0"
+    sha256 x86_64_linux:   "18ea26aa05700494f2acf965ad8db36bf9c1e8f36ca1c606091e1373effaad9d"
   end
 
+  depends_on "bdw-gc"
   depends_on "crystal"
+  depends_on "libevent"
+  depends_on "libyaml"
   depends_on "openssl@3"
-  uses_from_macos "sqlite"
+  depends_on "pcre2"
+  depends_on "sqlite"
+
+  uses_from_macos "zlib"
+
+  # Temporary resource to fix build with Crystal 1.13
+  resource "optarg" do
+    url "https://github.com/amberframework/optarg/archive/refs/tags/v0.9.3.tar.gz"
+    sha256 "0d31c0cfdc1c3ec1ca8bfeabea1fc796a1bb02e0a798a8f40f10b035dd4712e9"
+
+    # PR ref: https://github.com/amberframework/optarg/pull/6
+    patch do
+      url "https://github.com/amberframework/optarg/commit/56b34d117458b67178f77523561813d16ccddaf8.patch?full_index=1"
+      sha256 "c5d9c374b0fdafe63136cd02126ac71ce394b1706ced59da5584cdc9559912c8"
+    end
+  end
 
   # patch granite to fix db dependency resolution issue
   # upstream patch https://github.com/amberframework/amber/pull/1339
@@ -27,6 +48,18 @@ class Amber < Formula
   end
 
   def install
+    (buildpath/"optarg").install resource("optarg")
+    (buildpath/"shard.override.yml").write <<~YAML
+      dependencies:
+        optarg:
+          path: #{buildpath}/optarg
+    YAML
+
+    # Work around an Xcode 15 linker issue which causes linkage against LLVM's
+    # libunwind due to it being present in a library search path.
+    llvm = Formula["llvm"]
+    ENV.remove "HOMEBREW_LIBRARY_PATHS", llvm.opt_lib if DevelopmentTools.clang_build_version >= 1500
+
     system "shards", "install"
     system "make", "install", "PREFIX=#{prefix}"
   end

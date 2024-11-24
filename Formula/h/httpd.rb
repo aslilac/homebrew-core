@@ -1,20 +1,20 @@
 class Httpd < Formula
   desc "Apache HTTP server"
   homepage "https://httpd.apache.org/"
-  url "https://dlcdn.apache.org/httpd/httpd-2.4.57.tar.bz2"
-  mirror "https://downloads.apache.org/httpd/httpd-2.4.57.tar.bz2"
-  sha256 "dbccb84aee95e095edfbb81e5eb926ccd24e6ada55dcd83caecb262e5cf94d2a"
+  url "https://dlcdn.apache.org/httpd/httpd-2.4.62.tar.bz2"
+  mirror "https://downloads.apache.org/httpd/httpd-2.4.62.tar.bz2"
+  sha256 "674188e7bf44ced82da8db522da946849e22080d73d16c93f7f4df89e25729ec"
   license "Apache-2.0"
-  revision 1
 
   bottle do
-    sha256 arm64_ventura:  "cd1df761f081f37617aa370ae5eb5920b9498f407e3b5fd13ce4292064f6e040"
-    sha256 arm64_monterey: "9328555b146535a63b4e824793379ee2347165e13c9f9d06aa0a8898c1afd156"
-    sha256 arm64_big_sur:  "64f4a71eaa38d9df9223c6b28100539dbd14adfa94be12e83a11e06e56bfbb11"
-    sha256 ventura:        "cdee36e9d429a55c9e2f590c1dc63b776ac7c9c3f8b72e5ae3512822668ac2a9"
-    sha256 monterey:       "0f8e42d107b4292af18eb2f32fe12a92f5c67aa1642be0cec768144298df3402"
-    sha256 big_sur:        "ec117d9e9cec8268195476b1426ac25100a3267eda333fb3cb75569a6288b219"
-    sha256 x86_64_linux:   "aff4fd796b8e88fd96dcc9737a83735f4d49c4811226af9de50a7e1085f2a3c2"
+    sha256 arm64_sequoia:  "d88e0c77616130710928d131e06659d58b241252cf53068b75d75a54df3d8ab3"
+    sha256 arm64_sonoma:   "e07d024239ee944db52ecebb1997c75e15144b343b347788b36dce01803bd7c0"
+    sha256 arm64_ventura:  "d497edfd46070f9f4552a5535901700cd20f885b48f2a45aa8550ad50b1f7ecc"
+    sha256 arm64_monterey: "f830c872c460dfe78c2a95ac3c21a2e0f432fa7f3e4dadacc0d1026e17d11c8a"
+    sha256 sonoma:         "f487133a012b379bfebc45bc90167a27c47e2a2985623b76f336ccb987638e87"
+    sha256 ventura:        "c3069f33e1bb675a6decd0228263f43a909d0351db6059d70bad2778bc83d36b"
+    sha256 monterey:       "ae984f66ee0b60b8955b6e9720ee7733226248f0bb052d195d9f67dc05b61641"
+    sha256 x86_64_linux:   "5a26f97286ecca3915f6a93910f0c624859205eb27f32756867b03708d98212b"
   end
 
   depends_on "apr"
@@ -24,13 +24,14 @@ class Httpd < Formula
   depends_on "openssl@3"
   depends_on "pcre2"
 
+  uses_from_macos "libxcrypt"
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
 
   def install
     # fixup prefix references in favour of opt_prefix references
     inreplace "Makefile.in",
-      '#@@ServerRoot@@#$(prefix)#', '#@@ServerRoot@@'"##{opt_prefix}#"
+      '#@@ServerRoot@@#$(prefix)#', "\#@@ServerRoot@@##{opt_prefix}#"
     inreplace "docs/conf/extra/httpd-autoindex.conf.in",
       "@exp_iconsdir@", "#{opt_pkgshare}/icons"
     inreplace "docs/conf/extra/httpd-multilang-errordoc.conf.in",
@@ -48,13 +49,14 @@ class Httpd < Formula
       s.gsub! "${datadir}/icons",   "#{pkgshare}/icons"
     end
 
-    libxml2 = "#{MacOS.sdk_path_if_needed}/usr"
-    libxml2 = Formula["libxml2"].opt_prefix if OS.linux?
-    zlib = if OS.mac?
-      "#{MacOS.sdk_path_if_needed}/usr"
+    if OS.mac?
+      libxml2 = "#{MacOS.sdk_path_if_needed}/usr"
+      zlib = "#{MacOS.sdk_path_if_needed}/usr"
     else
-      Formula["zlib"].opt_prefix
+      libxml2 = Formula["libxml2"].opt_prefix
+      zlib = Formula["zlib"].opt_prefix
     end
+
     system "./configure", "--enable-layout=Slackware-FHS",
                           "--prefix=#{prefix}",
                           "--sbindir=#{bin}",

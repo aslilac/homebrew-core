@@ -1,18 +1,24 @@
 class Libjwt < Formula
   desc "JSON Web Token C library"
   homepage "https://github.com/benmcollins/libjwt"
-  url "https://github.com/benmcollins/libjwt/releases/download/v1.16.0/libjwt-1.16.0.tar.bz2"
-  sha256 "ea9d0bff35b8b8f8f4df9d9920123f366ea4e6bb1c90ebe16143d840f146f2ed"
+  url "https://github.com/benmcollins/libjwt/releases/download/v1.17.2/libjwt-1.17.2.tar.bz2"
+  sha256 "f11c4544f61a31f105720b8329409fea009d6f9ef41c9361f98c2de48152eeae"
   license "MPL-2.0"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "5737b68c54b8487d34bbc9a465338f7e605bd65a1f26f1a836999378b3689dc0"
-    sha256 cellar: :any,                 arm64_monterey: "98cc184a63e3f1409805d1ab10a7a89436a73fbf92650f81798723a9e5d8941f"
-    sha256 cellar: :any,                 arm64_big_sur:  "5a0d0e6714354f1837fee3ebd6b42c1bf6ac0b177c0272585e15bdcca714d8df"
-    sha256 cellar: :any,                 ventura:        "128d4107b1b66d010fbcacbab88547bb9834ce2ac82e416d4f7e0a2137540b37"
-    sha256 cellar: :any,                 monterey:       "b92b870b2f5f991240472b123c05dbec589eebfe562b246876fba2efb14ceb76"
-    sha256 cellar: :any,                 big_sur:        "2fde3558321bf1c5bebfb24c192bdc7c72f3f3b4e256239eb6b94c38b38097e2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "29cbe60a9957194f57afc2cf23a44a5442623819f2e704034147b8060034c097"
+    sha256 cellar: :any,                 arm64_sequoia:  "e433e0ed22bee9058050751d331c00e6323c0fc72e613ff74f877c64eb062eaa"
+    sha256 cellar: :any,                 arm64_sonoma:   "e5e42db60707d394e7b75f12fbd4e893af044e6b8f95f0965d2360be945f54b8"
+    sha256 cellar: :any,                 arm64_ventura:  "7155a77451afa2502504166ee1f993d2940491307655baae26574a1e11ad79d4"
+    sha256 cellar: :any,                 arm64_monterey: "d146d780d78e589e25e65b60ad3b7d8690919fe5431eba07ef993f2355d9cd87"
+    sha256 cellar: :any,                 sonoma:         "88f76ba6d0b19bf5ce7b55606e091bfc3961dc86c63a5316dfd8863bbbc8962f"
+    sha256 cellar: :any,                 ventura:        "f2d43fd72ea4c4ddadc55897c08e42d5956e438dae7c4b7761938c86b889d0e5"
+    sha256 cellar: :any,                 monterey:       "27b7c6378fadd9a458e54ed4588b14f1f1fd6c9c596302a2853116d4f2249249"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "91c1b7a6dcfb8a65387ffef2f66c3902510b6e78c00cfa46077b853eb605022e"
   end
 
   head do
@@ -33,7 +39,7 @@ class Libjwt < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdlib.h>
       #include <jwt.h>
 
@@ -42,7 +48,7 @@ class Libjwt < Formula
         if (jwt_new(&jwt) != 0) return 1;
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-I#{include}", "-ljwt", "-o", "test"
     system "./test"
   end

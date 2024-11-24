@@ -1,15 +1,18 @@
 class Cmdshelf < Formula
   desc "Better scripting life with cmdshelf"
   homepage "https://github.com/toshi0383/cmdshelf"
-  url "https://github.com/toshi0383/cmdshelf/archive/2.0.2.tar.gz"
+  url "https://github.com/toshi0383/cmdshelf/archive/refs/tags/2.0.2.tar.gz"
   sha256 "dea2ea567cfa67196664629ceda5bc775040b472c25e96944c19c74892d69539"
   license any_of: ["Apache-2.0", "MIT"]
 
   bottle do
     rebuild 3
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a9228f22f7205b82bdd0db4e1a6a6f8145b264eeeeac69de13c1d95b99e6c31c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "baf2c8593f5dde592d0023b6a10c809da3dd0ba83121a72a34c0a0939abdbe35"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "11ee71c650aa2e2910bba632afb1632e00eed0d4a34968dde9f43c2728ed958b"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "2129cc4f853a0328aae11613e798bfae886299523422ad84bceb33b076060db7"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1cfd2cf4bb09a17661c2b513cf67eff5fa545d549734111829c8829b105cef14"
+    sha256 cellar: :any_skip_relocation, sonoma:         "7baa1f4881efdf5b6736bd4df641fca5b21b8f981e16ca775eed95c99746bf41"
     sha256 cellar: :any_skip_relocation, ventura:        "92038b2ba192ec3ede688f08ce352ba8502d506f02f904275c0ffeb61f08077e"
     sha256 cellar: :any_skip_relocation, monterey:       "fb958a194580d31dd505817d41030cf623f7b193a6482ee2d01fdb038b107c47"
     sha256 cellar: :any_skip_relocation, big_sur:        "b1b12cbcc8f895523782fc7955cd62fba746b27f76de5bc0e3b0f3c2555fd992"

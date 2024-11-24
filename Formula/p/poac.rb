@@ -1,33 +1,45 @@
 class Poac < Formula
-  desc "Package Manager for C++"
+  desc "Package manager and build system for C++"
   homepage "https://github.com/poac-dev/poac"
-  url "https://github.com/poac-dev/poac/archive/refs/tags/0.6.0.tar.gz"
-  sha256 "40f55553f7cca3bdad39599ce8c9049aeecf8f6140cfebac28c51d7d9abbbb78"
   license "Apache-2.0"
-  revision 3
   head "https://github.com/poac-dev/poac.git", branch: "main"
 
-  bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "a2d1bbd692d862ed69a18aea000a2f3c3f9cb242a477c63536c21db759cb1a04"
-    sha256 cellar: :any,                 arm64_monterey: "75266575278a200e0cdbb398b71ae0af259e6d707ed82f7d267285e206462b45"
-    sha256 cellar: :any,                 arm64_big_sur:  "70968a60b071fb721aa96c9ca6574c65084ffd8d1114da4d1bde0be6972b0ba0"
-    sha256 cellar: :any,                 ventura:        "f006371b2f7fbd03ab4d33035a7dad2f201242e4cd694103866669e5ce6626b3"
-    sha256 cellar: :any,                 monterey:       "b86f19b504b00fad55955e52a67d69c5a035a3d7773f445480e7a3423c943380"
-    sha256 cellar: :any,                 big_sur:        "f4ce26e6cd14546d3d7df1ff451d80cd84aa14644ef50c35f76dccccd9c48f28"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6c78e46360c37b849eddaf9ca395c6384c178e70d9a26b568a7d0b7521066771"
+  stable do
+    url "https://github.com/poac-dev/poac/archive/refs/tags/0.10.1.tar.gz"
+    sha256 "4be4f9d80ee1b4b2dd489bc335d59b50d945ad2bff9458eba66b230247f5c8a6"
+
+    # Backport build fix for tbb 2022
+    patch do
+      url "https://github.com/poac-dev/poac/commit/97cc65443b8d0a938a9cfdbfbbbe4b83f73976a8.patch?full_index=1"
+      sha256 "f3d5885a17ce00cc7f1568504a128f36704875bd41a66d7dcbfcdc3e7d53c538"
+    end
   end
 
-  depends_on "cmake" => :build
-  depends_on "boost"
+  bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "a6a22dea81a6f82833163d1a7541f7b1856dbec8eca1bed9d5c0365e65e50076"
+    sha256 cellar: :any,                 arm64_sonoma:   "ce280c229ec1bf6ca4f8d50a0337a7ef24f6c49447725a0237672a8e9657147c"
+    sha256 cellar: :any,                 arm64_ventura:  "42bf04a9fb7254ad547e688696fbfeca929aa459a578875aafa71d8a9db01729"
+    sha256 cellar: :any,                 arm64_monterey: "0c65b81b080635d90dfbcf52f436d16d01fc0fcbff37afc586b55f964f35dd9b"
+    sha256 cellar: :any,                 sonoma:         "884538639f5ea51af10475448c7b6842b7b37ff62a52e4a12aec77c577f60d6a"
+    sha256 cellar: :any,                 ventura:        "22d3259793bc6789619a425a12b9828dac69bb654c7fa03a3557b1102797869c"
+    sha256 cellar: :any,                 monterey:       "042cf881a92dbcf0e89efa098fef63606efe337a5a6cfbf514e5d28cd414f72d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4b1c2ab967603d03c320774091f89b110b5cec3e96526b56bbfa1316c9b55b77"
+  end
+
+  depends_on "nlohmann-json" => :build
+  depends_on "toml11" => :build
+  depends_on "curl"
   depends_on "fmt"
   depends_on "libgit2"
-  depends_on "openssl@3"
-  depends_on "spdlog"
-
-  uses_from_macos "libarchive"
+  depends_on "pkgconf"
+  depends_on "tbb"
 
   on_macos do
     depends_on "llvm" => [:build, :test] if DevelopmentTools.clang_build_version <= 1200
+  end
+
+  on_linux do
+    depends_on "gcc" # C++20
   end
 
   fails_with :clang do
@@ -35,25 +47,23 @@ class Poac < Formula
     cause "Requires C++20"
   end
 
-  fails_with gcc: "5" # C++20
+  fails_with :gcc do
+    version "11"
+    cause "Requires C++20"
+  end
 
   def install
     ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1200)
-
-    system "cmake", "-B", "build", "-DPOAC_BUILD_TESTING=OFF", *std_cmake_args
-    system "cmake", "--build", "build"
-    system "cmake", "--install", "build"
-
-    man.install "src/etc/man/man1"
-    bash_completion.install "src/etc/poac.bash" => "poac"
-    zsh_completion.install_symlink bash_completion/"poac" => "_poac"
+    # Avoid cloning `toml11` at build-time.
+    (buildpath/"build-out/DEPS/toml11").install_symlink Formula["toml11"].opt_include
+    system "make", "RELEASE=1", "PREFIX=#{prefix}", "install"
   end
 
   test do
     ENV.clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1200)
-    system bin/"poac", "create", "hello_world"
+    system bin/"poac", "new", "hello_world"
     cd "hello_world" do
-      assert_match "Hello, world!", shell_output("#{bin}/poac run")
+      assert_equal "Hello, world!", shell_output("#{bin}/poac run").split("\n").last
     end
   end
 end

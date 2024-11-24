@@ -1,11 +1,10 @@
 class Mysql < Formula
   desc "Open source relational database management system"
-  homepage "https://dev.mysql.com/doc/refman/8.0/en/"
-  # TODO: Check if we can use unversioned `protobuf` at version bump
-  # https://bugs.mysql.com/bug.php?id=111469
-  url "https://cdn.mysql.com/Downloads/MySQL-8.1/mysql-boost-8.1.0.tar.gz"
-  sha256 "cb19648bc8719b9f6979924bfea806b278bd26b8d67740e5742c6f363f142188"
+  homepage "https://dev.mysql.com/doc/refman/9.0/en/"
+  url "https://cdn.mysql.com/Downloads/MySQL-9.0/mysql-9.0.1.tar.gz"
+  sha256 "18fa65f1ea6aea71e418fe0548552d9a28de68e2b8bc3ba9536599eb459a6606"
   license "GPL-2.0-only" => { with: "Universal-FOSS-exception-1.0" }
+  revision 6
 
   livecheck do
     url "https://dev.mysql.com/downloads/mysql/?tpl=files&os=src"
@@ -13,51 +12,53 @@ class Mysql < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "2635ebe1066a0dc5c34337fe81d9872833b0f5e9d559a8703ca07b1822ccf0d4"
-    sha256 arm64_monterey: "1b4ef2d450f423881120a6ac35e8b87d012edaff7fd6e5a88ab6cccba1c87ab4"
-    sha256 arm64_big_sur:  "57e60dd46e6787de2d331ae73c0b5f5a7179d2e325560305100f4bb09bef429b"
-    sha256 ventura:        "6630ef74b2ec3554edcf4f02428e3a14a155961648bdda7cfcc029e4bc90c2b3"
-    sha256 monterey:       "45d0bc945be3a357f18283cdf39afffb48a9e9b1800ac44b1e07ebec1ee6af1d"
-    sha256 big_sur:        "184d9881c8d6e1fce906cbafca1fedc8edffefea8c892a04cf5ce54cd4d5b08a"
-    sha256 x86_64_linux:   "f9a1199c55cd9583a08fd320ef5df5c80ad6700965f2d5fdbd5b3ca03524089d"
+    sha256 arm64_sequoia: "f7c2477f3984a22f45a0eab253ed8b5d6333cde99b370fc148f7ab60b6de96f6"
+    sha256 arm64_sonoma:  "14547eeff61a87aeb3174768c064e7786503edd53ecf5902536f0b7272f6920d"
+    sha256 arm64_ventura: "a9c27c77b5d635e991d74f7a7106309b5c758dc69d59571f8e7786d7191be218"
+    sha256 sonoma:        "2e326104a3eaaaf8d552cde8fb68baf24aea8c13bb2b48b1d9453f9287d8ba5a"
+    sha256 ventura:       "2a393c8aa351de38f83f87e744c2c0732ce39ede9517283290647539915f687c"
+    sha256 x86_64_linux:  "30d90c455cb67a3ab4da748a4d2422ab9753e1368c951fe8be0be9bb87e6dbae"
   end
 
   depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
-  depends_on "icu4c"
-  depends_on "libevent"
-  depends_on "libfido2"
+  depends_on "abseil"
+  depends_on "icu4c@76"
   depends_on "lz4"
   depends_on "openssl@3"
-  depends_on "protobuf@21" # percona-xtrabackup dependency conflict
-  depends_on "zlib" # Zlib 1.2.12+
+  depends_on "protobuf"
+  depends_on "zlib" # Zlib 1.2.13+
   depends_on "zstd"
 
   uses_from_macos "curl"
   uses_from_macos "cyrus-sasl"
   uses_from_macos "libedit"
 
+  on_macos do
+    depends_on "llvm" if DevelopmentTools.clang_build_version <= 1400
+  end
+
   on_linux do
     depends_on "patchelf" => :build
     depends_on "libtirpc"
   end
 
-  conflicts_with "mariadb", "percona-server",
-    because: "mysql, mariadb, and percona install the same binaries"
+  conflicts_with "mariadb", "percona-server", because: "both install the same binaries"
 
-  fails_with gcc: "5" # for C++17
+  fails_with :clang do
+    build 1400
+    cause "Requires C++20"
+  end
+
+  fails_with :gcc do
+    version "9"
+    cause "Requires C++20"
+  end
 
   # Patch out check for Homebrew `boost`.
   # This should not be necessary when building inside `brew`.
   # https://github.com/Homebrew/homebrew-test-bot/pull/820
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/030f7433e89376ffcff836bb68b3903ab90f9cdc/mysql/boost-check.patch"
-    sha256 "af27e4b82c84f958f91404a9661e999ccd1742f57853978d8baec2f993b51153"
-  end
-
-  # Fix for "Cannot find system zlib libraries" even though they are installed.
-  # https://bugs.mysql.com/bug.php?id=110745
   patch :DATA
 
   def datadir
@@ -65,17 +66,36 @@ class Mysql < Formula
   end
 
   def install
-    if OS.linux?
-      # Fix libmysqlgcs.a(gcs_logging.cc.o): relocation R_X86_64_32
-      # against `_ZN17Gcs_debug_options12m_debug_noneB5cxx11E' can not be used when making
-      # a shared object; recompile with -fPIC
-      ENV.append_to_cflags "-fPIC"
+    # Remove bundled libraries other than explicitly allowed below.
+    # `boost` and `rapidjson` must use bundled copy due to patches.
+    # `lz4` is still needed due to xxhash.c used by mysqlgcs
+    keep = %w[boost duktape libbacktrace libcno lz4 rapidjson unordered_dense]
+    (buildpath/"extra").each_child { |dir| rm_r(dir) unless keep.include?(dir.basename.to_s) }
 
+    if OS.linux?
       # Disable ABI checking
       inreplace "cmake/abi_check.cmake", "RUN_ABI_CHECK 1", "RUN_ABI_CHECK 0"
+
+      # Work around build issue with Protobuf 22+ on Linux
+      # Ref: https://bugs.mysql.com/bug.php?id=113045
+      # Ref: https://bugs.mysql.com/bug.php?id=115163
+      inreplace "cmake/protobuf.cmake" do |s|
+        s.gsub! 'IF(APPLE AND WITH_PROTOBUF STREQUAL "system"', 'IF(WITH_PROTOBUF STREQUAL "system"'
+        s.gsub! ' INCLUDE REGEX "${HOMEBREW_HOME}.*")', ' INCLUDE REGEX "libabsl.*")'
+      end
+    elsif DevelopmentTools.clang_build_version <= 1400
+      ENV.llvm_clang
+      # Work around failure mixing newer `llvm` headers with older Xcode's libc++:
+      # Undefined symbols for architecture arm64:
+      #   "std::exception_ptr::__from_native_exception_pointer(void*)", referenced from:
+      #       std::exception_ptr std::make_exception_ptr[abi:ne180100]<std::runtime_error>(std::runtime_error) ...
+      ENV.prepend_path "HOMEBREW_LIBRARY_PATHS", Formula["llvm"].opt_lib/"c++"
     end
 
+    icu4c = deps.map(&:to_formula).find { |f| f.name.match?(/^icu4c@\d+$/) }
     # -DINSTALL_* are relative to `CMAKE_INSTALL_PREFIX` (`prefix`)
+    # -DWITH_FIDO=system isn't set as feature isn't enabled and bundled copy was removed.
+    # Formula paths are set to avoid HOMEBREW_HOME logic in CMake scripts
     args = %W[
       -DCOMPILATION_COMMENT=Homebrew
       -DINSTALL_DOCDIR=share/doc/#{name}
@@ -86,11 +106,12 @@ class Mysql < Formula
       -DINSTALL_PLUGINDIR=lib/plugin
       -DMYSQL_DATADIR=#{datadir}
       -DSYSCONFDIR=#{etc}
+      -DBISON_EXECUTABLE=#{Formula["bison"].opt_bin}/bison
+      -DOPENSSL_ROOT_DIR=#{Formula["openssl@3"].opt_prefix}
+      -DWITH_ICU=#{icu4c.opt_prefix}
       -DWITH_SYSTEM_LIBS=ON
       -DWITH_BOOST=boost
       -DWITH_EDITLINE=system
-      -DWITH_FIDO=system
-      -DWITH_ICU=system
       -DWITH_LIBEVENT=system
       -DWITH_LZ4=system
       -DWITH_PROTOBUF=system
@@ -98,7 +119,6 @@ class Mysql < Formula
       -DWITH_ZLIB=system
       -DWITH_ZSTD=system
       -DWITH_UNIT_TESTS=OFF
-      -DENABLED_LOCAL_INFILE=1
       -DWITH_INNODB_MEMCACHED=ON
     ]
 
@@ -106,23 +126,15 @@ class Mysql < Formula
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 
-    # Fix bad linker flags in `mysql_config`.
-    # https://bugs.mysql.com/bug.php?id=111011
-    inreplace bin/"mysql_config", "-lzlib", "-lz"
-
     (prefix/"mysql-test").cd do
-      system "./mysql-test-run.pl", "status", "--vardir=#{Dir.mktmpdir}"
+      system "./mysql-test-run.pl", "status", "--vardir=#{buildpath}/mysql-test-vardir"
     end
 
     # Remove the tests directory
-    rm_rf prefix/"mysql-test"
-
-    # Don't create databases inside of the prefix!
-    # See: https://github.com/Homebrew/homebrew/issues/4975
-    rm_rf prefix/"data"
+    rm_r(prefix/"mysql-test")
 
     # Fix up the control script and link into bin.
-    inreplace "#{prefix}/support-files/mysql.server",
+    inreplace prefix/"support-files/mysql.server",
               /^(PATH=".*)(")/,
               "\\1:#{HOMEBREW_PREFIX}/bin\\2"
     bin.install_symlink prefix/"support-files/mysql.server"
@@ -148,12 +160,19 @@ class Mysql < Formula
     unless (datadir/"mysql/general_log.CSM").exist?
       ENV["TMPDIR"] = nil
       system bin/"mysqld", "--initialize-insecure", "--user=#{ENV["USER"]}",
-        "--basedir=#{prefix}", "--datadir=#{datadir}", "--tmpdir=/tmp"
+                           "--basedir=#{prefix}", "--datadir=#{datadir}", "--tmpdir=/tmp"
     end
   end
 
   def caveats
     s = <<~EOS
+      Upgrading from MySQL <8.4 to MySQL >9.0 requires running MySQL 8.4 first:
+       - brew services stop mysql
+       - brew install mysql@8.4
+       - brew services start mysql@8.4
+       - brew services stop mysql@8.4
+       - brew services start mysql
+
       We've installed your MySQL database without a root password. To secure it run:
           mysql_secure_installation
 
@@ -181,40 +200,57 @@ class Mysql < Formula
   test do
     (testpath/"mysql").mkpath
     (testpath/"tmp").mkpath
-    system bin/"mysqld", "--no-defaults", "--initialize-insecure", "--user=#{ENV["USER"]}",
-      "--basedir=#{prefix}", "--datadir=#{testpath}/mysql", "--tmpdir=#{testpath}/tmp"
+
+    args = %W[--no-defaults --user=#{ENV["USER"]} --datadir=#{testpath}/mysql --tmpdir=#{testpath}/tmp]
+    system bin/"mysqld", *args, "--initialize-insecure", "--basedir=#{prefix}"
     port = free_port
-    fork do
-      system "#{bin}/mysqld", "--no-defaults", "--user=#{ENV["USER"]}",
-        "--datadir=#{testpath}/mysql", "--port=#{port}", "--tmpdir=#{testpath}/tmp"
+    pid = spawn(bin/"mysqld", *args, "--port=#{port}")
+    begin
+      sleep 5
+
+      output = shell_output("#{bin}/mysql --port=#{port} --user=root --password= --execute='show databases;'")
+      assert_match "information_schema", output
+      system bin/"mysqladmin", "--port=#{port}", "--user=root", "--password=", "shutdown"
+    ensure
+      Process.kill "TERM", pid
     end
-    sleep 5
-    assert_match "information_schema",
-      shell_output("#{bin}/mysql --port=#{port} --user=root --password= --execute='show databases;'")
-    system "#{bin}/mysqladmin", "--port=#{port}", "--user=root", "--password=", "shutdown"
   end
 end
 
 __END__
-diff --git a/cmake/zlib.cmake b/cmake/zlib.cmake
-index 460d87a..36fbd60 100644
---- a/cmake/zlib.cmake
-+++ b/cmake/zlib.cmake
-@@ -50,7 +50,7 @@ FUNCTION(FIND_ZLIB_VERSION ZLIB_INCLUDE_DIR)
-   MESSAGE(STATUS "ZLIB_INCLUDE_DIR ${ZLIB_INCLUDE_DIR}")
- ENDFUNCTION(FIND_ZLIB_VERSION)
- 
--FUNCTION(FIND_SYSTEM_ZLIB)
-+MACRO(FIND_SYSTEM_ZLIB)
-   FIND_PACKAGE(ZLIB)
-   IF(ZLIB_FOUND)
-     ADD_LIBRARY(zlib_interface INTERFACE)
-@@ -61,7 +61,7 @@ FUNCTION(FIND_SYSTEM_ZLIB)
-         ${ZLIB_INCLUDE_DIR})
-     ENDIF()
-   ENDIF()
--ENDFUNCTION(FIND_SYSTEM_ZLIB)
-+ENDMACRO(FIND_SYSTEM_ZLIB)
- 
- MACRO (RESET_ZLIB_VARIABLES)
-   # Reset whatever FIND_PACKAGE may have left behind.
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 438dff720c5..47863c17e23 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1948,31 +1948,6 @@ MYSQL_CHECK_RAPIDJSON()
+ MYSQL_CHECK_FIDO()
+ MYSQL_CHECK_FIDO_DLLS()
+
+-IF(APPLE)
+-  GET_FILENAME_COMPONENT(HOMEBREW_BASE ${HOMEBREW_HOME} DIRECTORY)
+-  IF(EXISTS ${HOMEBREW_BASE}/include/boost)
+-    FOREACH(SYSTEM_LIB ICU LZ4 PROTOBUF ZSTD FIDO)
+-      IF(WITH_${SYSTEM_LIB} STREQUAL "system")
+-        MESSAGE(FATAL_ERROR
+-          "WITH_${SYSTEM_LIB}=system is not compatible with Homebrew boost\n"
+-          "MySQL depends on ${BOOST_PACKAGE_NAME} with a set of patches.\n"
+-          "Including headers from ${HOMEBREW_BASE}/include "
+-          "will break the build.\n"
+-          "Please use WITH_${SYSTEM_LIB}=bundled\n"
+-          "or do 'brew uninstall boost' or 'brew unlink boost'"
+-          )
+-      ENDIF()
+-    ENDFOREACH()
+-  ENDIF()
+-  # Ensure that we look in /usr/local/include or /opt/homebrew/include
+-  FOREACH(SYSTEM_LIB ICU LZ4 PROTOBUF ZSTD FIDO)
+-    IF(WITH_${SYSTEM_LIB} STREQUAL "system")
+-      INCLUDE_DIRECTORIES(SYSTEM ${HOMEBREW_BASE}/include)
+-      BREAK()
+-    ENDIF()
+-  ENDFOREACH()
+-ENDIF()
+-
+ IF(WITH_AUTHENTICATION_WEBAUTHN OR
+   WITH_AUTHENTICATION_CLIENT_PLUGINS)
+   IF(WITH_FIDO STREQUAL "system" AND

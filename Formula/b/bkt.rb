@@ -1,18 +1,17 @@
 class Bkt < Formula
-  desc "Utility for caching the results of shell commands"
+  desc "CLI utility for caching the output of subprocesses"
   homepage "https://www.bkt.rs"
-  url "https://github.com/dimo414/bkt/archive/refs/tags/0.7.0.tar.gz"
-  sha256 "1a846e163fa0c530d64a3fdd3935895a2e3b66a00ff099070bcfd1f0bdf1f674"
+  url "https://github.com/dimo414/bkt/archive/refs/tags/0.8.2.tar.gz"
+  sha256 "d9128a13070ebc564bcc70210062bdd60eb757fd0f5d075c50e9aa7f714c6562"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6c454d031bb9cb8ebcf36b49137d4be6a2248d28dcb202a4a75047d92a4e511f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8342dc86fbdbf19564f772c038c361e232b8239412d3a52457cc437dddf8cea2"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bc939d9cc3cabb34301dffe4f8d63a112dd6637213316b9786b347ae23cab335"
-    sha256 cellar: :any_skip_relocation, ventura:        "2182cf10cfe68da489b3bce17c190dc6ff0a60c0295b1dc6f07669d4a7ebe241"
-    sha256 cellar: :any_skip_relocation, monterey:       "56b8f087e1ee3f7ec485ad47a628020a3566f9fe75cd1578ff3f665f8d81c884"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5a220cdaa5cd9368270b2c7f4e5fc276b3b0dcfedf10819df4312441ee20a8e8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3476550548768973aa8915b03350100d50a845e6d4f14aac64335fb26ccb3fac"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b10047b912e99a0490844b80c06ad838dd05f85ff7e9e87f5c25447993b72ce7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "dc1910c62ee9d66bb773f0633106edb03345905393999a29f056ab59b570e583"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "4ead41eec54fe52160bacbcd5305a521e7704c5fc6b19082aebb03163d0b02ab"
+    sha256 cellar: :any_skip_relocation, sonoma:        "fef406248481dabdb5e53ad4eb26be1f6984dbb261597a4f02e34a410d0b5141"
+    sha256 cellar: :any_skip_relocation, ventura:       "4d516657009e7793b2f9e2e3ee08a9349d613346481b4f03581f1cfd4a948851"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9f933949ff5c0945bc66c55380e42ca9e96d4292c241ba2ed8a147ea35e4b0a0"
   end
 
   depends_on "rust" => :build
@@ -23,8 +22,8 @@ class Bkt < Formula
 
   test do
     # Make sure date output is cached between runs
-    output1 = shell_output("#{bin}/bkt -- date +%s.%N")
+    output1 = shell_output("#{bin}/bkt --ttl=1m -- date +%s.%N")
     sleep(1)
-    assert_equal output1, shell_output("#{bin}/bkt -- date +%s.%N")
+    assert_equal output1, shell_output("#{bin}/bkt --ttl=1m -- date +%s.%N")
   end
 end

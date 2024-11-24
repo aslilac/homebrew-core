@@ -1,31 +1,60 @@
 class Iniparser < Formula
   desc "Library for parsing ini files"
-  homepage "http://ndevilla.free.fr/iniparser/"
-  url "https://github.com/ndevilla/iniparser/archive/v4.1.tar.gz"
-  sha256 "960daa800dd31d70ba1bacf3ea2d22e8ddfc2906534bf328319495966443f3ae"
+  homepage "https://gitlab.com/iniparser/iniparser"
+  url "https://gitlab.com/iniparser/iniparser/-/archive/v4.2.4/iniparser-v4.2.4.tar.bz2"
+  sha256 "767963cff69aa7b0c7e48b74954886d5e498835056727fce25aecb19ff551d43"
   license "MIT"
-  head "https://github.com/ndevilla/iniparser.git", branch: "master"
+  head "https://gitlab.com/iniparser/iniparser.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2b7f315ef24e0b8e9252772fb3ec750dcd13a90796eca266ae9dfefa50ec059f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "62dbb35ffe023cea60e167ba6f6a7242d01274868df203944298be40159fe123"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3b8550dc64594120847c937c9b1a4e10f6c81622de2610fd0d7818bb35b7f45a"
-    sha256 cellar: :any_skip_relocation, ventura:        "3b4cf68e72fa3eaaceb96f97cdd38d4fb4794492f2baaecae1055d9d4fbe52ca"
-    sha256 cellar: :any_skip_relocation, monterey:       "1fee5c56cf1543f370b6a940a3f11aae2d1fe4517bfd98a3b5f6265d20aad32b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0c46428d183d6cee7f196c7a2a5ba81eebf078900c2825b7c9d3186eb91391b8"
-    sha256 cellar: :any_skip_relocation, catalina:       "bcda9d9c41e5ecf09a748eae0c6054c92ce858df53d835e5454310ea4f731a8c"
-    sha256 cellar: :any_skip_relocation, mojave:         "69dde8e886645f5b89f83f36835c18449afe7f6c4f119d466d7f204e994952c7"
-    sha256 cellar: :any_skip_relocation, high_sierra:    "cec20d33114e7a5811acb41f9f9a36a411ffd2eebb7d537167b9b541b03fff8d"
-    sha256 cellar: :any_skip_relocation, sierra:         "7ad8eb3b8a66c08b78d2d9d3db18bd50e842d1c5962600ad0c9c8244d296dea8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ff54f4bdd772ed7f7695079046c3668ab088e233e4f1939bf699b4b7219b964f"
+    sha256 cellar: :any,                 arm64_sequoia:  "0c73018cec15ab4fe46af32c13a436c6c1cd0af280351aca183c4381692cf3d9"
+    sha256 cellar: :any,                 arm64_sonoma:   "4716c32b4218b5094b0a19479b1e8b65cd94dc04a40bf41b40799dd243191abb"
+    sha256 cellar: :any,                 arm64_ventura:  "a3c4368ddedd5810ef7db6e6a2d704d3d5a4fadff279bcabd32e5362144f2f01"
+    sha256 cellar: :any,                 arm64_monterey: "21e6754ad6276fd4ece5ea82b85c5fffe8f110d47892fbce03ad85e6b27cf83d"
+    sha256 cellar: :any,                 sonoma:         "301b365695b0e63861f07840b57804de9ff2d5b58991fb6abcf5fcad48d56c23"
+    sha256 cellar: :any,                 ventura:        "915fab6620a440294d3a357053e2f23d7cb3709e1fc5c2950acc0d976442d187"
+    sha256 cellar: :any,                 monterey:       "db5b501e6789c181018def30a06c00968be958b6e41c87ccdc15c451e1e66216"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "969c5952f004e0c00e5b845c76d7c060c023028c0d6a39b0bc87faf038db3308"
   end
+
+  depends_on "cmake" => :build
+  depends_on "doxygen" => :build
 
   conflicts_with "fastbit", because: "both install `include/dictionary.h`"
 
   def install
-    # Only make the *.a file; the *.so target is useless (and fails).
-    system "make", "libiniparser.a", "CC=#{ENV.cc}", "RANLIB=ranlib"
-    lib.install "libiniparser.a"
-    include.install Dir["src/*.h"]
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
+  end
+
+  test do
+    test_config = testpath/"test.ini"
+    test_config.write <<~EOS
+      [section]
+      key = value
+    EOS
+
+    (testpath/"test.c").write <<~C
+      #include <stdio.h>
+      #include <string.h>
+      #include <iniparser/iniparser.h>
+
+      int main() {
+        dictionary *ini;
+        ini = iniparser_load("#{test_config}");
+        const char *value = iniparser_getstring(ini, "section:key", NULL);
+        if (value == NULL || strcmp(value, "value") != 0) {
+          fprintf(stderr, "value not found or incorrect\\n");
+          return 1;
+        }
+        printf("Parsed value: %s", value);
+        iniparser_freedict(ini);
+        return 0;
+      }
+    C
+
+    system ENV.cc, "test.c", "-o", "test", "-L#{lib}", "-liniparser"
+    assert_equal "Parsed value: value", shell_output("./test")
   end
 end

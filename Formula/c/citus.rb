@@ -1,19 +1,28 @@
 class Citus < Formula
   desc "PostgreSQL-based distributed RDBMS"
   homepage "https://www.citusdata.com"
-  url "https://github.com/citusdata/citus/archive/v12.0.0.tar.gz"
-  sha256 "9a6adaecc28e80e03a0523d07ee14c4b848f86f48ed37f84aa8cb98f3489f632"
+  url "https://github.com/citusdata/citus/archive/refs/tags/v12.1.4.tar.gz"
+  sha256 "6f8e55bbcae75309192c48cdb7238e8c895fd63e5b785ff798023c8b8b799e61"
   license "AGPL-3.0-only"
   head "https://github.com/citusdata/citus.git", branch: "main"
 
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  # of the Git tags.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "f4bf486699a5729f4d0c2006001f4449f60d343256550be6017d9ba2c34ff374"
-    sha256 cellar: :any,                 arm64_monterey: "eeb9601a50b0eef99e8bf5b5e7e8e8ad5dd9a2ff205e6e39a7d7a056cf9f7f89"
-    sha256 cellar: :any,                 arm64_big_sur:  "e1d3d86a47cbdb1d3899f78cdfa58b11932ebdeecf77e7243ce5f87c8073b99f"
-    sha256 cellar: :any,                 ventura:        "47b61e4cc15726dac930df244271c94c96c000b8855ac360e51cbf3df0d00938"
-    sha256 cellar: :any,                 monterey:       "55aedab8c64a790da451bba0e878aa04de3213b89a2399ddef69bb94cfe3e824"
-    sha256 cellar: :any,                 big_sur:        "2f117d6aa7e6daaa46239f2654c3f477fa64cae2e2be6fabba91e4741210eb21"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0a80582e490c8d146843864627ac75b85f2fa917e671da46bd2aef9ae1676f84"
+    sha256 cellar: :any,                 arm64_sequoia:  "f32f83baf5052b4564c889b703206d260016b3f7e69b2693dab22338dda8d598"
+    sha256 cellar: :any,                 arm64_sonoma:   "786b219283e84207a8cf2820c7c74e9e61b3f2bf0ba06a10bc32d9e781c1bdfc"
+    sha256 cellar: :any,                 arm64_ventura:  "5bb67885ce15fa7298da6923126b7130310053504edc84d2aec88630af21e831"
+    sha256 cellar: :any,                 arm64_monterey: "0422a4a7e7891f5102c12c289bea85c9f69f59fd3f36dae47bc297760c470ef0"
+    sha256 cellar: :any,                 sonoma:         "362100c937c43c33190c04eef85b17fc1a697649634500d8ed7457bf7668e9be"
+    sha256 cellar: :any,                 ventura:        "0e17325da26d62c2cb2a0e60b5adfee79676271c1a93814791bbce6918e8c5de"
+    sha256 cellar: :any,                 monterey:       "1584b2586f0a566ab65e88edc40bcd848b67870e0581affbb55ff23a6f5ed277"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4363b7e3f120d35f0fa024c82f9903619e0414185fdc9ad466853fd37c30a86d"
   end
 
   depends_on "lz4"
@@ -25,30 +34,24 @@ class Citus < Formula
   uses_from_macos "curl"
 
   def postgresql
-    Formula["postgresql@14"]
+    deps.map(&:to_formula)
+        .find { |f| f.name.start_with?("postgresql@") }
   end
 
   def install
     ENV["PG_CONFIG"] = postgresql.opt_bin/"pg_config"
 
-    system "./configure"
-    # workaround for https://github.com/Homebrew/legacy-homebrew/issues/49948
-    system "make", "libpq=-L#{postgresql.opt_lib} -lpq"
-
-    # Use stage directory to prevent installing to pg_config-defined dirs,
-    # which would not be within this package's Cellar.
-    mkdir "stage"
-    system "make", "install", "DESTDIR=#{buildpath}/stage"
-
-    stage_path = File.join("stage", HOMEBREW_PREFIX)
-    lib.install (buildpath/stage_path/"lib").children
-    include.install (buildpath/stage_path/"include").children
-    share.install (buildpath/stage_path/"share").children
-
-    bin.install (buildpath/File.join("stage", postgresql.bin.realpath)).children
+    system "./configure", *std_configure_args
+    system "make"
+    # Override the hardcoded install paths set by the PGXS makefiles.
+    system "make", "install", "bindir=#{bin}",
+                              "datadir=#{share/postgresql.name}",
+                              "pkglibdir=#{lib/postgresql.name}",
+                              "pkgincludedir=#{include/postgresql.name}"
   end
 
   test do
+    ENV["LC_ALL"] = "C"
     pg_ctl = postgresql.opt_bin/"pg_ctl"
     psql = postgresql.opt_bin/"psql"
     port = free_port

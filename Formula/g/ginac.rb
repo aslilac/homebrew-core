@@ -11,25 +11,27 @@ class Ginac < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 ventura:      "6b1f54f17f7035edd80c36af3402485f99654fe651c8c06e55eebc886ceef480"
-    sha256 cellar: :any,                 monterey:     "2e32ee246037520340c63cb173593b22e88aa49fd67fde26e2a990effe68a36e"
-    sha256 cellar: :any,                 big_sur:      "5a0597e100de5340db7682e7ef2a4609eaa7eb87817f933fd13ff3de243238a3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "dbabf993c6a4453301f92b8697a6e10f865def6d817eebed7c57ae548edaf018"
+    rebuild 2
+    sha256 cellar: :any,                 arm64_sequoia: "9a7a204b5c3770f7d683be8e7010ce7746bb599302e7caee90eef1fa45abff55"
+    sha256 cellar: :any,                 arm64_sonoma:  "f4a19bf3843043773daecc4e19a308eaf20e1370d78be953c03dd271e46744bc"
+    sha256 cellar: :any,                 arm64_ventura: "11f66f760f919876085a014375f863d2a03613a5f9a26e1fef7aa0c673759619"
+    sha256 cellar: :any,                 sonoma:        "c91f9809888fb6294d6839ab236eb3880d77cae084b5dc7ccf5950cdff267055"
+    sha256 cellar: :any,                 ventura:       "5cd7b23d37eb77baab052cacb8cbcf36378d5dc38633593761c8810632c6de97"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1fdede5aa580316b0c9d774fc07455d659d760cb9fa76d10bec3eb47128b0cae"
   end
 
   depends_on "pkg-config" => :build
   depends_on "cln"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
   depends_on "readline"
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <iostream>
       #include <ginac/ginac.h>
       using namespace std;
@@ -46,7 +48,7 @@ class Ginac < Formula
         cout << poly << endl;
         return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, "test.cpp", "-L#{lib}",
                                 "-L#{Formula["cln"].lib}",
                                 "-lcln", "-lginac", "-o", "test",

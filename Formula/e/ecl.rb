@@ -1,22 +1,10 @@
 class Ecl < Formula
   desc "Embeddable Common Lisp"
   homepage "https://ecl.common-lisp.dev"
+  url "https://ecl.common-lisp.dev/static/files/release/ecl-24.5.10.tgz"
+  sha256 "e4ea65bb1861e0e495386bfa8bc673bd014e96d3cf9d91e9038f91435cbe622b"
   license "LGPL-2.1-or-later"
-  revision 2
   head "https://gitlab.com/embeddable-common-lisp/ecl.git", branch: "develop"
-
-  stable do
-    url "https://ecl.common-lisp.dev/static/files/release/ecl-21.2.1.tgz"
-    sha256 "b15a75dcf84b8f62e68720ccab1393f9611c078fcd3afdd639a1086cad010900"
-
-    # Backport fix for bug that causes errors when building `sbcl`.
-    # Issue ref: https://gitlab.com/embeddable-common-lisp/ecl/-/issues/667
-    # Remove in the next release along with the stable block
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/7cb53af69947e9e452d43f334577adb74011fe9e/ecl/sbcl.patch"
-      sha256 "04fbdabd084d45144b931c49ad656f8d552b5e99857ed6de003daee8e6e3bd48"
-    end
-  end
 
   livecheck do
     url "https://ecl.common-lisp.dev/static/files/release/"
@@ -24,15 +12,14 @@ class Ecl < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_ventura:  "d1833fcfef55781606e6793becf3f235c6d27b32d65f969f606bfd4c23e654c7"
-    sha256 arm64_monterey: "c0e158eaeda959f3502a2c08d9640fdb3d9ed42c4a562d504f883703320952ec"
-    sha256 arm64_big_sur:  "06222b960fadf45796e2570b8d1304dc5c111bcb12f216820962020677207ea0"
-    sha256 ventura:        "c30e496ebece4e2b03b3ec7f06c1950967be0b2efec95114b60a88a7d50d441d"
-    sha256 monterey:       "ebe596bb4a260b50143fff6a4c7b9a215ba37035e7014e661cd801580d40852e"
-    sha256 big_sur:        "b7249ea59449d4fc8b3e509f3f61f6c9f660659745ecb30f7dc056e73edde275"
-    sha256 catalina:       "c47af2ea084746d721142998ed720ca7c627a428134fe6c1e38e067c5aa24b6b"
-    sha256 x86_64_linux:   "c61e19e3dfc2f9e971ecd48ac1eb68246dbd0db41e154c214fe4b2ab20c17695"
+    sha256 arm64_sequoia:  "04a0ce4228cb34b3dc85b14755a96f61c698d9a3b35c3459d6f228a0e87fe5df"
+    sha256 arm64_sonoma:   "f511628793d569db33a5d91a96a052eff9a7bcc922717941c7e5dd3a08a32d34"
+    sha256 arm64_ventura:  "6e4978801eb0b6cf26e5bccd502ce82e5b4c5ba7213aedd23fd39ee6e639d3e7"
+    sha256 arm64_monterey: "38a0407a7998ec9218775d7eeafec3703cbbe823298383bee875b32113f23fae"
+    sha256 sonoma:         "2a29cff3a5684dc0171d182ca98308ffd5f16336500b03e3352c40f699bd999e"
+    sha256 ventura:        "538afbf26399d650b672ddd2013103ac4faacea950ec92531afc00bb8a6fd583"
+    sha256 monterey:       "95e261506d9cbb74e121eb52f281c516012d971d0b88887b9116b74a82144e8e"
+    sha256 x86_64_linux:   "fcc4ecc3ffdf65a6d96712a835d80711d804f643139208fe49ea029296a0a1dc"
   end
 
   depends_on "texinfo" => :build # Apple's is too old
@@ -43,10 +30,7 @@ class Ecl < Formula
   def install
     ENV.deparallelize
 
-    # Avoid -flat_namespace usage on macOS
-    inreplace "src/configure", "-flat_namespace -undefined suppress ", "" if OS.mac?
-
-    libffi_prefix = if MacOS.version >= :catalina
+    libffi_prefix = if OS.mac? && MacOS.version >= :catalina
       MacOS.sdk_path
     else
       Formula["libffi"].opt_prefix

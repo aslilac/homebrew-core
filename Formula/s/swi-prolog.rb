@@ -1,8 +1,8 @@
 class SwiProlog < Formula
   desc "ISO/Edinburgh-style Prolog interpreter"
   homepage "https://www.swi-prolog.org/"
-  url "https://www.swi-prolog.org/download/stable/src/swipl-9.0.4.tar.gz"
-  sha256 "feb2815a51d34fa81cb34e8149830405935a7e1d1c1950461239750baa8b49f0"
+  url "https://www.swi-prolog.org/download/stable/src/swipl-9.2.8.tar.gz"
+  sha256 "b331637a57c913c49edcfcb10ddcf6c031278ce93d2411d54542778531abb5c7"
   license "BSD-2-Clause"
   head "https://github.com/SWI-Prolog/swipl-devel.git", branch: "master"
 
@@ -12,19 +12,18 @@ class SwiProlog < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_ventura:  "76509c435a4249ef4594c9fe87e6c7543278bc87b9ad0745bccce4d6daf5c384"
-    sha256 arm64_monterey: "8f997823471430596e60239443343a4c5c8f6c40d4e65355ce4d7fcd9899fefb"
-    sha256 arm64_big_sur:  "9fb8a039478093771a808bf7eed91037ec51444db350f0f2fc3608807e3ef6de"
-    sha256 ventura:        "af9904a55d4d2e51ca9b9d3b106d41804e8789a265e986c613f559edc2e3201a"
-    sha256 monterey:       "8b483de3ba11170b5165888cc05fe2387bd29f03fb19e841febc3634c6e3f2ff"
-    sha256 big_sur:        "2d8b82dde64f73ba269c34a0240f4faf6028521e9a2c581125a38187207baebe"
-    sha256 x86_64_linux:   "c51d8ba176d8072047cb43aecbab4eedd1ca48336759d7fed68a8d65648ea0ad"
+    sha256 arm64_sequoia: "f6ceb36933e2448157545fef30536bd4c91467802f7a0ac51c457ac76a1a4f04"
+    sha256 arm64_sonoma:  "ecbe24deec0df248adda3c44e789694aead64aeb4f4bb3ce1d48e60d6e5255c2"
+    sha256 arm64_ventura: "108eabd3efffcb439ab4a884d66c0790122fb34ca91eb6f23963ed0ee18d42ed"
+    sha256 sonoma:        "4473970903320547769a6380e6018a36acb004db8537e75e3917e79ead6818e4"
+    sha256 ventura:       "a07dde9c433e634ea14448227ef6709e6bb1c90f31fe3658fc7b049e39d59afd"
+    sha256 x86_64_linux:  "6d7123369a248a9b1226a72c9eeeb20970ae602b999ab96c8b5022b9ea8d5703"
   end
 
   depends_on "cmake" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "berkeley-db@4"
+  depends_on "berkeley-db@5" # keep berkeley-db < 6 to avoid AGPL incompatibility
   depends_on "gmp"
   depends_on "libarchive"
   depends_on "libyaml"
@@ -38,27 +37,34 @@ class SwiProlog < Formula
   uses_from_macos "zlib"
 
   def install
-    # Remove shim paths from binary files `swipl-ld` and `libswipl.so.*`
-    if OS.linux?
-      inreplace "cmake/Params.cmake" do |s|
-        s.gsub! "${CMAKE_C_COMPILER}", "\"gcc\""
-        s.gsub! "${CMAKE_CXX_COMPILER}", "\"g++\""
+    args = %W[
+      -DSWIPL_PACKAGES_JAVA=OFF
+      -DSWIPL_PACKAGES_X=OFF
+      -DCMAKE_INSTALL_RPATH=#{loader_path}
+      -DSWIPL_CC=#{ENV.cc}
+      -DSWIPL_CXX=#{ENV.cxx}
+    ]
+    if OS.mac?
+      macosx_dependencies_from = case HOMEBREW_PREFIX.to_s
+      when "/usr/local"
+        "HomebrewLocal"
+      when "/opt/homebrew"
+        "HomebrewOpt"
+      else
+        HOMEBREW_PREFIX
       end
+      args << "-DMACOSX_DEPENDENCIES_FROM=#{macosx_dependencies_from}"
     end
-
-    args = ["-DSWIPL_PACKAGES_JAVA=OFF", "-DSWIPL_PACKAGES_X=OFF", "-DCMAKE_INSTALL_RPATH=#{loader_path}"]
-    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args(install_prefix: libexec)
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
-
-    bin.write_exec_script (libexec/"bin").children
   end
 
   test do
-    (testpath/"test.pl").write <<~EOS
+    (testpath/"test.pl").write <<~PROLOG
       test :-
           write('Homebrew').
-    EOS
+    PROLOG
     assert_equal "Homebrew", shell_output("#{bin}/swipl -s #{testpath}/test.pl -g test -t halt")
   end
 end

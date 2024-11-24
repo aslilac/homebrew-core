@@ -1,37 +1,37 @@
-require "language/node"
-
 class Quicktype < Formula
   desc "Generate types and converters from JSON, Schema, and GraphQL"
-  homepage "https://github.com/quicktype/quicktype"
-  url "https://registry.npmjs.org/quicktype/-/quicktype-23.0.71.tgz"
-  sha256 "3a9b9c38880ed81af6c49886554d1ebd3ba710f17b0fd34090bf96c3360790df"
+  homepage "https://github.com/glideapps/quicktype"
+  url "https://registry.npmjs.org/quicktype/-/quicktype-23.0.170.tgz"
+  sha256 "659d134a323644b799149dc562882092544804d69a5288574af4d657f3c00a57"
   license "Apache-2.0"
-  head "https://github.com/quicktype/quicktype.git", branch: "master"
+  head "https://github.com/glideapps/quicktype.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a51ff828648661687838509ad44193d13bc9521c4578b3a1e33f7d6e1d554b94"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a51ff828648661687838509ad44193d13bc9521c4578b3a1e33f7d6e1d554b94"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a51ff828648661687838509ad44193d13bc9521c4578b3a1e33f7d6e1d554b94"
-    sha256 cellar: :any_skip_relocation, ventura:        "b0819ad4f0c4aead4ebe1bb2500870e2fc284c9b44f2962a9c45af70a9eda70c"
-    sha256 cellar: :any_skip_relocation, monterey:       "b0819ad4f0c4aead4ebe1bb2500870e2fc284c9b44f2962a9c45af70a9eda70c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b0819ad4f0c4aead4ebe1bb2500870e2fc284c9b44f2962a9c45af70a9eda70c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a51ff828648661687838509ad44193d13bc9521c4578b3a1e33f7d6e1d554b94"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a0165ecdfca165b21db3bf3ea97076058bd2a2b58d822ea665532030f69359c8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2e197f59d0b6c2e62f03322b0e4f014671c657515a16d3bdac7ae1da3369ba16"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2e197f59d0b6c2e62f03322b0e4f014671c657515a16d3bdac7ae1da3369ba16"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2e197f59d0b6c2e62f03322b0e4f014671c657515a16d3bdac7ae1da3369ba16"
+    sha256 cellar: :any_skip_relocation, sonoma:         "4e037edc65fcbe0cd256eef1142fe93ed25cf604af3a5ec9432f9a2381e6f614"
+    sha256 cellar: :any_skip_relocation, ventura:        "4e037edc65fcbe0cd256eef1142fe93ed25cf604af3a5ec9432f9a2381e6f614"
+    sha256 cellar: :any_skip_relocation, monterey:       "4e037edc65fcbe0cd256eef1142fe93ed25cf604af3a5ec9432f9a2381e6f614"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a741aad8272c2f841c25a8ce5a919843e84006dfd224eba6395ffbb9f22319f3"
   end
 
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
   test do
-    (testpath/"sample.json").write <<~EOS
+    (testpath/"sample.json").write <<~JSON
       {
         "i": [0, 1],
         "s": "quicktype"
       }
-    EOS
+    JSON
     output = shell_output("#{bin}/quicktype --lang typescript --src sample.json")
     assert_match "i: number[];", output
     assert_match "s: string;", output

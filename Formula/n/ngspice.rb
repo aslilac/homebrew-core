@@ -1,8 +1,8 @@
 class Ngspice < Formula
   desc "Spice circuit simulator"
   homepage "https://ngspice.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/41/ngspice-41.tar.gz"
-  sha256 "1ce219395d2f50c33eb223a1403f8318b168f1e6d1015a7db9dbf439408de8c4"
+  url "https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/43/ngspice-43.tar.gz"
+  sha256 "14dd6a6f08531f2051c13ae63790a45708bd43f3e77886a6a84898c297b13699"
   license :cannot_represent
 
   livecheck do
@@ -11,13 +11,14 @@ class Ngspice < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "8e36bc3e8ab359c91e0f0b2c01cc604e158526b711e11289c5ae8e186266a1cd"
-    sha256 arm64_monterey: "f902ee20c956ce7cfcfe714c707faa27a9f97efaf0937fb5099927857f9903b0"
-    sha256 arm64_big_sur:  "db4112cb7dd18fe865980f04cc5b52d4d202fe6eaa96be28f6f0a30c5873fc51"
-    sha256 ventura:        "836200d6dd7bbabac59e51d73bdd2048e5e4173c6919a9a5904b161178ab3632"
-    sha256 monterey:       "ce332690f0c8fd65b69ce3ae665911ea014b011e6796c21b2e64b0fff3b83f88"
-    sha256 big_sur:        "fe20b393cb57a19b05b0809f2ccf8ab5282aa193b270b1da7ae79630ec2573d1"
-    sha256 x86_64_linux:   "07a2aa97edc37e0e379fc4728563314a72ca110e1d564acd8bafc2bd94649e65"
+    sha256 arm64_sequoia:  "1d5d967e5df8300cf220db5ae8f2c0ebbaa46c640f6daa919f87cb31f3ebb3d6"
+    sha256 arm64_sonoma:   "61d50fad34522ba081608dd1f5d3477151079538d84cbb45cd814468df38dc8c"
+    sha256 arm64_ventura:  "c190af3e69b3db2dd5e2119fe743c24200f7ff28bc7d2f386b98271dd7a3c7a7"
+    sha256 arm64_monterey: "3ac872df0b4ea9bab7548abf20a84122418e9a8d3e3a986a6fd9068f191a3a92"
+    sha256 sonoma:         "06006e9371f61df4ab71bee94fd7379f0946c3ae32be242e6156c59449d7ec1b"
+    sha256 ventura:        "baf73472e5438f531d3e18075a6cc97f72596657a119ee7346d2de2b779ff5bb"
+    sha256 monterey:       "7e76ac150dd468473d8ded260453d9dbf8fe270251ade22e7e68b65757202eb3"
+    sha256 x86_64_linux:   "cd2f925a4717f2eff7ad283537ffd58bb02c3fabce3fa77ab8b66a52ea7ff0a1"
   end
 
   head do
@@ -29,28 +30,46 @@ class Ngspice < Formula
   end
 
   depends_on "fftw"
+  depends_on "freetype"
   depends_on "libngspice"
+  depends_on "libx11"
+  depends_on "libxaw"
+  depends_on "libxt"
   depends_on "readline"
 
   uses_from_macos "bison" => :build
+  uses_from_macos "ncurses"
+
+  on_macos do
+    depends_on "libice"
+    depends_on "libsm"
+    depends_on "libxext"
+    depends_on "libxmu"
+  end
 
   def install
     system "./autogen.sh" if build.head?
 
+    # Xft #includes <ft2build.h>, not <freetype2/ft2build.h>, hence freetype2
+    # must be put into the search path.
+    ENV.append "CFLAGS", "-I#{Formula["freetype"].opt_include}/freetype2"
+
     args = %w[
-      --with-readline=yes
+      --enable-cider
       --enable-xspice
-      --without-x
+      --disable-openmp
+      --enable-pss
+      --with-readline=yes
     ]
 
-    system "./configure", *std_configure_args, *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
 
     # fix references to libs
     inreplace pkgshare/"scripts/spinit", lib/"ngspice/", Formula["libngspice"].opt_lib/"ngspice/"
 
     # remove conflict lib files with libngspice
-    rm_rf Dir[lib/"ngspice"]
+    rm_r(Dir[lib/"ngspice"])
   end
 
   test do
@@ -66,6 +85,6 @@ class Ngspice < Formula
       .endc
       .end
     EOS
-    system "#{bin}/ngspice", "test.cir"
+    system bin/"ngspice", "test.cir"
   end
 end

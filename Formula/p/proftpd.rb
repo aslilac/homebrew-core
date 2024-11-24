@@ -1,10 +1,11 @@
 class Proftpd < Formula
   desc "Highly configurable GPL-licensed FTP server software"
   homepage "http://www.proftpd.org/"
-  url "https://github.com/proftpd/proftpd/archive/refs/tags/v1.3.8.tar.gz"
-  mirror "https://fossies.org/linux/misc/proftpd-1.3.8.tar.gz"
-  mirror "https://ftp.osuosl.org/pub/blfs/conglomeration/proftpd/proftpd-1.3.8.tar.gz"
-  sha256 "f7139e7377a2cb059b8b9b14d76a6df5f440e3181cb15ae890d43bbcae574748"
+  url "https://github.com/proftpd/proftpd/archive/refs/tags/v1.3.8b.tar.gz"
+  mirror "https://fossies.org/linux/misc/proftpd-1.3.8b.tar.gz"
+  mirror "https://ftp.osuosl.org/pub/blfs/conglomeration/proftpd/proftpd-1.3.8b.tar.gz"
+  version "1.3.8b"
+  sha256 "183ab7c6107de271a2959ff268f55c9b6c76b2cf0029e6584fccc019686601e0"
   license "GPL-2.0-or-later"
 
   # Proftpd uses an incrementing letter after the numeric version for
@@ -17,13 +18,14 @@ class Proftpd < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "33f8063b1091a4ed78261a858a6469addd60fce2fae3bf662d800b695d214bed"
-    sha256 arm64_monterey: "daad1aaa7a68c37157ffe1413b7b42a6ccb84861dc364e7ed6f18fb5c42e61c0"
-    sha256 arm64_big_sur:  "5bda56800a66fa203e0e4ee496bce2495e86791900c59e34af486a5c0799b6e5"
-    sha256 ventura:        "7ae1010fc5a818f9d34f3af95d17d1b199a74ff54ea18a05fdfd852b049032e6"
-    sha256 monterey:       "9059bb7d481426b7c40c42203301ddb8db983ef87a6b81c7bd559cbe4d740471"
-    sha256 big_sur:        "a5295fda88d783978f9c9eb8b8af88c5ccf606a8e32dbe520fa574fdf2966b78"
-    sha256 x86_64_linux:   "f550c15a70adfbcee4149723ccb3ed8d8eb5ceaf78d788ca361116e61e7cfa6a"
+    sha256 arm64_sequoia:  "7d223f2cd178e9a815cd477caf3a34f924564303c9fe10cb638ca6ae725646fe"
+    sha256 arm64_sonoma:   "48a583547c7df3b834deccb641a235f8b0d562e0e2f27bc978b04dd3540a46ca"
+    sha256 arm64_ventura:  "a421f924d2ad5a50c4f5c05702449b09fa7c0f59a61eb61189bc43ba4f7b0625"
+    sha256 arm64_monterey: "759316ccf7c904a7d275df4b4729fd2f70c74f321352669c7e44a4ea4bd3870a"
+    sha256 sonoma:         "3093cf6430a010f08e2d9d0b532fe748af26894f2e89b48824e9b21a028a58ea"
+    sha256 ventura:        "b8c0a627557359dc1e034a717a37b788bf1d020b98a48501a6b047ed9eb0dd35"
+    sha256 monterey:       "29bbea5b246e883d1e9ff9cb2f799d6a85d1e8eb0325d64c88795a70f2c57f9b"
+    sha256 x86_64_linux:   "a979d3cf427cd3e56eaf0c71a110d7bb5ff5517d97d60ccabfd7bc8be25c7af2"
   end
 
   uses_from_macos "libxcrypt"

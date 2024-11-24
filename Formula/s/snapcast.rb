@@ -1,23 +1,25 @@
 class Snapcast < Formula
   desc "Synchronous multiroom audio player"
   homepage "https://github.com/badaix/snapcast"
-  url "https://github.com/badaix/snapcast/archive/refs/tags/v0.27.0.tar.gz"
-  sha256 "c662c6eafbaa42a4797a4ed6ba4a7602332abf99f6ba6ea88ff8ae59978a86ba"
+  url "https://github.com/badaix/snapcast/archive/refs/tags/v0.29.0.tar.gz"
+  sha256 "ecfb2c96a4920adc4121b1180b37bb86566c359914c14831c0abea4e65d23f92"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any, arm64_ventura:  "5f8b48a023b44476b3616388c9b7e307a4faf9cf84c499ddb4a9005e2f0c4bda"
-    sha256 cellar: :any, arm64_monterey: "2ad42c1d88a43a12d762d96edcda0606c5fda5bb70681eda149985697b11ab11"
-    sha256 cellar: :any, arm64_big_sur:  "8588b358091d73a106db67279386ad7be95f3219daba2bfb5f1c9312b953b718"
-    sha256 cellar: :any, ventura:        "2bbbca9b982f1fec1ddb0586432a2422de1a0e0da70aed728acc7b0606653c07"
-    sha256 cellar: :any, monterey:       "618395d8c3fdcb4e12929e7dc9a1157a5c89f62c0ce064fc28866601097a49eb"
-    sha256 cellar: :any, big_sur:        "ba8f8d14a4b66bc87a4158fbd91b6f043566a65be66bfbb8d16322589960d265"
+    sha256 cellar: :any, arm64_sequoia:  "5d48a09b06c654f46ce0cfd7bd1251be0c37bba213114b2e917c1fe5f0777fbf"
+    sha256 cellar: :any, arm64_sonoma:   "e076ca61d99aeddad5ab382e4f41065351cd22d56e109e60b0ccaf76efe94790"
+    sha256 cellar: :any, arm64_ventura:  "365c1db7191bb5d2f70003ccc55145853432aac3f9bcd84e8e18dfe3ce9907bf"
+    sha256 cellar: :any, arm64_monterey: "f8b852400170331a4fc74987f28014ce13e318efdf78cebf8dbac90750e65926"
+    sha256 cellar: :any, sonoma:         "5f3f8d975856a3fca7883b19bd745b5e29f93c99caf2e23db942298a944abe9d"
+    sha256 cellar: :any, ventura:        "13691ba0b30c5fb0c79e03ef74c58da3af7f8eca534a59b541714d1737b7bc9c"
+    sha256 cellar: :any, monterey:       "f7d46b2c184101630b7f98a8b62f82f465bcf4a4a846756806530c339d9d7d19"
   end
 
   depends_on "boost" => :build
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "flac"
+  depends_on "libogg"
   depends_on "libsoxr"
   depends_on "libvorbis"
   depends_on "opus"

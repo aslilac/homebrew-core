@@ -1,103 +1,72 @@
-require "language/node"
-
 class Lanraragi < Formula
   desc "Web application for archival and reading of manga/doujinshi"
   homepage "https://github.com/Difegue/LANraragi"
-  url "https://github.com/Difegue/LANraragi/archive/v.0.8.90.tar.gz"
-  sha256 "290bd2299962f14667a279dd8e40a1f93d1e9e338c08342af5830a1ce119c93e"
+  url "https://github.com/Difegue/LANraragi/archive/refs/tags/v.0.9.22.tar.gz"
+  sha256 "979b819994fdf4260a19bf276aef407da9c1d9d294bee44fc7a1f600c1ce5696"
   license "MIT"
-  revision 1
   head "https://github.com/Difegue/LANraragi.git", branch: "dev"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "acfebac85db427ee57f85ff766fcde3beb1998d5ab0d1fc068005240d5bcecb5"
-    sha256 cellar: :any,                 arm64_monterey: "2a91a1f7b24fe399ebeb0cd778482e3b565efc549806a8b388be04e597b2535e"
-    sha256 cellar: :any,                 arm64_big_sur:  "b88ce15fc0bee771b32cf2756055223ec938ffdb283dea002e6b863eb9391f4c"
-    sha256 cellar: :any,                 ventura:        "7443f0e124560311ad902beafa77b2f3227ee8534621445ba49e475a1fa4ee78"
-    sha256 cellar: :any,                 monterey:       "62f7edd68fec57a1e42fe09d62442da2c6a30cf9afad9b6b2ab46b47781770d3"
-    sha256 cellar: :any,                 big_sur:        "c9e70d4b8caa235b5fc061db4f8fa89662cdf981f2594fe9d459fe300b0296d1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d10b27225caa01cc0635d3a99f78b5e3f3423e315bf028d37e1d65f437ce0a80"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "2a7275439b294f72023ac1504a45fb965d53755baf6fd9a9e991e1593a810285"
+    sha256 cellar: :any,                 arm64_sonoma:  "b85651e4ab341d8af56a2841123455d929bea02b9bf2894d7ec95436ad7d1811"
+    sha256 cellar: :any,                 arm64_ventura: "2e0d1db33e27f99d320e15b07569941e8493de031cac8ae8d7ddb99e1f55c3b2"
+    sha256 cellar: :any,                 sonoma:        "67b587ef379adbd02c1a06fc00853e511462d60bf1d44c5994f79d975343e1b6"
+    sha256 cellar: :any,                 ventura:       "ea30b9840d34c455744871551cd6c55152e1a9785d28dced8048c75f1c4f1896"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e8df596c32e9240b2457921e8ae84d6d566e202735b0dcf58fe6efd05a169440"
   end
 
-  depends_on "nettle" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
+
   depends_on "cpanminus"
   depends_on "ghostscript"
-  depends_on "giflib"
   depends_on "imagemagick"
-  depends_on "jpeg-turbo"
-  depends_on "libpng"
+  depends_on "libarchive"
   depends_on "node"
   depends_on "openssl@3"
   depends_on "perl"
-  depends_on "redis"
+  depends_on "redis" # TODO: migrate to `valkey`
   depends_on "zstd"
 
-  uses_from_macos "libarchive"
-
-  resource "libarchive-headers" do
-    on_macos do
-      url "https://github.com/apple-oss-distributions/libarchive/archive/refs/tags/libarchive-113.tar.gz"
-      sha256 "b422c37cc5f9ec876d927768745423ac3aae2d2a85686bc627b97e22d686930f"
-    end
-  end
+  uses_from_macos "libffi"
 
   resource "Image::Magick" do
-    url "https://cpan.metacpan.org/authors/id/J/JC/JCRISTY/Image-Magick-7.1.0-0.tar.gz"
-    sha256 "f90c975cbe21445777c40d19c17b7f79023d3064ef8fabcf348cf82654bc16eb"
+    url "https://cpan.metacpan.org/authors/id/J/JC/JCRISTY/Image-Magick-7.1.1-28.tar.gz"
+    sha256 "bc54137346c1d45626e7075015f7d1dae813394af885457499f54878cfc19e0b"
   end
 
   def install
-    ENV.prepend_create_path "PERL5LIB", "#{libexec}/lib/perl5"
-    ENV.prepend_path "PERL5LIB", "#{libexec}/lib"
-
-    # On Linux, use the headers provided by the libarchive formula rather than the ones provided by Apple.
-    ENV["CFLAGS"] = if OS.mac?
-      "-I#{libexec}/include"
-    else
-      "-I#{Formula["libarchive"].opt_include}"
-    end
-
+    ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
     ENV["OPENSSL_PREFIX"] = Formula["openssl@3"].opt_prefix
+    ENV["ARCHIVE_LIBARCHIVE_LIB_DLL"] = Formula["libarchive"].opt_lib/shared_library("libarchive")
+    ENV["ALIEN_INSTALL_TYPE"] = "system"
 
     imagemagick = Formula["imagemagick"]
     resource("Image::Magick").stage do
-      inreplace "Makefile.PL" do |s|
-        s.gsub! "/usr/local/include/ImageMagick-#{imagemagick.version.major}",
+      inreplace "Makefile.PL",
+                "/usr/local/include/ImageMagick-#{imagemagick.version.major}",
                 "#{imagemagick.opt_include}/ImageMagick-#{imagemagick.version.major}"
-      end
 
       system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
       system "make"
       system "make", "install"
     end
 
-    if OS.mac?
-      resource("libarchive-headers").stage do
-        cd "libarchive/libarchive" do
-          (libexec/"include").install "archive.h", "archive_entry.h"
-        end
-      end
-    end
-
     system "cpanm", "Config::AutoConf", "--notest", "-l", libexec
-    system "npm", "install", *Language::Node.local_npm_install_args
+    system "npm", "install", *std_npm_args(prefix: false)
     system "perl", "./tools/install.pl", "install-full"
 
-    prefix.install "README.md"
+    # Modify Archive::Libarchive to help find brew `libarchive`. Although environment
+    # variables like `ARCHIVE_LIBARCHIVE_LIB_DLL` and `FFI_CHECKLIB_PATH` exist,
+    # it is difficult to guarantee every way of running (like `npm start`) uses them.
+    inreplace libexec/"lib/perl5/Archive/Libarchive/Lib.pm",
+              "$ENV{ARCHIVE_LIBARCHIVE_LIB_DLL}",
+              "'#{ENV["ARCHIVE_LIBARCHIVE_LIB_DLL"]}'"
+
     (libexec/"lib").install Dir["lib/*"]
     libexec.install "script", "package.json", "public", "templates", "tests", "lrr.conf"
-    cd "tools/build/homebrew" do
-      bin.install "lanraragi"
-      libexec.install "redis.conf"
-    end
-  end
-
-  def caveats
-    <<~EOS
-      Automatic thumbnail generation will not work properly on macOS < 10.15 due to the bundled Libarchive being too old.
-      Opening archives for reading will generate thumbnails normally.
-    EOS
+    libexec.install "tools/build/homebrew/redis.conf"
+    bin.install "tools/build/homebrew/lanraragi"
   end
 
   test do

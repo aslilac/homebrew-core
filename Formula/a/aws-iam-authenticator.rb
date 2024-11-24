@@ -1,43 +1,46 @@
 class AwsIamAuthenticator < Formula
   desc "Use AWS IAM credentials to authenticate to Kubernetes"
   homepage "https://github.com/kubernetes-sigs/aws-iam-authenticator"
-  url "https://github.com/kubernetes-sigs/aws-iam-authenticator.git",
-      tag:      "v0.6.11",
-      revision: "08f0ebc973028f5b77c9a5f05c452b99664cb280"
+  url "https://github.com/kubernetes-sigs/aws-iam-authenticator/archive/refs/tags/v0.6.28.tar.gz"
+  sha256 "fd079b9aad27dedb6f5d132e6662aa60a9f7a25580af2d343f89882a4a6222f3"
   license "Apache-2.0"
   head "https://github.com/kubernetes-sigs/aws-iam-authenticator.git", branch: "master"
 
+  # Upstream has marked a version as "pre-release" in the past, so we check
+  # GitHub releases instead of Git tags. Upstream also doesn't always mark the
+  # highest version as the "Latest" release, so we have to use the
+  # `GithubReleases` strategy (instead of `GithubLatest`) for now.
   livecheck do
     url :stable
-    strategy :github_latest
+    strategy :github_releases
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c57aeb4520baaa087d34aef9785944ffaad5fa2c4cce8593869d905225d751c1"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c57aeb4520baaa087d34aef9785944ffaad5fa2c4cce8593869d905225d751c1"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c57aeb4520baaa087d34aef9785944ffaad5fa2c4cce8593869d905225d751c1"
-    sha256 cellar: :any_skip_relocation, ventura:        "7051bab2ea6417f2c9d12c5ff83ae6b8ad4fefc182b31b5ec4777db7419602b2"
-    sha256 cellar: :any_skip_relocation, monterey:       "7051bab2ea6417f2c9d12c5ff83ae6b8ad4fefc182b31b5ec4777db7419602b2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "7051bab2ea6417f2c9d12c5ff83ae6b8ad4fefc182b31b5ec4777db7419602b2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cd8781bebcb0400179428478e66576190fdd133be73ff319c22828cc085c43a3"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2247afcae2b6628195756935701bc46d873d98ae8678cfd25d86421059079b1b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2247afcae2b6628195756935701bc46d873d98ae8678cfd25d86421059079b1b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "2247afcae2b6628195756935701bc46d873d98ae8678cfd25d86421059079b1b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a9936a5ea230627da2d38677e48971316c00e8a5904e1f3cd6b29f58d9915b40"
+    sha256 cellar: :any_skip_relocation, ventura:       "a9936a5ea230627da2d38677e48971316c00e8a5904e1f3cd6b29f58d9915b40"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9b1bf56e51287b1dd746f9c047fe21594623a57f8168e69cd9bf7bbb5f390b8a"
   end
 
   depends_on "go" => :build
 
   def install
-    ldflags = ["-s", "-w",
-               "-X sigs.k8s.io/aws-iam-authenticator/pkg.Version=#{version}",
-               "-X sigs.k8s.io/aws-iam-authenticator/pkg.CommitID=#{Utils.git_head}",
-               "-buildid=''"]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/aws-iam-authenticator"
-    prefix.install_metafiles
+    ldflags = %W[
+      -s -w
+      -X sigs.k8s.io/aws-iam-authenticator/pkg.Version=#{version}
+      -X sigs.k8s.io/aws-iam-authenticator/pkg.CommitID=#{tap.user}
+      -buildid=
+    ]
+    system "go", "build", *std_go_args(ldflags:), "./cmd/aws-iam-authenticator"
   end
 
   test do
     output = shell_output("#{bin}/aws-iam-authenticator version")
     assert_match %Q("Version":"#{version}"), output
 
-    system "#{bin}/aws-iam-authenticator", "init", "-i", "test"
+    system bin/"aws-iam-authenticator", "init", "-i", "test"
     contents = Dir.entries(".")
     ["cert.pem", "key.pem", "aws-iam-authenticator.kubeconfig"].each do |created|
       assert_includes contents, created

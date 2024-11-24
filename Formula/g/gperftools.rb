@@ -1,12 +1,9 @@
 class Gperftools < Formula
   desc "Multi-threaded malloc() and performance analysis tools"
   homepage "https://github.com/gperftools/gperftools"
+  url "https://github.com/gperftools/gperftools/releases/download/gperftools-2.16/gperftools-2.16.tar.gz"
+  sha256 "f12624af5c5987f2cc830ee534f754c3c5961eec08004c26a8b80de015cf056f"
   license "BSD-3-Clause"
-
-  stable do
-    url "https://github.com/gperftools/gperftools/releases/download/gperftools-2.12/gperftools-2.12.tar.gz"
-    sha256 "fb611b56871a3d9c92ab0cc41f9c807e8dfa81a54a4a9de7f30e838756b5c7c6"
-  end
 
   livecheck do
     url :stable
@@ -15,13 +12,12 @@ class Gperftools < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "544641aac87613e9a372be604b4cf74049a924cf8f9998d8c6bbaf16bbb1048a"
-    sha256 cellar: :any,                 arm64_monterey: "0f6f0bfb2422e7d0bad20f4efc1b14057e8b6d2c324fe87d54f5241545770e83"
-    sha256 cellar: :any,                 arm64_big_sur:  "2e7bd053cb4b19fd4baa5c8d3f5e320bcc9072c7d27ec72d549c62b0cc747f7c"
-    sha256 cellar: :any,                 ventura:        "a24bfb67a31001cf9af30c8987620d031590362ed38b7324a3d61ca047a91c03"
-    sha256 cellar: :any,                 monterey:       "62318959469fdf36e2478f5275eb515d2e8dea8bca4b8c707cafe56adfeba1cc"
-    sha256 cellar: :any,                 big_sur:        "2e9667c2aa56f63b97a7676269b38e7a8eee275d0ed5d3ef3450ccad8716f92d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e0529fb74df942233be49fe092c20cb3ea66c9b434050ad76c32183dcb085fc6"
+    sha256 cellar: :any,                 arm64_sequoia: "b4d276871df67ffac99cd78e33136c6c10cd03b7953fd2338157484eb98aa51c"
+    sha256 cellar: :any,                 arm64_sonoma:  "98aaefc52161d42aaa50012e0d1f25f6b893f00369947bd72b5976be6651016e"
+    sha256 cellar: :any,                 arm64_ventura: "d428485901b9144e3b3d95ce3f0c4b344e1760dedb9672251ede5c6fac05b3a7"
+    sha256 cellar: :any,                 sonoma:        "b0f53d444765abb98c3c6756b4453898c59ff9664801f3f8f753b391e9481a1d"
+    sha256 cellar: :any,                 ventura:       "11454d149fe95769f52b1a679b7543a377896b136ed8756934b2309b5e79ed4f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "04f8ba407cd4997e7c0f62e25568c3216a36b1dbc50335b5a8c53351b4a73614"
   end
 
   head do
@@ -41,9 +37,7 @@ class Gperftools < Formula
   end
 
   def install
-    ENV.append_to_cflags "-D_XOPEN_SOURCE" if OS.mac?
-
-    system "autoreconf", "-fiv" if build.head?
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
 
     args = [
       "--disable-dependency-tracking",
@@ -57,7 +51,7 @@ class Gperftools < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~CC
       #include <assert.h>
       #include <gperftools/tcmalloc.h>
 
@@ -70,11 +64,11 @@ class Gperftools < Formula
 
         return 0;
       }
-    EOS
+    CC
     system ENV.cc, "test.c", "-L#{lib}", "-ltcmalloc", "-o", "test"
     system "./test"
 
-    (testpath/"segfault.c").write <<~EOS
+    (testpath/"segfault.c").write <<~C
       #include <stdio.h>
       #include <stdlib.h>
 
@@ -85,7 +79,7 @@ class Gperftools < Formula
         free(ptr);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "segfault.c", "-L#{lib}", "-ltcmalloc", "-o", "segfault"
     system "./segfault"
   end

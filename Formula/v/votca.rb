@@ -1,23 +1,22 @@
 class Votca < Formula
   desc "Versatile Object-oriented Toolkit for Coarse-graining Applications"
   homepage "https://www.votca.org/"
-  url "https://github.com/votca/votca/archive/refs/tags/v2022.1.tar.gz"
-  sha256 "4710a7552f94789936324d76d2e0830b576de8d3f1c605748e2d20947d018100"
+  url "https://github.com/votca/votca/archive/refs/tags/v2024.2.tar.gz"
+  sha256 "704d50f64bbfa2e19d0aa4b5726ac35c20c3b9b45554be5f1e1417d430e31c24"
   license "Apache-2.0"
-  revision 2
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "ad34a8fdf13c83d4cf4ed6ee1aad28bb6161f4cc438f81b340cecfb4ac5c7ed3"
-    sha256 cellar: :any,                 arm64_monterey: "0784db80c5bc27862a3ba49f00d62c805ec18744261639e396886eae1b49f555"
-    sha256 cellar: :any,                 arm64_big_sur:  "5fab23c3eaaddf5f2925d59faa696892bc87cd6a9e8773d0e15ede3888b5a798"
-    sha256 cellar: :any,                 ventura:        "ea91a1fb5731bd55db8c3fe18fcfa9ac960123b467b5e584ee74e1122310da42"
-    sha256 cellar: :any,                 monterey:       "42ec271c4ae0624818a3d0b121c64e7fb51bc1aaee27ac967e56579d7b5f9346"
-    sha256 cellar: :any,                 big_sur:        "ec1350082099bef7701d08a0c9015f900a356bbe97c3d907cec9b28f0313a020"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2acf1dbc9533e8d317ff5215f37f3a336177d6b28f30718c335c6dafb954847f"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "3bee35e3501b30d45351535d5df50f4529b6db11d024df9b48d0e1d712edd626"
+    sha256 cellar: :any,                 arm64_sonoma:  "6f4e7335acbdcae62e289c13f25384583a9073b7304839627115b44948f3e3b4"
+    sha256 cellar: :any,                 arm64_ventura: "0bb72aea264b3b63efcbb022883c5870ba5517b3bd9790ea15ed9e78118ad05d"
+    sha256 cellar: :any,                 sonoma:        "8795bb4558db3b7744dd1383681d53718476a22974368a1ea3ca06d818e0baa8"
+    sha256 cellar: :any,                 ventura:       "4fdb6152fdedf5e0dd7971fa9b5646c6a915874333f6946739520a86edd41316"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8a263fe3977df21e1d8033c82270ffa20c86d4dda43393f7ca728699599dcb23"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "boost"
   depends_on "eigen"
   depends_on "fftw"
@@ -27,11 +26,13 @@ class Votca < Formula
   depends_on "libecpint"
   depends_on "libint"
   depends_on "libxc"
-  depends_on "python@3.11"
+  depends_on "numpy"
+  depends_on "python@3.13"
 
   uses_from_macos "expat"
 
   on_macos do
+    depends_on "libaec"
     depends_on "libomp"
   end
 
@@ -49,12 +50,12 @@ class Votca < Formula
   end
 
   test do
-    system "#{bin}/csg_property", "--help"
+    system bin/"csg_property", "--help"
     (testpath/"table.in").write <<~EOS
       0 0 i
       1 1 i
     EOS
-    system "#{bin}/csg_resample", "--in", "table.in", "--out", "table.out", "--grid", "0:0.1:1", "--type", "linear"
+    system bin/"csg_resample", "--in", "table.in", "--out", "table.out", "--grid", "0:0.1:1", "--type", "linear"
     assert_path_exists "#{testpath}/table.out"
   end
 end

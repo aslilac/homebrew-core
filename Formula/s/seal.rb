@@ -1,18 +1,19 @@
 class Seal < Formula
   desc "Easy-to-use homomorphic encryption library"
   homepage "https://github.com/microsoft/SEAL"
-  url "https://github.com/microsoft/SEAL/archive/refs/tags/v4.1.1.tar.gz"
-  sha256 "af9bf0f0daccda2a8b7f344f13a5692e0ee6a45fea88478b2b90c35648bf2672"
+  url "https://github.com/microsoft/SEAL/archive/refs/tags/v4.1.2.tar.gz"
+  sha256 "55601ea4c9ab96eb29a8e37027637774e64a2868d02852474d625ffced0b92cb"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "be6bc6562cd94e6cdaaaf9fea4678a9d203891103136b54ebebd207f925e1518"
-    sha256 cellar: :any,                 arm64_monterey: "815a7f97fc5c9ac4f1dff9aefcfa9d8dc2de686db9986895cfdd03e67c532365"
-    sha256 cellar: :any,                 arm64_big_sur:  "47554e0e49d403571cb2a8dd1556173684c9137bb1795041ab7ffbcf01f8c2ea"
-    sha256 cellar: :any,                 ventura:        "4913771595a3039b887b499c9a5432c6ec83a4e6bb53e426ab10451258cdfa5c"
-    sha256 cellar: :any,                 monterey:       "1b4df4b2882c98e5577e0cbfe992ada1125250070e9343459c0451524d2f2831"
-    sha256 cellar: :any,                 big_sur:        "01a9f4a313feac9bf415099ac09c9e3647bbf3304006ce06f871cf589c7e0588"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "311dbf6d2608ee2921e86a72bb4bbe83c1e859676b4a95dabb3822ab700ff011"
+    sha256 cellar: :any,                 arm64_sequoia:  "95d3610de7c109265e775fcb6ef1547f2cb2f71d2be1a0e1d3c616cc0a708157"
+    sha256 cellar: :any,                 arm64_sonoma:   "fde6d946891affcafc3e5231b576a1b67aed87ab83cd225eace77d72827b1193"
+    sha256 cellar: :any,                 arm64_ventura:  "45449875a4c66daedc4730ee32d6c9d03875fc2139927d7c9e5716ebc2598e94"
+    sha256 cellar: :any,                 arm64_monterey: "b782ba0559923f33086a020b63ab5bcd05fa5262f40a166eb0d3be7ebdd26131"
+    sha256 cellar: :any,                 sonoma:         "f2d97c6b546621bc7a19cf8825787ec57f953ce9caa36d9e41005611d0262e00"
+    sha256 cellar: :any,                 ventura:        "7dcd8c0c88ffe2156af805090507e07389f5a66213f72b48a5ba817929f8b2a2"
+    sha256 cellar: :any,                 monterey:       "0d4a9d88654ccfc0becd6841ed2eaabdfb5673aae8b8477c8751de112404295b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "284c52f3e1190e14db52e5cf0518ef6fb78011b2a611d7081b1572ca0933ce19"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -52,7 +53,7 @@ class Seal < Formula
     args = std_cmake_args + %W[
       -DBUILD_SHARED_LIBS=ON
       -DSEAL_BUILD_DEPS=OFF
-      -DSEAL_USE_ALIGNED_ALLOC=#{(MacOS.version > :mojave) ? "ON" : "OFF"}
+      -DSEAL_USE_ALIGNED_ALLOC=#{(OS.mac? && MacOS.version > :mojave) ? "ON" : "OFF"}
       -DSEAL_USE_INTEL_HEXL=#{Hardware::CPU.intel? ? "ON" : "OFF"}
       -DHEXL_DIR=#{lib}/cmake
       -DCMAKE_CXX_FLAGS=-I#{include}
@@ -71,7 +72,7 @@ class Seal < Formula
     File.delete testpath/"examples/CMakeLists.txt"
 
     # Chip in a new "CMakeLists.txt" for example code tests
-    (testpath/"examples/CMakeLists.txt").write <<~EOS
+    (testpath/"examples/CMakeLists.txt").write <<~CMAKE
       cmake_minimum_required(VERSION 3.12)
       project(SEALExamples VERSION #{version} LANGUAGES CXX)
       # Executable will be in ../bin
@@ -98,12 +99,13 @@ class Seal < Formula
 
       # Link Microsoft SEAL
       target_link_libraries(sealexamples SEAL::seal_shared)
-    EOS
+    CMAKE
 
-    system "cmake", "examples", "-DHEXL_DIR=#{lib}/cmake"
-    system "make"
+    system "cmake", "-S", "examples", "-B", "build", "-DHEXL_DIR=#{lib}/cmake"
+    system "cmake", "--build", "build", "--target", "sealexamples"
+
     # test examples 1-5 and exit
     input = "1\n2\n3\n4\n5\n0\n"
-    assert_match "Correct", pipe_output("bin/sealexamples", input)
+    assert_match "Parameter validation (success): valid", pipe_output("bin/sealexamples", input)
   end
 end

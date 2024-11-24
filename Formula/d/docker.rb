@@ -2,8 +2,8 @@ class Docker < Formula
   desc "Pack, ship and run any application as a lightweight container"
   homepage "https://www.docker.com/"
   url "https://github.com/docker/cli.git",
-      tag:      "v24.0.5",
-      revision: "ced099660009713e0e845eeb754e6050dbaa45d0"
+      tag:      "v27.3.1",
+      revision: "ce1223035ac3ab8922717092e63a184cf67b493d"
   license "Apache-2.0"
   head "https://github.com/docker/cli.git", branch: "master"
 
@@ -13,13 +13,12 @@ class Docker < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "535cbf2123170068ee315fdf5e8ceeacedc22e9a89cd17d45d2194b07dce3ea0"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "535cbf2123170068ee315fdf5e8ceeacedc22e9a89cd17d45d2194b07dce3ea0"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "535cbf2123170068ee315fdf5e8ceeacedc22e9a89cd17d45d2194b07dce3ea0"
-    sha256 cellar: :any_skip_relocation, ventura:        "25a7049a99a9a2e8a9729a2884a177e5fb692f160efd07db5be26a44d5174c66"
-    sha256 cellar: :any_skip_relocation, monterey:       "25a7049a99a9a2e8a9729a2884a177e5fb692f160efd07db5be26a44d5174c66"
-    sha256 cellar: :any_skip_relocation, big_sur:        "25a7049a99a9a2e8a9729a2884a177e5fb692f160efd07db5be26a44d5174c66"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c4f5da4e794d1e8f83fd68981116896cdada3b0f8884bd868046e03c6159afe0"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dcd25100f823e80d665ce0bed51fe5016a4839669cb8bbfbb2e5be0e26dcc545"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "dcd25100f823e80d665ce0bed51fe5016a4839669cb8bbfbb2e5be0e26dcc545"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "dcd25100f823e80d665ce0bed51fe5016a4839669cb8bbfbb2e5be0e26dcc545"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d1ce47ef4f6ad9f17ac563ff39524beee77ad1b2baab58a4d4cac62b56367ce6"
+    sha256 cellar: :any_skip_relocation, ventura:       "d1ce47ef4f6ad9f17ac563ff39524beee77ad1b2baab58a4d4cac62b56367ce6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4f9af7f20c3d2b82d2146ffa6e1a524edfe8afc28251e4ed2dcbee01fe13f855"
   end
 
   depends_on "go" => :build
@@ -27,16 +26,20 @@ class Docker < Formula
   depends_on "docker-completion"
 
   def install
+    # TODO: Drop GOPATH when merged/released: https://github.com/docker/cli/pull/4116
     ENV["GOPATH"] = buildpath
     ENV["GO111MODULE"] = "auto"
-
     (buildpath/"src/github.com/docker").install_symlink buildpath => "cli"
-    ldflags = ["-X \"github.com/docker/cli/cli/version.BuildTime=#{time.iso8601}\"",
-               "-X github.com/docker/cli/cli/version.GitCommit=#{Utils.git_short_head}",
-               "-X github.com/docker/cli/cli/version.Version=#{version}",
-               "-X \"github.com/docker/cli/cli/version.PlatformName=Docker Engine - Community\""]
 
-    system "go", "build", *std_go_args(ldflags: ldflags), "github.com/docker/cli/cmd/docker"
+    ldflags = %W[
+      -s -w
+      -X github.com/docker/cli/cli/version.BuildTime=#{time.iso8601}
+      -X github.com/docker/cli/cli/version.GitCommit=#{Utils.git_short_head}
+      -X github.com/docker/cli/cli/version.Version=#{version}
+      -X "github.com/docker/cli/cli/version.PlatformName=Docker Engine - Community"
+    ]
+
+    system "go", "build", *std_go_args(ldflags:), "github.com/docker/cli/cmd/docker"
 
     Pathname.glob("man/*.[1-8].md") do |md|
       section = md.to_s[/\.(\d+)\.md\Z/, 1]

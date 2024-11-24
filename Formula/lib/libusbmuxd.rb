@@ -1,38 +1,34 @@
 class Libusbmuxd < Formula
   desc "USB multiplexor library for iOS devices"
   homepage "https://www.libimobiledevice.org/"
-  url "https://github.com/libimobiledevice/libusbmuxd/archive/2.0.2.tar.gz"
-  sha256 "8ae3e1d9340177f8f3a785be276435869363de79f491d05d8a84a59efc8a8fdc"
+  url "https://github.com/libimobiledevice/libusbmuxd/releases/download/2.1.0/libusbmuxd-2.1.0.tar.bz2"
+  sha256 "c35bf68f8e248434957bd5b234c389b02206a06ecd9303a7fb931ed7a5636b16"
   license all_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later"]
   head "https://github.com/libimobiledevice/libusbmuxd.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "839072b0f95782fb42835a56e17177d641efab6aed22e1864f6cbcf5501f4e5a"
-    sha256 cellar: :any,                 arm64_monterey: "27d1d27bbc4b9b2079bebe6460610c4c57acc9f2cffe51374ede91b717f7b49b"
-    sha256 cellar: :any,                 arm64_big_sur:  "9cd9d1df802799e026f09775bbde2c4bf0557fb3e1f5919f14a5b0def0b0255e"
-    sha256 cellar: :any,                 ventura:        "6f10083e1ab4c71cc4f21e570f1a6a988198f74dea26a0740625abce646ddc02"
-    sha256 cellar: :any,                 monterey:       "b5e52f9c8804a553ee3832d13c3e2a56a3253f17573addc3d8231c1503b35d07"
-    sha256 cellar: :any,                 big_sur:        "faf8346e0e4caa8ac7c4ac7e3b838693f847a88120cf477b8e8c82bd0a7628f6"
-    sha256 cellar: :any,                 catalina:       "72fcc67099f03a3d68faa131eaf464a431e5d5eaea0a5ddb9b8414c065f7ef73"
-    sha256 cellar: :any,                 mojave:         "132ee76aa823e51abb97c92c53ab8a30819720ced7020080f949cf4fd937f6ea"
-    sha256 cellar: :any,                 high_sierra:    "67c3d43cb2a1ebfd68fba1c9b51b419288fedefc93f101adeea1b5f6bdf1ad77"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b1f289531042024ef7fb1f87cad05f36a1c68ece14614266cf0564e32b3565ac"
+    sha256 cellar: :any,                 arm64_sequoia:  "5d4892dedecd97caba1f56522add5e601b4bc09ccea572c7c9b3ff84bd14744a"
+    sha256 cellar: :any,                 arm64_sonoma:   "8149dcd7d29cdf463c40a10e8030dcb23a4eb9e69078a88fb2e8671d9a27bdad"
+    sha256 cellar: :any,                 arm64_ventura:  "3908c3a4d699d2aff22b40e6353c498042153a47798357c4500b76b495f24e88"
+    sha256 cellar: :any,                 arm64_monterey: "738b1efb11135136a9066ee73379829f29c57df598e989631d26e4ae5401f456"
+    sha256 cellar: :any,                 sonoma:         "9b366b324e9758bd9f5d10c536e40ef2d90ed2caf2886ff7e55e13fe496628dd"
+    sha256 cellar: :any,                 ventura:        "b188d3fcab748c6ac1e5740129bf4a07b2756dedd557d89f6f1291715bf6c45e"
+    sha256 cellar: :any,                 monterey:       "4ea63ce7da1344b4e2fde47b7c2a9d8bad424bd5ce9282f6af1aa66a1155135b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f3e9212633194e2e9436afd98d00fd5e167ec0ff13f1abfd065112dd2dd32bd3"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
+  depends_on "libimobiledevice-glue"
   depends_on "libplist"
-  depends_on "libusb"
 
   uses_from_macos "netcat" => :test
 
   def install
-    system "./autogen.sh"
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "./autogen.sh", *std_configure_args, "--disable-silent-rules" if build.head?
+    system "./configure", *std_configure_args, "--disable-silent-rules"
     system "make", "install"
   end
 

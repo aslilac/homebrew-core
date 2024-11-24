@@ -1,30 +1,38 @@
 class Bfs < Formula
   desc "Breadth-first version of find"
   homepage "https://tavianator.com/projects/bfs.html"
-  url "https://github.com/tavianator/bfs/archive/3.0.1.tar.gz"
-  sha256 "a38bb704201ed29f4e0b989fb2ab3791ca51c3eff90acfc31fff424579bbf962"
+  url "https://github.com/tavianator/bfs/archive/refs/tags/4.0.4.tar.gz"
+  sha256 "209da9e9f43d8fe30fd689c189ea529e9d6b5358ce84a63a44721003aea3e1ca"
   license "0BSD"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "367342e005ccaa8c3a575ec567ffd8dda530f9ced0b13f2a796297178d3def47"
-    sha256 cellar: :any,                 arm64_monterey: "dcf63dc3886001cdb6caf9c97369751cc2b26e805d2dddd31622b82c5ffaa35b"
-    sha256 cellar: :any,                 arm64_big_sur:  "33ca6d4da0ab1a292b5370449545afa81f02106ff2764c49aab632bc20d242b7"
-    sha256 cellar: :any,                 ventura:        "a3e74b2597fce21e2e36e787214b3d9832c22db22c58d3987b718436d9bae564"
-    sha256 cellar: :any,                 monterey:       "29d42f0e8b5acc752998bf9e2b89fbe6ac8f3ef9b4b6941cf6c1e0dead449a85"
-    sha256 cellar: :any,                 big_sur:        "ab33de3d13063eb59c205d1e7ef2579020f5024bd71e17e2258b55d87e581ccd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c1c9c28b895956c0f81272ad5ab9c73bc93999fde4d7fa987f889f4250163123"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5552689137e104b1aee61a90d3aba3b9f7b1e1e9fcce057c6410b272965013a2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0065a6e741b15d10ada4de3c7feb0b104680211fe156a39e3ba94b2ff2712e74"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "5c61b922193327d4765bc2197afaceb8f4a1721fac902cb4382506691ac9851c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6819d8ceb9706fdce6c9b8bdb39179c9878d1955e17abe56587bab01bc3e18da"
+    sha256 cellar: :any_skip_relocation, ventura:       "41a8d395a39271337b0d531cac5c7d99eeb3920c4c3bbfebe0c5fc7b881b072c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "991460e41b715564748ecfb54d11bff9d4e1a9343c3eb8ba1afaafc82fe7be39"
   end
 
   depends_on "oniguruma"
 
+  on_macos do
+    depends_on "llvm" => :build if DevelopmentTools.clang_build_version <= 1300
+  end
+
   on_linux do
     depends_on "acl"
     depends_on "libcap"
+    depends_on "liburing"
   end
 
   def install
-    system "make", "release"
-    system "make", "install", "PREFIX=#{prefix}"
+    ENV.llvm_clang if OS.mac? && DevelopmentTools.clang_build_version <= 1300
+
+    system "./configure", "--enable-release"
+    system "make"
+    system "make", "install", "DEST_PREFIX=#{prefix}", "DEST_MANDIR=#{man}"
+    bash_completion.install share/"bash-completion/completions/bfs"
   end
 
   test do

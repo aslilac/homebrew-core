@@ -1,7 +1,7 @@
 class Libswiftnav < Formula
   desc "C library implementing GNSS related functions and algorithms"
   homepage "https://github.com/swift-nav/libswiftnav"
-  url "https://github.com/swift-nav/libswiftnav/archive/v2.4.2.tar.gz"
+  url "https://github.com/swift-nav/libswiftnav/archive/refs/tags/v2.4.2.tar.gz"
   sha256 "9dfe4ce4b4da28ffdb71acad261eef4dd98ad79daee4c1776e93b6f1765fccfa"
   license "LGPL-3.0-only"
 
@@ -11,9 +11,12 @@ class Libswiftnav < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "1ddd75cc7bfb08208ea88e3bbc3f3d5549c9c72511dc9378ab31101d50591c48"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0596c6cfaf45b62cd39b4fc4fc7f01b8b786914471e1b534be2f54c7f64921b1"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "4e3b556518c6860f34af3d1a2e4e1c3c134d089f6b86b53f8317fa8eff9f99b6"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "df259cd788dc4c271a2ae2296c17286163528eeb04cee8412fe450cf4a1549d8"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a25d1d7bab6a7c1fe2b53c6b22cd330abc8013a0c82764c96284e924dd9ef375"
+    sha256 cellar: :any_skip_relocation, sonoma:         "2d1816993437aea825dad690affb239660bed9a4e61b04536bc7cf6758c5a5e1"
     sha256 cellar: :any_skip_relocation, ventura:        "b9f845cbb35711aabf115910c838fbc2c5fedef78728ae695e28e5c038425885"
     sha256 cellar: :any_skip_relocation, monterey:       "b5e458c0d632aa814f63697a4a1fdd2a96d519f3846c9a5f7e04964df7cad26d"
     sha256 cellar: :any_skip_relocation, big_sur:        "39097a000739be8211214f46f80bb94709d3cc2784f7b4930d1b74107aeb87fc"
@@ -35,14 +38,13 @@ class Libswiftnav < Formula
   def install
     (buildpath/"cmake/common").install resource("swift-nav/cmake")
 
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdlib.h>
       #include <stdio.h>
       #include <swiftnav/edc.h>
@@ -61,7 +63,7 @@ class Libswiftnav < Formula
           exit(0);
         }
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L", lib, "-lswiftnav", "-o", "test"
     system "./test"
   end

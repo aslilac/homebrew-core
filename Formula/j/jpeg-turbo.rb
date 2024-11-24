@@ -1,35 +1,28 @@
 class JpegTurbo < Formula
   desc "JPEG image codec that aids compression and decompression"
   homepage "https://www.libjpeg-turbo.org/"
-  license "IJG"
+  url "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.0.4/libjpeg-turbo-3.0.4.tar.gz"
+  sha256 "99130559e7d62e8d695f2c0eaeef912c5828d5b84a0537dcb24c9678c9d5b76b"
+  license all_of: [
+    "IJG", # libjpeg API library and programs
+    "Zlib", # libjpeg-turbo SIMD source code
+    "BSD-3-Clause", # TurboJPEG API library and programs
+  ]
   head "https://github.com/libjpeg-turbo/libjpeg-turbo.git", branch: "main"
 
-  stable do
-    url "https://downloads.sourceforge.net/project/libjpeg-turbo/3.0.0/libjpeg-turbo-3.0.0.tar.gz"
-    sha256 "c77c65fcce3d33417b2e90432e7a0eb05f59a7fff884022a9d931775d583bfaa"
-
-    # Patch to fix regression test concurrency issue. Remove in next release.
-    patch do
-      url "https://github.com/libjpeg-turbo/libjpeg-turbo/commit/035ea386d1b6a99a8a1e2ab57cc1fc903569136c.patch?full_index=1"
-      sha256 "7389d29c16be16ae23e40f6ac31e78ca366550644ab96810f1e21bece71919bb"
-    end
-  end
-
-  # Versions with a 90+ patch are unstable (e.g., 2.1.90 corresponds to
-  # 3.0 beta1) and this regex should only match the stable versions.
   livecheck do
     url :stable
-    regex(%r{url=.*?/libjpeg-turbo[._-]v?(\d+\.\d+\.(?:\d|[1-8]\d+)(?:\.\d+)*)\.t}i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "1971c1fa66c2580fa0bfafe5350c6170bfe7395a4e503e7bfe0c69ec2e353010"
-    sha256 cellar: :any,                 arm64_monterey: "89da2a33e1e0e66c1fa10acb40e7c632716a79aa1f82c9175f4cd270cd88bc77"
-    sha256 cellar: :any,                 arm64_big_sur:  "8365422894438d22ff64db9387c6445ca5c9cbdecda15da0ef018c7fe355eda1"
-    sha256 cellar: :any,                 ventura:        "07d7b63893cbdf50c91ec9f3ca7568c774e03c50a8a98d003ee49665b7af0a8f"
-    sha256 cellar: :any,                 monterey:       "468dc920dff06894e1a9097a3d522472e0f59218523585ae78abee561eafc5dd"
-    sha256 cellar: :any,                 big_sur:        "4ced360a9d7c567dc49ae6dc6370ed92edbeb0ed6917c40bc56aa3ba73e51ce5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "44943f311f5999c84a5f6d3695b0fa96f6f336eb0f50a5a0174df7febf596174"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "45448929e1c82c5c958da022e2c4396d8c5e7d753005da3dce89fe4f33b80d91"
+    sha256 cellar: :any,                 arm64_sonoma:  "5f9b4512cc023a468d69a021eb4ce1a6cc112a94202f7a6c2c2a69982c210f2b"
+    sha256 cellar: :any,                 arm64_ventura: "8f8c316eca20f02b946386c2bfd11ced6d1953272336eb01661779697d6f7b55"
+    sha256 cellar: :any,                 sonoma:        "39ec0259e399be685749b2a9cef9cef6ba25314ff2fe32be0e4b0cbcb903e070"
+    sha256 cellar: :any,                 ventura:       "8cc44d75e66f9fd844d9275b5289b2dbf3ffad9bc1651391ae84e1406b5c6a3a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4c5a765ce6321ddfb4704d06037ae21ca71883135581c4717f395736cb448c2f"
   end
 
   depends_on "cmake" => :build
@@ -48,14 +41,26 @@ class JpegTurbo < Formula
 
   def install
     args = ["-DWITH_JPEG8=1", "-DCMAKE_EXE_LINKER_FLAGS=-Wl,-rpath,#{rpath}"]
-    # https://github.com/libjpeg-turbo/libjpeg-turbo/issues/709
-    args << "-DFLOATTEST12=" if Hardware::CPU.arm? && MacOS.version >= :ventura
+    if Hardware::CPU.arm? && OS.mac?
+      if MacOS.version >= :ventura
+        # https://github.com/libjpeg-turbo/libjpeg-turbo/issues/709
+        args += ["-DFLOATTEST8=fp-contract",
+                 "-DFLOATTEST12=fp-contract"]
+      elsif MacOS.version == :monterey
+        # https://github.com/libjpeg-turbo/libjpeg-turbo/issues/734
+        args << "-DFLOATTEST12=no-fp-contract"
+      end
+    end
     args += std_cmake_args.reject { |arg| arg["CMAKE_INSTALL_LIBDIR"].present? }
 
     system "cmake", "-S", ".", "-B", "build", *args
     system "cmake", "--build", "build"
     system "ctest", "--test-dir", "build", "--rerun-failed", "--output-on-failure", "--parallel", ENV.make_jobs
     system "cmake", "--install", "build"
+
+    # Avoid rebuilding dependents that hard-code the prefix.
+    inreplace [lib/"pkgconfig/libjpeg.pc", lib/"pkgconfig/libturbojpeg.pc"],
+              prefix, opt_prefix
   end
 
   test do

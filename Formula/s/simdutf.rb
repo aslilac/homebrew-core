@@ -1,27 +1,48 @@
 class Simdutf < Formula
   desc "Unicode conversion routines, fast"
   homepage "https://github.com/simdutf/simdutf"
-  url "https://github.com/simdutf/simdutf/archive/refs/tags/v3.2.17.tar.gz"
-  sha256 "c24e3eec1e08522a09b33e603352e574f26d367a7701bf069a65881f64acd519"
+  url "https://github.com/simdutf/simdutf/archive/refs/tags/v5.6.3.tar.gz"
+  sha256 "503070ddf27e26c051b9500dfc7354ec8850e11076f47db32635931c85b630c0"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/simdutf/simdutf.git", branch: "master"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e47da9bcb4afcd60d9378dbd36186a646ccd17e0ff2863e3ec8885709160b090"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9ee98252314db62b8306d26e9d2468408dd3718cae28f3db15e2274f22f0c1f2"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "75ba65683f24bc6aab82e88147783bf2b55dab87e4b28204e02e59f2013621f1"
-    sha256 cellar: :any_skip_relocation, ventura:        "45671f3cd92efd2353cab9ddf3626cea80b820e9b39c8a55667aa7d182e10e25"
-    sha256 cellar: :any_skip_relocation, monterey:       "1746c5e39177dc930f838c2c0bf5bf584adacd640cc84b936a06f6e107f5e3fb"
-    sha256 cellar: :any_skip_relocation, big_sur:        "77c4f97ed9d907527660fbf00e2ef3c19d7ab7779439b594b93988e4beee11d6"
+    sha256 cellar: :any, arm64_sequoia: "6ad935b6baf56a640e4b71b5e33e4f3cf88aeed80142a04d60e5e01fdbc37cf9"
+    sha256 cellar: :any, arm64_sonoma:  "0b23e4cdc44e3f2e2ff957534e80d34c5f3e36e3bb9314a604f69dd6c5d289da"
+    sha256 cellar: :any, arm64_ventura: "a68aeb8f1fd6248d6c6e5a2c16c895c8a2d3d9a0af166ac4c068530a6454c8b1"
+    sha256 cellar: :any, sonoma:        "d9c15febe12fe9289e8d117803421f6b2fdda66c16cca3b84686a0efa726f17d"
+    sha256 cellar: :any, ventura:       "4bcfa45952f7d18a0c52eb5f58de3b872bc7ddf2921438c29d19a64368edeb80"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.11" => :build
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on macos: :catalina
 
+  uses_from_macos "python" => :build
+
+  # VERSION=#{version} && curl -s https://raw.githubusercontent.com/simdutf/simdutf/v$VERSION/benchmarks/base64/CMakeLists.txt | grep -C 1 'VERSION'
+  resource "base64" do
+    url "https://github.com/aklomp/base64/archive/refs/tags/v0.5.2.tar.gz"
+    sha256 "723a0f9f4cf44cf79e97bcc315ec8f85e52eb104c8882942c3f2fba95acc080d"
+  end
+
   def install
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, "-DBUILD_TESTING=ON"
+    (buildpath/"base64").install resource("base64")
+
+    args = %W[
+      -DBUILD_SHARED_LIBS=ON
+      -DCMAKE_INSTALL_RPATH=#{rpath}
+      -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
+      -DFETCHCONTENT_SOURCE_DIR_BASE64=#{buildpath}/base64
+      -DPython3_EXECUTABLE=#{which("python3")}
+      -DSIMDUTF_BENCHMARKS=ON
+    ]
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
     bin.install "build/benchmarks/benchmark" => "sutf-benchmark"

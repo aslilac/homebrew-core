@@ -4,11 +4,17 @@ class Uade < Formula
   license "GPL-2.0-only"
 
   stable do
-    url "https://zakalwe.fi/uade/uade3/uade-3.02.tar.bz2"
-    sha256 "2aa317525402e479ae8863222e3c341d135670fcb23a2853ac93075ac428f35b"
+    url "https://zakalwe.fi/uade/uade3/uade-3.05.tar.bz2"
+    sha256 "1a2dd9fdf8cf47c4587dcc09df16f1bb49374a9e7f8f53cdb4816d50c87e4f4c"
+
+    resource "libzakalwe" do
+      url "https://gitlab.com/hors/libzakalwe/-/archive/v1.0.0/libzakalwe-v1.0.0.tar.bz2"
+      sha256 "cb503c557b04f34069654083963a056deb85a6dea25ba4b69aaaa2bbf7290a98"
+    end
 
     resource "bencode-tools" do
-      url "https://gitlab.com/heikkiorsila/bencodetools.git", revision: "5a1ccf65393ee50af3a029d0632f29567467873c"
+      url "https://gitlab.com/heikkiorsila/bencodetools/-/archive/v1.0.1/bencodetools-v1.0.1.tar.bz2"
+      sha256 "e41ae682525cf335b5f5ec0ba9b954abfe7b448e8ed13e2aa2a44e49fce2ca12"
     end
   end
 
@@ -18,28 +24,43 @@ class Uade < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "a120ed8c02bbd11a0ebf992ba23ee980082bfc5c04021b14c9cba788fb993d11"
-    sha256 arm64_monterey: "1fa83a9d0afe0133189cc075e9eb0e8822e21baa01d0e568e768f65949cfd567"
-    sha256 arm64_big_sur:  "9e2786bddc15f0864674e26e53032af89c07490f7aca0aff307186cdd0eef283"
-    sha256 ventura:        "43340e7315dc521c2c924279faf3c62bb02d014786bad9d61faf0a2a8c039c0d"
-    sha256 monterey:       "d58fbf04c9fcb13f046a76110aeebf25cb93c3d812ed2a5ec04f3d93cc82424e"
-    sha256 big_sur:        "42cef81cd6f1792dc53c8e14a8fc416dadac072bf08a8bbf568838c9ae758ea1"
-    sha256 catalina:       "923523028dcc4fd1e98df962874d7385bfbc658c894216ff64dac85ab13616fd"
-    sha256 x86_64_linux:   "b570d5bee780acb48d04b1915026fbbbea8bf38ec3f217e24129bd4904470174"
+    sha256 arm64_sequoia: "bd88580d311132e6f8989d53759a3f4014c3bd2a799a4beeda45917443bd24b1"
+    sha256 arm64_sonoma:  "ebc44bdc2b0985767cfc0e758b626bdc7a4fd25d46fd131f9a345b49f1637170"
+    sha256 arm64_ventura: "dd63456268436dad18fad3257239338d9be764a2c65f66a116ec38dc9ad523c7"
+    sha256 sonoma:        "8efa9e1dc22e259d2608f0300414f326405fa336fa8bc7323a1894cc9eba424f"
+    sha256 ventura:       "c6c24f4dad586bede8ea9cb93103e5b7acdd4694503ffaa00bc66022022c2365"
+    sha256 x86_64_linux:  "57119bf1df980db377ed2a47e16a386060756151ca74a3506bac17685834c4b9"
   end
 
   head do
     url "https://gitlab.com/uade-music-player/uade.git", branch: "master"
+
+    resource "libzakalwe" do
+      url "https://gitlab.com/hors/libzakalwe.git", branch: "master"
+    end
 
     resource "bencode-tools" do
       url "https://gitlab.com/heikkiorsila/bencodetools.git", branch: "master"
     end
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libao"
 
   def install
+    lib.mkdir # for libzakalwe
+
+    resource("libzakalwe").stage do
+      # Workaround for Xcode 14.3
+      if DevelopmentTools.clang_build_version >= 1403
+        inreplace "Makefile", "CFLAGS = -W -Wall", "CFLAGS = -Wno-implicit-function-declaration -W -Wall"
+      end
+
+      inreplace "Makefile", "-Wl,-soname,$@", "-Wl"
+      system "./configure", *std_configure_args
+      system "make", "install", "PREFIX=#{prefix}", "CC=#{ENV.cc}"
+    end
+
     resource("bencode-tools").stage do
       system "./configure", "--prefix=#{prefix}", "--without-python"
       system "make"
@@ -47,12 +68,15 @@ class Uade < Formula
     end
 
     system "./configure", "--prefix=#{prefix}",
-           "--without-write-audio"
+                          "--libzakalwe-prefix=#{prefix}",
+                          "--without-write-audio"
     system "make", "install"
   end
 
   test do
     output = shell_output("#{bin}/uade123 --get-info #{test_fixtures("test.mp3")} 2>&1", 1).chomp
     assert_equal "Unknown format: #{test_fixtures("test.mp3")}", output
+
+    assert_match version.to_s, shell_output("#{bin}/uade123 --version")
   end
 end

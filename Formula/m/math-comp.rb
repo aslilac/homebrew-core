@@ -1,20 +1,21 @@
 class MathComp < Formula
   desc "Mathematical Components for the Coq proof assistant"
   homepage "https://math-comp.github.io/math-comp/"
-  url "https://github.com/math-comp/math-comp/archive/mathcomp-1.17.0.tar.gz"
-  sha256 "1779bcdac5d23d90997627364a5943ef4883c6eb54d67ddbb1dfbe6b7795a188"
+  url "https://github.com/math-comp/math-comp/archive/refs/tags/mathcomp-1.19.0.tar.gz"
+  sha256 "786db902d904347f2108ffceae15ba29037ff8e63a6c58b87928f08671456394"
   license "CECILL-B"
-  revision 1
+  revision 5
   head "https://github.com/math-comp/math-comp.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3186adb11d4514d8c6d12dbf04260dc806aea29bc16b3cbd9dccfdb52d6f7059"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "94f8954a1405cad8a329d1503114d4852e921c7afc66d94aa225651dbd53d743"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0d514083ddf8572e14a423d560c7519fe13e7b5d0e581e9ee1db26b3efe272e5"
-    sha256 cellar: :any_skip_relocation, ventura:        "e09517b8d92ebcbb3285d2320079c9df50277f1c3254d98f1a3ffd0bdc70a4d7"
-    sha256 cellar: :any_skip_relocation, monterey:       "68e9fffd287137266c5378b64fa2c98d0f3b115368593277d216b72af4840c2f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "91840883012bcc64b6bf43ea554c2568ac5a91de2cf616a0199a0918afb6b73d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5570b0f3dc1020a8229573f89d38cb3e2064539ef061b8cec693c632d3ac699e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "56be5fa32ef4fb012b8fed9a47c9c7ae4630013eb31ac350a3cee7f4e152e2f4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c65e53df5bd92f7d2b2faa904b51f8aed7b9b7afa0154696787e78c95094ba58"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5d264a1afa803c6e911fb71cbe8c2105bd966db11fc744a41ce749b4409022de"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "82d8033f4b2d53e096d78553ca15ce4c1b70da10062d9b15d015d6e4b2d90e81"
+    sha256 cellar: :any_skip_relocation, sonoma:         "dbd53984d02d5022a36deca05b2ff0603a18af8bede8433538b6488de162a192"
+    sha256 cellar: :any_skip_relocation, ventura:        "18a7485c231fa966e42e1f92efa65d9d4a90f0638d11115669f8fe1abbd0768c"
+    sha256 cellar: :any_skip_relocation, monterey:       "9a73af8a9943e94f1d6b66bf00062268d490d343d3992ad734553d45f55b4b50"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b26a7b1d822620b5573ee79a908440d66e06eadfede3e0977ac1a60cc57eb85b"
   end
 
   depends_on "ocaml" => :build
@@ -22,6 +23,11 @@ class MathComp < Formula
   depends_on "coq"
 
   def install
+    # Work around for https://github.com/Homebrew/homebrew-test-bot/issues/805
+    if ENV["HOMEBREW_GITHUB_ACTIONS"] && !(Formula["ocaml-findlib"].etc/"findlib.conf").exist?
+      ENV["OCAMLFIND_CONF"] = Formula["ocaml-findlib"].opt_libexec/"findlib.conf"
+    end
+
     coqlib = "#{lib}/coq/"
 
     (buildpath/"mathcomp/Makefile.coq.local").write <<~EOS
@@ -40,6 +46,11 @@ class MathComp < Formula
   end
 
   test do
+    # Work around for https://github.com/Homebrew/homebrew-test-bot/issues/805
+    if ENV["HOMEBREW_GITHUB_ACTIONS"] && !(Formula["ocaml-findlib"].etc/"findlib.conf").exist?
+      ENV["OCAMLFIND_CONF"] = Formula["ocaml-findlib"].opt_libexec/"findlib.conf"
+    end
+
     (testpath/"testing.v").write <<~EOS
       From mathcomp Require Import ssreflect seq.
 

@@ -1,34 +1,35 @@
 class RakudoStar < Formula
   desc "Rakudo compiler and commonly used packages"
   homepage "https://rakudo.org/"
-  url "https://github.com/rakudo/star/releases/download/2023.08/rakudo-star-2023.08.tar.gz"
-  sha256 "baf44caa0ebe143c1dfb78bf8592b8eab79f7dc892787e369c2dc1a255dac0be"
+  url "https://github.com/rakudo/star/releases/download/2024.10/rakudo-star-2024.10.tar.gz"
+  sha256 "55e466112f3edd3600d58342dae8cf013ce7085804c3dbdb2933b7e6f5c4a19d"
   license "Artistic-2.0"
+  revision 1
 
   bottle do
-    sha256 arm64_ventura:  "5b453e990dd5b14737332647897c210029da3b7d27aaafd9c41ecb655a56e04d"
-    sha256 arm64_monterey: "bf45d047fed747bbec82211fc15b18cb66c364ffac0271da577d62b9ff8bf109"
-    sha256 arm64_big_sur:  "50fea3fd18f01c13d1cba0ce4563305712279fe0af204c81a5848dc00c464efe"
-    sha256 ventura:        "c05798b1277a6cca53261850a5b2b4b2feec036a3e9aa12acc2b4c477846d5bf"
-    sha256 monterey:       "268856265bd576fd2e9939f35694bf23c4091fa14231d92cb4c4a557f757d6e7"
-    sha256 big_sur:        "ec0b18547c1ac3c23d7645b1883a27c5482ec90ef1845e2b0a9eeed86aedcd38"
-    sha256 x86_64_linux:   "958c985e7ef23c57846010240ca7bde01b98db52ac39e8607901835830a8f6a8"
+    sha256 arm64_sequoia: "b601cefd4a062973b3e6e73dbec71e340995a960ab988dc2a9e9dd3f6fa2631e"
+    sha256 arm64_sonoma:  "fce2183bab91b8809271c5ead9988373b195603b77af8f5ffd606a2e2c5a3954"
+    sha256 arm64_ventura: "9bdafbafc7a9cdee0a7442d5a4d77af189e6e60a3ee8e288b400d533726f97f4"
+    sha256 sonoma:        "4207dbcba18f871514a1768128f47470559321bb0ad23a712f904bc70bd59900"
+    sha256 ventura:       "b7ca634f1aa9d6e3870f19a2f032168a06d0822530c18456d230e126f6ad8386"
+    sha256 x86_64_linux:  "30acce390cc9d5020833aa98ddc72d03657c76d26dfc0bb207c86a48a42296bb"
   end
 
   depends_on "bash" => :build
   depends_on "gmp"
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "openssl@3"
   depends_on "pcre"
   depends_on "readline"
   uses_from_macos "libffi", since: :catalina
 
+  conflicts_with "moar", because: "both install `moar` binaries"
   conflicts_with "moarvm", "nqp", because: "rakudo-star currently ships with moarvm and nqp included"
   conflicts_with "parrot"
   conflicts_with "rakudo"
 
   def install
-    if MacOS.version < :catalina
+    if !OS.mac? || MacOS.version < :catalina
       libffi = Formula["libffi"]
       ENV.remove "CPPFLAGS", "-I#{libffi.include}"
       ENV.prepend "CPPFLAGS", "-I#{libffi.lib}/libffi-#{libffi.version}/include"

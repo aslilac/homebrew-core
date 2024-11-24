@@ -10,18 +10,19 @@
 class Mutt < Formula
   desc "Mongrel of mail user agents (part elm, pine, mush, mh, etc.)"
   homepage "http://www.mutt.org/"
-  url "https://bitbucket.org/mutt/mutt/downloads/mutt-2.2.11.tar.gz"
-  sha256 "12325cf66d5ff8ac4bd87fac8db52c869de52dd278fc301cfd57d5a1f9f465cc"
+  url "https://bitbucket.org/mutt/mutt/downloads/mutt-2.2.13.tar.gz"
+  sha256 "eb23faddc1cc97d867693f3a4a9f30949ad93765ad5b6fdae2797a4001c58efb"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 arm64_ventura:  "e8108c04476da44364faa6d87edbf8694e5c1fff2c1fa00dc48070d974d40e1e"
-    sha256 arm64_monterey: "0a1c201e9c3fc099b6c50b8683d566f391200a4d4e37acbfb6ad86f21f166313"
-    sha256 arm64_big_sur:  "423f9fc3d54f4b04a7c4a720308cd76b2535b3ea7c8702aecede146425410277"
-    sha256 ventura:        "c536b49cc8b69cb47fa189cecb50e37a0cf685fc93af2a4e10621081ebb3188a"
-    sha256 monterey:       "3da9050e7e9d5ebe5ca770d04cfa60f4433788fb5e078e3ef8d3c21b852f2108"
-    sha256 big_sur:        "5092d0568fbda0fdd649d9e208ed9232d9077309b42e9b262b437b0637fbffb0"
-    sha256 x86_64_linux:   "18a24c7d4fbef9f1e22c19dbbcf60ef5e71ba399eef49baa37e211d24376d7e1"
+    sha256 arm64_sequoia:  "527fd3e12cb049c4415b6b7353aae1036684daa1733a83253caa84a0ecc7c2ce"
+    sha256 arm64_sonoma:   "40c414cbb65f0e9be27d487c9b7c87c63a822060e0afcc3f815848db10909892"
+    sha256 arm64_ventura:  "7d0e947b105c9787a9c90f97ff52ac4c89614de091af864c304cef72ce7a8350"
+    sha256 arm64_monterey: "87c4c4462ef88fd861ca8eb19611206b0cdb4175b478af24dba1448be962fc5a"
+    sha256 sonoma:         "83fc9e8ecb09b0e5face8b52265b0fcf862d66de53be933285884beb458c139f"
+    sha256 ventura:        "26067cb236bc01f97b58900574731fbc39d56fe9d8547a48dfe433912a10f385"
+    sha256 monterey:       "06b8ad27c9e37f1bf2f5a2bbbeadd4f9c2f48fb345b665e30532fc7626f29510"
+    sha256 x86_64_linux:   "d4c0e1f95a35b53d50ad2c0e1fed4cbea20d72092a3deaa7d99277031ed68085"
   end
 
   head do
@@ -34,16 +35,23 @@ class Mutt < Formula
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+
   depends_on "gpgme"
+  depends_on "libgpg-error"
   depends_on "libidn2"
+  depends_on "ncurses"
   depends_on "openssl@3"
   depends_on "tokyo-cabinet"
 
   uses_from_macos "bzip2"
   uses_from_macos "cyrus-sasl"
   uses_from_macos "krb5"
-  uses_from_macos "ncurses"
   uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "gettext"
+    depends_on "libunistring"
+  end
 
   conflicts_with "tin", because: "both install mmdf.5 and mbox.5 man pages"
 
@@ -52,10 +60,7 @@ class Mutt < Formula
     effective_group = Etc.getgrgid(Process.egid).name
 
     args = %W[
-      --disable-dependency-tracking
       --disable-warnings
-      --prefix=#{prefix}
-      --enable-debug
       --enable-gpgme
       --enable-hcache
       --enable-imap
@@ -69,7 +74,7 @@ class Mutt < Formula
       --with-tokyocabinet
     ]
 
-    system "./prepare", *args
+    system "./prepare", *args, *std_configure_args
     system "make"
 
     # This permits the `mutt_dotlock` file to be installed under a group

@@ -1,11 +1,10 @@
 class MysqlAT80 < Formula
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/8.0/en/"
-  # TODO: Check if we can use unversioned `protobuf` at version bump
-  # https://bugs.mysql.com/bug.php?id=111469
-  url "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-boost-8.0.34.tar.gz"
-  sha256 "0b881a19bcef732cd4dbbfc8dfeb84eff61f5dfe0d9788d015d699733e0adf1f"
+  url "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-boost-8.0.40.tar.gz"
+  sha256 "eb34a23d324584688199b4222242f4623ea7bca457a3191cd7a106c63a7837d9"
   license "GPL-2.0-only" => { with: "Universal-FOSS-exception-1.0" }
+  revision 2
 
   livecheck do
     url "https://dev.mysql.com/downloads/mysql/8.0.html?tpl=files&os=src&version=8.0"
@@ -13,27 +12,27 @@ class MysqlAT80 < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "c2f5cac94e7262ce3d190f4a58c96eda19ca4957b3724684651167488c535f37"
-    sha256 arm64_monterey: "a240d10bcb82598dde2d5d09bd4898f2ffb71ec6d698fb6c39eac80d754d39dc"
-    sha256 arm64_big_sur:  "f0239695c837fb67826f9101a7436582551df265db374ea4e3f9fc398f0a71a9"
-    sha256 ventura:        "7ac320da15cbbe7eb1d5b4f04fdb8e24fe5add10910f1efb0c20c9f1ac29dd6a"
-    sha256 monterey:       "211e23bb54c02f7a0279862e376e0db6dda7063b587b830dc0e8617249b59ed6"
-    sha256 big_sur:        "21022a30b4ed16bf353eb685bf1273f1f27323182f9972e7f5b7f72974284dbb"
-    sha256 x86_64_linux:   "ef8e5bd9e823bf462861d3e992a810633f8c27c7ae80c22851fca0dc730b203e"
+    sha256 arm64_sequoia: "fe30827dfc0fee9443e5687bd2352f0eef65ea10e2f1d5ab1f5d9bca140cc25d"
+    sha256 arm64_sonoma:  "208ea81302be022ebaed62029b7a6a6b1405b4c91ab0c6f7ba1baeb5efa8d2a7"
+    sha256 arm64_ventura: "b2bc8b11bf8d78bb2447fe4f95126dd2ee906789506aafbc3bda5f75dd684d87"
+    sha256 sonoma:        "c061c785a53c2f008fb6b52e534ee186557c59b063a35ddb24749826d6e07c49"
+    sha256 ventura:       "b7dd4e44734a345538e4191460404bc8879bf4b5c78f04dde5ee879947a07caa"
+    sha256 x86_64_linux:  "682f90acc07696d7597bd2425afae03f72e4bdfc04ce46b2fe7bd713ef1f70f3"
   end
 
   keg_only :versioned_formula
 
   depends_on "bison" => :build
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
-  depends_on "icu4c"
+  depends_on "pkgconf" => :build
+  depends_on "abseil"
+  depends_on "icu4c@76"
   depends_on "libevent"
   depends_on "libfido2"
   depends_on "lz4"
   depends_on "openssl@3"
-  depends_on "protobuf@21" # https://bugs.mysql.com/bug.php?id=111469
-  depends_on "zlib" # Zlib 1.2.12+
+  depends_on "protobuf"
+  depends_on "zlib" # Zlib 1.2.13+
   depends_on "zstd"
 
   uses_from_macos "curl"
@@ -45,18 +44,14 @@ class MysqlAT80 < Formula
     depends_on "libtirpc"
   end
 
-  fails_with gcc: "5" # for C++17
+  fails_with :gcc do
+    version "6"
+    cause "Requires C++17"
+  end
 
   # Patch out check for Homebrew `boost`.
   # This should not be necessary when building inside `brew`.
   # https://github.com/Homebrew/homebrew-test-bot/pull/820
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/030f7433e89376ffcff836bb68b3903ab90f9cdc/mysql/boost-check.patch"
-    sha256 "af27e4b82c84f958f91404a9661e999ccd1742f57853978d8baec2f993b51153"
-  end
-
-  # Fix for "Cannot find system zlib libraries" even though they are installed.
-  # https://bugs.mysql.com/bug.php?id=110745
   patch :DATA
 
   def datadir
@@ -64,16 +59,11 @@ class MysqlAT80 < Formula
   end
 
   def install
-    if OS.linux?
-      # Fix libmysqlgcs.a(gcs_logging.cc.o): relocation R_X86_64_32
-      # against `_ZN17Gcs_debug_options12m_debug_noneB5cxx11E' can not be used when making
-      # a shared object; recompile with -fPIC
-      ENV.append_to_cflags "-fPIC"
+    # Disable ABI checking
+    inreplace "cmake/abi_check.cmake", "RUN_ABI_CHECK 1", "RUN_ABI_CHECK 0" if OS.linux?
 
-      # Disable ABI checking
-      inreplace "cmake/abi_check.cmake", "RUN_ABI_CHECK 1", "RUN_ABI_CHECK 0"
-    end
-
+    icu4c = deps.find { |dep| dep.name.match?(/^icu4c(@\d+)?$/) }
+                .to_formula
     # -DINSTALL_* are relative to `CMAKE_INSTALL_PREFIX` (`prefix`)
     args = %W[
       -DCOMPILATION_COMMENT=Homebrew
@@ -85,11 +75,13 @@ class MysqlAT80 < Formula
       -DINSTALL_PLUGINDIR=lib/plugin
       -DMYSQL_DATADIR=#{datadir}
       -DSYSCONFDIR=#{etc}
+      -DBISON_EXECUTABLE=#{Formula["bison"].opt_bin}/bison
+      -DOPENSSL_ROOT_DIR=#{Formula["openssl@3"].opt_prefix}
+      -DWITH_ICU=#{icu4c.opt_prefix}
       -DWITH_SYSTEM_LIBS=ON
       -DWITH_BOOST=boost
       -DWITH_EDITLINE=system
       -DWITH_FIDO=system
-      -DWITH_ICU=system
       -DWITH_LIBEVENT=system
       -DWITH_LZ4=system
       -DWITH_PROTOBUF=system
@@ -97,7 +89,6 @@ class MysqlAT80 < Formula
       -DWITH_ZLIB=system
       -DWITH_ZSTD=system
       -DWITH_UNIT_TESTS=OFF
-      -DENABLED_LOCAL_INFILE=1
       -DWITH_INNODB_MEMCACHED=ON
     ]
 
@@ -105,23 +96,15 @@ class MysqlAT80 < Formula
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 
-    # Fix bad linker flags in `mysql_config`.
-    # https://bugs.mysql.com/bug.php?id=111011
-    inreplace bin/"mysql_config", "-lzlib", "-lz"
-
     (prefix/"mysql-test").cd do
-      system "./mysql-test-run.pl", "status", "--vardir=#{Dir.mktmpdir}"
+      system "./mysql-test-run.pl", "status", "--vardir=#{buildpath}/mysql-test-vardir"
     end
 
     # Remove the tests directory
-    rm_rf prefix/"mysql-test"
-
-    # Don't create databases inside of the prefix!
-    # See: https://github.com/Homebrew/homebrew/issues/4975
-    rm_rf prefix/"data"
+    rm_r(prefix/"mysql-test")
 
     # Fix up the control script and link into bin.
-    inreplace "#{prefix}/support-files/mysql.server",
+    inreplace prefix/"support-files/mysql.server",
               /^(PATH=".*)(")/,
               "\\1:#{HOMEBREW_PREFIX}/bin\\2"
     bin.install_symlink prefix/"support-files/mysql.server"
@@ -147,7 +130,7 @@ class MysqlAT80 < Formula
     unless (datadir/"mysql/general_log.CSM").exist?
       ENV["TMPDIR"] = nil
       system bin/"mysqld", "--initialize-insecure", "--user=#{ENV["USER"]}",
-        "--basedir=#{prefix}", "--datadir=#{datadir}", "--tmpdir=/tmp"
+                           "--basedir=#{prefix}", "--datadir=#{datadir}", "--tmpdir=/tmp"
     end
   end
 
@@ -180,40 +163,53 @@ class MysqlAT80 < Formula
   test do
     (testpath/"mysql").mkpath
     (testpath/"tmp").mkpath
-    system bin/"mysqld", "--no-defaults", "--initialize-insecure", "--user=#{ENV["USER"]}",
-      "--basedir=#{prefix}", "--datadir=#{testpath}/mysql", "--tmpdir=#{testpath}/tmp"
+
+    args = %W[--no-defaults --user=#{ENV["USER"]} --datadir=#{testpath}/mysql --tmpdir=#{testpath}/tmp]
+    system bin/"mysqld", *args, "--initialize-insecure", "--basedir=#{prefix}"
     port = free_port
-    fork do
-      system "#{bin}/mysqld", "--no-defaults", "--user=#{ENV["USER"]}",
-        "--datadir=#{testpath}/mysql", "--port=#{port}", "--tmpdir=#{testpath}/tmp"
-    end
+    fork { exec bin/"mysqld", *args, "--port=#{port}" }
     sleep 5
-    assert_match "information_schema",
-      shell_output("#{bin}/mysql --port=#{port} --user=root --password= --execute='show databases;'")
-    system "#{bin}/mysqladmin", "--port=#{port}", "--user=root", "--password=", "shutdown"
+
+    output = shell_output("#{bin}/mysql --port=#{port} --user=root --password= --execute='show databases;'")
+    assert_match "information_schema", output
+    system bin/"mysqladmin", "--port=#{port}", "--user=root", "--password=", "shutdown"
   end
 end
 
 __END__
-diff --git a/cmake/zlib.cmake b/cmake/zlib.cmake
-index 460d87a..36fbd60 100644
---- a/cmake/zlib.cmake
-+++ b/cmake/zlib.cmake
-@@ -50,7 +50,7 @@ FUNCTION(FIND_ZLIB_VERSION ZLIB_INCLUDE_DIR)
-   MESSAGE(STATUS "ZLIB_INCLUDE_DIR ${ZLIB_INCLUDE_DIR}")
- ENDFUNCTION(FIND_ZLIB_VERSION)
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 42e63d0..5d21cc3 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1942,31 +1942,6 @@ MYSQL_CHECK_RAPIDJSON()
+ MYSQL_CHECK_FIDO()
+ MYSQL_CHECK_FIDO_DLLS()
 
--FUNCTION(FIND_SYSTEM_ZLIB)
-+MACRO(FIND_SYSTEM_ZLIB)
-   FIND_PACKAGE(ZLIB)
-   IF(ZLIB_FOUND)
-     ADD_LIBRARY(zlib_interface INTERFACE)
-@@ -61,7 +61,7 @@ FUNCTION(FIND_SYSTEM_ZLIB)
-         ${ZLIB_INCLUDE_DIR})
-     ENDIF()
-   ENDIF()
--ENDFUNCTION(FIND_SYSTEM_ZLIB)
-+ENDMACRO(FIND_SYSTEM_ZLIB)
-
- MACRO (RESET_ZLIB_VARIABLES)
-   # Reset whatever FIND_PACKAGE may have left behind.
+-IF(APPLE)
+-  GET_FILENAME_COMPONENT(HOMEBREW_BASE ${HOMEBREW_HOME} DIRECTORY)
+-  IF(EXISTS ${HOMEBREW_BASE}/include/boost)
+-    FOREACH(SYSTEM_LIB ICU LIBEVENT LZ4 PROTOBUF ZSTD FIDO)
+-      IF(WITH_${SYSTEM_LIB} STREQUAL "system")
+-        MESSAGE(FATAL_ERROR
+-          "WITH_${SYSTEM_LIB}=system is not compatible with Homebrew boost\n"
+-          "MySQL depends on ${BOOST_PACKAGE_NAME} with a set of patches.\n"
+-          "Including headers from ${HOMEBREW_BASE}/include "
+-          "will break the build.\n"
+-          "Please use WITH_${SYSTEM_LIB}=bundled\n"
+-          "or do 'brew uninstall boost' or 'brew unlink boost'"
+-          )
+-      ENDIF()
+-    ENDFOREACH()
+-  ENDIF()
+-  # Ensure that we look in /usr/local/include or /opt/homebrew/include
+-  FOREACH(SYSTEM_LIB ICU LIBEVENT LZ4 PROTOBUF ZSTD FIDO)
+-    IF(WITH_${SYSTEM_LIB} STREQUAL "system")
+-      INCLUDE_DIRECTORIES(SYSTEM ${HOMEBREW_BASE}/include)
+-      BREAK()
+-    ENDIF()
+-  ENDFOREACH()
+-ENDIF()
+-
+ IF(WITH_AUTHENTICATION_FIDO OR WITH_AUTHENTICATION_CLIENT_PLUGINS)
+   IF(WITH_FIDO STREQUAL "system" AND
+     NOT WITH_SSL STREQUAL "system")

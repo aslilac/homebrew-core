@@ -2,29 +2,29 @@ class Animdl < Formula
   include Language::Python::Virtualenv
 
   desc "Anime downloader and streamer"
+  # pin lxml and yarl once https://github.com/justfoolingaround/animdl/pull/308 merged and released
   homepage "https://github.com/justfoolingaround/animdl"
-  url "https://files.pythonhosted.org/packages/6f/f7/8d3ec78e651a6929bddafdcf5eb8e836700f186366f7beb53f51f9ba1f2d/animdl-1.7.22.tar.gz"
-  sha256 "e08decd5266c8e0875202b04a3323d02986f70f1ca794d7e80a9d35d19b95a72"
+  url "https://files.pythonhosted.org/packages/5b/79/4be6ac2caca32dea6fe500e5f5df9d74a3a5ce1d500175c3a7b69500bb3f/animdl-1.7.27.tar.gz"
+  sha256 "fd97b278da4c82da88759993eaf6d8ad6fc3660d0f03de5b2151279c4ebd8370"
   license "GPL-3.0-only"
+  revision 1
   head "https://github.com/justfoolingaround/animdl.git", branch: "master"
 
   bottle do
     rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2b1d0869f85ae348976657294c10c2551305f4963a8203e175aadfc8dcf290fe"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0436c3cdeede9d93c6543bc90840f2381815a07d396277aa154471b9e79fd546"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e61cc15ea2c5f85048f590cbe8f097d6fab4c470a06e40849b38f8f255a5f8a4"
-    sha256 cellar: :any_skip_relocation, ventura:        "dcf658bb0b380298887d4dcc41b064a3afc0cd7300c9b36c088eed4b597392ed"
-    sha256 cellar: :any_skip_relocation, monterey:       "35b0d6f833bd22a2a50ea53967bab5cb94dcfa1643c3802a125f02269352c2d4"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0f9431729f32146a9c063fad814761801ca85e5a1d99271cc38de011fd50b869"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4c02f9b118477470ce7900687a771628b7b80308ad642f5b58a7458a8f6aa5a5"
+    sha256 cellar: :any,                 arm64_sequoia: "5aaa37e63ae5e8b1e9fb2fd0412373e8c5bcceb7eb79380ca0fc3f34b047f20c"
+    sha256 cellar: :any,                 arm64_sonoma:  "efaaca845d0eecd8bf4bc5eb17c608b8e160981f435ece7ef7f1c2974e7ff014"
+    sha256 cellar: :any,                 arm64_ventura: "9525f12cfd47300b58e2d8dd1fe726b5271e5efc88c7df3d5ad1d5ff8b7751e4"
+    sha256 cellar: :any,                 sonoma:        "0f4968fcb2a2aad6e52bd1660a4397e9a4f07ae2fec2d3ca3bdc1dda09e9c82a"
+    sha256 cellar: :any,                 ventura:       "f5d300f45f9da97629c76e70689d90ce818e328701774b1cb6cb034bb9a19518"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "165920e2f9da447e3b0ef0877851af4f38b339c145fe2d27bcb7a1e57148e714"
   end
 
-  depends_on "pygments"
-  depends_on "python-certifi"
-  depends_on "python@3.11"
-  depends_on "pyyaml"
+  depends_on "certifi"
+  depends_on "libyaml"
+  depends_on "python@3.13"
 
-  uses_from_macos "libxml2"
+  uses_from_macos "libxml2", since: :ventura
   uses_from_macos "libxslt"
 
   resource "anchor-kr" do
@@ -38,13 +38,13 @@ class Animdl < Formula
   end
 
   resource "anyio" do
-    url "https://files.pythonhosted.org/packages/28/99/2dfd53fd55ce9838e6ff2d4dac20ce58263798bd1a0dbe18b3a9af3fcfce/anyio-3.7.1.tar.gz"
-    sha256 "44a3c9aba0f5defa43261a8b3efb97891f2bd7d804e0e1f56419befa1adfc780"
+    url "https://files.pythonhosted.org/packages/78/49/f3f17ec11c4a91fe79275c426658e509b07547f874b14c1a526d86a83fc8/anyio-4.6.0.tar.gz"
+    sha256 "137b4559cbb034c477165047febb6ff83f390fc3b20bf181c1fc0a728cb8beeb"
   end
 
   resource "click" do
-    url "https://files.pythonhosted.org/packages/72/bd/fedc277e7351917b6c4e0ac751853a97af261278a4c7808babafa8ef2120/click-8.1.6.tar.gz"
-    sha256 "48ee849951919527a045bfe3bf7baa8a959c423134e1a5b98c05c20ba75a1cbd"
+    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
+    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
   end
 
   resource "comtypes" do
@@ -73,13 +73,13 @@ class Animdl < Formula
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz"
-    sha256 "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
+    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
+    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
   end
 
   resource "lxml" do
-    url "https://files.pythonhosted.org/packages/70/bb/7a2c7b4f8f434aa1ee801704bf08f1e53d7b5feba3d5313ab17003477808/lxml-4.9.1.tar.gz"
-    sha256 "fe749b052bb7233fe5d072fcb549221a8cb1a16725c47c37e42b0b9cb3ff2c3f"
+    url "https://files.pythonhosted.org/packages/ea/e2/3834472e7f18801e67a3cd6f3c203a5456d6f7f903cfb9a990e62098a2f3/lxml-5.2.1.tar.gz"
+    sha256 "3f7765e69bbce0906a7c74d5fe46d2c7a7596147318dbc08e4a2431f3060e306"
   end
 
   resource "markdown-it-py" do
@@ -93,23 +93,33 @@ class Animdl < Formula
   end
 
   resource "multidict" do
-    url "https://files.pythonhosted.org/packages/4a/15/bd620f7a6eb9aa5112c4ef93e7031bcd071e0611763d8e17706ef8ba65e0/multidict-6.0.4.tar.gz"
-    sha256 "3666906492efb76453c0e7b97f2cf459b0682e7402c0489a95484965dbc1da49"
+    url "https://files.pythonhosted.org/packages/d6/be/504b89a5e9ca731cd47487e91c469064f8ae5af93b7259758dcfc2b9c848/multidict-6.1.0.tar.gz"
+    sha256 "22ae2ebf9b0c69d206c003e2f6a914ea33f0a932d4aa16f236afc049d9958f4a"
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/b9/6c/7c6658d258d7971c5eb0d9b69fa9265879ec9a9158031206d47800ae2213/packaging-23.1.tar.gz"
-    sha256 "a392980d2b6cffa644431898be54b0045151319d1e7ec34f0cfed48767dd334f"
+    url "https://files.pythonhosted.org/packages/fb/2b/9b9c33ffed44ee921d0967086d653047286054117d584f1b1a7c22ceaf7b/packaging-23.2.tar.gz"
+    sha256 "048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"
   end
 
   resource "pkginfo" do
-    url "https://files.pythonhosted.org/packages/b4/1c/89b38e431c20d6b2389ed8b3926c2ab72f58944733ba029354c6d9f69129/pkginfo-1.9.6.tar.gz"
-    sha256 "8fd5896e8718a4372f0ea9cc9d96f6417c9b986e23a4d116dda26b62cc29d046"
+    url "https://files.pythonhosted.org/packages/6f/c3/4f625ca754f4063200216658463a73106bf725dc27a66b84df35ebe7468c/pkginfo-1.11.2.tar.gz"
+    sha256 "c6bc916b8298d159e31f2c216e35ee5b86da7da18874f879798d0a1983537c86"
   end
 
   resource "pycryptodomex" do
     url "https://files.pythonhosted.org/packages/24/40/e249ac3845a2333ce50f1bb02299ffb766babdfe80ca9d31e0158ad06afd/pycryptodomex-3.14.1.tar.gz"
     sha256 "2ce76ed0081fd6ac8c74edc75b9d14eca2064173af79843c24fa62573263c1f2"
+  end
+
+  resource "pygments" do
+    url "https://files.pythonhosted.org/packages/8e/62/8336eff65bcbc8e4cb5d05b55faf041285951b6e80f33e2bff2024788f31/pygments-2.18.0.tar.gz"
+    sha256 "786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"
+  end
+
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
   end
 
   resource "regex" do
@@ -128,22 +138,31 @@ class Animdl < Formula
   end
 
   resource "sniffio" do
-    url "https://files.pythonhosted.org/packages/cd/50/d49c388cae4ec10e8109b1b833fd265511840706808576df3ada99ecb0ac/sniffio-1.3.0.tar.gz"
-    sha256 "e60305c5e5d314f5389259b7f22aaa33d8f7dee49763119234af3755c55b9101"
+    url "https://files.pythonhosted.org/packages/a2/87/a6771e1546d97e7e041b6ae58d80074f81b7d5121207425c964ddf5cfdbd/sniffio-1.3.1.tar.gz"
+    sha256 "f4324edc670a0f49750a81b895f35c3adb843cca46f0530f79fc1babb23789dc"
   end
 
   resource "tqdm" do
-    url "https://files.pythonhosted.org/packages/3d/78/81191f56abb7d3d56963337dbdff6aa4f55805c8afd8bad64b0a34199e9b/tqdm-4.65.0.tar.gz"
-    sha256 "1871fb68a86b8fb3b59ca4cdd3dcccbc7e6d613eeed31f4c332531977b89beb5"
+    url "https://files.pythonhosted.org/packages/06/04/e65e7f457ce9a2e338366a3a873ec6994e081cf4f99becb59ab6ce19e4b5/tqdm-4.65.2.tar.gz"
+    sha256 "5f7d8b4ac76016ce9d51a7f0ea30d30984888d97c474fdc4a4148abfb5ee76aa"
   end
 
   resource "yarl" do
-    url "https://files.pythonhosted.org/packages/c4/1e/1b204050c601d5cd82b45d5c8f439cb6f744a2ce0c0a6f83be0ddf0dc7b2/yarl-1.8.2.tar.gz"
-    sha256 "49d43402c6e3013ad0978602bf6bf5328535c48d192304b91b97a3c6790b1562"
+    url "https://files.pythonhosted.org/packages/1e/87/6d71456eabebf614e0cac4387c27116a0bff9decf00a70c362fe7db9394e/yarl-1.9.11.tar.gz"
+    sha256 "c7548a90cb72b67652e2cd6ae80e2683ee08fde663104528ac7df12d8ef271d2"
   end
+
+  # Multiple resources are too old to build on recent Xcode/macOS,
+  # can delete this after a change like this is merged and released in a new version:
+  # https://github.com/justfoolingaround/animdl/pull/301
+  # The patch isn't strictly needed but it's an easy way to see which Python `resource`
+  # blocks needed to be manually bumped to newer versions.
+  patch :DATA
 
   def install
     virtualenv_install_with_resources
+
+    generate_completions_from_executable(bin/"animdl", shells: [:fish, :zsh], shell_parameter_format: :click)
   end
 
   test do
@@ -156,3 +175,26 @@ class Animdl < Formula
     assert_match "animdl, version #{version}", shell_output("#{bin}/animdl --version")
   end
 end
+__END__
+diff --git a/pyproject.toml b/pyproject.toml
+index e0e8782..e71eacf 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -21,8 +21,8 @@ httpx = "~=0.23.0"
+ tqdm = ">=4.62.3,<4.66.0"
+ pycryptodomex = "~=3.14.1"
+ regex = "~=2022.10.31"
+-yarl = "~=1.8.1"
+-pyyaml = "~=6.0"
++yarl = "~=1.9.11"
++pyyaml = "~=6.0.1"
+ packaging = ">=22,<24"
+ pkginfo = "^1.9.2"
+ rich = ">=13.3.1,<13.3.4"
+@@ -33,5 +33,5 @@ rich = ">=13.3.1,<13.3.4"
+ animdl = "animdl.__main__:__animdl_cli__"
+
+ [tool.poetry.dependencies.lxml]
+-version = "4.9.1"
++version = "5.1.0"
+ markers = "sys_platform != 'win32'"

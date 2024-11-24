@@ -1,18 +1,17 @@
 class Vale < Formula
   desc "Syntax-aware linter for prose"
-  homepage "https://docs.errata.ai/"
-  url "https://github.com/errata-ai/vale/archive/v2.28.2.tar.gz"
-  sha256 "642bd739da11273fc12db8660847899557cfc146e8e4d3a0de7e5d345fe173ff"
+  homepage "https://vale.sh/"
+  url "https://github.com/errata-ai/vale/archive/refs/tags/v3.9.1.tar.gz"
+  sha256 "77cc65eab69827f3a3b372b4edd1e1d11079e087768038441cc26976ebe9b48d"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5fec09c18bcafe91fcfc10650d917157d299899930781512ef771167e0af6168"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9d0acaf5029ce9a0131ff1e8daa8e7dfd960e7c74e90cfd433bb5be7267cf29c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "95f27d67efbb0674f1ffb7e7999ef2b2bf33a3a8052750f7af31bbe62a081332"
-    sha256 cellar: :any_skip_relocation, ventura:        "6b7d44de4fbd05ac642fd2c22b28753b9dfd420d00d86d3c1e25bb1ac7fee47d"
-    sha256 cellar: :any_skip_relocation, monterey:       "d0814ef1b855c38c09233fb3388b1a46b73e3ca0d96e84c87a7020207736e7e7"
-    sha256 cellar: :any_skip_relocation, big_sur:        "098e72cccb9f92b76c8693437be66a2458ccb3ba2b699144d31d5dedb21ce5a4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f6a9f489c1359b8324b1ce2eea8c95f12e0b0a63cb8421022aa45b0138f79edb"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f04773088e5c1e627becd0737b44c680154fa7c93e96e74677c80baa03338e6c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d6207dd2dd37e6ac75fb7af17c314b9282039aaaa8e2ad0884631c76a0481beb"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "01cfd96e03307b1d008cea1e3ffdcec751c31adb6ced4bf55da5ae2034869418"
+    sha256 cellar: :any_skip_relocation, sonoma:        "272a5d96969128adc31d8978c775284035e216f6c7ffd6392484abbdf0fcbaa9"
+    sha256 cellar: :any_skip_relocation, ventura:       "419c1d8f9cf03bcc761dc2c4d60640fd0d7d9ede398bd252efd81eff0ddf6fc3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ee1a1eedea9a6e7b9e07a7996989ec0e96053c0d656a2eea36f6ca8c933966b1"
   end
 
   depends_on "go" => :build
@@ -24,13 +23,13 @@ class Vale < Formula
 
   test do
     mkdir_p "styles/demo"
-    (testpath/"styles/demo/HeadingStartsWithCapital.yml").write <<~EOS
+    (testpath/"styles/demo/HeadingStartsWithCapital.yml").write <<~YAML
       extends: capitalization
       message: "'%s' should be in title case"
       level: warning
       scope: heading.h1
       match: $title
-    EOS
+    YAML
 
     (testpath/"vale.ini").write <<~EOS
       StylesPath = styles

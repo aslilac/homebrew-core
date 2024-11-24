@@ -1,25 +1,25 @@
 class Oha < Formula
   desc "HTTP load generator, inspired by rakyll/hey with tui animation"
   homepage "https://github.com/hatoo/oha/"
-  url "https://github.com/hatoo/oha/archive/refs/tags/v0.6.2.tar.gz"
-  sha256 "c7ab7cd84dacbdd42f6917c23aa2cba28eb016a38d29a62782b0fb0956b1f201"
+  url "https://github.com/hatoo/oha/archive/refs/tags/v1.4.7.tar.gz"
+  sha256 "a0fa13d33a5607f3ba4321522d0b2626a0eb52c94471e26e05350cd25d15d2ec"
   license "MIT"
   head "https://github.com/hatoo/oha.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bc201d7f8f6091ef39c4c41f2b38f76a234ccf7d382df7a47dbe93404e3d6e2e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "47a1321369f5be51da5c7bbcc650702f8940b06b7f9b1a815513cac55eaacae6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "07c3c25aa1d79583f142365447ef5db0ed2384c27937e2c8ebdb03d3bd8b2630"
-    sha256 cellar: :any_skip_relocation, ventura:        "06766e0563f28cd1f2d5095440e80edc5f37a09650e8339d1cd2a6871082b628"
-    sha256 cellar: :any_skip_relocation, monterey:       "dfebb1cedc6ffdb716c5bdff1e90d625d71f1a0cb6c3acfab5f8925c2f16520e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b65b11dc039b405b52a1607e7af423fc64d1b90db62b827204cf5a435b1eb901"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b8ddf41107339a626d3b392a192c9f1ccab9c068d9f2f6c9ecc0c33297c685c2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "43380667267790b276fe627528eca97d65be2d932240f55f935f608b006e0c60"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8896d0ef753755d0353dad8c5556794d19e5182705f229666290176f834bca00"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f1765667154ed80d52ef0d56a2cc563d36bfebbfdd4418683ec318f5fb89a788"
+    sha256 cellar: :any_skip_relocation, sonoma:        "8243aecd2e6523793241ebb533484944be33a6e13e8f8d8dd11f4b442f3e4e34"
+    sha256 cellar: :any_skip_relocation, ventura:       "f6825127a9b9b3f5780cc39da3f626b38f719571761cd35c305a014a45c957c8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1374ac88a0ccfd989e5ca5f8c53d9f039d812a5ece625ba350710f10df6e0e3c"
   end
 
+  depends_on "cmake" => :build # for aws-lc-sys
+  depends_on "pkg-config" => :build
   depends_on "rust" => :build
 
   on_linux do
-    depends_on "pkg-config" => :build
     depends_on "openssl@3" # Uses Secure Transport on macOS
   end
 
@@ -28,7 +28,9 @@ class Oha < Formula
   end
 
   test do
-    output = "[200] 200 responses"
-    assert_match output.to_s, shell_output("#{bin}/oha --no-tui https://www.google.com")
+    output = "[200] 1 responses"
+    assert_match output.to_s, shell_output("#{bin}/oha -n 1 -c 1 --no-tui https://www.google.com")
+
+    assert_match version.to_s, shell_output("#{bin}/oha --version")
   end
 end

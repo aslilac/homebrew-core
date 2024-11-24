@@ -1,18 +1,17 @@
 class Sftpgo < Formula
   desc "Fully featured SFTP server with optional HTTP/S, FTP/S and WebDAV support"
   homepage "https://github.com/drakkan/sftpgo"
-  url "https://github.com/drakkan/sftpgo/releases/download/v2.5.4/sftpgo_v2.5.4_src_with_deps.tar.xz"
-  sha256 "9d96480bc17c9863dbf09ec49e6109a55a0be3392d8fc31dd87d197da701f3d1"
+  url "https://github.com/drakkan/sftpgo/releases/download/v2.6.3/sftpgo_v2.6.3_src_with_deps.tar.xz"
+  sha256 "e7b68add57fcea56573dd6210c5f4ab53f112cc4394794230e967b617638e3e9"
   license "AGPL-3.0-only"
 
   bottle do
-    sha256 arm64_ventura:  "7edea42abb38b445af640c39a47d1b81790f5f80187a93216a79718c507df638"
-    sha256 arm64_monterey: "953753b67120f59e4b5eacfa0b1bed38c7db6c9fe1bc3734552266d6daea88ed"
-    sha256 arm64_big_sur:  "b2990de634d2bf3d259d64f24d1ed379df61ddaf44c804ae67f5f18dbc11eff7"
-    sha256 ventura:        "a7161c298c2a6312acdff226c881d822c0cd8a0824142709352bac98d3dd3899"
-    sha256 monterey:       "122d1270c7701bd52f2d33f6585c6388b160cd34b4a9785e6b63a7d15d1885d5"
-    sha256 big_sur:        "be8dca4b4a19715eb5eec94257ca2d96865d328350f81414bca85dda31461f8a"
-    sha256 x86_64_linux:   "4ad236cab3c8fa964ef5889eee6fb19a0a42e3ffd95dce7affa8a31f2fdf503e"
+    sha256 arm64_sequoia: "ac52ad6b956d905c7aeef06e7addbc926e0c70f1153cadb9e0b83dd005398559"
+    sha256 arm64_sonoma:  "534cc1f8cfebba646c73f73a05349389df38ae82318b282f61f1bcdbc9b86ec7"
+    sha256 arm64_ventura: "46a19b9a7daf5e736b860033a6dd8ea00b388799eb4361ea2ae72f80f4e5b7fa"
+    sha256 sonoma:        "0df34fefd30dcc7f10dd1c8efe8ff1ab5cd15453419ed27b720d76f4db8584a9"
+    sha256 ventura:       "03a5110cfad470f25ac6ab003138adf9bd248d4073d2ceeb726376cce1c91d87"
+    sha256 x86_64_linux:  "abab91480542ab33cbbffcef6b844376b3e330bec2afd9f8ed5bea5aa7ac1052"
   end
 
   depends_on "go" => :build
@@ -25,7 +24,7 @@ class Sftpgo < Formula
       -X github.com/drakkan/sftpgo/v2/internal/version.commit=#{git_sha}
       -X github.com/drakkan/sftpgo/v2/internal/version.date=#{time.iso8601}
     ].join(" ")
-    system "go", "build", *std_go_args(ldflags: ldflags), "-tags", "nopgxregisterdefaulttypes"
+    system "go", "build", *std_go_args(ldflags:), "-tags", "nopgxregisterdefaulttypes,disable_grpc_modules"
     system bin/"sftpgo", "gen", "man", "-d", man1
 
     generate_completions_from_executable(bin/"sftpgo", "gen", "completion")

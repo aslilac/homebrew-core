@@ -1,8 +1,8 @@
 class Fheroes2 < Formula
-  desc "Free Heroes of Might and Magic II is a recreation of HoMM2 game engine"
+  desc "Recreation of the Heroes of Might and Magic II game engine"
   homepage "https://ihhub.github.io/fheroes2/"
-  url "https://github.com/ihhub/fheroes2/archive/1.0.7.tar.gz"
-  sha256 "f6bb254ddd848c6a65ed7cd6863c755482c28879e3a97f0b1f5421d939c9626f"
+  url "https://github.com/ihhub/fheroes2/archive/refs/tags/1.1.3.tar.gz"
+  sha256 "f91760f7e8a512fa4b2b5eb02d852d358106fca50faa13db942d8314926ca6d8"
   license "GPL-2.0-or-later"
   head "https://github.com/ihhub/fheroes2.git", branch: "master"
 
@@ -12,21 +12,19 @@ class Fheroes2 < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "ddf743a62c4f4530d65ec42ab5fcde2d42a025a425aa02b3f9da4ab5309867dc"
-    sha256 arm64_monterey: "ffe9a6d485d3da80ee85215df941c19722b2ae1b21bad754c031c47eceeb386b"
-    sha256 arm64_big_sur:  "ef7c83f54868580eedb6416d4441a220371fdfd18dce1481e1554de2ad1c3c8c"
-    sha256 ventura:        "7cb8146c616ab0948f8d4771eb77de71bf4105bff9c1cc7345511ba2f2bc55aa"
-    sha256 monterey:       "fd50b303913be8c09876e07159fa646fe81bdf26768773baebe8f58f6ccfa1e7"
-    sha256 big_sur:        "c2bc52997eea567cfa5332b05fc83480d75a776a625d15dd190addce827011ca"
-    sha256 x86_64_linux:   "0358f3375f893dded5e96b870679370eebd48d59a245287fffbe21b997b9ca6a"
+    sha256 arm64_sequoia: "abd77f3c7b0748848798a86ced7e6db626a2d5e30a2a8d209d70ae7614b3699a"
+    sha256 arm64_sonoma:  "73c1a13e93e0ebc14e5f8c50cdba23ccc54b4865e4d5ede1a1155e89946fd817"
+    sha256 arm64_ventura: "929d227e53e7e290a1e65ea7571c97e0a0866e2338dc3d634474d92cced55603"
+    sha256 sonoma:        "d73ad420578eee3093ac978ce6c3718f4b5baefb723c3b7a25517f0a3edaca7c"
+    sha256 ventura:       "90909dd4ea8a865b40bcc9d5c388bae3e4cf5011c91bb9c018c0656dd03dc2fa"
+    sha256 x86_64_linux:  "0831cfb9c4feb8703f716628d937685457164e33d88bb90ae2269ca28a9379f5"
   end
 
   depends_on "cmake" => :build
   depends_on "gettext" => :build
 
-  depends_on "libpng"
+  depends_on "innoextract"
   depends_on "sdl2"
-  depends_on "sdl2_image"
   depends_on "sdl2_mixer"
 
   uses_from_macos "zlib"
@@ -44,6 +42,12 @@ class Fheroes2 < Formula
 
   def caveats
     <<~EOS
+      Run fheroes2-install-demo command to download and install all the necessary
+      files from the demo version of the original Heroes of Might and Magic II game.
+
+      Run fheroes2-extract-resources command to extract all the necessary resource
+      files from a legally purchased copy of the original game.
+
       Documentation is available at:
       #{share}/doc/fheroes2/README.txt
     EOS

@@ -1,19 +1,21 @@
 class Ode < Formula
   desc "Simulating articulated rigid body dynamics"
   homepage "https://www.ode.org/"
-  url "https://bitbucket.org/odedevs/ode/downloads/ode-0.16.4.tar.gz"
-  sha256 "71037b8281c6c86b0a55729f90d5db697abe4cbec1d8118157e00d48ec253467"
+  url "https://bitbucket.org/odedevs/ode/downloads/ode-0.16.5.tar.gz"
+  sha256 "ba875edd164570958795eeaa70f14853bfc34cc9871f8adde8da47e12bd54679"
   license any_of: ["LGPL-2.1-or-later", "BSD-3-Clause"]
+  revision 1
   head "https://bitbucket.org/odedevs/ode.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "0db659d5d8b9f5b0a8391e07bf6dce76c6528ee142ef64227d27cd108c14fe76"
-    sha256 cellar: :any,                 arm64_monterey: "2eb1e7ae85cec1e9d3686113190d8ec89fca460c58b81f3e978b20961d235cf6"
-    sha256 cellar: :any,                 arm64_big_sur:  "f4cb558f0e993040046a0400a5d6aa69bd4916d5cac25e45597f2b6b72cbdb83"
-    sha256 cellar: :any,                 ventura:        "e04a88ce07030af5f9f93f2bd035a4b89ea200a9d67a17ebd89c7ad5bc536565"
-    sha256 cellar: :any,                 monterey:       "af90730fce7e61597be9dd2132e985386a47e59dde6ba23a16c42d4e6a0d44f2"
-    sha256 cellar: :any,                 big_sur:        "21c78389a6a1999ea1c0a5deb90e779ae44cbe71affcc7b6c5ac5ce0d43af578"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "26dc057f117efea645ebf883369d7d48082b6a87a40443ad95e2d40f26d2ff48"
+    sha256 cellar: :any,                 arm64_sequoia:  "58790fb1f2cc52d91f1bcaead540caa03b531dafef534468786e9ac48e1a109d"
+    sha256 cellar: :any,                 arm64_sonoma:   "1dfefe85ef027eff13206f91fcfb6e3f5c24f620b15351cbf464d26cab397f05"
+    sha256 cellar: :any,                 arm64_ventura:  "c363d1cfd6ba84dfd8193cf0f35d0692892679c8c11c2ea75ccce157c1af3811"
+    sha256 cellar: :any,                 arm64_monterey: "947a229707651468f4ec56e1a16508d495b934070413683d2ba73abf6abd8211"
+    sha256 cellar: :any,                 sonoma:         "7a19db0009214d0c78def3ecb8327137603967f5bc65bc7f11debb715dc7022a"
+    sha256 cellar: :any,                 ventura:        "9334eda731f3105d30a93600393140d690e80fb05791d9a63dc99601641a8888"
+    sha256 cellar: :any,                 monterey:       "7d6ed1dc202b74d76cc339fb17c96626dad0faf626dad2474f957590e0b15165"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5158488ea35492840d91d5d4cfd4cff98c4d26003e230be5214dc1320bca74c1"
   end
 
   depends_on "autoconf" => :build
@@ -34,20 +36,21 @@ class Ode < Formula
                           "--enable-libccd",
                           "--enable-shared",
                           "--disable-static",
+                          "--disable-demos",
                           "--enable-double-precision"
     system "make"
     system "make", "install"
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <ode/ode.h>
       int main() {
         dInitODE();
         dCloseODE();
         return 0;
       }
-    EOS
+    CPP
     system ENV.cc, "test.cpp", "-I#{include}/ode", "-L#{lib}", "-lode",
                    "-L#{Formula["libccd"].opt_lib}", "-lccd", "-lm", "-lpthread",
                    "-o", "test"

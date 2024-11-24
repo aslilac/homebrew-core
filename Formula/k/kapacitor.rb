@@ -6,14 +6,21 @@ class Kapacitor < Formula
 
   stable do
     url "https://github.com/influxdata/kapacitor.git",
-        tag:      "v1.6.6",
-        revision: "79897085a4802304bb2fb052035bac4d16913302"
+        tag:      "v1.7.4",
+        revision: "3470f6ae7f53acaca90459cc1128298548fdc740"
 
-    # build patch to upgrade flux so that it can be built with rust 1.66.0
-    # upstream bug report, https://github.com/influxdata/kapacitor/issues/2769
+    # TODO: Remove when release uses flux >= 0.195.0 to get following fix for rust >= 1.78
+    # Ref: https://github.com/influxdata/flux/commit/68c831c40b396f0274f6a9f97d77707c39970b02
+    resource "flux" do
+      url "https://github.com/influxdata/flux/archive/refs/tags/v0.194.5.tar.gz"
+      sha256 "85229c86d307fdecccc7d940902fb83bfbd7cff7a308ace831e2487d36a6a8ca"
+    end
+
+    # build patch to upgrade flux so that it can be built with rust 1.72.0+
+    # upstream PR ref, https://github.com/influxdata/kapacitor/pull/2811
     patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/38549b7/kapacitor/1.6.6.patch"
-      sha256 "32bba2e397d25afb7fed8128f5f924e0fd3368371b959b7ef2a68260f32110e4"
+      url "https://github.com/influxdata/kapacitor/commit/1bc086f38b5164813c0f5b0989045bd21d543377.patch?full_index=1"
+      sha256 "38ab4f97dfed87cde492c0f1de372dc6563bcdda10741cace7a99f8d3ab777b6"
     end
   end
 
@@ -23,30 +30,52 @@ class Kapacitor < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "82a7eae9df12d924844d669cd098e4d2c627b6ddbe88b46a4fbb4a95f773ca05"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "753eb96876f6b4ee37822cf96328b4bd52dd97300230384f145947ce92317b96"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "51d79f3c8df3812c2a2afa242d9b5d5e58463bd13845e4c6dca8bc1b8dc77213"
-    sha256 cellar: :any_skip_relocation, ventura:        "62acbd5f2cd1f6178338868d5d1a2ff93c7a2a46f9bc569f4b5d3b9380f74426"
-    sha256 cellar: :any_skip_relocation, monterey:       "8abe8b6727275b75d12fc5a014847ac2e882d2b2730f8fea6989197a68f46edd"
-    sha256 cellar: :any_skip_relocation, big_sur:        "7778f76687401b5b649c3cd490b9b19aa97dbb6a72fe714084acec78680b38b5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a9c728517d5c4fd80f8e9dbe70813fa657ecc4314334cc452890967cfecb3efd"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "1a33c443bf07f988db3116c35ab0753ae92b017d117d82d522bac20ecd94e35f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "18df0fe28a2f236b9e83280d13fb1628da163b43010b1ab2e278d596be334154"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7fc56e944c7205bf82e6f09e0fd6acb2671813abff062cb5358c3e10aa34240b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "077bb8e7923a28559b7fca1bf0e5da9a5bed8cbc2ec066292145e0ea0b61edb3"
+    sha256 cellar: :any_skip_relocation, sonoma:         "7320249f7bfd73fc7e9d1bfde2a14aa6e6800981c72b67cfeaf97023b7f8b7dc"
+    sha256 cellar: :any_skip_relocation, ventura:        "fc0aea1281480c4dc679d6edf1b2ac03918db4ad774adcd8160f07f05370abdd"
+    sha256 cellar: :any_skip_relocation, monterey:       "46a38f00666300e465230a0f8330c9d6e44758dd2bc4b9475c8bc8e0770f3cd3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6007b9e8d7e2b33e36510923d1989d83ef86e36e724c118686cdd61ef32d38a1"
   end
 
-  depends_on "go" => :build
+  # Go 1.23 results in panic: failed to parse CA certificate.
+  # TODO: Switch to `go` when `kapacitor` updates gosnowflake
+  depends_on "go@1.22" => :build
   depends_on "rust" => :build
 
   on_linux do
-    depends_on "pkg-config" => :build # for `pkg-config-wrapper`
+    depends_on "pkgconf" => :build # for `pkg-config-wrapper`
   end
 
   # NOTE: The version here is specified in the go.mod of kapacitor.
   # If you're upgrading to a newer kapacitor version, check to see if this needs upgraded too.
   resource "pkg-config-wrapper" do
-    url "https://github.com/influxdata/pkg-config/archive/v0.2.12.tar.gz"
+    url "https://github.com/influxdata/pkg-config/archive/refs/tags/v0.2.12.tar.gz"
     sha256 "23b2ed6a2f04d42906f5a8c28c8d681d03d47a1c32435b5df008adac5b935f1a"
   end
 
   def install
+    if build.stable?
+      # Check if newer `go` can be used
+      go_mod = (buildpath/"go.mod").read
+      gosnowflake_version = go_mod[%r{/influxdata/gosnowflake v(\d+(?:\.\d+)+)}, 1]
+      odie "Check if `go` can be used!" if gosnowflake_version.blank? || Version.new(gosnowflake_version) > "1.6.9"
+
+      # Workaround to skip dead_code lint. RUSTFLAGS workarounds didn't work.
+      flux_module = "github.com/influxdata/flux"
+      flux_version = go_mod[/#{flux_module} v(\d+(?:\.\d+)+)/, 1]
+      odie "Check if `flux` resource can be removed!" if flux_version.blank? || Version.new(flux_version) >= "0.195"
+      (buildpath/"vendored_flux").install resource("flux")
+      inreplace "vendored_flux/libflux/flux-core/src/lib.rs", "#![allow(\n", "\\0    dead_code,\n"
+      (buildpath/"go.work").write <<~EOS
+        go 1.22
+        use .
+        replace #{flux_module} => ./vendored_flux
+      EOS
+    end
+
     resource("pkg-config-wrapper").stage do
       system "go", "build", *std_go_args, "-o", buildpath/"bootstrap/pkg-config"
     end

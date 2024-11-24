@@ -1,8 +1,8 @@
 class Serd < Formula
   desc "C library for RDF syntax"
   homepage "https://drobilla.net/software/serd.html"
-  url "https://download.drobilla.net/serd-0.30.16.tar.xz"
-  sha256 "f50f486da519cdd8d03b20c9e42414e459133f5a244411d8e63caef8d9ac9146"
+  url "https://download.drobilla.net/serd-0.32.2.tar.xz"
+  sha256 "df7dc2c96f2ba1decfd756e458e061ded7d8158d255554e7693483ac0963c56b"
   license "ISC"
 
   livecheck do
@@ -11,14 +11,14 @@ class Serd < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "ad22140ee5f263a0f0fac3b6bf9ba7166f1678cf2eb060fc1c2cdbec377c61bf"
-    sha256 cellar: :any,                 arm64_monterey: "e72e4a3fbf4a93915d462e5c2a9d942bc17154ec06a88b71e19c76d9e4fa3672"
-    sha256 cellar: :any,                 arm64_big_sur:  "ea9755059bd3d9d159c3768637b7fa65de0adf03c7ccf24c21e8e6894a43f62e"
-    sha256 cellar: :any,                 ventura:        "80a21b975737e83827f174ff56fac17eb92b621bbe2c1c504e8df10b7fa88259"
-    sha256 cellar: :any,                 monterey:       "dfb5856f93497bf7c137f96031a02d2e0f6a4d2bdc363d2d1e6e605f32c9e83e"
-    sha256 cellar: :any,                 big_sur:        "e7974773f196596a6f57b8200ec8678b8b52d2d8f4e053bd61bb57591ad2f2fe"
-    sha256 cellar: :any,                 catalina:       "5900f1d60c5f2aa684e996793fe1ba35fd1e21e3c11e8ac3959ff1cb8146bf61"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "67f216bd3fb20ef5b9cab23bb734fd25b111b4d66fcbca3801f48bc581a67753"
+    sha256 cellar: :any,                 arm64_sequoia:  "6da3bc12299d08bdd94b31b39eb398895133440589a08307fd59f27a41f1deb8"
+    sha256 cellar: :any,                 arm64_sonoma:   "64998f0f202c9dc4d9db24962d225b8575691230c9529e9caf5f51ea1cfe6a51"
+    sha256 cellar: :any,                 arm64_ventura:  "a90f4099dc15980f2d3434153cbb09b5cb4da1e359514f0ec5b7503fa3236d0f"
+    sha256 cellar: :any,                 arm64_monterey: "1b92544391c0b1a50707d923824e5d6762ce7348b4078d108d122a950854f782"
+    sha256 cellar: :any,                 sonoma:         "fc6f974050534d696af8dadbe2540b184cca110684125c5d16b7b8757b414389"
+    sha256 cellar: :any,                 ventura:        "07c535671ae8df56222c86f3033dcac69f998195f048d32c36d3c030bfd7c7b3"
+    sha256 cellar: :any,                 monterey:       "c94b0036ca6c651de4fc692640b055ec09149c13eebcb3ab321f2cf06a86c05f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "af54bbd35eed60339757f56f0a603f4d27ba1b44b8c7b60d18bf8b67438eaa21"
   end
 
   depends_on "meson" => :build
@@ -33,6 +33,6 @@ class Serd < Formula
   test do
     rdf_syntax_ns = "http://www.w3.org/1999/02/22-rdf-syntax-ns"
     re = %r{(<#{Regexp.quote(rdf_syntax_ns)}#.*>\s+)?<http://example.org/List>\s+\.}
-    assert_match re, pipe_output("serdi -", "() a <http://example.org/List> .")
+    assert_match re, pipe_output("#{bin}/serdi -", "() a <http://example.org/List> .")
   end
 end

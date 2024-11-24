@@ -5,6 +5,7 @@ class BashCompletion < Formula
   homepage "https://salsa.debian.org/debian/bash-completion"
   url "https://src.fedoraproject.org/repo/pkgs/bash-completion/bash-completion-1.3.tar.bz2/a1262659b4bbf44dc9e59d034de505ec/bash-completion-1.3.tar.bz2"
   sha256 "8ebe30579f0f3e1a521013bcdd183193605dab353d7a244ff2582fb3a36f7bec"
+  license "GPL-2.0-or-later"
   revision 3
 
   livecheck do
@@ -12,9 +13,12 @@ class BashCompletion < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "6727e6e418e740531b75aebedaac6ceece0a0865f4f46dd0351d265035b497e9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "60e79daad9283c5e9f4c814eed837c86aab0b5172c633e7171cbbf26a434bcff"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "d7902e07973d14daf1bf98d5e3bc5b84beeee977b943c33585cf86d4eaae6e36"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "d7902e07973d14daf1bf98d5e3bc5b84beeee977b943c33585cf86d4eaae6e36"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "44be13e781914250b3c277ce3672b7a3c45974f80ae8a2b0c55ccf884faf5d6b"
+    sha256 cellar: :any_skip_relocation, sonoma:         "10c560f8c8058f80450a1d44826e57820d83370dbc3631cf5230a15cc8b8bbdc"
     sha256 cellar: :any_skip_relocation, ventura:        "1a5cc6b613a97f1a15f87725d8343b4358e56acaa230f7cec64c77d4566a6f80"
     sha256 cellar: :any_skip_relocation, monterey:       "1a5cc6b613a97f1a15f87725d8343b4358e56acaa230f7cec64c77d4566a6f80"
     sha256 cellar: :any_skip_relocation, big_sur:        "8fe573529e08174b26d4379d92a42a7c38138c712e4e998541e8892fc6a376e7"
@@ -30,8 +34,8 @@ class BashCompletion < Formula
     conflicts_with "util-linux", because: "both install `mount`, `rfkill`, and `rtcwake` completions"
   end
 
-  conflicts_with "bash-completion@2",
-    because: "each are different versions of the same formula"
+  conflicts_with "bash-completion@2", because: "each are different versions of the same formula"
+  conflicts_with "medusa", because: "both install `medusa` bash completion"
 
   # Backports the following upstream patch from 2.x:
   # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=740971
@@ -54,10 +58,23 @@ class BashCompletion < Formula
   end
 
   def caveats
-    <<~EOS
+    s = <<~EOS
       Add the following line to your ~/.bash_profile:
         [[ -r "#{etc}/profile.d/bash_completion.sh" ]] && . "#{etc}/profile.d/bash_completion.sh"
     EOS
+    version_caveat = <<~EOS
+
+      This formula is mainly for use with Bash 3. If you are using Homebrew's Bash or your
+      system Bash is at least version 4.2, then you should install `bash-completion@2` instead.
+    EOS
+    if Formula["bash"].any_version_installed?
+      s += version_caveat
+    else
+      on_linux do
+        s += version_caveat
+      end
+    end
+    s
   end
 
   test do

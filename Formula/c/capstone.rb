@@ -1,22 +1,29 @@
 class Capstone < Formula
   desc "Multi-platform, multi-architecture disassembly framework"
   homepage "https://www.capstone-engine.org/"
-  url "https://github.com/capstone-engine/capstone/archive/4.0.2.tar.gz"
-  sha256 "7c81d798022f81e7507f1a60d6817f63aa76e489aa4e7055255f21a22f5e526a"
+  url "https://github.com/capstone-engine/capstone/archive/refs/tags/5.0.3.tar.gz"
+  sha256 "3970c63ca1f8755f2c8e69b41432b710ff634f1b45ee4e5351defec4ec8e1753"
   license "BSD-3-Clause"
   head "https://github.com/capstone-engine/capstone.git", branch: "next"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "4a7f3c31862791da2c3e9436880a84953ad61a7764fbac208fb6b6999ee139dc"
-    sha256 cellar: :any,                 arm64_monterey: "53b534ac0a71300d7e005cb7552a2778ff6d0e3bcaaa6417303c0c86112a6884"
-    sha256 cellar: :any,                 arm64_big_sur:  "5c2d67aeb32a36c76d1918ec10de347971b385fc73b3025c97639467dc5302e2"
-    sha256 cellar: :any,                 ventura:        "b617967c6e67a7be0d466fb6df8f8777a23a6bf73fe712220d656ea5d2ce527a"
-    sha256 cellar: :any,                 monterey:       "dda60f389b39dc6b777940428feccee4a0b50db91629d152a5e62a95c3915d38"
-    sha256 cellar: :any,                 big_sur:        "21dd5b41e81b165e0419901103aa46ab8afee2be5453b2076c8f7a5b94fdf211"
-    sha256 cellar: :any,                 catalina:       "b434ee96e9d7c413e289340b280705a6c3b9929cf1859de865d88bc012c34396"
-    sha256 cellar: :any,                 mojave:         "c90885740ef54af155c2a0151dc85f728a3aa7ca304a45510e5524ac7fecb7fc"
-    sha256 cellar: :any,                 high_sierra:    "c6d974a3c237fc36bfea2042d95551f2be7197d37fc0df6c7b9ea2179cd01084"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "93d5e7b14aeacb27c38fa2164800458ea4e8deee2d0da2df8e042c616a63a199"
+    sha256 cellar: :any,                 arm64_sequoia:  "1bfbe3ed3ee90ede3b80ccef52d4cab75c81d215870ecd50d4bf6b30ba60b84d"
+    sha256 cellar: :any,                 arm64_sonoma:   "2c1c08af469f0307469b70ff6c277d5971495db3a8c7ae38c98bd2c70745acbb"
+    sha256 cellar: :any,                 arm64_ventura:  "8960b1111e9a59597c9c50a6b7ec3cfcfbc5e845d28bb2f42507a2d7bb108a71"
+    sha256 cellar: :any,                 arm64_monterey: "9fadfcd6aa4f0a077472715e2c9cd8da5e64c47d4e025a944525e70835619fbb"
+    sha256 cellar: :any,                 sonoma:         "87442182a186180fa0a4a8bdf3eef0acff55cd732001b191a83f032701520ca9"
+    sha256 cellar: :any,                 ventura:        "bcc3c9288b93bf10c8c10a08352bba47767bf1ffe147c9a6a5bb6e8567fb15de"
+    sha256 cellar: :any,                 monterey:       "eedc593b4cd8ff6baee45009248224d9a227abef8d4db98db868a42e5ae4c49d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6d8ed2e019394daca38715f2c7ab67fc2076c54aeb40e0a4d048d798ba0c51ba"
+  end
+
+  on_macos do
+    depends_on "gettext"
   end
 
   def install
@@ -28,7 +35,7 @@ class Capstone < Formula
 
   test do
     # code comes from https://www.capstone-engine.org/lang_c.html
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdio.h>
       #include <inttypes.h>
       #include <capstone/capstone.h>
@@ -53,7 +60,7 @@ class Capstone < Formula
         cs_close(&handle);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-lcapstone", "-o", "test"
     system "./test"
   end

@@ -3,13 +3,16 @@ class Libcsv < Formula
   homepage "https://sourceforge.net/projects/libcsv/"
   url "https://downloads.sourceforge.net/project/libcsv/libcsv/libcsv-3.0.3/libcsv-3.0.3.tar.gz"
   sha256 "d9c0431cb803ceb9896ce74f683e6e5a0954e96ae1d9e4028d6e0f967bebd7e4"
-  license "GPL-2.0"
+  license "LGPL-2.1-or-later"
 
   bottle do
     rebuild 2
+    sha256 cellar: :any,                 arm64_sequoia:  "c515471cacac39d4bdb089b73f0ca8f2405a7c90b7973203fda68ab10c28a630"
+    sha256 cellar: :any,                 arm64_sonoma:   "5ffc7fff79c22779c3c5e74f553511a5d160be80d2fa147f675db2631af542fa"
     sha256 cellar: :any,                 arm64_ventura:  "98c6f484207a9291a7d5696a9eff9ecdb6c6579834b86f8df8731ae61d8f3f4e"
     sha256 cellar: :any,                 arm64_monterey: "37da5ecb6f4175cf6e044d2cd5a5797ffd20ddac9631d5b2bb54b2db53f3dab1"
     sha256 cellar: :any,                 arm64_big_sur:  "5fab325e7caac0db2cb892eebd55b5ef1094b92eaa3413bdd9ce85f47d82ff17"
+    sha256 cellar: :any,                 sonoma:         "1f49d10bf54d93ac9b3ea032385ed32d9e148adb401bd004b8698cc4fe715529"
     sha256 cellar: :any,                 ventura:        "975bc0968b6d54eb26b6d21983086472cd473159163e525080e6ece157a3cc58"
     sha256 cellar: :any,                 monterey:       "6c4f06b89f9dea054ca3ee012d70b83268b9df1943b7e002a58b442f55ea126e"
     sha256 cellar: :any,                 big_sur:        "4edab615e912a3a0e931fff1b4f594093cfa1c4bc4869340046300b181f9ebc5"
@@ -34,13 +37,13 @@ class Libcsv < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <csv.h>
       int main(void) {
         struct csv_parser p;
         csv_init(&p, CSV_STRICT);
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lcsv", "-o", "test"
     system "./test"
   end

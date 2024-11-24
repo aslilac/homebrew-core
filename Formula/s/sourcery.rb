@@ -1,25 +1,34 @@
 class Sourcery < Formula
   desc "Meta-programming for Swift, stop writing boilerplate code"
   homepage "https://github.com/krzysztofzablocki/Sourcery"
-  url "https://github.com/krzysztofzablocki/Sourcery/archive/2.0.3.tar.gz"
-  sha256 "3779a52e2f7d87d9616ec467344930b27d84ae1e8c57799b77f305bddf6ee297"
+  url "https://github.com/krzysztofzablocki/Sourcery/archive/refs/tags/2.2.5.tar.gz"
+  sha256 "6f4d4d2859e57039f9d49f737a696d0f22aecaffd553a7d5039fa2007103994f"
   license "MIT"
+  revision 1
   version_scheme 1
   head "https://github.com/krzysztofzablocki/Sourcery.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "27afb4e8b4090f28a583bbf412e5aa66dd8061c84f0e22be15ca6395fb699af7"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6ff4932710f2a7b201ff9c6cb43493f37dca6cd04574491d205e2f96fffbd2fe"
-    sha256 cellar: :any_skip_relocation, ventura:        "29d81854d22e0f8ce8aba0086116e13d5c382ff9d263c7b9603f3f23d4fedef4"
-    sha256 cellar: :any_skip_relocation, monterey:       "23a3b64d05a689bbeada45f2db507059b12baa261860de81acad9c2e67f86308"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "71a57229b8bfaab27f073c8cc07a211558ff394905fef154d0b1ade1c6d7ea61"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8b82e5b008f23e3dec7d016755a3cc877daa64e565be7722e89e35cd2258ed71"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "7347a5d596dd15979b3befcef52dff53a354fa2acf7f64bfca26cc38f5b98ee8"
+    sha256 cellar: :any_skip_relocation, sonoma:        "007d74c9daa1026a9fd5d22ed751474b203dcec6466228a860f926664c7c0f51"
+    sha256 cellar: :any_skip_relocation, ventura:       "b963422707a34b8ba8eeb39129031d8bebb90b4c243b49d1a629df372fbe6412"
+    sha256                               x86_64_linux:  "28c3a0eb1d8e30f1b5f413ceb51be9efe83f5b340eb986d8a98f07bdcfe125c8"
   end
 
-  depends_on :macos # Linux support is still a WIP: https://github.com/krzysztofzablocki/Sourcery/issues/306
-  depends_on xcode: "13.3"
+  depends_on xcode: "14.3"
 
   uses_from_macos "ruby" => :build
+  uses_from_macos "ncurses"
+  uses_from_macos "sqlite"
+  uses_from_macos "swift"
 
   def install
+    # Build script is unfortunately not customisable.
+    # We want static stdlib on Linux as the stdlib is not ABI stable there.
+    inreplace "Rakefile", "--disable-sandbox", "--static-swift-stdlib" if OS.linux?
+
     system "rake", "build"
     bin.install "cli/bin/sourcery"
     lib.install Dir["cli/lib/*.dylib"]

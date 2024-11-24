@@ -1,19 +1,20 @@
 class EfmLangserver < Formula
   desc "General purpose Language Server"
   homepage "https://github.com/mattn/efm-langserver"
-  url "https://github.com/mattn/efm-langserver/archive/v0.0.48.tar.gz"
-  sha256 "39d56178a11c39f865eb2e3677d51af7ac62c79e0b6daa9176dcd8f58a4c0b05"
+  url "https://github.com/mattn/efm-langserver/archive/refs/tags/v0.0.53.tar.gz"
+  sha256 "2e315b6c563a994d8f5b3d2d8e5be629628b1f6dc7e4a82d9ea1a5deb8c81be6"
   license "MIT"
   head "https://github.com/mattn/efm-langserver.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "34e9c2849538000efb03912f10eafe86359b8991760508b4859b920385f6a374"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "34e9c2849538000efb03912f10eafe86359b8991760508b4859b920385f6a374"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "34e9c2849538000efb03912f10eafe86359b8991760508b4859b920385f6a374"
-    sha256 cellar: :any_skip_relocation, ventura:        "d60ab1b882a1d5057e4dfd4f139d781a40cb84e535af5c6fc9893b45104362dc"
-    sha256 cellar: :any_skip_relocation, monterey:       "d60ab1b882a1d5057e4dfd4f139d781a40cb84e535af5c6fc9893b45104362dc"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d60ab1b882a1d5057e4dfd4f139d781a40cb84e535af5c6fc9893b45104362dc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e0297f619f11165dd6c4ca392549d609b1ecbb2be390bdad613dc33b2c25c77f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9f2519c8b0bd2c84a34ab41818136152b191813d12d6c79469d8dce1f80f1554"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "acdd9f4c7834504e7e8c5078d64c5c602818cd9e51229cfc23c8c6a507d43eb5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "acdd9f4c7834504e7e8c5078d64c5c602818cd9e51229cfc23c8c6a507d43eb5"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "acdd9f4c7834504e7e8c5078d64c5c602818cd9e51229cfc23c8c6a507d43eb5"
+    sha256 cellar: :any_skip_relocation, sonoma:         "b614e49df5008158661b2dcdf75a1baacad164372e426dcaee83e244999ce3ba"
+    sha256 cellar: :any_skip_relocation, ventura:        "b614e49df5008158661b2dcdf75a1baacad164372e426dcaee83e244999ce3ba"
+    sha256 cellar: :any_skip_relocation, monterey:       "b614e49df5008158661b2dcdf75a1baacad164372e426dcaee83e244999ce3ba"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "22b2233ec19c7568d83661cbfd6cb196ef85d64fa74a779ca599399c75c7b081"
   end
 
   depends_on "go" => :build
@@ -23,7 +24,7 @@ class EfmLangserver < Formula
   end
 
   test do
-    (testpath/"config.yml").write <<~EOS
+    (testpath/"config.yml").write <<~YAML
       version: 2
       root-markers:
         - ".git/"
@@ -31,7 +32,7 @@ class EfmLangserver < Formula
         python:
           - lint-command: "flake8 --stdin-display-name ${INPUT} -"
             lint-stdin: true
-    EOS
+    YAML
     output = shell_output("#{bin}/efm-langserver -c #{testpath/"config.yml"} -d")
     assert_match "version: 2", output
     assert_match "lint-command: flake8 --stdin-display-name ${INPUT} -", output

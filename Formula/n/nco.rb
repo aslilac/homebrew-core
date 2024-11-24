@@ -1,18 +1,17 @@
 class Nco < Formula
   desc "Command-line operators for netCDF and HDF files"
   homepage "https://nco.sourceforge.net/"
-  url "https://github.com/nco/nco/archive/5.1.7.tar.gz"
-  sha256 "2b068558a605e30a465870166747e1d37726849814a5cfe41a000764b30e2ba1"
+  url "https://github.com/nco/nco/archive/refs/tags/5.2.9.tar.gz"
+  sha256 "6245886e2a18a4821b0fb768cf9906de09aeb47c303462c8e85f0d1a4f34956d"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "dcc21e88227b4eefe8d36ff7edcfd5225561176e15cd6ad3549e2b2587b31c1b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e3a65c0a5281ff0b4fdb6091727ebba3a143b4b72a8ddc5564c96038025f3f5c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f3ee43838dd2612b6abf53dd7ba38534f39005b4e5b3a5aba6cebcb093d53ed3"
-    sha256 cellar: :any_skip_relocation, ventura:        "bc661af8d30264c2b3a1f9d49f9fad7480adcb934e412202c2c04c700786ffc3"
-    sha256 cellar: :any_skip_relocation, monterey:       "95f0ec6e66e17f56612c3f18fb91db227b97660bd1b441a4b34820c0238ce1b8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "efbfc6ce00dba2a57b19d51a07432297016350e05b07bf5e4c5dfc474081d108"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6185f641b9586830ecea3dc3e6b8269083af9534657ee2258acec759ef6551da"
+    sha256 cellar: :any,                 arm64_sequoia: "36fee2dba418873c6b8f70ce3910b72f6233d46c7d694e7a6bef71f99cc640e9"
+    sha256 cellar: :any,                 arm64_sonoma:  "f8a925356271dd53ebba184d5eaf0d8d267842c03cdccfad97862285ff6487c3"
+    sha256 cellar: :any,                 arm64_ventura: "d9f36db0f341909aac90ae55611edfd1f5dd5315e8674d1d43df8af981263576"
+    sha256 cellar: :any,                 sonoma:        "433adbbea94d7eed23c146af84bb3e88b6026d131d4e2068f6d0cb941eb63f74"
+    sha256 cellar: :any,                 ventura:       "6fdafffb41b987c8f1bfb74b3f0073e9acb12cd7f356f26c6af978e00ba5ef7e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8a60e8035abed7f02a875ab4b21cb55b2792c148a8462dce0b0cff94b8120c9d"
   end
 
   head do

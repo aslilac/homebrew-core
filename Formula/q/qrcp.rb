@@ -1,18 +1,24 @@
 class Qrcp < Formula
   desc "Transfer files to and from your computer by scanning a QR code"
-  homepage "https://claudiodangelis.com/qrcp"
-  url "https://github.com/claudiodangelis/qrcp/archive/0.10.1.tar.gz"
-  sha256 "866344c247fbc2bd4def91e2b7fe395b81bc954b89dad4f32ebd8033bd2e6c7d"
+  homepage "https://qrcp.sh"
+  url "https://github.com/claudiodangelis/qrcp/archive/refs/tags/0.11.3.tar.gz"
+  sha256 "de6a9e29d7c71268e40452abf2f1f593d5d53baa34df5abcb7352ebfd72a952f"
   license "MIT"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "cb8411ed58cb46bf657126dd96cde64faef4fc2f659bfd83007e68b890ebee4f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "cb8411ed58cb46bf657126dd96cde64faef4fc2f659bfd83007e68b890ebee4f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cb8411ed58cb46bf657126dd96cde64faef4fc2f659bfd83007e68b890ebee4f"
-    sha256 cellar: :any_skip_relocation, ventura:        "a124631223cd27aebd64b75466a4ff7d982c327003bb37088c0d1b310d4702ae"
-    sha256 cellar: :any_skip_relocation, monterey:       "a124631223cd27aebd64b75466a4ff7d982c327003bb37088c0d1b310d4702ae"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a124631223cd27aebd64b75466a4ff7d982c327003bb37088c0d1b310d4702ae"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d56dba0ceb4cf3b57647e788a777e3fec8bfc4141f68cd8f1ada06354f183cb3"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "1412bb71cdbc83ed8be54281f08cbb6b0abfe379c8b39b1b72fc781941a27d5a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e2a1feee6e390e192dc3c9750ffab42cbb99282ed024211f2d8f34ed1b6d290b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e2a1feee6e390e192dc3c9750ffab42cbb99282ed024211f2d8f34ed1b6d290b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e2a1feee6e390e192dc3c9750ffab42cbb99282ed024211f2d8f34ed1b6d290b"
+    sha256 cellar: :any_skip_relocation, sonoma:         "889feb401afde85d10a584249efd64810cc7c6a28de0935b2c70ddbdc4abeae5"
+    sha256 cellar: :any_skip_relocation, ventura:        "889feb401afde85d10a584249efd64810cc7c6a28de0935b2c70ddbdc4abeae5"
+    sha256 cellar: :any_skip_relocation, monterey:       "889feb401afde85d10a584249efd64810cc7c6a28de0935b2c70ddbdc4abeae5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4c8ae9e3c53ff4f2483f61a75bb47e7a7d7ae1924116229f68b9bf9d78f4806d"
   end
 
   depends_on "go" => :build
@@ -31,13 +37,13 @@ class Qrcp < Formula
     port = free_port
     server_url = "http://localhost:#{port}/send/testing"
 
-    (testpath/"config.json").write <<~EOS
+    (testpath/"config.json").write <<~JSON
       {
         "interface": "any",
         "fqdn": "localhost",
         "port": #{port}
       }
-    EOS
+    JSON
 
     fork do
       exec bin/"qrcp", "-c", testpath/"config.json", "--path", "testing", testpath/"test_data.txt"

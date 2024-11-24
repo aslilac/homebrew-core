@@ -1,9 +1,8 @@
 class Kustomize < Formula
   desc "Template-free customization of Kubernetes YAML manifests"
   homepage "https://github.com/kubernetes-sigs/kustomize"
-  url "https://github.com/kubernetes-sigs/kustomize.git",
-      tag:      "kustomize/v5.1.1",
-      revision: "f8391994b4dc1558fa25596d41311fde07f96e46"
+  url "https://github.com/kubernetes-sigs/kustomize/archive/refs/tags/kustomize/v5.5.0.tar.gz"
+  sha256 "a90ed294c874404934bb5aa132185604d31fbd5622fbcb5ce2c3f56d67eeb322"
   license "Apache-2.0"
   head "https://github.com/kubernetes-sigs/kustomize.git", branch: "master"
 
@@ -13,27 +12,24 @@ class Kustomize < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9fb341d323479c9e47006daed35dfff4a30210df230bf2329b36ed85c5f4f2cc"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "922c53c719dba7cd3863a5508af03b466d34fea3aed14a299dad0c6784872fbc"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2f892731c66c44d3811b45fe235804089ab62fe2d40e4c3f743152b80e97f82f"
-    sha256 cellar: :any_skip_relocation, ventura:        "ee5b223fd99f51952fa37730384bf9771e1ef911f5f683181c2ef4415ec42a2d"
-    sha256 cellar: :any_skip_relocation, monterey:       "4042cf364407b01e6f298f94b4ce1bb7a9ed395a272b622fd0c71145bccc088b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4fc392427a0e9a7aec0bdf644f6b07fe8fca31715266c706a007b55e6b5b9407"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "481bf7f7a5993db3ddafc1d986fdaa78e1960896ca77469f21d9f8df76ec8637"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0a34e6a184939183913d0eb56312afde72e28c22dedf305d9c667efd8a36fceb"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "377f5b7a4eea752d7553084436d07a5ca12898ca26590a9fdc28a6ed67c27e0e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "16acc2a8548c736dc7634b98588c342f8b53a9798174d51e809a4e66bcfbf0b9"
+    sha256 cellar: :any_skip_relocation, sonoma:        "93211d48a7837e98bc39e013f7274076799e20b1bf7c1d7480ce10c7c27e0f61"
+    sha256 cellar: :any_skip_relocation, ventura:       "6e05b4d3965821a9824a3693c29ee2906720777e867b6336c8144e208bdb217c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0dc01f68d22e7d2834a0af743eabc3c2f01876816d7dd5a0137977cbb175200f"
   end
 
   depends_on "go" => :build
 
   def install
-    cd "kustomize" do
-      ldflags = %W[
-        -s -w
-        -X sigs.k8s.io/kustomize/api/provenance.version=#{name}/v#{version}
-        -X sigs.k8s.io/kustomize/api/provenance.buildDate=#{time.iso8601}
-      ]
+    ldflags = %W[
+      -s -w
+      -X sigs.k8s.io/kustomize/api/provenance.version=#{name}/v#{version}
+      -X sigs.k8s.io/kustomize/api/provenance.buildDate=#{time.iso8601}
+    ]
 
-      system "go", "build", *std_go_args(ldflags: ldflags)
-    end
+    system "go", "build", *std_go_args(ldflags:), "./kustomize"
 
     generate_completions_from_executable(bin/"kustomize", "completion")
   end
@@ -41,13 +37,13 @@ class Kustomize < Formula
   test do
     assert_match "v#{version}", shell_output("#{bin}/kustomize version")
 
-    (testpath/"kustomization.yaml").write <<~EOS
+    (testpath/"kustomization.yaml").write <<~YAML
       resources:
       - service.yaml
       patches:
       - path: patch.yaml
-    EOS
-    (testpath/"patch.yaml").write <<~EOS
+    YAML
+    (testpath/"patch.yaml").write <<~YAML
       apiVersion: v1
       kind: Service
       metadata:
@@ -55,15 +51,15 @@ class Kustomize < Formula
       spec:
         selector:
           app: foo
-    EOS
-    (testpath/"service.yaml").write <<~EOS
+    YAML
+    (testpath/"service.yaml").write <<~YAML
       apiVersion: v1
       kind: Service
       metadata:
         name: brew-test
       spec:
         type: LoadBalancer
-    EOS
+    YAML
     output = shell_output("#{bin}/kustomize build #{testpath}")
     assert_match(/type:\s+"?LoadBalancer"?/, output)
   end

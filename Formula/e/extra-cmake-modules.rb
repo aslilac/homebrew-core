@@ -1,51 +1,47 @@
 class ExtraCmakeModules < Formula
   desc "Extra modules and scripts for CMake"
   homepage "https://api.kde.org/frameworks/extra-cmake-modules/html/index.html"
-  url "https://download.kde.org/stable/frameworks/5.109/extra-cmake-modules-5.109.0.tar.xz"
-  sha256 "1526b557cf9718e4d3bf31ff241578178d1ee60bdfb863110c97d43d478b7fb7"
+  url "https://download.kde.org/stable/frameworks/6.8/extra-cmake-modules-6.8.0.tar.xz"
+  sha256 "ff8a0bf72285bec1768e3acd8f7c665a26d55a1527e96d73e35789dc9f0e3472"
   license all_of: ["BSD-2-Clause", "BSD-3-Clause", "MIT"]
   head "https://invent.kde.org/frameworks/extra-cmake-modules.git", branch: "master"
 
-  # We check the tags from the `head` repository because the latest stable
-  # version doesn't seem to be easily available elsewhere.
   livecheck do
-    url :head
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    url "https://download.kde.org/stable/frameworks/"
+    regex(%r{href=.*?v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7a655248046b1117e2625e11b702c6197c4c0f45c2ebbb30d4b8518f1b5bcd0d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7a655248046b1117e2625e11b702c6197c4c0f45c2ebbb30d4b8518f1b5bcd0d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "756f40cedf878f3817ea69d8230e0937eaa2fc44e420ccb0575618232634046b"
-    sha256 cellar: :any_skip_relocation, ventura:        "4818f19a4aa11710bdfb78e8674c7c023fcf169a429abb3acf1b06edd97e4abb"
-    sha256 cellar: :any_skip_relocation, monterey:       "4818f19a4aa11710bdfb78e8674c7c023fcf169a429abb3acf1b06edd97e4abb"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ad3c3be10a8db3d44fda754e420e542f7203a3cb91b9b81a7f96dfa78edcaf8e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c725c6aa81b11a5de654534d043ea81861b12d90e4ad8a2e1e11de54a2afe1b9"
+    sha256 cellar: :any_skip_relocation, all: "c269b67cda49c03cdf5f6a1c9e21a52317f49819ff202dc09f52000fd652c46a"
   end
 
   depends_on "cmake" => [:build, :test]
-  depends_on "qt@5" => :build
   depends_on "sphinx-doc" => :build
 
   def install
-    args = std_cmake_args + %w[
-      -S .
-      -B build
+    args = %w[
       -DBUILD_HTML_DOCS=ON
       -DBUILD_MAN_DOCS=ON
-      -DBUILD_QTHELP_DOCS=ON
     ]
 
-    system "cmake", *args
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
+
+    # Ensure uniform bottles.
+    inreplace_files = %w[prefix.sh.cmake prefix.sh.fish.cmake].map { |f| share/"ECM/kde-modules"/f }
+    inreplace inreplace_files, "/usr/local", HOMEBREW_PREFIX
   end
 
   test do
-    (testpath/"CMakeLists.txt").write("find_package(ECM REQUIRED)")
-    system "cmake", ".", "-Wno-dev"
+    (testpath/"CMakeLists.txt").write <<~CMAKE
+      cmake_minimum_required(VERSION 3.5)
+      project(test)
+      find_package(ECM REQUIRED)
+    CMAKE
+    system "cmake", "."
 
-    expected="ECM_DIR:PATH=#{HOMEBREW_PREFIX}/share/ECM/cmake"
-    assert_match expected, File.read(testpath/"CMakeCache.txt")
+    expected = "ECM_DIR:PATH=#{HOMEBREW_PREFIX}/share/ECM/cmake"
+    assert_match expected, (testpath/"CMakeCache.txt").read
   end
 end

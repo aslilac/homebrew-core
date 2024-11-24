@@ -2,19 +2,20 @@ class Zls < Formula
   desc "Language Server for Zig"
   homepage "https://github.com/zigtools/zls"
   url "https://github.com/zigtools/zls.git",
-      tag:      "0.10.0",
-      revision: "7ef224467ab2f3179058981740e942977892e7b9"
+      tag:      "0.13.0",
+      revision: "a26718049a8657d4da04c331aeced1697bc7652b"
   license "MIT"
   head "https://github.com/zigtools/zls.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "57e41a00eacea3a15f363470b5a64f6da2a7002cd69692df83910cbeee3bbe0b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7f7686c0ea862ad5ab3ae4431dafadf9a28951bb7854e7e7c02c359d63caf0dd"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c75a6b48d33d6b129b020c0e227f6df7107dcbbf9a296d74f52397d8b2234836"
-    sha256 cellar: :any_skip_relocation, ventura:        "ba4279657dc4293a8261202ba7553a3f72254556e7b32b0c49586090f0ccb9af"
-    sha256 cellar: :any_skip_relocation, monterey:       "035e8403b2a33986d35251e49a1db2e18f1892bd1a3f029e069e44179537d5ca"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8883d3da3be2111f3b1c569027d6454ac627891de95d3268303275f995473ff3"
-    sha256                               x86_64_linux:   "96c162fc09934028b9d3e2f10703e1f2f23c4ce8c9737b5e62fc4b54805f075e"
+    sha256 arm64_sequoia:  "40ae2eed62a206035ef1ac4744f0b29e57c608edc19256d6dbc4e5a04a9e6731"
+    sha256 arm64_sonoma:   "ad033c76a56c3e673f5a98b858044b6cce0943e4efc1f65e1808e96e6bc35526"
+    sha256 arm64_ventura:  "8cec98eb089329c697832b25e173f6b136c007dfbcb6c3831d6b20df9ca65738"
+    sha256 arm64_monterey: "dc17fa3ed91c7f1fe2f3978d5179f1b7d3bf49be1efe432c0de5c7934bc4b984"
+    sha256 sonoma:         "0b9f2c664b2df58c11636bb2e79c29ea6fd3763ec294ad4df9752943241bf0f7"
+    sha256 ventura:        "4b901bea62efa0dac5ab5301f50c6130bc749820e4c00769ab17fa6f33e7b9cc"
+    sha256 monterey:       "c8f8837db476edf57943adc3a050c7f7514eec746f6d5deace1f0877a3ca6e08"
+    sha256 x86_64_linux:   "efbbcc9ee2e1ff6189e5efe21281b621114c44091ca07e3e05fcb10ea4a3c60c"
   end
 
   depends_on "zig"
@@ -27,7 +28,7 @@ class Zls < Formula
     else Hardware.oldest_cpu
     end
 
-    args = %W[--prefix #{prefix} -Drelease-fast=true]
+    args = %W[--prefix #{prefix} -Doptimize=ReleaseFast]
     args << "-Dcpu=#{cpu}" if build.bottle?
 
     system "zig", "build", *args
@@ -54,7 +55,7 @@ class Zls < Formula
     JSON
 
     input = "Content-Length: #{json.size}\r\n\r\n#{json}"
-    output = pipe_output("#{bin}/zls --config-path #{testpath}", input, 0)
+    output = pipe_output("#{bin}/zls --config-path #{test_config}", input, 1)
     assert_match(/^Content-Length: \d+/i, output)
 
     assert_match version.to_s, shell_output("#{bin}/zls --version")

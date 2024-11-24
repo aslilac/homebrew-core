@@ -1,33 +1,45 @@
 class Zsh < Formula
   desc "UNIX shell (command interpreter)"
   homepage "https://www.zsh.org/"
-  url "https://downloads.sourceforge.net/project/zsh/zsh/5.9/zsh-5.9.tar.xz"
-  mirror "https://www.zsh.org/pub/zsh-5.9.tar.xz"
-  sha256 "9b8d1ecedd5b5e81fbf1918e876752a7dd948e05c1a0dba10ab863842d45acd5"
-  license "MIT-Modern-Variant"
+  license all_of: [
+    "MIT-Modern-Variant",
+    "GPL-2.0-only", # Completion/Linux/Command/_qdbus, Completion/openSUSE/Command/{_osc,_zypper}
+    "GPL-2.0-or-later", # Completion/Unix/Command/_darcs
+    "ISC", # Src/openssh_bsd_setres_id.c
+  ]
+
+  # TODO: Switch to `pcre2` on next release and remove stable block
+  stable do
+    url "https://downloads.sourceforge.net/project/zsh/zsh/5.9/zsh-5.9.tar.xz"
+    mirror "https://www.zsh.org/pub/zsh-5.9.tar.xz"
+    sha256 "9b8d1ecedd5b5e81fbf1918e876752a7dd948e05c1a0dba10ab863842d45acd5"
+
+    depends_on "pcre"
+  end
 
   livecheck do
     url "https://sourceforge.net/projects/zsh/rss?path=/zsh"
   end
 
   bottle do
-    sha256 arm64_ventura:  "03171d3b9ea605b88cfa73682a6f06f8e6c3e5e44fb96dbc9eedb3ab70a69c28"
-    sha256 arm64_monterey: "1c6d208a7aa0601b25d04c5d41a393424b1094cf188e5b0c80fafc6e1e2755ef"
-    sha256 arm64_big_sur:  "0a93821dee76829dac49770d4b32d08d0678272c43937e3858d7f901bab86cd6"
-    sha256 ventura:        "1175aa3d19707da832bcb82e6a5ef49f513d98a840bcc252f96379eec4d5c18e"
-    sha256 monterey:       "b9a38fa0344b187333771a5585ad2d01c27e69a7e5362ba3fc8d7389aa3279f3"
-    sha256 big_sur:        "722236bd8c9a094e1eca09263f5e83a94d4c97c2ca797804eef4f9564ef729ec"
-    sha256 catalina:       "64c8757cc6db0247fb9f604ff84f61726fb5d91318c566157fa2957782040403"
-    sha256 x86_64_linux:   "fb0b59e7b1407323ea06b7c757de4d75bbcfb0836ce05857b0b2cf7816a231e0"
+    rebuild 2
+    sha256 arm64_sequoia:  "15e9037c0726a957c252406d8dcd10b92bf96f080ffd6a21f252f88cfe2328b2"
+    sha256 arm64_sonoma:   "2724270ffc9ec802c84de94466076bbff2e9de712dc4542e2b98646d5bdf9120"
+    sha256 arm64_ventura:  "de824bdff0cf68af18e1ca615d3e0646968a9cc0411cde518c86ff4e446e75ed"
+    sha256 arm64_monterey: "9f2b18137c50145752b9c64f02a2be3ffbfedfcbff5b91ebe3f0d20358fe2a07"
+    sha256 sonoma:         "ab60dacfc4fa57a741cd735b268ef64e51bab181b39cfb3846f2a546c22793ff"
+    sha256 ventura:        "3e0713581f6c028b856556e9f5e2201e9fd9d333bc13fc6156bdb0c58d097626"
+    sha256 monterey:       "e09b2792c4d231b4917ebe8c3565ba66c22d15c5242043af47e3075f50470839"
+    sha256 x86_64_linux:   "28d2fb59ee1c2db1ea2a0a2923201fde83b4b8cb2891ac3bbee288e7cf9cb2c6"
   end
 
   head do
     url "https://git.code.sf.net/p/zsh/code.git", branch: "master"
     depends_on "autoconf" => :build
+    depends_on "pcre2"
   end
 
   depends_on "ncurses"
-  depends_on "pcre"
 
   on_system :linux, macos: :ventura_or_newer do
     depends_on "texinfo" => :build
@@ -40,10 +52,9 @@ class Zsh < Formula
   end
 
   def install
-    # Work around configure issues with Xcode 12
-    # https://www.zsh.org/mla/workers/2020/index.html
-    # https://github.com/Homebrew/homebrew-core/issues/64921
-    ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
+    # Fix compile with newer Clang. Remove in the next release
+    # Ref: https://sourceforge.net/p/zsh/code/ci/ab4d62eb975a4c4c51dd35822665050e2ddc6918/
+    ENV.append_to_cflags "-Wno-implicit-int" if DevelopmentTools.clang_build_version >= 1403
 
     system "Util/preconfig" if build.head?
 
@@ -84,5 +95,6 @@ class Zsh < Formula
   test do
     assert_equal "homebrew", shell_output("#{bin}/zsh -c 'echo homebrew'").chomp
     system bin/"zsh", "-c", "printf -v hello -- '%s'"
+    system bin/"zsh", "-c", "zmodload zsh/pcre"
   end
 end

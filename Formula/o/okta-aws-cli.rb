@@ -1,18 +1,24 @@
 class OktaAwsCli < Formula
   desc "Okta federated identity for AWS CLI"
   homepage "https://github.com/okta/okta-aws-cli"
-  url "https://github.com/okta/okta-aws-cli/archive/refs/tags/v1.2.1.tar.gz"
-  sha256 "4e16572757702d55c938d6cf1688fc1386d6b20f981cc8432366a3ffefc8f2eb"
+  url "https://github.com/okta/okta-aws-cli/archive/refs/tags/v2.3.1.tar.gz"
+  sha256 "610eef917edfb36990fcb0e8f3a2cd8132cbf95b3ec25c659db5f1e69780a0b3"
   license "Apache-2.0"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e48cb6a1855355c8e37d9a63a8230c8e8b917456a8fb97349a14c34cb7a27337"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b3147e8617511571329c7ca44ccf8ca25f290670b61d5346667f93a9f7e8a630"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c30e2e80b3f9aa9cde5f9b788212f967d3373f18abbefb2545b80af79078aaee"
-    sha256 cellar: :any_skip_relocation, ventura:        "1b1c05c54cf71124ecdffc1684316381d21ee183048b53a7b7f0c56c9bdab965"
-    sha256 cellar: :any_skip_relocation, monterey:       "c534a06d7f448f5f3668347df9f2e6f559014ac5a3fe94a9ee48c19d096dc490"
-    sha256 cellar: :any_skip_relocation, big_sur:        "197067921d6abecec3c1f39e73de5fbf6d1e7d50a3a6fd6775ceef8fe79c9ae5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "745dc6d51dfa0ec0c7afcc491773a70a13bf411648851710b3f30c163b97c1ff"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e0f7d81bc77e4258a4602ad330bed1322a1e11b2962b879e0f6c02e688726398"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d309a14d4647fea7c98f4dbb12483cd12f18351884b1dc12a3304efb3dfb9144"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d309a14d4647fea7c98f4dbb12483cd12f18351884b1dc12a3304efb3dfb9144"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d309a14d4647fea7c98f4dbb12483cd12f18351884b1dc12a3304efb3dfb9144"
+    sha256 cellar: :any_skip_relocation, sonoma:         "91723498e6a4789fc539c2e1f00b47113ce558004a9ca5dd6dc40ce3d4f4ae86"
+    sha256 cellar: :any_skip_relocation, ventura:        "91723498e6a4789fc539c2e1f00b47113ce558004a9ca5dd6dc40ce3d4f4ae86"
+    sha256 cellar: :any_skip_relocation, monterey:       "91723498e6a4789fc539c2e1f00b47113ce558004a9ca5dd6dc40ce3d4f4ae86"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "11a1b28d3037d75845e614d9878499afa7629654dbd40889435084b966533904"
   end
 
   depends_on "go" => :build
@@ -22,10 +28,9 @@ class OktaAwsCli < Formula
   end
 
   test do
-    str_help = shell_output("#{bin}/okta-aws-cli --help")
-    assert_match "Usage:", str_help
-    assert_match "Flags:", str_help
-    str_error = shell_output("#{bin}/okta-aws-cli -o example.org -c homebrew-test 2>&1", 1)
-    assert_match 'Error: authorize received API response "404 Not Found"', str_error
+    output = shell_output("#{bin}/okta-aws-cli list-profiles")
+    assert_match "Profiles:", output
+
+    assert_match version.to_s, shell_output("#{bin}/okta-aws-cli --version")
   end
 end

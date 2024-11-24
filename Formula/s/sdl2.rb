@@ -1,8 +1,8 @@
 class Sdl2 < Formula
   desc "Low-level access to audio, keyboard, mouse, joystick, and graphics"
   homepage "https://www.libsdl.org/"
-  url "https://github.com/libsdl-org/SDL/releases/download/release-2.28.2/SDL2-2.28.2.tar.gz"
-  sha256 "64b1102fa22093515b02ef33dd8739dee1ba57e9dbba6a092942b8bbed1a1c5e"
+  url "https://github.com/libsdl-org/SDL/releases/download/release-2.30.9/SDL2-2.30.9.tar.gz"
+  sha256 "24b574f71c87a763f50704bbb630cbe38298d544a1f890f099a4696b1d6beba4"
   license "Zlib"
 
   livecheck do
@@ -12,17 +12,16 @@ class Sdl2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "cfa4fcd327d0a1bf1241df0b25c33c6e8912dd25fb0e373b85f34a696ccda894"
-    sha256 cellar: :any,                 arm64_monterey: "c0bbcfca51e71baad1a0b7e877eb3e8b60f510216be65fe42184e8ef34175fd1"
-    sha256 cellar: :any,                 arm64_big_sur:  "8b52a1ca7da7138fa8465387358e3908d52a65e483342a8134f51bf3bda983c2"
-    sha256 cellar: :any,                 ventura:        "dfc44316769e87fd93c96fb2b4b74caa98e89b96acdc98c547fc1e1e50d6efa3"
-    sha256 cellar: :any,                 monterey:       "f6bc882a2a91d8e974fdb55e6dda145477d4397893ca0c1962106d89ed475d52"
-    sha256 cellar: :any,                 big_sur:        "c7ea523fc46fbc83d51fd19c52bc26f3c06b4a1318f8522cc94b1e14821c9e52"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c2a37ed6dd4edc283c1e310f2bee751fabd8b6aa27fdb9d1ad7f7cdcd3d9790d"
+    sha256 cellar: :any,                 arm64_sequoia: "cbff6c079fb44cb4b568dddb0a69c5da08b396fe6f6a4c90618f2fe8486456ea"
+    sha256 cellar: :any,                 arm64_sonoma:  "84704c6ab26482890a172d9da912fbe51656de29caea75e46e287397f60461e0"
+    sha256 cellar: :any,                 arm64_ventura: "a8168508bbddc2439d5434b85b3fd4fec4f8b5cbbfeb11dc4c4b33faadaaabff"
+    sha256 cellar: :any,                 sonoma:        "e0e36f68524a09d5f0b9318b8ce905a4d3a87408eea94a238084075e55bd1176"
+    sha256 cellar: :any,                 ventura:       "7726275e371a832296395ce5e0d3988ccca358d1ddba82d384be5a9dbdc4c23b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ebc21173917029b88754e65099236a393bf42e5f3b07f100977140ba4b7f71cf"
   end
 
   head do
-    url "https://github.com/libsdl-org/SDL.git", branch: "main"
+    url "https://github.com/libsdl-org/SDL.git", branch: "SDL2"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -30,7 +29,7 @@ class Sdl2 < Formula
   end
 
   on_linux do
-    depends_on "pkg-config" => :build
+    depends_on "pkgconf" => :build
     depends_on "libice"
     depends_on "libxcursor"
     depends_on "libxscrnsaver"
@@ -48,23 +47,26 @@ class Sdl2 < Formula
     system "./autogen.sh" if build.head?
 
     args = %W[--prefix=#{prefix} --enable-hidapi]
-    args << if OS.mac?
-      "--without-x"
+    args += if OS.mac?
+      %w[--without-x]
     else
-      args << "--with-x"
-      args << "--enable-pulseaudio"
-      args << "--enable-pulseaudio-shared"
-      args << "--enable-video-dummy"
-      args << "--enable-video-opengl"
-      args << "--enable-video-opengles"
-      args << "--enable-video-x11"
-      args << "--enable-video-x11-scrnsaver"
-      args << "--enable-video-x11-xcursor"
-      args << "--enable-video-x11-xinerama"
-      args << "--enable-video-x11-xinput"
-      args << "--enable-video-x11-xrandr"
-      args << "--enable-video-x11-xshape"
-      "--enable-x11-shared"
+      %w[
+        --disable-rpath
+        --enable-pulseaudio
+        --enable-pulseaudio-shared
+        --enable-video-dummy
+        --enable-video-opengl
+        --enable-video-opengles
+        --enable-video-x11
+        --enable-video-x11-scrnsaver
+        --enable-video-x11-xcursor
+        --enable-video-x11-xinerama
+        --enable-video-x11-xinput
+        --enable-video-x11-xrandr
+        --enable-video-x11-xshape
+        --enable-x11-shared
+        --with-x
+      ]
     end
     system "./configure", *args
     system "make", "install"

@@ -1,21 +1,20 @@
-require "language/node"
-
 class Prettier < Formula
   desc "Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML"
   homepage "https://prettier.io/"
-  url "https://registry.npmjs.org/prettier/-/prettier-3.0.2.tgz"
-  sha256 "1bb4aeae5300640dd6aa09f1d4787a0ee3e9a0e923bee5f24b0a209de402d642"
+  url "https://registry.npmjs.org/prettier/-/prettier-3.3.3.tgz"
+  sha256 "2f1ecb0ab57a588e0d4d40d3d45239e71ebd8f0190199d0d3f87fe2283639f46"
   license "MIT"
   head "https://github.com/prettier/prettier.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "4b3a68c7c1edb98149b357c2e1f4b1d8ef095d366276733994c869141ecf0945"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, all: "34c3eb047777201bc1fd28e71876301232bdecf8ee36d35787e621a412244be3"
   end
 
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 

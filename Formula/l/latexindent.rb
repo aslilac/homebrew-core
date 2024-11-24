@@ -1,18 +1,19 @@
 class Latexindent < Formula
   desc "Add indentation to LaTeX files"
   homepage "https://latexindentpl.readthedocs.io"
-  url "https://github.com/cmhughes/latexindent.pl/archive/V3.22.2.tar.gz"
-  sha256 "4efbbad1015263d91d3f16ebc3fa222c366b39c9247fa4927a0bbc766bb2170b"
+  url "https://github.com/cmhughes/latexindent.pl/archive/refs/tags/V3.24.4.tar.gz"
+  sha256 "7b7216604d1e544b7f22cf520b3ca1817222e70e28fe2865bcc4d0e3284c497c"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a4371c02e69c287b4f3ef5dfbc252e24fa59ee5962eec48b2b4a2faaa7a745a1"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c7285952b5beda7894e6e166dafad1d9ba4a4e05bdf38ef6fff81b89b50dcd00"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "698506dbc41a8b133c6b496a4b6e8351c116651096b5af71ec078a0aad399f42"
-    sha256 cellar: :any_skip_relocation, ventura:        "f4351c0207b02cd4863d5f52dacea5f6b293fd100f3d0fd7aabe5d12e28168f4"
-    sha256 cellar: :any_skip_relocation, monterey:       "6215d915a9397cdef7a9553e6c4168ed3c1823084c4c982da856363ba668e637"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b3b08079c0b6684e5cd8d2a32cfa8160c6dc96bac04aff3965e5e5e053aadef5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e2007219a58a8f67d7ba4fc211873954f2a93d1f66a5062ef52c7f3ca178bbbf"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "d534cd3e3721d0714d5b4d36a1aabef1cc2c970aeb863cd8c175f5811d884506"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b04582bc3af70d9b42d800a00e3203fb498c6f9cbb9f1882cd65bd2998302c52"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3a139417ac37daa84a1c07f563157cb63fbb0b2fb5a34f610c96dc6ae0c8526e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4f3fc5462d9bfae6801a589f29eecc338f49c1a7100c38274ecf114bc7cf7519"
+    sha256 cellar: :any_skip_relocation, sonoma:         "109ef109bba008c2574dc99a81a5eea0377dbc7aaa40b9b7cf0426235038b785"
+    sha256 cellar: :any_skip_relocation, ventura:        "b8537550b090777911270e933fc33911f3af2ef5de4b320b0abd1a8703c41c41"
+    sha256 cellar: :any_skip_relocation, monterey:       "9d29972ec35a4f252b261e334cc9898e7933a780cc4045b9f0cded45b10a0867"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "217da1f566d0196dfed633e6b722d9e5ea39b1fa31f288973215dacafe9f8086"
   end
 
   depends_on "perl"
@@ -25,8 +26,8 @@ class Latexindent < Formula
   end
 
   resource "B::Hooks::EndOfScope" do
-    url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/B-Hooks-EndOfScope-0.26.tar.gz"
-    sha256 "39df2f8c007a754672075f95b90797baebe97ada6d944b197a6352709cb30671"
+    url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/B-Hooks-EndOfScope-0.28.tar.gz"
+    sha256 "edac77a17fc36620c8324cc194ce1fad2f02e9fcbe72d08ad0b2c47f0c7fd8ef"
   end
 
   resource "Class::Data::Inheritable" do
@@ -40,8 +41,8 @@ class Latexindent < Formula
   end
 
   resource "Devel::StackTrace" do
-    url "https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/Devel-StackTrace-2.04.tar.gz"
-    sha256 "cd3c03ed547d3d42c61fa5814c98296139392e7971c092e09a431f2c9f5d6855"
+    url "https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/Devel-StackTrace-2.05.tar.gz"
+    sha256 "63cb6196e986a7e578c4d28b3c780e7194835bfc78b68eeb8f00599d4444888c"
   end
 
   resource "Dist::CheckConflicts" do
@@ -160,8 +161,8 @@ class Latexindent < Formula
   end
 
   resource "Variable::Magic" do
-    url "https://cpan.metacpan.org/authors/id/V/VP/VPIT/Variable-Magic-0.63.tar.gz"
-    sha256 "ba4083b2c31ff2694f2371333d554c826aaf24b4d98d03e48b5b4a43a2a0e679"
+    url "https://cpan.metacpan.org/authors/id/V/VP/VPIT/Variable-Magic-0.64.tar.gz"
+    sha256 "9f7853249c9ea3b4df92fb6b790c03a60680fc029f44c8bf9894dccf019516bd"
   end
 
   resource "XString" do
@@ -203,7 +204,7 @@ class Latexindent < Formula
   end
 
   test do
-    (testpath/"test.tex").write <<~EOS
+    (testpath/"test.tex").write <<~TEX
       \\documentclass{article}
       \\title{latexindent Homebrew Test}
       \\begin{document}
@@ -213,8 +214,8 @@ class Latexindent < Formula
       \\item World
       \\end{itemize}
       \\end{document}
-    EOS
-    assert_match <<~EOS, shell_output("#{bin}/latexindent #{testpath}/test.tex")
+    TEX
+    assert_match <<~TEX, shell_output("#{bin}/latexindent #{testpath}/test.tex")
       \\documentclass{article}
       \\title{latexindent Homebrew Test}
       \\begin{document}
@@ -224,6 +225,6 @@ class Latexindent < Formula
       	\\item World
       \\end{itemize}
       \\end{document}
-    EOS
+    TEX
   end
 end

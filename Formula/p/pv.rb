@@ -1,8 +1,8 @@
 class Pv < Formula
   desc "Monitor data's progress through a pipe"
   homepage "https://www.ivarch.com/programs/pv.shtml"
-  url "https://www.ivarch.com/programs/sources/pv-1.7.24.tar.gz"
-  sha256 "3bf43c5809c8d50066eaeaea5a115f6503c57a38c151975b710aa2bee857b65e"
+  url "https://www.ivarch.com/programs/sources/pv-1.9.0.tar.gz"
+  sha256 "b38d69d7fc0785eb5eb3c57e8b12a7334f862047bf84b18f414365335399469a"
   license "Artistic-2.0"
 
   livecheck do
@@ -11,17 +11,16 @@ class Pv < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1c286f0f0525b1399b9b4b715135a2120c23a297db1b4476431673385e6e4fa5"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b8e57b34637969d1125b7999ebef0f5cdd105e0898deae72a59deffb696953e9"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1bc92daab79045bf093e9c9f472a2ff85c3b591fcdb31d62b8c6cf17d4b42b06"
-    sha256 cellar: :any_skip_relocation, ventura:        "0468258418ba5bfcfac151ae9d150928d4fb38727d47d5352b553f355cd8e16d"
-    sha256 cellar: :any_skip_relocation, monterey:       "465850891540f18c3342cf189700784327967cff0bafa08fdb52e51778be59ae"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d7e1729eb6fb3efab1eac38398399f894db800ae97a2dc3783314205aa4f5431"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b33dac363479b61cdf849f70f2885ca5e6448c69d9c46cc31e1f9ca216c38a4e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f9e420de1a3555054ef2a2c1bb06ae52d566d68703a60b27408f4c0a16201f4f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a4ff1418c1d4036d1be8712e0f41904ea27f686e4596d331e2f4af2487fc03e3"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "42db9d825c20a38cb0cb8f5f7dc2d9c68afc0030554fea61db7858c082713d11"
+    sha256 cellar: :any_skip_relocation, sonoma:        "860cded87f996a8ad031bd791796e5f67589fe36bcf24aa8f0afe7a147d2edd0"
+    sha256 cellar: :any_skip_relocation, ventura:       "f357dc2da58b2128ca760ee0ea86519acf9ecf3006b25075a0f9708d7268890b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0aaf715a715bee53f9dc09436dbcf07475a61e2a23884137845562e4c15acd9b"
   end
 
   def install
-    # Workaround for Xcode 14.3
+    # Fix compile with newer Clang
     ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
 
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--disable-nls"

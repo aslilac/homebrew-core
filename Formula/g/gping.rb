@@ -1,8 +1,8 @@
 class Gping < Formula
   desc "Ping, but with a graph"
   homepage "https://github.com/orf/gping"
-  url "https://github.com/orf/gping/archive/gping-v1.14.0.tar.gz"
-  sha256 "8a9c11668e2de8472d551225da1390e89bfbe4a327d120e62f8f65a2270c44f0"
+  url "https://github.com/orf/gping/archive/refs/tags/gping-v1.18.0.tar.gz"
+  sha256 "a76e09619831c0f2bb95f505a92c1332de89c3c43383b4d832a69afcb0fafd4c"
   license "MIT"
   head "https://github.com/orf/gping.git", branch: "master"
 
@@ -16,25 +16,22 @@ class Gping < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a2105f80b7281c4bbd6d0d37ffa90bc78923ef39ba0bddf586eb482bdc7408b3"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bd8e1c7198f93d8fd50abadc97ce6dd4e9bd818e471143a60ece22c2d1be9297"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "50be5b606ceeddfc10c869ada112de57882add6c5e0df359766825957ae9c2c0"
-    sha256 cellar: :any_skip_relocation, ventura:        "fa66777a98614a23c4872e3f80020a05ff9442ac477ef5761a813d0d0a851ca9"
-    sha256 cellar: :any_skip_relocation, monterey:       "faf840067b92c85ab6ad65af177fc5224b479a07faf1d52b72252af02a2f385b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2370e1c29a30f40659a2c4bfdf834de48f27b2f68941490eb8c7e24e6e8a0751"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fd17d33fef88546ca07d7da1c56142549a545199e541f2de8f24ff705a13376e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7d5997b1f711f810ad7ac906979aa8e30935fec0d5be6928709803d6ed1e6927"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "66ca9e13796783e00217ecb9df7b16577882d7908f2ad2e17e4d79efd166cf02"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "ddc951ebb3e3bb95cc312aa6e8ee465c1171bef226508a99c2f98c329e6e1c96"
+    sha256 cellar: :any_skip_relocation, sonoma:        "eb8e2f91391341fe2e43c4a584021f859b79223f21410f980880c709d0a7f720"
+    sha256 cellar: :any_skip_relocation, ventura:       "9a1329f19dfd5c4e49ae9fe894ff501b9d9ed6b06022cb49c75296a4591425ad"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7b3d71c0896cb93022a289d740ed310160ea4e92b5da84d60a1bb15fb40940a6"
   end
 
   depends_on "pkg-config" => :build
   depends_on "rust" => :build
 
-  on_macos do
-    depends_on "libgit2"
-  end
-
   on_linux do
     depends_on "iputils"
   end
+
+  conflicts_with "inetutils", because: "both install `gping` binaries"
 
   def install
     system "cargo", "install", *std_cargo_args(path: "gping")
@@ -46,7 +43,7 @@ class Gping < Formula
 
     r, w, = PTY.spawn("#{bin}/gping google.com")
     r.winsize = [80, 130]
-    sleep 1
+    sleep 10
     w.write "q"
 
     begin
@@ -62,14 +59,5 @@ class Gping < Formula
     rescue Errno::EIO
       # GNU/Linux raises EIO when read is done on closed pty
     end
-
-    return unless OS.mac?
-
-    linkage_with_libgit2 = (bin/"gping").dynamically_linked_libraries.any? do |dll|
-      next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)
-
-      File.realpath(dll) == (Formula["libgit2"].opt_lib/shared_library("libgit2")).realpath.to_s
-    end
-    assert linkage_with_libgit2, "No linkage with libgit2! Cargo is likely using a vendored version."
   end
 end

@@ -2,43 +2,46 @@ class Flyctl < Formula
   desc "Command-line tools for fly.io services"
   homepage "https://fly.io"
   url "https://github.com/superfly/flyctl.git",
-      tag:      "v0.1.84",
-      revision: "5735a8b979ebc938c74832c3edd52c509abaa7eb"
+      tag:      "v0.3.40",
+      revision: "0a5966dcd8a4a7ae3a71623f9f04371a3e7f27ae"
   license "Apache-2.0"
   head "https://github.com/superfly/flyctl.git", branch: "master"
 
+  # Upstream tags versions like `v0.1.92` and `v2023.9.8` but, as of writing,
+  # they only create releases for the former and those are the versions we use
+  # in this formula. We could omit the date-based versions using a regex but
+  # this uses the `GithubLatest` strategy, as the upstream repository also
+  # contains over a thousand tags (and growing).
   livecheck do
     url :stable
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "39d58c90d8ab72a7cb1af20f645827c225fc664a10f0db1d70622c2486a3fed8"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "39d58c90d8ab72a7cb1af20f645827c225fc664a10f0db1d70622c2486a3fed8"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "39d58c90d8ab72a7cb1af20f645827c225fc664a10f0db1d70622c2486a3fed8"
-    sha256 cellar: :any_skip_relocation, ventura:        "9df1de2bc79e96de3cc94f46713812c543d2c8b728895acd9ccf8d0216fcf2e8"
-    sha256 cellar: :any_skip_relocation, monterey:       "9df1de2bc79e96de3cc94f46713812c543d2c8b728895acd9ccf8d0216fcf2e8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9df1de2bc79e96de3cc94f46713812c543d2c8b728895acd9ccf8d0216fcf2e8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4e89c6552c85c7972b7f7f7df1521f8ce694de36005415e49813a2a62465cbf8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "920f17f51a711c22b8572019f0c431152b8f90a12230d945cabd439691137cf3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "920f17f51a711c22b8572019f0c431152b8f90a12230d945cabd439691137cf3"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "920f17f51a711c22b8572019f0c431152b8f90a12230d945cabd439691137cf3"
+    sha256 cellar: :any_skip_relocation, sonoma:        "929111e453312f892ff27619668a78a00890a0c2fbd900bb00758792a4588227"
+    sha256 cellar: :any_skip_relocation, ventura:       "929111e453312f892ff27619668a78a00890a0c2fbd900bb00758792a4588227"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3cfe22d4f83ab0b2a35f448e0ea8cc44536a1125959cc7490191247a917b7493"
   end
 
-  # go 1.21.0 support bug report, https://github.com/superfly/flyctl/issues/2688
-  depends_on "go@1.20" => :build
+  depends_on "go" => :build
 
   def install
     ENV["CGO_ENABLED"] = "0"
     ldflags = %W[
       -s -w
-      -X github.com/superfly/flyctl/internal/buildinfo.environment=production
       -X github.com/superfly/flyctl/internal/buildinfo.buildDate=#{time.iso8601}
-      -X github.com/superfly/flyctl/internal/buildinfo.version=#{version}
+      -X github.com/superfly/flyctl/internal/buildinfo.buildVersion=#{version}
       -X github.com/superfly/flyctl/internal/buildinfo.commit=#{Utils.git_short_head}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:), "-tags", "production"
 
     bin.install_symlink "flyctl" => "fly"
 
     generate_completions_from_executable(bin/"flyctl", "completion")
+    generate_completions_from_executable(bin/"fly", "completion", base_name: "fly")
   end
 
   test do

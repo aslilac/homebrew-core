@@ -2,8 +2,8 @@ class ErlangAT25 < Formula
   desc "Programming language for highly scalable real-time systems"
   homepage "https://www.erlang.org/"
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url "https://github.com/erlang/otp/releases/download/OTP-25.3.2.5/otp_src_25.3.2.5.tar.gz"
-  sha256 "1f899b4b1ef8569c08713b76bc54607a09503a1d188e6d61512036188cc356db"
+  url "https://github.com/erlang/otp/releases/download/OTP-25.3.2.15/otp_src_25.3.2.15.tar.gz"
+  sha256 "5effb0f7d791c9fb216e530f61f3380bf7052a5dfd98b4de2caa05a259abaf05"
   license "Apache-2.0"
 
   livecheck do
@@ -12,13 +12,12 @@ class ErlangAT25 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "837bc50860adb8723e5539b164f90691b1ab3037d37264c63166844c4d1dbb95"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a349f46d54799b90317426abe4c9f59cc86026ccacf296ede29c698fccc4f999"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4336febcb80b2ffb0a72e6181a9c4d7e3acd6093139aa43ea9235096711bd1c9"
-    sha256 cellar: :any_skip_relocation, ventura:        "c090769e9b39412ba85039d85b5b94976961ed7a2f60ed60b2efcfa2364eb952"
-    sha256 cellar: :any_skip_relocation, monterey:       "8d92b667682e3558c810d396b2e6acecf335c6efc56ff277e088a6d32d896083"
-    sha256 cellar: :any_skip_relocation, big_sur:        "dd76a57df675a84cef6a06d7995f262d9e019176651487e8a2ff59c0863dcf7a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ace061b82819ecdd073df17770a61478219d1fc668615aa4ee22062978e3a868"
+    sha256 cellar: :any,                 arm64_sequoia: "dcce1a6100893654374542ccdfe615c45308563b648f135889d8e025fe8af702"
+    sha256 cellar: :any,                 arm64_sonoma:  "605e1fb6f7a576bf93032d073597ae91cc8029ef09d20a4b1491da34062d73c0"
+    sha256 cellar: :any,                 arm64_ventura: "c4d254a838a33282501b36f86a14d9c4a2ce9dbb01c9962a93e71c45a9539b11"
+    sha256 cellar: :any,                 sonoma:        "cd312decccb484bc043adab387b834d314b3e16e3a373d68b3b86d37e1063bb7"
+    sha256 cellar: :any,                 ventura:       "279a6dc478ab99275a2b62eb94cc05aeb2cc807e32be547f2ff68cb14554ab03"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e4575bb7b78e3c78e4fca9cf64535251248562ee7fda4876d75445412385dda0"
   end
 
   keg_only :versioned_formula
@@ -28,13 +27,21 @@ class ErlangAT25 < Formula
   depends_on "wxwidgets" # for GUI apps like observer
 
   uses_from_macos "libxslt" => :build # for xsltproc
+  uses_from_macos "ncurses"
+  uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "mesa-glu"
+  end
 
   resource "html" do
-    url "https://github.com/erlang/otp/releases/download/OTP-25.3.2.5/otp_doc_html_25.3.2.5.tar.gz"
-    sha256 "9e9fcac4f545947bdbe9105ae3b5150b7390ffb4bef74ae8de4a3cad194adf4a"
+    url "https://github.com/erlang/otp/releases/download/OTP-25.3.2.15/otp_doc_html_25.3.2.15.tar.gz"
+    sha256 "e407dd957663439f78ee7394009f26731ecd25a62dc5ff8dd6cdaffdb73b77d9"
   end
 
   def install
+    odie "html resource needs to be updated" if version != resource("html").version
+
     # Unset these so that building wx, kernel, compiler and
     # other modules doesn't fail with an unintelligible error.
     %w[LIBS FLAGS AFLAGS ZFLAGS].each { |k| ENV.delete("ERL_#{k}") }
@@ -84,9 +91,8 @@ class ErlangAT25 < Formula
   end
 
   test do
-    assert_equal version, resource("html").version, "`html` resource needs updating!"
+    system bin/"erl", "-noshell", "-eval", "crypto:start().", "-s", "init", "stop"
 
-    system "#{bin}/erl", "-noshell", "-eval", "crypto:start().", "-s", "init", "stop"
     (testpath/"factorial").write <<~EOS
       #!#{bin}/escript
       %% -*- erlang -*-
@@ -109,6 +115,7 @@ class ErlangAT25 < Formula
       fac(0) -> 1;
       fac(N) -> N * fac(N-1).
     EOS
+
     chmod 0755, "factorial"
     assert_match "usage: factorial integer", shell_output("./factorial")
     assert_match "factorial 42 = 1405006117752879898543142606244511569936384000000000", shell_output("./factorial 42")

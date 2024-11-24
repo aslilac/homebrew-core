@@ -1,46 +1,65 @@
 class Alpscore < Formula
   desc "Applications and libraries for physics simulations"
   homepage "https://alpscore.org"
-  url "https://github.com/ALPSCore/ALPSCore/archive/v2.2.0.tar.gz"
-  sha256 "f7bc9c8f806fb0ad4d38cb6604a10d56ab159ca63aed6530c1f84ecaf40adc61"
+  url "https://github.com/ALPSCore/ALPSCore/archive/refs/tags/v2.3.1.tar.gz"
+  sha256 "384f25cd543ded1ac99fe8238db97a5d90d24e1bf83ca8085f494acdd12ed86c"
   license "GPL-2.0-only"
-  revision 3
+  revision 2
   head "https://github.com/ALPSCore/ALPSCore.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "88c6e64b6e8ca7f7354ec0b65c281c82d9fd7f7efe35966411fc3151ec539b3c"
-    sha256 cellar: :any,                 arm64_monterey: "9e4266bcf31a8c7af05d8f582d23c773ab814ba033251bb221000b0de00c4b90"
-    sha256 cellar: :any,                 arm64_big_sur:  "d05d9821803c3f2db25b613b77ed4e271c25f7cd8696b39bf474ea477eff4aa1"
-    sha256 cellar: :any,                 ventura:        "f1645afda2a5b5d554c12f8156dd84ab32ef21a0aa112463a82a3694e2b0ca95"
-    sha256 cellar: :any,                 monterey:       "1b80a39cdcb57578928c6a4fc88218160236e947299b281acfc12f8678f3061d"
-    sha256 cellar: :any,                 big_sur:        "311a9f813a4e9f6147de06a0975c6c18eaec990ece62326de19e53ff40dbb435"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cad3a9b4d34851a8b32ccde1aff2ff675de151e5af7a06dc831284be0c3fe2f6"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "29c6ede223583eed8c36de8efc88aa516fc5a7ef2c2e95e2608ec560dce28271"
+    sha256 cellar: :any,                 arm64_sonoma:  "a7de097346c1a2dc6f21b04cc6a5e1b226de60e863af74ee8fc93a9273e04dd1"
+    sha256 cellar: :any,                 arm64_ventura: "b190400e560789f65a14137da3b2ea97bc320578dafdda367d38dac3a10b854d"
+    sha256 cellar: :any,                 sonoma:        "c92e9a635a0c4b249bbe3c7ac3eedd003791547c0ac24536414e4e51048e7014"
+    sha256 cellar: :any,                 ventura:       "5efb507ba18bf0ee8dab3ccce424d3accb15e5a6a3a8386460bd286fd1a117d6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a8aa15df04e08a496efa4df6c4884e2ca3214fd7374f35fe04264240da43b232"
   end
 
-  depends_on "cmake" => :build
+  depends_on "cmake" => [:build, :test]
   depends_on "boost"
   depends_on "eigen"
   depends_on "hdf5"
   depends_on "open-mpi"
 
-  on_macos do
-    depends_on "libaec"
-  end
-
   def install
-    args = std_cmake_args
-    args << "-DEIGEN3_INCLUDE_DIR=#{Formula["eigen"].opt_include}/eigen3"
-    args << "-DALPS_BUILD_SHARED=ON"
-    args << "-DENABLE_MPI=ON"
-    args << "-DTesting=OFF"
+    # Work around different behavior in CMake-built HDF5
+    inreplace "common/cmake/ALPSCommonModuleDefinitions.cmake" do |s|
+      s.sub! "set(HDF5_NO_FIND_PACKAGE_CONFIG_FILE TRUE)", ""
+      s.sub! "find_package (HDF5 1.10.2 ", "find_package (HDF5 "
+    end
 
-    system "cmake", "-S", ".", "-B", "build", *args
+    args = %W[
+      -DEIGEN3_INCLUDE_DIR=#{Formula["eigen"].opt_include}/eigen3
+      -DALPS_BUILD_SHARED=ON
+      -DENABLE_MPI=ON
+      -DTesting=OFF
+    ]
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
+
+    # Fix Cellar references
+    files_with_cellar_references = [
+      share/"alps-utilities/alps-utilities.cmake",
+      share/"alps-alea/alps-alea.cmake",
+      share/"alps-gf/alps-gf.cmake",
+      share/"alps-accumulators/alps-accumulators.cmake",
+      share/"alps-mc/alps-mc.cmake",
+      share/"alps-params/alps-params.cmake",
+      share/"alps-hdf5/alps-hdf5.cmake",
+    ]
+
+    inreplace files_with_cellar_references do |s|
+      s.gsub!(Formula["open-mpi"].prefix.realpath, Formula["open-mpi"].opt_prefix)
+      s.gsub!(Formula["hdf5"].prefix.realpath, Formula["hdf5"].opt_prefix, audit_result: false)
+    end
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <alps/mc/api.hpp>
       #include <alps/mc/mcbase.hpp>
       #include <alps/accumulators.hpp>
@@ -55,16 +74,20 @@ class Alpscore < Formula
         p["myparam"] = 1.0;
         cout << set["a"] << endl << p["myparam"] << endl;
       }
-    EOS
+    CPP
 
-    args = %W[
-      -std=c++11
-      -I#{include} -I#{Formula["boost"].opt_include}
-      -L#{lib} -L#{Formula["boost"].opt_lib}
-      -lalps-accumulators -lalps-hdf5 -lalps-utilities -lalps-params
-      -lboost_filesystem-mt -lboost_system-mt -lboost_program_options-mt
-    ]
-    system ENV.cxx, "test.cpp", *args, "-o", "test"
+    (testpath/"CMakeLists.txt").write <<~CMAKE
+      cmake_minimum_required(VERSION 3.5)
+      project(test)
+      set(CMAKE_CXX_STANDARD 14)
+      find_package(HDF5 REQUIRED)
+      find_package(ALPSCore REQUIRED mc accumulators params)
+      add_executable(test test.cpp)
+      target_link_libraries(test ${ALPSCore_LIBRARIES})
+    CMAKE
+
+    system "cmake", "."
+    system "cmake", "--build", "."
     assert_equal "3 #2\n1 (type: double) (name='myparam')\n", shell_output("./test")
   end
 end

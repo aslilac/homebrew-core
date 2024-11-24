@@ -1,8 +1,8 @@
 class Solidity < Formula
   desc "Contract-oriented programming language"
   homepage "https://soliditylang.org"
-  url "https://github.com/ethereum/solidity/releases/download/v0.8.21/solidity_0.8.21.tar.gz"
-  sha256 "6d1bb8e72850320e72d788575f6bd25dd4930cb6dd9edd35a59266a46f610d13"
+  url "https://github.com/ethereum/solidity/releases/download/v0.8.28/solidity_0.8.28.tar.gz"
+  sha256 "ec756e30f26a5a38d028fd6f401ef0a7f5cfbf4a1ce71f76c2e3e1ffb8730672"
   license all_of: ["GPL-3.0-or-later", "MIT", "BSD-3-Clause", "Apache-2.0", "CC0-1.0"]
 
   livecheck do
@@ -11,26 +11,40 @@ class Solidity < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e3ce41bb65420d367fc36871cb8eeeaa401b9fcb53996c72a8bb221003f84743"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3c38b29827806be9182ba1b44843551f7eb36854a074b51af56b0b7e1bdb8738"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1918981bca20dc6d478b38a7fd103032d1637b1535b9e773a30b8706f9196e1f"
-    sha256 cellar: :any_skip_relocation, ventura:        "289d29d6236ce84a00857b44edf2480754474e49dac5365848057a763d6b1005"
-    sha256 cellar: :any_skip_relocation, monterey:       "82bc0cdc0afee2ed50c9e7c08f96c2a2b367c0df6e84233c15f34fdbaaa7bf7b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ffc4f49ef46582e5c0304b653ea8433c7daf0930f3429a259024c42ff23843c2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "46be35bc547de75f39379b21201c969fb332bbe658b08c5fbecdaceb24f9486d"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "7d25ad2af2b0d23695ac400c5650d9f4b1ab381363c649f382b1763010362fba"
+    sha256 cellar: :any,                 arm64_sonoma:  "fc412d6503e462724de89699c0b84c96944b349b88d222e37c9c38cea72c479d"
+    sha256 cellar: :any,                 arm64_ventura: "5e579cf156f4878259a12cc70ccc7d300e6d6eb1a9e6822457df27185d3abd22"
+    sha256 cellar: :any,                 sonoma:        "8e0726035c368da6bcd502d76b5139a668222de5b19f64787561500a0eacbd8f"
+    sha256 cellar: :any,                 ventura:       "6fcd5c082015c863f527bb1983c72915f1c9a3f8b1d1ad0e27e2dbcb55e68561"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "aaa64d53b22674a9afddd6bea5bb0c1f53bad7262ff6c98131d8ccbff989d791"
   end
 
   depends_on "cmake" => :build
-  depends_on xcode: ["11.0", :build]
+  depends_on "fmt" => :build
+  depends_on "nlohmann-json" => :build
+  depends_on "range-v3" => :build
   depends_on "boost"
+  depends_on "z3"
 
-  fails_with gcc: "5"
+  conflicts_with "solc-select", because: "both install `solc` binaries"
+
+  # build patch to use system fmt, nlohmann-json, and range-v3, upstream PR ref, https://github.com/ethereum/solidity/pull/15414
+  patch do
+    url "https://github.com/ethereum/solidity/commit/aa47181eef8fa63a6b4f52bff2c05517c66297a2.patch?full_index=1"
+    sha256 "b73e52a235087b184b8813a15a52c4b953046caa5200bf0aa60773ec4bb28300"
+  end
 
   def install
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args
-      system "make", "install"
-    end
+    rm_r("deps")
+
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DBoost_USE_STATIC_LIBS=OFF",
+                    "-DSTRICT_Z3_VERSION=OFF",
+                    "-DTESTS=OFF",
+                    *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -43,6 +57,7 @@ class Solidity < Formula
         }
       }
     EOS
+
     output = shell_output("#{bin}/solc --bin hello.sol")
     assert_match "hello.sol:HelloWorld", output
     assert_match "Binary:", output

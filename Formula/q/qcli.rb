@@ -1,39 +1,49 @@
 class Qcli < Formula
   desc "Report audiovisual metrics via libavfilter"
   homepage "https://bavc.org/preserve-media/preservation-tools"
-  url "https://github.com/bavc/qctools/archive/v1.2.1.tar.gz"
-  sha256 "17cdc326819d3b332574968ee99714ac982c3a8e19a9c80bcbd3dc6dcb4db2b1"
   license "GPL-3.0-or-later"
+  revision 1
   head "https://github.com/bavc/qctools.git", branch: "master"
 
-  bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "715edcf1acb8c6ec82742921b2e69534991174bdd37e4e9ef1a98072acf4cb40"
-    sha256 cellar: :any,                 arm64_monterey: "c938fd599d5673faa37050128aee9a772b4839d06904f5590e58418236d12777"
-    sha256 cellar: :any,                 arm64_big_sur:  "c21c3d3503c25df679252810f0fe02ce8804d2ca17beca67e4e8d664a40757d0"
-    sha256 cellar: :any,                 ventura:        "2429b03da7661875548c9dae60312f71afe1ac85e89019347ae5ea6ae0f73fde"
-    sha256 cellar: :any,                 monterey:       "0848ef18376ea60af79db5a6dacd3238057d3026d58301fb2a7005e88835627e"
-    sha256 cellar: :any,                 big_sur:        "834aa115e6d3564ecd1b2ee6aa92bb614205c04f219b31ab3afa49394bc4823d"
-    sha256 cellar: :any,                 catalina:       "c2bca545b18f596970d770bdcfdd8e8d28fbf8066da7ec1916e6ed8efdd6b45b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ec653e796249edd74fa133508baaf3577ed5acbcfead80fa040db92ce741275c"
+  stable do
+    url "https://github.com/bavc/qctools.git",
+        tag:      "v1.3.1",
+        revision: "0573c33953d02db53812a2420f174d6b1233751e"
+
+    # Backport fix for Qt 6.7
+    patch do
+      url "https://github.com/valbok/QtAVPlayer/commit/a24033d6636426d4fc1f97b6ee483bf6a7ab6072.patch?full_index=1"
+      sha256 "44396f114cd81c85949cd6dfc017ef51a3255d79be9ba42ae82c57e6a326b0e3"
+      directory "Project/QtCreator/qctools-QtAVPlayer"
+    end
   end
 
-  depends_on "pkg-config" => :build
-  depends_on "ffmpeg@4"
-  depends_on "qt@5"
-  depends_on "qwt-qt5"
+  bottle do
+    sha256 cellar: :any,                 arm64_sonoma:   "74f2414ccaac5d53bb8b4649f36df6a1d71affd563f9659a2234ceb0c81805ed"
+    sha256 cellar: :any,                 arm64_ventura:  "d6f507f9162b5c0efd05e676beacb4426a17b6aa910919310f5c451483900277"
+    sha256 cellar: :any,                 arm64_monterey: "63948d79ec70c9d0508708b7d9c646ce56730577af431cdf5aa9dd362091afe4"
+    sha256 cellar: :any,                 sonoma:         "ac8d5ce426a89238dfdb40d584e3af8cd275630b467bfc6e5dbb06407a0d41c3"
+    sha256 cellar: :any,                 ventura:        "61cc358cb9c4afe330d4b2639c990d90c76837f5b788279ec81df02eb61d3ce3"
+    sha256 cellar: :any,                 monterey:       "12bf0f711da97afae0e9cffd4eee084c95fa50b9a7945334a6aa62a010b5c145"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "14e72317eceef670be0d732541e176f143ffafc616cb698dc4052b5c1c589c92"
+  end
 
-  fails_with gcc: "5" # ffmpeg is compiled with GCC
+  depends_on "pkgconf" => :build
+  depends_on "ffmpeg@6" # Issue ref: https://github.com/bavc/qctools/issues/552
+  depends_on "qt"
+  depends_on "qwt"
+
+  uses_from_macos "zlib"
 
   def install
-    qt5 = Formula["qt@5"].opt_prefix
-    ENV["QCTOOLS_USE_BREW"]="true"
+    ENV["USE_BREW"] = "true"
 
     cd "Project/QtCreator/qctools-lib" do
-      system "#{qt5}/bin/qmake", "qctools-lib.pro"
+      system "qmake", "qctools-lib.pro"
       system "make"
     end
     cd "Project/QtCreator/qctools-cli" do
-      system "#{qt5}/bin/qmake", "qctools-cli.pro"
+      system "qmake", "qctools-cli.pro"
       system "make"
       bin.install "qcli"
     end
@@ -42,10 +52,10 @@ class Qcli < Formula
   test do
     # Create an example mp4 file
     mp4out = testpath/"video.mp4"
-    system "#{Formula["ffmpeg@4"].bin}/ffmpeg", "-filter_complex", "testsrc=rate=1:duration=1", mp4out
+    system Formula["ffmpeg@6"].bin/"ffmpeg", "-filter_complex", "testsrc=rate=1:duration=1", mp4out
     # Create a qcli report from the mp4
     qcliout = testpath/"video.mp4.qctools.xml.gz"
     system bin/"qcli", "-i", mp4out, "-o", qcliout
-    assert_predicate qcliout, :exist?
+    assert_path_exists qcliout
   end
 end

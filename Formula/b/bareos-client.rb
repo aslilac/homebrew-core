@@ -1,8 +1,8 @@
 class BareosClient < Formula
   desc "Client for Bareos (Backup Archiving REcovery Open Sourced)"
   homepage "https://www.bareos.org/"
-  url "https://github.com/bareos/bareos/archive/Release/22.1.0.tar.gz"
-  sha256 "f1ee802751cdf89c46d1817e08a7caa937d02c6615940666c420cf17601b8b9c"
+  url "https://github.com/bareos/bareos/archive/refs/tags/Release/23.1.0.tar.gz"
+  sha256 "8a4ae832317de4c160deaf378fa783ab3e259c92b16e961f93fc8d0ffbb59d5a"
   license "AGPL-3.0-only"
 
   livecheck do
@@ -11,13 +11,12 @@ class BareosClient < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "e86d1ce16bc66fdf6dfe1970900f30caa047ae168010314e361c4f381992b6d0"
-    sha256 arm64_monterey: "41c162660184898882572268b91b7c5d7e1e4c212fae191dff57a742d1ac153d"
-    sha256 arm64_big_sur:  "844bdbffec650e13937bfe75d5320d82785f3934524fcc8467c11362814507e4"
-    sha256 ventura:        "14881605ad0493cd05cfaa77c1737290e6fbeb1771810d4b0694e64a8f92a202"
-    sha256 monterey:       "9e27718126d33afedb0b01634011c4a9edffcc2cb648f409699aa6484a688ffd"
-    sha256 big_sur:        "69c7bc9ce269bd759fdfb1846187e1e594b9e4652c621cc5fb99c49edb5ededf"
-    sha256 x86_64_linux:   "fcaf2fafe2c5e2fe23adf648ccf5c22c2a1b211c6addbd3ab6b87e2af2575676"
+    sha256 arm64_sequoia: "a4c091f719cf913d0169dfc61c6776523e564ad188b4add942073d054c52f83e"
+    sha256 arm64_sonoma:  "8e2c4f7ecdaa225201ad7c4b9868d131bdd8c254aab09cefe35b8dc1ea52ebc4"
+    sha256 arm64_ventura: "8831342bc284a21691808595541813945fdec8496ee710b0404a132110b21dc5"
+    sha256 sonoma:        "f0920e20d82df606382dd8c8e52460abb3f6aaa194d252e3963b0db415f0d366"
+    sha256 ventura:       "0a9e16ca65e7ef2fe24fcf8e52ffb491f0bc473bf8a3479f46476d28b0b445c4"
+    sha256 x86_64_linux:  "d7f7362086788f338fd137813a828685c72681ad176dac9e1e6cdfbaa7e4e64c"
   end
 
   depends_on "cmake" => :build
@@ -48,23 +47,14 @@ class BareosClient < Formula
       ENV.append_to_cflags "-Wno-unused-parameter"
     end
 
-    # Work around hardcoded paths to /usr/local Homebrew installation,
-    # forced static linkage on macOS, and openssl formula alias usage.
-    inreplace "core/CMakeLists.txt" do |s|
-      s.gsub! "/usr/local/opt/gettext/lib/libintl.a", Formula["gettext"].opt_lib/shared_library("libintl")
-      s.gsub! "/usr/local/opt/openssl", Formula["openssl@3"].opt_prefix
-      s.gsub! "/usr/local/", "#{HOMEBREW_PREFIX}/"
-    end
-    inreplace "core/src/plugins/CMakeLists.txt" do |s|
-      s.gsub! "/usr/local/opt/gettext/include", Formula["gettext"].opt_include
-      s.gsub! "/usr/local/opt/openssl/include", Formula["openssl@3"].opt_include
-    end
+    # Work around hardcoded paths forced static linkage on macOS
     inreplace "core/cmake/BareosFindAllLibraries.cmake" do |s|
-      s.gsub! "/usr/local/opt/lzo/lib/liblzo2.a", Formula["lzo"].opt_lib/shared_library("liblzo2")
       s.gsub! "set(OPENSSL_USE_STATIC_LIBS 1)", ""
+      s.gsub! "${HOMEBREW_PREFIX}/opt/lzo/lib/liblzo2.a", Formula["lzo"].opt_lib/shared_library("liblzo2")
     end
+
     inreplace "core/cmake/FindReadline.cmake",
-              "/usr/local/opt/readline/lib/libreadline.a",
+              "${HOMEBREW_PREFIX}/opt/readline/lib/libreadline.a",
               Formula["readline"].opt_lib/shared_library("libreadline")
 
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args,
@@ -79,7 +69,8 @@ class BareosClient < Formula
                     "-Dmon-fd-password=XXX_REPLACE_WITH_CLIENT_MONITOR_PASSWORD_XXX",
                     "-Dbasename=XXX_REPLACE_WITH_LOCAL_HOSTNAME_XXX",
                     "-Dhostname=XXX_REPLACE_WITH_LOCAL_HOSTNAME_XXX",
-                    "-Dclient-only=ON"
+                    "-Dclient-only=ON",
+                    "-DENABLE_LZO=ON"
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

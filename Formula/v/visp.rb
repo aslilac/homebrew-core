@@ -1,10 +1,10 @@
 class Visp < Formula
   desc "Visual Servoing Platform library"
   homepage "https://visp.inria.fr/"
-  url "https://visp-doc.inria.fr/download/releases/visp-3.5.0.tar.gz"
-  sha256 "494a648b2570da2a200ba326ed61a14e785eb9ee08ef12d3ad178b2f384d3d30"
+  url "https://visp-doc.inria.fr/download/releases/visp-3.6.0.tar.gz"
+  sha256 "eec93f56b89fd7c0d472b019e01c3fe03a09eda47f3903c38dc53a27cbfae532"
   license "GPL-2.0-or-later"
-  revision 9
+  revision 6
 
   livecheck do
     url "https://visp.inria.fr/download/"
@@ -12,34 +12,61 @@ class Visp < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "0e0bba5de3673f6414707d4f387dbde600ef2122ba5e1f88c85d11a0dd6db9e6"
-    sha256 cellar: :any,                 arm64_monterey: "0adad66a23d024372d09ac46fdb4785e89c8d2ebe053cdf7c52440cc276f48de"
-    sha256 cellar: :any,                 arm64_big_sur:  "2d0cb5f830558f0dca0771d3929732e57d27ebe9cf5344f157b578dfe6e4a450"
-    sha256 cellar: :any,                 ventura:        "89c6e65399dd047f50a99384022b61fbf828f3419b2dd51601f1d73ef81a017c"
-    sha256 cellar: :any,                 monterey:       "6593ddf36c07cc67cf35c256641308dd5f3c7e89d817f85fa7184dc12ac72f37"
-    sha256 cellar: :any,                 big_sur:        "49287f7440399abfaa7b57d24651336127b82bed5ecae19d37b58832a6064d02"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9ad6d0f418c178812c2c3384f90cfd31da77ce019129293ce1d1344b06be3c2a"
+    sha256 cellar: :any,                 arm64_sonoma:   "aa2ae8cfa6a139b9789cff6b0c91a10cea7b1c854d4d23073bbca8ac53bbb4b4"
+    sha256 cellar: :any,                 arm64_ventura:  "afa24d7d2774a8a53ef166bb1d00cdf81b56b4ad6f71441fc9660f67af93a698"
+    sha256 cellar: :any,                 arm64_monterey: "1a0a7b8cd994f5d302d2f5693071a6c17ec93a4edab19691867e12dc20278911"
+    sha256 cellar: :any,                 sonoma:         "fee41cb44c0c51d1942ae451d8bb2079d2c96e994f341f201fb1b403faf4c274"
+    sha256 cellar: :any,                 ventura:        "a4a5b98f1546f90c563ca8ffef2cf86912a92acdd39965fa8c81a3b1ba52898d"
+    sha256 cellar: :any,                 monterey:       "754fccdcd34b588341ae8a6d846bd500f443a23f3485910a301b2af62dcf0d5f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8ae66b7767af5ceb8ad682c3328aa9dc6bca569e4705641d45c161e199ff0a55"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => [:build, :test]
+
   depends_on "eigen"
   depends_on "gsl"
   depends_on "jpeg-turbo"
   depends_on "libdc1394"
   depends_on "libpng"
+  depends_on "openblas"
   depends_on "opencv"
   depends_on "pcl"
+  depends_on "vtk"
   depends_on "zbar"
 
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
 
+  on_macos do
+    depends_on "boost"
+    depends_on "flann"
+    depends_on "glew"
+    depends_on "libomp"
+    depends_on "libpcap"
+    depends_on "qhull"
+    depends_on "qt"
+  end
+
   on_linux do
     depends_on "libnsl"
   end
 
-  fails_with gcc: "5"
+  # Backport fix for recent Apple Clang
+  patch do
+    url "https://github.com/lagadic/visp/commit/8c1461661f99a5db31c89ede9946d2b0244f8123.patch?full_index=1"
+    sha256 "1e0126c731bf14dfe915088a4205a16ec0b6d5f2ea57d0e84f2f69b8e86b144f"
+  end
+  patch do
+    url "https://github.com/lagadic/visp/commit/e41aa4881e0d58c182f0c140cc003b37afb99d39.patch?full_index=1"
+    sha256 "c0dd6678f1b39473da885f7519daf16018e20209c66cdd04f660a968f6fadbba"
+  end
+
+  # One usage of OpenCV Universal Intrinsics API altered starting from 4.9.0
+  # Remove this patch if it's merged into a future version
+  # https://github.com/lagadic/visp/issues/1309
+  # Patch source: https://github.com/lagadic/visp/pull/1310
+  patch :DATA
 
   def install
     ENV.cxx11
@@ -110,7 +137,7 @@ class Visp < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <visp3/core/vpConfig.h>
       #include <iostream>
       int main()
@@ -119,8 +146,44 @@ class Visp < Formula
                 "." << VISP_VERSION_PATCH << std::endl;
         return 0;
       }
-    EOS
-    system ENV.cxx, "test.cpp", "-I#{include}", "-L#{lib}", "-o", "test"
+    CPP
+    pkg_config_flags = shell_output("pkgconf --cflags --libs visp").chomp.split
+    system ENV.cxx, "test.cpp", "-o", "test", *pkg_config_flags
     assert_equal version.to_s, shell_output("./test").chomp
   end
 end
+
+__END__
+diff --git a/modules/tracker/mbt/src/depth/vpMbtFaceDepthDense.cpp b/modules/tracker/mbt/src/depth/vpMbtFaceDepthDense.cpp
+index 8a47b5d437..c6d636bc9e 100644
+--- a/modules/tracker/mbt/src/depth/vpMbtFaceDepthDense.cpp
++++ b/modules/tracker/mbt/src/depth/vpMbtFaceDepthDense.cpp
+@@ -606,9 +606,15 @@ void vpMbtFaceDepthDense::computeInteractionMatrixAndResidu(const vpHomogeneousM
+         cv::v_float64x2 vx, vy, vz;
+         cv::v_load_deinterleave(ptr_point_cloud, vx, vy, vz);
+ 
++#if (VISP_HAVE_OPENCV_VERSION >= 0x040900)
++        cv::v_float64x2 va1 = cv::v_sub(cv::v_mul(vnz, vy), cv::v_mul(vny, vz)); // vnz*vy - vny*vz
++        cv::v_float64x2 va2 = cv::v_sub(cv::v_mul(vnx, vz), cv::v_mul(vnz, vx)); // vnx*vz - vnz*vx
++        cv::v_float64x2 va3 = cv::v_sub(cv::v_mul(vny, vx), cv::v_mul(vnx, vy)); // vny*vx - vnx*vy
++#else
+         cv::v_float64x2 va1 = vnz*vy - vny*vz;
+         cv::v_float64x2 va2 = vnx*vz - vnz*vx;
+         cv::v_float64x2 va3 = vny*vx - vnx*vy;
++#endif
+ 
+         cv::v_float64x2 vnxy = cv::v_combine_low(vnx, vny);
+         cv::v_store(ptr_L, vnxy);
+@@ -630,7 +636,12 @@ void vpMbtFaceDepthDense::computeInteractionMatrixAndResidu(const vpHomogeneousM
+         cv::v_store(ptr_L, vnxy);
+         ptr_L += 2;
+ 
++#if (VISP_HAVE_OPENCV_VERSION >= 0x040900)
++        cv::v_float64x2 verr = cv::v_add(vd, cv::v_muladd(vnx, vx, cv::v_muladd(vny, vy, cv::v_mul(vnz, vz))));
++#else
+         cv::v_float64x2 verr = vd + cv::v_muladd(vnx, vx, cv::v_muladd(vny, vy, vnz*vz));
++#endif
++
+         cv::v_store(ptr_error, verr);
+         ptr_error += 2;
+ #elif USE_SSE

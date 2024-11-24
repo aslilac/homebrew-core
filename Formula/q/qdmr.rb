@@ -1,19 +1,19 @@
 class Qdmr < Formula
   desc "Codeplug programming tool for DMR radios"
   homepage "https://dm3mat.darc.de/qdmr/"
-  url "https://github.com/hmatuschek/qdmr/archive/refs/tags/v0.11.3.tar.gz"
-  sha256 "bad499faec7533c460e72c121716141f8cca0ea613ed55143ba1780b06a49b9a"
+  url "https://github.com/hmatuschek/qdmr/archive/refs/tags/v0.12.0.tar.gz"
+  sha256 "309854ba81c7b59a748e42958eb0acbd4b5efbd956790ffdf04886c9abc6c588"
   license "GPL-3.0-or-later"
-  revision 1
 
   bottle do
-    sha256 arm64_ventura:  "a3d47d1a4f74f29d7205b551e09602e0d7459677f25653fc788e3bf8fe3cbd6f"
-    sha256 arm64_monterey: "b825f13edb4f363391a354ff6c99b1f117dbc07ea222804ddeade267642fafc6"
-    sha256 arm64_big_sur:  "e24d6e79da29b3e49aa5e727b89aa6c41cfc8d87d6d731576ad643507701a867"
-    sha256 ventura:        "96a334c4673dd26658fac496c7788bb27f4efcdf0b1bf8f2b720888a435e2cbb"
-    sha256 monterey:       "7702c73879f9acdbab76b3fdfa684533f674a6b36f35ed23ae91ae1c983f73a7"
-    sha256 big_sur:        "0115dad9c598ae7fd2ebcf0127d5daaf87db0bb324698ff99dd6e8e9d3c99d86"
-    sha256 x86_64_linux:   "f63dfccf38fe9a7542be3adec7d0ca85777c566a8a92fd3a9e5f527ad8db270e"
+    sha256 arm64_sequoia:  "dfd2e1ef58019f2cf0edcabedcc8d0559bb014478e349bdd4e32128f1d641f40"
+    sha256 arm64_sonoma:   "c61719e66046cf2dc2995949e48c56fbc9b8e7aa1687fee3fc2dd279f7639eb5"
+    sha256 arm64_ventura:  "76f4b08ec605a1e316c08c7f99eb82280ee9a6bdad2f13e4ad846d7eb7aa1551"
+    sha256 arm64_monterey: "205f2098198e0c5e861bf5612c6f5d227baad54f63fd950e98fe92d485dc3196"
+    sha256 sonoma:         "18c109314f78f38164ae6bf00eeff1b7f98183c371e3d301da6e0cea13114dd5"
+    sha256 ventura:        "9fa82f7039cc7b94b645db9d7031a73faee2316785a4960bdf75329f308dabd8"
+    sha256 monterey:       "22b7f99b5fcb8b06744c3a97ea85d86f7abf51682f7988b236e7391dbf5c41ec"
+    sha256 x86_64_linux:   "774c8c6089066641a4abd1f5fc28d563feac0a1fc66aedcb192f636a8135b3b4"
   end
 
   depends_on "cmake" => :build
@@ -28,7 +28,7 @@ class Qdmr < Formula
   end
 
   test do
-    (testpath/"config.yaml").write <<~EOS
+    (testpath/"config.yaml").write <<~YAML
       radioIDs:
         - dmr: {id: id1, name: DM3MAT, number: 2621370}
 
@@ -39,7 +39,7 @@ class Qdmr < Formula
             rxFrequency: 123.456780   # <- Up to 10Hz precision
             txFrequency: 1234.567890
 
-    EOS
+    YAML
     system bin/"dmrconf", "--radio=d878uv2", "encode", "config.yaml", "config.dfu"
   end
 end

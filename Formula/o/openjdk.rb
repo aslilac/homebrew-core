@@ -1,8 +1,8 @@
 class Openjdk < Formula
   desc "Development kit for the Java programming language"
   homepage "https://openjdk.java.net/"
-  url "https://github.com/openjdk/jdk20u/archive/refs/tags/jdk-20.0.1-ga.tar.gz"
-  sha256 "ced1915490f6831cd53bbf84281e8bd6b0c5e3fe6ab7c04e3428df1f32343a1e"
+  url "https://github.com/openjdk/jdk23u/archive/refs/tags/jdk-23.0.1-ga.tar.gz"
+  sha256 "0e058ae2956871aafc5be33960b6e0f8dd954d234d590d249bcb3b619b579a0a"
   license "GPL-2.0-only" => { with: "Classpath-exception-2.0" }
 
   livecheck do
@@ -11,20 +11,20 @@ class Openjdk < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_ventura:  "f1f57bfbc1a34a0262afaee9b46311631f801e5fde7881483e5fef3d3c50c39d"
-    sha256 cellar: :any, arm64_monterey: "cd7740408b565bc5cf65623212d9de741bde4ebda65bc8ce697af71d7d79dcd4"
-    sha256 cellar: :any, arm64_big_sur:  "575b22d9e6189d0cad3bc0c5aac99e22d3b542de9ef846a8b74521d96b800fba"
-    sha256 cellar: :any, ventura:        "c20be81e70ccea53ece81cd8e2fbf8829eecffcdfeb6ab4395f9808cc664ee95"
-    sha256 cellar: :any, monterey:       "12ab1b2e4022ee37f354ba0a0180e652a96b8bda45cb4212f71731e4c5f0a57a"
-    sha256 cellar: :any, big_sur:        "0c0f98e27bd0a59acbcd04097fdeb798327d99db24ee5b16e4928be7fa5e87ca"
-    sha256               x86_64_linux:   "ed436706aaa8c5d8221d7a0b386d24d0b004a5bcadadb9f8e040998450caf081"
+    sha256 cellar: :any, arm64_sequoia: "5cba5c9149f823770a7aa5ddd12f8e0d48263284bfc8151b066d9c60b5945f04"
+    sha256 cellar: :any, arm64_sonoma:  "176f8199a78576ee2c58ff0991fe39715f5bfa2b3696f1524dd02d189b2bbecb"
+    sha256 cellar: :any, arm64_ventura: "28f082ca3d5a172b9991546169f74fbe1f69a9dbd3e96dc0fe02aa35e0332454"
+    sha256 cellar: :any, sonoma:        "0af938cb313d757ceadccb67ecb37ea8744de3a672ec23ee7fd19afd1ed9ff98"
+    sha256 cellar: :any, ventura:       "c682b196a6eb18f671c7f995d9c48ce8e88db01767822283f4ab3f74b3c51ce6"
+    sha256               x86_64_linux:  "873413e010c1bf4a928801aa74bd8d20fb8053a6bc303a74486ad17653d35e9e"
   end
 
   keg_only :shadowed_by_macos
 
   depends_on "autoconf" => :build
   depends_on "pkg-config" => :build
-  depends_on xcode: :build
+  depends_on xcode: :build # for metal
+  depends_on "freetype"
   depends_on "giflib"
   depends_on "harfbuzz"
   depends_on "jpeg-turbo"
@@ -40,9 +40,9 @@ class Openjdk < Formula
   on_linux do
     depends_on "alsa-lib"
     depends_on "fontconfig"
-    depends_on "freetype"
     depends_on "libx11"
     depends_on "libxext"
+    depends_on "libxi"
     depends_on "libxrandr"
     depends_on "libxrender"
     depends_on "libxt"
@@ -55,28 +55,32 @@ class Openjdk < Formula
   resource "boot-jdk" do
     on_macos do
       on_arm do
-        url "https://download.java.net/java/GA/jdk19.0.1/afdd2e245b014143b62ccb916125e3ce/10/GPL/openjdk-19.0.1_macos-aarch64_bin.tar.gz"
-        sha256 "915054b18fc17216410cea7aba2321c55b82bd414e1ef3c7e1bafc7beb6856c8"
+        url "https://download.java.net/java/GA/jdk22.0.2/c9ecb94cd31b495da20a27d4581645e8/9/GPL/openjdk-22.0.2_macos-aarch64_bin.tar.gz"
+        sha256 "3dab98730234e1a87aec14bcb8171d2cae101e96ff4eed1dab96abbb08e843fd"
       end
       on_intel do
-        url "https://download.java.net/java/GA/jdk19.0.1/afdd2e245b014143b62ccb916125e3ce/10/GPL/openjdk-19.0.1_macos-x64_bin.tar.gz"
-        sha256 "469af195906979f96c1dc862c2f539a5e280d0daece493a95ebeb91962512161"
+        url "https://download.java.net/java/GA/jdk22.0.2/c9ecb94cd31b495da20a27d4581645e8/9/GPL/openjdk-22.0.2_macos-x64_bin.tar.gz"
+        sha256 "e8b3ec7a7077711223d31156e771f11723cd7af31c2017f1bd2eda20855940fb"
       end
     end
     on_linux do
       on_arm do
-        url "https://download.java.net/java/GA/jdk19.0.1/afdd2e245b014143b62ccb916125e3ce/10/GPL/openjdk-19.0.1_linux-aarch64_bin.tar.gz"
-        sha256 "88cadc91d5c7c540ea9df5d23678bb65dc2092fe4e00650b39d87f24f2328e17"
+        url "https://download.java.net/java/GA/jdk22.0.2/c9ecb94cd31b495da20a27d4581645e8/9/GPL/openjdk-22.0.2_linux-aarch64_bin.tar.gz"
+        sha256 "25fba2bd5585e1e9923134dc827f2bd5a2beaca3d242ae00b7e68c152faf7ba6"
       end
       on_intel do
-        url "https://download.java.net/java/GA/jdk19.0.1/afdd2e245b014143b62ccb916125e3ce/10/GPL/openjdk-19.0.1_linux-x64_bin.tar.gz"
-        sha256 "7a466882c7adfa369319fe4adeb197ee5d7f79e75d641e9ef94abee1fc22b1fa"
+        url "https://download.java.net/java/GA/jdk22.0.2/c9ecb94cd31b495da20a27d4581645e8/9/GPL/openjdk-22.0.2_linux-x64_bin.tar.gz"
+        sha256 "41536f115668308ecf4eba92aaf6acaeb0936225828b741efd83b6173ba82963"
       end
     end
   end
 
-  # Patch to restore build on macOS 13
-  patch :DATA
+  # Fix build with `--with-harfbuzz=system`.
+  # https://github.com/openjdk/jdk/pull/19739
+  patch do
+    url "https://github.com/openjdk/jdk/commit/ba5a4670b8ad86fefb41a939752754bf36aac9dc.patch?full_index=1"
+    sha256 "ff6c66f3fa81bef3fb18e88196c520cfa867aa5d57ebf26574635723b4d06d16"
+  end
 
   def install
     boot_jdk = buildpath/"boot-jdk"
@@ -99,6 +103,7 @@ class Openjdk < Formula
       --with-version-build=#{revision}
       --without-version-opt
       --without-version-pre
+      --with-freetype=system
       --with-giflib=system
       --with-harfbuzz=system
       --with-lcms=system
@@ -107,12 +112,20 @@ class Openjdk < Formula
       --with-zlib=system
     ]
 
-    ldflags = ["-Wl,-rpath,#{loader_path.gsub("$", "\\$$")}/server"]
+    ldflags = %W[
+      -Wl,-rpath,#{loader_path.gsub("$", "\\$$")}
+      -Wl,-rpath,#{loader_path.gsub("$", "\\$$")}/server
+    ]
     args += if OS.mac?
       ldflags << "-headerpad_max_install_names"
 
+      # Allow unbundling `freetype` on macOS
+      inreplace "make/autoconf/lib-freetype.m4", '= "xmacosx"', '= ""'
+
       %W[
         --enable-dtrace
+        --with-freetype-include=#{Formula["freetype"].opt_include}
+        --with-freetype-lib=#{Formula["freetype"].opt_lib}
         --with-sysroot=#{MacOS.sdk_path}
       ]
     else
@@ -120,11 +133,14 @@ class Openjdk < Formula
         --with-x=#{HOMEBREW_PREFIX}
         --with-cups=#{HOMEBREW_PREFIX}
         --with-fontconfig=#{HOMEBREW_PREFIX}
-        --with-freetype=system
         --with-stdc++lib=dynamic
       ]
     end
     args << "--with-extra-ldflags=#{ldflags.join(" ")}"
+
+    if DevelopmentTools.clang_build_version == 1600
+      args << "--with-extra-cflags=-mllvm -enable-constraint-elimination=0"
+    end
 
     system "bash", "configure", *args
 
@@ -155,32 +171,16 @@ class Openjdk < Formula
   end
 
   test do
-    (testpath/"HelloWorld.java").write <<~EOS
+    (testpath/"HelloWorld.java").write <<~JAVA
       class HelloWorld {
         public static void main(String args[]) {
           System.out.println("Hello, world!");
         }
       }
-    EOS
+    JAVA
 
     system bin/"javac", "HelloWorld.java"
 
     assert_match "Hello, world!", shell_output("#{bin}/java HelloWorld")
   end
 end
-
-__END__
-diff -pur a/src/jdk.net/macosx/native/libextnet/MacOSXSocketOptions.c b/src/jdk.net/macosx/native/libextnet/MacOSXSocketOptions.c
---- a/src/jdk.net/macosx/native/libextnet/MacOSXSocketOptions.c	2022-08-12 22:24:53.000000000 +0200
-+++ b/src/jdk.net/macosx/native/libextnet/MacOSXSocketOptions.c	2022-10-24 18:27:36.000000000 +0200
-@@ -29,9 +29,9 @@
- #include <unistd.h>
- 
- #include <jni.h>
--#include <netinet/tcp.h>
- 
- #define __APPLE_USE_RFC_3542
-+#include <netinet/tcp.h>
- #include <netinet/in.h>
- 
- #ifndef IP_DONTFRAG

@@ -1,10 +1,10 @@
 class Efl < Formula
   desc "Enlightenment Foundation Libraries"
   homepage "https://www.enlightenment.org"
-  url "https://download.enlightenment.org/rel/libs/efl/efl-1.26.3.tar.xz"
-  sha256 "d9f83aa0fd9334f44deeb4e4952dc0e5144683afac786feebce6030951617d15"
+  url "https://download.enlightenment.org/rel/libs/efl/efl-1.27.0.tar.xz"
+  sha256 "3dfb99fbcc268c0bc797e2f83e8c503ef9de66284f40b381bb597a08185c00f4"
   license all_of: ["GPL-2.0-only", "LGPL-2.1-only", "BSD-2-Clause", "FTL", "zlib-acknowledgement"]
-  revision 5
+  revision 1
 
   livecheck do
     url "https://download.enlightenment.org/rel/libs/efl/"
@@ -12,19 +12,19 @@ class Efl < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "2b653b7a4bfdead4b6567f9633dc1d0ec851e2678920236ad57463eea369f9a4"
-    sha256 arm64_monterey: "a7144e491351f8475a5dfe051112f150df09ff410bcc963b182aef50106a2381"
-    sha256 arm64_big_sur:  "b444bced3c8b20c19df34893a3760c9e3f8bcf9a2fa84fd912111c07645df52b"
-    sha256 ventura:        "de13653096d6456aff03cc84c8c728db8214ba25b97f92967005b3ae071469d9"
-    sha256 monterey:       "9daaffaab0f55f68f13594599e7738ae7a36e351b903e133ad76ec64fe52024a"
-    sha256 big_sur:        "3b8df4569420168d8b8055f2edfbfb91da6c85807bf4c8b87895a17ab43f2354"
-    sha256 x86_64_linux:   "3b909487cffe75b106ae5ce4741dd4be864852831609536404a47c7e181a6a84"
+    sha256 arm64_sequoia: "9f2c4e1c7e33bf4520784a3e98aac04f4fe2b4deb187396562fd1f78fc37601f"
+    sha256 arm64_sonoma:  "2fcce8a4b857779f120f23b38866220e9ee00cf09c40846e2bde2252b7abf0f5"
+    sha256 arm64_ventura: "03282d03c4090d9aac8e3002f1ea330ae63c553d5760bbe7af3ff9a2174a623b"
+    sha256 sonoma:        "2ef9fb0ea5b90140c65d0026d2039597be19b72b4fe8f70c66580bf4d81b2292"
+    sha256 ventura:       "e62c843535599e6fbef26f1bdd1b0446664cefbd68bb53dc4b3a93b59f65a549"
+    sha256 x86_64_linux:  "018c6e3799d3bf61352901915250d0f75db2e2f0257a4df5f2aca5781e7d7101"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "bullet"
+  depends_on "cairo"
   depends_on "dbus"
   depends_on "fontconfig"
   depends_on "freetype"
@@ -33,6 +33,7 @@ class Efl < Formula
   depends_on "giflib"
   depends_on "glib"
   depends_on "gstreamer"
+  depends_on "harfbuzz"
   depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libraw"
@@ -42,6 +43,7 @@ class Efl < Formula
   depends_on "libtiff"
   depends_on "luajit"
   depends_on "lz4"
+  depends_on "openjpeg"
   depends_on "openssl@3"
   depends_on "poppler"
   depends_on "pulseaudio"
@@ -49,6 +51,15 @@ class Efl < Formula
   depends_on "webp"
 
   uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "gdk-pixbuf"
+    depends_on "little-cms2"
+  end
+
+  on_linux do
+    depends_on "mesa"
+  end
 
   # Remove LuaJIT 2.0 linker args -pagezero_size and -image_base
   # to fix ARM build using LuaJIT 2.1+

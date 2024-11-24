@@ -1,19 +1,20 @@
 class Envd < Formula
   desc "Reproducible development environment for AI/ML"
   homepage "https://envd.tensorchord.ai"
-  url "https://github.com/tensorchord/envd/archive/v0.3.39.tar.gz"
-  sha256 "d7f4c2f51d8c83f73b40e732640ee8cedf59f299f4a42011c3ead776f5db4b1c"
+  url "https://github.com/tensorchord/envd/archive/refs/tags/v0.3.45.tar.gz"
+  sha256 "5dc8802b6ffdd9c6859b97de6eff71ebdaf5c6db916a832f8ef694569de79178"
   license "Apache-2.0"
   head "https://github.com/tensorchord/envd.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "110ee4d7152825be9a31a922e834228d564dfe3e1c62fc04df477743722dd9b7"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "be14603d77cd79a3423d574668e555239a0224c668ac457b3a58c1910a0434b5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "19b1cc3db62907a28a37d1146b9ebe86bac1b2c41feeaac74b1ff1d4176ed426"
-    sha256 cellar: :any_skip_relocation, ventura:        "1d6c3b1e94176f6d237dc05ed0aefb150a07cc35b0a7c7832fe521910e321c80"
-    sha256 cellar: :any_skip_relocation, monterey:       "d9829325587a779703ea8565958e257d10141ff0f4b9b04aa79f4f478d597690"
-    sha256 cellar: :any_skip_relocation, big_sur:        "12609b3f96df256e80853f6d24972376825225a5fed102e34c71772ee819f01b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b175c1064ea47ca3c561181e26f8f1dd2c5e22cfdd2c977dd9cfcdf3fc7114bd"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "d7c11e4d5e933c0cece9d6fc9af8f81d6ff3ab0b334364c2eb9e32dcb35adc34"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "20b4514e5b71dc23b8a9ac6a51f0d41c243253d2b5d7bd478878bb9997950e68"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "fdbfeca300caffd35f51e74ce2dbd71d2131f3da43253689909219f55829783f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c952e29a6e9d957d96a91b469625930df6399aaa119ff84a438aad1a5e106628"
+    sha256 cellar: :any_skip_relocation, sonoma:         "20c354bb829e87b9717f3e7a07383524898a98ba4b95d45cf7bd1fae66524d1e"
+    sha256 cellar: :any_skip_relocation, ventura:        "769b04d7c0432dc3ba36636c45e552618a948118dc10291d4bf4f181f221f694"
+    sha256 cellar: :any_skip_relocation, monterey:       "68222aa5bfdb48c1a4d13fabce1b17becccb7f8f78020a8d304ac52c8870fcaf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cf2133c09cd94b30bbef81cea84f8b75a032238a07d8146cea3b04ff30eba238"
   end
 
   depends_on "go" => :build
@@ -27,7 +28,7 @@ class Envd < Formula
       -X github.com/tensorchord/envd/pkg/version.gitCommit=#{tap.user}
       -X github.com/tensorchord/envd/pkg/version.gitTreeState=clean
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/envd"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/envd"
     generate_completions_from_executable(bin/"envd", "completion", "--no-install",
                                          shell_parameter_format: "--shell=",
                                          shells:                 [:bash, :zsh, :fish])
@@ -40,7 +41,7 @@ class Envd < Formula
     expected = if OS.mac?
       "failed to list containers: Cannot connect to the Docker daemon"
     else
-      "failed to list containers: Got permission denied while trying to connect to the Docker daemon"
+      "failed to list containers: permission denied while trying to connect to the Docker daemon"
     end
 
     stderr = shell_output("#{bin}/envd env list 2>&1", 1)

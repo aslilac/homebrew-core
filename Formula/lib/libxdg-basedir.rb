@@ -1,14 +1,17 @@
 class LibxdgBasedir < Formula
   desc "C implementation of the XDG Base Directory specifications"
   homepage "https://github.com/devnev/libxdg-basedir"
-  url "https://github.com/devnev/libxdg-basedir/archive/libxdg-basedir-1.2.3.tar.gz"
+  url "https://github.com/devnev/libxdg-basedir/archive/refs/tags/libxdg-basedir-1.2.3.tar.gz"
   sha256 "ff30c60161f7043df4dcc6e7cdea8e064e382aa06c73dcc3d1885c7d2c77451d"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "830d1609d4a60b66a7de159c17476bd63834bfae62aafb38a37c7c6aac24575f"
+    sha256 cellar: :any,                 arm64_sonoma:   "6fb0160f5b6cd2579d154b9a97c459aef54ca27470db7d8fe9dded2e2f208a2e"
     sha256 cellar: :any,                 arm64_ventura:  "63e6eff0ad399d3054cd01b23563674d726fd502cdf0ae468e489427015e9b79"
     sha256 cellar: :any,                 arm64_monterey: "e7aa730f8ebf8aed39fb649f132fe70611b658d3a2d5162bbc073f193c7050b9"
     sha256 cellar: :any,                 arm64_big_sur:  "45fb150350fc290277e2fe56f834065d7694aa1018bc2ffaf2b4a22f20962212"
+    sha256 cellar: :any,                 sonoma:         "5610c066d92263607ec017ec5c3fb94aeae21482175b28909b5ed25353ee9760"
     sha256 cellar: :any,                 ventura:        "9c3b62fa19c3169a4641fc9c5d5a3e6700303335c49383bbe58daa23755d34ac"
     sha256 cellar: :any,                 monterey:       "24e93c008e652e67a3e37f2da0e8c937b4dbedc399f3fe1d1cb89ff1dafecc59"
     sha256 cellar: :any,                 big_sur:        "815e73cfc0be4d8091e83b4083bd583e2514a4768c553480d70be1a3e21d77c2"
@@ -28,7 +31,7 @@ class LibxdgBasedir < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <basedir.h>
       int main() {
         xdgHandle handle;
@@ -36,7 +39,7 @@ class LibxdgBasedir < Formula
         xdgWipeHandle(&handle);
         return 0;
       }
-    EOS
+    CPP
     system ENV.cc, "test.cpp", "-L#{lib}", "-lxdg-basedir", "-o", "test"
     system "./test"
   end

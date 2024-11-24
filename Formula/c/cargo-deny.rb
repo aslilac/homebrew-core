@@ -1,24 +1,23 @@
 class CargoDeny < Formula
   desc "Cargo plugin for linting your dependencies"
   homepage "https://github.com/EmbarkStudios/cargo-deny"
-  url "https://github.com/EmbarkStudios/cargo-deny/archive/refs/tags/0.14.1.tar.gz"
-  sha256 "0579a6469688360d0bfc1245c3455335b0c2f8ae6c40645fcf0e8e1a700eb7f6"
+  url "https://github.com/EmbarkStudios/cargo-deny/archive/refs/tags/0.16.2.tar.gz"
+  sha256 "a0a21efb9bb42c3f3d62ac2d1378890a56b5744197e6acc7ccafb9a6bd4f8051"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/EmbarkStudios/cargo-deny.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "81ac33b5903ce5dae20066ae5a4865ec5a8caba50492798ecfb3e6906f3d2337"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b731c610d73e73e974c57204422d23da817c0c9dcb2360f121ade26e96275447"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "819c34226b9524138c47f3938f572189ba4e839001b309f5bf01324f93751074"
-    sha256 cellar: :any_skip_relocation, ventura:        "d2cbfa46ef6b33567e646059c3ff6ba3411d9782ab8448ebe6859e4df90ec0bc"
-    sha256 cellar: :any_skip_relocation, monterey:       "cd27b1c607c4426c94970de6b970afe4046202d2ec62d44de15050b93448a362"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a7edc5b2810ce70d2b24321d1429630a8ab01a2b819e486e09f1378f078923f5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d756524a9d4cee78382e0b9b3958e6e15316594f694604783bc04694d3117a86"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e30b9186b6144ad067f9304e092d5fa4fbae11faff142a05ec50b0c8b7c6b54a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "956928d9a20fb1a0af8611d694ae4147318e6fa115d1e24d392e97f56299e8b9"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "ac17200f682b74fad773fe2204f09d2cfcf5ec4c045636ad90abeb1fef7e11af"
+    sha256 cellar: :any_skip_relocation, sonoma:        "0650b56be8e21c54008e1fc156c15eb3f56f81a73d1c81c2cd31e5ff49ad53b2"
+    sha256 cellar: :any_skip_relocation, ventura:       "11b85bf7953908126f10ec8d5f7a476ad0f8a4628d6e754b997b76b6f34b795c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5ba5d8e5e155b50caa91ccbc8c2785bc94fb94d8a6115e1ef886c6bac48a3d29"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
-  depends_on "rustup-init" => :test
+  depends_on "rustup" => :test
 
   def install
     system "cargo", "install", *std_cargo_args
@@ -27,14 +26,13 @@ class CargoDeny < Formula
   test do
     # Show that we can use a different toolchain than the one provided by the `rust` formula.
     # https://github.com/Homebrew/homebrew-core/pull/134074#pullrequestreview-1484979359
-    ENV["RUSTUP_INIT_SKIP_PATH_CHECK"] = "yes"
-    system "#{Formula["rustup-init"].bin}/rustup-init", "-y", "--no-modify-path"
-    ENV.prepend_path "PATH", HOMEBREW_CACHE/"cargo_cache/bin"
+    ENV.prepend_path "PATH", Formula["rustup"].bin
     system "rustup", "default", "beta"
+    system "rustup", "set", "profile", "minimal"
 
     crate = testpath/"demo-crate"
     mkdir crate do
-      (crate/"src/main.rs").write <<~EOS
+      (crate/"src/main.rs").write <<~RUST
         #[cfg(test)]
         mod tests {
           #[test]
@@ -42,12 +40,12 @@ class CargoDeny < Formula
             assert_eq!(1 + 1, 2);
           }
         }
-      EOS
-      (crate/"Cargo.toml").write <<~EOS
+      RUST
+      (crate/"Cargo.toml").write <<~TOML
         [package]
         name = "demo-crate"
         version = "0.1.0"
-      EOS
+      TOML
 
       output = shell_output("cargo deny check 2>&1", 4)
       assert_match "advisories ok, bans ok, licenses FAILED, sources ok", output

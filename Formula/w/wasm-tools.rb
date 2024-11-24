@@ -1,24 +1,23 @@
 class WasmTools < Formula
   desc "Low level tooling for WebAssembly in Rust"
   homepage "https://github.com/bytecodealliance/wasm-tools"
-  url "https://github.com/bytecodealliance/wasm-tools/archive/refs/tags/wasm-tools-1.0.40.tar.gz"
-  sha256 "3cb15b5aed7bd7dc54e59b8749e28e72cdd85527c24c292f290be186bbe161de"
+  url "https://github.com/bytecodealliance/wasm-tools/archive/refs/tags/v1.220.0.tar.gz"
+  sha256 "eba930e6bccf3c14e1e7c8da9e112bbe58439a0746d4e83208294b2993638fc7"
   license "Apache-2.0" => { with: "LLVM-exception" }
   head "https://github.com/bytecodealliance/wasm-tools.git", branch: "main"
 
   livecheck do
     url :stable
-    regex(/^wasm-tools[._-]v?(\d+(?:\.\d+)+)$/i)
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "627cc2791c1f94031e47b9daa64d185f00ccd34cc4049b36002b201792357d5c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4215b55ffc88464d1b9e3b2f5430482dcba2101a09292885b934cc15701a5fee"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7eb7162743cfbb81aa97a706996c8158fd7d420ddf0da13054d2af0e413ad0cc"
-    sha256 cellar: :any_skip_relocation, ventura:        "8515bedafc8fd58e0ab1a555db2d2d3e5c5a1a13972cf80b4022e56a482695b6"
-    sha256 cellar: :any_skip_relocation, monterey:       "7970e5ff233fd4d1d14c0bf462a58270c9266a27d3b90436d183a1ab5bcddde2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2d2d2ac3dc3087a3b264b571dc66da115a45ff4d869c2ac679b1de3b5a705e69"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c3d5802ecb3539db39f90b2d0c6d99eb44b7fe2be9b77324f80db37acd27419c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9178d4689d4c5981fcba3a28a33acade049d3750b8150ce63d5a61126ad2f96a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "77e12b3f695db828a14b4e74ab135ff0d8910749c93725b4a5c846969035563b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0dd238b99da2acaf94ac564bd73f479283a042d67211ea0c4c4303b297934dc5"
+    sha256 cellar: :any_skip_relocation, sonoma:        "31ba7c1122c75e40c1b0e59e7d32ca2ccc7978c05046bedc0d8b90f356b6ef4f"
+    sha256 cellar: :any_skip_relocation, ventura:       "dadf528eb7842c57b7e55a8c747ac862ed30bf85055aa524c7eb6909c5262c0d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a1c08616959f8882e8d12b8c015d9cf0595da37504de6c07884c3c43fa821a68"
   end
 
   depends_on "rust" => :build
@@ -32,15 +31,15 @@ class WasmTools < Formula
     (testpath/"sum.wasm").write(wasm)
     system bin/"wasm-tools", "validate", testpath/"sum.wasm"
 
-    expected = <<~EOS.strip
+    expected = <<~EOS
       (module
         (type (;0;) (func (param i32 i32) (result i32)))
+        (export "sum" (func 0))
         (func (;0;) (type 0) (param i32 i32) (result i32)
           local.get 0
           local.get 1
           i32.add
         )
-        (export "sum" (func 0))
       )
     EOS
     assert_equal expected, shell_output("#{bin}/wasm-tools print #{testpath}/sum.wasm")

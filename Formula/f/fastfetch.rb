@@ -1,19 +1,23 @@
 class Fastfetch < Formula
   desc "Like neofetch, but much faster because written mostly in C"
   homepage "https://github.com/fastfetch-cli/fastfetch"
-  url "https://github.com/fastfetch-cli/fastfetch/archive/refs/tags/2.0.5.tar.gz"
-  sha256 "8046eb856fd95d9896220238c966125fb05e451e65d8cfc7eb25483767612235"
+  url "https://github.com/fastfetch-cli/fastfetch/archive/refs/tags/2.30.1.tar.gz"
+  sha256 "5248311a3d8ce65f6f48756dfc0df9f8922d64f5201ee8d980497d52e924906e"
   license "MIT"
   head "https://github.com/fastfetch-cli/fastfetch.git", branch: "dev"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 arm64_ventura:  "f49d6f4e78a49383cdabf144b5f430552fdecee88d83edc24067e1611516d8c6"
-    sha256 arm64_monterey: "9317d97828ffa7118a1c39ec17f27d60344d0508d1723cac70d816c09b07ed96"
-    sha256 arm64_big_sur:  "3faa1f1833f128477312535afd1b1752fc9a21237ab338abaaa1ce29fdf58a59"
-    sha256 ventura:        "504a64032dc690a24975b241e81221f1b4afc95069cff1919af1a9676c41cf37"
-    sha256 monterey:       "55fac6d1d27fc3fccd805075a7c6fc4aba3f8306f885664e53145ef9303e2129"
-    sha256 big_sur:        "bcd06af97b57d538e7206caff5cf79cfd51f8212821e8c00227becfa7778a029"
-    sha256 x86_64_linux:   "e294c911eb59b5f353ff51e238c8b0a5627ad084b99ca06d048d0f72e39da1fc"
+    sha256 arm64_sequoia: "2ba0aaadc4875972c6dec5490a45a9efc09d1374d3863aaf6ab4c4bf391ce2f3"
+    sha256 arm64_sonoma:  "af31b4bec50b0a0d6f49554c73b72a61ab4b7321dbafe982de46aed989f120c9"
+    sha256 arm64_ventura: "b684e4f4066e0ff71c068c40dad6bac448ce69c481f7e7b97aed356de6baab0e"
+    sha256 sonoma:        "985a991fd1a9d3f5ea8e721e79a150b97d2d132cda598735e71cdc00d963adc6"
+    sha256 ventura:       "7a2b918a20bff83f61d28276ff341dabea84414d7d260ae4390b0e30b3a43e37"
+    sha256 x86_64_linux:  "c9c434f04308a17f5fc6ef1206ad2a5b70e3eb3b3a7a5f8c97a85f29de45ca71"
   end
 
   depends_on "chafa" => :build
@@ -21,6 +25,7 @@ class Fastfetch < Formula
   depends_on "glib" => :build
   depends_on "imagemagick" => :build
   depends_on "pkg-config" => :build
+  depends_on "python@3.13" => :build
   depends_on "vulkan-loader" => :build
 
   uses_from_macos "sqlite" => :build
@@ -29,9 +34,12 @@ class Fastfetch < Formula
   on_linux do
     depends_on "dbus" => :build
     depends_on "ddcutil" => :build
+    depends_on "elfutils" => :build
+    depends_on "libdrm" => :build
     depends_on "libx11" => :build
     depends_on "libxcb" => :build
     depends_on "libxrandr" => :build
+    depends_on "linux-headers@5.15" => :build
     depends_on "mesa" => :build
     depends_on "opencl-icd-loader" => :build
     depends_on "pulseaudio" => :build

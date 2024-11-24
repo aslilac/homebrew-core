@@ -1,19 +1,18 @@
 class Cpr < Formula
   desc "C++ Requests, a spiritual port of Python Requests"
   homepage "https://docs.libcpr.org/"
-  url "https://github.com/libcpr/cpr/archive/1.10.4.tar.gz"
-  sha256 "88462d059cd3df22c4d39ae04483ed50dfd2c808b3effddb65ac3b9aa60b542d"
+  url "https://github.com/libcpr/cpr/archive/refs/tags/1.11.0.tar.gz"
+  sha256 "fdafa3e3a87448b5ddbd9c7a16e7276a78f28bbe84a3fc6edcfef85eca977784"
   license "MIT"
   head "https://github.com/libcpr/cpr.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "f52db0627a16d81f7a3c583403d8a483829380eb0fb43ba5aa02facd61197af9"
-    sha256 cellar: :any,                 arm64_monterey: "dba0fa6a2756d6f72eabd0a6c94d14f531b44160968806ef63d594ad3b0f8b52"
-    sha256 cellar: :any,                 arm64_big_sur:  "dbb3e0c82cb8e5c8b635281b4dd7ddc8ae43a05b9bfec945226c4e009940731a"
-    sha256 cellar: :any,                 ventura:        "1a4c07b4ebfef58ca98089dda3a3859afe1ccdfaecde0a9a80b5094f7643cea6"
-    sha256 cellar: :any,                 monterey:       "623ee04a2a672e1ff1cfd94ae1f5f791f3c790f6a322b05f363c0b3014b40d81"
-    sha256 cellar: :any,                 big_sur:        "b42dd113f236f40bb4bb7dadb86ce35b1831cf288ac732122f20c16bf570cb5f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a40a748f7a33446daa2c780f1e69286830d6f2f3d7e2e1bf647eb7f158525880"
+    sha256 cellar: :any,                 arm64_sequoia: "52148bb941bbed4a3e8641a942edfcb73bd2c37ad949a4d21255cdc84e3a8772"
+    sha256 cellar: :any,                 arm64_sonoma:  "b4f5ac50892af98014d9536a09fbd84e10ed71fdfa0ff4b2d2a8c13a3cf01f17"
+    sha256 cellar: :any,                 arm64_ventura: "62221b4b1f800a1b10f7af4774f00a94219a160e79ecc629aeadbc6b0bfb32e3"
+    sha256 cellar: :any,                 sonoma:        "e429dd6fc464ef789d5ab13fedd4213266cf1c082319a69647d6cbd70d18c2ca"
+    sha256 cellar: :any,                 ventura:       "28de8df1ddca1b9d1c6bf5c3de5978e311b2a95adde7bb0de4981ff38c39ec9b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3cc60004b96d225fa1633e79ba527227bbf167b52e30730bbd859ea75c3bb558"
   end
 
   depends_on "cmake" => :build
@@ -43,7 +42,7 @@ class Cpr < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <iostream>
       #include <curl/curl.h>
       #include <cpr/cpr.h>
@@ -54,14 +53,14 @@ class Cpr < Formula
 
           return 0;
       }
-    EOS
+    CPP
 
     args = %W[
       -I#{include}
       -L#{lib}
       -lcpr
     ]
-    args << "-I#{Formula["curl"].opt_include}" if MacOS.version <= :big_sur
+    args << "-I#{Formula["curl"].opt_include}" if !OS.mac? || MacOS.version <= :big_sur
 
     system ENV.cxx, "test.cpp", "-std=c++17", *args, "-o", testpath/"test"
     assert_match "200", shell_output("./test")

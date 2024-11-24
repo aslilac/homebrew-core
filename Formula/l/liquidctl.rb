@@ -6,30 +6,31 @@ class Liquidctl < Formula
   url "https://files.pythonhosted.org/packages/99/d9/15bfe9dc11f2910b7483693b0bab16a382e5ad16cee657ff8133b7cae56d/liquidctl-1.13.0.tar.gz"
   sha256 "ee17241689c0bf3de43cf4d97822e344f5b57513d16dd160e37fa0e389a158c7"
   license "GPL-3.0-or-later"
+  revision 2
   head "https://github.com/liquidctl/liquidctl.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "23ef439f62a0fb2e067dbad0616022f720cc88a6806141afd682f75f255db447"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1118836d3c09a476ac87c1fa8489941b0e3495bff73c2bae4103164fbf331274"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2b817482e19e1d262fd840b48664cb1fba6193ec86d24bf80c04a45839663fc6"
-    sha256 cellar: :any_skip_relocation, ventura:        "4014b0cc454ca2963590e6837609ca0b27423765aaf76e0780ddfb141e55b6d5"
-    sha256 cellar: :any_skip_relocation, monterey:       "e4f0f2b943b338e99bca2ba783e172aa876d52c80d4eb867089be8ea96741848"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ff870fdf6aa79774517d91de7d9c3e99469ccf250ef508273bf9df56bcdf21a7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "03ecd81baaef703520e0b01fda9f57f40f61239dc71f1906a34ffe0008630d7c"
+    sha256 cellar: :any,                 arm64_sequoia: "5b7d116b57b269eadd7006affac38a95761f8b8773aa18877bfb27378bec8467"
+    sha256 cellar: :any,                 arm64_sonoma:  "1a4301c9452fbb366a43e086d77bfafb140af1fe4a6256bee0171803cdcf5700"
+    sha256 cellar: :any,                 arm64_ventura: "baf3ad92ea880d182f53ee80fd8cabd47a3ba8a4ef6f78557584a3f1eb1cf243"
+    sha256 cellar: :any,                 sonoma:        "bf35060fb1ad3e14d28affbb22c42680db0322103944e10f1adb8bde29b19c68"
+    sha256 cellar: :any,                 ventura:       "73e72321380e52953bc9d0564a74aeed8f7cc01e589ed4a6b3b613b31d13ce1d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "daeeeb0e6b98a1275460bce5cae4994c1c74307c2447dff786da1c744c4d9ce6"
   end
 
+  depends_on "pkg-config" => :build
   depends_on "hidapi"
   depends_on "libusb"
   depends_on "pillow"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
   on_linux do
     depends_on "i2c-tools"
   end
 
   resource "colorlog" do
-    url "https://files.pythonhosted.org/packages/78/6b/4e5481ddcdb9c255b2715f54c863629f1543e97bc8c309d1c5c131ad14f2/colorlog-6.7.0.tar.gz"
-    sha256 "bd94bd21c1e13fac7bd3153f4bc3a7dc0eb0974b8bc2fdf1a989e474f6e582e5"
+    url "https://files.pythonhosted.org/packages/db/38/2992ff192eaa7dd5a793f8b6570d6bbe887c4fbbf7e72702eb0a693a01c8/colorlog-6.8.2.tar.gz"
+    sha256 "3e3e079a41feb5a1b64f978b5ea4f46040a94f11f0e8bbb8261e3dbbeca64d44"
   end
 
   resource "crcmod" do
@@ -43,14 +44,8 @@ class Liquidctl < Formula
   end
 
   resource "hidapi" do
-    url "https://files.pythonhosted.org/packages/95/0e/c106800c94219ec3e6b483210e91623117bfafcf1decaff3c422e18af349/hidapi-0.14.0.tar.gz"
-    sha256 "a7cb029286ced5426a381286526d9501846409701a29c2538615c3d1a612b8be"
-
-    # patch to build with Cython 3+, remove in next release
-    patch do
-      url "https://github.com/trezor/cython-hidapi/commit/749da6931f57c4c30596de678125648ccfd6e1cd.patch?full_index=1"
-      sha256 "e3d70eb9850c7be0fdb0c31bf575b33be5c5848def904760a6ca9f4c3824f000"
-    end
+    url "https://files.pythonhosted.org/packages/bf/6f/90c536b020a8e860f047a2839830a1ade3e1490e67336ecf489b4856eb7b/hidapi-0.14.0.post2.tar.gz"
+    sha256 "6c0e97ba6b059a309d51b495a8f0d5efbcea8756b640d98b6f6bb9fdef2458ac"
   end
 
   resource "pyusb" do
@@ -58,35 +53,24 @@ class Liquidctl < Formula
     sha256 "a4cc7404a203144754164b8b40994e2849fde1cfff06b08492f12fff9d9de7b9"
   end
 
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/27/b8/f21073fde99492b33ca357876430822e4800cdf522011f18041351dfa74b/setuptools-75.1.0.tar.gz"
+    sha256 "d59a21b17a275fb872a9c3dae73963160ae079f1049ed956880cd7c09b120538"
+  end
+
   def install
-    # customize liquidctl --version
-    ENV["DIST_NAME"] = "homebrew"
-    ENV["DIST_PACKAGE"] = "liquidctl #{version}"
-
-    python3 = "python3.11"
-    venv = virtualenv_create(libexec, python3)
-
-    resource("hidapi").stage do
-      inreplace "setup.py" do |s|
-        s.gsub! "/usr/include/libusb-1.0", "#{Formula["libusb"].opt_include}/libusb-1.0"
-        s.gsub! "/usr/include/hidapi", "#{Formula["hidapi"].opt_include}/hidapi"
-      end
-      system python3, *Language::Python.setup_install_args(libexec, python3), "--with-system-hidapi"
-    end
-
-    venv.pip_install resources.reject { |r| r.name == "hidapi" }
-    venv.pip_install_and_link buildpath
+    ENV["HIDAPI_SYSTEM_HIDAPI"] = ENV["HIDAPI_WITH_LIBUSB"] = "1"
+    virtualenv_install_with_resources
 
     man_page = buildpath/"liquidctl.8"
     # setting the is_macos register to 1 adjusts the man page for macOS
     inreplace man_page, ".nr is_macos 0", ".nr is_macos 1" if OS.mac?
-    man.mkpath
     man8.install man_page
 
     (lib/"udev/rules.d").install Dir["extra/linux/*.rules"] if OS.linux?
   end
 
   test do
-    shell_output "#{bin}/liquidctl list --verbose --debug"
+    system bin/"liquidctl", "list", "--verbose", "--debug"
   end
 end

@@ -1,8 +1,8 @@
 class Hledger < Formula
   desc "Easy plain text accounting with command-line, terminal and web UIs"
   homepage "https://hledger.org/"
-  url "https://github.com/simonmichael/hledger/archive/refs/tags/1.30.tar.gz"
-  sha256 "d2a946c47ed74b835fe90cdb3979fc26a266b9e4b7f6a01f7cf1e05910d752a5"
+  url "https://github.com/simonmichael/hledger/archive/refs/tags/1.40.tar.gz"
+  sha256 "fac19b524566b08ff0ade9793e8440ed0d31ab7bf7c5a33ac73c21ec05f358aa"
   license "GPL-3.0-or-later"
   head "https://github.com/simonmichael/hledger.git", branch: "master"
 
@@ -15,16 +15,17 @@ class Hledger < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "707a9a4a60836255b43d805524e91037d97832ecf94b9f69551f5a62b682dd8c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4a2d0b1da989ba3d383f4b9960fffcfe9eb00516afb28311ca02471c847b8a61"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "903adb4c92c4f2f8a13b50f4009359ca922078f6d8cc6494c333eeaf67d7cb42"
-    sha256 cellar: :any_skip_relocation, ventura:        "2c592d4719ae2fceb4db92f5f0ec821fefd2473981bf090c2fc394f3e48c26af"
-    sha256 cellar: :any_skip_relocation, monterey:       "5a29b43a0789f56b3209529dba0b3f5b746280515547bf44683b6606ccb83b81"
-    sha256 cellar: :any_skip_relocation, big_sur:        "6ee24fdabb7f6dd20574e8a8c127c3e5d8796a3a283df6b095f990d3195d6d69"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "57a1715dd99dd1981e0f68f05b5054b177f6c7266f93033bd032f104ba8f3e71"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "743ffb01ef98164adc24d38bf7d7157a8c28443da32c28d4ab737fd7332ac996"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c33f69d843a135a0f3df5496ad5ddfea395be6e4324dc8d81cada61c952722f1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c60c65d440480d6e8e0283d8de3c86f007a1a440d9ac947e1e03236d246b530a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "727a907e5447c55e5f88fa0e2aaba0b0c8deccba402cd8dfdcdc1e7d96fd4165"
+    sha256 cellar: :any_skip_relocation, sonoma:         "80cf62d4bdff770e20c42a38ed009e978c882dcfaeb8a91b8f97c3249c15a574"
+    sha256 cellar: :any_skip_relocation, ventura:        "a95911dff60f8a30b0a8e8c19e24ae8efad7f59fb42cfe4d0ffb78d864694808"
+    sha256 cellar: :any_skip_relocation, monterey:       "2af6d01f2c109bde9a191247001f16137c63df669f97b91b24d05417981de54f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9cb47392110629bc44148f6bb68a6a104dc671f11ff0fe7efa91a3c84d7259dc"
   end
 
-  depends_on "ghc@9.2" => :build
+  depends_on "ghc@9.8" => :build
   depends_on "haskell-stack" => :build
 
   uses_from_macos "ncurses"

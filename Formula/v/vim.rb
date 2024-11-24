@@ -2,37 +2,49 @@ class Vim < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 50 releases on multiples of 50
-  url "https://github.com/vim/vim/archive/v9.0.1800.tar.gz"
-  sha256 "bc65a1361a7473c79c63f3a9000474f5340eb73d9c5b8c987100eafdb7016f80"
+  url "https://github.com/vim/vim/archive/refs/tags/v9.1.0850.tar.gz"
+  sha256 "4bbd7480c2d5c577a77a070fa4a133e057c37f611adf47d9a317e50244d7caa4"
   license "Vim"
   head "https://github.com/vim/vim.git", branch: "master"
 
   # The Vim repository contains thousands of tags and the `Git` strategy isn't
   # ideal in this context. This is an exceptional situation, so this checks the
-  # first page of tags on GitHub (to minimize data transfer).
+  # first 50 tags using the GitHub API (to minimize data transfer).
   livecheck do
-    url "https://github.com/vim/vim/tags"
-    regex(%r{href=["']?[^"' >]*?/tag/v?(\d+(?:\.\d+)+)["' >]}i)
-    strategy :page_match
+    url "https://api.github.com/repos/vim/vim/tags?per_page=50"
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :json do |json, regex|
+      json.map do |tag|
+        match = tag["name"]&.match(regex)
+        next if match.blank?
+
+        match[1]
+      end
+    end
+    throttle 50
   end
 
   bottle do
-    sha256 arm64_ventura:  "156b24210333ff1e6b97b70b873ed3d413e0bda2c7f67243a83bb52ccccc761e"
-    sha256 arm64_monterey: "3893c85a80591b67fac3eb9d2c0ade5b52cd88b5f7aeff149dded1df053a1677"
-    sha256 arm64_big_sur:  "317f25946499468ec507d8c1ea86311aad9504310b4fe1b837330ac70e4a5077"
-    sha256 ventura:        "42c4e5c5264967b95e58c3556790fb1db4447997c97e0c69ab4575f5081260c5"
-    sha256 monterey:       "12d4f05e96edf98bb934f8880c23dcce58092c75b74ac9f206170b37d09f56cb"
-    sha256 big_sur:        "850acfcced3faeb799d8d5cc808634dda6fb95237368fd03b3132dd716a3a032"
-    sha256 x86_64_linux:   "7d977b2715cb09049726e7026bda6ead9a5d7354ffb73170fb48f6462744bbf3"
+    sha256 arm64_sequoia: "080fc85b0be2c82c2e3afdabb12e6df5384d29aa85530b4f42855a096e8b709c"
+    sha256 arm64_sonoma:  "a321c19bfd32e3a66e5a7676bc059b99f5eee18f25855d820e3ecf0010809ddf"
+    sha256 arm64_ventura: "f4b7e8330328a9bd5daec9d2e8812f0d05aab71d056a151fa7193f5542604646"
+    sha256 sonoma:        "d5ba1f754cfbfbf7a06135be2dfab52b2f46964e937316283ed2c0c150c727ff"
+    sha256 ventura:       "4595ce6c86dd80d7551d166d01e5d86d6e1952af45df3509074528c1c2ae1c6e"
+    sha256 x86_64_linux:  "43671b39421f5cfeb84799b901a5b5d2efa8a330ab96c1911371c94531a22862"
   end
 
   depends_on "gettext"
   depends_on "libsodium"
   depends_on "lua"
   depends_on "ncurses"
-  depends_on "perl"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
   depends_on "ruby"
+
+  uses_from_macos "perl"
+
+  on_linux do
+    depends_on "acl"
+  end
 
   conflicts_with "ex-vi",
     because: "vim and ex-vi both install bin/ex and bin/view"
@@ -41,13 +53,15 @@ class Vim < Formula
     because: "vim and macvim both install vi* binaries"
 
   def install
-    ENV.prepend_path "PATH", Formula["python@3.11"].opt_libexec/"bin"
+    ENV.prepend_path "PATH", Formula["python@3.13"].opt_libexec/"bin"
 
     # https://github.com/Homebrew/homebrew-core/pull/1046
     ENV.delete("SDKROOT")
 
     # vim doesn't require any Python package, unset PYTHONPATH.
     ENV.delete("PYTHONPATH")
+
+    ENV.append_to_cflags "-mllvm -enable-constraint-elimination=0" if DevelopmentTools.clang_build_version == 1600
 
     # We specify HOMEBREW_PREFIX as the prefix to make vim look in the
     # the right place (HOMEBREW_PREFIX/share/vim/{vimrc,vimfiles}) for

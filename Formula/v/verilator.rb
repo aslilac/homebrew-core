@@ -1,19 +1,18 @@
 class Verilator < Formula
   desc "Verilog simulator"
   homepage "https://www.veripool.org/wiki/verilator"
-  url "https://github.com/verilator/verilator/archive/refs/tags/v5.014.tar.gz"
-  sha256 "36e16c8a7c4b376f88d87411cea6ee68710e6d1382a13faf21f35d65b54df4a7"
+  url "https://github.com/verilator/verilator/archive/refs/tags/v5.030.tar.gz"
+  sha256 "b9e7e97257ca3825fcc75acbed792b03c3ec411d6808ad209d20917705407eac"
   license any_of: ["LGPL-3.0-only", "Artistic-2.0"]
   head "https://github.com/verilator/verilator.git", branch: "master"
 
   bottle do
-    sha256 arm64_ventura:  "c7e1c43bfdc0a7ed4190ceb982c70e3f1111bdf14bdc28ffcab75e2930678529"
-    sha256 arm64_monterey: "2a08514d4611648409375222e9d8e1841f7f799525512c9c90e4a6fca411feb2"
-    sha256 arm64_big_sur:  "afab46195a7a9d1186380a49cc769b0f5ffabc236596be89e8f63d0e7262f7d8"
-    sha256 ventura:        "bd6c1f2848626ac7d36befa527b86070a72594c22a7ec9bc3acc8ebd4bfe4847"
-    sha256 monterey:       "9f95d8f8a9b1ba5e6cb4667e422d4bfee202c85a1986d58d9e55da7e1ef6cbf7"
-    sha256 big_sur:        "a25bebc5dddae09f92f1407f478d05b6478f5b5518f0d445163b334cab682af6"
-    sha256 x86_64_linux:   "725a96af88e568f4f460c88dabbf967717ef051226d073ecf72558094ace8e07"
+    sha256 arm64_sequoia: "89b842e26be55b8801f4c1acb4e8ff69832b41ab1275fe9af5ce2e2be2d7169f"
+    sha256 arm64_sonoma:  "5891c341e03ec64f2fa05999d80391aa8f3f0873cdf73ed096821fd55718c553"
+    sha256 arm64_ventura: "7ce77901dc02a1459a2e9526a30a0d4586ff2704ac1366ba9b5f12e4427de9e3"
+    sha256 sonoma:        "aff2df390996f738267cce2450c75bc00e793d06a9b346423e0964a165c1c115"
+    sha256 ventura:       "abd173206449d6d2d80971dc099acea2b6ab0efdd5e2805947b775d12808f472"
+    sha256 x86_64_linux:  "5f911e440b3cbacf2732bedf833ae2ce7efb0f4e0577ab9f26f6fff0f843520b"
   end
 
   depends_on "autoconf" => :build
@@ -53,7 +52,7 @@ class Verilator < Formula
          initial begin $display("Hello World"); $finish; end
       endmodule
     EOS
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include "Vtest.h"
       #include "verilated.h"
       int main(int argc, char **argv, char **env) {
@@ -63,7 +62,7 @@ class Verilator < Formula
           delete top;
           exit(0);
       }
-    EOS
+    CPP
     system bin/"verilator", "-Wall", "--cc", "test.v", "--exe", "test.cpp"
     cd "obj_dir" do
       system "make", "-j", "-f", "Vtest.mk", "Vtest"

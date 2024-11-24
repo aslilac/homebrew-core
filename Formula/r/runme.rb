@@ -1,19 +1,18 @@
 class Runme < Formula
   desc "Execute commands inside your runbooks, docs, and READMEs"
   homepage "https://runme.dev/"
-  url "https://github.com/stateful/runme/archive/refs/tags/v1.7.3.tar.gz"
-  sha256 "b963215852a93c77a9117e494e6cbafe4e13b0ff1080502cfb1b389b3e4267af"
+  url "https://github.com/stateful/runme/archive/refs/tags/v3.9.4.tar.gz"
+  sha256 "664ac958b9f690c082f65c09a114e684954eb1f41ffd945b093a966134f09dd1"
   license "Apache-2.0"
   head "https://github.com/stateful/runme.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "eda2942a3b045203f9ae5373f41e6e25d7c6229c7c02f0376192c3683295ca87"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ab9fd1446e07d0b8ec4f51b54238b2e3d8b19154f3989750229a4b507ee0e438"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "14898017d305fa7bb4237d61e8d785f774a1a67a06e6d2817e39a8f5be32896e"
-    sha256 cellar: :any_skip_relocation, ventura:        "771cb1471a9dc417f9a9baa51f0d789d66eeec7b5790b98a998d63c1539fa111"
-    sha256 cellar: :any_skip_relocation, monterey:       "1652be01fab9620feb5b868b38da9cc151fed66b907751931c5067cf5695ebae"
-    sha256 cellar: :any_skip_relocation, big_sur:        "81f27169cae1385274168a923077bf3a1e52b88e41236efdfe16a9ce17ffc81d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d2f81fe570c14c25fc55028654d6394a776baefe293d13d8a7d0469051a80686"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4be7c2eedf1789f2b66dae21ef846ce10e9c50ae2627714a2c373fb2805ffa57"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4be7c2eedf1789f2b66dae21ef846ce10e9c50ae2627714a2c373fb2805ffa57"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "4be7c2eedf1789f2b66dae21ef846ce10e9c50ae2627714a2c373fb2805ffa57"
+    sha256 cellar: :any_skip_relocation, sonoma:        "138a176eb562d58afdad08fc0942c0aa8ab4618c86edae6c96ac263fd6f83e92"
+    sha256 cellar: :any_skip_relocation, ventura:       "138a176eb562d58afdad08fc0942c0aa8ab4618c86edae6c96ac263fd6f83e92"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0a7d1d4d8d868b27c812f38a810b6f4098d5903a04edf6739253a7214b532d91"
   end
 
   depends_on "go" => :build
@@ -21,17 +20,17 @@ class Runme < Formula
   def install
     ldflags = %W[
       -s -w
-      -X github.com/stateful/runme/internal/version.BuildDate=#{time.iso8601}
-      -X github.com/stateful/runme/internal/version.BuildVersion=#{version}
-      -X github.com/stateful/runme/internal/version.Commit=#{tap.user}
+      -X github.com/stateful/runme/v3/internal/version.BuildDate=#{time.iso8601}
+      -X github.com/stateful/runme/v3/internal/version.BuildVersion=#{version}
+      -X github.com/stateful/runme/v3/internal/version.Commit=#{tap.user}
     ]
 
-    system "go", "build", "-o", bin, *std_go_args(ldflags: ldflags)
+    system "go", "build", "-o", bin, *std_go_args(ldflags:)
     generate_completions_from_executable(bin/"runme", "completion")
   end
 
   test do
-    system "#{bin}/runme", "--version"
+    system bin/"runme", "--version"
     markdown = (testpath/"README.md")
     markdown.write <<~EOS
       # Some Markdown
@@ -42,7 +41,7 @@ class Runme < Formula
       echo "Hello World"
       ```
     EOS
-    assert_match "Hello World", shell_output("#{bin}/runme run foobar")
-    assert_match "foobar", shell_output("#{bin}/runme list")
+    assert_match "Hello World", shell_output("#{bin}/runme run --git-ignore=false foobar")
+    assert_match "foobar", shell_output("#{bin}/runme list --git-ignore=false")
   end
 end

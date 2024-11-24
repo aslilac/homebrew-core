@@ -1,29 +1,34 @@
 class Ncnn < Formula
   desc "High-performance neural network inference framework"
   homepage "https://github.com/Tencent/ncnn"
-  url "https://github.com/Tencent/ncnn/archive/refs/tags/20230816.tar.gz"
-  sha256 "6b14105b6aba1e5fc87321b161c1d996c507f9b671a961831c8cd9987e807aa1"
+  url "https://github.com/Tencent/ncnn/archive/refs/tags/20240820.tar.gz"
+  sha256 "21e7897c7a332894934800a15189915b5131dddc84b2c8d5669ff53de8c5efa4"
   license "BSD-3-Clause"
+  revision 5
   head "https://github.com/Tencent/ncnn.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "9f88efbbcd39c6af44cfa83f2f283cb805a0972a90dc2db9c54c8d42fd442479"
-    sha256 cellar: :any,                 arm64_monterey: "fed58c3656d787a0a89c7e5cee42503120f2a7d4376bc2ccc10e27f314acacaf"
-    sha256 cellar: :any,                 arm64_big_sur:  "5365b7b45976bb40ab802712740a1bef9f6ea24b2197cb89745ffb495c827c2a"
-    sha256 cellar: :any,                 ventura:        "b40aee63254c378d8d0002238a1a37fad0de02238a8c3a8e403b55b82514ce2c"
-    sha256 cellar: :any,                 monterey:       "229ab25dd2b47cb6e88d6d9adfd30067931c67fffeb0dd583e595445771110fc"
-    sha256 cellar: :any,                 big_sur:        "dbda185fb84e45bcf806d0044955c12c87cc9dc3efffdddfd19d8d221f240fa7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "849e034743437d789b6c29547a60ad8953f3cba683e45563c7c316203550eb07"
+    sha256 cellar: :any,                 arm64_sequoia: "0fc6f36f40ac00a3093b6257a150026398c5ae5304992f103bdc45cf74a253dd"
+    sha256 cellar: :any,                 arm64_sonoma:  "bc0120683ef6d55f797dd26f639e860681544d3588f9b28a8cfedf110b0998d2"
+    sha256 cellar: :any,                 arm64_ventura: "5bb3b572b66031afc1afa5fad37dbb408a2cf7139d94bb25233eceb3c9dbb18a"
+    sha256 cellar: :any,                 sonoma:        "b0ba0c2e85cd0ee075c6f856d7435217b15d6f84d2a24c0cb12c32abc454473b"
+    sha256 cellar: :any,                 ventura:       "3f465221ec5d7c109e3a966410e22aabf5e241325312f309d3e009b68d378ac7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3741ad723827b237a044ae3126c60be1c4a149c58c00ef016b792b6b1b87abc0"
   end
 
   depends_on "cmake" => :build
+  depends_on "abseil"
+  depends_on "glslang"
   depends_on "protobuf"
 
   on_macos do
-    depends_on "glslang" => :build
-    depends_on "vulkan-headers" => [:build, :test]
     depends_on "libomp"
     depends_on "molten-vk"
+    depends_on "spirv-tools"
+  end
+
+  on_linux do
+    depends_on "vulkan-tools" => :test
   end
 
   def install
@@ -31,32 +36,44 @@ class Ncnn < Formula
     # https://stackoverflow.com/a/55086637
     ENV.append "LDFLAGS", "-Wl,--copy-dt-needed-entries" if OS.linux?
 
-    args = std_cmake_args + %w[
-      -DCMAKE_CXX_STANDARD=11
+    args = %W[
+      -DCMAKE_CXX_STANDARD=17
       -DCMAKE_CXX_STANDARD_REQUIRED=ON
+      -DCMAKE_INSTALL_RPATH=#{rpath}
       -DNCNN_SHARED_LIB=ON
       -DNCNN_BUILD_BENCHMARK=OFF
       -DNCNN_BUILD_EXAMPLES=OFF
+      -DNCNN_SYSTEM_GLSLANG=ON
+      -DGLSLANG_TARGET_DIR=#{Formula["glslang"].opt_lib}/cmake
+      -DNCNN_VULKAN=ON
     ]
 
     if OS.mac?
       args += %W[
-        -DNCNN_SYSTEM_GLSLANG=ON
-        -DGLSLANG_TARGET_DIR=#{Formula["glslang"].opt_lib/"cmake"}
-        -DNCNN_VULKAN=ON
         -DVulkan_INCLUDE_DIR=#{Formula["molten-vk"].opt_include}
         -DVulkan_LIBRARY=#{Formula["molten-vk"].opt_lib/shared_library("libMoltenVK")}
       ]
     end
 
-    inreplace "src/gpu.cpp", "glslang/glslang", "glslang"
-    system "cmake", "-S", ".", "-B", "build", *args
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    vulkan = 1
+    if OS.linux?
+      # Use a fake Vulkan ICD on Linux as it is lighter-weight than testing
+      # with `vulkan-loader` and `mesa` (CPU/LLVMpipe) dependencies.
+      ENV["VK_ICD_FILENAMES"] = Formula["vulkan-tools"].lib/"mock_icd/VkICD_mock_icd.json"
+    elsif ENV["HOMEBREW_GITHUB_ACTIONS"] && Hardware::CPU.intel?
+      # Don't test Vulkan on GitHub Intel macOS runners as they fail with: "vkCreateInstance failed -9"
+      vulkan = 0
+    end
+
+    (testpath/"test.cpp").write <<~CPP
+      #include <cassert>
+      #include <ncnn/gpu.h>
       #include <ncnn/mat.h>
 
       int main(void) {
@@ -65,12 +82,19 @@ class Ncnn < Formula
           ncnn::Mat myMatClone = myMat.clone();
           myMat.release();
           myMatClone.release();
+
+      #if #{vulkan}
+          ncnn::create_gpu_instance();
+          assert(ncnn::get_gpu_count() > 0);
+          ncnn::destroy_gpu_instance();
+      #endif
+
           return 0;
       }
-    EOS
+    CPP
 
     system ENV.cxx, "test.cpp", "-std=c++11",
-                    "-I#{Formula["vulkan-headers"].opt_include}", "-I#{include}", "-L#{lib}", "-lncnn",
+                    "-I#{include}", "-L#{lib}", "-lncnn",
                     "-o", "test"
     system "./test"
   end

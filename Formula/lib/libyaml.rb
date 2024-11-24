@@ -1,7 +1,7 @@
 class Libyaml < Formula
   desc "YAML Parser"
   homepage "https://github.com/yaml/libyaml"
-  url "https://github.com/yaml/libyaml/archive/0.2.5.tar.gz"
+  url "https://github.com/yaml/libyaml/archive/refs/tags/0.2.5.tar.gz"
   sha256 "fa240dbf262be053f3898006d502d514936c818e422afdcf33921c63bed9bf2e"
   license "MIT"
 
@@ -11,9 +11,12 @@ class Libyaml < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "0ec9bf8082245c008803b42dcae3e6a0c8cd7a67aed589d9b6482b115c0a543b"
+    sha256 cellar: :any,                 arm64_sonoma:   "98c0cf81bcdf7577d5fdc8cc18732970b9ae7e0e7423a733f88f0f566ba483ad"
     sha256 cellar: :any,                 arm64_ventura:  "11239e8f5066c6d0d0718208d4eab518da00c7289f33c9c76c0a09ba5c0417c9"
     sha256 cellar: :any,                 arm64_monterey: "a436da33a05f805258c5951a365dec4e8d70a908dbe5dacdeb6b2ecd0efd5024"
     sha256 cellar: :any,                 arm64_big_sur:  "fe1082f3475a144261b41e2c3e0728b9331911b1cbfadfbc1f3d70d454709154"
+    sha256 cellar: :any,                 sonoma:         "4d6e02ce3a82b60033bc7e55bef841dcfef0c05c051176d96accb50744136c6d"
     sha256 cellar: :any,                 ventura:        "b49e62f014b3e7d85a169b422b7521356700c7caaaea9f4901086cafe692a86e"
     sha256 cellar: :any,                 monterey:       "dbd54ce703c6d8eb77e708f75b4730ad2653d28f6291c4a26dc22158beb3f210"
     sha256 cellar: :any,                 big_sur:        "83547fba540a38c30705a59a2e746952c68857212e823c6ee97c186e088f75cd"
@@ -34,7 +37,7 @@ class Libyaml < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <yaml.h>
 
       int main()
@@ -44,7 +47,7 @@ class Libyaml < Formula
         yaml_parser_delete(&parser);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-lyaml", "-o", "test"
     system "./test"
   end

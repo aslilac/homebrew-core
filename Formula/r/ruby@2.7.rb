@@ -7,9 +7,11 @@ class RubyAT27 < Formula
   revision 1
 
   bottle do
+    sha256 arm64_sonoma:   "1145b53a7a873516f3408712c8ac546d0f36242c929d8a586d5209bbd136134e"
     sha256 arm64_ventura:  "3b37017d8a6c722b6ce8b44361d7893a8458c8696e84f393df01be87e4d67faa"
     sha256 arm64_monterey: "732ed82a82fed5ceb49de4cd4be5c5c6f4151d02c157df689cbdb1eae668b0f5"
     sha256 arm64_big_sur:  "7d0763386880e2a4edb83e80151592d9ea074a87cd7091406798c74d3a6b7bea"
+    sha256 sonoma:         "196867c803513c9676084c43be6a9348a73a0babfc741dfa6fd50817930e6141"
     sha256 ventura:        "34b05f1fce9e839d2039ff581f40f195ae590f803e2b8c5cbdd564130b775716"
     sha256 monterey:       "f10c957f760ae1b34d12629ad26c958556f9bc84ad0da848f3077a522b0ede5f"
     sha256 big_sur:        "695d5eaf8dee2c506365e15030a1d139e161c640d455c1eea5ae5d433a0d76de"
@@ -20,9 +22,9 @@ class RubyAT27 < Formula
 
   # EOL: 2023-03-31
   # https://www.ruby-lang.org/en/downloads/branches/
-  deprecate! date: "2023-05-14", because: :unsupported
+  disable! date: "2024-06-15", because: :unsupported
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libyaml"
   depends_on "openssl@3"
   depends_on "readline"
@@ -51,7 +53,7 @@ class RubyAT27 < Formula
   end
 
   def api_version
-    Utils.safe_popen_read("#{bin}/ruby", "-e", "print Gem.ruby_api_version")
+    "2.7.0"
   end
 
   def rubygems_bindir
@@ -64,7 +66,7 @@ class RubyAT27 < Formula
 
     %w[openssl digest].each do |r_name|
       resource(r_name).stage do
-        %W[ext/#{r_name} test/#{r_name}].each { |stem| (buildpath/stem).rmtree }
+        %W[ext/#{r_name} test/#{r_name}].each { |stem| rm_r(buildpath/stem) }
         (buildpath/"ext").install "ext/#{r_name}"
         Pathname.new("lib").each_child do |child|
           if child.directory?
@@ -120,7 +122,7 @@ class RubyAT27 < Formula
     resource("rubygems").stage do
       ENV.prepend_path "PATH", bin
 
-      system "#{bin}/ruby", "setup.rb", "--prefix=#{buildpath}/vendor_gem"
+      system bin/"ruby", "setup.rb", "--prefix=#{buildpath}/vendor_gem"
       rg_in = lib/"ruby/#{api_version}"
       rg_gems_in = lib/"ruby/gems/#{api_version}"
 
@@ -147,11 +149,11 @@ class RubyAT27 < Formula
     # Since Gem ships Bundle we want to provide that full/expected installation
     # but to do so we need to handle the case where someone has previously
     # installed bundle manually via `gem install`.
-    rm_f %W[
+    rm(%W[
       #{rubygems_bindir}/bundle
       #{rubygems_bindir}/bundler
-    ]
-    rm_rf Dir[HOMEBREW_PREFIX/"lib/ruby/gems/#{api_version}/gems/bundler-*"]
+    ].select { |file| File.exist?(file) })
+    rm_r(Dir[HOMEBREW_PREFIX/"lib/ruby/gems/#{api_version}/gems/bundler-*"])
     rubygems_bindir.install_symlink Dir[libexec/"gembin/*"]
 
     # Customize rubygems to look/install in the global gem directory
@@ -240,8 +242,6 @@ class RubyAT27 < Formula
   end
 
   def caveats
-    return unless latest_version_installed?
-
     <<~EOS
       By default, binaries installed by gem will be placed into:
         #{rubygems_bindir}
@@ -253,8 +253,11 @@ class RubyAT27 < Formula
   test do
     hello_text = shell_output("#{bin}/ruby -e 'puts :hello'")
     assert_equal "hello\n", hello_text
+
+    assert_equal api_version, shell_output("#{bin}/ruby -e 'print Gem.ruby_api_version'")
+
     ENV["GEM_HOME"] = testpath
-    system "#{bin}/gem", "install", "json"
+    system bin/"gem", "install", "json"
 
     (testpath/"Gemfile").write <<~EOS
       source 'https://rubygems.org'

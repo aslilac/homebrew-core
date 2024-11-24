@@ -1,16 +1,18 @@
 class Lablgtk < Formula
   desc "Objective Caml interface to gtk+"
-  homepage "http://lablgtk.forge.ocamlcore.org"
-  url "https://github.com/garrigue/lablgtk/archive/2.18.12.tar.gz"
+  homepage "https://github.com/garrigue/lablgtk"
+  url "https://github.com/garrigue/lablgtk/archive/refs/tags/2.18.12.tar.gz"
   sha256 "43b2640b6b6d6ba352fa0c4265695d6e0b5acb8eb1da17290493e99ae6879b18"
-  license "LGPL-2.1"
+  license "LGPL-2.1-or-later" => { with: "OCaml-LGPL-linking-exception" }
   revision 1
 
   bottle do
     rebuild 1
+    sha256 cellar: :any, arm64_sonoma:   "b0af5ac1cd4cca8509ecdc7feb0fddef63c2a197d26a8e84a8b4b58f7eee73eb"
     sha256 cellar: :any, arm64_ventura:  "7cb01bef4d60ce7f596ad6f3adc5923d749ead4b59588b543138b1f66b74a2a6"
     sha256 cellar: :any, arm64_monterey: "2c21ec6b8830ee50288760db11028d09ae3b044f3c13b88ff994d4216b1f0ed9"
     sha256 cellar: :any, arm64_big_sur:  "65cfbb0af55509b9b7510f326f5b88f63f9d3a3df0977d93f065d9ef043c7425"
+    sha256 cellar: :any, sonoma:         "e8320c459ec008f4b868f81aa7ecdfcc44f16eb09d634fb594f5299536377a21"
     sha256 cellar: :any, ventura:        "2201dac36a46692e3528faeb8b13bddbf211bac47751ee78a129292eb6a48e51"
     sha256 cellar: :any, monterey:       "1e26236878d78e09830714ac7367843aa0de50aaee48946958dbb795e6d27e2e"
     sha256 cellar: :any, big_sur:        "b934fef88127a297467f7dcb144fe7e3c60d169da70c45e7ac63cccf03dc2a6e"
@@ -19,9 +21,9 @@ class Lablgtk < Formula
 
   # GTK 2 is EOL: https://blog.gtk.org/2020/12/16/gtk-4-0/
   # GTK 3 supported package is named `lablgtk3` so may be better as separate formula
-  deprecate! date: "2023-01-18", because: :unmaintained
+  disable! date: "2024-01-21", because: :unmaintained
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "gtk+"
   depends_on "gtksourceview"
   depends_on "librsvg"

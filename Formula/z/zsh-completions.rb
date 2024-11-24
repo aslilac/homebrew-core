@@ -1,13 +1,24 @@
 class ZshCompletions < Formula
   desc "Additional completion definitions for zsh"
   homepage "https://github.com/zsh-users/zsh-completions"
-  url "https://github.com/zsh-users/zsh-completions/archive/0.34.0.tar.gz"
-  sha256 "21b6c194b15ae3992f4c2340ab249aa326a9874d46e3130bb3f292142c217fe2"
-  license "MIT-Modern-Variant"
+  url "https://github.com/zsh-users/zsh-completions/archive/refs/tags/0.35.0.tar.gz"
+  sha256 "811bb4213622720872e08d6e0857f1dd7bc12ff7aa2099a170b76301a53f4fbe"
+  # The main/default license is the same as Zsh (MIT-Modern-Variant); however,
+  # the majority of completions are BSD-3-Clause. The remainder is mostly MIT.
+  # A few completions use other licenses and are specifically noted below.
+  license all_of: [
+    "MIT-Modern-Variant",
+    "BSD-3-Clause",
+    "MIT",
+    "Apache-2.0", # _cf, _hledger
+    "ISC", # _rfkill
+    "NCSA", # _include-what-you-use
+  ]
   head "https://github.com/zsh-users/zsh-completions.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "513586906b397bfcd70897487fe13b8104188ecd7de04c39da9dfbacbc78ecc6"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "98d3985c4c7883eceb5136fef89f1e169067fe290eb540efeb5fec4ace5396be"
   end
 
   uses_from_macos "zsh" => :test
@@ -36,8 +47,9 @@ class ZshCompletions < Formula
         rm -f ~/.zcompdump; compinit
 
       Additionally, if you receive "zsh compinit: insecure directories" warnings when attempting
-      to load these completions, you may need to run this:
+      to load these completions, you may need to run these commands:
 
+        chmod go-w '#{HOMEBREW_PREFIX}/share'
         chmod -R go-w '#{HOMEBREW_PREFIX}/share/zsh'
     EOS
   end

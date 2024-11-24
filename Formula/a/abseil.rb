@@ -1,29 +1,36 @@
 class Abseil < Formula
   desc "C++ Common Libraries"
   homepage "https://abseil.io"
-  url "https://github.com/abseil/abseil-cpp/archive/refs/tags/20230125.3.tar.gz"
-  sha256 "5366d7e7fa7ba0d915014d387b66d0d002c03236448e1ba9ef98122c13b35c36"
+  url "https://github.com/abseil/abseil-cpp/archive/refs/tags/20240722.0.tar.gz"
+  sha256 "f50e5ac311a81382da7fa75b97310e4b9006474f9560ac46f54a9967f07d4ae3"
   license "Apache-2.0"
   head "https://github.com/abseil/abseil-cpp.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_ventura:  "c789ff211d0d81fba211ffa4abc0a0e5ce430698ae0e590057cbeeb73d620d15"
-    sha256 cellar: :any,                 arm64_monterey: "69def86118e5c3fad60816d0747ddb7909f7da1cfe7f4ed4f2373d2e4ac27fb2"
-    sha256 cellar: :any,                 arm64_big_sur:  "6f935264ca89f8cd343e01c38cf3806ec98e8e7c616bcbcfc921082af7320f03"
-    sha256 cellar: :any,                 ventura:        "365fd4fef0e37db61c1ae3c83e21c0a6d178a180a8ff94eaa61cce25c6ef84c4"
-    sha256 cellar: :any,                 monterey:       "42d1faa5ff28d113705a651d57edcdc29580c8b7c941a9db5f3f06c97306966f"
-    sha256 cellar: :any,                 big_sur:        "a621f54dec9a4f409592536179c78e62ca67add70b6a06956a3b2802240a7f98"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "447174d63faf184ec9f0c0b5dcf6cc926a619f74b3a130809383f6ee8b4bb316"
+    sha256 cellar: :any,                 arm64_sequoia:  "280f470ee5ae12531a5528850dd90010acb872699064ee273598e4bbc46e304b"
+    sha256 cellar: :any,                 arm64_sonoma:   "922c5d7b256fed577b3f7c84ec7a8ce67dddfc7670726e417eaed71bb6878fc6"
+    sha256 cellar: :any,                 arm64_ventura:  "0e81f268b9e514694f0dbe17a2cf6fecf1537ed680206e6ef88671345482f7e9"
+    sha256 cellar: :any,                 arm64_monterey: "e10b87de708e6731f27a22e3585884749dbcf967a3bd2486ddcae0f410951c3f"
+    sha256 cellar: :any,                 sonoma:         "e669331fc89560e725f40f61ad5ef970eeb3f883586f482ac45d45bc21124b82"
+    sha256 cellar: :any,                 ventura:        "5d72497268f8335b3955ea9408e33f6235ae1c13dcfb67b14b6a58a0600e4908"
+    sha256 cellar: :any,                 monterey:       "68b478c629ee72fd66bca1b4c3944c29e053d9d85315ffc8cd4fe225daefa9a3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "847b8ef8ec4bb017c0e43121225b03f742d74d570a560d411db7408d0385e9bd"
   end
 
-  depends_on "cmake" => :build
+  depends_on "cmake" => [:build, :test]
 
   on_macos do
     depends_on "googletest" => :build # For test helpers
   end
 
   fails_with gcc: "5" # C++17
+
+  # Fix shell option group handling in pkgconfig files
+  # https://github.com/abseil/abseil-cpp/pull/1738
+  patch do
+    url "https://github.com/abseil/abseil-cpp/commit/9dfde0e30a2ce41077758e9c0bb3ff736d7c4e00.patch?full_index=1"
+    sha256 "94a9b4dc980794b3fba0a5e4ae88ef52261240da59a787e35b207102ba4ebfcd"
+  end
 
   def install
     ENV.runtime_cpu_detection
@@ -44,17 +51,10 @@ class Abseil < Formula
                     *extra_cmake_args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
-
-    return unless OS.mac?
-
-    # Remove bad flags in .pc files.
-    # https://github.com/abseil/abseil-cpp/issues/1408
-    inreplace lib.glob("pkgconfig/absl_random_internal_randen_hwaes{,_impl}.pc"),
-              "-Xarch_x86_64 -Xarch_x86_64 -Xarch_arm64 ", ""
   end
 
   test do
-    (testpath/"test.cc").write <<~EOS
+    (testpath/"hello_world.cc").write <<~CPP
       #include <iostream>
       #include <string>
       #include <vector>
@@ -66,9 +66,24 @@ class Abseil < Formula
 
         std::cout << "Joined string: " << s << "\\n";
       }
-    EOS
-    system ENV.cxx, "-std=c++17", "-I#{include}", "-L#{lib}", "-labsl_strings",
-                    "test.cc", "-o", "test"
-    assert_equal "Joined string: foo-bar-baz\n", shell_output("#{testpath}/test")
+    CPP
+    (testpath/"CMakeLists.txt").write <<~CMAKE
+      cmake_minimum_required(VERSION 3.16)
+
+      project(my_project)
+
+      # Abseil requires C++14
+      set(CMAKE_CXX_STANDARD 14)
+
+      find_package(absl REQUIRED)
+
+      add_executable(hello_world hello_world.cc)
+
+      # Declare dependency on the absl::strings library
+      target_link_libraries(hello_world absl::strings)
+    CMAKE
+    system "cmake", testpath
+    system "cmake", "--build", testpath, "--target", "hello_world"
+    assert_equal "Joined string: foo-bar-baz\n", shell_output("#{testpath}/hello_world")
   end
 end

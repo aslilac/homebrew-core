@@ -1,19 +1,20 @@
 class Hcl2json < Formula
   desc "Convert HCL2 to JSON"
   homepage "https://github.com/tmccombs/hcl2json"
-  url "https://github.com/tmccombs/hcl2json/archive/refs/tags/v0.6.0.tar.gz"
-  sha256 "2ec33271f1e332329bd112b8fa56e05434ec61d496a3950934782b1d21c4a26d"
+  url "https://github.com/tmccombs/hcl2json/archive/refs/tags/v0.6.4.tar.gz"
+  sha256 "577009829cb3de548e1ae78f9b934cdcfafb1b5b1f3d5b2a62ceb1f6d88fff62"
   license "Apache-2.0"
   head "https://github.com/tmccombs/hcl2json.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4dd4d6ba11a2c8a467920a0ece7796a36251babfd0433da82a6af61292035d45"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4dd4d6ba11a2c8a467920a0ece7796a36251babfd0433da82a6af61292035d45"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4dd4d6ba11a2c8a467920a0ece7796a36251babfd0433da82a6af61292035d45"
-    sha256 cellar: :any_skip_relocation, ventura:        "9a013efd58dd3b6faf647f8c7c02180ece99d1125c7c1b530ff5522d682faa45"
-    sha256 cellar: :any_skip_relocation, monterey:       "9a013efd58dd3b6faf647f8c7c02180ece99d1125c7c1b530ff5522d682faa45"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9a013efd58dd3b6faf647f8c7c02180ece99d1125c7c1b530ff5522d682faa45"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8be0b345e6e5736d86ffe4823a513a99527f57f378ce38d71292e87b69303bed"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9f8933bbbcc345a06385faf3e07da39594c23a270beb4934aee6f280baafb76c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ec9a49b460d45145f06fd5290eeb0e728281e98ef0df96020014a77a224ec4b0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ec9a49b460d45145f06fd5290eeb0e728281e98ef0df96020014a77a224ec4b0"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ec9a49b460d45145f06fd5290eeb0e728281e98ef0df96020014a77a224ec4b0"
+    sha256 cellar: :any_skip_relocation, sonoma:         "58c08e45591dc30fd763446d41470b5dce12ec5f7ff9ce0e170972174fbcde77"
+    sha256 cellar: :any_skip_relocation, ventura:        "58c08e45591dc30fd763446d41470b5dce12ec5f7ff9ce0e170972174fbcde77"
+    sha256 cellar: :any_skip_relocation, monterey:       "58c08e45591dc30fd763446d41470b5dce12ec5f7ff9ce0e170972174fbcde77"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cbdd19b10ec94ff8c93405c4d482969548f8037d698e460266cacd1fb8230b95"
   end
 
   depends_on "go" => :build

@@ -1,18 +1,20 @@
 class Govulncheck < Formula
   desc "Database client and tools for the Go vulnerability database"
   homepage "https://github.com/golang/vuln"
-  url "https://github.com/golang/vuln/archive/refs/tags/v1.0.1.tar.gz"
-  sha256 "973a94a499c19c90f76624f9fc22d8a15b68fbb9565d74d237d4fb524bddf4ec"
+  url "https://github.com/golang/vuln/archive/refs/tags/v1.1.3.tar.gz"
+  sha256 "9609756c03d8ce810a1a65434ad15d35213cf97414341644777308ae9753370e"
   license "BSD-3-Clause"
+  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c6a720241f4a758ee3309f1532414d2b88f154f6c9807e59ab11dbdb38fa6f5b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f6b46be14b67dbc508f0f136e39123909c00e9614035201bc6807fdad29ae932"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "75c0a31f6e9a8f123d4c4159decd0e94a055ec54b0e8b5ec93605ab7caee324b"
-    sha256 cellar: :any_skip_relocation, ventura:        "1ab22586e166ab32b1ecc0248f9c5a1439071f17e5ff3c9298921df35ab190ec"
-    sha256 cellar: :any_skip_relocation, monterey:       "d21319d3e527914e89fad558df01710699a02729755b6c73a1c07ddefabb80f9"
-    sha256 cellar: :any_skip_relocation, big_sur:        "67d00716304ad8c4c0cf101ab9e5d903ae34759e6d89a13195794b40a39b07af"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2ed56bb11027b4d2d220f453537434b73d3943c4d63348a6f51ccbb46bc6dac7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "241264db9449a92aee067de28f0e3f29d20fc1bcbf33f8d7f87ba088885542e2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "45cacfa3490e92ae8db85cbae1eb85d5d2242264ef18299c96f69c33b09ba769"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "45cacfa3490e92ae8db85cbae1eb85d5d2242264ef18299c96f69c33b09ba769"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "45cacfa3490e92ae8db85cbae1eb85d5d2242264ef18299c96f69c33b09ba769"
+    sha256 cellar: :any_skip_relocation, sonoma:         "bad51736276a2a11ceecff012ac9b1294309cdb4aa28228a416d3d61811599f9"
+    sha256 cellar: :any_skip_relocation, ventura:        "bad51736276a2a11ceecff012ac9b1294309cdb4aa28228a416d3d61811599f9"
+    sha256 cellar: :any_skip_relocation, monterey:       "bad51736276a2a11ceecff012ac9b1294309cdb4aa28228a416d3d61811599f9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6aa83918d5c88c5f171e209d3b3edf61e55150dcb7e2350784e37688ea036fcd"
   end
 
   depends_on "go" => [:build, :test]
@@ -24,11 +26,11 @@ class Govulncheck < Formula
   test do
     mkdir "brewtest" do
       system "go", "mod", "init", "brewtest"
-      (testpath/"brewtest/main.go").write <<~EOS
+      (testpath/"brewtest/main.go").write <<~GO
         package main
 
         func main() {}
-      EOS
+      GO
 
       output = shell_output("#{bin}/govulncheck ./...")
       assert_match "No vulnerabilities found.", output

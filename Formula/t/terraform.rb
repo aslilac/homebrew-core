@@ -4,28 +4,29 @@ class Terraform < Formula
   # NOTE: Do not bump to v1.6.0+ as license changed to BUSL-1.1
   # https://github.com/hashicorp/terraform/pull/33661
   # https://github.com/hashicorp/terraform/pull/33697
-  url "https://github.com/hashicorp/terraform/archive/v1.5.6.tar.gz"
-  sha256 "b5866bf9c7efef74e1f6f2a7ba0a39e645ce77f5dfeb4faebb38e8e7d21476f1"
+  url "https://github.com/hashicorp/terraform/archive/refs/tags/v1.5.7.tar.gz"
+  sha256 "6742fc87cba5e064455393cda12f0e0241c85a7cb2a3558d13289380bb5f26f5"
   license "MPL-2.0"
   head "https://github.com/hashicorp/terraform.git", branch: "main"
 
-  livecheck do
-    url "https://releases.hashicorp.com/terraform/"
-    regex(%r{href=.*?v?(\d+(?:\.\d+)+)/?["' >]}i)
+  bottle do
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "87e8faf4dc4090ff8259a2cc258ac20518c154989af694475a3105d5ad57d664"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "82a9dcb1351fa533ea106fe0222678c89814a42ce4939d17c01178f4dbff4713"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b9f647f7ab0dc2c8878c6f4ab51bcd412197bc02e30389b15cc37de2b0dfaf8b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8b14e9ffc5a5d154e5d6b58b94c18372c2f69c5ce1fd5735b351c1a1bac0187f"
+    sha256 cellar: :any_skip_relocation, sonoma:         "9ce38d4ffe85f9530ba5911299d190f0a119610c4fd9fc6b30f57871647b61cb"
+    sha256 cellar: :any_skip_relocation, ventura:        "f68fee2494570a785d854056484c6853421e592a7e58489bfdc692ef87913412"
+    sha256 cellar: :any_skip_relocation, monterey:       "b8cef4d46451e2780754cdf5c5510b8ed458025668a03beb1dd69c23b61396ce"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "390afc2492fa4ea2fc7dce55efa25b9ae09e060639e1dc3d9c160718893881b3"
   end
 
-  bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "84e4c20defa7fb567b4b2c4542814131a73faca1f9dc5742f3eca3373fe12868"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "be75264e34c08bcd32cf638283b1c4f379ad5c747fcd228b6850baf34c65ac77"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "58918cf6df857483d61ad23c9612b8cf0fe6a850d08032d1e8b675b88713272b"
-    sha256 cellar: :any_skip_relocation, ventura:        "cef2c017a8985b23bf6bc5cd6db4e5a53ddbd23cdaf8c2e8595f0335b39a119f"
-    sha256 cellar: :any_skip_relocation, monterey:       "2abd765acd70c1714bfbfba7c3e52c9a606a1a970a25a3627ef6e308f6189ce8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "285aed8fca6988d68cce062a82c8e18361c6cfccb4edaf5c07f2ecd62e09d445"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "207dbcfecdb3c96b45658df0a2a22cb6f8a1c1b3975303fdefefb45b2a48249b"
-  end
+  # https://www.hashicorp.com/blog/hashicorp-adopts-business-source-license
+  deprecate! date: "2024-04-04", because: "changed its license to BUSL on the next release"
 
   depends_on "go" => :build
 
+  conflicts_with "tenv", because: "both install terraform binary"
   conflicts_with "tfenv", because: "tfenv symlinks terraform binaries"
 
   # Needs libraries at runtime:
@@ -34,6 +35,16 @@ class Terraform < Formula
 
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w")
+  end
+
+  def caveats
+    <<~EOS
+      We will not accept any new Terraform releases in homebrew/core (with the BUSL license).
+      The next release changed to a non-open-source license:
+      https://www.hashicorp.com/blog/hashicorp-adopts-business-source-license
+      See our documentation for acceptable licences:
+        https://docs.brew.sh/License-Guidelines
+    EOS
   end
 
   test do
@@ -65,7 +76,7 @@ class Terraform < Formula
         count         = 4
       }
     EOS
-    system "#{bin}/terraform", "init"
-    system "#{bin}/terraform", "graph"
+    system bin/"terraform", "init"
+    system bin/"terraform", "graph"
   end
 end

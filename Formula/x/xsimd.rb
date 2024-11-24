@@ -1,29 +1,28 @@
 class Xsimd < Formula
   desc "Modern, portable C++ wrappers for SIMD intrinsics"
   homepage "https://xsimd.readthedocs.io/en/latest/"
-  url "https://github.com/xtensor-stack/xsimd/archive/refs/tags/11.1.0.tar.gz"
-  sha256 "aa54dba8daade472656eba0d27154f072fec06ee3831aefcac69a5f6c7dbbae7"
+  url "https://github.com/xtensor-stack/xsimd/archive/refs/tags/13.0.0.tar.gz"
+  sha256 "8bdbbad0c3e7afa38d88d0d484d70a1671a1d8aefff03f4223ab2eb6a41110a3"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "dc4048240f762b6da21aab8faccd18c3a6924f0a3842c04aedcf5b80c7a27e0e"
+    sha256 cellar: :any_skip_relocation, all: "666ef7e22bd2235b3d5b614df919714723deaac35850a5fc7a1b5cb8f4b8ade0"
   end
 
   depends_on "cmake" => :build
 
   def install
-    args = std_cmake_args
-    args << "-DBUILD_TESTS=OFF"
-
-    system "cmake", ".", *args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", "-DBUILD_TESTS=OFF", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <vector>
       #include <type_traits>
 
+      #include "xsimd/config/xsimd_inline.hpp"
       #include "xsimd/memory/xsimd_alignment.hpp"
 
       using namespace xsimd;
@@ -43,8 +42,9 @@ class Xsimd < Formula
         if(!std::is_same<mock_align, unaligned_mode>::value) abort();
         return 0;
       }
-    EOS
-    system ENV.cxx, "test.c", "-std=c++14", "-I#{include}", "-o", "test"
+    CPP
+
+    system ENV.cxx, "test.cpp", "-std=c++14", "-I#{include}", "-o", "test"
     system "./test"
   end
 end

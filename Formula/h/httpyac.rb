@@ -1,20 +1,17 @@
-require "language/node"
-
 class Httpyac < Formula
   desc "Quickly and easily send REST, SOAP, GraphQL and gRPC requests"
   homepage "https://httpyac.github.io/"
-  url "https://registry.npmjs.org/httpyac/-/httpyac-6.6.3.tgz"
-  sha256 "dc22be401cceff7554c5ff4d1697d1eb7b2244ea41e84975a74c40d668c51126"
+  url "https://registry.npmjs.org/httpyac/-/httpyac-6.16.4.tgz"
+  sha256 "2139537b6f368a0fa749e881773c71886022ced16bbd4dcf1d795c276c6441d5"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3630a83740bab56853e6ca865390a5916354122352626c00c341462b04505ec7"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3630a83740bab56853e6ca865390a5916354122352626c00c341462b04505ec7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3630a83740bab56853e6ca865390a5916354122352626c00c341462b04505ec7"
-    sha256 cellar: :any_skip_relocation, ventura:        "fb128647697e46448eb0760ccd1905e3d9846b5d0e7884e489b15ce382536313"
-    sha256 cellar: :any_skip_relocation, monterey:       "fb128647697e46448eb0760ccd1905e3d9846b5d0e7884e489b15ce382536313"
-    sha256 cellar: :any_skip_relocation, big_sur:        "fb128647697e46448eb0760ccd1905e3d9846b5d0e7884e489b15ce382536313"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "217694c8d65ba352133f214bd5466ad7069d568a7d89e76a552c7c28daedbe39"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "37eb0fc1a66cd6b3a77188fd9f254cb1494bef9d721a22d611e173a3b15d52a2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "37eb0fc1a66cd6b3a77188fd9f254cb1494bef9d721a22d611e173a3b15d52a2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "37eb0fc1a66cd6b3a77188fd9f254cb1494bef9d721a22d611e173a3b15d52a2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3b1b87abf924b622a3974dc570361f608529b750df4c87dc0a9059b63862f549"
+    sha256 cellar: :any_skip_relocation, ventura:       "3b1b87abf924b622a3974dc570361f608529b750df4c87dc0a9059b63862f549"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "17f73fd6c0b7ed96685867fbfbc8886953e646dc2449a3f1e328e73b1b3d7326"
   end
 
   depends_on "node"
@@ -24,11 +21,11 @@ class Httpyac < Formula
   end
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir[libexec/"bin/*"]
 
     clipboardy_fallbacks_dir = libexec/"lib/node_modules/#{name}/node_modules/clipboardy/fallbacks"
-    clipboardy_fallbacks_dir.rmtree # remove pre-built binaries
+    rm_r(clipboardy_fallbacks_dir) # remove pre-built binaries
     if OS.linux?
       linux_dir = clipboardy_fallbacks_dir/"linux"
       linux_dir.mkpath
@@ -66,7 +63,7 @@ class Httpyac < Formula
     assert_match "HTTP/1.1 200  - OK", output
     # for graphql call
     assert_match "\"name\": \"Europe\"", output
-    assert_match "2 requests processed (2 succeeded, 0 failed)", output
+    assert_match "2 requests processed (2 succeeded)", output
 
     assert_match version.to_s, shell_output("#{bin}/httpyac --version")
   end

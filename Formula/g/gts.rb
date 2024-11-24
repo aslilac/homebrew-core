@@ -7,9 +7,12 @@ class Gts < Formula
   revision 3
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "b93bb9f091fbf2d25c99437f8ef0dc0e40f680fe445b968cf952d2d067417ebb"
+    sha256 cellar: :any,                 arm64_sonoma:   "45ce1fc7fc4da58e808c6d11bd19a17c35bed97719b63e2572b22ff6bd417aac"
     sha256 cellar: :any,                 arm64_ventura:  "de8259a24624223ddab38d0e1482ec9f055ddfacc353fb0290d127919e509cf1"
     sha256 cellar: :any,                 arm64_monterey: "8bedf36ac77f7998ea926904efe011d52086e67f9901c1a64cda7e8013f7bc07"
     sha256 cellar: :any,                 arm64_big_sur:  "ed540825164e099f8f1c9719fada2d186a3f9b9ee10279ad4f2dac658bc68cb8"
+    sha256 cellar: :any,                 sonoma:         "63d06518c5c1da686ecf76d612b7717bc021d8c19a6470a21ec1f69020fe1dac"
     sha256 cellar: :any,                 ventura:        "946d3f08c41e94c2861e555358fd152df7c069ad8a2a7f621b64b55cfb8ceffb"
     sha256 cellar: :any,                 monterey:       "3800de79b45b9a5736b9ecd9d48b2ab2935d74cbe57e308eeed2ddb2e07a08e1"
     sha256 cellar: :any,                 big_sur:        "486a4d3b428e12daf5573a21d60371b4cd1f9e1c7e3b14c7d2d1c0a3bea58524"
@@ -42,7 +45,7 @@ class Gts < Formula
   end
 
   test do
-    (testpath/"gtstest.c").write <<~EOS
+    (testpath/"gtstest.c").write <<~C
       #include "gts.h"
       int main() {
         GtsRange r;
@@ -56,7 +59,7 @@ class Gts < Formula
         if (r.n == 10) return 0;
         return 1;
       }
-    EOS
+    C
 
     cflags = Utils.safe_popen_read("pkg-config", "--cflags", "--libs", "gts").strip.split
     system ENV.cc, "gtstest.c", *cflags, "-lm", "-o", "gtstest"

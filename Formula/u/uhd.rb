@@ -1,10 +1,10 @@
 class Uhd < Formula
+  include Language::Python::Virtualenv
+
   desc "Hardware driver for all USRP devices"
   homepage "https://files.ettus.com/manual/"
-  # The build system uses git to recover version information
-  url "https://github.com/EttusResearch/uhd.git",
-      tag:      "v4.4.0.0",
-      revision: "5fac246bc18ab04cb4870026a630e46d0fd87b17"
+  url "https://github.com/EttusResearch/uhd/archive/refs/tags/v4.7.0.0.tar.gz"
+  sha256 "afe56842587ce72d6a57535a2b15c061905f0a039abcc9d79f0106f072a00d10"
   license all_of: ["GPL-3.0-or-later", "LGPL-3.0-or-later", "MIT", "BSD-3-Clause", "Apache-2.0"]
   revision 1
   head "https://github.com/EttusResearch/uhd.git", branch: "master"
@@ -15,50 +15,54 @@ class Uhd < Formula
   end
 
   bottle do
-    sha256                               arm64_ventura:  "5192c19ef635a0162939c1081446f5cb8cf2dd5a92c3a17b37f8e6945a7964ed"
-    sha256                               arm64_monterey: "2b800f76d257b08949c424c94c12925e78b536c0420ddfe88c4adbe8c21855f9"
-    sha256                               arm64_big_sur:  "f6773619a414a4fa6eda95b805f506d2aaa0f51a64fb01eedb69cf1a68e112ca"
-    sha256                               ventura:        "0f660fd7eaeb50c7a3ec89babf697aa7eefe53955a2a11324371251cd61c18ea"
-    sha256                               monterey:       "528a304d4c87793738ead29c11f2ef9eff3138c6883cc5362cd95777234b8199"
-    sha256                               big_sur:        "41e8dbeca5aeef65b5de9d94f80ef66e71b5a6cbdae312222294716d64d302fb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "031608eb36683bd8dca86b7e6e58e7a6baaaa63df99f48a8205165695f745a74"
+    rebuild 1
+    sha256                               arm64_sequoia: "8af487212569ce117181b6bb884536580a701a581823cd615168e8fc5b1699e0"
+    sha256                               arm64_sonoma:  "87477b72f2b117d10c580fdc2812e3e1c032309e4e2ce86836cc5250655ef03f"
+    sha256                               arm64_ventura: "86904ebacfd828a291f1f205df0859de71bc412527270400c6eac5df69dfb43d"
+    sha256                               sonoma:        "4a9799003cc7f032a630c857d17a6c970de02beb7f5778c143aa955df670b654"
+    sha256                               ventura:       "43358e6612f828c025c1c7b2e6f00785546f33ab84d4b6c9bf7f4ea850d60947"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a8be6e51f1458a8f8ac8d85ab25e00e7d064fb6bbdc23c9abf62890a43cc45fc"
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "boost"
   depends_on "libusb"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
-  fails_with gcc: "5"
-
-  resource "Mako" do
-    url "https://files.pythonhosted.org/packages/05/5f/2ba6e026d33a0e6ddc1dddf9958677f76f5f80c236bd65309d280b166d3e/Mako-1.2.4.tar.gz"
-    sha256 "d60a3903dc3bb01a18ad6a89cdbe2e4eadc69c0bc8ef1e3773ba53d44c3f7a34"
+  on_linux do
+    depends_on "ncurses"
   end
 
-  resource "MarkupSafe" do
-    url "https://files.pythonhosted.org/packages/95/7e/68018b70268fb4a2a605e2be44ab7b4dd7ce7808adae6c5ef32e34f4b55a/MarkupSafe-2.1.2.tar.gz"
-    sha256 "abcabc8c2b26036d62d4c746381a6f7cf60aafcc653198ad678306986b09450d"
+  resource "mako" do
+    url "https://files.pythonhosted.org/packages/67/03/fb5ba97ff65ce64f6d35b582aacffc26b693a98053fa831ab43a437cbddb/Mako-1.3.5.tar.gz"
+    sha256 "48dbc20568c1d276a2698b36d968fa76161bf127194907ea6fc594fa81f943bc"
+  end
+
+  resource "markupsafe" do
+    url "https://files.pythonhosted.org/packages/b4/d2/38ff920762f2247c3af5cbbbbc40756f575d9692d381d7c520f45deb9b8f/markupsafe-3.0.1.tar.gz"
+    sha256 "3e683ee4f5d0fa2dde4db77ed8dd8a876686e3fc417655c2ece9a90576905344"
+  end
+
+  def python3
+    "python3.13"
   end
 
   def install
-    python = "python3.11"
-    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor"/Language::Python.site_packages(python)
+    venv = virtualenv_create(buildpath/"venv", python3)
+    venv.pip_install resources
+    ENV.prepend_path "PYTHONPATH", venv.site_packages
 
-    resources.each do |r|
-      r.stage do
-        system python, *Language::Python.setup_install_args(libexec/"vendor", python)
-      end
-    end
-
-    system "cmake", "-S", "host", "-B", "host/build", "-DENABLE_TESTS=OFF", *std_cmake_args
-    system "cmake", "--build", "host/build"
-    system "cmake", "--install", "host/build"
+    system "cmake", "-S", "host", "-B", "build",
+                    "-DENABLE_TESTS=OFF",
+                    "-DUHD_VERSION=#{version}",
+                    *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    assert_match version.major_minor_patch.to_s, shell_output("#{bin}/uhd_config_info --version")
+    assert_match version.to_s, shell_output("#{bin}/uhd_config_info --version")
   end
 end

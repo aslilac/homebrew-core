@@ -1,8 +1,8 @@
 class Libuv < Formula
   desc "Multi-platform support library with a focus on asynchronous I/O"
   homepage "https://libuv.org"
-  url "https://github.com/libuv/libuv/archive/v1.46.0.tar.gz"
-  sha256 "7aa66be3413ae10605e1f5c9ae934504ffe317ef68ea16fdaa83e23905c681bd"
+  url "https://github.com/libuv/libuv/archive/refs/tags/v1.49.2.tar.gz"
+  sha256 "388ffcf3370d4cf7c4b3a3205504eea06c4be5f9e80d2ab32d19f8235accc1cf"
   license "MIT"
   head "https://github.com/libuv/libuv.git", branch: "v1.x"
 
@@ -12,13 +12,12 @@ class Libuv < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "8c3beb4d11ed0d45cf0b7e07d280ff815eab9f9c138eec90a2f824168aed039e"
-    sha256 cellar: :any,                 arm64_monterey: "bfaeee8ea65a26b881951c90d5ec1f4000039f228a4198735c015309307c47d9"
-    sha256 cellar: :any,                 arm64_big_sur:  "1f1c49121e9a4df9eb520aceac58781a3ee61364370f04096ddc043842c8beda"
-    sha256 cellar: :any,                 ventura:        "68085c874a3df5a9dc0a6a86bbce91ef370373523602fcbb31a63d37f259e025"
-    sha256 cellar: :any,                 monterey:       "38513d0917c18b294afadbca1ad005d73c450f3a06a5afcd2396398f428157ad"
-    sha256 cellar: :any,                 big_sur:        "f75b27c39a13b279554a2c6f5c0451d54af1c9f7abc312e6c5e50ae3f346599d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ad3f4af550bc5b9256f9d2c73bce18e335adf185052d9dec5dd44c1c142f961c"
+    sha256 cellar: :any,                 arm64_sequoia: "0b28a00add187590626c395c52a9295857fc1320e9ff0b8dd9fe726f4614ebcf"
+    sha256 cellar: :any,                 arm64_sonoma:  "bf7e4fc58b402b235dabb022fcba6e7960c8e1afb28e482a35771345de91d117"
+    sha256 cellar: :any,                 arm64_ventura: "f7f9df3d16699a31cd90bd8e5a8172d590c3f18bef7c03f6cd0bdf32fa4b968e"
+    sha256 cellar: :any,                 sonoma:        "1c30f58448ce9c0d30cef601a475a1986d1cf072188b110adf783c7002a9b559"
+    sha256 cellar: :any,                 ventura:       "219fe43b746aaaa223c27cedf8634da8e0977a4e03bf970c254dc050e300da29"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a6d13b73eee595b1bf4157d8c047bcdbc46f61b8a3aa2d7225d80a9183849396"
   end
 
   depends_on "autoconf" => :build
@@ -31,21 +30,18 @@ class Libuv < Formula
     # This isn't yet handled by the make install process sadly.
     cd "docs" do
       system "make", "man"
-      system "make", "singlehtml"
       man1.install "build/man/libuv.1"
-      doc.install Dir["build/singlehtml/*"]
     end
 
     system "./autogen.sh"
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "./configure", *std_configure_args,
+                          "--disable-silent-rules"
     system "make"
     system "make", "install"
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <uv.h>
       #include <stdlib.h>
 
@@ -57,7 +53,7 @@ class Libuv < Formula
         free(loop);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-luv", "-o", "test"
     system "./test"
   end

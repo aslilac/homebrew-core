@@ -1,8 +1,8 @@
 class Libuninameslist < Formula
   desc "Library of Unicode names and annotation data"
   homepage "https://github.com/fontforge/libuninameslist"
-  url "https://github.com/fontforge/libuninameslist/releases/download/20221022/libuninameslist-dist-20221022.tar.gz"
-  sha256 "92c833936d653b2f205fb5e7ac82818311824dabdc7abdc2e81f07c3a0ea39bb"
+  url "https://github.com/fontforge/libuninameslist/releases/download/20240910/libuninameslist-dist-20240910.tar.gz"
+  sha256 "e59aab324ca0a3a713fe85c09a56c40c680a8458438d90624597920b3ef0be26"
   license "BSD-3-Clause"
 
   livecheck do
@@ -12,14 +12,14 @@ class Libuninameslist < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "e1f92764ac97ebac5e76e2cc88414e9b4272c791159b92751b44b8b1b16f88f8"
-    sha256 cellar: :any,                 arm64_monterey: "b730c8d395fff31ba541759c101e3024b9652c05aa426ca08b41f996afa49e7f"
-    sha256 cellar: :any,                 arm64_big_sur:  "4b0214eea454a0b9be8a49a37146519750abd9a384c397a35e0fd7978007d211"
-    sha256 cellar: :any,                 ventura:        "ea76dda1784a20ed1a884903618a73c57d66c69c9d0f1b40c050362c70d787ec"
-    sha256 cellar: :any,                 monterey:       "85eef665f0db7618b40ed7710b0677c098745a4c429c5f5ef70b4647f5fa2774"
-    sha256 cellar: :any,                 big_sur:        "24cebce234e974de93316eacc50b2bb4eef5aa68463fa2d4762b5a4103d87388"
-    sha256 cellar: :any,                 catalina:       "f7228caba01e8f69cf264d19822c6ae5fecddbc8c943911ab12df5d5c0539675"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0663619ead9a7ed939f94b7eb97d1be2b7239b35ed149e71c8605efbc171ff17"
+    sha256 cellar: :any,                 arm64_sequoia:  "cf609c8bc13da0d2e48afb290124f6f40364d99ccd60d9cd90a5736cfd0a7b62"
+    sha256 cellar: :any,                 arm64_sonoma:   "30162a392d8c3b38e0b54765ef6d3285b9b136123949df0dff2c6dd1850793b8"
+    sha256 cellar: :any,                 arm64_ventura:  "ac5b3cf31a12f29e6f1c98d2dc20b6fb00c133f1ef25236ef1121034bb08c7d5"
+    sha256 cellar: :any,                 arm64_monterey: "2ddbb3f6078bc8de3e9247846ae47bf71f9c9c70e76c3646af259247e217fa11"
+    sha256 cellar: :any,                 sonoma:         "058a9be1c073ea75b776da75a266fdcc21fd3a20244705b2d426c91c16092bac"
+    sha256 cellar: :any,                 ventura:        "44e94ef3192ab2052ec7c36460e307dbfd5e2aa75e445a1c285a4dc805bf81f0"
+    sha256 cellar: :any,                 monterey:       "4ba6f06973d3507936496ade35a2ebe95e8b3fcaedfce6b82ba25274f6cc22be"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e69b85f779f074776a2f4d8da6a1ae610b3b1a8760192a9ab1aa392622c8492a"
   end
 
   head do
@@ -41,14 +41,14 @@ class Libuninameslist < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <uninameslist.h>
 
       int main() {
         (void)uniNamesList_blockCount();
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-luninameslist", "-o", "test"
     system "./test"
   end

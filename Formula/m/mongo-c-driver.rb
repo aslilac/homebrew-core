@@ -1,8 +1,8 @@
 class MongoCDriver < Formula
   desc "C driver for MongoDB"
   homepage "https://github.com/mongodb/mongo-c-driver"
-  url "https://github.com/mongodb/mongo-c-driver/releases/download/1.24.3/mongo-c-driver-1.24.3.tar.gz"
-  sha256 "cc0ad1006447ded21bbefecf57d6fef61afe6f0d56a4e28da73805d50fdb81b5"
+  url "https://github.com/mongodb/mongo-c-driver/archive/refs/tags/1.29.0.tar.gz"
+  sha256 "507414795dfb24ddf1a418b155b57459d8cea1191c7f0fcd8b826acf5400343c"
   license "Apache-2.0"
   head "https://github.com/mongodb/mongo-c-driver.git", branch: "master"
 
@@ -12,13 +12,12 @@ class MongoCDriver < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "e902dd1f043d95001dcad6ab486478a1b240d93fc65780c7b7ad01f0e50db816"
-    sha256 cellar: :any,                 arm64_monterey: "aae53ae5ea1ea475f374ee9257bb5c36445c66cc019c6d0fb51a4d0696c5b6cf"
-    sha256 cellar: :any,                 arm64_big_sur:  "42364185101510788e67ff70582ce9f48a8bda606e29d88107a7800a4e7f6d56"
-    sha256 cellar: :any,                 ventura:        "77b920816c21595c4812bb5c0ce3125e1a467950c50b34e2285624b6bee6ad16"
-    sha256 cellar: :any,                 monterey:       "9ad19be320fd8b4ed20310c20715974bb2608d966dc1203458776e24e456c2a2"
-    sha256 cellar: :any,                 big_sur:        "72e9184f26578e9100c4ea09a1e4c4e7777921e21ba140794b9bae2c3449116a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ee79fc1d1aed4c3e61974b231f5bf21a88681ac4badc0a64253c1e3a76d97df9"
+    sha256 cellar: :any,                 arm64_sequoia: "d4f21fedfda0eebce42de12b02eae5de2c55083e3d70dc002ed410a49a6b87a1"
+    sha256 cellar: :any,                 arm64_sonoma:  "e14103bf6cb5a50ca4211da32503ce496f336d6edd771dd38c250880cb309fab"
+    sha256 cellar: :any,                 arm64_ventura: "8fa2bdd4e92144ef5f888c7d2d19dfb76b7f07164d58d45529fd5fcbd8808b6f"
+    sha256 cellar: :any,                 sonoma:        "a59ea091aca0c1248893f71299a972b898d2f73cdabcccad961250e79cc397ef"
+    sha256 cellar: :any,                 ventura:       "a68cdd701a71286c3b8a17d12f18bc18200d32adb44a2f8421e5e8062604b738"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "62c5490508d63f54720a08c10329d387bf2398c914c240ca9175b66908ecfae0"
   end
 
   depends_on "cmake" => :build
@@ -31,6 +30,7 @@ class MongoCDriver < Formula
   def install
     cmake_args = std_cmake_args
     cmake_args << "-DCMAKE_INSTALL_RPATH=#{rpath}"
+    File.write "VERSION_CURRENT", version.to_s unless build.head?
     inreplace "src/libmongoc/src/mongoc/mongoc-config.h.in", "@MONGOC_CC@", ENV.cc
     system "cmake", ".", *cmake_args
     system "make", "install"

@@ -1,18 +1,17 @@
 class Vitess < Formula
   desc "Database clustering system for horizontal scaling of MySQL"
   homepage "https://vitess.io"
-  url "https://github.com/vitessio/vitess/archive/v17.0.2.tar.gz"
-  sha256 "a7f32da038c04b35d5b51ceef8210de8159267467ea4aa5fe14bd144975d5511"
+  url "https://github.com/vitessio/vitess/archive/refs/tags/v21.0.0.tar.gz"
+  sha256 "a7c5c0391b2461fd78e3fee3362ca2473153d8e0b9c5bddf2c1cc066c2e29d3b"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c831c8b45af7f2166ea2d5dd14245f2388de94bad3ea7e11597952b3fbf20710"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "21f4ed8033b1d286b6c276dda0cb68eaeb43f5dbe55397173637b7588a78790f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2c7fb08c2d8d2244d9a65f71671fd83afb00c3949341dd146a3dfac72e0bdf61"
-    sha256 cellar: :any_skip_relocation, ventura:        "5dba5bfd643d7ec3a4ba70b6af492438e2f04596e15913e9350119b74a66a930"
-    sha256 cellar: :any_skip_relocation, monterey:       "ba52cb2ed6c7e61992c72e1e7c8823acaf6db545fcffb5086f66d5f5e353c07d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "59b6fbb95fd1cb61fa2de833e8cbf314c4dd776e49ccd0af928249da2b4dd0b7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bbbc0ad5461a1fce055c1a31ce5b3ae148a5b9d7c6439937704913da118acc95"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cb4e19bd93f6189793480eae223553ad6ec8b1b5f1b29521714db8115b3f3776"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "db1b81a58cbd9663f1df39b32af1b23c9672b1db9ff1193909177985f85db542"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "19f2bf9bf62e846dd6748da2e40a94d07d6e840f13aab1ba50ec8cff0f4ab73f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "2c7db58b223cac831550d683dd0f5830af901ee5a104bcc3ffca22d34a7e3c5e"
+    sha256 cellar: :any_skip_relocation, ventura:       "fd5274b11fce55904fe988861711534cb77ff1346e4e11083672742b66dae574"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d0d6b40a774930e3d01e5e86625f353b8c4d425af6fd54dc7b5d3288b5d5a4ef"
   end
 
   depends_on "go" => :build
@@ -71,7 +70,7 @@ class Vitess < Formula
                          "--cells_to_watch", cell,
                          "--port", port.to_s
     end
-    sleep 3
+    sleep 8
 
     output = shell_output("curl -s localhost:#{port}/debug/health")
     assert_equal "ok", output

@@ -2,50 +2,64 @@ class Pipx < Formula
   include Language::Python::Virtualenv
 
   desc "Execute binaries from Python packages in isolated environments"
-  homepage "https://pypa.github.io/pipx"
-  url "https://files.pythonhosted.org/packages/86/4e/2820045417d94d699c7fcfc81860c9d671aed87fe563a00d9a5f88993c2f/pipx-1.2.0.tar.gz"
-  sha256 "d1908041d24d525cafebeb177efb686133d719499cb55c54f596c95add579286"
+  homepage "https://pipx.pypa.io"
+  url "https://files.pythonhosted.org/packages/17/21/dd6b9a9c4f0cb659ce3dad991f0e8dde852b2c81922224ef77df4222ab7a/pipx-1.7.1.tar.gz"
+  sha256 "762de134e16a462be92645166d225ecef446afaef534917f5f70008d63584360"
   license "MIT"
   head "https://github.com/pypa/pipx.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e823b669e5dd5da3981e8bfe6c4abe4fa057fbfb3e1ec163483f7b68ae471378"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ec2551733c4e688523d14cd663c715d0c1ae2a9f8d485128e3a13297b24b5f19"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f283303715f313620777476c76202e1d2eeabf27f7b22f380b85cc19ce6bf391"
-    sha256 cellar: :any_skip_relocation, ventura:        "0bd1c1e927d5e1d9f0abdeaa56965eb4da147d0d312b2652aadd494d39605a40"
-    sha256 cellar: :any_skip_relocation, monterey:       "9b1e6ca79064190f7e15e54aa8786c26f474f07f7aa54a320dd942fd8fbd8391"
-    sha256 cellar: :any_skip_relocation, big_sur:        "cf56d25e2017a76ec76398da864588c058ff1b20e8bc2302e6b57dedce0927ef"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2c30124af6c8342b431b958cc4ecc8d2e8098275c72bf26784b430d71896d0d0"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c772b7d29bf673061661818d85c0ef6fffb060e5c9c0ff9912e8d06a38182ef2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c772b7d29bf673061661818d85c0ef6fffb060e5c9c0ff9912e8d06a38182ef2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c772b7d29bf673061661818d85c0ef6fffb060e5c9c0ff9912e8d06a38182ef2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "308434aaf773a12a4ce20aba5ddc9c9f355a4df21ceb25dfc3bf55adc2827ef7"
+    sha256 cellar: :any_skip_relocation, ventura:       "308434aaf773a12a4ce20aba5ddc9c9f355a4df21ceb25dfc3bf55adc2827ef7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b485d7cd129aeaa561c125a3faaa07c5ac428a581331adf75eeda30c8ce6f2ef"
   end
 
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
   resource "argcomplete" do
-    url "https://files.pythonhosted.org/packages/ac/43/b4ac2e533f86b96414a471589948da660925b95b50b1296bd25cd50c0e3e/argcomplete-2.1.1.tar.gz"
-    sha256 "72e08340852d32544459c0c19aad1b48aa2c3a96de8c6e5742456b4f538ca52f"
+    url "https://files.pythonhosted.org/packages/5f/39/27605e133e7f4bb0c8e48c9a6b87101515e3446003e0442761f6a02ac35e/argcomplete-3.5.1.tar.gz"
+    sha256 "eb1ee355aa2557bd3d0145de7b06b2a45b0ce461e1e7813f5d066039ab4177b4"
   end
 
   resource "click" do
-    url "https://files.pythonhosted.org/packages/59/87/84326af34517fca8c58418d148f2403df25303e02736832403587318e9e8/click-8.1.3.tar.gz"
-    sha256 "7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e"
+    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
+    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/47/d5/aca8ff6f49aa5565df1c826e7bf5e85a6df852ee063600c1efa5b932968c/packaging-23.0.tar.gz"
-    sha256 "b6ad297f8907de0fa2fe1ccbd26fdaf387f5f47c7275fedf8cce89f99446cf97"
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
+  end
+
+  resource "platformdirs" do
+    url "https://files.pythonhosted.org/packages/13/fc/128cc9cb8f03208bdbf93d3aa862e16d376844a14f9a0ce5cf4507372de4/platformdirs-4.3.6.tar.gz"
+    sha256 "357fb2acbc885b0419afd3ce3ed34564c13c9b95c89360cd9563f73aa5e2b907"
   end
 
   resource "userpath" do
-    url "https://files.pythonhosted.org/packages/85/ee/820c8e5f0a5b4b27fdbf6f40d6c216b6919166780128b6714adf3c201644/userpath-1.8.0.tar.gz"
-    sha256 "04233d2fcfe5cff911c1e4fb7189755640e1524ff87a4b82ab9d6b875fee5787"
+    url "https://files.pythonhosted.org/packages/d5/b7/30753098208505d7ff9be5b3a32112fb8a4cb3ddfccbbb7ba9973f2e29ff/userpath-1.9.2.tar.gz"
+    sha256 "6c52288dab069257cc831846d15d48133522455d4677ee69a9781f11dbefd815"
+  end
+
+  def python3
+    deps.map(&:to_formula)
+        .find { |f| f.name.start_with?("python@") }
   end
 
   def install
-    virtualenv_install_with_resources
-    bin.install_symlink libexec/"bin/register-python-argcomplete"
+    # Avoid Cellar path reference, which is only good for one version.
+    inreplace "src/pipx/interpreter.py",
+              "DEFAULT_PYTHON = _get_sys_executable()",
+              "DEFAULT_PYTHON = '#{python3.opt_libexec/"bin/python"}'"
 
-    generate_completions_from_executable(libexec/"bin/register-python-argcomplete", "pipx", "--shell",
-                                         shells: [:bash, :fish])
+    virtualenv_install_with_resources
+
+    generate_completions_from_executable(libexec/"bin/register-python-argcomplete", "pipx",
+                                         shell_parameter_format: :arg)
   end
 
   test do

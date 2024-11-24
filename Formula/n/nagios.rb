@@ -1,8 +1,8 @@
 class Nagios < Formula
   desc "Network monitoring and management system"
   homepage "https://www.nagios.org/"
-  url "https://downloads.sourceforge.net/project/nagios/nagios-4.x/nagios-4.4.14/nagios-4.4.14.tar.gz"
-  sha256 "507caac1ae89974ffa8ea5b310aa048ba9ab00cd9711693ef36eb17eeea9f84f"
+  url "https://downloads.sourceforge.net/project/nagios/nagios-4.x/nagios-4.5.8/nagios-4.5.8.tar.gz"
+  sha256 "19a575532095aab6ed0c13660623cde7fbb6138816b8bd53df08fb0a1d2cc0b6"
   license "GPL-2.0-only"
 
   livecheck do
@@ -11,21 +11,23 @@ class Nagios < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "3e11c8d47ab27bfe9ae845d6a390dda158b2f3fc3f579fcabdb79a7cdbba4451"
-    sha256 arm64_monterey: "f71f5b21f4f04d8506eb3b16fcf3e6ab8953cef5c08588e4490a44cd5db1afa0"
-    sha256 arm64_big_sur:  "2fadc0c51d7b242433b17f35afd047da6816512bd8862307ad8c71cd15cef64c"
-    sha256 ventura:        "508f7b24fd3b5112ce3f3e4efd5f370a4d50052baa98b972dcb98db369b00df5"
-    sha256 monterey:       "9fb3c90a139643ea2d17cd914476dbe8631d45f52a2b07b6952d9c96c376fecc"
-    sha256 big_sur:        "5b818ef03ef91ac3851c0d110018e1d2e767b4360ddb0bee3b5862aff7f88a7a"
-    sha256 x86_64_linux:   "d53805470dfaf177423fd5279ce71b8cbaef2eec739c676fde0790d48f1f7254"
+    sha256 arm64_sequoia: "c857e5dc0aafc1c35ba0e4be3b909de4ba758195d58fc05a0cb77376fb7f1c5e"
+    sha256 arm64_sonoma:  "157fa1d0e6087d84acbf09376862f9e2d2a69aa38b4ce22cd23fce5995702173"
+    sha256 arm64_ventura: "3c3815d107519a5d310ebf3bbb2f498ebe1248917bc5e9014c336eec43dff1b4"
+    sha256 sonoma:        "a0d629addfb90aac498c3735a2fe11fd1ba8674aa021ef7933a9dbad70d0b681"
+    sha256 ventura:       "313ca5e89394e996acc9265a3587f69b72544028c996ea3efdbd03f6df3f0002"
+    sha256 x86_64_linux:  "7f48ff5ce3eeec6b15cf1d7087d6086b86bd51b4d1676093ab98db103ec5fe46"
   end
 
   depends_on "gd"
   depends_on "libpng"
-  depends_on "nagios-plugins"
   depends_on "openssl@3"
 
   uses_from_macos "unzip"
+
+  on_macos do
+    depends_on "jpeg-turbo"
+  end
 
   def nagios_sbin
     prefix/"cgi-bin"

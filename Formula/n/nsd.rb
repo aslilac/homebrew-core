@@ -1,10 +1,9 @@
 class Nsd < Formula
   desc "Name server daemon"
   homepage "https://www.nlnetlabs.nl/projects/nsd/"
-  url "https://www.nlnetlabs.nl/downloads/nsd/nsd-4.7.0.tar.gz"
-  sha256 "8faca44e299ad2915fa000887ab1632631ea68709c62ce35f110bfe721ecf214"
+  url "https://www.nlnetlabs.nl/downloads/nsd/nsd-4.10.1.tar.gz"
+  sha256 "c0190f923f0095995f2e6331dacd92c6e1f4d578b880d61690602b43a5acfd84"
   license "BSD-3-Clause"
-  revision 1
 
   # We check the GitHub repo tags instead of
   # https://www.nlnetlabs.nl/downloads/nsd/ since the first-party site has a
@@ -12,31 +11,38 @@ class Nsd < Formula
   livecheck do
     url "https://github.com/NLnetLabs/nsd.git"
     regex(/^NSD[._-]v?(\d+(?:[._]\d+)+)[._-]REL$/i)
+
+    strategy :git do |tags, regex|
+      tags.map { |tag| tag[regex, 1]&.tr("_", ".") }
+    end
   end
 
   bottle do
-    sha256 arm64_ventura:  "09aa50e0ff6b9dcbc6457acce3242fa0f259534e45f45df1962f3a55a2f84b54"
-    sha256 arm64_monterey: "aa66c94672a6831ba5845d0d9fe73021fe9ea21e1403d1f194222fbabd60c91e"
-    sha256 arm64_big_sur:  "7d1a23581b87a516f4adab974626ceeed458342a2177c6870686160c8edc7efa"
-    sha256 ventura:        "0f2566019b7601c94d0f21ab7854025eb5c1f5c843bcf429c72fb7501d4f62fa"
-    sha256 monterey:       "39d73cf7533e96c0c1434baa1f59211e4be2b4ceeb176fa04b44e05b66206dca"
-    sha256 big_sur:        "1f146848df2780720ea966f52f6f48e3c428c5400ce0cec2216b76b9166f50c7"
-    sha256 x86_64_linux:   "cdb25f1576f8f2e074781348b7754d039943e472cf72c464f7497d8b4ef41281"
+    sha256 arm64_sequoia:  "7ae36d4553f3fc44b8e502fccf7029a594a6764f03d5881f7e5512641a7d565b"
+    sha256 arm64_sonoma:   "3460116714f6081ea1b1ff74aa6d69af3dcd90c5afdebe393aae19af8d052224"
+    sha256 arm64_ventura:  "6b051779b60b8d878dd094338c58fed35c7a54874297f3039a1c1e196b95e363"
+    sha256 arm64_monterey: "7a814959891aea2529609ab8e88f382956669f2ba69d194c7c4a57bf9085454f"
+    sha256 sonoma:         "cd6d2ed468d4183bcf79002d0f533f01380ba0eea2c606200b69bc4f56104e27"
+    sha256 ventura:        "93bbc4a2bd5b2f7cb8e764c011e262785a06398d5c7a362fe9955422d3c5c4ba"
+    sha256 monterey:       "2a607b26919ffce37e867e790d24bc6920fd6a6a2cb19393dab5f1f64ff0d608"
+    sha256 x86_64_linux:   "202a6511ed192c3cb3409f9ba7c50b8bfcb3dcb887037fe67b7317e34eb1f765"
   end
 
   depends_on "libevent"
   depends_on "openssl@3"
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}",
+    ENV.runtime_cpu_detection if Hardware::CPU.intel?
+
+    system "./configure", "--sysconfdir=#{etc}",
                           "--localstatedir=#{var}",
                           "--with-libevent=#{Formula["libevent"].opt_prefix}",
-                          "--with-ssl=#{Formula["openssl@3"].opt_prefix}"
+                          "--with-ssl=#{Formula["openssl@3"].opt_prefix}",
+                          *std_configure_args
     system "make", "install"
   end
 
   test do
-    system "#{sbin}/nsd", "-v"
+    system sbin/"nsd", "-v"
   end
 end

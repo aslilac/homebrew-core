@@ -1,16 +1,16 @@
 class Libcpuid < Formula
   desc "Small C library for x86 CPU detection and feature extraction"
   homepage "https://github.com/anrieff/libcpuid"
-  url "https://github.com/anrieff/libcpuid/archive/v0.6.3.tar.gz"
-  sha256 "da570fdeb450634d84208f203487b2e00633eac505feda5845f6921e811644fc"
+  url "https://github.com/anrieff/libcpuid/archive/refs/tags/v0.7.0.tar.gz"
+  sha256 "cfd9e6bcda5da3f602273e55f983bdd747cb93dde0b9ec06560e074939314210"
   license "BSD-2-Clause"
   head "https://github.com/anrieff/libcpuid.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 ventura:      "84d3564619410abf63cb5dd759bd5c129d9caf273ab972bc1f04ff4fa3fcb29a"
-    sha256 cellar: :any,                 monterey:     "d05aefe01176128d788f2c914d02b8ffc6a111ef2c2e04d142a2c3f3fc46a68b"
-    sha256 cellar: :any,                 big_sur:      "35cae66754dd499614f854c21da717fec919aaf7cfd50ea8e0a3c9b83e332a19"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "583ac04b1bd04fde3501f4f18fa0743f38f2302094f91369963b001349230343"
+    sha256 cellar: :any,                 sonoma:       "cdf5030cd5af1bb803485b2853ac70667962e9df464a0be7efd10894c9f3ecf1"
+    sha256 cellar: :any,                 ventura:      "84cba38211a65ec58b209c1616efd38e1053f2554dd3b629a9570dfb4a7caf14"
+    sha256 cellar: :any,                 monterey:     "4e5d099b1a7a93f4b7748adfcca7d43369b22ee4bbe6fda5fae001794aa32472"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "12735bcc406da1a4362c7f366bdb098f2b4a63cd63cd0df11116a55692dd9a1d"
   end
 
   depends_on "autoconf" => :build

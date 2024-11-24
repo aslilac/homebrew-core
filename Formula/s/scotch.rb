@@ -1,8 +1,8 @@
 class Scotch < Formula
   desc "Package for graph partitioning, graph clustering, and sparse matrix ordering"
   homepage "https://gitlab.inria.fr/scotch/scotch"
-  url "https://gitlab.inria.fr/scotch/scotch/-/archive/v7.0.4/scotch-v7.0.4.tar.bz2"
-  sha256 "97dbe0445231a7ad818ad3615c0128814c9b3e2514d10af0a9a89840888a487e"
+  url "https://gitlab.inria.fr/scotch/scotch/-/archive/v7.0.5/scotch-v7.0.5.tar.bz2"
+  sha256 "c742ed05db8f39c6644f3128c762fc8acd72ed2fce0185d29f7fd30cc672821b"
   license "CECILL-C"
   head "https://gitlab.inria.fr/scotch/scotch.git", branch: "master"
 
@@ -12,13 +12,14 @@ class Scotch < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "4e955eb59faa64c6eaac17ac90a5f81f5964c07cc30043220402fca109dbdae7"
-    sha256 cellar: :any,                 arm64_monterey: "f7ff675ff26315f13cd6791fd0c360bf330a8c7ab4f17053cc3dc056be235925"
-    sha256 cellar: :any,                 arm64_big_sur:  "d4ba89fe8aa9288e63f51e21700bb47761f52430ee8ebe84651b8e4cb7f2a7ea"
-    sha256 cellar: :any,                 ventura:        "8c8f68140b68c8c1753a57cec616275db2606d9b04e378ac0e7178c3b830380a"
-    sha256 cellar: :any,                 monterey:       "78eb8974aa3dcc0a19a39465e6d2e3528169e7f7ae103cd0384015f52c13af8a"
-    sha256 cellar: :any,                 big_sur:        "84cebae59eb1307765ad6314e6557e01d4300980cdc94b18b6f31711e8702699"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4fb598235fa27e3dd3169df39cddfa434a592fd0750eea410100b875e8b148ad"
+    sha256 cellar: :any,                 arm64_sequoia:  "de4538c50a8a18eccfdf930eee033be2533b5072f75553c5814d4e2522e614c6"
+    sha256 cellar: :any,                 arm64_sonoma:   "24e92a586b21cb68b395ea503e6ccd6d163f2ed98157d30345cc0578a621b632"
+    sha256 cellar: :any,                 arm64_ventura:  "6371884c2959baaaa0cdced2f0863dbfb6072732a6dccc2cae04dda024a0a96d"
+    sha256 cellar: :any,                 arm64_monterey: "61dd479a8047d0262333496f06f7ab22327254c17c73ed7c3def2fa5a0d4d8e5"
+    sha256 cellar: :any,                 sonoma:         "12e6d7232a2be03036ebd1eb1664a7d4c659b2482699d4b1e377093645bf11be"
+    sha256 cellar: :any,                 ventura:        "4ab1ff12902e7a764be2134480b1abc02e3136c8f8b5f021b23ff5898865f470"
+    sha256 cellar: :any,                 monterey:       "a2ce349941b5132c00ac6de6585d363bfe1b4ff396a36407b2ce8702f0ca50b2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d264a5164e967dbdd12f826b516918c05346e091fe39f768b34de71a977954ed"
   end
 
   depends_on "bison" => :build
@@ -59,7 +60,7 @@ class Scotch < Formula
         ln_sf "Make.inc/Makefile.inc.#{makefile_inc_suffix}.shlib", "Makefile.inc"
       end
 
-      system "make", "scotch", "ptscotch"
+      system "make", "scotch", "ptscotch", "esmumps", "ptesmumps"
       system "make", "prefix=#{prefix}", "install"
 
       pkgshare.install "check/test_strat_seq.c"
@@ -72,7 +73,7 @@ class Scotch < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdlib.h>
       #include <stdio.h>
       #include <scotch.h>
@@ -82,7 +83,7 @@ class Scotch < Formula
         printf("%d.%d.%d", major, minor, patch);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-lscotch", "-lscotcherr",
                              "-pthread", "-L#{Formula["zlib"].opt_lib}", "-lz", "-lm"
     assert_match version.to_s, shell_output("./a.out")

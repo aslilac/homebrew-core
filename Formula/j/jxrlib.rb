@@ -1,18 +1,31 @@
 class Jxrlib < Formula
   desc "Tools for JPEG-XR image encoding/decoding"
   homepage "https://tracker.debian.org/pkg/jxrlib"
-  url "http://deb.debian.org/debian/pool/main/j/jxrlib/jxrlib_1.2~git20170615.f752187.orig.tar.xz"
+  url "https://deb.debian.org/debian/pool/main/j/jxrlib/jxrlib_1.2~git20170615.f752187.orig.tar.xz"
+  version "1.2_git20170615-f752187"
   sha256 "3e3c9d3752b0bbf018ed9ce01b43dcd4be866521dc2370dc9221520b5bd440d4"
   license "BSD-2-Clause"
+  version_scheme 1
+
+  livecheck do
+    url "https://deb.debian.org/debian/pool/main/j/jxrlib/"
+    regex(/href=.*?jxrlib[._-]v?(\d+(?:\.\d+)+[^"' >]*?)\.orig\.t/i)
+    strategy :page_match do |page, regex|
+      page.scan(regex).map do |match|
+        match[0].tr("~", "_").sub(/\.(\h{7})$/, '-\1')
+      end
+    end
+  end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "488ffec6b9614adcd0b07349e71fc87243b142a59004a511da051756d05f299e"
-    sha256 cellar: :any,                 arm64_monterey: "029cfa77cb1594e9831eb94173bfd0bcef7a5a8eb24ff44bc7e367ab2617c936"
-    sha256 cellar: :any,                 arm64_big_sur:  "b2c8d472fa9c0a69763f9df5ddf4a807a5580cc5da7cdd1497f09f8c35dd6df5"
-    sha256 cellar: :any,                 ventura:        "f927ae6b48154efe4ffbfffe93d5088b54c14717eb3e2c562d54194da8ae2c94"
-    sha256 cellar: :any,                 monterey:       "fdf76897a19643eae22606dfd051a4e2be38963f78ad95c64c6661355aee6730"
-    sha256 cellar: :any,                 big_sur:        "e676ef53d5cf3ae6ec8bdd7b1b75846e1f06fc24521518a8cb10f6c7f239295c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dfb64124039eccbb5481c3b214b0e1c539b0310d8052227fdd6faf094b07438b"
+    sha256 cellar: :any,                 arm64_sequoia:  "e7aae93b96e812a888ab0a4da737a40fef17bb389a7e3bcc5106ff81c33a7841"
+    sha256 cellar: :any,                 arm64_sonoma:   "437e4ba50db36d58d3c043f6a3a1e34939f0e80f1318160d9d142da27f222e47"
+    sha256 cellar: :any,                 arm64_ventura:  "a81a86a6bc199eac66b8c9ae3b40a942c2acd8986b2c901e165f2ebb99e466f1"
+    sha256 cellar: :any,                 arm64_monterey: "2faf5cbf70c5f9fc6d93dd9449b53db9304bbfcb73a48bf58e935f5cee6f9939"
+    sha256 cellar: :any,                 sonoma:         "212c5e081a76c9e8e669e025a09bc57a2ca86454eb18dc902809af560a0530fc"
+    sha256 cellar: :any,                 ventura:        "449029d8100d5ed878755410d3c23b3044f4033afb5a384886fd2db2b0994434"
+    sha256 cellar: :any,                 monterey:       "1b98aa039650e79119c061342a8ccf2e6ef8d0872893ad12c1bfefac67a8d88d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a8b4edc2fe9b2af8b4ac16fc72f1ac97c7c2bd61186250e2edb55c2cd632527d"
   end
 
   depends_on "cmake" => :build

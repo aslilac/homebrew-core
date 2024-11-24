@@ -1,19 +1,18 @@
 class Goread < Formula
   desc "RSS/Atom feeds in the terminal"
   homepage "https://github.com/TypicalAM/goread"
-  url "https://github.com/TypicalAM/goread/archive/refs/tags/v1.6.2.tar.gz"
-  sha256 "8b28b7dd572164bf99afba38edd19bb19f2ba778a69ef06eca64426ed1ef5168"
+  url "https://github.com/TypicalAM/goread/archive/refs/tags/v1.7.0.tar.gz"
+  sha256 "bf7b8cb47f9ea78bb445fc2679df6a383cb4e0133b000e4bbee1dee660f71a26"
   license "GPL-3.0-or-later"
   head "https://github.com/TypicalAM/goread.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1b87335f5c2a6ca5323ced3f2746f3799281e883cd7763cc52004c600722ff35"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b1e850a085ef66554693301002a58fd95949a8a3db7e6d096c4c95927c93cf07"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c52c5e3e0b1ca1feb1a617e568de35fc8148fc77ec1a4c498ff3b093d8832cc9"
-    sha256 cellar: :any_skip_relocation, ventura:        "c2f99b932af819291988affd6ffbca8c2977c3624578a6599cca85a084560326"
-    sha256 cellar: :any_skip_relocation, monterey:       "6fc2d68deba15a34ace75ea78dec2a69781ddc14c1842d4a9dc85e6df3172e30"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c2bfddb4fc8c7b560ca1b063700f2b04e3096b51ce6392021a234ed8bfc2d6b2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "103eb96d4e2ead0355eb865193fec04eee786b92d79e0f57749d315d5af40c7f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fc4e7fabecb4dbeec0469872a1b7537861082bce8e0548a3f175b0bcc764be2b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "fc4e7fabecb4dbeec0469872a1b7537861082bce8e0548a3f175b0bcc764be2b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "fc4e7fabecb4dbeec0469872a1b7537861082bce8e0548a3f175b0bcc764be2b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "74263d896796e6887948950eadf7cdd48e4aa3fde57b24846e19ac95bd1f2092"
+    sha256 cellar: :any_skip_relocation, ventura:       "74263d896796e6887948950eadf7cdd48e4aa3fde57b24846e19ac95bd1f2092"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0888998680667c174eb0d11fb93e4a9a2fe26baab478a28fb76dc2b6c2d9150e"
   end
 
   depends_on "go" => :build

@@ -1,54 +1,48 @@
 class SpirvTools < Formula
   desc "API and commands for processing SPIR-V modules"
   homepage "https://github.com/KhronosGroup/SPIRV-Tools"
-  url "https://github.com/KhronosGroup/SPIRV-Tools/archive/v2023.2.tar.gz"
-  sha256 "7416cc8a98a10c32bacc36a39930b0c5b2a484963df5d68f388ed7ffee1faad3"
+  url "https://github.com/KhronosGroup/SPIRV-Tools/archive/refs/tags/vulkan-sdk-1.3.296.0.tar.gz"
+  sha256 "75aafdf7e731b4b6bfb36a590ddfbb38ebc605d80487f38254da24fe0cb95837"
   license "Apache-2.0"
+  version_scheme 1
+  head "https://github.com/KhronosGroup/SPIRV-Tools.git", branch: "main"
+
+  livecheck do
+    url :stable
+    regex(/^(?:vulkan[._-])?sdk[._-]v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "cd86ec4dadaf9a5df724b5e8e2d0b3434e9dece5f1d0f693171e2b3b49614e31"
-    sha256 cellar: :any,                 arm64_monterey: "0637ae77abc11f9ba1677119426ce011fb2e5f6580abcda1d6a6c44503127a69"
-    sha256 cellar: :any,                 arm64_big_sur:  "ee408e7ebba7faf63f468dbc17addff81d36a1d056abdacb070c5cf542b178b3"
-    sha256 cellar: :any,                 ventura:        "4bc22b444e909a223e10dd78a4769dc610f5d81bc115d3baf4f047c11af9b5c6"
-    sha256 cellar: :any,                 monterey:       "058ed9c4f4104887ae3a57458ee1d4e5b13f82b7303f114b4db5920aa25389d8"
-    sha256 cellar: :any,                 big_sur:        "b212c0450234482cbf842614c8c8c82cbc2fa00eb6e4f63aae88aeeb47e05841"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4b0f52bb57518a8cd11a581164b724b2585c0b63753aabe2263027c1ab1bde5c"
+    sha256 cellar: :any,                 arm64_sequoia: "d1eb7ecbb0874326bf77ade45b32af7784e1534806e13beb465f410f18d4c054"
+    sha256 cellar: :any,                 arm64_sonoma:  "7e589216dd90a65ec950b78fd6a059c48a6036ec92e6d0f284e6957b87b5da8f"
+    sha256 cellar: :any,                 arm64_ventura: "024ed8087234902cee4875f4e9655a23b42802c2f5c761d400be18fa3506dd8b"
+    sha256 cellar: :any,                 sonoma:        "61eab8b84f8d42ab55fe184cb06ed93955d80c5cee9bbb82b101aebf550956bf"
+    sha256 cellar: :any,                 ventura:       "5eddb8840375d643d90e17bc96e6679d8ec852a36638acb2a38cf70dd28e0e7b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0f4a1e2d759c153dc74c250c65028fc7eb4393c52353e66faf64a1439a3ac40b"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.11" => :build
 
-  resource "re2" do
-    # revision number could be found in ./DEPS
-    url "https://github.com/google/re2.git",
-        revision: "b059ae85c83ca6b1f29dba20e92e4acb85cb5b29"
-  end
-
-  resource "effcee" do
-    # revision number could be found in ./DEPS
-    url "https://github.com/google/effcee.git",
-        revision: "66edefd2bb641de8a2f46b476de21f227fc03a28"
-  end
+  uses_from_macos "python" => :build, since: :catalina
 
   resource "spirv-headers" do
-    # revision number could be found in ./DEPS
+    # revision number could be found as `spirv_headers_revision` in `./DEPS`
     url "https://github.com/KhronosGroup/SPIRV-Headers.git",
-        revision: "1feaf4414eb2b353764d01d88f8aa4bcc67b60db"
+        revision: "2a9b6f951c7d6b04b6c21fe1bf3f475b68b84801"
   end
 
   def install
-    resources.each do |res|
-      (buildpath/"external"/res.name).install res
-    end
+    (buildpath/"external/spirv-headers").install resource("spirv-headers")
 
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args,
-                            "-DCMAKE_INSTALL_RPATH=#{rpath}",
-                            "-DBUILD_SHARED_LIBS=ON",
-                            "-DSPIRV_SKIP_TESTS=ON",
-                            "-DSPIRV_TOOLS_BUILD_STATIC=OFF"
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DCMAKE_INSTALL_RPATH=#{rpath}",
+                    "-DBUILD_SHARED_LIBS=ON",
+                    "-DPython3_EXECUTABLE=#{which("python3")}",
+                    "-DSPIRV_SKIP_TESTS=ON",
+                    "-DSPIRV_TOOLS_BUILD_STATIC=OFF",
+                    *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
     (libexec/"examples").install "examples/cpp-interface/main.cpp"
   end

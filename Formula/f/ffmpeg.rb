@@ -1,23 +1,13 @@
 class Ffmpeg < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
+  url "https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz"
+  sha256 "40973d44970dbc83ef302b0609f2e74982be2d85916dd2ee7472d30678a7abe6"
   # None of these parts are used by default, you have to explicitly pass `--enable-gpl`
   # to configure to activate them. In this case, FFmpeg's license changes to GPL v2+.
   license "GPL-2.0-or-later"
-  revision 1
+  revision 3
   head "https://github.com/FFmpeg/FFmpeg.git", branch: "master"
-
-  stable do
-    url "https://ffmpeg.org/releases/ffmpeg-6.0.tar.xz"
-    sha256 "57be87c22d9b49c112b6d24bc67d42508660e6b718b3db89c44e47e289137082"
-
-    # Fix for binutils, remove with `stable` block on next release
-    # https://www.linuxquestions.org/questions/slackware-14/regression-on-current-with-ffmpeg-4175727691/
-    patch do
-      url "https://github.com/FFmpeg/FFmpeg/commit/effadce6c756247ea8bae32dc13bb3e6f464f0eb.patch?full_index=1"
-      sha256 "9800c708313da78d537b61cfb750762bb8ad006ca9335b1724dbbca5669f5b24"
-    end
-  end
 
   livecheck do
     url "https://ffmpeg.org/download.html"
@@ -25,13 +15,12 @@ class Ffmpeg < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "adc16acae9282fbe6794459e2f86ac4fc257586840f72e526dbb8993c32d890a"
-    sha256 arm64_monterey: "7b1d3dc6c1d7d23217ce78e559125c6c4e089bdfe6331a7472d72476c30d4188"
-    sha256 arm64_big_sur:  "5b35267cf103f0c985a793caca31df4cb8bfc8a795305917b4e234f3bf62cee7"
-    sha256 ventura:        "74597bd8254cd242adea4024340fff4cf33329fe6e5cc86a7e1c1a5b05cc3a02"
-    sha256 monterey:       "a41ef7a55137493c397590da7d519e79206060710956edf2b70b1dce1ff7f1e1"
-    sha256 big_sur:        "aad4ec2113bea323f6564a5ceb40f821279a8f6bc3eb590b9b6b223b6e0c9d73"
-    sha256 x86_64_linux:   "edc5bf97e59ea91e8123e88bb887fea2fed1b13e66dc10603c69f0d449e03491"
+    sha256 arm64_sequoia: "c96ab5cd19aa5b31eef4b8ffeeaca8d73fa22056fa69d15b81174561c8c2e316"
+    sha256 arm64_sonoma:  "83c29276528929abf4eb48d5d14248a1a9cf773675261732df12933a472ac89b"
+    sha256 arm64_ventura: "5006a6b45280faaa8107faa266fe70381507d1ab17b5b9ddb723d7fe4f265df5"
+    sha256 sonoma:        "157f5eebd4da29f998197c8319b76777a044c4a762bb6a65d852977355cc14bb"
+    sha256 ventura:       "66d7b586260df1b33f54221ac5223525d95701c3f9c8dcd7a51ea315e9bfe14f"
+    sha256 x86_64_linux:  "d3a29d2c867df86335af5f7d3643c830782d8323bbe45cc2c9a067caef651136"
   end
 
   depends_on "pkg-config" => :build
@@ -42,15 +31,20 @@ class Ffmpeg < Formula
   depends_on "freetype"
   depends_on "frei0r"
   depends_on "gnutls"
+  depends_on "harfbuzz"
+  depends_on "jpeg-xl"
   depends_on "lame"
   depends_on "libass"
   depends_on "libbluray"
   depends_on "librist"
   depends_on "libsoxr"
+  depends_on "libssh"
   depends_on "libvidstab"
   depends_on "libvmaf"
   depends_on "libvorbis"
   depends_on "libvpx"
+  depends_on "libx11"
+  depends_on "libxcb"
   depends_on "opencore-amr"
   depends_on "openjpeg"
   depends_on "opus"
@@ -75,8 +69,15 @@ class Ffmpeg < Formula
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
 
+  on_macos do
+    depends_on "libarchive"
+    depends_on "libogg"
+    depends_on "libsamplerate"
+  end
+
   on_linux do
     depends_on "alsa-lib"
+    depends_on "libxext"
     depends_on "libxv"
   end
 
@@ -94,6 +95,9 @@ class Ffmpeg < Formula
   end
 
   def install
+    # The new linker leads to duplicate symbol issue https://github.com/homebrew-ffmpeg/homebrew-ffmpeg/issues/140
+    ENV.append "LDFLAGS", "-Wl,-ld_classic" if DevelopmentTools.clang_build_version >= 1500
+
     args = %W[
       --prefix=#{prefix}
       --enable-shared
@@ -109,6 +113,8 @@ class Ffmpeg < Formula
       --enable-libaribb24
       --enable-libbluray
       --enable-libdav1d
+      --enable-libharfbuzz
+      --enable-libjxl
       --enable-libmp3lame
       --enable-libopus
       --enable-librav1e
@@ -116,6 +122,7 @@ class Ffmpeg < Formula
       --enable-librubberband
       --enable-libsnappy
       --enable-libsrt
+      --enable-libssh
       --enable-libsvtav1
       --enable-libtesseract
       --enable-libtheora
@@ -153,10 +160,8 @@ class Ffmpeg < Formula
 
     # Build and install additional FFmpeg tools
     system "make", "alltools"
-    bin.install Dir["tools/*"].select { |f| File.executable? f }
-
-    # Fix for Non-executables that were installed to bin/
-    mv bin/"python", pkgshare/"python", force: true
+    bin.install (buildpath/"tools").children.select { |f| f.file? && f.executable? }
+    pkgshare.install buildpath/"tools/python"
   end
 
   test do

@@ -1,9 +1,9 @@
 class Teleport < Formula
   desc "Modern SSH server for teams managing distributed infrastructure"
-  homepage "https://gravitational.com/teleport"
-  url "https://github.com/gravitational/teleport/archive/refs/tags/v13.3.6.tar.gz"
-  sha256 "60ae2838919d7978a2dd29ddf5b3b0443e88183fbc943e6c93a2ad0722162f82"
-  license "Apache-2.0"
+  homepage "https://goteleport.com/"
+  url "https://github.com/gravitational/teleport/archive/refs/tags/v17.0.1.tar.gz"
+  sha256 "d2022e497edf5f42f110d4c8d2d8e9dbbcd87d45810fe7cb58e8dcc666f0b0fb"
+  license all_of: ["AGPL-3.0-or-later", "Apache-2.0"]
   head "https://github.com/gravitational/teleport.git", branch: "master"
 
   # As of writing, two major versions of `teleport` are being maintained
@@ -18,18 +18,21 @@ class Teleport < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e32c133da3abd287116d7a22ea013862c343549bdadfaabdd45200535a7a2ab9"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3b82a8dcca26aaa5fea48fb43ce80e5495bf3790048bbbbe8b2ded63a33489d0"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "af29176047526f9d62ae8676523d2758f026a231d5303b2ae1dc06b137b23200"
-    sha256 cellar: :any_skip_relocation, ventura:        "226d5207c1a8e5adff864f3d13d76c67f41c366104711d0cd8316478da76d314"
-    sha256 cellar: :any_skip_relocation, monterey:       "75ceb50dcaad6e21b3b35dd86d3ee33fd9ec0ae242a3b68260dca370896ae4fa"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4313df3d0476c25676706c3cc892e59f4d92016ecdcf284efd70f233ef4c7fac"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "741dbe09de73ce20e3f9ba8033d8a83df4a9fc20467d8d5b220263df8f7636dc"
+    sha256 cellar: :any,                 arm64_sequoia: "318a7d816285010fca6f4442450e0703249134a6860151c5d26b288683a551d3"
+    sha256 cellar: :any,                 arm64_sonoma:  "079fc1e7ee5ecbbffcbeb200b3578a7c9487dc11c071865e91a922b6a06f84c4"
+    sha256 cellar: :any,                 arm64_ventura: "5978eced41a5bb7de57597b6e5c0c44b2930dc708e1bc0367bed8b23ec84ac7d"
+    sha256 cellar: :any,                 sonoma:        "ea516dd6d686938aeea65c860e3f3147ac8ee77faad97dee96e6ec84af39e2cf"
+    sha256 cellar: :any,                 ventura:       "c5488e1e7897e9ee361a6ddb42c7eea083017dfa772653cf42b1758cc9c81d1a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a0919bd611327c12655352871e3508577c08e952401d7b74470c0fa55b234eb2"
   end
 
   depends_on "go" => :build
-  depends_on "pkg-config" => :build
-  depends_on "yarn" => :build
+  depends_on "pkgconf" => :build
+  depends_on "pnpm" => :build
+  depends_on "rust" => :build
+  # TODO: try to remove rustup dependancy, see https://github.com/Homebrew/homebrew-core/pull/191633#discussion_r1774378671
+  depends_on "rustup" => :build
+  depends_on "wasm-pack" => :build
   depends_on "libfido2"
   depends_on "node"
   depends_on "openssl@3"
@@ -39,8 +42,13 @@ class Teleport < Formula
   uses_from_macos "zip"
 
   conflicts_with "etsh", because: "both install `tsh` binaries"
+  conflicts_with "tctl", because: "both install `tctl` binaries"
 
   def install
+    ENV.prepend_path "PATH", Formula["rustup"].bin
+    system "rustup", "default", "stable"
+    system "rustup", "set", "profile", "minimal"
+
     ENV.deparallelize { system "make", "full", "FIDO2=dynamic" }
     bin.install Dir["build/*"]
   end
@@ -51,7 +59,7 @@ class Teleport < Formula
     assert_match version.to_s, shell_output("#{bin}/tctl version")
 
     mkdir testpath/"data"
-    (testpath/"config.yml").write <<~EOS
+    (testpath/"config.yml").write <<~YAML
       version: v2
       teleport:
         nodename: testhost
@@ -59,7 +67,7 @@ class Teleport < Formula
         log:
           output: stderr
           severity: WARN
-    EOS
+    YAML
 
     fork do
       exec "#{bin}/teleport start --roles=proxy,node,auth --config=#{testpath}/config.yml"
@@ -68,8 +76,8 @@ class Teleport < Formula
     sleep 10
     system "curl", "--insecure", "https://localhost:3080"
 
-    status = shell_output("#{bin}/tctl --config=#{testpath}/config.yml status")
-    assert_match(/Cluster\s*testhost/, status)
-    assert_match(/Version\s*#{version}/, status)
+    status = shell_output("#{bin}/tctl status --config=#{testpath}/config.yml")
+    assert_match(/Cluster:\s*testhost/, status)
+    assert_match(/Version:\s*#{version}/, status)
   end
 end

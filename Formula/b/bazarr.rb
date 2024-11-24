@@ -1,23 +1,23 @@
-require "language/node"
-
 class Bazarr < Formula
   include Language::Python::Virtualenv
 
   desc "Companion to Sonarr and Radarr for managing and downloading subtitles"
   homepage "https://www.bazarr.media"
-  url "https://github.com/morpheus65535/bazarr/releases/download/v1.2.4/bazarr.zip"
-  sha256 "4dd05acde63fc3dbd211bb3f3a046d7688bfae20146a2d73ae633f03c79c6960"
+  url "https://github.com/morpheus65535/bazarr/releases/download/v1.4.3/bazarr.zip"
+  sha256 "b664dd9947d1051941d788ee371528eb945efbd6a05015f40414ae36ede9482d"
   license "GPL-3.0-or-later"
   head "https://github.com/morpheus65535/bazarr.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7b0c2439a686beaadd18c60ceb72855cbfe00b16e470079302d4b40116c98f1c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5ecf5450a7d3ede1484357669e564c7a6392149377b4c5dda57e9490c22ac6e9"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a166a08f5dccc1095f773be7f0cd0dd3d71e1acc364b00afa0e4cc7279bab262"
-    sha256 cellar: :any_skip_relocation, ventura:        "69b835d7998c4d5a016fa202ca1f5c7b2a6688444ea2c704d4b529ba3ddcf2e7"
-    sha256 cellar: :any_skip_relocation, monterey:       "830671046b2eb128b22229170a74a313ebd9433737d23424dbab29018fbdbd4b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5d6e962a7aa277c69055e6663ace6008ac802904060ffc6983ea6c97df5bb3e6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "388b0d13df91711071656eba524fb55517ffc8b065ae414e0a2ba67e7ac5f4b2"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "0f8672138939fa50ef1f6b228cb57a66e8bd15f270aebbaeed175adec2bd78ec"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8b023d5c160d3c58237cd18c8ce142b47f94725ab26f9849f9161401cd416c33"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c5a5ccc8ae165f93dd193cb14cdbdb489eb800fc57f2da84c33fbc3b12be29fd"
+    sha256 cellar: :any,                 arm64_monterey: "99e22f87a17d46593ac22ebca997d18d25bc1d7885871b4a3afcc65a53794b45"
+    sha256 cellar: :any_skip_relocation, sonoma:         "9c97ed102759a6ea084b277f13bce79792ea13ca159d55df7a06c86d19e094ba"
+    sha256 cellar: :any_skip_relocation, ventura:        "bad9d45c6e1f7292549859ddc2a2461b32293fa6f42cc29cc1620dd93d9a5ec4"
+    sha256 cellar: :any,                 monterey:       "18350639a3711e8a8059aaa5af057473dc833dc9894917c5e57cfa800a8857d2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f5757b9d197bca66cac1645c719d2f8f2f0c74397f0bf39177d4428f9dbe4075"
   end
 
   depends_on "node" => :build
@@ -25,16 +25,21 @@ class Bazarr < Formula
   depends_on "gcc"
   depends_on "numpy"
   depends_on "pillow"
-  depends_on "python@3.11"
+  depends_on "python@3.12"
   depends_on "unar"
 
-  uses_from_macos "libxml2"
+  uses_from_macos "libxml2", since: :ventura
   uses_from_macos "libxslt"
   uses_from_macos "zlib"
 
   resource "lxml" do
-    url "https://files.pythonhosted.org/packages/30/39/7305428d1c4f28282a4f5bdbef24e0f905d351f34cf351ceb131f5cddf78/lxml-4.9.3.tar.gz"
-    sha256 "48628bd53a426c9eb9bc066a923acaa0878d1e86129fd5359aee99285f4eed9c"
+    url "https://files.pythonhosted.org/packages/e7/6b/20c3a4b24751377aaa6307eb230b66701024012c29dd374999cc92983269/lxml-5.3.0.tar.gz"
+    sha256 "4e109ca30d1edec1ac60cdbe341905dc3b8f55b16855e03a54aaf59e51ec8c6f"
+  end
+
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/5e/11/487b18cc768e2ae25a919f230417983c8d5afa1b6ee0abd8b6db0b89fa1d/setuptools-72.1.0.tar.gz"
+    sha256 "8d243eff56d095e5817f796ede6ae32941278f542e0f941867cc05ae52b162ec"
   end
 
   resource "webrtcvad-wheels" do
@@ -43,32 +48,33 @@ class Bazarr < Formula
   end
 
   def install
-    ENV.prepend_create_path "PYTHONPATH", libexec/Language::Python.site_packages("python3.11")
-    venv = virtualenv_create(libexec, "python3.11")
-
+    venv = virtualenv_create(libexec, "python3.12")
     venv.pip_install resources
 
     if build.head?
       # Build front-end.
       cd buildpath/"frontend" do
-        system "npm", "install", *Language::Node.local_npm_install_args
+        system "npm", "install", *std_npm_args(prefix: false)
         system "npm", "run", "build"
       end
     end
 
     # Stop program from automatically downloading its own binaries.
     binaries_file = buildpath/"bazarr/utilities/binaries.json"
-    rm binaries_file
+    binaries_file.unlink
     binaries_file.write "[]"
 
+    # Prevent strange behavior of searching for a different python executable on macOS,
+    # which won't have the required dependencies
+    inreplace "bazarr.py", "def get_python_path():", "def get_python_path():\n    return sys.executable"
+
     libexec.install Dir["*"]
-    (bin/"bazarr").write_env_script libexec/"bin/python", "#{libexec}/bazarr.py",
+    (bin/"bazarr").write_env_script venv.root/"bin/python", libexec/"bazarr.py",
       NO_UPDATE:  "1",
       PATH:       "#{Formula["ffmpeg"].opt_bin}:#{HOMEBREW_PREFIX/"bin"}:$PATH",
-      PYTHONPATH: ENV["PYTHONPATH"]
+      PYTHONPATH: venv.site_packages
 
     pkgvar = var/"bazarr"
-
     pkgvar.mkpath
     pkgvar.install_symlink pkgetc => "config"
 
@@ -102,18 +108,17 @@ class Bazarr < Formula
     require "open3"
     require "timeout"
 
-    system "#{bin}/bazarr", "--help"
+    system bin/"bazarr", "--help"
 
-    config_file = testpath/"config/config.ini"
-    config_file.write <<~EOS
+    (testpath/"config/config.ini").write <<~EOS
       [backup]
       folder = #{testpath}/custom_backup
     EOS
 
     port = free_port
 
-    Open3.popen3("#{bin}/bazarr", "--no-update", "--config", testpath, "-p", port.to_s) do |_, _, stderr, wait_thr|
-      Timeout.timeout(30) do
+    Open3.popen3(bin/"bazarr", "--no-update", "--config", testpath, "-p", port.to_s) do |_, _, stderr, wait_thr|
+      Timeout.timeout(45) do
         stderr.each do |line|
           refute_match "ERROR", line unless line.match? "Error trying to get releases from Github"
           break if line.include? "BAZARR is started and waiting for request on http://0.0.0.0:#{port}"
@@ -122,9 +127,10 @@ class Bazarr < Formula
       end
     ensure
       Process.kill "TERM", wait_thr.pid
-      Process.wait wait_thr.pid
     end
 
-    assert_includes File.read(config_file), "#{testpath}/custom_backup"
+    assert_predicate (testpath/"config/config.ini.old"), :exist?
+    assert_includes (testpath/"config/config.yaml").read, "#{testpath}/custom_backup"
+    assert_match "BAZARR is started and waiting for request", (testpath/"log/bazarr.log").read
   end
 end

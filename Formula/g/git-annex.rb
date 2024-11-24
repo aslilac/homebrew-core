@@ -1,47 +1,29 @@
 class GitAnnex < Formula
   desc "Manage files with git without checking in file contents"
   homepage "https://git-annex.branchable.com/"
-  url "https://hackage.haskell.org/package/git-annex-10.20230802/git-annex-10.20230802.tar.gz"
-  sha256 "c7e89ced9dcb9516d924fe7bc4a41fead795a5538939c7ef19b0fbf3f8607217"
+  url "https://hackage.haskell.org/package/git-annex-10.20241031/git-annex-10.20241031.tar.gz"
+  sha256 "0c8eafec05e8203e3125530fb8d7435f6867e5bebea96db9f9d3a6177c929293"
   license all_of: ["AGPL-3.0-or-later", "BSD-2-Clause", "BSD-3-Clause",
                    "GPL-2.0-only", "GPL-3.0-or-later", "MIT"]
   head "git://git-annex.branchable.com/", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "8bbbf4d6bcbf25e6aa6df6418c5c8505b9edce7da8a97b01dd52431bee798301"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a5fbadcb20c3408d6b379cab77e3677fe38b3a7a8d032b1dc87d24679b613b01"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "077e4b5b731cc56b633ac1df9f546ac0761719832dcadf891c0f17da71d89def"
-    sha256 cellar: :any_skip_relocation, ventura:        "d7e3e5df37e4fb7f9fb79388e7fc87244525cd3566debcb854001a2ad8329d4d"
-    sha256 cellar: :any_skip_relocation, monterey:       "7f77c924f64abcf8a40c2ddbce6a08ea3204a9abb8c22ea4a6da5800a780639b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ace357e4217c0d6acf143726e363fa91823bf49b964be649ff8f39c1b2ca0af1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "28bf18d857c39bea3d5b2543ce6cd0892c2d2d7e6c0100fd57b0aeb6b4237ae5"
+    sha256 cellar: :any,                 arm64_sequoia: "241a9c71c2edc6da62015b274b8a781576afdf2be56afa9ff6c386cf907a30a1"
+    sha256 cellar: :any,                 arm64_sonoma:  "cd350703654df0c663f6464e69fa13109bffac23a52715586bd4dc5fd80404bb"
+    sha256 cellar: :any,                 arm64_ventura: "5fee27ee7183918c611e396cd43d2f2a1371afe6a1ddb07b9f3d1feac25dab15"
+    sha256 cellar: :any,                 sonoma:        "701800c7192fc5a98f6d79080dc234be25a2034a12f49949f5e764c0879ebdff"
+    sha256 cellar: :any,                 ventura:       "a14e2be39d6b82676ce895797e8276ec36635c4a4ecaa455ce5e89a8cef052c5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "63a4be2635e2d76b3e39971418a6c5d52eacbd7ca29b689590d087d9d8a20bae"
   end
 
   depends_on "cabal-install" => :build
-  depends_on "ghc" => :build
+  depends_on "ghc@9.8" => :build
   depends_on "pkg-config" => :build
   depends_on "libmagic"
 
-  resource "bloomfilter" do
-    url "https://hackage.haskell.org/package/bloomfilter-2.0.1.0/bloomfilter-2.0.1.0.tar.gz"
-    sha256 "6c5e0d357d5d39efe97ae2776e8fb533fa50c1c05397c7b85020b0f098ad790f"
-
-    # Fix build with GHC >= 9.2
-    # PR ref: https://github.com/bos/bloomfilter/pull/20
-    patch do
-      url "https://github.com/bos/bloomfilter/commit/fb79b39c44404fd791a3bed973e9d844fb084f1e.patch?full_index=1"
-      sha256 "c91c45fbdeb92f9dcb9b55412d14603b4e480139f6638e8b6ed651acd92409f3"
-    end
-  end
+  uses_from_macos "zlib"
 
   def install
-    # Add workarounds to build with GHC >= 9.2
-    (buildpath/"homebrew/bloomfilter").install resource("bloomfilter")
-    (buildpath/"cabal.project.local").write <<~EOS
-      packages: ./*.cabal
-                homebrew/bloomfilter/
-    EOS
-
     system "cabal", "v2-update"
     system "cabal", "v2-install", *std_cabal_v2_args, "--flags=+S3"
     bin.install_symlink "git-annex" => "git-annex-shell"
@@ -54,8 +36,6 @@ class GitAnnex < Formula
   test do
     # make sure git can find git-annex
     ENV.prepend_path "PATH", bin
-    # We don't want this here or it gets "caught" by git-annex.
-    rm_r "Library/Python/2.7/lib/python/site-packages/homebrew.pth"
 
     system "git", "init"
     system "git", "annex", "init"
@@ -68,7 +48,7 @@ class GitAnnex < Formula
     # make sure the various remotes were built
     assert_match shell_output("git annex version | grep 'remote types:'").chomp,
                  "remote types: git gcrypt p2p S3 bup directory rsync web bittorrent " \
-                 "webdav adb tahoe glacier ddar git-lfs httpalso borg hook external"
+                 "webdav adb tahoe glacier ddar git-lfs httpalso borg rclone hook external"
 
     # The steps below are necessary to ensure the directory cleanly deletes.
     # git-annex guards files in a way that isn't entirely friendly of automatically

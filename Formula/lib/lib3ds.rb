@@ -3,13 +3,16 @@ class Lib3ds < Formula
   homepage "https://code.google.com/archive/p/lib3ds/"
   url "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/lib3ds/lib3ds-1.3.0.zip"
   sha256 "f5b00c302955a67fa5fb1f2d3f2583767cdc61fdbc6fd843c0c7c9d95c5629e3"
-  license "GPL-2.0"
+  license "LGPL-2.1-or-later"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia:  "7cac898d78de339d70d5aba02ebdfc2703b341f251206f8cb1ebb6c35eac984d"
+    sha256 cellar: :any,                 arm64_sonoma:   "3eb97f0b621af19c2c00dd8590357fe234954bbaddc81ca0d43323837ce1d50e"
     sha256 cellar: :any,                 arm64_ventura:  "065e64a374733b5c8fe9a37c2897e5c366bc2e41bdbcc92708e130eb0a446f88"
     sha256 cellar: :any,                 arm64_monterey: "630075c7c6f6a5d80d39592ed47c6f6a7694a02f32eb5ac0f7de12ddc15d4a56"
     sha256 cellar: :any,                 arm64_big_sur:  "2959476e3f2e5a95ca23aa6a9fc4b11f9e8ca202e460d6b00ce2906f043c8936"
+    sha256 cellar: :any,                 sonoma:         "9acd8d134ef5efb47d11722256f0012be94562994fc87f70f89a9a13d9bb72ed"
     sha256 cellar: :any,                 ventura:        "43e5029413555b545a6b4177acdc9b254f3e6a82251ea5bded95dfa5b7f4d93f"
     sha256 cellar: :any,                 monterey:       "745bdb83e2fd03b6f96e163055971471f3f4e1ef6ea465adcb765e799b9a01d1"
     sha256 cellar: :any,                 big_sur:        "175e42127a596271ed3347b35eeb8088d684b1b46f6efa4d1bbb8d8ef9776605"

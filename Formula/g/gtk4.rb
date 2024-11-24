@@ -1,8 +1,8 @@
 class Gtk4 < Formula
   desc "Toolkit for creating graphical user interfaces"
   homepage "https://gtk.org/"
-  url "https://download.gnome.org/sources/gtk/4.12/gtk-4.12.1.tar.xz"
-  sha256 "b8b61d6cf94fac64bf3a0bfc7af137c9dd2f8360033fdeb0cfe9612b77a99a72"
+  url "https://download.gnome.org/sources/gtk/4.16/gtk-4.16.6.tar.xz"
+  sha256 "db1ce6604f5f3116d7a7bfc6426aeb994b746b09d5ed4d3e24d34f7a1d6677b6"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -11,26 +11,30 @@ class Gtk4 < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "43398ed6c38b4be07cf6b803f6e955b280e184ff3dcafbf1f054616e70ed3aa2"
-    sha256 arm64_monterey: "51ef88e47f1a80f5f07f18ab12ad29f330fe3553abb9870e98171de1179e024f"
-    sha256 arm64_big_sur:  "fa1bd23fecf73e09222c859581edcf902fbdc685cf7729a47827e3b84ae37e1c"
-    sha256 ventura:        "9e76c4c18086a19bc83eb84f6b0eb38e11b7e70367bad93241cc84bf505285fd"
-    sha256 monterey:       "3f2b2eaa50df962c940738a29d4e3713791ea6790e0725a1112b9b2ab42e93b0"
-    sha256 big_sur:        "c144d21457505b8952d3b69e3d103a26e453b66b360668842316e21f3bae9596"
-    sha256 x86_64_linux:   "7f782301229eeed595a3f50866b52ab1735998ed2c9b865df69099cc6f8d747b"
+    sha256 arm64_sequoia: "bbb77266be0e6ff47918619b923dc37324aad4329a33d69e23cc761478651c8d"
+    sha256 arm64_sonoma:  "b082b9237607f5748841ca7d1d31b993efd89a2198f5a89c5a449a7b27f894c2"
+    sha256 arm64_ventura: "dee5f9fa5aa2540378e113c9ccf7b8ea614f1831b697135c0a754983cde5a2b1"
+    sha256 sonoma:        "8b661c6c79cc1105d748453362a3a288b1c055d5d8705aab4e42c9fb817e7eab"
+    sha256 ventura:       "dc6980734b83b655326be892fd0582eeaf47c45354e79b7d35dd01b0ef1cb2b1"
+    sha256 x86_64_linux:  "4c0ebd13c44cd9cfe32cce76c9090dce6e4a60d3636481fa2aa58f1d2bcf6106"
   end
 
   depends_on "docbook" => :build
   depends_on "docbook-xsl" => :build
   depends_on "docutils" => :build
+  depends_on "gettext" => :build
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => [:build, :test]
   depends_on "sassc" => :build
+  depends_on "cairo"
+  depends_on "fontconfig"
+  depends_on "fribidi"
   depends_on "gdk-pixbuf"
   depends_on "glib"
   depends_on "graphene"
+  depends_on "harfbuzz"
   depends_on "hicolor-icon-theme"
   depends_on "jpeg-turbo"
   depends_on "libepoxy"
@@ -41,26 +45,31 @@ class Gtk4 < Formula
   uses_from_macos "libxslt" => :build # for xsltproc
   uses_from_macos "cups"
 
-  on_linux do
-    depends_on "libxcursor"
-    depends_on "libxkbcommon"
+  on_macos do
+    depends_on "gettext"
   end
 
-  # patch macOS build
-  # upstream PR ref, https://gitlab.gnome.org/GNOME/gtk/-/merge_requests/6208
-  patch do
-    url "https://gitlab.gnome.org/GNOME/gtk/-/commit/aa888c0b3f775776fe3b71028396b7a8c6adb1d6.diff"
-    sha256 "07604078655c73b5db8b5fcdf2288677f0d19a791f336293d7f1c561819488e1"
+  on_linux do
+    depends_on "libx11"
+    depends_on "libxcursor"
+    depends_on "libxdamage"
+    depends_on "libxext"
+    depends_on "libxfixes"
+    depends_on "libxi"
+    depends_on "libxinerama"
+    depends_on "libxkbcommon"
+    depends_on "libxrandr"
+    depends_on "wayland"
   end
 
   def install
     args = %w[
-      -Dgtk_doc=false
-      -Dman-pages=true
-      -Dintrospection=enabled
       -Dbuild-examples=false
       -Dbuild-tests=false
+      -Dintrospection=enabled
+      -Dman-pages=true
       -Dmedia-gstreamer=disabled
+      -Dvulkan=disabled
     ]
 
     if OS.mac?
@@ -78,8 +87,8 @@ class Gtk4 < Formula
     # Disable asserts and cast checks explicitly
     ENV.append "CPPFLAGS", "-DG_DISABLE_ASSERT -DG_DISABLE_CAST_CHECKS"
 
-    system "meson", *std_meson_args, "build", *args
-    system "meson", "compile", "-C", "build", "-v"
+    system "meson", "setup", "build", *args, *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
   end
 
@@ -90,15 +99,15 @@ class Gtk4 < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <gtk/gtk.h>
 
       int main(int argc, char *argv[]) {
         gtk_disable_setlocale();
         return 0;
       }
-    EOS
-    ENV.prepend_path "PKG_CONFIG_PATH", Formula["jpeg-turbo"].opt_lib/"pkgconfig"
+    C
+
     flags = shell_output("#{Formula["pkg-config"].opt_bin}/pkg-config --cflags --libs gtk4").strip.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"

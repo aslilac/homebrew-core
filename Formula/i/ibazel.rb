@@ -1,32 +1,26 @@
 class Ibazel < Formula
   desc "Tools for building Bazel targets when source files change"
   homepage "https://github.com/bazelbuild/bazel-watcher"
-  url "https://github.com/bazelbuild/bazel-watcher/archive/refs/tags/v0.23.7.tar.gz"
-  sha256 "21920e77f0dca97a4b098588b60d5afefab6efc6db384c755e01084ecaf0620f"
+  url "https://github.com/bazelbuild/bazel-watcher/archive/refs/tags/v0.25.3.tar.gz"
+  sha256 "064e313f2e2fa39ebd71a8f6b5eb44e7c832b713c0fc4077811d88830aa2e68e"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bf92e59b275b9b679f1981c95662ec3a9e66f24138d8ae996977562eaa00b627"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e21a82d5ac71ad718f70508a7bd5b84e98860932dfe72330fce68bb6af5f6e76"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fb1c42c2b1431706f654f888d728878e8cf179d82bb67f76b396fc5824cfe4b7"
-    sha256 cellar: :any_skip_relocation, ventura:        "25f3e191c945b09cc8ade60a849f54d9a72b6578643d3bd25a99124a65454a0b"
-    sha256 cellar: :any_skip_relocation, monterey:       "0425b8634086d48374555a66352a4a34c22c923de1d1bb0dd47b0f9e8b091bce"
-    sha256 cellar: :any_skip_relocation, big_sur:        "02e214ea899f496aabbeb88cf8d0fc656b3b4f3bf0b809dd7c09140a2cce4828"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2cd9fc0b538066a09667ab2888b2817c79eae97984b1e14c922aef3ebcd9c7a8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "0205534d6a69777bc71584978ec7c5d8dff4dc16827e3e4fef4b3757f427334c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5a6a3d2eaa8749318a9a9149d34bf01bed82aa3a32664c7cfac0536d2a44f250"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "99edde73148166f0f1738662507a13738df09f301322e2297b8e9e7c5ffaa88e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "de1b88603188daf5036f5e5ada068d962c270fcca96baf2cd291d0efdb4057bb"
+    sha256 cellar: :any_skip_relocation, sonoma:         "993c286e8f3e90429297e8d00ba069ae23e1a9ab9f5aafcec0a74bd2d0da7e60"
+    sha256 cellar: :any_skip_relocation, ventura:        "e25598ecd6f211262b59640362024ea38f84b2a9cde86dd541aaea9ef030690a"
+    sha256 cellar: :any_skip_relocation, monterey:       "cbb955a9601fc9bfe2f7ff6091488e457262466e67f7f0e01a1d7fe3b8a50f48"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d66f94440f2ec1b6fef9b11e46776c2654b61b8c648ac8b6d275e4f0aebedf49"
   end
 
+  depends_on "bazelisk" => [:build, :test]
   depends_on "go" => [:build, :test]
 
-  on_macos do
-    depends_on "bazel" => [:build, :test]
-  end
-
-  on_linux do
-    depends_on "bazelisk" => [:build, :test]
-  end
-
   # bazel 6.x support issue, https://github.com/bazelbuild/bazel-watcher/issues/616
-  # patch to use bazel 6.3.2, upstream PR, https://github.com/bazelbuild/bazel-watcher/pull/575
+  # patch to use bazel 6.4.0, upstream PR, https://github.com/bazelbuild/bazel-watcher/pull/575
   patch :DATA
 
   def install
@@ -55,13 +49,13 @@ class Ibazel < Formula
       go_host_sdk(name = "go_sdk")
     EOS
 
-    (testpath/"test.go").write <<~EOS
+    (testpath/"test.go").write <<~GO
       package main
       import "fmt"
       func main() {
         fmt.Println("Hi!")
       }
-    EOS
+    GO
 
     (testpath/"BUILD").write <<~EOS
       load("@io_bazel_rules_go//go:def.bzl", "go_binary")
@@ -90,4 +84,4 @@ index 8a30e8f..09b254e 100644
 +++ b/.bazelversion
 @@ -1 +1 @@
 -5.4.0
-+6.3.2
++6.4.0

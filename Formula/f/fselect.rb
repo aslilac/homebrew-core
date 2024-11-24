@@ -1,20 +1,22 @@
 class Fselect < Formula
   desc "Find files with SQL-like queries"
   homepage "https://github.com/jhspetersson/fselect"
-  url "https://github.com/jhspetersson/fselect/archive/0.8.4.tar.gz"
-  sha256 "db720310ff265012f283f9fdfb4ac99188bb4a3cbfe5550171c7e2ab55a36420"
+  url "https://github.com/jhspetersson/fselect/archive/refs/tags/0.8.6.tar.gz"
+  sha256 "4b7a6dc5f6f3da39c3242856a1c78734c7b14bd801dc4d7e32bc6f5a1809bc63"
   license any_of: ["Apache-2.0", "MIT"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "de733f375d9bc4102ae9cc5df84b687a71f0bb1906ab7509ac0f0c94fcabe719"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ce1fccb27a86677f00d118ca3f3a571495c57613aa35992576336f2dbbbc6a50"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bd1061f80d85c8e083b77b290fcde9b7b5cfc94a8b38ffd8a657cdb3f3c35c38"
-    sha256 cellar: :any_skip_relocation, ventura:        "e1585c19d310ec08fa643b2e18d674044cb64968affd22b0fc1fd1f0467408a3"
-    sha256 cellar: :any_skip_relocation, monterey:       "061426ee1e45f67667c47d3ae29ecbb5c132babec1e7588f8e8c0eaa8bcaf879"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d45dc50de51c3da6a21eeba921290cfdba1771dc6e4d54e8b618cb952a1494e4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "55c906233ccf466b84826bb6d0f83dd08d5d721e305ddb9980c3648a0487d381"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "1c3e8e52608993681362fa617f524a63d45684a4f7fa29f01b1a39a81598de74"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3171b8c25d69f276f61be0c7cce9ab905e54ea4011a484e0ba9330a996352563"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "de126c3169480e0d90144eaad355ed031b62aa2b8149a8a02c917414a0fc9f73"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f57d8cd7e8e943e316f3c143e11c76bc0263db43f756b6fcc1d1a15e556ca80e"
+    sha256 cellar: :any_skip_relocation, sonoma:         "80b7ebca9ea3f802c5d0b489e7bcbc756e0c49d1894fc615c0fb7b71bc460caa"
+    sha256 cellar: :any_skip_relocation, ventura:        "4f1fb5fea01dbec1ffef839f7f62ccfa99392dd079c69c561d2a04cc0f4d530b"
+    sha256 cellar: :any_skip_relocation, monterey:       "9766a8bb7449d7ecacabcae13c0d780792323c435ee1852077d2249527b3d1e0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b1d2aa5853dadf6a50d4942b8258b50b7605ae4ad1d0d7b213d52c890128cc3b"
   end
 
+  depends_on "cmake" => :build # for libz-ng-sys
   depends_on "rust" => :build
 
   def install

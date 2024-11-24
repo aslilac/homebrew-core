@@ -1,7 +1,7 @@
 class Clfft < Formula
   desc "FFT functions written in OpenCL"
   homepage "https://github.com/clMathLibraries/clFFT"
-  url "https://github.com/clMathLibraries/clFFT/archive/v2.12.2.tar.gz"
+  url "https://github.com/clMathLibraries/clFFT/archive/refs/tags/v2.12.2.tar.gz"
   sha256 "e7348c146ad48c6a3e6997b7702202ad3ee3b5df99edf7ef00bbacc21e897b12"
   license "Apache-2.0"
 
@@ -17,7 +17,7 @@ class Clfft < Formula
     sha256 cellar: :any, el_capitan:     "369c0df6b06b7ea116120e177a44a54760cc4d7132a1fb59a83ef52a99a6b5f4"
   end
 
-  deprecate! date: "2023-03-10", because: :unmaintained
+  disable! date: "2024-01-05", because: :unmaintained
 
   depends_on "boost" => :build
   depends_on "cmake" => :build

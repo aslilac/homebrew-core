@@ -1,8 +1,8 @@
 class Libarchive < Formula
   desc "Multi-format archive and compression library"
   homepage "https://www.libarchive.org"
-  url "https://www.libarchive.org/downloads/libarchive-3.7.1.tar.xz"
-  sha256 "b17403ce670ff18d8e06fea05a9ea9accf70678c88f1b9392a2e29b51127895f"
+  url "https://www.libarchive.org/downloads/libarchive-3.7.7.tar.xz"
+  sha256 "879acd83c3399c7caaee73fe5f7418e06087ab2aaf40af3e99b9e29beb29faee"
   license "BSD-2-Clause"
 
   livecheck do
@@ -11,13 +11,12 @@ class Libarchive < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "2d7d9dddbbc96ef7c620ec4e366a91a68162b8525bc816cfd7e9c46c89bede5b"
-    sha256 cellar: :any,                 arm64_monterey: "403720cd7dacae2a336ca4468cd99d945169de168e96640c90d5a0edf316884f"
-    sha256 cellar: :any,                 arm64_big_sur:  "e1edf67677a95201614552089ed995ea20f224fce34da1a18ea8645e2874549c"
-    sha256 cellar: :any,                 ventura:        "22e676223ed68dabbb8c22ed0c5c51e285736e8cc976366ae2a5da3fb0d7d055"
-    sha256 cellar: :any,                 monterey:       "b36757beb7ec487e3dbe76c9e4ed5b32e0dab04c9f1c36ba5e1c7f44faf5dba4"
-    sha256 cellar: :any,                 big_sur:        "cec7ea50eb8a73e0b067ff1fe4b2561e882e69954e3fc39dcd57d30a8672d033"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a584a26875be96cf70679cd4a0484bd95c3c23e751dc24884e01adedaba131d3"
+    sha256 cellar: :any,                 arm64_sequoia: "faa2ce394a18275219d6962a94b179069c03e4984def0e50c1b24299faf6c241"
+    sha256 cellar: :any,                 arm64_sonoma:  "aae3b625c55b90350442f6e875d0dcc581d06fe55deee5d130e3cb62796218b7"
+    sha256 cellar: :any,                 arm64_ventura: "f958d5c4d48d485952127f8bd60c58340584ddca04224c494030d80ab1d52b88"
+    sha256 cellar: :any,                 sonoma:        "2826ca154e5d77a3359b452fd1474a40440bd31a3fe2e271c2ec126be18db5ef"
+    sha256 cellar: :any,                 ventura:       "ff075171bb4be50191aefefc74f279c47d45a545216b2e867adeab60a9e0e809"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "64931b9a1e34e7e1085ef0c61879c7a599d7d18bf642f6b6c1804cb20ff2b8bf"
   end
 
   keg_only :provided_by_macos
@@ -41,13 +40,16 @@ class Libarchive < Formula
 
     system "make", "install"
 
-    # fixes https://github.com/libarchive/libarchive/issues/1819
-    if OS.mac?
-      inreplace lib/"pkgconfig/libarchive.pc", "Libs.private: ", "Libs.private: -liconv "
-      inreplace lib/"pkgconfig/libarchive.pc", "Requires.private: iconv", ""
-    end
+    # Avoid hardcoding Cellar paths in dependents.
+    inreplace lib/"pkgconfig/libarchive.pc", prefix.to_s, opt_prefix.to_s
 
     return unless OS.mac?
+
+    # fixes https://github.com/libarchive/libarchive/issues/1819
+    inreplace lib/"pkgconfig/libarchive.pc" do |s|
+      s.gsub! "Libs.private: ", "Libs.private: -liconv "
+      s.gsub! "Requires.private: iconv", ""
+    end
 
     # Just as apple does it.
     ln_s bin/"bsdtar", bin/"tar"

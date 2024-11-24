@@ -1,19 +1,18 @@
 class Snowflake < Formula
   desc "Pluggable Transport using WebRTC, inspired by Flashproxy"
   homepage "https://www.torproject.org"
-  url "https://gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake/-/archive/v2.6.0/snowflake-v2.6.0.tar.gz"
-  sha256 "3b49ce35059fb414211263f564c7198d3562fbc49f7e16aefe6597eb948aa243"
+  url "https://gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake/-/archive/v2.10.1/snowflake-v2.10.1.tar.gz"
+  sha256 "fd3a8036d1a94bbe63bc37580caa028540926d61a60a650a90cab0dea185c018"
   license "BSD-3-Clause"
   head "https://gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "739f418e9400f55bd4af1a8a3e7f1cfb3d8e7aefc500709fca9a191b42311158"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "739f418e9400f55bd4af1a8a3e7f1cfb3d8e7aefc500709fca9a191b42311158"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "739f418e9400f55bd4af1a8a3e7f1cfb3d8e7aefc500709fca9a191b42311158"
-    sha256 cellar: :any_skip_relocation, ventura:        "2b6705a15bb0a7eb662c366f1b234eb7d4c8c32e35f63f9dff79abeea75da137"
-    sha256 cellar: :any_skip_relocation, monterey:       "2b6705a15bb0a7eb662c366f1b234eb7d4c8c32e35f63f9dff79abeea75da137"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2b6705a15bb0a7eb662c366f1b234eb7d4c8c32e35f63f9dff79abeea75da137"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "eaf0f2443639165ead60b79c8f4baa90f4c2bbd084808134cae188cb91076923"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "07a6b122106aef0f5d9937284eee382799fdfff93618403f9c4a865810323128"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "07a6b122106aef0f5d9937284eee382799fdfff93618403f9c4a865810323128"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "07a6b122106aef0f5d9937284eee382799fdfff93618403f9c4a865810323128"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6e0692f785c995c5b510a8cceaecc976d0a006a1c1106f2f3c18afefe6b490b6"
+    sha256 cellar: :any_skip_relocation, ventura:       "6e0692f785c995c5b510a8cceaecc976d0a006a1c1106f2f3c18afefe6b490b6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5748cac0c4def26224081230df4a1054d992796b11dbd91453ac196ecc1eca69"
   end
 
   depends_on "go" => :build

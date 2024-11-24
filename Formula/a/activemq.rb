@@ -1,19 +1,18 @@
 class Activemq < Formula
   desc "Apache ActiveMQ: powerful open source messaging server"
   homepage "https://activemq.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=activemq/5.18.2/apache-activemq-5.18.2-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/activemq/5.18.2/apache-activemq-5.18.2-bin.tar.gz"
-  sha256 "cd3df3ec2f791d47f4351bc0e5d5f9880c220a451a31820edbf839962ec8430a"
+  url "https://www.apache.org/dyn/closer.lua?path=activemq/6.1.4/apache-activemq-6.1.4-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/activemq/6.1.4/apache-activemq-6.1.4-bin.tar.gz"
+  sha256 "f1bd27a345d434ec3753650b5ad356f51ec30165ed01a8ef8749c6b9391535f3"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f4b0c952a8e56a52f8f1fdf3a82ad5ae901fd028d1c1f4e04d3cee66e05ccec0"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "95bececfb3d00a1b12b6ba5f1278e6f0c0bd75e133814b8c4519713909fad723"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "306b098ca800f9e54c4cebc20a2fce8ba711cf42601ebcae89fda974e96310ab"
-    sha256 cellar: :any_skip_relocation, ventura:        "ad2bb9bbf173ae56a246550eca6f7439780c26f87e10ad94db74725046c896b6"
-    sha256 cellar: :any_skip_relocation, monterey:       "f4f2dacfab2df8a1430c05142ddbddce2f21b375a45179c3f65b608b4bd09d1c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "017f8b8312ea6f01d69d1e7e9c42f34e85dc81199366f425c033503bcfd215c7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8900b73fccb19c748158b980c96984f1b977eec36ac2cadac31dcc2be536ca51"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a33223433cbc182b8e0f69681c5c8783a286caf14ba14d54a6c6af359b6194f9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "024cbdd4a38849bdbf26d4cf9bd741a0f8d2899c55d6dba32552f8ddfa6c9ba8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f97b821b25920a572a38fbd553788fa1ebdbfa99b450d8111af2e0c1092f2b8c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "518159896f2fd33539f07fbddf795353c080c8623a6ebe9d655dd5b26e7618b9"
+    sha256 cellar: :any_skip_relocation, ventura:       "8e3b7f4f41ffe894e41dd5f7fdc74c98725ec56356388b69d6a79b860a01fcaf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2f55d581b78a0ea1baa0329eba94da3c83261009489d220e7621fb027c1f89c5"
   end
 
   depends_on "java-service-wrapper"
@@ -42,6 +41,6 @@ class Activemq < Formula
   end
 
   test do
-    system "#{bin}/activemq", "browse", "-h"
+    system bin/"activemq", "browse", "-h"
   end
 end

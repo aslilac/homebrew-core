@@ -1,24 +1,25 @@
 class Cweb < Formula
   desc "Literate documentation system for C, C++, and Java"
   homepage "https://cs.stanford.edu/~knuth/cweb.html"
-  url "https://github.com/ascherer/cweb/archive/cweb-4.10.tar.gz"
-  sha256 "9c5e5639ce90977a8a679d5bc30deaba10f5954afb4175e77fb5436883974de1"
+  url "https://github.com/ascherer/cweb/archive/refs/tags/cweb-4.12.tar.gz"
+  sha256 "d2fb0f8bc315fb36dfc300a1593fee43c58df45120371dc30b5a0762b26fda72"
   # See discussions in this thread, https://github.com/ascherer/cweb/issues/29
   license :cannot_represent
 
   livecheck do
     url :stable
-    regex(/^cweb[._-]v?(\d+(?:\.\d+)+[a-z]*?)$/i)
+    regex(/^cweb[._-]v?(\d+(?:\.\d+)+[a-z]?)$/i)
   end
 
   bottle do
-    sha256 arm64_ventura:  "e10d8402b8bccb4be441330471901b041e17ef55c06efd6d519f547004213a74"
-    sha256 arm64_monterey: "aba87e8e1d3a4fc68af199a0d48d7e373c675a74fcad8b1c91193a0e477db7b3"
-    sha256 arm64_big_sur:  "f956307d32bf08c74e34129be48d2b47f820738b6a4bdefec58eefb77a6d5945"
-    sha256 ventura:        "5a8358bd8b5220afb2868cd87815115d8b991c46bfec8f57082d8ec82a47582d"
-    sha256 monterey:       "074b44f5d65ba414a9b9b095d6e028553ae06c00341d3b5f5979196c703454be"
-    sha256 big_sur:        "b3eaf50616b0af852bc5217063fa92b447ae9a40115fbe97e5b7245f0efebd55"
-    sha256 x86_64_linux:   "fedc9a7b36fdda5d4533be3ed1a7293aff256ca0785db085519131593dba1d76"
+    sha256 arm64_sequoia:  "68f8d3e1048ec6680b38801ded3588a6c40f88cd383b41220fb79865e1b91351"
+    sha256 arm64_sonoma:   "568fb4d1e8521f6540d1bf1bd82ee1e9ebec4c03e058e89bac128efca38338a0"
+    sha256 arm64_ventura:  "9c9c107b2d27d5b05d4a3fa7402cf8a97d4293707a02cccdb95f53df13caf5b3"
+    sha256 arm64_monterey: "dfe83fa420835c38f25b96d2efe1e9e8ccb74608b0d0feca628fea11e0b8d2f8"
+    sha256 sonoma:         "bf115b06ff2d03b2335ebae9c2b06d347dec403c7e2b5923ad486ead8cea2132"
+    sha256 ventura:        "af2575b5bc8153f6d59514810263db60efd3ddd4c0fdc41e20092b36169aaf97"
+    sha256 monterey:       "2b00ffd639e8f9106c7675d7beb17b26b1cd2ee8cd40de96df7e28e9e3924fcf"
+    sha256 x86_64_linux:   "7a80f9fbc0f0397d8911d2a8dac4b213f6f53b2ca6c92a128c9260979980f5a8"
   end
 
   conflicts_with "texlive", because: "both install `cweb` binaries"

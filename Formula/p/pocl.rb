@@ -1,64 +1,49 @@
 class Pocl < Formula
   desc "Portable Computing Language"
-  homepage "http://portablecl.org"
-  # TODO: Check if we can use unversioned `llvm` at version bump.
-  url "http://portablecl.org/downloads/pocl-3.1.tar.gz"
-  sha256 "82314362552e050aff417318dd623b18cf0f1d0f84f92d10a7e3750dd12d3a9a"
+  homepage "https://portablecl.org/"
+  url "https://github.com/pocl/pocl/archive/refs/tags/v6.0.tar.gz"
+  sha256 "de9710223fc1855f833dbbf42ea2681e06aa8ec0464f0201104dc80a74dfd1f2"
   license "MIT"
-  revision 2
-  head "https://github.com/pocl/pocl.git", branch: "master"
+  revision 1
+  head "https://github.com/pocl/pocl.git", branch: "main"
 
   livecheck do
-    url "http://portablecl.org/download.html"
-    regex(/href=.*?pocl[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    sha256 arm64_ventura:  "a889cde4e1f855f90ccc3e9afcb0839c3f2cd63ac4788c3b6ae109fdf69e3b01"
-    sha256 arm64_monterey: "b102e21ee22fb6da243b672735d26d75aacceb79cb2628d5cb6897dc7709423d"
-    sha256 arm64_big_sur:  "05ad886415b8c78098aec4a5511e058b86e5c4b90833e815f4f010b47723d258"
-    sha256 ventura:        "31547dd88a441097ac30b5a396d293af17331df64223e5d6bc75e8bee5219c70"
-    sha256 monterey:       "ebd4512a7dffd600b8a02b61fa017fe5f90c8b693785963d241dffcb224bd703"
-    sha256 big_sur:        "be751028d7efa9dd39564b3a79e39a40aaa6916683cccabde37b030884a64b10"
-    sha256 x86_64_linux:   "691ace09c0b0bd71a8a63cd44a201dd15d36de055cd6fca2e96aadc4eaa59426"
+    sha256 arm64_sequoia: "37c8ffad1dc251ad96358273fa375ee12c54f760c422545aeb6ca8d2e7f64345"
+    sha256 arm64_sonoma:  "bf1d743d75558e518e6bf58c9b1414259ba4c715429d99fb4d5aa18ebe1f01d5"
+    sha256 arm64_ventura: "d267fbd4dd48b16abaa5d8d7ae1d321848f48bf029bdc2850a7236f94fb576b5"
+    sha256 sonoma:        "8e04092d421186a60170dadaa223f2bbe3b58702a3d1b7188a38b85635cf643b"
+    sha256 ventura:       "f5b3f006dabc0dedeb515e70a641938917550889cdfc1bbdb1671b24bc9b4a05"
+    sha256 x86_64_linux:  "5eb94f47dc4e2c6a34259afa0fb0ac297ee9b985c1934f8fc3e25d48ce009b14"
   end
 
   depends_on "cmake" => :build
   depends_on "opencl-headers" => :build
   depends_on "pkg-config" => :build
   depends_on "hwloc"
-  depends_on "llvm@15"
+  depends_on "llvm@18"
   depends_on "opencl-icd-loader"
   uses_from_macos "python" => :build
 
-  on_macos do
-    depends_on "llvm" => :build # because of `fails_with :clang`
-  end
-
-  fails_with :clang do
-    cause <<-EOS
-      .../pocl-3.1/lib/CL/devices/builtin_kernels.cc:24:10: error: expected expression
-               {BIArg("char*", "input", READ_BUF),
-               ^
-    EOS
-  end
-
   fails_with gcc: "5" # LLVM is built with GCC
 
+  def llvm
+    deps.map(&:to_formula).find { |f| f.name.match?(/^llvm(@\d+)?$/) }
+  end
+
   def install
-    ENV.llvm_clang if OS.mac?
-    llvm = deps.reject(&:build?).map(&:to_formula).find { |f| f.name.match?(/^llvm(@\d+(\.\d+)*)?$/) }
-
-    # Make sure our runtime LLVM dependency is found first.
-    ENV.prepend_path "PATH", llvm.opt_bin
-    ENV.prepend_path "CMAKE_PREFIX_PATH", llvm.opt_prefix
-
     # Install the ICD into #{prefix}/etc rather than #{etc} as it contains the realpath
     # to the shared library and needs to be kept up-to-date to work with an ICD loader.
     # This relies on `brew link` automatically creating and updating #{etc} symlinks.
+    rpaths = [loader_path, rpath(source: lib/"pocl")]
+    rpaths << llvm.opt_lib.to_s if OS.linux?
     args = %W[
       -DPOCL_INSTALL_ICD_VENDORDIR=#{prefix}/etc/OpenCL/vendors
-      -DCMAKE_INSTALL_RPATH=#{loader_path};#{rpath(source: lib/"pocl")}
+      -DCMAKE_INSTALL_RPATH=#{rpaths.join(";")}
       -DENABLE_EXAMPLES=OFF
       -DENABLE_TESTS=OFF
       -DWITH_LLVM_CONFIG=#{llvm.opt_bin}/llvm-config

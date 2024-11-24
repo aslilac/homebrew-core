@@ -1,24 +1,29 @@
 class Deployer < Formula
   desc "Deployment tool written in PHP with support for popular frameworks"
   homepage "https://deployer.org/"
-  url "https://github.com/deployphp/deployer/releases/download/v7.3.1/deployer.phar"
-  sha256 "5ffe5db394fee893ab562382a11a3c14604e90272825c41348d3928da5f1ae9d"
+  # Bump to php 8.4 on the next release, if possible.
+  url "https://github.com/deployphp/deployer/releases/download/v7.5.5/deployer.phar"
+  sha256 "30c1c09038b0c390f40d21b3cb0a9e1ff46cfeefe4da1c834aeca6adfb5952d4"
   license "MIT"
+  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "9d3a0df77b981e45f88dbd2feccf62a4a19178818dcd160c652a2cffec282d64"
+    sha256 cellar: :any_skip_relocation, all: "7e54fce47176409d67d6508aa9b661e62600d211fe8ad81948029823f7a51b32"
   end
 
-  depends_on "php"
-
-  conflicts_with "dep", because: "both install `dep` binaries"
+  depends_on "php@8.3"
 
   def install
-    bin.install "deployer.phar" => "dep"
+    libexec.install "deployer.phar" => "dep"
+
+    (bin/"dep").write <<~EOS
+      #!#{Formula["php@8.3"].opt_bin}/php
+      <?php require '#{libexec}/dep';
+    EOS
   end
 
   test do
-    system "#{bin}/dep", "init", "--no-interaction"
+    system bin/"dep", "init", "--no-interaction"
     assert_predicate testpath/"deploy.php", :exist?
   end
 end

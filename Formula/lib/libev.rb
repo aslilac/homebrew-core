@@ -4,6 +4,7 @@ class Libev < Formula
   url "http://dist.schmorp.de/libev/Attic/libev-4.33.tar.gz"
   mirror "https://fossies.org/linux/misc/libev-4.33.tar.gz"
   sha256 "507eb7b8d1015fbec5b935f34ebed15bf346bed04a11ab82b8eee848c4205aea"
+  license any_of: ["BSD-2-Clause", "GPL-2.0-or-later"]
 
   livecheck do
     url "http://dist.schmorp.de/libev/"
@@ -11,9 +12,12 @@ class Libev < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "67740e5ba01e82c140ceadc512aa26a3990bfadaef0f4b545ba7f9aaf24c50bf"
+    sha256 cellar: :any,                 arm64_sonoma:   "e476d7fb265b97275a91a5cb3acfa0357e4f722d44a550ab3bc22388add80614"
     sha256 cellar: :any,                 arm64_ventura:  "45855fb985e74c97e1764ae481f1699e846441089cc3da65bdca5d8fc1b41243"
     sha256 cellar: :any,                 arm64_monterey: "2ae425f0f4435a6a01577bdf04723791f2c7bb67d6eeaacafca7aaca9450c55b"
     sha256 cellar: :any,                 arm64_big_sur:  "8ed86bdd0ff3b47f8802b251a9ca61770ffc4c9b0be964f41f50955256b5bb53"
+    sha256 cellar: :any,                 sonoma:         "5de04c4e03a70639639d5e4ced919aafdef07f9ea98cbde320b2e9dd81f9d5ce"
     sha256 cellar: :any,                 ventura:        "6d0945ebe1bd085e597fedeee3fbcfba8f0d40195b03e4523894917b5b5526ca"
     sha256 cellar: :any,                 monterey:       "de9342ba34cfa8c2f8863a92eb7aced34652c302328f8a593a449d183c9fe1e0"
     sha256 cellar: :any,                 big_sur:        "95ddf4b85924a6a10d4a88b6eb52616fa8375e745c99d0752618d5bb82f5248a"
@@ -40,7 +44,7 @@ class Libev < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       /* Wait for stdin to become readable, then read and echo the first line. */
 
       #include <stdio.h>
@@ -66,7 +70,7 @@ class Libev < Formula
         ev_run(EV_DEFAULT, 0);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lev", "-o", "test"
     input = "hello, world\n"
     assert_equal input, pipe_output("./test", input, 0)

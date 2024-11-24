@@ -2,19 +2,20 @@ class SourceToImage < Formula
   desc "Tool for building source and injecting into docker images"
   homepage "https://github.com/openshift/source-to-image"
   url "https://github.com/openshift/source-to-image.git",
-      tag:      "v1.3.8",
-      revision: "980ca195116928b3beb61b25d5939d0044b3040b"
+      tag:      "v1.4.0",
+      revision: "d3544c7ee6453f8f6f953f6f27b60190b1eb386f"
   license "Apache-2.0"
   head "https://github.com/openshift/source-to-image.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f50ed6d499d0123e959b5027f6897cfab3daeea0a8369f77d43090e7a8a8af86"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e70fe8a14ac7600b9d273343410dd40e0d7f75d8df041367f3a83598423fec36"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a234fec43b13d68d62d3827cb9c4f76820213b99f8b2203666b2d0632a62cbc7"
-    sha256 cellar: :any_skip_relocation, ventura:        "5a72887cdd4f0132ca6349e01a92c94e2d143a3b989b4b130c775a31a7b9369a"
-    sha256 cellar: :any_skip_relocation, monterey:       "21f8b669dd230f4d8749b6da504453c3529d0322d3ea49824f0b82d272313eb3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4c1b253eb3a2c8611cae470735df04eb0a73165acb9f5576236090381b56dc1d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2d39b5f8f2348c6ff07fe3be0575f9df5e81a45704f84b58b9b556ab3dd55821"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a98a5ab37e969669f685bccf2236196e23ff4c74778cce2a509b409dc65fdd74"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "86d37a7f6c6a702bb8d05d8c8796f76e55cc48ec156bd3bae5f9aa3933ae12e1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b3476682ae853b90d438748d48b7da496f871c2782a77d403f1a1835cd001084"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "76c32af61ebb5734abcb32df97317975b4dd8c02fc4d2e5b217e9a0947431436"
+    sha256 cellar: :any_skip_relocation, sonoma:         "4bd0c6860b0b4c48527a0413ad6289fe7986480ae937fe4aeb9a54223ae1494e"
+    sha256 cellar: :any_skip_relocation, ventura:        "6214f5dfe6af749c5958ce6be9a7cf15053a9c4244693d1deb490b9c8f077169"
+    sha256 cellar: :any_skip_relocation, monterey:       "4718bf9923ae17c45495de303e6e8a999ae4d8860ce24f209b23df863c24c855"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cac92d497754413810e6b2c0d96a4ea0af34be301fd954ee290df5bf165cbb1c"
   end
 
   depends_on "go" => :build
@@ -28,7 +29,7 @@ class SourceToImage < Formula
   end
 
   test do
-    system "#{bin}/s2i", "create", "testimage", testpath
+    system bin/"s2i", "create", "testimage", testpath
     assert_predicate testpath/"Dockerfile", :exist?, "s2i did not create the files."
   end
 end

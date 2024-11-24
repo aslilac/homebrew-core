@@ -11,6 +11,10 @@ on:
     types:
       - completed
 
+defaults:
+  run:
+    shell: bash -xeuo pipefail {0}
+
 concurrency:
   group: recreate-linux-runners-${{ github.event.workflow_run.id || github.ref }}
   cancel-in-progress: true
@@ -43,10 +47,11 @@ jobs:
 
       - name: Download `event_payload` artifact
         if: github.event_name == 'workflow_run'
-        uses: Homebrew/actions/gh-try-download@master
+        uses: actions/download-artifact@v4
         with:
-          artifact-name: event_payload
-          workflow-id: ${{ env.workflow_run_id }}
+          name: event_payload
+          github-token: ${{ github.token }}
+          run-id: ${{ env.workflow_run_id }}
 
       - name: Check if runner needs to be recreated
         id: check
@@ -63,7 +68,7 @@ jobs:
               gh api \
                 --header 'Accept: application/vnd.github+json' \
                 --header 'X-GitHub-Api-Version: 2022-11-28' \
-                "repos/{owner}/{repo}/pulls/$PR" \
+                "repos/$GITHUB_REPOSITORY/pulls/$PR" \
                 --jq 'any(.labels[].name; .== "CI-linux-self-hosted")'
             )"
           fi

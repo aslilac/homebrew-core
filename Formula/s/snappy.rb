@@ -1,19 +1,20 @@
 class Snappy < Formula
   desc "Compression/decompression library aiming for high speed"
   homepage "https://google.github.io/snappy/"
-  url "https://github.com/google/snappy/archive/1.1.10.tar.gz"
-  sha256 "49d831bffcc5f3d01482340fe5af59852ca2fe76c3e05df0e67203ebbe0f1d90"
+  url "https://github.com/google/snappy/archive/refs/tags/1.2.1.tar.gz"
+  sha256 "736aeb64d86566d2236ddffa2865ee5d7a82d26c9016b36218fcc27ea4f09f86"
   license "BSD-3-Clause"
   head "https://github.com/google/snappy.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "ca95915a51bed09a5e70ebb6f253eabe4df5b00e87ebe49aea0124f8bb51bc3c"
-    sha256 cellar: :any,                 arm64_monterey: "40cfa23024bcadc5ed04823eb8dea4595ebe8e793d913e3c0074defb8eb9e185"
-    sha256 cellar: :any,                 arm64_big_sur:  "a18f25dc10ceffe4f8f0256c6ed9354e22a70069f01fc27013cee8cd7238386d"
-    sha256 cellar: :any,                 ventura:        "1e9238c5f3f100b635ca74a17b3441d5f5f9c23007537107340d5397bcbd483d"
-    sha256 cellar: :any,                 monterey:       "6c0e72f9f601374a7bfe92a9083e382715dc885015c36fc9081de0c068c5fd33"
-    sha256 cellar: :any,                 big_sur:        "14d183eff56f11c0ffdc1394d1fedfaa3cc5ba315e3abe4c21598dfbe9fe25d1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "73aa76de40ad1ca4f5b03a76180a018aadbc05bda2cde1d4b9030cf56d100f2f"
+    sha256 cellar: :any,                 arm64_sequoia:  "45275e26a466be03a8a2b81ef27afc862038b220cdf7d8cd63f6ff9f47f18e56"
+    sha256 cellar: :any,                 arm64_sonoma:   "2b905dfed7d6c0b44de9c89a79a6aa69824758c2727dcffe95bc6ebef465cf3f"
+    sha256 cellar: :any,                 arm64_ventura:  "ca5b33ef7fd245020808bcb339f5b7799a4d4441b50c430c9bdd4eeca6a7d785"
+    sha256 cellar: :any,                 arm64_monterey: "a3ad18bfdb378542375074f5f3423bb4972147595ee7b3ec38acd04469bff5db"
+    sha256 cellar: :any,                 sonoma:         "4a39b310e4c5a726de262265e14cb0ee219f89c0da0afd19328007d965dba7f8"
+    sha256 cellar: :any,                 ventura:        "80fa828013ffa932262d110a351fc4f28f44524cc783d23c15b61328182170ac"
+    sha256 cellar: :any,                 monterey:       "e31f618776a2346ae18b6aa8bc035e0edc3c1dbf421498ef13f8b5a1e75fd1be"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0c33db20cdc5d828f5f90eb3996f6729a02ebf697bf0a67d28f59feeb24bed42"
   end
 
   depends_on "cmake" => :build
@@ -53,7 +54,7 @@ class Snappy < Formula
     # Force use of Clang on Mojave
     ENV.clang if OS.mac?
 
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <assert.h>
       #include <snappy.h>
       #include <string>
@@ -69,7 +70,7 @@ class Snappy < Formula
         assert(source == decompressed);
         return 0;
       }
-    EOS
+    CPP
 
     system ENV.cxx, "-std=c++11", "test.cpp", "-L#{lib}", "-lsnappy", "-o", "test"
     system "./test"

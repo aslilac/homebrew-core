@@ -1,8 +1,8 @@
 class Libgweather < Formula
   desc "GNOME library for weather, locations and timezones"
   homepage "https://wiki.gnome.org/Projects/LibGWeather"
-  url "https://download.gnome.org/sources/libgweather/4.2/libgweather-4.2.0.tar.xz"
-  sha256 "af8a812da0d8976a000e1d62572c256086a817323fbf35b066dbfdd8d2ca6203"
+  url "https://download.gnome.org/sources/libgweather/4.4/libgweather-4.4.4.tar.xz"
+  sha256 "7017677753cdf7d1fdc355e4bfcdb1eba8369793a8df24d241427a939cbf4283"
   license all_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later"]
   version_scheme 1
 
@@ -16,31 +16,43 @@ class Libgweather < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_ventura:  "10e3aa3f43d4613c79ede732e46bc59afb9795881388600a93dff38ff2983c1a"
-    sha256 arm64_monterey: "dd362d2581760d1ad24032bef6602950afbb95d2a03d8227d99dc457f8e18aa0"
-    sha256 arm64_big_sur:  "e290a296815fc815693df0c9d5f1535603e05ba359b9de0e449381d5c8ee9967"
-    sha256 ventura:        "1251d458064a2d2ed5275781e3fe5a03bf87fd408e29eb483eefc7bbb1831aa9"
-    sha256 monterey:       "09f7e049f0ba4abc43dd43ce8c24722b18e0d9d77897795663e3ddf865cbb4ab"
-    sha256 big_sur:        "e3c037ec03dedafb98a73a7ace0028f3a390d39f840e74cd73ec6e7d553fdacb"
-    sha256 x86_64_linux:   "e01185848d3a1fbaed6bdb58b7921c4e13076649a23a8577e8687852ae5a63f1"
+    sha256 arm64_sequoia:  "c7697434e255dd1ceb91bed8baa441dce6be4c8f6eab61906f42a9aea4f57426"
+    sha256 arm64_sonoma:   "02c91201c18a93a45588abf946d3b636890dc31761978d0630d8ab7446aa0dc3"
+    sha256 arm64_ventura:  "d2d0765dc966fa1299d58c4c279380f0da767d6ce0d47a8ae32200afeb1ccdc9"
+    sha256 arm64_monterey: "afee30653b964979c9f1e10d068faa99de4fcec840ae6ae62a6561b12eb6baf3"
+    sha256 sonoma:         "1b10edad1de33da77f30b0253d12f8b1f094fa3bcebeb2d507f8dfc668a96b68"
+    sha256 ventura:        "66e04fe281db63f8c3f31efe8af83c04364a94d38622a39ea814a4add7fc9947"
+    sha256 monterey:       "1b16600b10b73bac96dcf7bcf174318d4c80e80d34388a672f28a247b780f9e7"
+    sha256 x86_64_linux:   "8836ddf538d68d22693e2f916410c6872d9a22ae51ddf1176436580eecf5e192"
   end
 
+  depends_on "gettext" => :build
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => [:build, :test]
   depends_on "pygobject3" => :build
-  depends_on "python@3.11" => :build
+  depends_on "python@3.12" => :build
+
   depends_on "geocode-glib"
+  depends_on "glib"
   depends_on "gtk+3"
+  depends_on "json-glib"
   depends_on "libsoup"
 
   uses_from_macos "libxml2"
 
+  on_macos do
+    depends_on "gettext"
+  end
+
   def install
     ENV["DESTDIR"] = "/"
-    system "meson", *std_meson_args, "build", "-Dgtk_doc=false", "-Dtests=false"
+
+    # Fix compile with newer Clang
+    ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
+
+    system "meson", "setup", "build", "-Dgtk_doc=false", "-Dtests=false", *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
   end
@@ -50,14 +62,14 @@ class Libgweather < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <libgweather/gweather.h>
 
       int main(int argc, char *argv[]) {
         GType type = gweather_info_get_type();
         return 0;
       }
-    EOS
+    C
     ENV.prepend_path "PKG_CONFIG_PATH", Formula["icu4c"].opt_lib/"pkgconfig" if OS.mac?
     pkg_config_flags = shell_output("pkg-config --cflags --libs gweather4").chomp.split
     system ENV.cc, "-DGWEATHER_I_KNOW_THIS_IS_UNSTABLE=1", "test.c", "-o", "test", *pkg_config_flags

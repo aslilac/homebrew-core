@@ -2,18 +2,17 @@ class Xgboost < Formula
   desc "Scalable, Portable and Distributed Gradient Boosting Library"
   homepage "https://xgboost.ai/"
   url "https://github.com/dmlc/xgboost.git",
-      tag:      "v1.7.6",
-      revision: "36eb41c960483c8b52b44082663c99e6a0de440a"
+      tag:      "v2.1.2",
+      revision: "f1990391e0eb401bc1aa1309dd9f86085749c4a3"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "04d72cbe85a1a802e07408742e5b64b9312a7320789118413a29103438474dd1"
-    sha256 cellar: :any,                 arm64_monterey: "97bc38d310ed1c56c1e6058913444c43f5283a8a35130312a8606802e9d63672"
-    sha256 cellar: :any,                 arm64_big_sur:  "0431d0005d51463623548e8113b7b8f926606b160d69459fc6c4879fd890293f"
-    sha256 cellar: :any,                 ventura:        "12df562c167a27ba5e678a50a2ab72a4e786013387bf9403f6b82983eaf45a56"
-    sha256 cellar: :any,                 monterey:       "0d2664d8ce124545e28c1af5bb03dd05836fb9f39c25ad3fc67287563173add8"
-    sha256 cellar: :any,                 big_sur:        "48b3579a36401fa6611fe6de895754807f7eda9e3a1a7872723fa92782d549d5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e91c0a44dbc2c19678aa481e1e1077007a56098c3a8beb2d7bf5d31437e0187d"
+    sha256 cellar: :any,                 arm64_sequoia: "5c969ebbf56727606f05b267d02a1a01ed57ec811eb3b7bbe1ab2752a6a94854"
+    sha256 cellar: :any,                 arm64_sonoma:  "4ee24eb50a4f2d2a0135748be4f7de1b85ac657e5f6816ee5fbb448299647a3e"
+    sha256 cellar: :any,                 arm64_ventura: "a8bb2e604fd5d54825316c60d1d18653a99ccce326c94a55a47e1f0b3af4c393"
+    sha256 cellar: :any,                 sonoma:        "b23c0bd2480f5a6a93961ebd344799d19ebf68b2da51d1f6a5db37ac22a44f2a"
+    sha256 cellar: :any,                 ventura:       "2bf119825fdeed1068fb89919d5d0c34ba1b404d1a9fbab8405ab830541c3704"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2d992b9261cafd1d2a087b9049e2230c75c1bcfeb7826fbd85a403ba834527ad"
   end
 
   depends_on "cmake" => :build
@@ -48,13 +47,59 @@ class Xgboost < Formula
   end
 
   test do
-    # Force use of Clang on Mojave
-    ENV.clang if OS.mac?
-
     cp_r (pkgshare/"demo"), testpath
-    cd "demo/data" do
-      cp "../CLI/binary_classification/mushroom.conf", "."
-      system "#{bin}/xgboost", "mushroom.conf"
-    end
+
+    (testpath/"test.cpp").write <<~CPP
+      #include <xgboost/c_api.h>
+      #include <iostream>
+
+      int main() {
+        std::string train_data = "#{testpath}/demo/data/agaricus.txt.train?format=libsvm";
+
+        DMatrixHandle dtrain;
+        if (XGDMatrixCreateFromFile(train_data.c_str(), 0, &dtrain) != 0) {
+          std::cerr << "Failed to load training data: " << train_data << std::endl;
+          std::cerr << "Last error message: " << XGBGetLastError() << std::endl;
+          return 1;
+        }
+
+        // Create booster and set parameters
+        BoosterHandle booster;
+        if (XGBoosterCreate(&dtrain, 1, &booster) != 0) {
+          std::cerr << "Failed to create booster" << std::endl;
+          return 1;
+        }
+        if (XGBoosterSetParam(booster, "max_depth", "2") != 0) {
+          std::cerr << "Failed to set parameter" << std::endl;
+          return 1;
+        }
+        if (XGBoosterSetParam(booster, "eta", "1") != 0) {
+          std::cerr << "Failed to set parameter" << std::endl;
+          return 1;
+        }
+        if (XGBoosterSetParam(booster, "objective", "binary:logistic") != 0) {
+          std::cerr << "Failed to set parameter" << std::endl;
+          return 1;
+        }
+
+        // Train the model
+        for (int iter = 0; iter < 10; ++iter) {
+          if (XGBoosterUpdateOneIter(booster, iter, dtrain) != 0) {
+            std::cerr << "Failed to update booster" << std::endl;
+            return 1;
+          }
+        }
+
+        // Free resources
+        XGBoosterFree(booster);
+        XGDMatrixFree(dtrain);
+
+        std::cout << "Test completed successfully" << std::endl;
+        return 0;
+      }
+    CPP
+
+    system ENV.cxx, "test.cpp", "-I#{include}", "-L#{lib}", "-lxgboost", "-o", "test"
+    system "./test"
   end
 end

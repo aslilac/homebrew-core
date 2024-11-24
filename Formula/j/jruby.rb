@@ -1,8 +1,8 @@
 class Jruby < Formula
   desc "Ruby implementation in pure Java"
   homepage "https://www.jruby.org/"
-  url "https://search.maven.org/remotecontent?filepath=org/jruby/jruby-dist/9.4.3.0/jruby-dist-9.4.3.0-bin.tar.gz"
-  sha256 "b097e08c5669e8a188288e113911d12b4ad2bd67a2c209d6dfa8445d63a4d8c9"
+  url "https://search.maven.org/remotecontent?filepath=org/jruby/jruby-dist/9.4.9.0/jruby-dist-9.4.9.0-bin.tar.gz"
+  sha256 "8d64736e66a3c0e1e1ea813b6317219c5d43769e5d06a4417311e2baa8b40ef7"
   license any_of: ["EPL-2.0", "GPL-2.0-only", "LGPL-2.1-only"]
 
   livecheck do
@@ -11,13 +11,12 @@ class Jruby < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "2fd10e207bd093233fcd885201d78fccfb4267e951de84b45260aefe005f6c1f"
-    sha256 cellar: :any,                 arm64_monterey: "2fd10e207bd093233fcd885201d78fccfb4267e951de84b45260aefe005f6c1f"
-    sha256 cellar: :any,                 arm64_big_sur:  "85b921637c343735924ca3a5983103935ba5a61152ea5d437f46db0a12b73506"
-    sha256 cellar: :any,                 ventura:        "d802ee86a25b8ad568c0aaacb2e8d0f847c4f8758f0e189d45ac0c4f5c35f33a"
-    sha256 cellar: :any,                 monterey:       "d802ee86a25b8ad568c0aaacb2e8d0f847c4f8758f0e189d45ac0c4f5c35f33a"
-    sha256 cellar: :any,                 big_sur:        "d802ee86a25b8ad568c0aaacb2e8d0f847c4f8758f0e189d45ac0c4f5c35f33a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "86e833df96abd9d0336b78d43498cc774b5adefcc36abaa26acb32d544bc0f81"
+    sha256 cellar: :any,                 arm64_sequoia: "90f1d4c62a14003b9e9fb14466f990d60eef3200823d09569c2e3235cc04f4df"
+    sha256 cellar: :any,                 arm64_sonoma:  "90f1d4c62a14003b9e9fb14466f990d60eef3200823d09569c2e3235cc04f4df"
+    sha256 cellar: :any,                 arm64_ventura: "90f1d4c62a14003b9e9fb14466f990d60eef3200823d09569c2e3235cc04f4df"
+    sha256 cellar: :any,                 sonoma:        "96de337118b5728b1da86328c614a03cc927e84ebb8c3d7a6967fcbaee87fa31"
+    sha256 cellar: :any,                 ventura:       "96de337118b5728b1da86328c614a03cc927e84ebb8c3d7a6967fcbaee87fa31"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bad7e6b6572b85417d3d5f1a22066e6cb3f89c46c86c4aad7ec1a75e530ffb7f"
   end
 
   depends_on "openjdk"
@@ -35,7 +34,7 @@ class Jruby < Formula
     end
 
     # Only keep the macOS native libraries
-    rm_rf Dir["lib/jni/*"] - ["lib/jni/Darwin"]
+    rm_r(Dir["lib/jni/*"] - ["lib/jni/Darwin"])
     libexec.install Dir["*"]
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files libexec/"bin", Language::Java.overridable_java_home_env
@@ -47,7 +46,7 @@ class Jruby < Formula
     end
     libfixposix_binary = libexec/"lib/ruby/stdlib/libfixposix/binary"
     libfixposix_binary.children
-                      .each { |dir| dir.rmtree if dir.basename.to_s != "#{arch}-#{os}" }
+                      .each { |dir| rm_r(dir) if dir.basename.to_s != "#{arch}-#{os}" }
 
     # Replace (prebuilt!) universal binaries with their native slices
     # FIXME: Build libjffi-1.2.jnilib from source.

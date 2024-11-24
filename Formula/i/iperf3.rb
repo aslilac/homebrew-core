@@ -1,8 +1,8 @@
 class Iperf3 < Formula
   desc "Update of iperf: measures TCP, UDP, and SCTP bandwidth"
   homepage "https://github.com/esnet/iperf"
-  url "https://downloads.es.net/pub/iperf/iperf-3.14.tar.gz"
-  sha256 "723fcc430a027bc6952628fa2a3ac77584a1d0bd328275e573fc9b206c155004"
+  url "https://downloads.es.net/pub/iperf/iperf-3.17.1.tar.gz"
+  sha256 "84404ca8431b595e86c473d8f23d8bb102810001f15feaf610effd3b318788aa"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,13 +11,14 @@ class Iperf3 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "ab0fc5615e81c6df60ef9b38870e6a7089e8335a3e6c932f14ea686832b93e37"
-    sha256 cellar: :any,                 arm64_monterey: "dea7d322cc59a723e275bf7f9f96931a938ddb0acdd659ee6d3f43f653609b1f"
-    sha256 cellar: :any,                 arm64_big_sur:  "88227e2a989b1383774c39f28524d55b73dfb45c92c2566d0c3ac1a926a1b63d"
-    sha256 cellar: :any,                 ventura:        "f48399115677cc04b11f9522c6c877492b3c35eab15318f42cc69a5a1b6939ec"
-    sha256 cellar: :any,                 monterey:       "498d1ecdc91abe7802a7fb6ff224741c02daf51f5e8d3397e67c8681f80de152"
-    sha256 cellar: :any,                 big_sur:        "3710c98bb3c71b2d14eee936a93904f94642b6ddd2d6cf8aba5bfb1ccc294530"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "29c4c3df48b332a540bfab3107e420714912f9784bdc751b32a36d1185cde999"
+    sha256 cellar: :any,                 arm64_sequoia:  "b29ee5f4dd16259bdb26e20cf6a0aefd2d428c586381889d744a92c1974364db"
+    sha256 cellar: :any,                 arm64_sonoma:   "e6ddc4a850e6ad07369f041658596e2dab53376658cde9a3571bd51e5c928648"
+    sha256 cellar: :any,                 arm64_ventura:  "b0485135b0e0e5c04d2c4b23f81d0983d59f49ecbad9062867d999aa82aa9e23"
+    sha256 cellar: :any,                 arm64_monterey: "b7f4bbfe3fd4e06159c964d62994850d5f7b26ae102b0f73cceed90081e3da9b"
+    sha256 cellar: :any,                 sonoma:         "d71fc999cb135190fb2f9f8ee330740e95b7f6219403ff27db00e05e6d813c31"
+    sha256 cellar: :any,                 ventura:        "7c72d83acb66109e5df009014c8dcf4a81563abde205b287eeb7fd12e5d0fa9c"
+    sha256 cellar: :any,                 monterey:       "c331b70baac73a243bc9458855fba5155f269135be16de5186bd7c87905a21d2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "efb515ecc2c8a9d1eff2a24076f5f9ea3af3e435d60ebce9e95b9f086b5904b7"
   end
 
   head do

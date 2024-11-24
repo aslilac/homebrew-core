@@ -1,30 +1,30 @@
 class CargoGenerate < Formula
   desc "Use pre-existing git repositories as templates"
   homepage "https://github.com/cargo-generate/cargo-generate"
-  url "https://github.com/cargo-generate/cargo-generate/archive/refs/tags/v0.18.3.tar.gz"
-  sha256 "e44e021dbc83cc862e4f52fce76ed6cfab0cf08d74505fe177bec048f981ac9b"
+  url "https://github.com/cargo-generate/cargo-generate/archive/refs/tags/v0.22.0.tar.gz"
+  sha256 "cbea9b09fe0d9d577723007e1c7ef8329f7cb36268ad042bb870b63dbeaad323"
   license any_of: ["Apache-2.0", "MIT"]
-  revision 1
   head "https://github.com/cargo-generate/cargo-generate.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "f1423eba17a969331a6245be5750dd057993c96dd7d3f88e6e10f3775522bb44"
-    sha256 cellar: :any,                 arm64_monterey: "872007cf7741a8c95e571d06cae772ce30bf4b05792cb38cc3070290b88a0657"
-    sha256 cellar: :any,                 arm64_big_sur:  "a279ff568f299917443c319f901544faf7bc49e067758e6b011710a286dc95af"
-    sha256 cellar: :any,                 ventura:        "83f7d54dc2ca09ae6696e2e58e5e9601c2d4ef8404630c9772ea7a48b1145707"
-    sha256 cellar: :any,                 monterey:       "99a7741c22c61bf9f48f0b0e1b565231b35f4a1f52a5836bc0f86d1dd490ff8f"
-    sha256 cellar: :any,                 big_sur:        "6f7b3ce671653d4f4660943708f41d49846d0aef7f4018cdf2d076d5c96627ce"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7100287872bf0fabcf2a03cfa891eb83c63a780c84d8b03f07b9ba69ae6711bc"
+    sha256 cellar: :any,                 arm64_sequoia:  "b9d75c2816fb85e86c7063c24eaee49e0312548102ecf5c76d07cd30cb5abb75"
+    sha256 cellar: :any,                 arm64_sonoma:   "b7c2aa1cf4d9399a92393095be0d0db98382c4134a5d23b2e690db38c3fa998d"
+    sha256 cellar: :any,                 arm64_ventura:  "ebacfd69ba9482f1bb85bbb216e43f04706e69156cb0199607bc4b86d6cc83dd"
+    sha256 cellar: :any,                 arm64_monterey: "3deb80088b59d79b13fefb9ac189af1220b8269e39857fbfa1df7610fe0a95a0"
+    sha256 cellar: :any,                 sonoma:         "e0d5693494cb6763204f33499965ce4954918751c0caae64f9de3a2427fccce2"
+    sha256 cellar: :any,                 ventura:        "caea467b6b29979e1d5d5040ef5839a5fe2ce1c1e94a87759a9b9838cfd5c30b"
+    sha256 cellar: :any,                 monterey:       "fdc8e442a0bd311e2dcc420ca98aa513d632e320edb7fb7cfa3cad32351c3b86"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "515399398dbaba43f5fa4225df8334c28b620e1e0e486771010fb6aeef6fb0ee"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "libgit2"
   depends_on "libssh2"
   depends_on "openssl@3"
 
   def install
-    ENV["LIBGIT2_SYS_USE_PKG_CONFIG"] = "1"
+    ENV["LIBGIT2_NO_VENDOR"] = "1"
     ENV["LIBSSH2_SYS_USE_PKG_CONFIG"] = "1"
     # Ensure the correct `openssl` will be picked up.
     ENV["OPENSSL_DIR"] = Formula["openssl@3"].opt_prefix

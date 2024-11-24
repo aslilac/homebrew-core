@@ -1,28 +1,38 @@
 class Bup < Formula
   desc "Backup tool"
   homepage "https://bup.github.io/"
-  url "https://github.com/bup/bup/archive/0.33.2.tar.gz"
-  sha256 "d806548695c2f35be893c1eacec05a61060a1cbfe2efa4e008c44f85ee7eadd8"
+  url "https://github.com/bup/bup/archive/refs/tags/0.33.4.tar.gz"
+  sha256 "f51284f2cb24aa653288f05aad32d6ec6ebb9546143ed7c588d40ba82f24b79a"
   license all_of: ["BSD-2-Clause", "LGPL-2.0-only"]
   head "https://github.com/bup/bup.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "bb46a019407e6c7ee72bc421c5bd3ed63d35cc86af160edc2d589fbb1f775b7f"
-    sha256 cellar: :any,                 arm64_monterey: "cd481ee1377e13c638c9cccfa11100e48a0bd959da4885b43c8e11d7451034d1"
-    sha256 cellar: :any,                 arm64_big_sur:  "83ff925b58003d8636f0a84b04f25433ed6b5ead1228782561ce9f6e07cff34f"
-    sha256 cellar: :any,                 ventura:        "565a89a883b428cc9f5cd9e7175307a950da1e9cea33fd259a75a75b60157480"
-    sha256 cellar: :any,                 monterey:       "6f04f6b3b8705d984061cf1fa31a584494d54a0cba9d4931c284249d848d83b9"
-    sha256 cellar: :any,                 big_sur:        "878ff99437d3ab084517ad1d1d48637e0750b2d762248a7beef53401f4ecbdc2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d3f8a0520a6aec3025fe0c4b75c7bc0b121cfb58c78f6adf859737d51dfabadf"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "072a23a0d78a3edbf310c11a4806790f6db210cb46360b68967d7dfba0abc8be"
+    sha256 cellar: :any,                 arm64_sonoma:  "1e8bb051d48feb51a4a4e9131c9a57d6bca1b18cd3f991308a51d42a74d0131e"
+    sha256 cellar: :any,                 arm64_ventura: "20936d4f42a86c5910976a49237d66de3ad1322849fc6e817c7a61388f7b6fb2"
+    sha256 cellar: :any,                 sonoma:        "9a81da2b651bea27265b21ea5acd7f0f51980833d1b84601f99e56ba20bb60ef"
+    sha256 cellar: :any,                 ventura:       "968afe49a84bdb342e6017d9a20ac9e0e2fc4c16d0dd442012378b4f54dd4f1e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "76c01543e2d93d089488d0e942e833d7d30889438fe7ed3370ec4044228478c0"
   end
 
   depends_on "pandoc" => :build
-  depends_on "pkg-config" => :build
-  depends_on "python@3.11"
+  depends_on "pkgconf" => :build
+
+  depends_on "python@3.13"
+  depends_on "readline"
+
+  on_linux do
+    depends_on "acl"
+  end
+
+  def python3
+    which("python3.13")
+  end
 
   def install
-    python3 = "python3.11"
     ENV["BUP_PYTHON_CONFIG"] = "#{python3}-config"
+
     system "make", "PREFIX=#{prefix}", "install"
   end
 

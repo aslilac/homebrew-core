@@ -1,12 +1,12 @@
 class FfmpegAT28 < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.8.21.tar.xz"
-  sha256 "e5d956c19bff2aa5bdd60744509c9d8eb01330713d52674a7f650d54b570c82d"
+  url "https://ffmpeg.org/releases/ffmpeg-2.8.22.tar.xz"
+  sha256 "1fbbf622806a112c5131d42b280a9e980f676ffe1c81a4e0f2ae4cb121241531"
   # None of these parts are used by default, you have to explicitly pass `--enable-gpl`
   # to configure to activate them. In this case, FFmpeg's license changes to GPL v2+.
   license "GPL-2.0-or-later"
-  revision 2
+  revision 3
 
   livecheck do
     url "https://ffmpeg.org/download.html"
@@ -14,13 +14,12 @@ class FfmpegAT28 < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "39ab9275cf8e96084bf71186064c3b44a266bb9738bfbed6e276182acbc62c9e"
-    sha256 arm64_monterey: "e2933796de987f8b85ccf3a8ad0cfc762866a5d51cea54fd0202d74c64736050"
-    sha256 arm64_big_sur:  "be1a0c4ce83319cb11a6df578ac665968e8ce79696229bcb3d9624cdf1c1dca2"
-    sha256 ventura:        "1de0658a8355e4879bed836d15f58e30832b42ed3b0b968c810874d5408d5eb1"
-    sha256 monterey:       "7d9ed87744201a90e1c40432484584b5485e359002f982796e07425dfe85a8e3"
-    sha256 big_sur:        "b68fb395e1651b58d0f5edd40f49bbaf7a9a02b2f5aa1466dd62a991ea967676"
-    sha256 x86_64_linux:   "c82117dfcbefff995ca06b5f033ffa37f7ba0b1e22030083a9e440c536e8c86b"
+    sha256 arm64_sequoia: "e96b9cf0d22d26bbb5e31a328470ae33968ad11689331bf00194de6c0804a2f7"
+    sha256 arm64_sonoma:  "da1e239986a7e9d4460b6c34248a445116bd77b189e415122e3b4ae7817b11b7"
+    sha256 arm64_ventura: "336e26f38c4a56a4adfa36fe3483c7b98aad5103de3458efdad2cdf8a743252c"
+    sha256 sonoma:        "8e678fd542f42f1ff7df584291fd10d4f78d2b958b41c2fac1d1da2b416b0059"
+    sha256 ventura:       "c1d9eef17eeb35651624ea12ab079b20326e44b0d7afde99bc6d5493e50dcb72"
+    sha256 x86_64_linux:  "45a9e326e3fbe245bd9408f9928967bb9737b3d1d67fbe05607c80f73470f66e"
   end
 
   keg_only :versioned_formula
@@ -34,10 +33,12 @@ class FfmpegAT28 < Formula
   depends_on "frei0r"
   depends_on "lame"
   depends_on "libass"
+  depends_on "libogg"
   depends_on "libvo-aacenc"
   depends_on "libvorbis"
   depends_on "libvpx"
   depends_on "opencore-amr"
+  depends_on "openssl@3"
   depends_on "opus"
   depends_on "rtmpdump"
   depends_on "sdl12-compat"
@@ -47,11 +48,20 @@ class FfmpegAT28 < Formula
   depends_on "x264"
   depends_on "x265"
   depends_on "xvid"
-  depends_on "xz" # try to change to uses_from_macos after python is not a dependency
+  depends_on "xz"
+
+  uses_from_macos "bzip2"
+  uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "alsa-lib"
+  end
 
   def install
+    # Work-around for build issue with Xcode 15.3
+    ENV.append_to_cflags "-Wno-incompatible-function-pointer-types" if DevelopmentTools.clang_build_version >= 1500
+
     args = %W[
-      --prefix=#{prefix}
       --enable-shared
       --enable-pthreads
       --enable-gpl
@@ -80,6 +90,7 @@ class FfmpegAT28 < Formula
       --enable-libopencore-amrwb
       --enable-librtmp
       --enable-libspeex
+      --enable-vda
       --disable-indev=jack
       --disable-libxcb
       --disable-xlib
@@ -87,17 +98,7 @@ class FfmpegAT28 < Formula
 
     args << "--enable-opencl" if OS.mac?
 
-    # A bug in a dispatch header on 10.10, included via CoreFoundation,
-    # prevents GCC from building VDA support. GCC has no problems on
-    # 10.9 and earlier.
-    # See: https://github.com/Homebrew/homebrew/issues/33741
-    args << if ENV.compiler == :clang
-      "--enable-vda"
-    else
-      "--disable-vda"
-    end
-
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args.reject { |s| s["--disable-dependency-tracking"] }
 
     inreplace "config.mak" do |s|
       shflags = s.get_make_var "SHFLAGS"

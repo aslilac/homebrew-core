@@ -1,10 +1,9 @@
 class Libgit2 < Formula
   desc "C library of Git core methods that is re-entrant and linkable"
   homepage "https://libgit2.github.com/"
-  url "https://github.com/libgit2/libgit2/archive/v1.6.4.tar.gz"
-  sha256 "d25866a4ee275a64f65be2d9a663680a5cf1ed87b7ee4c534997562c828e500d"
+  url "https://github.com/libgit2/libgit2/archive/refs/tags/v1.8.4.tar.gz"
+  sha256 "49d0fc50ab931816f6bfc1ac68f8d74b760450eebdb5374e803ee36550f26774"
   license "GPL-2.0-only" => { with: "GCC-exception-2.0" }
-  revision 1
   head "https://github.com/libgit2/libgit2.git", branch: "main"
 
   livecheck do
@@ -13,13 +12,12 @@ class Libgit2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "2397abb72e01e08acec420aa55b787459fbf678ffdd13d4d9f4728eda818f800"
-    sha256 cellar: :any,                 arm64_monterey: "ac8d4365e5934eefa014be623fa5a93f52b5106221f1a71f8ed31ce36ad18cd6"
-    sha256 cellar: :any,                 arm64_big_sur:  "0e835df6e63b9368ecf71f757df0bc71f87e6488b833757136f4bbe98a74ca5f"
-    sha256 cellar: :any,                 ventura:        "d0942b923c027438c776298fe388e595d8bbf87daf3db1aa82e2927ffef2785d"
-    sha256 cellar: :any,                 monterey:       "d9a5acf3df857605f5dd7814760062a0bca3f5877eb67786c5f6d3e8a8081c26"
-    sha256 cellar: :any,                 big_sur:        "5e897e058041e1c9b947883c750911f90727f851545d8dd92c2e20eac3d34cf2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7f6702df8184a73fed8ea3568ece9d96bc3bc1a8faef13c457bbf1be5f014210"
+    sha256 cellar: :any,                 arm64_sequoia: "af706565ac2a03d3d765ed233aa4247dad3fb66d95b81762dca6eda04227c015"
+    sha256 cellar: :any,                 arm64_sonoma:  "771f2b1ccc5fb1b4398570f8d69b54f0d941c92a4703b48e84fcfac81256c720"
+    sha256 cellar: :any,                 arm64_ventura: "dd50ae6085310761b73171d1f225728227d3de9fc763d1f4ed999ee6bee5a4c3"
+    sha256 cellar: :any,                 sonoma:        "1e2d125e49b5b7a55e1e1de88e5597451fee74e989b8f703bb84522b2c778723"
+    sha256 cellar: :any,                 ventura:       "2d324aaded04a396af21dd0daec49fe455d5081e2ed911330f9281eaaee46c37"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e33599ab70f4c70f137c61cf4664b5416ca7e75453310c70ead985530a65b8dc"
   end
 
   depends_on "cmake" => :build
@@ -40,7 +38,7 @@ class Libgit2 < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <git2.h>
       #include <assert.h>
 
@@ -49,7 +47,7 @@ class Libgit2 < Formula
         assert(options & GIT_FEATURE_SSH);
         return 0;
       }
-    EOS
+    C
     libssh2 = Formula["libssh2"]
     flags = %W[
       -I#{include}

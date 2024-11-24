@@ -1,46 +1,51 @@
 class Cppcheck < Formula
   desc "Static analysis of C and C++ code"
   homepage "https://sourceforge.net/projects/cppcheck/"
-  url "https://github.com/danmar/cppcheck/archive/2.11.1.tar.gz"
-  sha256 "fef6ef868d562d49136f158e1d0f7a38237e7e1c0a91d9189bdd465f1fe54316"
+  url "https://github.com/danmar/cppcheck/archive/refs/tags/2.16.0.tar.gz"
+  sha256 "f1a97c8cef5ee9d0abb57e9244549d4fe18d4ecac80cf82e250d1fc5f38b1501"
   license "GPL-3.0-or-later"
   head "https://github.com/danmar/cppcheck.git", branch: "main"
 
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  # of the Git tags.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 arm64_ventura:  "48933b2187e98a0b70003d594042e311a354c1e782d64a7f49781374af71b635"
-    sha256 arm64_monterey: "ec42be87bd74f2d27ac56a8720115f179a23c863027d8fdac992e987b7034f50"
-    sha256 arm64_big_sur:  "32fe3a51ddccf0ac5cdc76dba7002ab00417be3b70043892e9277b42e106ea6c"
-    sha256 ventura:        "c8a4389214138d7f729759f7fd43a8ab60ccbdf60a3431596f3d02daf5881fcb"
-    sha256 monterey:       "49d88ab7633210b3c5f8731ecc4fda8375801b5b9b2dedc445241efa4a7cd864"
-    sha256 big_sur:        "54566b98f2fb96d9d8aacc8a0a21bb46857f331bbd52f08ffd3ec3d5c25d89d7"
-    sha256 x86_64_linux:   "d81099bf2338bcd416ee94ad75a9a462162a6f514048e6585fa2bf271292846e"
+    sha256 arm64_sequoia: "fb5842051cde656928d4b808ed159e4b25d04496b75f2a792372fa2b3adb0b4b"
+    sha256 arm64_sonoma:  "bb3feb14aae1f7954396b8026c91253ed01809f70ddeba6e5e375e2d577932b0"
+    sha256 arm64_ventura: "7e9c35a1c2d1998d89747a67ee77046fab42688508e5e05e0b5b87b8935ec566"
+    sha256 sonoma:        "efaa934a8536deaac326094c5aad9f401b59983f1b9a7a270986959f3700dea3"
+    sha256 ventura:       "c380212e8b3bedc5d2f1aecbc0c4730042897fb6ca0b2e46c000cbf88ea0b272"
+    sha256 x86_64_linux:  "ffda2b7b66275fecd5f9caf7b4004b9f764c5ad478eed47497d3e4172303f179"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.11" => [:build, :test]
+  depends_on "python@3.13" => [:build, :test]
   depends_on "pcre"
   depends_on "tinyxml2"
 
   uses_from_macos "libxml2"
 
   def python3
-    which("python3.11")
+    which("python3.13")
   end
 
   def install
-    args = std_cmake_args + %W[
+    args = %W[
       -DHAVE_RULES=ON
-      -DUSE_MATCHCOMPILER=ON
       -DUSE_BUNDLED_TINYXML2=OFF
       -DENABLE_OSS_FUZZ=OFF
       -DPYTHON_EXECUTABLE=#{python3}
+      -DFILESDIR=#{pkgshare}
     ]
-    system "cmake", "-S", ".", "-B", "build", *args
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
-
-    # Move the python addons to the cppcheck pkgshare folder
-    (pkgshare/"addons").install Dir.glob("addons/*.py")
   end
 
   test do
@@ -70,16 +75,16 @@ class Cppcheck < Formula
         number = initialNumber;
       }
     EOS
-    system "#{bin}/cppcheck", test_cpp_file
+    system bin/"cppcheck", test_cpp_file
 
     # Test the "out of bounds" check
     test_cpp_file_check = testpath/"testcheck.cpp"
     test_cpp_file_check.write <<~EOS
       int main()
       {
-      char a[10];
-      a[10] = 0;
-      return 0;
+        char a[10];
+        a[10] = 0;
+        return 0;
       }
     EOS
     output = shell_output("#{bin}/cppcheck #{test_cpp_file_check} 2>&1")
@@ -118,7 +123,7 @@ class Cppcheck < Formula
           print("%s\\n%s" %(detected_functions, detected_token_count))
     EOS
 
-    system "#{bin}/cppcheck", "--dump", test_cpp_file
+    system bin/"cppcheck", "--dump", test_cpp_file
     test_cpp_file_dump = "#{test_cpp_file}.dump"
     assert_predicate testpath/test_cpp_file_dump, :exist?
     output = shell_output("#{python3} #{sample_addon_file} #{test_cpp_file_dump}")

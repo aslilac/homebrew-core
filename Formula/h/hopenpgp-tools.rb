@@ -1,24 +1,23 @@
 class HopenpgpTools < Formula
   desc "Command-line tools for OpenPGP-related operations"
   homepage "https://hackage.haskell.org/package/hopenpgp-tools"
-  url "https://hackage.haskell.org/package/hopenpgp-tools-0.23.7/hopenpgp-tools-0.23.7.tar.gz"
-  sha256 "b04137b315106f3f276509876acf396024fbb7152794e1e2a0ddd3afd740f857"
+  url "https://hackage.haskell.org/package/hopenpgp-tools-0.23.10/hopenpgp-tools-0.23.10.tar.gz"
+  sha256 "5a89eab24143ed212b6d91e0df9cc00d9b0ebd3ccf7a0b65b4f29768c4044e29"
   license "AGPL-3.0-or-later"
   head "https://salsa.debian.org/clint/hOpenPGP.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5bba29c5fe72093581be4ee0cf64fe345b7f366b9784f4cf9071674c7c720bbf"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "723dcc2a9a37a9ad238c335c289b62474284ecffc30564e3a4b7281386476f72"
-    sha256 cellar: :any_skip_relocation, ventura:        "106e20b9e9cedeeea379b9edce775842aabe5ed59efa0cd15843626f4f6d7b7e"
-    sha256 cellar: :any_skip_relocation, monterey:       "25218ccd4e41873383140eb223da71c0d018d08a62a213fbfe102e745c97b355"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9a50ad11be71a77763353b97fcf5214c44b1fc495d616d189633e1749e649689"
-    sha256 cellar: :any_skip_relocation, catalina:       "c82f967236223fcbb3245513aead6c3d34789031d3244440ec86c5aa4a95bd87"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cc2e44b2d4cf1ac3d71572ecaa5f4ba3d0ba882a1c9ed7813ca7d8edda546cc6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "454c7f1db4aa75a3b8645cbfdcd55b0c3a1c48faefe3f4ea5b9d7fddd862544d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "842b69bcbeacdb7a8debb729a1165d7ad16bc62e9938b20fbf98a136cf02a422"
+    sha256 cellar: :any,                 arm64_ventura: "8d996b1a36cd2565b0cc00dfde4a820220d905acbba85d41d0620888a11da727"
+    sha256 cellar: :any_skip_relocation, sonoma:        "824baa8add32bd98dda8c7a6358bbe789d1ee535c1ccc947eecc68e337544799"
+    sha256 cellar: :any,                 ventura:       "36be45e7e532005ef1c836aee093666fdddc2cae27855146c13ac0dbc0b37ee9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "522e51de7cf2aec5233d680e28502cc2f76deb153f5130a9a7ef89df87471f7e"
   end
 
   depends_on "cabal-install" => :build
-  depends_on "ghc@8.10" => :build
-  depends_on "pkg-config" => :build
+  depends_on "ghc@9.6" => :build
+  depends_on "pkgconf" => :build
   depends_on "nettle"
 
   uses_from_macos "zlib"
@@ -29,13 +28,8 @@ class HopenpgpTools < Formula
   end
 
   def install
-    # hOpenPGPTools's dependency hOpenPGP has conflict instance (Hashable Set) w/ hashable above 1.3.4.0
-    # remove when hOpenPGP remove conflict instance or add upper bound of hashable
-    # aeson has breaking change of 2.x.x.x
-    # remove when hopenpgp-tools adopt aeson 2.x.x.x or add upper bound of aeson
-    cabal_args = std_cabal_v2_args + ["--constraint=hashable<1.3.4.0", "--constraint=aeson<1.6"]
     system "cabal", "v2-update"
-    system "cabal", "v2-install", *cabal_args
+    system "cabal", "v2-install", *std_cabal_v2_args
   end
 
   test do

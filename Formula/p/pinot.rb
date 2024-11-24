@@ -1,13 +1,13 @@
 class Pinot < Formula
   desc "Realtime distributed OLAP datastore"
   homepage "https://pinot.apache.org/"
-  url "https://downloads.apache.org/pinot/apache-pinot-0.12.1/apache-pinot-0.12.1-bin.tar.gz"
-  sha256 "d612c427ac4277cd78fac88394fd664e2274dba11ddfedb955f7c99a555a5d51"
+  url "https://downloads.apache.org/pinot/apache-pinot-1.2.0/apache-pinot-1.2.0-bin.tar.gz"
+  sha256 "349120b114e5bda700b5f6527c5a22b016f0fc486ab28560999693b4fab8c822"
   license "Apache-2.0"
   head "https://github.com/apache/pinot.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "3995770bdfaa495ddf2a516c3631d6959da2725687210087750420374f95ef52"
+    sha256 cellar: :any_skip_relocation, all: "4a8d159e06c7ca4d5358e2254e3803f5ced134b852657a018eb27b6ff910b8e4"
   end
 
   depends_on "openjdk@11"
@@ -56,7 +56,6 @@ class Pinot < Formula
     sleep 40
 
     assert_match("HTTP/1.1 200 OK", shell_output("curl -i http://localhost:#{controller_port} 2>&1"))
-
   ensure
     Process.kill "TERM", controller_pid
     Process.wait controller_pid

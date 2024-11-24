@@ -4,7 +4,7 @@ class Libcdr < Formula
   url "https://dev-www.libreoffice.org/src/libcdr/libcdr-0.1.7.tar.xz"
   sha256 "5666249d613466b9aa1e987ea4109c04365866e9277d80f6cd9663e86b8ecdd4"
   license "MPL-2.0"
-  revision 5
+  revision 8
 
   livecheck do
     url "https://dev-www.libreoffice.org/src/"
@@ -12,39 +12,45 @@ class Libcdr < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "6141888d52c7b3936088755ed90952ad1991f0994b5f7390b2611cdfd92e8031"
-    sha256 cellar: :any,                 arm64_monterey: "3e81b65399b22fb51dd5f2a519fd5b5cfafaa9a2d42b57c0d2d2194c5223c611"
-    sha256 cellar: :any,                 arm64_big_sur:  "b6a97482a83ea524eb47c9995661e907c23f569ed1d5166f83143ef3f3d6841c"
-    sha256 cellar: :any,                 ventura:        "867cb6c4edf171df1224bd9a6740e96f78e4116f18f253d499c3c85e1247ec34"
-    sha256 cellar: :any,                 monterey:       "ab27a9457704979bb0e33c59d03649725f2c421dfac3c13a54034a8bc007430e"
-    sha256 cellar: :any,                 big_sur:        "a363205ee91eff85e566a8d162353d1f7201b468300a438d7ccc2937d49b117c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7fa8dbae78687968b16b4425783b258ede49b11daa75a0ac6107d577cef142cf"
+    sha256 cellar: :any,                 arm64_sequoia: "bbc2a54bb8f6d6a4e466865b14d7b70a6fbc858d388548cf9b953f201de3c990"
+    sha256 cellar: :any,                 arm64_sonoma:  "cc66b1548f086a48f271bf053c229ee390cd2bd1156903d29ff0021f0df9b5a5"
+    sha256 cellar: :any,                 arm64_ventura: "4490629bd88271316e181a59054bdbca640a68fc742ad2e072b7c00d529787ad"
+    sha256 cellar: :any,                 sonoma:        "1229fd37c6e1c8e952b63e78bd58778a92f64da3fda9f7f6ac0f07c6b8b61150"
+    sha256 cellar: :any,                 ventura:       "d36c29ef45a56def001e4401ef3a2efce00352621ff1dd2f23260d6d6dadff5f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "11f1b27844634dbdba55e73959c47a4cf20189936b203790f5f98ac48e7174c7"
   end
 
-  depends_on "cppunit" => :build
+  depends_on "boost" => :build
   depends_on "pkg-config" => :build
-  depends_on "boost"
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "librevenge"
   depends_on "little-cms2"
 
+  uses_from_macos "zlib"
+
   def install
-    ENV.cxx11
-    # Needed for Boost 1.59.0 compatibility.
-    ENV["LDFLAGS"] = "-lboost_system-mt"
-    system "./configure", "--disable-werror",
+    # icu4c 75+ needs C++17 and icu4c 76+ needs icu-uc
+    # TODO: Remove after https://gerrit.libreoffice.org/c/libcdr/+/175709/1
+    icu4c = deps.find { |dep| dep.name.match?(/^icu4c(@\d+)?$/) }
+                .to_formula
+    ENV["ICU_LIBS"] = "-L#{icu4c.opt_lib} -licui18n -licuuc"
+    ENV.append "CXXFLAGS", "-std=gnu++17"
+
+    system "./configure", "--disable-silent-rules",
+                          "--disable-tests",
+                          "--disable-werror",
                           "--without-docs",
-                          "--prefix=#{prefix}"
+                          *std_configure_args
     system "make", "install"
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <libcdr/libcdr.h>
       int main() {
         libcdr::CDRDocument::isSupported(0);
       }
-    EOS
+    CPP
     system ENV.cxx, "test.cpp", "-o", "test",
                                 "-I#{Formula["librevenge"].include}/librevenge-0.0",
                                 "-I#{include}/libcdr-0.1",

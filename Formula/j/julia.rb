@@ -2,28 +2,38 @@ class Julia < Formula
   desc "Fast, Dynamic Programming Language"
   homepage "https://julialang.org/"
   # Use the `-full` tarball to avoid having to download during the build.
-  url "https://github.com/JuliaLang/julia/releases/download/v1.9.3/julia-1.9.3-full.tar.gz"
-  sha256 "8fc0c9dc5443a28d359bd79dda3940fa94ba2b7966b89865beb20da81123c316"
+  # TODO: Check if we can unbundle `curl`: https://github.com/JuliaLang/Downloads.jl/issues/260
+  url "https://github.com/JuliaLang/julia/releases/download/v1.11.1/julia-1.11.1-full.tar.gz"
+  sha256 "a49b804de6e86a03fe26c73f58851eaee1ff243d7204f2b5ae4dbc5c1dc2758d"
   license all_of: ["MIT", "BSD-3-Clause", "Apache-2.0", "BSL-1.0"]
   head "https://github.com/JuliaLang/julia.git", branch: "master"
 
+  # Upstream creates GitHub releases for both stable and LTS versions, so the
+  # "latest" release on GitHub may be an LTS version instead of a "stable"
+  # version. This checks the first-party download page, which links to the
+  # `stable` tarballs from the newest releases on GitHub.
+  livecheck do
+    url "https://julialang.org/downloads/"
+    regex(/href=.*?julia[._-]v?(\d+(?:\.\d+)+)[._-]full\.t/i)
+  end
+
   bottle do
-    sha256 cellar: :any, arm64_ventura:  "3c230a8f5038fad6a23e8a7f4e9905938f8ccabb8700ebf17686eebe7cd43e0c"
-    sha256 cellar: :any, arm64_monterey: "3b1dd6d4423df6f4b86a73dc63c47d35ff4fda295930499d3cf5bd0e73faf54c"
-    sha256 cellar: :any, arm64_big_sur:  "730979ec7eccbbe5b9bb9d91d980b1525e693a7944301ea37e0ddd4f0845c067"
-    sha256 cellar: :any, ventura:        "ffc5a024dbd489145a747d5cef8453dc5c2e008d6cf24e063a7fcb08769be65d"
-    sha256 cellar: :any, monterey:       "5aa78f98bff618afd7e8577305f59ac8ee3ad00e446a9ea8d5bf39b39eb41f8a"
-    sha256 cellar: :any, big_sur:        "7b030c2d66e9d3a74743231a993d5c4a8b7ef728cbf058a033aa145a8aa618ba"
+    sha256 cellar: :any,                 arm64_sequoia: "3b2539c87cfe9806329260581fc67be5bc2c86ea093e1e51a06ca180a11e31ed"
+    sha256 cellar: :any,                 arm64_sonoma:  "4cc98c936169dcc782b9c25c33c2ed2970a15472c19196ece265c73c695f7d0e"
+    sha256 cellar: :any,                 arm64_ventura: "030f65d72a6defa11b745578c309204e0524256ff4bdbf3dfba014abb28774d3"
+    sha256 cellar: :any,                 sonoma:        "8729de1cbe4595e6410284e7806dbe32868cf1aa58b5aaec1b53e9f1f2836bd6"
+    sha256 cellar: :any,                 ventura:       "4a84666af1dc53c87a29c6d717601626190f6137166d3029ecc060d7f54797d0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c202ab099227ac14559c988c050b92a8a1a346c9796141e418839686fa05ebf8"
   end
 
   depends_on "cmake" => :build # Needed to build LLVM
-  # TODO: Use system `suite-sparse` when `julia` supports v7.
-  # PR ref: https://github.com/JuliaLang/julia/pull/48977
-  depends_on "suite-sparse" => :test # Check bundled copy is used
+  depends_on "gcc" => :build # for gfortran
   depends_on "ca-certificates"
-  depends_on "curl"
-  depends_on "gcc" # for gfortran
+  # Julia is currently incompatible with curl >= 8.10
+  # Issue ref: https://github.com/JuliaLang/Downloads.jl/issues/260
+  # TODO: depends_on "curl"
   depends_on "gmp"
+  depends_on "libblastrampoline"
   depends_on "libgit2"
   depends_on "libnghttp2"
   depends_on "libssh2"
@@ -33,10 +43,13 @@ class Julia < Formula
   depends_on "openlibm"
   depends_on "p7zip"
   depends_on "pcre2"
+  depends_on "suite-sparse"
   depends_on "utf8proc"
+  depends_on "zstd"
 
   uses_from_macos "perl" => :build
   uses_from_macos "python" => :build
+  uses_from_macos "ncurses" # for terminfo
   uses_from_macos "zlib"
 
   on_linux do
@@ -44,8 +57,6 @@ class Julia < Formula
   end
 
   conflicts_with "juliaup", because: "both install `julia` binaries"
-
-  fails_with gcc: "5"
 
   # Link against libgcc_s.1.1.dylib, not libgcc_s.1.dylib
   # https://github.com/JuliaLang/julia/issues/48056
@@ -61,17 +72,17 @@ class Julia < Formula
       prefix=#{prefix}
       sysconfdir=#{etc}
       LOCALBASE=#{HOMEBREW_PREFIX}
-      MACOSX_VERSION_MIN=#{MacOS.version}
       PYTHON=python3
       USE_BINARYBUILDER=0
       USE_SYSTEM_BLAS=1
       USE_SYSTEM_CSL=1
-      USE_SYSTEM_CURL=1
+      USE_SYSTEM_CURL=0
       USE_SYSTEM_GMP=1
       USE_SYSTEM_LAPACK=1
+      USE_SYSTEM_LIBBLASTRAMPOLINE=1
       USE_SYSTEM_LIBGIT2=1
       USE_SYSTEM_LIBSSH2=1
-      USE_SYSTEM_LIBSUITESPARSE=0
+      USE_SYSTEM_LIBSUITESPARSE=1
       USE_SYSTEM_MBEDTLS=1
       USE_SYSTEM_MPFR=1
       USE_SYSTEM_NGHTTP2=1
@@ -87,20 +98,37 @@ class Julia < Formula
       LIBLAPACK=-lopenblas
       LIBLAPACKNAME=libopenblas
       USE_BLAS64=0
+      WITH_TERMINFO=0
     ]
 
+    args << "MACOSX_VERSION_MIN=#{MacOS.version}" if OS.mac?
+
     # Set MARCH and JULIA_CPU_TARGET to ensure Julia works on machines we distribute to.
-    # Values adapted from https://github.com/JuliaCI/julia-buildbot/blob/master/master/inventory.py
+    # Values adapted from https://github.com/JuliaCI/julia-buildkite/blob/main/utilities/build_envs.sh
     args << "MARCH=#{Hardware.oldest_cpu}" if Hardware::CPU.intel?
 
-    cpu_targets = ["generic"]
-    cpu_targets += if Hardware::CPU.arm?
-      %w[cortex-a57 thunderx2t99 armv8.2-a,crypto,fullfp16,lse,rdm]
-    else
-      %w[sandybridge,-xsaveopt,clone_all haswell,-rdrnd,base(1)]
+    cpu_targets = %w[generic]
+    if Hardware::CPU.arm?
+      if OS.mac?
+        # For Apple Silicon, we don't care about other hardware
+        cpu_targets << "apple-m1,clone_all"
+      else
+        cpu_targets += %w[cortex-a57 thunderx2t99 carmel,clone_all
+                          apple-m1,base(3) neoverse-512tvb,base(3)]
+      end
     end
-    args << "JULIA_CPU_TARGET=#{cpu_targets.join(";")}" if build.stable?
-    args << "TAGGED_RELEASE_BANNER=Built by #{tap.user} (v#{pkg_version})"
+    if Hardware::CPU.intel?
+      cpu_targets += %w[sandybridge,-xsaveopt,clone_all
+                        haswell,-rdrnd,base(1)
+                        x86-64-v4,-rdrnd,base(1)]
+    end
+    args << "JULIA_CPU_TARGET=#{cpu_targets.join(";")}"
+    user = begin
+      tap.user
+    rescue
+      "unknown user"
+    end
+    args << "TAGGED_RELEASE_BANNER=Built by #{user} (v#{pkg_version})"
 
     ENV.append "LDFLAGS", "-Wl,-rpath,#{lib}/julia"
     # Help Julia find keg-only dependencies
@@ -115,21 +143,26 @@ class Julia < Formula
       # List these two last, since we want keg-only libraries to be found first
       ENV.append "LDFLAGS", "-Wl,-rpath,#{HOMEBREW_PREFIX}/lib"
       ENV.append "LDFLAGS", "-Wl,-rpath,/usr/lib" # Needed to find macOS zlib.
+      ENV["SDKROOT"] = MacOS.sdk_path
     else
       ENV.append "LDFLAGS", "-Wl,-rpath,#{lib}"
     end
 
     # Remove library versions from MbedTLS_jll, nghttp2_jll and others
     # https://git.archlinux.org/svntogit/community.git/tree/trunk/julia-hardcoded-libs.patch?h=packages/julia
-    %w[MbedTLS nghttp2 LibGit2 OpenLibm].each do |dep|
-      (buildpath/"stdlib").glob("**/#{dep}_jll.jl") do |jll|
-        inreplace jll, %r{@rpath/lib(\w+)(\.\d+)*\.dylib}, "@rpath/lib\\1.dylib"
-        inreplace jll, /lib(\w+)\.so(\.\d+)*/, "lib\\1.so"
+    %w[MbedTLS nghttp2 LibGit2 OpenLibm SuiteSparse].each do |dep|
+      inreplace (buildpath/"stdlib").glob("**/#{dep}_jll.jl") do |s|
+        s.gsub!(%r{@rpath/lib(\w+)(\.\d+)*\.dylib}, "@rpath/lib\\1.dylib")
+        s.gsub!(/lib(\w+)\.so(\.\d+)*/, "lib\\1.so")
       end
     end
 
     # Make Julia use a CA cert from `ca-certificates`
     (buildpath/"usr/share/julia").install_symlink Formula["ca-certificates"].pkgetc/"cert.pem"
+
+    # Workaround to install bundled curl without bundling other libs
+    odie "Remove `make install-curl` workaround!" if deps.any? { |dep| dep.name == "curl" }
+    system "make", "-C", "deps", "install-curl", *args
 
     system "make", *args, "install"
 
@@ -171,7 +204,13 @@ class Julia < Formula
     ]
 
     assert_equal "4", shell_output("#{bin}/julia #{args.join(" ")} --print '2 + 2'").chomp
-    system bin/"julia", *args, "--eval", 'Base.runtests("core")'
+
+    if OS.linux? || Hardware::CPU.arm?
+      # Setting up test suite is slow and causes Intel macOS to exceed 5 min limit
+      with_env(CI: nil) do
+        system bin/"julia", *args, "--eval", 'Base.runtests("core")'
+      end
+    end
 
     # Check that installing packages works.
     # https://github.com/orgs/Homebrew/discussions/2749
@@ -192,8 +231,7 @@ class Julia < Formula
     # This also checks that these libraries can be loaded even when
     # the symlinks are broken (e.g. by version bumps).
     libs = (lib/"julia").glob(shared_library("*"))
-                        .map(&:basename)
-                        .map(&:to_s)
+                        .map { |library| library.basename.to_s }
                         .reject do |name|
                           name.start_with?("sys", "libjulia-internal", "libccalltest")
                         end

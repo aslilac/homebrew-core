@@ -1,8 +1,8 @@
 class Scamper < Formula
   desc "Advanced traceroute and network measurement utility"
   homepage "https://www.caida.org/catalog/software/scamper/"
-  url "https://www.caida.org/catalog/software/scamper/code/scamper-cvs-20230614b.tar.gz"
-  sha256 "d02af6902ffdeb718349b84113df3dc415ce8e40c6e42bb739756274d9ac4cfa"
+  url "https://www.caida.org/catalog/software/scamper/code/scamper-cvs-20241112.tar.gz"
+  sha256 "80fe8339b86bbfbf45c80c2a34fe55b92008588af3e541c34ce364ae27de7edc"
   license "GPL-2.0-only"
 
   livecheck do
@@ -11,16 +11,15 @@ class Scamper < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "36b9c6763887b010906a67e4fa6adf3e668767b49a3d603bd99a0db5bcb9990c"
-    sha256 cellar: :any,                 arm64_monterey: "f60d4d6307e5380fcc80ed252e0dbed5023090e27fe5515defa43d11b021e789"
-    sha256 cellar: :any,                 arm64_big_sur:  "7d0e29db0bdcd36997f4c754b8cba5770e945694a64fe2c90e0b8b09d9afc418"
-    sha256 cellar: :any,                 ventura:        "d9ba8341b1e2bbffe1287313394c60edcb38789781d7e9b8dcd7e8d1be32bee4"
-    sha256 cellar: :any,                 monterey:       "075d40f63b7288c65da93b07a1611502bb807bb11d84429f74eb2b6df8548021"
-    sha256 cellar: :any,                 big_sur:        "0c6b0f1cebc48a2043e1a6f20e0ea42f2ff738dd336c1bd5f3aa01eacd101a98"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ec47504617b79ca9d2f394558dba402041f149fead66d09d9f325d70ba08d066"
+    sha256 cellar: :any,                 arm64_sequoia: "7baf69df9fd0bcf78dc4107735467f389df98d2908644af83b577fbc32d42ffb"
+    sha256 cellar: :any,                 arm64_sonoma:  "5d93a75040f76c24aa03ea51e62cfa00025c750f0ea337f3ae1a8d727ef8dcdd"
+    sha256 cellar: :any,                 arm64_ventura: "67391b8a97ec27182b575eff4c8579eb1a9bf6875c42150883104e369b12fe6e"
+    sha256 cellar: :any,                 sonoma:        "c2548947113391a080d0b4d83985d5adfb0c4688f187eed801ff0eb8d85d45a3"
+    sha256 cellar: :any,                 ventura:       "0071d399bd51b32dfccf85effe7ae7fcec125a70d3e513229408a34679e82db7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "16c28b6d1f3993a0a20540882ac1521e5451c8e48aea7398b6bf942df8bcf53e"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "openssl@3"
   depends_on "xz" # for LZMA
 

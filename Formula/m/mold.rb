@@ -1,22 +1,22 @@
 class Mold < Formula
   desc "Modern Linker"
   homepage "https://github.com/rui314/mold"
-  url "https://github.com/rui314/mold/archive/refs/tags/v2.1.0.tar.gz"
-  sha256 "a32bec1282671b18ea4691855aed925ea2f348dfef89cb7689cd81273ea0c5df"
+  url "https://github.com/rui314/mold/archive/refs/tags/v2.34.1.tar.gz"
+  sha256 "a8cf638045b4a4b2697d0bcc77fd96eae93d54d57ad3021bf03b0333a727a59d"
   license "MIT"
   head "https://github.com/rui314/mold.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f330fa8f16e90211c7035636537cada48f164c3a81fad65f619179977cb1109c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9d539b9139eb5fcebdbd6a40b6cb6cf6d61208b3cc16eb432292d41a97267b0e"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9cc83da97a8153ab7f5c983c700e8cc772522b3ba3d2001473360c73b0f03200"
-    sha256 cellar: :any_skip_relocation, ventura:        "ae8e847d4fa89295747e43ca0b51607b771b1cff1debabd3908ab85601f50f38"
-    sha256 cellar: :any_skip_relocation, monterey:       "cb88098f530802e221ed840d7b36aca3b04c596a1095be69efc6d791f4d344f2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2c2d661b6139dbb842313e1f1d9a49cb474e4d9e81ba756ff2f97a46b09eb895"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f983f6c4d856f7e5f7d1e1babcb4ca64988ddae75813d59296c8a396854c778f"
+    sha256 cellar: :any,                 arm64_sequoia: "0aa7ac1193cecac1c78b3545953d8bc7009faf324c25c1e02cc2d26598a7154d"
+    sha256 cellar: :any,                 arm64_sonoma:  "954b9c4ef7fbfe0a56fcb2cd39e50fc590335edbcb58d7a305a2b6d8ea84667f"
+    sha256 cellar: :any,                 arm64_ventura: "a8f194f72d412348873617439dce5050465abc1c8c35f9602ae777a48a2a5eac"
+    sha256 cellar: :any,                 sonoma:        "213b7a4bfd81052de322188a7630e564f5e5361863a0c91acf9f1625c40c044a"
+    sha256 cellar: :any,                 ventura:       "ae19f47d88d50bd5b237ad47bb67cb7389c9f27106b39469dda5f66503c9fe52"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f2477939c35c0a9d9effd4644334a2f7444a6a0e0eb4d468b22e49fdb32ffeaa"
   end
 
   depends_on "cmake" => :build
+  depends_on "blake3"
   depends_on "tbb"
   depends_on "zstd"
   uses_from_macos "zlib"
@@ -27,7 +27,6 @@ class Mold < Formula
 
   on_linux do
     depends_on "mimalloc"
-    depends_on "openssl@3" # Uses CommonCrypto on macOS
   end
 
   fails_with :clang do
@@ -45,9 +44,9 @@ class Mold < Formula
 
     # Avoid embedding libdir in the binary.
     # This helps make the bottle relocatable.
-    inreplace "common/config.h.in", "@CMAKE_INSTALL_FULL_LIBDIR@", ""
+    inreplace "lib/config.h.in", "@CMAKE_INSTALL_FULL_LIBDIR@", ""
     # Ensure we're using Homebrew-provided versions of these dependencies.
-    %w[mimalloc tbb zlib zstd].map { |dir| (buildpath/"third-party"/dir).rmtree }
+    %w[blake3 mimalloc tbb zlib zstd].each { |dir| rm_r(buildpath/"third-party"/dir) }
     args = %w[
       -DMOLD_LTO=ON
       -DMOLD_USE_MIMALLOC=ON
@@ -71,9 +70,9 @@ class Mold < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       int main(void) { return 0; }
-    EOS
+    C
 
     linker_flag = case ENV.compiler
     when /^gcc(-(\d|10|11))?$/ then "-B#{libexec}/mold"
@@ -96,25 +95,26 @@ class Mold < Formula
     cp_r pkgshare/"test", testpath
 
     # Remove non-native tests.
-    arch = Hardware::CPU.arm? ? "aarch64" : Hardware::CPU.arch.to_s
-    testpath.glob("test/elf/*.sh")
-            .reject { |f| f.basename(".sh").to_s.match?(/^(#{arch}_)?[^_]+$/) }
+    arch = Hardware::CPU.arch.to_s
+    arch = "aarch64" if arch == "arm64"
+    testpath.glob("test/arch-*.sh")
+            .reject { |f| f.basename(".sh").to_s.match?(/^arch-#{arch}-/) }
             .each(&:unlink)
 
-    inreplace testpath.glob("test/elf/*.sh") do |s|
-      s.gsub!(%r{(\./|`pwd`/)?mold-wrapper}, lib/"mold/mold-wrapper", false)
-      s.gsub!(%r{(\.|`pwd`)/mold}, bin/"mold", false)
-      s.gsub!(/-B(\.|`pwd`)/, "-B#{libexec}/mold", false)
+    inreplace testpath.glob("test/*.sh") do |s|
+      s.gsub!(%r{(\./|`pwd`/)?mold-wrapper}, lib/"mold/mold-wrapper", audit_result: false)
+      s.gsub!(%r{(\.|`pwd`)/mold}, bin/"mold", audit_result: false)
+      s.gsub!(/-B(\.|`pwd`)/, "-B#{libexec}/mold", audit_result: false)
     end
 
     # The `inreplace` rules above do not work well on this test. To avoid adding
     # too much complexity to the regex rules, it is manually tested below
     # instead.
-    (testpath/"test/elf/mold-wrapper2.sh").unlink
+    (testpath/"test/mold-wrapper2.sh").unlink
     assert_match "mold-wrapper.so",
       shell_output("#{bin}/mold -run bash -c 'echo $LD_PRELOAD'")
 
     # Run the remaining tests.
-    testpath.glob("test/elf/*.sh").each { |t| system "bash", t }
+    testpath.glob("test/*.sh").each { |t| system "bash", t }
   end
 end

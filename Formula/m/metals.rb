@@ -1,8 +1,8 @@
 class Metals < Formula
   desc "Scala language server"
   homepage "https://github.com/scalameta/metals"
-  url "https://github.com/scalameta/metals/archive/refs/tags/v1.0.0.tar.gz"
-  sha256 "4ed800e189546ea8c97f7fd4c866fed85921ad8b6449f1c9aecd4d885bea3dce"
+  url "https://github.com/scalameta/metals/archive/refs/tags/v1.4.1.tar.gz"
+  sha256 "6c2e091409af7ed2e987378a60ffdb9f8f9f268febb1f3b33f44e78b94e9d4a4"
   license "Apache-2.0"
 
   # Some version tags don't become a release, so it's necessary to check the
@@ -13,13 +13,12 @@ class Metals < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ba58acd84ef04ef3b0c1789b126d6b82fd949cb0153237138cbd09ec56bf9b79"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "755a702265c160ceade1775fcb8c04af11c8aa2988edc7c6e91e2c631f4a773a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1a7fd3b3783c6c2766d9c618f1035d87cbb53ec8caa4de94ebb1f884e142a055"
-    sha256 cellar: :any_skip_relocation, ventura:        "9f559c018b08791bf49bdfe9c2712d63b7cb9e14b54b60677f6280c355894a3c"
-    sha256 cellar: :any_skip_relocation, monterey:       "1ffbcc653ad9b3c46b6ba3bb6822dade65abfa167ee4b44f168ee07c6ad73e72"
-    sha256 cellar: :any_skip_relocation, big_sur:        "7af649e156a418c0d6268f9002c5a57d629d36715f2af40b672df7773a3325a8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9695fb20f447e6c01ec220d1bd6f6a457e3a86fb9fd9c1e1de51f3b84c22e1e7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0bb9ee98b90b979934d17115c66088419bb66373a07671fd18fae13859c3987d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9af896d9a12e2b4390f8d6d166a716599702e72e5e18621a87eb0dcbce666b93"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "398ead473c97bb508414562fa792a2a2a76385ee0e0dd13d422eb3f9df87b72d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3c5a9057912f4c123fc90ea35f91eac2e6fdcb1f95a544b6b72e105811423b56"
+    sha256 cellar: :any_skip_relocation, ventura:       "78ebca3e6015135cd39ae6385faa353bccd4d4457a9f17ba8d4d81329bc9d78f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4bfd680deacc1f184e375e6c05efd313274220e7e544cdf4bff1cbb60be5b438"
   end
 
   depends_on "sbt" => :build
@@ -44,12 +43,10 @@ class Metals < Formula
     (libexec/"lib").install buildpath.glob("mtags-shared/target/scala-*/mtags-shared_*-#{version}.jar")
     (libexec/"lib").install "mtags-interfaces/target/mtags-interfaces-#{version}.jar"
 
-    (bin/"metals").write <<~EOS
-      #!/bin/bash
-
-      export JAVA_HOME="#{Language::Java.java_home}"
-      exec "${JAVA_HOME}/bin/java" -cp "#{libexec/"lib"}/*" "scala.meta.metals.Main" "$@"
-    EOS
+    args = %W[-cp "#{libexec/"lib"}/*" scala.meta.metals.Main]
+    env = Language::Java.overridable_java_home_env
+    env["PATH"] = "$JAVA_HOME/bin:$PATH"
+    (bin/"metals").write_env_script "java", args.join(" "), env
   end
 
   test do
@@ -65,7 +62,7 @@ class Metals < Formula
         }
       }
     JSON
-    Open3.popen3("#{bin}/metals") do |stdin, stdout, _e, w|
+    Open3.popen3(bin/"metals") do |stdin, stdout, _e, w|
       stdin.write "Content-Length: #{json.size}\r\n\r\n#{json}"
       sleep 3
       assert_match(/^Content-Length: \d+/i, stdout.readline)

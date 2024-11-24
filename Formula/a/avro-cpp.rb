@@ -1,33 +1,38 @@
 class AvroCpp < Formula
   desc "Data serialization system"
   homepage "https://avro.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=avro/avro-1.11.2/cpp/avro-cpp-1.11.2.tar.gz"
-  mirror "https://archive.apache.org/dist/avro/avro-1.11.2/cpp/avro-cpp-1.11.2.tar.gz"
-  sha256 "4abf733b886e9469aace111573904b0d7d15b38b245adce29d5dfc4666a3c90c"
+  # Upstreams tar.gz can't be opened by bsdtar on macOS
+  # https://github.com/Homebrew/homebrew-core/pull/146296#issuecomment-1737945877
+  # https://apple.stackexchange.com/questions/197839/why-is-extracting-this-tgz-throwing-an-error-on-my-mac-but-not-on-linux
+  url "https://github.com/apache/avro.git",
+      tag:      "release-1.11.3",
+      revision: "35ff8b997738e4d983871902d47bfb67b3250734"
   license "Apache-2.0"
+  revision 4
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "b3f08fe9f4adb2c7d738375b67bf7e8714e0545f6f06aea7e3dcd71e5a063056"
-    sha256 cellar: :any,                 arm64_monterey: "59974b029bc5ddeb8bfda48c65654a4234eb93da7a906550bfec01bc0f0ca17f"
-    sha256 cellar: :any,                 arm64_big_sur:  "ff389dcf51bea64a046460954b87aafd3c8aae34a91f0aa6abe5195fe7497b9f"
-    sha256 cellar: :any,                 ventura:        "4b716a1ad09b16035c828d56009ba448f5900b8f5d45b1a1203cb187f4915d73"
-    sha256 cellar: :any,                 monterey:       "7cfdaa40cb85377a7381c36156c9170b0e9d73c74f2e9e21b6907a10d71ba4c8"
-    sha256 cellar: :any,                 big_sur:        "6d8c3060dc59bf18609c4460083ce0e249667841c167729fbbc78cdf849248fe"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "424e21b1c2105bd4cb1856dda9dc4ed7f94a16e666b1b58ea887345bed28dafb"
+    sha256 cellar: :any,                 arm64_sequoia:  "68cc14a37de162f0006e51cd24bf8732037333c8b4f83d93281f5fd027322854"
+    sha256 cellar: :any,                 arm64_sonoma:   "43b9420650c17df411a56b9ffa47824c265e909a116f63b5141d700f20ead267"
+    sha256 cellar: :any,                 arm64_ventura:  "e3a3876b799400d284f39109717924563302d548de3508b93499047321982e4f"
+    sha256 cellar: :any,                 arm64_monterey: "3d840f89e9fbef4334d1f3a1919f6c784ad787a108aabd4f156dd0ad5039add7"
+    sha256 cellar: :any,                 sonoma:         "b9193599165f9bd895789f9ea0429f1f1ef0cfeb4768d7cb6857109f8a282f6a"
+    sha256 cellar: :any,                 ventura:        "1732eb8f243b23187bfc41604a74e5b8c222489a72944686a97ad8cc9eca034e"
+    sha256 cellar: :any,                 monterey:       "b75fd0a64cacf35169c219ebea627c7f6f291a46e9d984b250fc3e4ea3a9acd6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c23da0cf62087e7ea7556c6c8359f05f22c97f49e35694dc0269ee8b83d730bd"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "boost"
 
   def install
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "-S", "lang/c++", "-B", "build", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"cpx.json").write <<~EOS
+    (testpath/"cpx.json").write <<~JSON
       {
           "type": "record",
           "name": "cpx",
@@ -36,16 +41,18 @@ class AvroCpp < Formula
               {"name": "im", "type" : "double"}
           ]
       }
-    EOS
-    (testpath/"test.cpp").write <<~EOS
+    JSON
+
+    (testpath/"test.cpp").write <<~CPP
       #include "cpx.hh"
 
       int main() {
         cpx::cpx number;
         return 0;
       }
-    EOS
-    system "#{bin}/avrogencpp", "-i", "cpx.json", "-o", "cpx.hh", "-n", "cpx"
+    CPP
+
+    system bin/"avrogencpp", "-i", "cpx.json", "-o", "cpx.hh", "-n", "cpx"
     system ENV.cxx, "test.cpp", "-std=c++11", "-o", "test"
     system "./test"
   end

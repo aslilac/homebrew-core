@@ -1,18 +1,17 @@
 class Lowdown < Formula
   desc "Simple markdown translator"
   homepage "https://kristaps.bsd.lv/lowdown"
-  url "https://github.com/kristapsdz/lowdown/archive/refs/tags/VERSION_1_0_2.tar.gz"
-  sha256 "049b7883874f8a8e528dc7c4ed7b27cf7ceeb9ecf8fe71c3a8d51d574fddf84b"
+  url "https://github.com/kristapsdz/lowdown/archive/refs/tags/VERSION_1_2_0.tar.gz"
+  sha256 "a4a7eab951b85a8b25c806a4e399ef3e06458a3f6811ac1201a5fb765ccde3d2"
   license "ISC"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "8fb0c7d57f545fd6ed5902049ec23eaa7f54a3bde10c0e6808cc54adb76e6abb"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2bc8fd2653eab9542d2afe9d6aad18481ed647dec62228d1b2e2f5a2cb03d141"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "da6b18b0d4734244f9e5d677298f4a0874d87326f269656e76120d4fb867d8de"
-    sha256 cellar: :any_skip_relocation, ventura:        "05886e27d8b52b8755130af5e4741f0920908d9742781975aa3cdf398ca613c3"
-    sha256 cellar: :any_skip_relocation, monterey:       "a4a41ff54df94cafab6b52b1ce062cf5dbf3a99c6ad22b494c59e99bf95088b3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "fb19bded8bdfe9220682b03c8c9aeaf7c24c86bd20d8cc294ad5cc35fba5e87b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7b3aae261818590324f0ed233f8f104541d5adddc0da9abe36f035919c480657"
+    sha256 cellar: :any,                 arm64_sequoia: "4bd6fdbbe532d6d433c7b15771a3175708f4e9652491cedba222d03e67b5ff5f"
+    sha256 cellar: :any,                 arm64_sonoma:  "9fd15db78f4fb5365369713c732a31d674be049f211dd494b775087702a3a478"
+    sha256 cellar: :any,                 arm64_ventura: "5260cbdf7b10460160cb39beda9f124a2769d54f17d13c449e59db9cd78e129d"
+    sha256 cellar: :any,                 sonoma:        "2f3f2cb3dcb4706b5c91d6039fc732e3923cce0fecc14719d2f80c573a5ded33"
+    sha256 cellar: :any,                 ventura:       "5c324d03e446de5591fe02650d21149c887d388f9e18ef96563076616a6bec37"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3c77eaf34c970ddbea7326e672099cd9208b9bb0f1e0b6b72192a595f4e9aedf"
   end
 
   def install
@@ -26,7 +25,7 @@ class Lowdown < Formula
 
     system "./configure", *configure_args
     system "make"
-    system "make", "install"
+    system "make", "install", "install_libs"
   end
 
   test do

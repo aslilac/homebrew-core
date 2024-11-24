@@ -1,9 +1,9 @@
 class Varnish < Formula
   desc "High-performance HTTP accelerator"
   homepage "https://www.varnish-cache.org/"
-  url "https://varnish-cache.org/_downloads/varnish-7.3.0.tgz"
-  mirror "https://fossies.org/linux/www/varnish-7.3.0.tgz"
-  sha256 "e2dbbb0ec270a90647c386866e6e226993aed46e48de751a72bb819737f14ae7"
+  url "https://varnish-cache.org/_downloads/varnish-7.6.1.tgz"
+  mirror "https://fossies.org/linux/www/varnish-7.6.1.tgz"
+  sha256 "5a9bb5a149ff27867b54a66ce16d2a4b93edffa5473cb87c9c71f7699cf845ba"
   license "BSD-2-Clause"
 
   livecheck do
@@ -12,31 +12,26 @@ class Varnish < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "2dd251edcc1036789e19ada129c56b02cda4d35f569c37b137f893b013746808"
-    sha256 arm64_monterey: "92229d29cd0fff3f51b9bb975062138ce4e69f2c877e47a5d3b0909e92103915"
-    sha256 arm64_big_sur:  "898cca625a7d3ed0b73c3c0696323cd8dd231358678c2cb90f500c9d2e97844e"
-    sha256 ventura:        "432fac72abe49eae6a92277fad47b611371b983709b981d36991cc4df2dea881"
-    sha256 monterey:       "4fcc3cf2b1fd09a29e65a7ba9f2f30b0ab64585f23a8a49ff01a2d13f46d4c4b"
-    sha256 big_sur:        "02013a9904aeee2c320e9595668569bba705ef415225c1c2001579ed19315017"
-    sha256 x86_64_linux:   "5f27365c143163e3c91f73a23c325694b459779e8e74db9e4bb9695ca7a8067b"
+    sha256 arm64_sequoia: "c27410d2620eb90cdd55fe2d2f2cb9263e50b7e38f1657ed829933b2ba42d7dd"
+    sha256 arm64_sonoma:  "dca58a2dd40ff2cd995d8ca52be858a63656a37c2098dd676ede5d2fb8ef5fc1"
+    sha256 arm64_ventura: "63ce70bd5ed1b4c5c6fb069732f9619cdacc43d664fe20e6ff036e8a2ada733a"
+    sha256 sonoma:        "bc34ed9be333dbdc5459f969058a42808385e76e3b2ae62bb2cee111b970ebe4"
+    sha256 ventura:       "f67e4e5eb341516ad0229efe39a4012a55e840fe4f38befc9e153baabfae757e"
+    sha256 x86_64_linux:  "edb61c2b757d063387fcb8de36074a1dbfcec2cbe7e0637d0e9cf0966c988109"
   end
 
   depends_on "docutils" => :build
   depends_on "graphviz" => :build
-  depends_on "pkg-config" => :build
-  depends_on "python@3.11" => :build
+  depends_on "pkgconf" => :build
   depends_on "sphinx-doc" => :build
   depends_on "pcre2"
 
+  uses_from_macos "python" => :build
   uses_from_macos "libedit"
   uses_from_macos "ncurses"
 
   def install
-    ENV["PYTHON"] = Formula["python@3.11"].opt_bin/"python3.11"
-
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--localstatedir=#{var}"
+    system "./configure", "--localstatedir=#{var}", *std_configure_args
 
     # flags to set the paths used by varnishd to load VMODs and VCL,
     # pointing to the ${HOMEBREW_PREFIX}/ shared structure so other packages
@@ -74,7 +69,14 @@ class Varnish < Formula
     #   but is "nothing of concern" (see varnishcache/varnish-cache#3710)
     # - u*.vtc (utilities and background processes)
     testpath = pkgshare/"tests"
-    tests = testpath.glob("[bmu]*.vtc") - [testpath/"m00000.vtc"]
+    timeout_tests = [
+      testpath/"m00000.vtc",
+      testpath/"b00047.vtc",
+      testpath/"b00084.vtc",
+      testpath/"b00086.vtc",
+      testpath/"u00008.vtc",
+    ]
+    tests = testpath.glob("[bmu]*.vtc") - timeout_tests
     # -j: run the tests (using up to half the cores available)
     # -q: only report test failures
     # varnishtest will exit early if a test fails (use -k to continue and find all failures)

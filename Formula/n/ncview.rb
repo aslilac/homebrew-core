@@ -1,30 +1,24 @@
 class Ncview < Formula
   desc "Visual browser for netCDF format files"
   homepage "https://cirrus.ucsd.edu/ncview/"
-  url "ftp://cirrus.ucsd.edu/pub/ncview/ncview-2.1.8.tar.gz"
-  sha256 "e8badc507b9b774801288d1c2d59eb79ab31b004df4858d0674ed0d87dfc91be"
+  url "https://cirrus.ucsd.edu/~pierce/ncview/ncview-2.1.10.tar.gz"
+  sha256 "08d9cefb58a25b41316296074dccfe24147c3b7ea1af071cbfe785eff9f0dc65"
   license "GPL-3.0-only"
-  revision 6
 
-  # The stable archive in the formula is fetched over FTP and the website for
-  # the software hasn't been updated to list the latest release (it has been
-  # years now). We're checking Debian for now because it's potentially better
-  # than having no check at all.
   livecheck do
-    url "https://deb.debian.org/debian/pool/main/n/ncview/"
-    regex(/href=.*?ncview[._-]v?(\d+(?:\.\d+)+)(?:\+ds)?\.orig\.t/i)
+    url :homepage
+    regex(/href=.*?ncview[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "00202073aeffac85fd800347d7c3854cc4d4de99bd6e4283541bb81baabc62c2"
-    sha256 cellar: :any,                 arm64_monterey: "f80fbf9c909cc45a91d44cdb8244a64fa57e53e95765f9d3e24cfb22b4fc9ea1"
-    sha256                               arm64_big_sur:  "891d85685f499d86b5666a688f1fed2e406a05082a0bd3916b5da325230d6c4b"
-    sha256 cellar: :any,                 ventura:        "9251eb13ae369b765732d7f71dd1beb98bfdecec4f76d52dac569581408d5323"
-    sha256 cellar: :any,                 monterey:       "f8248fcbfd8e33f1bbda3924d7dfcbd1c0a1968089f492ca0f0a487ef21beaa7"
-    sha256                               big_sur:        "6129b591b2b0238a0e61ec86ebc5d875a494e677963656b679300e67f874c13c"
-    sha256                               catalina:       "93d6850d0542b7ea67b442f1ea80d63b80a04c872f0c4d25d0713f3fba5b92a2"
-    sha256                               mojave:         "0b8b3c63895071a605b80ab1c1576356d1bfe634857e78f2cf3cb22742de09c2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c78f5b727f31fc213d111d63aa8a7f27193746a4dd3657c8a21ed33cb5a02423"
+    sha256 cellar: :any,                 arm64_sequoia:  "9c32e0c8d61208d3573870a33349e73dd07aed488fa950efc9209aad3499d464"
+    sha256 cellar: :any,                 arm64_sonoma:   "5b5169eca0a60caf8ecf81577a4defc72f8d18f97836fbdd69cddf1ec9d4215e"
+    sha256 cellar: :any,                 arm64_ventura:  "96ab79560d36c63a53c61ed9974738627eb217cbe69bea25b625ac2f4a8deba2"
+    sha256 cellar: :any,                 arm64_monterey: "5e634d2eb02f6a4e7fb1e35ef14920816262def3495d76697edeb76af115c2fb"
+    sha256 cellar: :any,                 sonoma:         "e23c7440e27e4395c5c7dc5df2d1f39b18be9961b9bbdceec5b4de3fbff97238"
+    sha256 cellar: :any,                 ventura:        "ba35d1867da98ec3b6046414749366c07b5cd71efa1f9d2205e36699beeddd54"
+    sha256 cellar: :any,                 monterey:       "5e9dc69c8c96e2e9e5184f78041a6bf9d58c4b6ec10e213b937476b5bb049c99"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1962ae80242970e6d4a782be711680746eda4dfcd160d2e9990005856bc8be80"
   end
 
   depends_on "libice"

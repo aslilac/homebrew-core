@@ -1,6 +1,6 @@
 class AutoconfAT269 < Formula
   desc "Automatic configure script builder"
-  homepage "https://www.gnu.org/software/autoconf"
+  homepage "https://www.gnu.org/software/autoconf/"
   url "https://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz"
   mirror "https://ftpmirror.gnu.org/autoconf/autoconf-2.69.tar.gz"
   sha256 "954bd69b391edc12d6a4a51a2dd1476543da5c6bbf05a95b59dc0dd6fd4c2969"
@@ -10,9 +10,12 @@ class AutoconfAT269 < Formula
   ]
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "349138ef4ad5f2b21cca94d5534c659f59206c582af8f063e64269e34b56eb04"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4497ba5e4e2a1a463e60a5fa8cf7227f8ebf943f19ef52edd2e6c2ce83435de4"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "fa8878f7ae82d8c8b2f1de7d330ffe52d797aec62c955fd0d62bcf5557ffd4b1"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "fa8878f7ae82d8c8b2f1de7d330ffe52d797aec62c955fd0d62bcf5557ffd4b1"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f7b28e5cdf538418baea43d1d5638a1df52161ef0cd198ee1f261cdc61ac6636"
+    sha256 cellar: :any_skip_relocation, sonoma:         "0258028b89daec636bb2da31d0c6893ab13f35940c195ef045fabbd4db824908"
     sha256 cellar: :any_skip_relocation, ventura:        "210d6b15bb404f7711955bfeb60dce45a8bd34bda84d043ea32552571bb3d1d6"
     sha256 cellar: :any_skip_relocation, monterey:       "b06ba90b16a3d6d38a2954e5c02710a4225a7e82bd1a5c30e1b7574dbfd1b2b4"
     sha256 cellar: :any_skip_relocation, big_sur:        "e4a0ef0b0b653836a212225fbb5345fb58e898ed7a24cb8386a4169496bbfde3"
@@ -22,6 +25,8 @@ class AutoconfAT269 < Formula
   end
 
   keg_only :versioned_formula
+
+  deprecate! date: "2023-12-14", because: :versioned_formula
 
   depends_on "m4"
   uses_from_macos "perl"
@@ -39,7 +44,7 @@ class AutoconfAT269 < Formula
     system "./configure", "--prefix=#{prefix}", "--with-lispdir=#{elisp}"
     system "make", "install"
 
-    rm_f info/"standards.info"
+    rm(info/"standards.info")
   end
 
   test do

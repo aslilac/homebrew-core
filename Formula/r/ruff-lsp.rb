@@ -3,47 +3,45 @@ class RuffLsp < Formula
 
   desc "Language Server Protocol implementation for Ruff"
   homepage "https://github.com/astral-sh/ruff-lsp"
-  url "https://files.pythonhosted.org/packages/d8/e8/de30cd65be061390ebbaeea20cec415d76bfd55d2a9c94af0c036e4438af/ruff_lsp-0.0.37.tar.gz"
-  sha256 "15def4d654157c91ba05db0a57e027dc7c092b93ea8e2725bc81a1747631f4cc"
+  url "https://files.pythonhosted.org/packages/fa/4f/d855c6c298326384b2d8c6396f21e3ab421ea9bf089c1ead0718f0bfce36/ruff_lsp-0.0.59.tar.gz"
+  sha256 "340a9d42b6fbdbc09f6a5c6d641bd4fa1e7f51868427467109a1331955c52754"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bd648d5a255eede70e3d3e5b3b36b31db313750f92ef03b5a7e98b3ef9053686"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a129b07d5ed7d0e47ed32f9d0647b937296e75a2a7d5239abd93765aa608cd60"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "985aab9a2b37fff6a3837dae9a50ed7cbd907bec6ccf4afbf41efbab0ca91986"
-    sha256 cellar: :any_skip_relocation, ventura:        "815a5e1736c1b0851df12a7211ce98acd5a1d29c613c3961bb4ec1f27647688a"
-    sha256 cellar: :any_skip_relocation, monterey:       "2a653cb39106c355b0c900a814d1f74236471482c6e7dab08937bf2f2052fe2c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "edece0f482e4ae865baaa4c573eed5c5fe45e64a9448d324391a43b0fbf4c1e5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "18ec683833df6e16f168e627454a39b7af6be2fb33a8d71db340a79f9082742a"
+    sha256 cellar: :any_skip_relocation, all: "0ee57d863d9f0e0fe49f9af398575e3f28a6cf8637da6aa0ca33ea7c7ca0e95e"
   end
 
-  depends_on "python-typing-extensions"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
   depends_on "ruff"
 
   resource "attrs" do
-    url "https://files.pythonhosted.org/packages/97/90/81f95d5f705be17872843536b1868f351805acf6971251ff07c1b8334dbb/attrs-23.1.0.tar.gz"
-    sha256 "6279836d581513a26f1bf235f9acd333bc9115683f14f7e8fae46c98fc50e015"
+    url "https://files.pythonhosted.org/packages/fc/0f/aafca9af9315aee06a89ffde799a10a582fe8de76c563ee80bbcdc08b3fb/attrs-24.2.0.tar.gz"
+    sha256 "5cfb1b9148b5b086569baec03f20d7b6bf3bcacc9a42bebf87ffaaca362f6346"
   end
 
   resource "cattrs" do
-    url "https://files.pythonhosted.org/packages/68/d4/27f9fd840e74d51b6d6a024d39ff495b56ffde71d28eb82758b7b85d0617/cattrs-23.1.2.tar.gz"
-    sha256 "db1c821b8c537382b2c7c66678c3790091ca0275ac486c76f3c8f3920e83c657"
+    url "https://files.pythonhosted.org/packages/64/65/af6d57da2cb32c076319b7489ae0958f746949d407109e3ccf4d115f147c/cattrs-24.1.2.tar.gz"
+    sha256 "8028cfe1ff5382df59dd36474a86e02d817b06eaf8af84555441bac915d2ef85"
   end
 
   resource "lsprotocol" do
-    url "https://files.pythonhosted.org/packages/f3/70/4e0e841e35ac450ca7f994020887c05aeb4d0cd25e8d53901f448dd43acb/lsprotocol-2023.0.0a2.tar.gz"
-    sha256 "80aae7e39171b49025876a524937c10be2eb986f4be700ca22ee7d186b8488aa"
+    url "https://files.pythonhosted.org/packages/9d/f6/6e80484ec078d0b50699ceb1833597b792a6c695f90c645fbaf54b947e6f/lsprotocol-2023.0.1.tar.gz"
+    sha256 "cc5c15130d2403c18b734304339e51242d3018a05c4f7d0f198ad6e0cd21861d"
+  end
+
+  resource "packaging" do
+    url "https://files.pythonhosted.org/packages/d0/63/68dbb6eb2de9cb10ee4c9c14a0148804425e13c4fb20d61cce69f53106da/packaging-24.2.tar.gz"
+    sha256 "c228a6dc5e932d346bc5739379109d49e8853dd8223571c7c5b55260edc0b97f"
   end
 
   resource "pygls" do
-    url "https://files.pythonhosted.org/packages/bb/c4/fc9c817ba0f1ad0fdbe1686bc8211a0dc2390ab11cf7780e9eeed718594b/pygls-1.0.2.tar.gz"
-    sha256 "888ed63d1f650b4fc64d603d73d37545386ec533c0caac921aed80f80ea946a4"
+    url "https://files.pythonhosted.org/packages/86/b9/41d173dad9eaa9db9c785a85671fc3d68961f08d67706dc2e79011e10b5c/pygls-1.3.1.tar.gz"
+    sha256 "140edceefa0da0e9b3c533547c892a42a7d2fd9217ae848c330c53d266a55018"
   end
 
-  resource "typeguard" do
-    url "https://files.pythonhosted.org/packages/af/40/3398497c6e6951c92abaf933492d6633e7ac4df0bfc9d81f304b3f977f15/typeguard-3.0.2.tar.gz"
-    sha256 "fee5297fdb28f8e9efcb8142b5ee219e02375509cd77ea9d270b5af826358d5a"
+  resource "typing-extensions" do
+    url "https://files.pythonhosted.org/packages/df/db/f35a00659bc03fec321ba8bce9420de607a1d37f8342eee1863174c69557/typing_extensions-4.12.2.tar.gz"
+    sha256 "1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"
   end
 
   def install
@@ -63,7 +61,7 @@ class RuffLsp < Formula
       }
     JSON
     input = "Content-Length: #{json.size}\r\n\r\n#{json}"
-    output = pipe_output("#{bin}/ruff-lsp", input)
+    output = pipe_output(bin/"ruff-lsp", input)
     assert_match(/^Content-Length: \d+/i, output)
   end
 end

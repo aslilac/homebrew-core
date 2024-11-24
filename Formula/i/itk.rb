@@ -4,25 +4,24 @@ class Itk < Formula
   url "https://github.com/InsightSoftwareConsortium/ITK/releases/download/v5.3.0/InsightToolkit-5.3.0.tar.gz"
   sha256 "57a4471133dc8f76bde3d6eb45285c440bd40d113428884a1487472b7b71e383"
   license "Apache-2.0"
-  revision 2
+  revision 4
   head "https://github.com/InsightSoftwareConsortium/ITK.git", branch: "master"
 
   livecheck do
     url :stable
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 arm64_ventura:  "02b932d424a0083d120a2852283fb66840b4dcbbb143e41465e10b3d77c255ab"
-    sha256 arm64_monterey: "146bae11cdc51191bf0949a162ca8672433a224b5ae065d21f4b03ce67387542"
-    sha256 arm64_big_sur:  "b59c138f5343b634c38722facd48fd91cc14982a4450eabfe94be12fc4a78de2"
-    sha256 ventura:        "65203140977767fdf00618053dba2f580772eefe1ca8079420fdc1bf9d2e0fa0"
-    sha256 monterey:       "a7035bdae6fc5ef6137ed257bf894f8abaa85f41968ce1c14b156edca3b1717a"
-    sha256 big_sur:        "53eedaa35f58d2de6ff603274001ca7cd039f2c5f47febaecbf500ef22de8c36"
-    sha256 x86_64_linux:   "a45410c1cfe60f0a5c250c85d5fc06fed800235a9d43d0ed6ec88ed87ef3d6c0"
+    sha256                               arm64_sonoma:  "2946d8cc3fe71edc8eaee0182502e6a21e7669f38b2dadd27351a455d063118d"
+    sha256                               arm64_ventura: "0b467199158eab5ec6a202ba68e6a5685ff8c8f99799d475380983b917a1a584"
+    sha256                               sonoma:        "8b6af5f9da7f3fe03c9c36d6c467cd68a56c5fe40b3bb848681ba17b27abc9d7"
+    sha256                               ventura:       "4d45a3ddb6decc2e823f9eab2b0e81f3031438250140391f8596a2fe513d2e6f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7933e5ae1c16bc36938461323a0da872e0a79830b945178a1ce371e7fd7d1d75"
   end
 
   depends_on "cmake" => :build
+
   depends_on "double-conversion"
   depends_on "fftw"
   depends_on "gdcm"
@@ -31,6 +30,13 @@ class Itk < Formula
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "vtk"
+
+  uses_from_macos "expat"
+  uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "glew"
+  end
 
   on_linux do
     depends_on "alsa-lib"
@@ -41,7 +47,7 @@ class Itk < Formula
 
   def install
     # Avoid CMake trying to find GoogleTest even though tests are disabled
-    (buildpath/"Modules/ThirdParty/GoogleTest").rmtree
+    rm_r(buildpath/"Modules/ThirdParty/GoogleTest")
 
     args = %W[
       -DBUILD_SHARED_LIBS=ON
@@ -88,7 +94,7 @@ class Itk < Formula
     system "cmake", "--install", "build"
 
     # Remove the bundled JRE installed by SCIFIO ImageIO plugin
-    (lib/"jre").rmtree if OS.linux? || Hardware::CPU.intel?
+    rm_r(lib/"jre") if OS.linux? || Hardware::CPU.intel?
   end
 
   test do

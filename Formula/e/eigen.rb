@@ -13,7 +13,8 @@ class Eigen < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "211fd7f1d58b383e3d64335c08a376a7d8433007ce61410ead0320df34b6f4bd"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, all: "b7d3fc4023e664e69392994530a88aa0b6f2a81067da6d64727cf983db2c1bd1"
   end
 
   depends_on "cmake" => :build
@@ -21,17 +22,13 @@ class Eigen < Formula
   conflicts_with "freeling", because: "freeling ships its own copy of eigen"
 
   def install
-    mkdir "eigen-build" do
-      args = std_cmake_args
-      args << "-Dpkg_config_libdir=#{lib}" << ".."
-      system "cmake", *args
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "eigen-build", "-Dpkg_config_libdir=#{lib}", *std_cmake_args
+    system "cmake", "--install", "eigen-build"
     (share/"cmake/Modules").install "cmake/FindEigen3.cmake"
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <iostream>
       #include <Eigen/Dense>
       using Eigen::MatrixXd;
@@ -44,7 +41,7 @@ class Eigen < Formula
         m(1,1) = m(1,0) + m(0,1);
         std::cout << m << std::endl;
       }
-    EOS
+    CPP
     system ENV.cxx, "test.cpp", "-I#{include}/eigen3", "-o", "test"
     assert_equal %w[3 -1 2.5 1.5], shell_output("./test").split
   end

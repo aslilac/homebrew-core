@@ -1,31 +1,32 @@
 class Eigenpy < Formula
   desc "Python bindings of Eigen library with Numpy support"
   homepage "https://github.com/stack-of-tasks/eigenpy"
-  url "https://github.com/stack-of-tasks/eigenpy/releases/download/v3.1.1/eigenpy-3.1.1.tar.gz"
-  sha256 "3e2b2c3cd78f163f4d96bee008124ebe3369c6bab8db3c055c1cb239e49835b7"
+  url "https://github.com/stack-of-tasks/eigenpy/releases/download/v3.10.1/eigenpy-3.10.1.tar.gz"
+  sha256 "7b4ea31c8eda2eeba6b1ebb22ebfe72b650e04da20e6ef48d48008c2afb1bbc4"
   license "BSD-2-Clause"
   head "https://github.com/stack-of-tasks/eigenpy.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "f7139edb725de3665a189053fac0d9236b327412221917ed8d47f7d8e149c662"
-    sha256 cellar: :any,                 arm64_monterey: "0405e981803d220215def0872f9320162c6b69b20077f348a52b7d089f56844f"
-    sha256 cellar: :any,                 arm64_big_sur:  "4246053cefdb0c4992115d295f88ff0d3cf9c8f85938d0fa022ccaaeac511e35"
-    sha256 cellar: :any,                 ventura:        "f5d27eb53296b48283b3f51c34f63e9962fa8e24dbdae2a08cbe67931a5dd408"
-    sha256 cellar: :any,                 monterey:       "5f10517739d0bcf023a15242e2322cadabcc92f7f522c28dee4b47506de0661a"
-    sha256 cellar: :any,                 big_sur:        "3603a2188e67ddb8398ba132a3b8957e1f789b81902a27fe90e7209d681e1b90"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8065b3439a649c1eb87428aca5d851c0f16cda17d730e76e9a4e926456b7d9c9"
+    sha256 cellar: :any,                 arm64_sequoia: "2873eb6f51db6437e0a463de495856c3c36a95157be2cefaf77923be054b2ac1"
+    sha256 cellar: :any,                 arm64_sonoma:  "178b9c4635958edd26edc9fc3d3f496f77d1425cb2cc0d87bc3f7d8805069844"
+    sha256 cellar: :any,                 arm64_ventura: "9a83b7ebdb25767c84adc267701182830f5f5ad85d20ad1b0abe09138f3e2890"
+    sha256 cellar: :any,                 sonoma:        "8405f62554a5deb4c51c1a751a5eda8797418c4dcdfcf909bcc005607c442b37"
+    sha256 cellar: :any,                 ventura:       "b5c5be71db3f9252241280ab376645a4656c9b67e9449d42fddcea3b63078194"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "96fb6f25e75ddcc3f05d1a6aaa229d5a9450f5ad32b28c24c8db28d7d946307a"
   end
 
   depends_on "boost" => :build
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
+  depends_on "pkgconf" => :build
   depends_on "boost-python3"
   depends_on "eigen"
   depends_on "numpy"
-  depends_on "python@3.11"
+  depends_on "python@3.12"
+  depends_on "scipy"
 
   def python3
-    "python3.11"
+    "python3.12"
   end
 
   def install

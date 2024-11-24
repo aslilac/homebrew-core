@@ -1,8 +1,8 @@
 class Capnp < Formula
   desc "Data interchange format and capability-based RPC system"
   homepage "https://capnproto.org/"
-  url "https://capnproto.org/capnproto-c++-1.0.1.tar.gz"
-  sha256 "0f7f4b8a76a2cdb284fddef20de8306450df6dd031a47a15ac95bc43c3358e09"
+  url "https://capnproto.org/capnproto-c++-1.0.2.tar.gz"
+  sha256 "9057dbc0223366b74bbeca33a05de164a229b0377927f1b7ef3828cdd8cb1d7e"
   license "MIT"
   head "https://github.com/capnproto/capnproto.git", branch: "master"
 
@@ -12,13 +12,14 @@ class Capnp < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "85b7fa56075fd5cfc7ac2826db04393bcedc532d6c1b7e77a0fb9640b73dae23"
-    sha256 arm64_monterey: "705425ac57b11d428626f70ef1fc7b3a9bb137b11797445f6e6121cd5c677222"
-    sha256 arm64_big_sur:  "646fda7aeff0ecf305688e1f1752bd78e0d9477508d9c4e71b96c2ee2ce31259"
-    sha256 ventura:        "a3979d91880e97d250a9f2decb2655c8d5bbccb7be0f48468fd65826ce40a4b5"
-    sha256 monterey:       "96e2da3790877a51e93bb65e67781e203fc7c73387ac5aaa14f578627bd60fa2"
-    sha256 big_sur:        "6160d5afc05b64c8cdfb836b0d35972bf573de4136068e4f4f1ddec32a9674c7"
-    sha256 x86_64_linux:   "6a64eeff8dc7fba4f39ed8a4d25908f7757c175f21de3ff72ed62852d8275304"
+    sha256 arm64_sequoia:  "86158801e5d5a2131d80c2526855da900d3f333080b19f8ed77ec4489b258721"
+    sha256 arm64_sonoma:   "19bd2ac85d9b982d0f5bb2cbf728823aeb1ceed838096c55459f1b973f6d9733"
+    sha256 arm64_ventura:  "f9f10d39ccda6aac9d9e4dee159dd2e882ba5cd027a8b19216f498fd1c39ae72"
+    sha256 arm64_monterey: "d4db0fb57022ca7980f402cdde520987d37ee66caaaa61b78037136b4476225f"
+    sha256 sonoma:         "5b90bfe71f8f407f71c0d0f3404a02607eb3d1fcc903067cce628653dd5c00ed"
+    sha256 ventura:        "37ba767871207bc87d5869e343738a4db44e8357366d7f6165618ddf211bd968"
+    sha256 monterey:       "ddd4e35539498174d233ed6fec3fce40c3ee7b2d61b93f5114e6b6eba5784e83"
+    sha256 x86_64_linux:   "28f2ac2e3b0ab17b31bcf092c2e3e6d810d5601e0a17e09c2a12872a4ec57348"
   end
 
   depends_on "cmake" => :build
@@ -68,9 +69,9 @@ class Capnp < Formula
         email @2 :Text;
       }
     EOS
-    system "#{bin}/capnp", "compile", "-oc++", testpath/"person.capnp"
+    system bin/"capnp", "compile", "-oc++", testpath/"person.capnp"
 
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include "person.capnp.h"
       #include <capnp/message.h>
       #include <capnp/serialize-packed.h>
@@ -82,7 +83,7 @@ class Capnp < Formula
         std::cout << person.getName().cStr() << ": "
                   << person.getEmail().cStr() << std::endl;
       }
-    EOS
+    CPP
     system ENV.cxx, "-c", testpath/"test.cpp", "-I#{include}", "-o", "test.o", "-fPIC", "-std=c++1y"
     system ENV.cxx, "-shared", testpath/"test.o", "-L#{lib}", "-fPIC", "-lcapnp", "-lkj"
   end

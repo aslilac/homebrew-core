@@ -1,19 +1,18 @@
 class Forcecli < Formula
   desc "Command-line interface to Force.com"
   homepage "https://force-cli.herokuapp.com/"
-  url "https://github.com/ForceCLI/force/archive/v1.0.3.tar.gz"
-  sha256 "c7572a4f927183d58c83a47f497bd68e9b7f8ba2455a844e7ba08cf6d5d70724"
+  url "https://github.com/ForceCLI/force/archive/refs/tags/v1.0.7.tar.gz"
+  sha256 "f3a37692bd5f1dcf842ed3d917523b13c561ecfbdfa5170f4e98789c6472d762"
   license "MIT"
   head "https://github.com/ForceCLI/force.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c49096b0e815131b7b85486cc91edbbc8c50a5abbe6df1aa04faea5864698da5"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c49096b0e815131b7b85486cc91edbbc8c50a5abbe6df1aa04faea5864698da5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c49096b0e815131b7b85486cc91edbbc8c50a5abbe6df1aa04faea5864698da5"
-    sha256 cellar: :any_skip_relocation, ventura:        "5648c60ceaa5c8b19c60840b7845af8bcf71f0ab6294aaff91cbed20660ad8b0"
-    sha256 cellar: :any_skip_relocation, monterey:       "5648c60ceaa5c8b19c60840b7845af8bcf71f0ab6294aaff91cbed20660ad8b0"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5648c60ceaa5c8b19c60840b7845af8bcf71f0ab6294aaff91cbed20660ad8b0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d6cf73cbaa8a88fb6772c1c6eb989c874df929846bf36c705a2e2406e4246435"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "68854eea2fc456c4ad3a77ec09939f694c797bb5785d200b41c1e007c906a43d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "68854eea2fc456c4ad3a77ec09939f694c797bb5785d200b41c1e007c906a43d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "68854eea2fc456c4ad3a77ec09939f694c797bb5785d200b41c1e007c906a43d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "e99e1e3fa57c477ca3087020dde0a5620d341d70ddcce86d0d9ec969116daacc"
+    sha256 cellar: :any_skip_relocation, ventura:       "e99e1e3fa57c477ca3087020dde0a5620d341d70ddcce86d0d9ec969116daacc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ed2e3bcd665667d01a8aa278a47c4d7be64c53c4185980887e968e382c7ed684"
   end
 
   depends_on "go" => :build

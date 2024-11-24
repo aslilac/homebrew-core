@@ -1,8 +1,8 @@
 class Rabbitmq < Formula
-  desc "Messaging broker"
+  desc "Messaging and streaming broker"
   homepage "https://www.rabbitmq.com"
-  url "https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.12.4/rabbitmq-server-generic-unix-3.12.4.tar.xz"
-  sha256 "03bc521e664afd8278d40193bb6fbe3d66d6301fc24cbb120bf53fda6613ef36"
+  url "https://github.com/rabbitmq/rabbitmq-server/releases/download/v4.0.4/rabbitmq-server-generic-unix-4.0.4.tar.xz"
+  sha256 "b024b75935bc9b30597b3ea5c5d3846b8a8f887e0f1d5703f00974ea481342f3"
   license "MPL-2.0"
 
   livecheck do
@@ -11,7 +11,7 @@ class Rabbitmq < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "abcba6139e9ec11ebe4ff7cd94845249ed9c737e2f072cd2e7f7837026167ec3"
+    sha256 cellar: :any_skip_relocation, all: "25ecb2a43134c5f1968c6f35dbb83f9b259f26096271202bfb21bc82fc9a6a3d"
   end
 
   depends_on "erlang"
@@ -50,7 +50,12 @@ class Rabbitmq < Formula
                                  "rabbitmq_mqtt,rabbitmq_stream]."
     end
 
-    sbin.install prefix/"plugins/rabbitmq_management-#{version}/priv/www/cli/rabbitmqadmin"
+    rabbitmqadmin = prefix.glob("plugins/rabbitmq_management-*/priv/www/cli/rabbitmqadmin")
+    if (rabbitmqadmin_count = rabbitmqadmin.count) > 1
+      odie "Expected only one `rabbitmqadmin`, got #{rabbitmqadmin_count}"
+    end
+
+    sbin.install rabbitmqadmin
     (sbin/"rabbitmqadmin").chmod 0755
     generate_completions_from_executable(sbin/"rabbitmqadmin", "--bash-completion", shells: [:bash],
                                          base_name: "rabbitmqadmin", shell_parameter_format: :none)
@@ -58,7 +63,8 @@ class Rabbitmq < Formula
 
   def caveats
     <<~EOS
-      Management Plugin enabled by default at http://localhost:15672
+      Management UI: http://localhost:15672
+      Homebrew-specific docs: https://rabbitmq.com/install-homebrew.html
     EOS
   end
 

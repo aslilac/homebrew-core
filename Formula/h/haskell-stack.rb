@@ -1,8 +1,8 @@
 class HaskellStack < Formula
   desc "Cross-platform program for developing Haskell projects"
   homepage "https://haskellstack.org/"
-  url "https://github.com/commercialhaskell/stack/archive/v2.11.1.tar.gz"
-  sha256 "7a3a7e4aca8aef9ab6c081ea553a681844e6dad901c6b36b5e4cacae2fef6d23"
+  url "https://github.com/commercialhaskell/stack/archive/refs/tags/v3.1.1.tar.gz"
+  sha256 "74ad174c55c98f56f5a5ef458f019da5903b19b4fa4857a7b2d4565d8bd0fbac"
   license "BSD-3-Clause"
   head "https://github.com/commercialhaskell/stack.git", branch: "master"
 
@@ -12,40 +12,50 @@ class HaskellStack < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b81fc81d3662235af6f1fed0d1f960fc728ffbd2eaa4e963ba7024227da4435d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b0d96a8ca7778d812662071c191dab3c588138a5327041842edfbd56378ca999"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d4fcc4cf54e777f2358c7c8437101efb72f2b84a0945f9e24bf813b4f4b233ba"
-    sha256 cellar: :any_skip_relocation, ventura:        "95f4fd991821862e3ea548a96a7cd93abeffbc22e0912de8bafec85d22f20d9d"
-    sha256 cellar: :any_skip_relocation, monterey:       "96e78b944ced64a81d399f3770ef55424b9664e541d90d2b07b8647c8862567c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "36bbb67964219186feacbc1860b4430962f2eb7bdae2295f7752e9f8b8fab99c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1a7f98a6502cfd4dac42e044caa745b13a8d06b91f6b994255390ebce8cd50b9"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ebe17a5457cd6aa4667986e50da4c10a2d62e8fada679a826cd9aa6681661a82"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2b6576d6d8ac9f556b439115476020b4bca320dff2d3dea510a05296073d0192"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0306a15e9eac83d5824fe35bd4ac3d56a198f0d3a4afe0149429f1e7a1863fec"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3fd846a3e9489aea4e074b2c4880a8a442b46a2a9ce1025f0d4985cdb1addf68"
+    sha256 cellar: :any_skip_relocation, ventura:       "9c56477a47316be12a676dc6c9b3b733ffa6cba2dd6335fdc8b8f5af10ae31c2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5cc5821f3c34d5b38fc82a5d7a2aaef2d62082848134dd335d6fc7968736563d"
   end
 
   depends_on "cabal-install" => :build
-  depends_on "ghc@9.2" => :build
+  depends_on "ghc@9.8" => :build
 
   uses_from_macos "zlib"
-
-  # All ghc versions before 9.2.1 requires LLVM Code Generator as a backend on
-  # ARM. GHC 8.10.7 user manual recommend use LLVM 9 through 12 and we met some
-  # unknown issue with LLVM 13 before so conservatively use LLVM 12 here.
-  #
-  # References:
-  #   https://downloads.haskell.org/~ghc/8.10.7/docs/html/users_guide/8.10.7-notes.html
-  #   https://gitlab.haskell.org/ghc/ghc/-/issues/20559
-  on_arm do
-    depends_on "llvm@12"
-  end
 
   def install
     # Remove locked dependencies which only work with a single patch version of GHC.
     # If there are issues resolving dependencies, then can consider bootstrapping with stack instead.
     (buildpath/"cabal.project").unlink
+    (buildpath/"cabal.project").write <<~EOS
+      packages: .
+    EOS
 
     system "cabal", "v2-update"
     system "cabal", "v2-install", *std_cabal_v2_args
 
-    bin.env_script_all_files libexec, PATH: "${PATH}:#{Formula["llvm@12"].opt_bin}" if Hardware::CPU.arm?
+    generate_completions_from_executable(bin/"stack", "--bash-completion-script", bin/"stack",
+                                         shells: [:bash], shell_parameter_format: :none)
+    generate_completions_from_executable(bin/"stack", "--fish-completion-script", bin/"stack",
+                                         shells: [:fish], shell_parameter_format: :none)
+    generate_completions_from_executable(bin/"stack", "--zsh-completion-script", bin/"stack",
+                                         shells: [:zsh], shell_parameter_format: :none)
+  end
+
+  def caveats
+    on_macos do
+      on_arm do
+        <<~EOS
+          All GHC versions before 9.2.1 requires LLVM Code Generator as a backend
+          on ARM. If you are using one of those GHC versions with `haskell-stack`,
+          then you may need to install a supported LLVM version and add its bin
+          directory to the PATH.
+        EOS
+      end
+    end
   end
 
   test do

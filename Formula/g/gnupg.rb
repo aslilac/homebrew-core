@@ -1,8 +1,8 @@
 class Gnupg < Formula
   desc "GNU Pretty Good Privacy (PGP) package"
   homepage "https://gnupg.org/"
-  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.4.3.tar.bz2"
-  sha256 "a271ae6d732f6f4d80c258ad9ee88dd9c94c8fdc33c3e45328c4d7c126bd219d"
+  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.4.6.tar.bz2"
+  sha256 "95acfafda7004924a6f5c901677f15ac1bda2754511d973bb4523e8dd840e17a"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,14 +11,12 @@ class Gnupg < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_ventura:  "b36cece245a9b2f401fb25f5a8889e03458b76aca9f7bdaf95bac90fa067fb50"
-    sha256 arm64_monterey: "8951a873559c55131f5cf620528039653b1656fb8f428f9df4755230b7b8737c"
-    sha256 arm64_big_sur:  "51178a0ebf5071ff97acfca894ff19d2563757b06db45cc639cf565dcfa28540"
-    sha256 ventura:        "92c5de78a69010ffa7c30578f08b7443bde2906d553e6e225be131e34d983ad0"
-    sha256 monterey:       "d9a628e366f7373ef3aa576f03b6cbba0671c77e3a2606796d3e6b05d6c7f447"
-    sha256 big_sur:        "0f7278b21edfbcbc9d7350f8231eead52164283de936433ff85aea4eeff26831"
-    sha256 x86_64_linux:   "806bf7a22e94d2c83bd19278a23cf7988074e86b5fd4cd0e6d1e031b9fc96fc0"
+    sha256 arm64_sequoia: "504f8f29547995be5fef21f91769f05e1b2e317c424d3d481d3e1c69561f93b6"
+    sha256 arm64_sonoma:  "5a23f8f2c150986e2e727a25bc42c12c5f89455bc27a213dcfa98289df377bf2"
+    sha256 arm64_ventura: "31f920052dda3ede08d6a75b56c7b38cdb41a0964ab18305ebfc70ac55bbcc37"
+    sha256 sonoma:        "e71ab7138942ea33cac896389aa8e82a4583d0ac5c1691d816e3671bd9327e7b"
+    sha256 ventura:       "e6106c117ccdceeadbad2f16a6ddb551e93b08be6c60e9fc5af615ec23c26e3d"
+    sha256 x86_64_linux:  "861b48d7bc2aa8e2a81f6c300d425ff2453ffb5bc948bc58cf1bdf1d93bd13ec"
   end
 
   depends_on "pkg-config" => :build
@@ -29,11 +27,11 @@ class Gnupg < Formula
   depends_on "libksba"
   depends_on "libusb"
   depends_on "npth"
-  depends_on "openldap"
   depends_on "pinentry"
   depends_on "readline"
 
   uses_from_macos "bzip2"
+  uses_from_macos "openldap"
   uses_from_macos "sqlite", since: :catalina
   uses_from_macos "zlib"
 
@@ -41,16 +39,22 @@ class Gnupg < Formula
     depends_on "gettext"
   end
 
+  # Backport fix for missing unistd.h
+  patch do
+    url "https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=patch;h=1d5cfa9b7fd22e1c46eeed5fa9fed2af6f81d34f"
+    sha256 "610d0c50004e900f1310f58255fbf559db641edf22abb86a6f0eb6c270959a5d"
+  end
+
   def install
     libusb = Formula["libusb"]
     ENV.append "CPPFLAGS", "-I#{libusb.opt_include}/libusb-#{libusb.version.major_minor}"
 
     mkdir "build" do
-      system "../configure", *std_configure_args,
-                             "--disable-silent-rules",
-                             "--sysconfdir=#{etc}",
+      system "../configure", "--disable-silent-rules",
                              "--enable-all-tests",
-                             "--with-pinentry-pgm=#{Formula["pinentry"].opt_bin}/pinentry"
+                             "--sysconfdir=#{etc}",
+                             "--with-pinentry-pgm=#{Formula["pinentry"].opt_bin}/pinentry",
+                             *std_configure_args
       system "make"
       system "make", "check"
       system "make", "install"
@@ -60,9 +64,9 @@ class Gnupg < Formula
     # https://dev.gnupg.org/T5415#145864
     if OS.mac?
       # write to buildpath then install to ensure existing files are not clobbered
-      (buildpath/"scdaemon.conf").write <<~EOS
+      (buildpath/"scdaemon.conf").write <<~CONF
         disable-ccid
-      EOS
+      CONF
       pkgetc.install "scdaemon.conf"
     end
   end
@@ -73,7 +77,7 @@ class Gnupg < Formula
   end
 
   test do
-    (testpath/"batch.gpg").write <<~EOS
+    (testpath/"batch.gpg").write <<~GPG
       Key-Type: RSA
       Key-Length: 2048
       Subkey-Type: RSA
@@ -83,7 +87,8 @@ class Gnupg < Formula
       Expire-Date: 1d
       %no-protection
       %commit
-    EOS
+    GPG
+
     begin
       system bin/"gpg", "--batch", "--gen-key", "batch.gpg"
       (testpath/"test.txt").write "Hello World!"

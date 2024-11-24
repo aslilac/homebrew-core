@@ -3,53 +3,59 @@ class Urh < Formula
 
   desc "Universal Radio Hacker"
   homepage "https://github.com/jopohl/urh"
-  url "https://files.pythonhosted.org/packages/1c/20/45c108e7c89db910d68b8cccd988603789b1886acb94f79a716b89dffa19/urh-2.9.4.tar.gz"
-  sha256 "da5ee5acf9af62a8261e35cf2f2e40c37dc0898f0d84a3efd5f4ea21e5fb9ced"
+  url "https://files.pythonhosted.org/packages/d8/dc/a6dcf5686e980530b23bc16936cd9c879c50da133f319f729da6d20bd95b/urh-2.9.6.tar.gz"
+  sha256 "0dee42619009361e8f5f54d48f31e1c6cf24b171c773dd38f99a34111a0945e1"
   license "GPL-3.0-only"
+  revision 1
   head "https://github.com/jopohl/urh.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "8f11a16384870bcfb788b151fe6a5971083100cd6351cdfab7a363fd7347e184"
-    sha256 cellar: :any,                 arm64_monterey: "2b6e639d82196f76d76781d2122419986c9e643dcb4eded2e3432d5ee00fcf74"
-    sha256 cellar: :any,                 arm64_big_sur:  "7b1121f0d2d9780940c50cdf50482b13fe96ae7f6cab38462569ed19094c1b0e"
-    sha256 cellar: :any,                 ventura:        "94e865b02d6809295da8755a8186051648e7bafa15cac1b5a26aad83317d9bdc"
-    sha256 cellar: :any,                 monterey:       "2ec3e3b3e9978326034a42efdb988b6cfdf4c4253ea26eb49a6c9d21787f2bf3"
-    sha256 cellar: :any,                 big_sur:        "48352e9abdfa048dbcc5b0cb39aef14fd40d5d4fdcbadc7b40db3e95c0606be3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c9c5389cf8319dbc575ef300f37c57f982dddc2e77f7563010b3de395eae935d"
+    sha256 cellar: :any,                 arm64_sequoia:  "f4c830b4dcadd93a8cb54abe61279a9d4c6498b519422fe51da78cafbf036e0d"
+    sha256 cellar: :any,                 arm64_sonoma:   "9cf0c985be519cb7a5f1451f28e242d9505aecd69e45f24e6ea5ee5348c13421"
+    sha256 cellar: :any,                 arm64_ventura:  "eb11c4f95f491213e504f5b60504b12a828caa585be5c0aec76feeca62f57ab5"
+    sha256 cellar: :any,                 arm64_monterey: "750206ac26d982f439f424f847ba0836fe8a5dcc38ee6d11365bd4c13515c371"
+    sha256 cellar: :any,                 sonoma:         "c0a2928d954e4db4233ec61cd01b51dd53a97ce5378064645da014ba0809cc2a"
+    sha256 cellar: :any,                 ventura:        "add9e8fa22725e8821e914840d7d9fb7d7264a759aa938ad71e79518f753eeee"
+    sha256 cellar: :any,                 monterey:       "d7ecf3dccb8741f280378988e79477a37b78eb6493f50cf4688582f24c697abd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c7249ef337f50461015896cc171db6501f3ca2b3d0b9e0664a2c32ba51fb7629"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "hackrf"
-  depends_on "libcython"
   depends_on "numpy"
   depends_on "pyqt@5"
-  depends_on "python@3.11"
+  depends_on "python@3.12"
+
+  resource "cython" do
+    url "https://files.pythonhosted.org/packages/2a/97/8cc3fe7c6de4796921236a64d00ca8a95565772e57f0d3caae68d880b592/Cython-0.29.37.tar.gz"
+    sha256 "f813d4a6dd94adee5d4ff266191d1d95bf6d4164a4facc535422c021b2504cfb"
+  end
 
   resource "psutil" do
-    url "https://files.pythonhosted.org/packages/3d/7d/d05864a69e452f003c0d77e728e155a89a2a26b09e64860ddd70ad64fb26/psutil-5.9.4.tar.gz"
-    sha256 "3d7f9739eb435d4b1338944abe23f49584bde5395f27487d2ee25ad9a8774a62"
+    url "https://files.pythonhosted.org/packages/90/c7/6dc0a455d111f68ee43f27793971cf03fe29b6ef972042549db29eec39a2/psutil-5.9.8.tar.gz"
+    sha256 "6be126e3225486dff286a8fb9a06246a5253f4c7c53b475ea5f5ac934e64194c"
+  end
+
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/4d/5b/dc575711b6b8f2f866131a40d053e30e962e633b332acf7cd2c24843d83d/setuptools-69.2.0.tar.gz"
+    sha256 "0ff4183f8f42cd8fa3acea16c45205521a4ef28f73c6391d8a25e92893134f2e"
   end
 
   def install
-    python3 = "python3.11"
-
-    # Enable finding cython, which is keg-only
-    site_packages = Language::Python.site_packages(python3)
-    pth_contents = <<~EOS
-      import site; site.addsitedir('#{Formula["libcython"].opt_libexec/site_packages}')
-    EOS
-    (libexec/site_packages/"homebrew-libcython.pth").write pth_contents
-
-    virtualenv_install_with_resources
+    venv = virtualenv_create(libexec, "python3.12")
+    venv.pip_install resources
+    # Need to disable build isolation and install Setuptools since `urh` only
+    # has a setup.py which assumes Cython and Setuptools are already installed
+    venv.pip_install_and_link(buildpath, build_isolation: false)
   end
 
   test do
-    (testpath/"test.py").write <<~EOS
+    (testpath/"test.py").write <<~PYTHON
       from urh.util.GenericCRC import GenericCRC;
       c = GenericCRC();
       expected = [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0]
       assert(expected == c.crc([0, 1, 0, 1, 1, 0, 1, 0]).tolist())
-    EOS
+    PYTHON
     system libexec/"bin/python3", "test.py"
 
     # test command-line functionality

@@ -1,19 +1,18 @@
 class Autocorrect < Formula
   desc "Linter and formatter to improve copywriting, correct spaces, words between CJK"
-  homepage "https://github.com/huacnlee/autocorrect"
-  url "https://github.com/huacnlee/autocorrect/archive/v2.8.4.tar.gz"
-  sha256 "e176fe00e2890e499e48fec4412142f2f3f4f799ce6d348b5492d65759b1d2f8"
+  homepage "https://huacnlee.github.io/autocorrect/"
+  url "https://github.com/huacnlee/autocorrect/archive/refs/tags/v2.13.0.tar.gz"
+  sha256 "4848b672a779a67c0649098ba5ff58cd89dd69bd3bc8bda159889190971ced76"
   license "MIT"
   head "https://github.com/huacnlee/autocorrect.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "94ffccd8e930262e010233ccf5b2d2ee10171e61cfd8fedfa5b572294283592e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1ecb551c917d3fa363c7af8819dc034f9886608e869ec86bbe1b58bbd7e080c8"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "88789d8d03bba5e3b3f11c81a85a9e61b8d7d86ab5031d728e730b55da4b0c29"
-    sha256 cellar: :any_skip_relocation, ventura:        "a53ae80ce71ee7afced96ea08945857e455469978ff9460a9a61afd7bb1789ea"
-    sha256 cellar: :any_skip_relocation, monterey:       "257e2e27727c4d9b009ce2a603193aecc04b0689f9d7bb8f1112018ee924275f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "94d82168bae776874f0e2bcbf103389c536edb93c1baa323109ab4b0881fd4be"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a828d198d2ca2ce1e9cc1ef4e66d477a969a7c04b8d33827eb0756477ce72083"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "126c4443939b2cef7e021ad75e5d804fd50dd7774838fc8b0942c4504a5e3d60"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "044aa971fccd7031d76d25d136985458c48ced2783896ce44f5925de0b042df1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "770f65cacce8ca073d71dbd8ae467a4ca3eee7534fe3bc0344501d71c804864c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "9e7c3abed394d0786f1f03f30943db6a0b488a7bd28fc9db62645a878ed7135c"
+    sha256 cellar: :any_skip_relocation, ventura:       "38a657d539fef5f0f2e0e09adabbc41ed57a8eb16fcbcd9a33a00b8814521315"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5123a57f0663c808a602c82aa4e4055c160e06270dbc28b2637daf2c1c840261"
   end
 
   depends_on "rust" => :build
@@ -25,6 +24,8 @@ class Autocorrect < Formula
   test do
     (testpath/"autocorrect.md").write "Hello世界"
     out = shell_output("#{bin}/autocorrect autocorrect.md").chomp
-    assert_equal "Hello 世界", out
+    assert_match "Hello 世界", out
+
+    assert_match version.to_s, shell_output("#{bin}/autocorrect --version")
   end
 end

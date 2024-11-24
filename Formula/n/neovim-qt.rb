@@ -1,39 +1,31 @@
 class NeovimQt < Formula
-  desc "Neovim GUI, in Qt5"
+  desc "Neovim GUI, in Qt"
   homepage "https://github.com/equalsraf/neovim-qt"
-  url "https://github.com/equalsraf/neovim-qt/archive/v0.2.17.tar.gz"
-  sha256 "ac538c2e5d63572dd0543c13fafb4d428e67128ea676467fcda68965b2aacda1"
+  url "https://github.com/equalsraf/neovim-qt/archive/refs/tags/v0.2.18.tar.gz"
+  sha256 "b1e1e019946ecb106b3aea8e35fc6e367d2efce44ca1c1599a2ccdfb35a28635"
   license "ISC"
   head "https://github.com/equalsraf/neovim-qt.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_ventura:  "ba069626e6a18a2d6a4d7c53b1b6807ca7b47ed4fb11253c747183f13715406d"
-    sha256 cellar: :any,                 arm64_monterey: "c43685139264ca10c57b80a7328340f9036c2c07fca44f507104cea67274d9e4"
-    sha256 cellar: :any,                 arm64_big_sur:  "e35446a4b5b00b7b82387c523fbf229333426707a17a42c4016dfa7862681d2e"
-    sha256 cellar: :any,                 ventura:        "504ec4239004f831968b089d78a28c7633210c1de1eacbce2281c0ec8e6a71df"
-    sha256 cellar: :any,                 monterey:       "937fa07572c5bc168106b2bdd8d47d168ed722aa6c1ca99aa12514312abefe90"
-    sha256 cellar: :any,                 big_sur:        "3cb5e4c689e23d40c5c397fb11292bd1efceb5aac51a08d42c24e2247b584996"
-    sha256 cellar: :any,                 catalina:       "850cf1963c335f59b923d7085ed76d004e55ba9c058303f88886c007b8b7bff7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "91244720218a0ab7daeaa8a2e91e287aa1c635c33f513bf898006405b671badf"
+    rebuild 2
+    sha256 cellar: :any,                 arm64_sonoma:   "cbc794e2861dfc0445333cd7c0015d486a2bc207fdc30c29093c3f798cd4722e"
+    sha256 cellar: :any,                 arm64_ventura:  "e53af8f8ce0d65b0b5ea14544fe07be12e5b560a07f045479c8a9db96be46fa9"
+    sha256 cellar: :any,                 arm64_monterey: "59268e9d0fce3668e5f97f820c3b3389f371b31cb61a7afd5fb5c8bfe6bf80d6"
+    sha256 cellar: :any,                 sonoma:         "8ec8250d0dcacab51744c6c96c69dba8a5a7d076f37caebed58893d2961fd098"
+    sha256 cellar: :any,                 ventura:        "f2faacba3619337ebe82f43d0183bededa813ac608ffde74a5b6db7bfe578e71"
+    sha256 cellar: :any,                 monterey:       "e7c53a22b12dc61f48db137534e077965917f548b337f9b6ad0bf6ad51b44ebc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c72d8cf5d5aca2b06de38325c2236688aded8c62ccfdc8e8c4c4a8e80abedfb9"
   end
 
   depends_on "cmake" => :build
   depends_on "msgpack"
   depends_on "neovim"
-  depends_on "qt@5"
+  depends_on "qt"
 
   fails_with gcc: "5"
 
-  # Fix finding `msgpack`
-  # https://github.com/equalsraf/neovim-qt/pull/1054
-  patch do
-    url "https://github.com/equalsraf/neovim-qt/commit/6831b54729e0ec812a366e01fa98483114f1cf49.patch?full_index=1"
-    sha256 "9bd6dc3adc1ddebed25aea00396eb4c79dd31f72d5f7e62c24d845db19ffe494"
-  end
-
   def install
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, "-DUSE_SYSTEM_MSGPACK=ON"
+    system "cmake", "-S", ".", "-B", "build", "-DUSE_SYSTEM_MSGPACK=ON", "-DWITH_QT=Qt6", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 
@@ -66,8 +58,8 @@ class NeovimQt < Formula
     system "nvim", *nvim_opts, "--remote", testfile
     system "nvim", *nvim_opts, "--remote-send", testcommand
     system "nvim", *nvim_opts, "--remote-send", ":w<CR>"
-    assert_equal testexpected, testfile.read.chomp
     system "nvim", "--server", testserver, "--remote-send", ":q<CR>"
+    assert_equal testexpected, testfile.read.chomp
     Process.wait nvimqt_pid
   end
 end

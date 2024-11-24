@@ -1,31 +1,33 @@
 class Yosys < Formula
   desc "Framework for Verilog RTL synthesis"
   homepage "https://yosyshq.net/yosys/"
-  url "https://github.com/YosysHQ/yosys/archive/yosys-0.32.tar.gz"
-  sha256 "07b168491fa103a57231483a80f8e03545d0c957672e96b73d4eb9c8c8c43930"
+  url "https://github.com/YosysHQ/yosys/releases/download/0.47/yosys.tar.gz"
+  sha256 "76038d3de2768567007e7c31995b17c888c16da1cf571d8a24b4c524d3eddfdf"
   license "ISC"
-  head "https://github.com/YosysHQ/yosys.git", branch: "master"
+  revision 1
+  head "https://github.com/YosysHQ/yosys.git", branch: "main"
 
   bottle do
-    sha256 arm64_ventura:  "ed7f7b449b42f49d7e2b18372dd9aea4de47fc800dc9433bc80014feb11b5f4e"
-    sha256 arm64_monterey: "0e9d3904135b0e40e4819901bbb22d5b700de1779ae8db2fd5bdd9d4364a13c8"
-    sha256 arm64_big_sur:  "f5298c9467e596907908af2a874f8a4c31d99587407ef89116d2ed0cbcb34b32"
-    sha256 ventura:        "0288f6a7977ac822f00c8675f65f0c02f613790912d047c3d57b2457b5811632"
-    sha256 monterey:       "1e95b72c5a446311d7b962c63b415fb17680dcdd5d99acc968f4071b48f5fdbe"
-    sha256 big_sur:        "21a6ce060f38728124bb3dcb22d632ecf0eaf2b3c909b88dcf5c37baefda13e0"
-    sha256 x86_64_linux:   "93333c25d0c6328d452744d3bfb1b9d5a5a1888d1669f9870d695f0406b879f7"
+    sha256 arm64_sequoia: "c4fd9b8235e9731f3668ea61211ad842e664afb18ed75dc6bac2590fa98d4c17"
+    sha256 arm64_sonoma:  "38859f08c0a027e47339c1729f30f396d47633e65652e754f5fc2a8a81d9b517"
+    sha256 arm64_ventura: "c4dd24e07cc8d45a89a0930543b4e94a50c2fa1b4e3d21b91618c45ff17c1ee2"
+    sha256 sonoma:        "72ceca73083b1a82983708cf230905be6a4c8609b4782e86639536231cbf226d"
+    sha256 ventura:       "8177facddc5ee351c418dfb2de1d198a24f61d75a5370d6ed166d002ec2ea696"
+    sha256 x86_64_linux:  "a2a220095e32260c05187ad03ca40b3c67e67ee0a470b3fba5b2896aac9200fb"
   end
 
   depends_on "bison" => :build
-  depends_on "pkg-config" => :build
-  depends_on "python@3.11"
+  depends_on "pkgconf" => :build
   depends_on "readline"
 
   uses_from_macos "flex"
   uses_from_macos "libffi", since: :catalina
+  uses_from_macos "python"
   uses_from_macos "tcl-tk"
+  uses_from_macos "zlib"
 
   def install
+    ENV.append "LINKFLAGS", "-L#{Formula["readline"].opt_lib}"
     system "make", "install", "PREFIX=#{prefix}", "PRETTY=0"
   end
 

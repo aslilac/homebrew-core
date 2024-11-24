@@ -1,20 +1,18 @@
 class Qthreads < Formula
   desc "Lightweight locality-aware user-level threading runtime"
-  homepage "https://github.com/Qthreads/qthreads"
-  url "https://github.com/Qthreads/qthreads/archive/refs/tags/1.18.tar.gz"
-  sha256 "c2d1ba85533dc980ff61e422c9b7531417e8884c3a1a701d59229c0e6956594c"
+  homepage "https://www.sandia.gov/qthreads/"
+  url "https://github.com/sandialabs/qthreads/releases/download/1.21/qthreads-1.21.tar.gz"
+  sha256 "428983e7423d10ca9be2830c3b3935516286b160694d1d054ed76ae12c510171"
   license "BSD-3-Clause"
-  head "https://github.com/Qthreads/qthreads.git", branch: "main"
+  head "https://github.com/sandialabs/qthreads.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "5d9d7bd839e5ea29c6e9907907d153388c37f6011242c241ca650f19a6b75e73"
-    sha256 cellar: :any,                 arm64_monterey: "20e1c3bfd839efc644db0d69c98d0d58a9fce71b4a2830d054d4792d5180fc92"
-    sha256 cellar: :any,                 arm64_big_sur:  "a584249b31c678d1a723e3c2dc78ce455a76275baef8e9d3c59e5d624f0f5369"
-    sha256 cellar: :any,                 ventura:        "847863371988e92cc7e6d1290db352f9dcdf7847c5baeca4fe18bf02d403be57"
-    sha256 cellar: :any,                 monterey:       "b60ec614ce7bd7cfc835a084e1aa371efa7bbf3790f84f8942e5933f4b77fd27"
-    sha256 cellar: :any,                 big_sur:        "0523493be01de6b4e4159ac430693ce59919d3970349643b8b9278bbe1fe6054"
-    sha256 cellar: :any,                 catalina:       "c4f9b57d8bd7fb1536aa668317d3fc5cff24ca3db5d78a8d52f26f80431277fd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "083a3510caf257af5108d87e1d23cc036c5e65e3263487d68ee1afb41d6fa6bf"
+    sha256 cellar: :any,                 arm64_sequoia: "96285a04844a48e8d9fb1b42603028838283daa73d0f128b2f5693ae26b0034f"
+    sha256 cellar: :any,                 arm64_sonoma:  "e4c8067e01b5b13796c266aadef6f0b87a55eb98074f491213b4278402a84eec"
+    sha256 cellar: :any,                 arm64_ventura: "d6f302754331981d1eb27dc3171ac6d959abf587c8fa73f9bcf43314a1e9b979"
+    sha256 cellar: :any,                 sonoma:        "350662c7facb3943957870c0769b1442c051f824512276c15ae1171eaf69d49d"
+    sha256 cellar: :any,                 ventura:       "0e23710563e3ebdb83505cd7817dada31a3aafd2fa9460aace926dc022eefabb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c1d37bb159cb706c38bf76372026532407eba1e1f93702147710c0d5ecffae32"
   end
 
   depends_on "autoconf" => :build
@@ -23,10 +21,7 @@ class Qthreads < Formula
 
   def install
     system "./autogen.sh"
-    system "./configure", "--prefix=#{prefix}",
-                          "--libdir=#{lib}",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make"
     system "make", "install"
     pkgshare.install "userguide/examples"

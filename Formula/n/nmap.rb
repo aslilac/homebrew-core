@@ -1,21 +1,10 @@
 class Nmap < Formula
   desc "Port scanning utility for large networks"
   homepage "https://nmap.org/"
+  url "https://nmap.org/dist/nmap-7.95.tar.bz2"
+  sha256 "e14ab530e47b5afd88f1c8a2bac7f89cd8fe6b478e22d255c5b9bddb7a1c5778"
   license :cannot_represent
-  revision 1
   head "https://svn.nmap.org/nmap/"
-
-  # TODO: Remove stable block in next release.
-  stable do
-    url "https://nmap.org/dist/nmap-7.94.tar.bz2"
-    sha256 "d71be189eec43d7e099bac8571509d316c4577ca79491832ac3e1217bc8f92cc"
-
-    # Fix build with Lua 5.4. Remove in next release.
-    patch do
-      url "https://github.com/nmap/nmap/commit/b9263f056ab3acd666d25af84d399410560d48ac.patch?full_index=1"
-      sha256 "088d426dc168b78ee4e0450d6b357deef13e0e896b8988164ba2bb8fd8b8767c"
-    end
-  end
 
   livecheck do
     url "https://nmap.org/dist/"
@@ -23,14 +12,14 @@ class Nmap < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_ventura:  "83d8ed27f97a962bc7c291d62f58fc256842fbc362ec864842ca95c7d33d30f2"
-    sha256 arm64_monterey: "330b30825ed94ab28251a49f4bf7c29b787a9e110874d62bdadb7bbed3e7e5ad"
-    sha256 arm64_big_sur:  "cda65073fe14ec68918386c3e59e0eda28118c24a36f935f714a4b281f4aacd1"
-    sha256 ventura:        "769500f197813a9f2314106dde778efe0169d074655ce7ff7d16e210cffd0db2"
-    sha256 monterey:       "83003d39656e8a11fe33d73acaa73711b31517de04420ab1f76070e5c5557242"
-    sha256 big_sur:        "f8d1270f7cf1ff7c0fff44cbc1dd18757bb3fb930e89c94df4a3eab5b82b4090"
-    sha256 x86_64_linux:   "dc5baca48d808491591083b6978fb3b94801fcca148f4360ced4799b5303b13a"
+    sha256 arm64_sequoia:  "79e86674984301bb84449e67ca155af2009dba475e4609c6671dc73e7112961c"
+    sha256 arm64_sonoma:   "cdafb01815d04428742bca04ecd329522933c578bcac7c7210fc92bd7e36cedf"
+    sha256 arm64_ventura:  "948c11d0d852890c2d331674ceee73615fd645daee551b40351045eef48b4411"
+    sha256 arm64_monterey: "2b5079654dc3ab7d015d4eb8aa17a127acbf96a24fca651c7bcaeeb7e0f68d9e"
+    sha256 sonoma:         "773bf1c00d07c15f837efeffe68b2c0606fa0dae27aaa23e830d340b4cc09706"
+    sha256 ventura:        "3273343599a31092f05c677a803be118332eb39fa2c2f0defc4a68883d19be5e"
+    sha256 monterey:       "9ed369a7f81ba3c7c0396e0645ac77173dfb31ddba16cbcfa8faece61a29e2af"
+    sha256 x86_64_linux:   "6dd2f9435f92feb161180cca78a46c323c78e252f4107a709c5355e275516422"
   end
 
   depends_on "liblinear"
@@ -38,10 +27,11 @@ class Nmap < Formula
   # Check supported Lua version at https://github.com/nmap/nmap/tree/master/liblua.
   depends_on "lua"
   depends_on "openssl@3"
-  depends_on "pcre"
+  depends_on "pcre2"
 
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
+  uses_from_macos "libpcap"
   uses_from_macos "zlib"
 
   conflicts_with "cern-ndiff", "ndiff", because: "both install `ndiff` binaries"
@@ -49,17 +39,23 @@ class Nmap < Formula
   def install
     ENV.deparallelize
 
+    libpcap_path = if OS.mac?
+      MacOS.sdk_path/"usr/"
+    else
+      Formula["libpcap"].opt_prefix
+    end
+
     args = %W[
-      --prefix=#{prefix}
       --with-liblua=#{Formula["lua"].opt_prefix}
-      --with-libpcre=#{Formula["pcre"].opt_prefix}
+      --with-libpcre=#{Formula["pcre2"].opt_prefix}
       --with-openssl=#{Formula["openssl@3"].opt_prefix}
+      --with-libpcap=#{libpcap_path}
       --without-nmap-update
       --disable-universal
       --without-zenmap
     ]
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make" # separate steps required otherwise the build fails
     system "make", "install"
 

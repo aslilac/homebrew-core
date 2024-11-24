@@ -1,15 +1,22 @@
 class ApacheSpark < Formula
   desc "Engine for large-scale data processing"
   homepage "https://spark.apache.org/"
-  url "https://dlcdn.apache.org/spark/spark-3.4.1/spark-3.4.1-bin-hadoop3.tgz"
-  mirror "https://archive.apache.org/dist/spark/spark-3.4.1/spark-3.4.1-bin-hadoop3.tgz"
-  version "3.4.1"
-  sha256 "de24e511aebd95e7408c636fde12d19391f57a33730fe30735d6742180e338d4"
+  url "https://dlcdn.apache.org/spark/spark-3.5.3/spark-3.5.3-bin-hadoop3.tgz"
+  mirror "https://archive.apache.org/dist/spark/spark-3.5.3/spark-3.5.3-bin-hadoop3.tgz"
+  version "3.5.3"
+  sha256 "173651a8a00f5bf0ee27b74d817e0e52eed9daa49fd66d59718994974d1d367d"
   license "Apache-2.0"
   head "https://github.com/apache/spark.git", branch: "master"
 
+  # The download page creates file links using JavaScript, so we identify
+  # versions within the related JS file.
+  livecheck do
+    url "https://spark.apache.org/js/downloads.js"
+    regex(/addRelease\(.*?["']v?(\d+(?:\.\d+)+)["']/i)
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "f4335fa90cf2693e2d6886e5b32fa24c0b5aef301c9232b05ab0411ea7f5e795"
+    sha256 cellar: :any_skip_relocation, all: "57a6975ec946b5e729579e522a0c5fd733a3f951c3ac47b0954805c573ffad13"
   end
 
   depends_on "openjdk@17"
@@ -18,10 +25,10 @@ class ApacheSpark < Formula
     # Rename beeline to distinguish it from hive's beeline
     mv "bin/beeline", "bin/spark-beeline"
 
-    rm_f Dir["bin/*.cmd"]
+    rm(Dir["bin/*.cmd"])
     libexec.install Dir["*"]
     bin.install Dir[libexec/"bin/*"]
-    bin.env_script_all_files(libexec/"bin", JAVA_HOME: Formula["openjdk@17"].opt_prefix)
+    bin.env_script_all_files(libexec/"bin", JAVA_HOME: Language::Java.overridable_java_home_env("17")[:JAVA_HOME])
   end
 
   test do

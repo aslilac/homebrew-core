@@ -1,8 +1,8 @@
 class GitCredentialLibsecret < Formula
   desc "Git helper for accessing credentials via libsecret"
   homepage "https://git-scm.com"
-  url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.42.0.tar.xz"
-  sha256 "3278210e9fd2994b8484dd7e3ddd9ea8b940ef52170cdb606daa94d887c93b0d"
+  url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.47.0.tar.xz"
+  sha256 "1ce114da88704271b43e027c51e04d9399f8c88e9ef7542dae7aebae7d87bc4e"
   license "GPL-2.0-or-later"
   head "https://github.com/git/git.git", branch: "master"
 
@@ -11,18 +11,22 @@ class GitCredentialLibsecret < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "28f0cb50d9d232d8d08f163b3e9e5bb09daaf4c7c0a20d0f62f2d4746140f657"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bae03b9e7c2999c12ba7d94b14e475dd88043ceb151e00546e43a668bebaf1e6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bbdfff905373151e25d49cb34cd682fc873f0df9792b1a47c3ad393a03c737aa"
-    sha256 cellar: :any_skip_relocation, ventura:        "001a599c5e79e05253f9314c4ff95db40b5e8f4948291f89196a4c678f012bff"
-    sha256 cellar: :any_skip_relocation, monterey:       "8fef0a7f29ffa32a6d8b289b67eba7316436f44a785e85e2aee45b85fcbc2133"
-    sha256 cellar: :any_skip_relocation, big_sur:        "1729f8c0f40937c777b266705773e25a08cfca5449cf5175c0824991969571f5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "482369dbddd23ee26d8db4b11266b90c8d4f858ef523bfb1daf59843a1a4a660"
+    sha256 cellar: :any,                 arm64_sequoia: "88e0d91301c837f8808d210b1f7431809e4bc8a5d53cb96ba69d9bbf759f46ba"
+    sha256 cellar: :any,                 arm64_sonoma:  "2c80204926090116526405f930b1692ef9057c3cae310d5457e57bd13e692cbb"
+    sha256 cellar: :any,                 arm64_ventura: "3edd3bb5089bde73907eab142668053348fa326a771422c1b59c4b711dcdffa0"
+    sha256 cellar: :any,                 sonoma:        "228d185f8b3a6e020d48d5635d9c92afe61ef64391665f152fb9618f37238680"
+    sha256 cellar: :any,                 ventura:       "c630c376327c88a1f2704f3236142be6bd09ba458c538a3c6b109d85e853838e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4242a9cda0a3878c3cd561f37d0d37f5d91724bb54a10aba21aa2844a3900309"
   end
 
   depends_on "pkg-config" => :build
+
   depends_on "glib"
   depends_on "libsecret"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   def install
     cd "contrib/credential/libsecret" do
@@ -37,10 +41,12 @@ class GitCredentialLibsecret < Formula
       username=Homebrew
       password=123
     EOS
+
     output = <<~EOS
       username=Homebrew
       password=123
     EOS
+
     assert_equal output, pipe_output("#{bin}/git-credential-libsecret get", input, 1)
   end
 end

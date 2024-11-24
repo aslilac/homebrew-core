@@ -1,8 +1,8 @@
 class Imagemagick < Formula
   desc "Tools and libraries to manipulate images in many formats"
   homepage "https://imagemagick.org/index.php"
-  url "https://imagemagick.org/archive/releases/ImageMagick-7.1.1-15.tar.xz"
-  sha256 "c8589ea233f678b0474daaba19a55ce783b52b25495fb5ba93ac1d377f65bb2f"
+  url "https://imagemagick.org/archive/releases/ImageMagick-7.1.1-41.tar.xz"
+  sha256 "3de1a21654918c96f36de3d080dd8cf3f3d41515267db4c7a9e4b64e9dc646d8"
   license "ImageMagick"
   head "https://github.com/ImageMagick/ImageMagick.git", branch: "main"
 
@@ -12,19 +12,20 @@ class Imagemagick < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "c1b051269e7c5a9b4bfca542307408d1199feb0b0e72ed492adff021e0f2629d"
-    sha256 arm64_monterey: "8b9a5fe2feb63d9485d52af41d6b243f8758baf534922f12050c6ceb56771eaa"
-    sha256 arm64_big_sur:  "e946788f8ded90196ed797a6b31f97799475b7f3da97254246e5e37d70dd9fe7"
-    sha256 ventura:        "6b574b6d6bdbd5fd8194d60850f01f4efde6b8cdc472f980fee56c28dbee380b"
-    sha256 monterey:       "dac2130d10eaeefb3edc54f9171190a5583e341a17da4de65a85ebc99806fb7b"
-    sha256 big_sur:        "9bf5c7b8737396ff8099d8777b3bad89cb57ece50ffa0fde079c1936ec9608c2"
-    sha256 x86_64_linux:   "2900bf207487d6d14afcf3c539680de99f28283c02295f71f30d4fb21b26e585"
+    sha256 arm64_sequoia: "c32215fc6f3a7a80a28abb0ced846f1d153430afd2ef29f76da2711286ea11c2"
+    sha256 arm64_sonoma:  "f31c1fce6a79afe9a562b1441923468e796ffd97a34334bde017da8e7caf1e22"
+    sha256 arm64_ventura: "1176c7fd9a10853d07a56c63bd0bccc129c0b4f08770a218bcadfe991d8c891b"
+    sha256 sonoma:        "20ebd3c46ea9ae687371bc8cd40c7787c948f8039002aa91f50859f6d17273a5"
+    sha256 ventura:       "d25b3ff7382e43150b1832527b952339e636de6d69b250a4f18370d2f7f588b8"
+    sha256 x86_64_linux:  "0cd399334918d6af885294f07c50e90baf9a1b4cddc5a2133bb6e6f8a84455db"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
+  depends_on "fontconfig"
   depends_on "freetype"
   depends_on "ghostscript"
   depends_on "jpeg-turbo"
+  depends_on "jpeg-xl"
   depends_on "libheif"
   depends_on "liblqr"
   depends_on "libpng"
@@ -42,11 +43,15 @@ class Imagemagick < Formula
   uses_from_macos "zlib"
 
   on_macos do
+    depends_on "gettext"
+    depends_on "glib"
+    depends_on "imath"
     depends_on "libomp"
   end
 
   on_linux do
     depends_on "libx11"
+    depends_on "libxext"
   end
 
   skip_clean :la
@@ -90,7 +95,7 @@ class Imagemagick < Formula
       ]
     end
 
-    system "./configure", *std_configure_args, *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

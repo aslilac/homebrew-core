@@ -2,9 +2,9 @@ class PhpAT81 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.1.22.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.1.22.tar.xz"
-  sha256 "9ea4f4cfe775cb5866c057323d6b320f3a6e0adb1be41a068ff7bfec6f83e71d"
+  url "https://www.php.net/distributions/php-8.1.31.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.1.31.tar.xz"
+  sha256 "c4f244d46ba51c72f7d13d4f66ce6a9e9a8d6b669c51be35e01765ba58e7afca"
   license "PHP-3.01"
 
   livecheck do
@@ -13,20 +13,19 @@ class PhpAT81 < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "580bf653bac5d8a2386a7e32364216f25853689945ce61baf25b2be89713c041"
-    sha256 arm64_monterey: "e8593e73f729145cc4a547ee9f0072664de9bd45324aad0116aacf2e56862294"
-    sha256 arm64_big_sur:  "468f861cb9a590065c2496aa6010134d13ef35c368b4236c15e547433134d36d"
-    sha256 ventura:        "6893611f1d94e1d89b92ba9aea0b4e13c9595e6e1c76de7392ee9fa514e660b5"
-    sha256 monterey:       "f2261cdf25058505b66820728774e374d933ada08d6e1ea953e251927c10d72f"
-    sha256 big_sur:        "602e5bd2d82e13b3ce0d2c020ed8765a568c779d3012cb4b104a4cad75d93153"
-    sha256 x86_64_linux:   "8697ccc005955ca78c191a4bc06838e4f09d6cab8ed06fe89adbc2f1f5c2274b"
+    sha256 arm64_sequoia: "2fd310dfbd570b6998906d8f40bd2fd51ba66b6f28a7d8f826ff6dbeef111edc"
+    sha256 arm64_sonoma:  "d0c5eacbbc350721e5d87f301bd3e27e24c7711422bd0af976c077a14ebbff5e"
+    sha256 arm64_ventura: "69596825a94b96775a0c4904ed335d47a472d281efec950ba4aecf49acce974a"
+    sha256 sonoma:        "2585dac48ab45d53e9cf0cba573aeedab04ab133cb13f7bc4ef21856c2a94b5c"
+    sha256 ventura:       "c459e02507d84d26513063b3b8c8f2985971a077dac54b33ea4c215e79f1ae82"
+    sha256 x86_64_linux:  "ecf74cf457d6b821b6a058a01a5531f2f37711fbfe4ee3e2b9548db6e98c9629"
   end
 
   keg_only :versioned_formula
 
-  # Security Support Until Nov 25 2024
+  # Security Support Until 31 Dec 2025
   # https://www.php.net/supported-versions.php
-  deprecate! date: "2024-11-25", because: :unsupported
+  deprecate! date: "2025-12-31", because: :unsupported
 
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
@@ -40,7 +39,7 @@ class PhpAT81 < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "krb5"
   depends_on "libpq"
   depends_on "libsodium"
@@ -62,12 +61,29 @@ class PhpAT81 < Formula
   uses_from_macos "zlib"
 
   on_macos do
+    # Apply MacPorts patch for Xcode 16. Upstream fix doesn't cleanly apply
+    # Ref: https://github.com/php/php-src/commit/e2e2b3ab62686af85fb079a403b5dda75595f6dd
+    patch do
+      url "https://raw.githubusercontent.com/macports/macports-ports/f6c30c5b3a810d4154ab8c85bb23274baa020fe1/lang/php/files/patch-php81-zend_string_equal_val.diff"
+      sha256 "382b1815dda418f539799c05674c3bfc22ec7e1da7494afd9f883938b4b3a1e2"
+    end
+
     # PHP build system incorrectly links system libraries
     # see https://github.com/php/php-src/issues/10680
     patch :DATA
   end
 
   def install
+    # Backport fix for libxml2 >= 2.13
+    # Ref: https://github.com/php/php-src/commit/67259e451d5d58b4842776c5696a66d74e157609
+    inreplace "ext/xml/compat.c",
+              "!= XML_PARSER_ENTITY_VALUE && parser->parser->instate != XML_PARSER_ATTRIBUTE_VALUE)",
+              "== XML_PARSER_CONTENT)"
+
+    # Work around to support `icu4c` 75, which needs C++17.
+    # Can remove if upstream backports support into PHP 8.1
+    ENV["ICU_CXXFLAGS"] = "-std=c++17"
+
     # buildconf required due to system library linking bug patch
     system "./buildconf", "--force"
 
@@ -119,6 +135,10 @@ class PhpAT81 < Formula
     # sdk path or it won't find the headers
     headers_path = "=#{MacOS.sdk_path_if_needed}/usr" if OS.mac?
 
+    # `_www` only exists on macOS.
+    fpm_user = OS.mac? ? "_www" : "www-data"
+    fpm_group = OS.mac? ? "_www" : "www-data"
+
     args = %W[
       --prefix=#{prefix}
       --localstatedir=#{var}
@@ -152,8 +172,8 @@ class PhpAT81 < Formula
       --with-external-gd
       --with-external-pcre
       --with-ffi
-      --with-fpm-user=_www
-      --with-fpm-group=_www
+      --with-fpm-user=#{fpm_user}
+      --with-fpm-group=#{fpm_group}
       --with-gettext=#{Formula["gettext"].opt_prefix}
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
@@ -201,7 +221,7 @@ class PhpAT81 < Formula
     system "make", "install"
 
     # Allow pecl to install outside of Cellar
-    extension_dir = Utils.safe_popen_read("#{bin}/php-config", "--extension-dir").chomp
+    extension_dir = Utils.safe_popen_read(bin/"php-config", "--extension-dir").chomp
     orig_ext_dir = File.basename(extension_dir)
     inreplace bin/"php-config", lib/"php", prefix/"pecl"
     %w[development production].each do |mode|
@@ -259,7 +279,7 @@ class PhpAT81 < Formula
     pecl_path = HOMEBREW_PREFIX/"lib/php/pecl"
     pecl_path.mkpath
     ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
-    extension_dir = Utils.safe_popen_read("#{bin}/php-config", "--extension-dir").chomp
+    extension_dir = Utils.safe_popen_read(bin/"php-config", "--extension-dir").chomp
     php_basename = File.basename(extension_dir)
     php_ext_dir = opt_prefix/"lib/php"/php_basename
 
@@ -319,7 +339,6 @@ class PhpAT81 < Formula
     EOS
   end
 
-  plist_options manual: "php-fpm"
   service do
     run [opt_sbin/"php-fpm", "--nodaemonize"]
     run_type :immediate
@@ -336,9 +355,9 @@ class PhpAT81 < Formula
     assert_includes (bin/"php").dynamically_linked_libraries,
                     (Formula["libpq"].opt_lib/shared_library("libpq", 5)).to_s
 
-    system "#{sbin}/php-fpm", "-t"
-    system "#{bin}/phpdbg", "-V"
-    system "#{bin}/php-cgi", "-m"
+    system sbin/"php-fpm", "-t"
+    system bin/"phpdbg", "-V"
+    system bin/"php-cgi", "-m"
     # Prevent SNMP extension to be added
     refute_match(/^snmp$/, shell_output("#{bin}/php -m"),
       "SNMP extension doesn't work reliably with Homebrew on High Sierra")
@@ -347,11 +366,11 @@ class PhpAT81 < Formula
       port_fpm = free_port
 
       expected_output = /^Hello world!$/
-      (testpath/"index.php").write <<~EOS
+      (testpath/"index.php").write <<~PHP
         <?php
         echo 'Hello world!' . PHP_EOL;
         var_dump(ldap_connect());
-      EOS
+      PHP
       main_config = <<~EOS
         Listen #{port}
         ServerName localhost:#{port}
@@ -399,7 +418,7 @@ class PhpAT81 < Formula
       pid = fork do
         exec Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd.conf"
       end
-      sleep 3
+      sleep 10
 
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
 
@@ -412,7 +431,7 @@ class PhpAT81 < Formula
       pid = fork do
         exec Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd-fpm.conf"
       end
-      sleep 3
+      sleep 10
 
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
     ensure

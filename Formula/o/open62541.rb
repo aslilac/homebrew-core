@@ -1,8 +1,8 @@
 class Open62541 < Formula
   desc "Open source implementation of OPC UA"
   homepage "https://open62541.org/"
-  url "https://github.com/open62541/open62541/archive/refs/tags/v1.3.6.tar.gz"
-  sha256 "0751ce6273908b1e571f36591665f3d5b9451514c2478ea5f6b4b466d7da6b02"
+  url "https://github.com/open62541/open62541/archive/refs/tags/v1.4.7.tar.gz"
+  sha256 "598889ae4bdc468d39c5c961ba76c648747b64337a9d0c0ef07b032c4819dea8"
   license "MPL-2.0"
 
   livecheck do
@@ -11,17 +11,16 @@ class Open62541 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "afde1ca3cd397d134ebab0ec50672610cdb59fb8924b0b033436d0c354eb81e9"
-    sha256 cellar: :any,                 arm64_monterey: "a56cf8963234070ed92de7fd71e4119b57355b20e1bc84f0ad68e052e9afd254"
-    sha256 cellar: :any,                 arm64_big_sur:  "204ac22c73e6c37950de0c8c6fddde0d71f8cc7fbe8b90fa1b5daee5384edd9b"
-    sha256 cellar: :any,                 ventura:        "e9f4ab36dcb0ea074dba434713a2c51e0e540cf2bb1e4fa0fd7c0a3b61a35cac"
-    sha256 cellar: :any,                 monterey:       "fd84a11308fc3a8981080dde285a5751a617d2c7f67791e2b664d2236b56333c"
-    sha256 cellar: :any,                 big_sur:        "7363cfdc77e97a9773e3db69a104a277648a10e4b518c4e68c52cc2bc47ab8b6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "027b5647f741b435d4168b13eb08db4ddbc7193587870bdd0c67bf033a23fedd"
+    sha256 cellar: :any,                 arm64_sequoia: "e5f3b1923957233d5a19913e9c2134aac8f3498e93eb18fae0347fd628d65e23"
+    sha256 cellar: :any,                 arm64_sonoma:  "772dd628877ad7b272bd4a8d76be6a21f3534ec5548de2ba7e88f76542dd8f3e"
+    sha256 cellar: :any,                 arm64_ventura: "705ff59290a04b82955ca34cbe21ae2b7e95648fa233ed2c244b887b37dd2655"
+    sha256 cellar: :any,                 sonoma:        "009f802e847c7d398933f63c16a7794a506f3428e0ddf212181abcfe742fc7f1"
+    sha256 cellar: :any,                 ventura:       "340d5778d5d9006bdc8ddc1b29a51fa88f608c7d7d1709ca2a96ed50bac17130"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9f11169f1da79325ebe620f672c1e57cbbfb2bceb05a017ada7dfa1f4c7b0ac6"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.11" => :build
+  uses_from_macos "python" => :build
 
   def install
     cmake_args = %w[
@@ -36,7 +35,7 @@ class Open62541 < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <open62541/client_config_default.h>
       #include <assert.h>
 
@@ -45,7 +44,7 @@ class Open62541 < Formula
         assert(client != NULL);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "./test.c", "-o", "test", "-I#{include}", "-L#{lib}", "-lopen62541"
     system "./test"
   end

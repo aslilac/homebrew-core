@@ -1,18 +1,17 @@
 class Actionlint < Formula
   desc "Static checker for GitHub Actions workflow files"
   homepage "https://rhysd.github.io/actionlint/"
-  url "https://github.com/rhysd/actionlint/archive/v1.6.25.tar.gz"
-  sha256 "7592aaddc49146b15a9822e97d90d917a1bd8ca33a4fb71cd98ef8c8c06eb3cf"
+  url "https://github.com/rhysd/actionlint/archive/refs/tags/v1.7.4.tar.gz"
+  sha256 "3004bcb4615510e671c76a56259755ed616c3200fb73b0be0ca9c3d6ea09c73a"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4a623d1bf1fb7f5dfb2ee2882d40bee9f57124c3d8d91752aedb7b05eae9bf65"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4a623d1bf1fb7f5dfb2ee2882d40bee9f57124c3d8d91752aedb7b05eae9bf65"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4a623d1bf1fb7f5dfb2ee2882d40bee9f57124c3d8d91752aedb7b05eae9bf65"
-    sha256 cellar: :any_skip_relocation, ventura:        "b7e373f09ff18c1aee35403a6618030ccca7239206e9600db62a997cc269fc12"
-    sha256 cellar: :any_skip_relocation, monterey:       "b7e373f09ff18c1aee35403a6618030ccca7239206e9600db62a997cc269fc12"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b7e373f09ff18c1aee35403a6618030ccca7239206e9600db62a997cc269fc12"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a8d0dc4c6ce196df503d737db4c1986c31bd9d13f834797d113c00313f13bbeb"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4800fafd738d38fd98e07e3c2ba1e46926f74f0a03f153eb40fdb639da44a910"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4800fafd738d38fd98e07e3c2ba1e46926f74f0a03f153eb40fdb639da44a910"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "4800fafd738d38fd98e07e3c2ba1e46926f74f0a03f153eb40fdb639da44a910"
+    sha256 cellar: :any_skip_relocation, sonoma:        "213db714539ffe8befc312eeeefbc3f6f6169f3d110006e18be07b631d839291"
+    sha256 cellar: :any_skip_relocation, ventura:       "213db714539ffe8befc312eeeefbc3f6f6169f3d110006e18be07b631d839291"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "06c290ccc5d780a1dc747bd21e280b0021308f3d2f94a7c8a99ce7f3072e80d7"
   end
 
   depends_on "go" => :build
@@ -20,21 +19,25 @@ class Actionlint < Formula
 
   def install
     ldflags = "-s -w -X github.com/rhysd/actionlint.version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/actionlint"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/actionlint"
     system "ronn", "man/actionlint.1.ronn"
     man1.install "man/actionlint.1"
   end
 
   test do
-    (testpath/"action.yaml").write <<~EOS
+    (testpath/"action.yaml").write <<~YAML
       name: Test
       on: push
       jobs:
         test:
+          permissions:
+            attestations: write
           steps:
-            - run: actions/checkout@v2
-    EOS
+            - run: actions/checkout@v4
+    YAML
 
-    assert_match "\"runs-on\" section is missing in job", shell_output("#{bin}/actionlint #{testpath}/action.yaml", 1)
+    output = shell_output("#{bin}/actionlint #{testpath}/action.yaml", 1)
+    assert_match "\"runs-on\" section is missing in job", output
+    refute_match "unknown permission scope", output
   end
 end

@@ -2,18 +2,19 @@ class Libgccjit < Formula
   desc "JIT library for the GNU compiler collection"
   homepage "https://gcc.gnu.org/"
   license "GPL-3.0-or-later" => { with: "GCC-exception-3.1" }
+  revision 1
   head "https://gcc.gnu.org/git/gcc.git", branch: "master"
 
   stable do
-    url "https://ftp.gnu.org/gnu/gcc/gcc-13.1.0/gcc-13.1.0.tar.xz"
-    mirror "https://ftpmirror.gnu.org/gcc/gcc-13.1.0/gcc-13.1.0.tar.xz"
-    sha256 "61d684f0aa5e76ac6585ad8898a2427aade8979ed5e7f85492286c4dfc13ee86"
+    url "https://ftp.gnu.org/gnu/gcc/gcc-14.2.0/gcc-14.2.0.tar.xz"
+    mirror "https://ftpmirror.gnu.org/gcc/gcc-14.2.0/gcc-14.2.0.tar.xz"
+    sha256 "a7b39bc69cbf9e25826c5a60ab26477001f7c08d85cec04bc0e29cabed6f3cc9"
 
     # Branch from the Darwin maintainer of GCC, with a few generic fixes and
-    # Apple Silicon support, located at https://github.com/iains/gcc-13-branch
+    # Apple Silicon support, located at https://github.com/iains/gcc-14-branch
     patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/5c206c47/gcc/gcc-13.1.0.diff"
-      sha256 "cb4e8a89387f748a744da0273025d0dc2e3c76780cc390b18ada704676afea11"
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/f30c309442a60cfb926e780eae5d70571f8ab2cb/gcc/gcc-14.2.0-r2.diff"
+      sha256 "6c0a4708f35ccf2275e6401197a491e3ad77f9f0f9ef5761860768fa6da14d3d"
     end
   end
 
@@ -22,14 +23,13 @@ class Libgccjit < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_ventura:  "16b221372ed02ec84f9d2436ae877014cb188e43f4b140c1354ef78bc0515032"
-    sha256 arm64_monterey: "49eb210b3f7148167f4d0b1afd6e21f5bb966b7461ea3c68053a26f45ed4293d"
-    sha256 arm64_big_sur:  "48e268e5b1544dd5ad84773544d66f52896777fb759dfecf9c71e6d6ee6d79c6"
-    sha256 ventura:        "f4046409a0fec5bd559d37026ad1430440e50b3a97638891050dafd4642cceaa"
-    sha256 monterey:       "896aff6cd2977b8739d6c208ea0f04affa1b32c8707f57f48037df15cfb25c62"
-    sha256 big_sur:        "3cdd7b0fd873acdaa52922f93f4fcf71c922c1bad30920befe77605f45899c4d"
-    sha256 x86_64_linux:   "f00f37852eb578381bdcfb8e0e3d6aba472cb2449dc3df0dfbfc8ce44a38f688"
+    sha256 arm64_sequoia: "52905f08739ef5b43a3c51c6a9be7befa915d1d5c9a74f1e6fcafa1048926f1f"
+    sha256 arm64_sonoma:  "19083279161321c45f2c05cf3800de97a2976056344ee62a936c9e2d80a7146b"
+    sha256 arm64_ventura: "9a41de72cb4140ba963a24b0e7916c7d8291f7c6c2c095a9a9522371e44a9a27"
+    sha256 sequoia:       "248d6a97fe62b914bd47807f6de0263112c9b80e6c0fd928f342214b9db80645"
+    sha256 sonoma:        "afdf195ab432568a33f36ba8b6180a6f1c23106825219635ebd406c5f9989ec5"
+    sha256 ventura:       "4c4c9a49250919da00c7f0488da19905ad1cf2ab426a0fb1171e1177302577e9"
+    sha256 x86_64_linux:  "76a465bf2a563f690cf457fd5f8fbcbf7be6109053f029356195f7336fd58d0c"
   end
 
   # The bottles are built on systems with the CLT installed, and do not work
@@ -44,6 +44,12 @@ class Libgccjit < Formula
   depends_on "zstd"
 
   uses_from_macos "zlib"
+
+  on_macos do
+    on_intel do
+      depends_on "gcc"
+    end
+  end
 
   # GCC bootstraps itself, so it is OK to have an incompatible C++ stdlib
   cxxstdlib_check :skip
@@ -79,7 +85,7 @@ class Libgccjit < Formula
       sdk = MacOS.sdk_path_if_needed
       args << "--with-sysroot=#{sdk}" if sdk
 
-      ["BOOT_LDFLAGS=-Wl,-headerpad_max_install_names"]
+      []
     else
       # Fix cc1: error while loading shared libraries: libisl.so.15
       args << "--with-boot-ldflags=-static-libstdc++ -static-libgcc #{ENV.ldflags}"
@@ -91,7 +97,10 @@ class Libgccjit < Formula
       # https://stackoverflow.com/a/54038769
       inreplace "gcc/config/i386/t-linux64", "m64=../lib64", "m64="
 
-      []
+      %W[
+        BOOT_CFLAGS=-I#{Formula["zlib"].opt_include}
+        BOOT_LDFLAGS=-I#{Formula["zlib"].opt_lib}
+      ]
     end
 
     # Building jit needs --enable-host-shared, which slows down the compiler.
@@ -103,15 +112,25 @@ class Libgccjit < Formula
 
     # We only install the relevant libgccjit files from libexec and delete the rest.
     prefix.find do |f|
-      rm_rf f if !f.directory? && !f.basename.to_s.start_with?("libgccjit")
+      rm_r(f) if !f.directory? && !f.basename.to_s.start_with?("libgccjit")
     end
 
     # Provide a `lib/gcc/xy` directory to align with the versioned GCC formulae.
     (lib/"gcc"/version.major).install_symlink (lib/"gcc/current").children
+
+    return if OS.linux? || Hardware::CPU.arm?
+
+    lib.glob("gcc/current/#{shared_library("libgccjit", "*")}").each do |dylib|
+      next if dylib.symlink?
+
+      # Fix linkage with `libgcc_s.1.1`. See: Homebrew/discussions#5364
+      gcc_libdir = Formula["gcc"].opt_lib/"gcc/current"
+      MachO::Tools.add_rpath(dylib, rpath(source: lib/"gcc/current", target: gcc_libdir))
+    end
   end
 
   test do
-    (testpath/"test-libgccjit.c").write <<~EOS
+    (testpath/"test-libgccjit.c").write <<~C
       #include <libgccjit.h>
       #include <stdlib.h>
       #include <stdio.h>
@@ -160,13 +179,22 @@ class Libgccjit < Formula
           gcc_jit_result_release (result);
           return 0;
       }
-    EOS
+    C
 
     gcc_major_ver = Formula["gcc"].any_installed_version.major
     gcc = Formula["gcc"].opt_bin/"gcc-#{gcc_major_ver}"
-    libs = "#{HOMEBREW_PREFIX}/lib/gcc/#{gcc_major_ver}"
+    libs = HOMEBREW_PREFIX/"lib/gcc/current"
+    test_flags = %W[-I#{include} test-libgccjit.c -o test -L#{libs} -lgccjit]
 
-    system gcc.to_s, "-I#{include}", "test-libgccjit.c", "-o", "test", "-L#{libs}", "-lgccjit"
+    system gcc.to_s, *test_flags
+    assert_equal "hello world", shell_output("./test")
+
+    # The test below fails with the host compiler on Linux.
+    return if OS.linux?
+
+    # Also test with the host compiler, which many users use with libgccjit
+    (testpath/"test").unlink
+    system ENV.cc, *test_flags
     assert_equal "hello world", shell_output("./test")
   end
 end

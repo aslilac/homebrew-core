@@ -3,53 +3,33 @@ class Cryfs < Formula
 
   desc "Encrypts your files so you can safely store them in Dropbox, iCloud, etc."
   homepage "https://www.cryfs.org"
-  url "https://github.com/cryfs/cryfs/releases/download/0.11.4/cryfs-0.11.4.tar.gz"
-  sha256 "6caca6276ce5aec40bf321fd0911b0af7bcffc44c3cb82ff5c5af944d6f75a45"
-  license "LGPL-3.0"
+  url "https://github.com/cryfs/cryfs/releases/download/1.0.0/cryfs-1.0.0.tar.gz"
+  sha256 "eb2fec8e2ca13abe7d3b1e33967b3996bfb2ea1da2d890e7b93946c418260ad1"
+  license "LGPL-3.0-or-later"
+  revision 1
+  head "https://github.com/cryfs/cryfs.git", branch: "develop"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "b4dcdb310929123fa966efa07d4206e24b36293e63bbc8f947f2d63cf0fb8ee0"
-  end
-
-  head do
-    url "https://github.com/cryfs/cryfs.git", branch: "develop"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "ff71bef93805542d184aeade894898a6082df9ae3c56e9bd564946c920c6aee2"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
+  depends_on "python@3.13" => :build
   depends_on "boost"
   depends_on "curl"
   depends_on "fmt"
   depends_on "libfuse@2"
   depends_on :linux # on macOS, requires closed-source macFUSE
-  depends_on "python@3.11"
   depends_on "range-v3"
   depends_on "spdlog"
 
-  fails_with gcc: "5"
-
-  resource "versioneer" do
-    url "https://files.pythonhosted.org/packages/32/d7/854e45d2b03e1a8ee2aa6429dd396d002ce71e5d88b77551b2fb249cb382/versioneer-0.29.tar.gz"
-    sha256 "5ab283b9857211d61b53318b7c792cf68e798e765ee17c27ade9f6c924235731"
-  end
-
   def install
-    python = "python3.11"
-    venv_root = buildpath/"venv"
-
-    venv = virtualenv_create(venv_root, python)
-    venv.pip_install resource("versioneer")
-
-    ENV.prepend_path "PYTHONPATH", venv_root/Language::Python.site_packages(python)
-    ENV.prepend_path "PATH", venv_root/"bin"
-
-    configure_args = [
-      "-DBUILD_TESTING=off",
-    ]
-
-    system "cmake", "-B", "build", "-S", ".", *configure_args, *std_cmake_args,
+    system "cmake", "-B", "build", "-S", ".",
+                    "-DBUILD_TESTING=off",
                     "-DCRYFS_UPDATE_CHECKS=OFF",
-                    "-DDEPENDENCY_CONFIG=cmake-utils/DependenciesFromLocalSystem.cmake"
+                    "-DDEPENDENCY_CONFIG=cmake-utils/DependenciesFromLocalSystem.cmake",
+                    *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
@@ -59,6 +39,7 @@ class Cryfs < Formula
 
     # Test showing help page
     assert_match "CryFS", shell_output("#{bin}/cryfs 2>&1", 10)
+    assert_match version.to_s, shell_output("#{bin}/cryfs --version")
 
     # Test mounting a filesystem. This command will ultimately fail because homebrew tests
     # don't have the required permissions to mount fuse filesystems, but before that

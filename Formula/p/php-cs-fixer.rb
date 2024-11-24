@@ -1,40 +1,36 @@
 class PhpCsFixer < Formula
   desc "Tool to automatically fix PHP coding standards issues"
   homepage "https://cs.symfony.com/"
-  url "https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v3.23.0/php-cs-fixer.phar"
-  sha256 "215527a38035a0ef65be4cc37d69ea74dd6b1e9289aa9aa2d6ad26c38fc4ff86"
+  # Bump to php 8.4 on the next release, if possible.
+  url "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/v3.64.0/php-cs-fixer.phar"
+  sha256 "7d67bbf0635df7239e0a09aef9999f6f91bbc7ef55541ee06aaed727453bfa5e"
   license "MIT"
+  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "02ae322a91bff79e49c40eed55848de209b054eae71bf6717741ed9503e416d6"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "02ae322a91bff79e49c40eed55848de209b054eae71bf6717741ed9503e416d6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "02ae322a91bff79e49c40eed55848de209b054eae71bf6717741ed9503e416d6"
-    sha256 cellar: :any_skip_relocation, ventura:        "02ae322a91bff79e49c40eed55848de209b054eae71bf6717741ed9503e416d6"
-    sha256 cellar: :any_skip_relocation, monterey:       "02ae322a91bff79e49c40eed55848de209b054eae71bf6717741ed9503e416d6"
-    sha256 cellar: :any_skip_relocation, big_sur:        "02ae322a91bff79e49c40eed55848de209b054eae71bf6717741ed9503e416d6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7c9a7c0007a1cb3f6c22cbda54dad25ad8515f8baa13b53036728aac8e490d01"
+    sha256 cellar: :any_skip_relocation, all: "a9de27a9df1fdfb1b3555a6fe04b98a025a1bfb97fe893b39c6067f3a37b18ad"
   end
 
-  depends_on "php"
+  depends_on "php@8.3"
 
   def install
     libexec.install "php-cs-fixer.phar"
 
     (bin/"php-cs-fixer").write <<~EOS
-      #!#{Formula["php"].opt_bin}/php
+      #!#{Formula["php@8.3"].opt_bin}/php
       <?php require '#{libexec}/php-cs-fixer.phar';
     EOS
   end
 
   test do
-    (testpath/"test.php").write <<~EOS
+    (testpath/"test.php").write <<~PHP
       <?php $this->foo(   'homebrew rox'   );
-    EOS
-    (testpath/"correct_test.php").write <<~EOS
+    PHP
+    (testpath/"correct_test.php").write <<~PHP
       <?php
 
       $this->foo('homebrew rox');
-    EOS
+    PHP
 
     system bin/"php-cs-fixer", "fix", "test.php"
     assert compare_file("test.php", "correct_test.php")

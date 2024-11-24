@@ -1,30 +1,36 @@
 class Youplot < Formula
   desc "Command-line tool that draw plots on the terminal"
   homepage "https://github.com/red-data-tools/YouPlot/"
-  url "https://github.com/red-data-tools/YouPlot/archive/v0.4.5.tar.gz"
-  sha256 "aa7339139bc4ea9aa0b2279e4e8052fde673a60ad47e87d50fde06626dc2b3c3"
+  url "https://github.com/red-data-tools/YouPlot/archive/refs/tags/v0.4.6.tar.gz"
+  sha256 "126278103f6dbc4e28983b9e90a4e593f17e78b38d925a7df16965b5d3c145a4"
   license "MIT"
 
   bottle do
-    sha256                               arm64_ventura:  "60e92af5e86cc5c29a923a12470c36b6c1bdbe9e3d0549ce483b45974494a090"
-    sha256                               arm64_monterey: "397cf683916a6b62eb8ac1a8ca98bb56d3ca3d9fdd725f40702d6f72c7e2bf4b"
-    sha256                               arm64_big_sur:  "6a0cc141b2dfc5bcd7a28666ca181799d5b6fbf48dca90ac64e582e7225810a2"
-    sha256                               ventura:        "13fedf180b967115571c03890214d65cfcaf8607acda2a75dea5b263c47ee3cb"
-    sha256                               monterey:       "c2d9cddf97b15b474f181f318f97a24a50e50e7e7ca71922cb97248d13935383"
-    sha256                               big_sur:        "fbc41b8190ca616ba3794aa5d75fc9121cb15e303fc2f4a7df0926bc74468ff0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c14eb0b846c089762f066aef1f2cda5093012274234b92023a331a1bf8e93bdc"
+    sha256                               arm64_sequoia:  "38af94e0b042576027ea48ddacfa7328a06da03115fd979ffe51ea78f20cce04"
+    sha256                               arm64_sonoma:   "34886703341b58e351283223a6fe19717d404120c709ed1a518753ac07f16e85"
+    sha256                               arm64_ventura:  "224f2643f50bbd531e19ec45f9a56ec760304379a943420a42c0038b0d5ca2c2"
+    sha256                               arm64_monterey: "e2f7ef7149fec5451496cdc50394a718084180d792d08f7b7db3085db1f56fa3"
+    sha256                               sonoma:         "15297f02a8a7176c2cae1a2f541ce7bd8884b15d097070b8882ad6e2fc54d7a6"
+    sha256                               ventura:        "3ed832d8288148f3ce99bb857538dabcdca8821e33215db6910c2c0f7075a9ae"
+    sha256                               monterey:       "0ab163b9eb0c815a52b0ae4122d3e7ac41c2ad885c39b7106e0bd1b909cd3f92"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e036b00579b5ab8dab662523782303690222a42b3f21197769191c690f1adb87"
   end
 
   uses_from_macos "ruby"
+
+  resource "enumerable-statistics" do
+    url "https://rubygems.org/downloads/enumerable-statistics-2.0.8.gem"
+    sha256 "1e0d69fcdec1d188dd529e6e5b2c27e8f88029c862f6094663c93806f6d313b3"
+  end
 
   resource "unicode_plot" do
     url "https://rubygems.org/downloads/unicode_plot-0.0.5.gem"
     sha256 "91ce6237bca67a3b969655accef91024c78ec6aad470fcddeb29b81f7f78f73b"
   end
 
-  resource "enumerable-statistics" do
-    url "https://rubygems.org/downloads/enumerable-statistics-2.0.7.gem"
-    sha256 "eeb84581376305327b31465e7b088146ea7909d19eb637d5677e51f099759636"
+  resource "csv" do
+    url "https://rubygems.org/downloads/csv-3.3.0.gem"
+    sha256 "0bbd1defdc31134abefed027a639b3723c2753862150f4c3ee61cab71b20d67d"
   end
 
   def install
@@ -40,12 +46,12 @@ class Youplot < Formula
   end
 
   test do
-    (testpath/"test.csv").write <<~EOS
+    (testpath/"test.csv").write <<~CSV
       A,20
       B,30
       C,40
       D,50
-    EOS
+    CSV
     expected_output = [
       "     ┌           ┐ ",
       "   A ┤■■ 20.0      ",

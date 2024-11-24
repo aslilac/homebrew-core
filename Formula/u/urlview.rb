@@ -1,8 +1,11 @@
 class Urlview < Formula
   desc "URL extractor/launcher"
   homepage "https://packages.debian.org/sid/misc/urlview"
+  # TODO: Consider switching to new Debian maintainer's fork if it is adopted
+  # by other repositories as allowed by our documented policy. Alternatively,
+  # we could introduce the fork as `urlview-ng` and deprecate this formula.
   url "https://deb.debian.org/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz"
-  version "0.9-23"
+  version "0.9-23.1"
   sha256 "746ff540ccf601645f500ee7743f443caf987d6380e61e5249fc15f7a455ed42"
   license "GPL-2.0-or-later"
 
@@ -11,18 +14,16 @@ class Urlview < Formula
   # we identify patch versions as well.
   livecheck do
     url "https://deb.debian.org/debian/pool/main/u/urlview/"
-    regex(/href=.*?urlview[._-]v?(\d+(?:[.-]\d+)+)/i)
+    regex(/href=.*?urlview[._-]v?(\d+(?:\.\d+)*[a-z]?(?:-\d+(?:\.\d+)*)?)/i)
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e61de906c2ad7b7303b2b69b2c3cc33ac29d77b22c5ad79a8eca704339d0fd5d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "79e803c2e3dd3e77fa2c7792f7ca846e2c9fa9b614540792c9fb8bac3bb03b34"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4bd54ce3f197e6a1dbeada8a9e6927a3ca00b8c304b4389879a2cb15dd4db17a"
-    sha256 cellar: :any_skip_relocation, ventura:        "52ce80dc709a61c1c64cff409b1f14edd802bc60954834d498762a51aa463fe8"
-    sha256 cellar: :any_skip_relocation, monterey:       "c906ca088635e62fba1979b6f3a5767edf0f0649929b31900ab9513ccbbc6cc3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4ba2615a1ea02924d894084fdba9be8a6bc219dbfa852276fbcd330ad9c118ef"
-    sha256 cellar: :any_skip_relocation, catalina:       "640e2ef08bf6e065c52b0f90832774049b9e9cd4cdeede8912ad8656c9c851af"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e6c16bac2771c3d20aecf067223c0562ec22ed824880f64d1260023364e73d0d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b2a05f008302affc74e6cab2a4fc76d212678746d4d167252e21d0a7f50d49e0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ceb55a63116f409bce3870150eda3310cc48f57813c79e6cb6d8a082e9be2eb0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "cef111adfd85ccdf8ae30eda094940acc688c8454679b3432c2c8b39e54c32ea"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3197e439d22f3e5dcbfa8b38f2e73c40f52e89252b3279c3c5d236b6605165be"
+    sha256 cellar: :any_skip_relocation, ventura:       "b39f7e2238dbb7ec1e87a121aa48a88bac18b1e269e3a9b84b601ca410260eea"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "eb73442a4c8cac047d120ec566f4bbc59ce23b6eece8fdedd67db4bb9832c2dd"
   end
 
   uses_from_macos "ncurses"
@@ -32,18 +33,26 @@ class Urlview < Formula
   end
 
   patch do
-    url "https://deb.debian.org/debian/pool/main/u/urlview/urlview_0.9-23.diff.gz"
-    sha256 "32dcff6d032ae23f100a42cb7b23573338033b5e0613b20813324ddb417ce86f"
+    url "http://ftp.debian.org/debian/pool/main/u/urlview/urlview_0.9-23.1.debian.tar.xz"
+    sha256 "bdb3b403b165ff1fe7d1a7c05275b6c865e4740d9ed46fd9c81495be1fbe2b9f"
+    apply "patches/debian.patch",
+          "patches/Fix-warning-about-implicit-declaration-of-function.patch",
+          "patches/invoke-AM_INIT_AUTOMAKE-with-foreign.patch",
+          "patches/Link-against-libncursesw-setlocale-LC_ALL.patch",
+          "patches/Allow-dumping-URLs-to-stdout.patch"
   end
 
   def install
+    # Workaround for newer Clang
+    ENV.append_to_cflags "-Wno-implicit-int" if DevelopmentTools.clang_build_version >= 1403
+
+    man1.mkpath
+
     url_handler = OS.mac? ? "open" : etc/"urlview/url_handler.sh"
     inreplace "urlview.man", "/etc/urlview/url_handler.sh", url_handler
     inreplace "urlview.c",
       '#define DEFAULT_COMMAND "/etc/urlview/url_handler.sh %s"',
       %Q(#define DEFAULT_COMMAND "#{url_handler} %s")
-
-    man1.mkpath
 
     unless OS.mac?
       touch("NEWS") # autoreconf will fail if this file does not exist
@@ -54,7 +63,9 @@ class Urlview < Formula
       (etc/"urlview").install "url_handler.sh"
     end
 
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}",
                           "--sysconfdir=#{etc}"
     system "make", "install"
   end

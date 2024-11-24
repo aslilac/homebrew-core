@@ -1,18 +1,19 @@
 class Gmime < Formula
   desc "MIME mail utilities"
   homepage "https://github.com/jstedfast/gmime"
-  url "https://github.com/jstedfast/gmime/releases/download/3.2.13/gmime-3.2.13.tar.xz"
-  sha256 "2e10a54d4821daf8b16c019ad5d567e0fb8e766f8ffe5fec3d4c6a37373d6406"
+  url "https://github.com/jstedfast/gmime/releases/download/3.2.15/gmime-3.2.15.tar.xz"
+  sha256 "84cd2a481a27970ec39b5c95f72db026722904a2ccf3fdbd57b280cf2d02b5c4"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256                               arm64_ventura:  "35dc9d92ec33ec3d84b118fe2bbc0ec55d639fc0c26ca1f288db2041b8cc66f5"
-    sha256                               arm64_monterey: "f27bc95fba280b579a93fda869ecb738e84593cf02e4fb689f668ef3b8668b40"
-    sha256                               arm64_big_sur:  "616305d3cdeb697de0139126e9f85138bed8beab38b79f6aa982b7b846be23cb"
-    sha256                               ventura:        "b3543eda3347b28808d6881d6b175d25192484563ffc5877a4ba5f82a26046da"
-    sha256                               monterey:       "9a2055499bf7a18b01bfa67d3637ca0a376a0353a52a984a1864ff0890280a27"
-    sha256                               big_sur:        "26ba4775f26d0549b57240711b9d446dacd825b52a11b0e1ff1c77410f2fe36c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "343edd8abff04d84cba81782ee2c447da2be52b2187581d25e989fe107c65b26"
+    sha256                               arm64_sequoia:  "458bcb6ae4fd091fd35b48f9917ff52d2f38254a480164416b682049ae9d083b"
+    sha256                               arm64_sonoma:   "a509468f057fc0a2013788381d8884710ef74d5241b706891372a43a9aa402ba"
+    sha256                               arm64_ventura:  "ea7b8ca1f448ab1fa9486e3e55a12305f2df3b5a8c19b99587332d0412326cf3"
+    sha256                               arm64_monterey: "c7c87673c6db12e288f836fe8a7aad8312c3aba2d35dae680a155741a82f660c"
+    sha256                               sonoma:         "103a9dada388b0c0d1e00f5d43e89a69be9c811c5db9053410aab1349897288a"
+    sha256                               ventura:        "4e6bcbb52d75e42ecd622a6aa76f376c148421aa073b1a808e82392cdb3f3b75"
+    sha256                               monterey:       "2acb6d3050ee79911c9f1407c90b1f0870becf0f4540ad441dc4f5cab69e5fc6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d427feebdf23d147fb3b4bf6d0df1b35d08c20d71d5d2100ab3572c2edb982d6"
   end
 
   head do
@@ -25,9 +26,17 @@ class Gmime < Formula
   end
 
   depends_on "gobject-introspection" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkg-config" => [:build, :test]
   depends_on "glib"
   depends_on "gpgme"
+  depends_on "libidn2"
+
+  uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "gettext"
+    depends_on "libgpg-error"
+  end
 
   def install
     args = %w[
@@ -42,10 +51,22 @@ class Gmime < Formula
 
     system "./configure", *std_configure_args, *args
     system "make", "install"
+
+    # Avoid hardcoding Cellar paths of dependencies
+    inreplace lib/"pkgconfig/gmime-#{version.major}.0.pc" do |s|
+      %w[gpgme libassuan libidn2].each do |f|
+        s.gsub! Formula[f].prefix.realpath, Formula[f].opt_prefix
+      end
+    end
+
+    return if OS.linux?
+
+    # Avoid dependents remembering gmime's Cellar path
+    inreplace share/"gir-1.0/GMime-#{version.major}.0.gir", prefix, opt_prefix
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdio.h>
       #include <gmime/gmime.h>
       int main (int argc, char **argv)
@@ -57,28 +78,27 @@ class Gmime < Formula
           return 1;
         }
       }
-    EOS
-    gettext = Formula["gettext"]
-    glib = Formula["glib"]
-    pcre = Formula["pcre"]
-    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
-    flags += %W[
-      -I#{gettext.opt_include}
-      -I#{glib.opt_include}/glib-2.0
-      -I#{glib.opt_lib}/glib-2.0/include
-      -I#{include}/gmime-3.0
-      -I#{pcre.opt_include}
-      -D_REENTRANT
-      -L#{gettext.opt_lib}
-      -L#{glib.opt_lib}
-      -L#{lib}
-      -lgio-2.0
-      -lglib-2.0
-      -lgmime-3.0
-      -lgobject-2.0
-    ]
-    flags << "-lintl" if OS.mac?
+    C
+
+    flags = shell_output("pkg-config --cflags --libs gmime-#{version.major}.0").strip.split
     system ENV.cc, "-o", "test", "test.c", *flags
     system "./test"
+
+    # Check that `pkg-config` paths are valid
+    cflags = shell_output("pkg-config --cflags gmime-#{version.major}.0").strip
+    cflags.split.each do |flag|
+      next unless flag.start_with?("-I")
+
+      flag.delete_prefix!("-I")
+      assert_path_exists flag
+    end
+
+    ldflags = shell_output("pkg-config --libs gmime-#{version.major}.0").strip
+    ldflags.split.each do |flag|
+      next unless flag.start_with?("-L")
+
+      flag.delete_prefix!("-L")
+      assert_path_exists flag
+    end
   end
 end

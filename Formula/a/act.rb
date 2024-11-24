@@ -1,19 +1,18 @@
 class Act < Formula
   desc "Run your GitHub Actions locally"
   homepage "https://github.com/nektos/act"
-  url "https://github.com/nektos/act/archive/v0.2.49.tar.gz"
-  sha256 "3e27111277a1dfb3dcfc6c5b3a81df1225974a379d0f10b253306ad44fb20ff8"
+  url "https://github.com/nektos/act/archive/refs/tags/v0.2.69.tar.gz"
+  sha256 "aba388bff6661d85ddb55262cb76c266c878ffd8f5b374cf9b3485f4b8b71e51"
   license "MIT"
   head "https://github.com/nektos/act.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3c7c68ddbd244bcd92be078f8a831a9c482886df5a436392db6de1b94e555055"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9026293530f2612ca54e93c87c33b8b6c8d66ea824247760150e671c27f00683"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0fff5673949e0ec7f94ed6f020afebaf5274bf77717f56469fa3de28f7b4a7b9"
-    sha256 cellar: :any_skip_relocation, ventura:        "6d416c3fc2d3ba8fcd6661da24e79a8324792aab3b9ffd00acb18c5d332f342c"
-    sha256 cellar: :any_skip_relocation, monterey:       "ea199b6ae944135bdae25e3f42aefe085efd4716a3698d05607b24166cc445b7"
-    sha256 cellar: :any_skip_relocation, big_sur:        "cd67f4b4400f36b885f817f7031168482aaa19eb38a170c71bb0597117814a90"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c6b5907c171416a49660efd15b199199b5fa431f5ee11c8628a88b9f625dc11c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b506a62f7a79cb1274f1b4e2ac063e99e8b21c48303f037a8d072fa7e72d51f1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "fc7f50bc0659b145e63576379ec94f799d4a18b05442126828cb78a4579e44d0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b55f6f6d877ca04e0e8416d0659655f4b5949d43f054799760d36c985331fc9c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "04027bfea83f4a73d50c788cc5cdecf8a06866fc7e208a89d9c0b1271e6b0f58"
+    sha256 cellar: :any_skip_relocation, ventura:       "ca92a0306d5f17988f137e0711b1fffc1a4aa7038f2bbe96b50ec52ed788f846"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "30819c65f4c708e7cf5443017a5c16e27ffdccef8f2e1177b01886cdde982a4c"
   end
 
   depends_on "go" => :build

@@ -1,56 +1,67 @@
 class Ortp < Formula
   desc "Real-time transport protocol (RTP, RFC3550) library"
   homepage "https://linphone.org/"
-  url "https://gitlab.linphone.org/BC/public/ortp/-/archive/5.2.98/ortp-5.2.98.tar.bz2"
-  sha256 "0d5b2fbb110e664f7ea6428deb672dea97e7ca1b93396fdf827db081ed17876b"
   license "GPL-3.0-or-later"
-  head "https://gitlab.linphone.org/BC/public/ortp.git", branch: "master"
+
+  stable do
+    url "https://gitlab.linphone.org/BC/public/ortp/-/archive/5.3.84/ortp-5.3.84.tar.bz2"
+    sha256 "e0b539a0021c8b6babca5efddc9362954148824f59c4c316d772a124ebbb51bd"
+
+    depends_on "mbedtls"
+
+    # bctoolbox appears to follow ortp's version. This can be verified at the GitHub mirror:
+    # https://github.com/BelledonneCommunications/bctoolbox
+    resource "bctoolbox" do
+      url "https://gitlab.linphone.org/BC/public/bctoolbox/-/archive/5.3.84/bctoolbox-5.3.84.tar.bz2"
+      sha256 "1c9ec26a91e74f720b16416a0e9e5e84c8aeb04b3fc490c22a4b2fc10ab6d5e3"
+    end
+  end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "d766f99ed5edca9a0a63047f64fff5e3f26a18f7babef0f258f1647d17a64385"
-    sha256 cellar: :any,                 arm64_monterey: "f2d1fb46ec1c3d736e87b7c5e0ee652dd53bac08ca32dd37e1d67b1f98c2735e"
-    sha256 cellar: :any,                 arm64_big_sur:  "2769ad6b37298876acb875eceb086f8c7c93111fcd69ad912f608460d74d24da"
-    sha256 cellar: :any,                 ventura:        "1af7a99ffdc62fee5f343389adb25f9c93004b3dfc788c03e03da4d6d6e1476b"
-    sha256 cellar: :any,                 monterey:       "1266774c1588243c4c28d815bbaeddb5bb9769fc8aa9d7f164b1c9d369c7ccf7"
-    sha256 cellar: :any,                 big_sur:        "4f9e7b7fdf1a2ecb6c18e77c69e94946f5d6f90b9b28b618c48078ec46096c3e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1ea8a6dbc5e788facd82b8261d9a54405a7363b3f57007f966081823e847f742"
+    sha256 cellar: :any,                 arm64_sequoia: "4db45336c212cfb572b3ff42b878352733679fdbc11a79f6dc3dda037f220bab"
+    sha256 cellar: :any,                 arm64_sonoma:  "4214e613d3563fdb8e737376eabc9576e7b01ec5d001082e19169f1b9b6dff0b"
+    sha256 cellar: :any,                 arm64_ventura: "9cd9109b254d1d76307bc9c779d6e2b6da0ed264297421aac06ba61fdf2a66a9"
+    sha256 cellar: :any,                 sonoma:        "635f5d33e32f95b633923cbcb168f0be9705699b83da87a7fc3eb590f46de10c"
+    sha256 cellar: :any,                 ventura:       "113dff9d0907b040807916b184d3c722be016f952f4b0f7ca895c4eb4332fe6b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4b2f06f9efd8c6b09a40b5cd555d1a1ce5c782463cf60a5ddd324885a272b124"
+  end
+
+  head do
+    url "https://gitlab.linphone.org/BC/public/ortp.git", branch: "master"
+
+    depends_on "openssl@3"
+
+    resource "bctoolbox" do
+      url "https://gitlab.linphone.org/BC/public/bctoolbox.git", branch: "master"
+    end
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
-  depends_on "mbedtls@2"
-
-  # bctoolbox appears to follow ortp's version. This can be verified at the GitHub mirror:
-  # https://github.com/BelledonneCommunications/bctoolbox
-  resource "bctoolbox" do
-    # Don't forget to change both instances of the version in the URL.
-    url "https://gitlab.linphone.org/BC/public/bctoolbox/-/archive/5.2.98/bctoolbox-5.2.98.tar.bz2"
-    sha256 "5f6ea68954f3d6ef844a215153413ff575f7b12579267a83d926c1d894cc0c69"
-  end
 
   def install
+    odie "bctoolbox resource needs to be updated" if build.stable? && version != resource("bctoolbox").version
+
     resource("bctoolbox").stage do
-      args = ["-DENABLE_TESTS_COMPONENT=OFF"]
-      args << "-DCMAKE_C_FLAGS=-Wno-error=unused-parameter" if OS.linux?
-      system "cmake", "-S", ".", "-B", "build",
-                      *args,
-                      *std_cmake_args(install_prefix: libexec)
+      args = ["-DENABLE_TESTS_COMPONENT=OFF", "-DBUILD_SHARED_LIBS=ON"]
+      args += ["-DENABLE_MBEDTLS=OFF", "-DENABLE_OPENSSL=ON"] if build.head?
+
+      system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args(install_prefix: libexec)
       system "cmake", "--build", "build"
       system "cmake", "--install", "build"
     end
 
     ENV.prepend_path "PKG_CONFIG_PATH", libexec/"lib/pkgconfig"
     ENV.append "LDFLAGS", "-Wl,-rpath,#{libexec}/lib" if OS.linux?
-    cflags = ["-I#{libexec}/include"]
-    cflags << "-Wno-error=maybe-uninitialized" if OS.linux?
+    ENV.append_to_cflags "-I#{libexec}/include"
 
     args = %W[
       -DCMAKE_PREFIX_PATH=#{libexec}
-      -DCMAKE_C_FLAGS=#{cflags.join(" ")}
-      -DCMAKE_CXX_FLAGS=-I#{libexec}/include
+      -DBUILD_SHARED_LIBS=ON
       -DENABLE_DOC=NO
       -DENABLE_UNIT_TESTS=NO
     ]
+    args << "-DCMAKE_INSTALL_RPATH=#{libexec}/Frameworks" if OS.mac?
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
@@ -58,7 +69,7 @@ class Ortp < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include "ortp/logging.h"
       #include "ortp/rtpsession.h"
       #include "ortp/sessionset.h"
@@ -67,12 +78,9 @@ class Ortp < Formula
         ORTP_PUBLIC void ortp_init(void);
         return 0;
       }
-    EOS
-    system ENV.cc, "-I#{include}", "-I#{libexec}/include", "-L#{lib}", "-lortp",
-           testpath/"test.c", "-o", "test"
+    C
+    linker_flags = OS.mac? ? %W[-F#{frameworks} -framework ortp] : %W[-L#{lib} -lortp]
+    system ENV.cc, "test.c", "-o", "test", "-I#{include}", "-I#{libexec}/include", *linker_flags
     system "./test"
-
-    # Ensure that bctoolbox's version is identical to ortp's.
-    assert_equal version, resource("bctoolbox").version
   end
 end

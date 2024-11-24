@@ -3,30 +3,30 @@ class Fabric < Formula
 
   desc "Library and command-line tool for SSH"
   homepage "https://www.fabfile.org/"
-  url "https://files.pythonhosted.org/packages/34/6a/8e8734a47dad3cf6cbf4ba8631340814cd374ea58452133a62714dc6338b/fabric-3.2.1.tar.gz"
-  sha256 "81293d7e2b509d37e51bb49a0151191455f5a7ea11ebaa158bdee995b844c668"
+  url "https://files.pythonhosted.org/packages/0d/3f/337f278b70ba339c618a490f6b8033b7006c583bd197a897f12fbc468c51/fabric-3.2.2.tar.gz"
+  sha256 "8783ca42e3b0076f08b26901aac6b9d9b1f19c410074e7accfab902c184ff4a3"
   license "BSD-2-Clause"
+  revision 2
   head "https://github.com/fabric/fabric.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "2a44e63aebb1059c09035289bf10f9edd127816c14f28778c20334046249ffad"
-    sha256 cellar: :any,                 arm64_monterey: "4d984a18c6bd0fc5050f92016435c32ef95630cc663e44f8e99524ff0b9e042b"
-    sha256 cellar: :any,                 arm64_big_sur:  "cf95c2e016afaa6178c22431463e95bfd90286de3fdb886b880f728b3387474e"
-    sha256 cellar: :any,                 ventura:        "ed088d699657b0700077a847af3c1a026204ff6b32b36dbce4586905604c80f4"
-    sha256 cellar: :any,                 monterey:       "88c5649231e8bacc40ee02833f03b161384bb4518aa9d49f9c449a3dfb6f25aa"
-    sha256 cellar: :any,                 big_sur:        "5a9773a10bd322e0364d27a0c359c839f33977a083e94fdad3021ca0d987cd2d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "48eebd617e0242ce94e829b4cca34875849a75aac7abc258038c72112e443ba9"
+    rebuild 3
+    sha256 cellar: :any,                 arm64_sequoia: "4d1555e8e1817baca2b6923fdb04c78ad0e4e31c8a73335cbb25572c8d90ab5e"
+    sha256 cellar: :any,                 arm64_sonoma:  "af5461c5eec7061d03b600d697c31c9819f0601bc2340636b852beb2b48e67c1"
+    sha256 cellar: :any,                 arm64_ventura: "462f81ce1dad72d97411bc6dd9413b009dd661f9ea562a2f388343363f072ed8"
+    sha256 cellar: :any,                 sonoma:        "887b91b1a6d0a1ab97b9a4d114575f9da05e0bc54568ce249f0b8f02d897f6b7"
+    sha256 cellar: :any,                 ventura:       "421882203efbb325031a85f98942f5f0a46ac043595c855b77037e7a6fbcc4ce"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "250317267233bf7f607ad268ddd2089c29f8722840ba8a3f37a1a33603f84911"
   end
 
   depends_on "rust" => :build # for bcrypt
-  depends_on "cffi"
-  depends_on "pyinvoke"
-  depends_on "python-cryptography"
-  depends_on "python@3.11"
+  depends_on "cryptography"
+  depends_on "libsodium" # for pynacl
+  depends_on "python@3.13"
 
   resource "bcrypt" do
-    url "https://files.pythonhosted.org/packages/8c/ae/3af7d006aacf513975fd1948a6b4d6f8b4a307f8a244e1a3d3774b297aad/bcrypt-4.0.1.tar.gz"
-    sha256 "27d375903ac8261cfe4047f6709d16f7d18d39b1ec92aaf72af989552a650ebd"
+    url "https://files.pythonhosted.org/packages/e4/7e/d95e7d96d4828e965891af92e43b52a4cd3395dc1c1ef4ee62748d0471d0/bcrypt-4.2.0.tar.gz"
+    sha256 "cf69eaf5185fd58f268f805b505ce31f9b9fc2d64b376642164e9244540c1221"
   end
 
   resource "decorator" do
@@ -39,9 +39,14 @@ class Fabric < Formula
     sha256 "e5323eb936458dccc2582dc6f9c322c852a775a27065ff2b0c4970b9d53d01b3"
   end
 
+  resource "invoke" do
+    url "https://files.pythonhosted.org/packages/f9/42/127e6d792884ab860defc3f4d80a8f9812e48ace584ffc5a346de58cdc6c/invoke-2.2.0.tar.gz"
+    sha256 "ee6cbb101af1a859c7fe84f2a264c059020b0cb7fe3535f9424300ab568f6bd5"
+  end
+
   resource "paramiko" do
-    url "https://files.pythonhosted.org/packages/44/03/158ae1dcb950bd96f04038502238159e116fafb27addf5df1ba35068f2d6/paramiko-3.3.1.tar.gz"
-    sha256 "6a3777a961ac86dbef375c5f5b8d50014a1a96d0fd7f054a43bc880134b0ff77"
+    url "https://files.pythonhosted.org/packages/1b/0f/c00296e36ff7485935b83d466c4f2cf5934b84b0ad14e81796e1d9d3609b/paramiko-3.5.0.tar.gz"
+    sha256 "ad11e540da4f55cedda52931f1a3f812a8238a7af7f62a60de538cd80bb28124"
   end
 
   resource "pynacl" do
@@ -50,27 +55,23 @@ class Fabric < Formula
   end
 
   resource "wrapt" do
-    url "https://files.pythonhosted.org/packages/f8/7d/73e4e3cdb2c780e13f9d87dc10488d7566d8fd77f8d68f0e416bfbd144c7/wrapt-1.15.0.tar.gz"
-    sha256 "d06730c6aed78cee4126234cf2d071e01b44b915e725a6cb439a879ec9754a3a"
+    url "https://files.pythonhosted.org/packages/95/4c/063a912e20bcef7124e0df97282a8af3ff3e4b603ce84c481d6d7346be0a/wrapt-1.16.0.tar.gz"
+    sha256 "5f370f952971e7d17c7d1ead40e49f32345a7f7a5373571ef44d800d06b1899d"
   end
 
   def install
+    ENV["SODIUM_INSTALL"] = "system"
     virtualenv_install_with_resources
-
-    # we depend on pyinvoke, but that's a separate formula, so install a `.pth` file to link them
-    site_packages = Language::Python.site_packages("python3.11")
-    pyinvoke = Formula["pyinvoke"].opt_libexec
-    (libexec/site_packages/"homebrew-pyinvoke.pth").write pyinvoke/site_packages
   end
 
   test do
-    (testpath/"fabfile.py").write <<~EOS
+    (testpath/"fabfile.py").write <<~PYTHON
       from invoke import task
       import fabric
       @task
       def hello(c):
         c.run("echo {}".format(fabric.__version__))
-    EOS
+    PYTHON
     assert_equal version.to_s, shell_output("#{bin}/fab hello").chomp
   end
 end

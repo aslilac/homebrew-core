@@ -1,8 +1,8 @@
 class Libdrm < Formula
   desc "Library for accessing the direct rendering manager"
   homepage "https://dri.freedesktop.org"
-  url "https://dri.freedesktop.org/libdrm/libdrm-2.4.116.tar.xz"
-  sha256 "46c53f40735ea3d26d614297f155f6131a510624a24274f654f6469ca905339a"
+  url "https://dri.freedesktop.org/libdrm/libdrm-2.4.123.tar.xz"
+  sha256 "a2b98567a149a74b0f50e91e825f9c0315d86e7be9b74394dae8b298caadb79e"
   license "MIT"
 
   livecheck do
@@ -11,7 +11,7 @@ class Libdrm < Formula
   end
 
   bottle do
-    sha256 x86_64_linux: "f0f99c7cedf8010d9d704c1c64708be4ea111cb8523e6c9fd14de0c4ad9aacbd"
+    sha256 x86_64_linux: "e36b7a4f22e082d69516be926064e80db5c805700560da48f9d33292f1f7a59e"
   end
 
   depends_on "docutils" => :build
@@ -28,13 +28,13 @@ class Libdrm < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <libdrm/drm.h>
       int main(int argc, char* argv[]) {
         struct drm_gem_open open;
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-ldrm"
   end
 end

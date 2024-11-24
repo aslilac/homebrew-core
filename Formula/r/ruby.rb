@@ -2,59 +2,68 @@ class Ruby < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
   license "Ruby"
-  revision 1
+  head "https://github.com/ruby/ruby.git", branch: "master"
 
   stable do
-    url "https://cache.ruby-lang.org/pub/ruby/3.2/ruby-3.2.2.tar.gz"
-    sha256 "96c57558871a6748de5bc9f274e93f4b5aad06cd8f37befa0e8d94e7b8a423bc"
+    url "https://cache.ruby-lang.org/pub/ruby/3.3/ruby-3.3.6.tar.gz"
+    sha256 "8dc48fffaf270f86f1019053f28e51e4da4cce32a36760a0603a9aee67d7fd8d"
 
     # Should be updated only when Ruby is updated (if an update is available).
     # The exception is Rubygem security fixes, which mandate updating this
     # formula & the versioned equivalents and bumping the revisions.
     resource "rubygems" do
-      url "https://rubygems.org/rubygems/rubygems-3.4.10.tgz"
-      sha256 "55f1c67fa2ae96c9751b81afad5c0f2b3792c5b19cbba6d54d8df9fd821460d3"
+      url "https://rubygems.org/rubygems/rubygems-3.5.23.tgz"
+      sha256 "3d277bf0b12ff46834d89b283fc451d130dbe6428d00d7ace4664c449c3ef28c"
+
+      livecheck do
+        url "https://rubygems.org/pages/download"
+        regex(/href=.*?rubygems[._-]v?(\d+(?:\.\d+)+)\.t/i)
+      end
     end
   end
 
   livecheck do
-    url "https://www.ruby-lang.org/en/downloads/"
+    url "https://www.ruby-lang.org/en/downloads/releases/"
     regex(/href=.*?ruby[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    sha256 arm64_ventura:  "dd4528e4e2faddab7c90f7a1849b465d190c5d06f2c95a96ec779aca69da9d16"
-    sha256 arm64_monterey: "6730d64d415526ef41f3a2911be1ca901295cbd37ddc7efb243b3568e5620b01"
-    sha256 arm64_big_sur:  "7a297337dfa9a2afc204e8b3302dc5a25823653fed95c49120b9c87241600e91"
-    sha256 ventura:        "cc9b5b6ccc54d8182f0ab699b23cb810fd7cc323a1c8a1aa7c257aa93313cc4c"
-    sha256 monterey:       "8cf820914f34d82f6ae5b80a2eae7b75c133a5263e6ca34338a161542878c413"
-    sha256 big_sur:        "937d024ebfab8a3f43ec18a24a626ae2a29a4127c6712b138cea786aaf2c413c"
-    sha256 x86_64_linux:   "c93cfb32aa6168aefa19725dfbe005491fad4ad304c5a2181ce110d291850d42"
-  end
-
-  head do
-    url "https://github.com/ruby/ruby.git", branch: "master"
-    depends_on "autoconf" => :build
-    depends_on "bison" => :build
+    sha256 arm64_sequoia: "d1077f441bf54d6e59bdac468cd44013d218843dea36add546b8946464bc7b59"
+    sha256 arm64_sonoma:  "1d1be63045a004474d7d2f0e0607af710ef04999e70b455a7e1be7df289cc024"
+    sha256 arm64_ventura: "78f11b6782faa869e8422cf2531be7bf21447f86a563e8eae6d57d148ef2b6a7"
+    sha256 sonoma:        "9102cb5755913c088cb4fb5a9afe0188cdcf2f6b733586a3deb492b6869e8906"
+    sha256 ventura:       "f82fad313fa6e653d9d453ce21a56e16bfe6df4cd8539e883704fc1e08c680ea"
+    sha256 x86_64_linux:  "8784b621019d8580a50a588341ea83ceafded9a1f750f5ae47680a6bad89f909"
   end
 
   keg_only :provided_by_macos
 
   depends_on "autoconf" => :build
-  depends_on "bison" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "libyaml"
   depends_on "openssl@3"
-  depends_on "readline"
 
   uses_from_macos "gperf"
   uses_from_macos "libffi"
   uses_from_macos "libxcrypt"
   uses_from_macos "zlib"
 
+  def determine_api_version
+    Utils.safe_popen_read(bin/"ruby", "-e", "print Gem.ruby_api_version")
+  end
+
   def api_version
-    Utils.safe_popen_read("#{bin}/ruby", "-e", "print Gem.ruby_api_version")
+    if head?
+      if latest_head_prefix
+        determine_api_version
+      else
+        # Best effort guess
+        "#{stable.version.major.to_i}.#{stable.version.minor.to_i + 1}.0+0"
+      end
+    else
+      "#{version.major.to_i}.#{version.minor.to_i}.0"
+    end
   end
 
   def rubygems_bindir
@@ -72,7 +81,7 @@ class Ruby < Formula
 
     system "./autogen.sh" if build.head?
 
-    paths = %w[libyaml openssl@3 readline].map { |f| Formula[f].opt_prefix }
+    paths = %w[libyaml openssl@3].map { |f| Formula[f].opt_prefix }
     args = %W[
       --prefix=#{prefix}
       --enable-shared
@@ -82,6 +91,7 @@ class Ruby < Formula
       --with-opt-dir=#{paths.join(":")}
       --without-gmp
     ]
+    args << "--with-baseruby=#{RbConfig.ruby}" if build.head?
     args << "--disable-dtrace" if OS.mac? && !MacOS::CLT.installed?
 
     # Correct MJIT_CC to not use superenv shim
@@ -115,7 +125,7 @@ class Ruby < Formula
     resource("rubygems").stage do
       ENV.prepend_path "PATH", bin
 
-      system "#{bin}/ruby", "setup.rb", "--prefix=#{buildpath}/vendor_gem"
+      system bin/"ruby", "setup.rb", "--prefix=#{buildpath}/vendor_gem"
       rg_in = lib/"ruby/#{api_version}"
       rg_gems_in = lib/"ruby/gems/#{api_version}"
 
@@ -136,17 +146,20 @@ class Ruby < Formula
       (libexec/"gembin").install buildpath/"vendor_gem/bin/bundle" => "bundle"
       (libexec/"gembin").install_symlink "bundle" => "bundler"
     end
+
+    # remove all lockfiles in bin folder
+    rm Dir[bin/"*.lock"]
   end
 
   def post_install
     # Since Gem ships Bundle we want to provide that full/expected installation
     # but to do so we need to handle the case where someone has previously
     # installed bundle manually via `gem install`.
-    rm_f %W[
+    rm(%W[
       #{rubygems_bindir}/bundle
       #{rubygems_bindir}/bundler
-    ]
-    rm_rf Dir[HOMEBREW_PREFIX/"lib/ruby/gems/#{api_version}/gems/bundler-*"]
+    ].select { |file| File.exist?(file) })
+    rm_r(Dir[HOMEBREW_PREFIX/"lib/ruby/gems/#{api_version}/gems/bundler-*"])
     rubygems_bindir.install_symlink Dir[libexec/"gembin/*"]
 
     # Customize rubygems to look/install in the global gem directory
@@ -235,8 +248,6 @@ class Ruby < Formula
   end
 
   def caveats
-    return unless latest_version_installed?
-
     <<~EOS
       By default, binaries installed by gem will be placed into:
         #{rubygems_bindir}
@@ -248,8 +259,11 @@ class Ruby < Formula
   test do
     hello_text = shell_output("#{bin}/ruby -e 'puts :hello'")
     assert_equal "hello\n", hello_text
+
+    assert_equal api_version, determine_api_version
+
     ENV["GEM_HOME"] = testpath
-    system "#{bin}/gem", "install", "json"
+    system bin/"gem", "install", "json"
 
     (testpath/"Gemfile").write <<~EOS
       source 'https://rubygems.org'

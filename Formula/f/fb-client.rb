@@ -1,13 +1,13 @@
 class FbClient < Formula
   include Language::Python::Shebang
+  include Language::Python::Virtualenv
 
   desc "Shell-script client for https://paste.xinu.at"
   homepage "https://paste.xinu.at"
   url "https://paste.xinu.at/data/client/fb-2.3.0.tar.gz"
   sha256 "1164eca06eeacb4210d462c4baf1c4004272a6197d873d61166e7793539d1983"
   license "GPL-3.0-only"
-  revision 1
-  head "https://git.server-speed.net/users/flo/fb", using: :git, branch: "master"
+  revision 2
 
   livecheck do
     url :homepage
@@ -15,25 +15,33 @@ class FbClient < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "537eda37cb3bd26c4873ce83bdb9dbc8c41caeb392d2c0ade6507e1c44695c76"
-    sha256 cellar: :any,                 arm64_monterey: "320fa43c7cabdf9f3014db7ffc0145ecf187b5e4bf915202ba74e0298eaf6590"
-    sha256 cellar: :any,                 arm64_big_sur:  "de361b1fbff71a9042ae403b5e4305ef85d09b4f4f546e3ab1184954150c3f45"
-    sha256 cellar: :any,                 ventura:        "7634d244c93543f5ab6a05e4f730ba67ee79917695b324e9d4b7bfa77819fcb4"
-    sha256 cellar: :any,                 monterey:       "b2e427fce34347a147339ca1475d88c276c5200ce3a20592ba84abe2d56e9f64"
-    sha256 cellar: :any,                 big_sur:        "3d4d6131f828be8e190b5c41a07fb43fd136c638198575f73fa42c4fd4782772"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ae2fb8b3cbe02544d90f47ec3cfdccfe6e524df67285a9969ff7356f61ae85a6"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "3b570c1a3f374cc935d1410478bedfd3747a9aa45701db997f56e84b6ad1fd12"
+    sha256 cellar: :any,                 arm64_sonoma:  "034252749348b8726609632cbe00f8fc8a6d5302d90e0715e3ef7f38cce17075"
+    sha256 cellar: :any,                 arm64_ventura: "5efc3735519f642d026d2a89bd65b849336c6e0053b6dd1793c8d398992ab1c6"
+    sha256 cellar: :any,                 sonoma:        "6153d56a2e1099121819856c504f6171705431b8c7e56e1daf2a5250929a5c72"
+    sha256 cellar: :any,                 ventura:       "0ab8a9ec411a5979fc7b9927264b90d4bf7362af250ac0dfac180da339b10ad3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9df6820eecd2924ec0458ba37fd14e21844091f98554dc47c60973832836b57b"
   end
 
-  depends_on "pkg-config" => :build
   depends_on "curl"
   depends_on "openssl@3"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
   conflicts_with "spotbugs", because: "both install a `fb` binary"
 
   resource "pycurl" do
-    url "https://files.pythonhosted.org/packages/09/ca/0b6da1d0f391acb8991ac6fdf8823ed9cf4c19680d4f378ab1727f90bd5c/pycurl-7.45.1.tar.gz"
-    sha256 "a863ad18ff478f5545924057887cdae422e1b2746e41674615f687498ea5b88a"
+    url "https://files.pythonhosted.org/packages/c9/5a/e68b8abbc1102113b7839e708ba04ef4c4b8b8a6da392832bb166d09ea72/pycurl-7.45.3.tar.gz"
+    sha256 "8c2471af9079ad798e1645ec0b0d3d4223db687379d17dd36a70637449f81d6b"
+
+    # Remove -flat_namespace
+    # PR ref: https://github.com/pycurl/pycurl/pull/855
+    on_sequoia :or_newer do
+      patch do
+        url "https://github.com/pycurl/pycurl/commit/7deb85e24981e23258ea411dcc79ca9b527a297d.patch?full_index=1"
+        sha256 "a49fa9143287398856274f019a04cf07b0c345560e1320526415e9280ce2efbc"
+      end
+    end
   end
 
   resource "pyxdg" do
@@ -42,24 +50,13 @@ class FbClient < Formula
   end
 
   def install
-    # avoid pycurl error about compile-time and link-time curl version mismatch
-    ENV.delete "SDKROOT"
+    venv = virtualenv_create(libexec, "python3.13")
+    venv.pip_install resources
 
-    python3 = "python3.11"
-    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor"/Language::Python.site_packages(python3)
-
-    # avoid error about libcurl link-time and compile-time ssl backend mismatch
-    ENV["PYCURL_CURL_CONFIG"] = Formula["curl"].opt_bin/"curl-config"
-    resources.each do |r|
-      r.stage do
-        system python3, "-m", "pip", "install", *std_pip_args(prefix: libexec/"vendor"), "."
-      end
-    end
-
-    rewrite_shebang detected_python_shebang, "fb"
+    rw_info = python_shebang_rewrite_info(libexec/"bin/python")
+    rewrite_shebang rw_info, "fb"
 
     system "make", "PREFIX=#{prefix}", "install"
-    bin.env_script_all_files(libexec/"bin", PYTHONPATH: ENV["PYTHONPATH"])
   end
 
   test do

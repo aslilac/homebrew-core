@@ -1,12 +1,20 @@
 class Sapling < Formula
   desc "Source control client"
   homepage "https://sapling-scm.com"
-  url "https://github.com/facebook/sapling/archive/refs/tags/0.2.20230523-092610+f12b7eee.tar.gz"
-  version "0.2.20230523-092610+f12b7eee"
-  sha256 "57a04327052f900d95d0dd3800d8b13a411b08222307bb141109afca1d1d0eaf"
   license "GPL-2.0-or-later"
-  revision 1
   head "https://github.com/facebook/sapling.git", branch: "main"
+
+  stable do
+    url "https://github.com/facebook/sapling/archive/refs/tags/0.2.20240718-145624+f4e9df48.tar.gz"
+    version "0.2.20240718-145624-f4e9df48"
+    sha256 "8081d405cddb9dc4eadd96f4c948b7686b0b61f641c068fc87b9c27518fb619e"
+
+    # Backport fix for Python 3.12
+    patch do
+      url "https://github.com/facebook/sapling/commit/65a7e9097fb9280aef7c50ecdf08b5755288490a.patch?full_index=1"
+      sha256 "ca59aebef870bad9887b927b68c1be76a01bb905f5eb76cf2f0d2499b3b0c306"
+    end
+  end
 
   livecheck do
     url :stable
@@ -15,58 +23,126 @@ class Sapling < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "748a832b6fc9303b9488ffa419eede0a11f213601d628dafe6e4036ef49411d2"
-    sha256 cellar: :any,                 arm64_monterey: "6e22574bc80d85053a8b9cd006c81dcad636030b1a553040d812070c6f717e89"
-    sha256 cellar: :any,                 arm64_big_sur:  "de6bbe1417ece08160a301761cf9e5b89850a31e7ece5d7e37bf2ff29df0fb8a"
-    sha256 cellar: :any,                 ventura:        "834be18db23a6d79822165626ea0940eb6cb69926b4f0a5a2d69b68cf1fcb453"
-    sha256 cellar: :any,                 monterey:       "2b2eeb0531b0d8134845f15ebd193edff8a97f271e85419d4fe07a5c6a19d34a"
-    sha256 cellar: :any,                 big_sur:        "21ec5396066114414ae3c587cbcf1a501d3aa16b34f4b24ef645678d9b9034bc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8e043c11958e614bfb4d74f65c4e1f3549e4942c7c52d5b2222af0b1ccdcc600"
+    rebuild 2
+    sha256 cellar: :any,                 arm64_sequoia: "60bcea0cc8d231647295709c7b3d4e02a12c41fc01e42008a166ebe34605fae3"
+    sha256 cellar: :any,                 arm64_sonoma:  "3fa0437a9e393c5351a924b7043e6437e7103a432214c0b45330b59125743f2d"
+    sha256 cellar: :any,                 arm64_ventura: "62de9035cb2918f4ed281c75db35d3ba307734815860342cd3b1173596fd5419"
+    sha256 cellar: :any,                 sonoma:        "53b8e3e1cee4803014e4e2020d0a8a9331234859fcb2144dbbfa5bbcd3f18361"
+    sha256 cellar: :any,                 ventura:       "cc3b90c7bf62e9dab0695598a52b7aed57906f9a4e5f4b2a0e2a37b31760fb36"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "595d837e78b2fcbeae267fe54256134c38d6094fae4a49ee0fae330890045844"
   end
 
   depends_on "cmake" => :build
+  depends_on "pkgconf" => :build
+  depends_on "python-setuptools" => :build
   depends_on "rust" => :build
   depends_on "yarn" => :build
   depends_on "gh"
+  depends_on "libssh2"
   depends_on "node"
   depends_on "openssl@3"
-  depends_on "python@3.11"
+  depends_on "python@3.12"
 
-  # `setuptools` 66.0.0+ only supports PEP 440 conforming version strings.
-  # Modify the version string to make `setuptools` happy.
-  def modified_version
-    # If installing through `brew install sapling --HEAD`, version will be HEAD-<hash>, which
-    # still doesn't make `setuptools` happy. However, since installing through this method
-    # will get a git repo, we can use the ci/tag-name.sh script for determining the version no.
-    build_version = if version.to_s.start_with?("HEAD")
-      Utils.safe_popen_read("ci/tag-name.sh").chomp + ".dev"
-    else
-      version
+  uses_from_macos "bzip2"
+  # curl-config on ventura builds do not report http2 feature,
+  # this is a workaround to allow to build against system curl
+  # see discussions in https://github.com/Homebrew/homebrew-core/pull/197727
+  uses_from_macos "curl", since: :sonoma
+  uses_from_macos "zlib"
+
+  conflicts_with "sl", because: "both install `sl` binaries"
+
+  def watchman_rev
+    watchman_repo = "https://github.com/facebook/watchman.git"
+    max_date = version.patch.to_s.match(/^(\d{4})(\d{2})(\d{2})\b/).captures.join(".")
+    tags = Utils.safe_popen_read("git", "ls-remote", "--sort=-version:refname", "--tags", watchman_repo)
+    tags.scan(%r{^(\S+)\trefs/tags/v(\d{4}\.\d{2}\.\d{2})(?:\.\d+)+$}) do |rev, date|
+      return rev if date <= max_date
     end
-    segments = build_version.to_s.split(/[-+]/)
-    "#{segments.take(2).join("-")}+#{segments.last}"
+    odie "Unable to pick watchman tag based on sapling patch version #{version.patch}!"
   end
 
   def install
-    python3 = "python3.11"
+    # Workaround to improve reproducibility as Cargo.toml uses branch for some dependencies.
+    # Actual reproducible builds won't be possible without a Cargo.lock.
+    #
+    # Related issue: https://github.com/facebook/sapling/issues/547
+    if build.stable?
+      github_hashes = buildpath.glob("build/deps/github_hashes/*/*-rev.txt").to_h do |revfile|
+        commit = revfile.read[/commit ([0-9a-f]+)$/i, 1]
+        odie "Unable to parse commit from #{revfile}!" if commit.nil?
+        ["#{revfile.dirname.basename}/#{revfile.basename("-rev.txt")}", commit]
+      end
+      odie "Unable to find any revision files in build/deps/github_hashes!" if github_hashes.empty?
 
+      # Watchman doesn't have a revision file. To avoid using HEAD, scan through tags
+      # and use revision from tag created on or before date in Sapling patch version
+      odie "Remove workaround for handling facebook/watchman!" if github_hashes.key?("facebook/watchman")
+      github_hashes["facebook/watchman"] = watchman_rev
+
+      no_modification = true
+      Dir.glob("**/Cargo.toml") do |manifest|
+        inreplace manifest do |s|
+          github_hashes.each do |repo, rev|
+            result = s.gsub! %r{(git = "https://github.com/#{repo}(?:\.git)?",) branch = "[^"]*"},
+                             "\\1 rev = \"#{rev}\"",
+                             audit_result: false
+            no_modification &&= result.nil?
+          end
+        end
+        if (git_branch = File.read(manifest)[/git = "[^"]*", branch = "[^"]*"/])
+          odie "#{manifest} tracks a branch for #{git_branch}!"
+        end
+      end
+      odie "Inreplace did not modify any branch usage in Cargo.toml manifests!" if no_modification
+    end
+
+    python3 = "python3.12"
+    ENV["LIBSSH2_SYS_USE_PKG_CONFIG"] = "1"
     ENV["OPENSSL_DIR"] = Formula["openssl@3"].opt_prefix
-    ENV["SAPLING_VERSION"] = modified_version
+    ENV["PYTHON_SYS_EXECUTABLE"] = which(python3)
+    ENV["SAPLING_VERSION"] = if build.stable?
+      version
+    else
+      Utils.safe_popen_read("ci/tag-name.sh").chomp + ".dev"
+    end
 
     # Don't allow the build to break our shim configuration.
     inreplace "eden/scm/distutils_rust/__init__.py", '"HOMEBREW_CCCFG"', '"NONEXISTENT"'
     system "make", "-C", "eden/scm", "install-oss", "PREFIX=#{prefix}", "PYTHON=#{python3}", "PYTHON3=#{python3}"
   end
 
+  def check_binary_linkage(binary, library)
+    binary.dynamically_linked_libraries.any? do |dll|
+      next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)
+
+      File.realpath(dll) == File.realpath(library)
+    end
+  end
+
   test do
-    assert_equal("Sapling #{modified_version}", shell_output("#{bin}/sl --version").chomp)
-    system "#{bin}/sl", "config", "--user", "ui.username", "Sapling <sapling@sapling-scm.com>"
-    system "#{bin}/sl", "init", "--git", "foobarbaz"
+    assert_equal "Sapling #{version}", shell_output("#{bin}/sl --version").chomp
+
+    system bin/"sl", "config", "--user", "ui.username", "Sapling <sapling@sapling-scm.com>"
+    system bin/"sl", "init", "--git", "foobarbaz"
+
     cd "foobarbaz" do
       touch "a"
-      system "#{bin}/sl", "add"
-      system "#{bin}/sl", "commit", "-m", "first"
-      assert_equal("first", shell_output("#{bin}/sl log -l 1 -T {desc}").chomp)
+      system bin/"sl", "add"
+      system bin/"sl", "commit", "-m", "first"
+      assert_equal "first", shell_output("#{bin}/sl log -l 1 -T {desc}").chomp
+    end
+
+    dylibs = [
+      Formula["libssh2"].opt_lib/shared_library("libssh2"),
+      Formula["openssl@3"].opt_lib/shared_library("libssl"),
+      Formula["openssl@3"].opt_lib/shared_library("libcrypto"),
+    ]
+    dylibs << (Formula["curl"].opt_lib/shared_library("libcurl")) if OS.linux?
+
+    dylibs.each do |library|
+      assert check_binary_linkage(bin/"sl", library),
+             "No linkage with #{library.basename}! Cargo is likely using a vendored version."
     end
   end
 end

@@ -5,7 +5,7 @@ class Libpgm < Formula
   head "https://github.com/steve-o/openpgm.git", branch: "master"
 
   stable do
-    url "https://github.com/steve-o/openpgm/archive/release-5-3-128.tar.gz"
+    url "https://github.com/steve-o/openpgm/archive/refs/tags/release-5-3-128.tar.gz"
     version "5.3.128"
     sha256 "8d707ef8dda45f4a7bc91016d7f2fed6a418637185d76c7ab30b306499c6d393"
 
@@ -17,9 +17,12 @@ class Libpgm < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "0f2266ecabc1128e3a70ff8e31864e6cd556bd20b66cc2c74fd32011b2646dc4"
+    sha256 cellar: :any,                 arm64_sonoma:   "6764decaa99670740309808e8be1ac3d75dbb9b8b8f8037d10c6dbe2932e0290"
     sha256 cellar: :any,                 arm64_ventura:  "27bb9366ecfabb4dafc81a54a1b7c39259cfcad13337a63c18a55ea0de26f2d5"
     sha256 cellar: :any,                 arm64_monterey: "8461b86788d5f5d6b6240ca78169bc120dd05fc753dcf052403537f5bd173382"
     sha256 cellar: :any,                 arm64_big_sur:  "350aa74e762a89d01bd49237b95bb92bb97b213da951f72d5d8febe372c636da"
+    sha256 cellar: :any,                 sonoma:         "a439be588514dae60781db58923be9b42dbd6e29c7ce2acfe44e81f13e291f8c"
     sha256 cellar: :any,                 ventura:        "4b1dc1f1e98ea4d6bbf9c47f069baec6521a9b35753044cdc2d5f1066ddd82f4"
     sha256 cellar: :any,                 monterey:       "6c5d4b6c58e5afb6c32f4b8681b5065dbc6c8920b505d14dd1dc49479411e56a"
     sha256 cellar: :any,                 big_sur:        "f5679fa01ad2590b57001a261b8eeffef2daf437021d75564fea4603ce348f68"
@@ -43,7 +46,7 @@ class Libpgm < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <pgm/pgm.h>
 
       int main(void) {
@@ -53,7 +56,7 @@ class Libpgm < Formula
         }
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-I#{include}/pgm-5.3", "-L#{lib}", "-lpgm", "-o", "test"
     system "./test"
   end

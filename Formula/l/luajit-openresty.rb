@@ -1,8 +1,8 @@
 class LuajitOpenresty < Formula
   desc "OpenResty's Branch of LuaJIT 2"
   homepage "https://github.com/openresty/luajit2"
-  url "https://github.com/openresty/luajit2/archive/refs/tags/v2.1-20230410.tar.gz"
-  sha256 "77bbcbb24c3c78f51560017288f3118d995fe71240aa379f5818ff6b166712ff"
+  url "https://github.com/openresty/luajit2/archive/refs/tags/v2.1-20241113.tar.gz"
+  sha256 "3b269f3a55c420e5a286bbd6b8ef8a5425dbcb4194fa2beb9e22eea277cd6638"
   license "MIT"
   version_scheme 1
   head "https://github.com/openresty/luajit2.git", branch: "v2.1-agentzh"
@@ -19,13 +19,12 @@ class LuajitOpenresty < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "e534584c7c3b7eb3a137649e7e6801b98799a1d863466d8db8b09343134f2a9b"
-    sha256 cellar: :any,                 arm64_monterey: "2e11555a5d4d0be559d01145726d068c4125172532ac5f51bb849f761fe80650"
-    sha256 cellar: :any,                 arm64_big_sur:  "83badf175a69ce7883c267ab0307204358fa5c705f5e7a004ac8088afb69a15c"
-    sha256 cellar: :any,                 ventura:        "02a45febeb8a172ebba48830de9f9c80853efe1382c9723e51b13f40c85b3fc0"
-    sha256 cellar: :any,                 monterey:       "99fdd703af20ec78bd845c3d6bf6f47b8c150ec425985549e8cd6389afc26628"
-    sha256 cellar: :any,                 big_sur:        "c5ed3c1c9b13b347a14fcb35c053fab22a1cca47a382cc0aa323e6d357dd61dd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3db66a26e9cbbce3acb24f279da334ebae69d6f319a3f93425aea13490a75c86"
+    sha256 cellar: :any,                 arm64_sequoia: "3ae9fdf36a395c60aab7bab9582ba1b01137cd8df6d43f7da991d35afdeba720"
+    sha256 cellar: :any,                 arm64_sonoma:  "e1fe634c3503c0db79f0f05e068e2780e34d0adc5d15ac4bb662c85c690ac09d"
+    sha256 cellar: :any,                 arm64_ventura: "8d0f221c1f72f6e3ef23e44554cc4d923e21dac08db3001673d43d323b13e4ee"
+    sha256 cellar: :any,                 sonoma:        "f3dab37c00904d880f0acd21ab4acb17335ef0fcdffb27d6d9f31c8bcc669b5a"
+    sha256 cellar: :any,                 ventura:       "1050d2f619431597d0a8b8c3425f7223887964d81df3d93bc993a5f999635739"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "42cea076faadb4a92bcc58fbd81085dcfa9505f4c978f5c417ca2e64002be015"
   end
 
   keg_only "it conflicts with the LuaJIT formula"
@@ -41,7 +40,10 @@ class LuajitOpenresty < Formula
 
     # Per https://luajit.org/install.html: If MACOSX_DEPLOYMENT_TARGET
     # is not set then it's forced to 10.4, which breaks compile on Mojave.
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
+    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version.to_s if OS.mac?
+
+    # Fix for clang >= 16, see https://github.com/LuaJIT/LuaJIT/issues/1266
+    ENV.append "LDFLAGS", "-Wl,-no_deduplicate" if DevelopmentTools.clang_build_version >= 1600
 
     args = %W[
       PREFIX=#{prefix}
@@ -66,11 +68,11 @@ class LuajitOpenresty < Formula
     end
 
     # Having an empty Lua dir in lib/share can mess with other Homebrew Luas.
-    %W[#{lib}/lua #{share}/lua].each { |d| rm_rf d }
+    %W[#{lib}/lua #{share}/lua].each { |d| rm_r(d) }
   end
 
   test do
-    system "#{bin}/luajit", "-e", <<~EOS
+    system bin/"luajit", "-e", <<~EOS
       local ffi = require("ffi")
       ffi.cdef("int printf(const char *fmt, ...);")
       ffi.C.printf("Hello %s!\\n", "#{ENV["USER"]}")

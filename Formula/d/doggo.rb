@@ -1,41 +1,27 @@
 class Doggo < Formula
   desc "Command-line DNS Client for Humans"
   homepage "https://doggo.mrkaran.dev/"
-  url "https://github.com/mr-karan/doggo/archive/refs/tags/v0.5.6.tar.gz"
-  sha256 "1965f4c909991bc38b65784ccbc03f4760214bca34f1bb984999f1fc8714ff96"
+  url "https://github.com/mr-karan/doggo/archive/refs/tags/v1.0.5.tar.gz"
+  sha256 "92a34f5510a48ab657a980c39edf907c17e96e88a476187d5b57a8cef3becd5b"
   license "GPL-3.0-or-later"
   head "https://github.com/mr-karan/doggo.git", branch: "main"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2b788c7ba4ed0cf74463335b2f013e1a9846fc2ff1df0e73a889447625839917"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a28947b7d156241ad42c3525cbaf52f811fb1c956b255430c5248b5997ea5aea"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "21883ad0571cdd465fa838154dd32a1f18650ba04512a502ec4e58400242c63a"
-    sha256 cellar: :any_skip_relocation, ventura:        "4c95b7e5d1eaa1827f94634df29794f7972fe3ca881072116ffab8926062f666"
-    sha256 cellar: :any_skip_relocation, monterey:       "0e98ea20aa5596ec69607bfa22a0d7aa891ef398d9162fcfe423bcb4192f8f87"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a102dc47b0ff374bb0449f973710af220d4fca7e313ab5f8b0372e7ea3299731"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "52e0cbe5449476605483e106b02c23e93daefffd4879410d1cabea145fec7efc"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "659e186849f180769977ef2af67b9880c454b72d32853222ab69f396e51094f7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "659e186849f180769977ef2af67b9880c454b72d32853222ab69f396e51094f7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "659e186849f180769977ef2af67b9880c454b72d32853222ab69f396e51094f7"
+    sha256 cellar: :any_skip_relocation, sonoma:        "e2bf2f469a3d501455d0c5db6005dd1f78a5a3916e31253361db0effd0d4cedf"
+    sha256 cellar: :any_skip_relocation, ventura:       "e2bf2f469a3d501455d0c5db6005dd1f78a5a3916e31253361db0effd0d4cedf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e6ef549e7c62a7cd3f1cf41dd03e7f99bf26e256f950ddc1b6c08d2a488debd5"
   end
 
   depends_on "go" => :build
 
-  # quic-go patch for go1.21.0 build
-  patch do
-    url "https://github.com/mr-karan/doggo/commit/b296706c7b25a9bfa40fd927af9280b836c03c3a.patch?full_index=1"
-    sha256 "27f3444ec7e3629665dad7a767990cb118807575894bd7dfd13ce481a937eaa9"
-  end
-
   def install
-    ldflags = %W[
-      -s -w
-      -X main.buildVersion=#{version}
-      -X main.buildDate=#{time.iso8601}
-    ]
+    ldflags = "-s -w -X main.buildVersion=#{version} -X main.buildDate=#{time.iso8601}"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/doggo"
 
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/doggo"
-
-    zsh_completion.install "completions/doggo.zsh" => "_doggo"
-    fish_completion.install "completions/doggo.fish"
+    generate_completions_from_executable(bin/"doggo", "completions")
   end
 
   test do

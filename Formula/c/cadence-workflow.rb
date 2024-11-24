@@ -2,19 +2,26 @@ class CadenceWorkflow < Formula
   desc "Distributed, scalable, durable, and highly available orchestration engine"
   homepage "https://cadenceworkflow.io/"
   url "https://github.com/uber/cadence.git",
-      tag:      "v1.0.0",
-      revision: "8e81044769ddd11a10db66795b98146687beeb41"
+      tag:      "v1.2.14",
+      revision: "51ca977369869835e3e67954aa15f08162963b0e"
   license "MIT"
   head "https://github.com/uber/cadence.git", branch: "master"
 
+  # Upstream creates releases that use a stable tag (e.g., `v1.2.3`) but are
+  # labeled as "pre-release" on GitHub before the version is released, so it's
+  # necessary to use the `GithubLatest` strategy.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6ce961c1122cdc0732910ec4fbc06fd7c096d0c37b1d65afd09b9fc0342a296d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5022de5575b51b8cb3a0e9813807d3a11bde1ea278dcb9f8bfc3cbe73e8364d6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "44040ca896a9935700ed223beeab382585035ac042318a7039c9dbf1a2db46cb"
-    sha256 cellar: :any_skip_relocation, ventura:        "0730212aa8a3b72c8629bbfb11aff5f946a42c83e0826c3fcd54ab2f06167e34"
-    sha256 cellar: :any_skip_relocation, monterey:       "5bca930b8af208fa04d4da776ae0760128f6f2132be11a7410c28ab679e54aa2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "46e3cdae35e96ddced80e4634cf9c6db0883ac60574568ed4726d7bcdc99b49a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e9d005b5fd4eb46630e4d51e70328c573bfda1c117f27009782c950a44755535"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a919ce8f9d62a4eb176415d36c4852c62d8f02bf7d21b19260b85c860b8edd33"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d8635ed6f308ecffc6fb6e50e234e392afd654de58ccd02a24d9e6e81a295c8a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "614f467e4d1324673773628990528639f101c788a1f883bbe0e3bf965ed2a931"
+    sha256 cellar: :any_skip_relocation, sonoma:        "44f29709a00103474be533bd67c74edfbbc5557613cdd65b9492ebbba804189b"
+    sha256 cellar: :any_skip_relocation, ventura:       "092779dff66b7df76f892520e7b9ec51e78f35c35c641c7958ff7caa94687254"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "284a0ae4f7d1fc34866c2b79a5a7212b3cc32b424cd1825a0c2950d9fc6d5401"
   end
 
   depends_on "go" => :build
@@ -22,11 +29,6 @@ class CadenceWorkflow < Formula
   conflicts_with "cadence", because: "both install an `cadence` executable"
 
   def install
-    # `go` version is hardcoded in Makefile
-    inreplace "Makefile" do |s|
-      s.change_make_var! "EXPECTED_GO_VERSION", Formula["go"].version.to_s
-    end
-
     system "make", ".just-build"
     make_args = %w[
       cadence
@@ -51,7 +53,7 @@ class CadenceWorkflow < Formula
     output = shell_output("#{bin}/cadence-server start 2>&1", 1)
     assert_match "Loading config; env=development,zone=,configDir", output
 
-    output = shell_output("#{bin}/cadence --domain samples-domain domain desc ", 1)
+    output = shell_output("#{bin}/cadence --domain samples-domain domain desc 2>&1", 1)
     assert_match "Error: Operation DescribeDomain failed", output
   end
 end

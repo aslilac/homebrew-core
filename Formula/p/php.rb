@@ -2,9 +2,9 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.2.9.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.2.9.tar.xz"
-  sha256 "1e6cb77f997613864ab3127fbfc6a8c7fdaa89a95e8ed6167617b913b4de4765"
+  url "https://www.php.net/distributions/php-8.4.1.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.4.1.tar.xz"
+  sha256 "94c8a4fd419d45748951fa6d73bd55f6bdf0adaefb8814880a67baa66027311f"
   license "PHP-3.01"
 
   livecheck do
@@ -13,13 +13,12 @@ class Php < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "126a91549aa4cc78430a40366f83ae2b88af1080973cfdb7440f49c73edd33dd"
-    sha256 arm64_monterey: "accd97c38e50852028602bd311da83c68397e17fd36ab7e03b7e3573050de169"
-    sha256 arm64_big_sur:  "f6716814c29399fa322a34adf2e53c5739ce38d08f481d4dbfc3df280cc86763"
-    sha256 ventura:        "798df3f971f900c4da17dbea1c64cd7c0f4cb700b99e8d9c3367760dc0eea1ec"
-    sha256 monterey:       "a521a7a3f0f5cea881544576bc3ff09e63e0e5e9574be8213713e86d6ee8bee0"
-    sha256 big_sur:        "54ad27106b993b44949390047ddcfd3682cfc013b6f37111add096583e5cc71a"
-    sha256 x86_64_linux:   "e45f60590a5468db9de00eb7fdd2a0460539d7730dccb5cd55c92b7cc9ff7680"
+    sha256 arm64_sequoia: "3800e45d5cd63c32c2f7218d16f58582b7fa6cdef5b95ca455e31b3205fcac3f"
+    sha256 arm64_sonoma:  "d0d48b74cee979feaf61163f997171d4be88aee7bd05d34f7b79086fc9bfee07"
+    sha256 arm64_ventura: "8457b0bbe50e7a56a498594f09f66aa645403a870632a9a376d8041446d2558a"
+    sha256 sonoma:        "9c19cac2676029b1166c92ef06da10ff8fe8812a7a85f847e28a030f1050c77d"
+    sha256 ventura:       "67374319228f35a65d26cdd7220f78ec82135ef6c832597ac3d4e14b96b2b8b5"
+    sha256 x86_64_linux:  "5b4f182ecbf9f3fa0a455b3f7a22374b5af59ddb231927a0207b6a31c85b094d"
   end
 
   head do
@@ -30,7 +29,7 @@ class Php < Formula
   end
 
   depends_on "httpd" => [:build, :test]
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "apr"
   depends_on "apr-util"
   depends_on "argon2"
@@ -41,7 +40,7 @@ class Php < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "krb5"
   depends_on "libpq"
   depends_on "libsodium"
@@ -73,11 +72,11 @@ class Php < Formula
     system "./buildconf", "--force"
 
     inreplace "configure" do |s|
-      s.gsub! "APACHE_THREADED_MPM=`$APXS_HTTPD -V 2>/dev/null | grep 'threaded:.*yes'`",
-              "APACHE_THREADED_MPM="
-      s.gsub! "APXS_LIBEXECDIR='$(INSTALL_ROOT)'`$APXS -q LIBEXECDIR`",
+      s.gsub! "$APXS_HTTPD -V 2>/dev/null | grep 'threaded:.*yes' >/dev/null 2>&1",
+              "false"
+      s.gsub! "APXS_LIBEXECDIR='$(INSTALL_ROOT)'$($APXS -q LIBEXECDIR)",
               "APXS_LIBEXECDIR='$(INSTALL_ROOT)#{lib}/httpd/modules'"
-      s.gsub! "-z `$APXS -q SYSCONFDIR`",
+      s.gsub! "-z $($APXS -q SYSCONFDIR)",
               "-z ''"
     end
 
@@ -202,7 +201,7 @@ class Php < Formula
     system "make", "install"
 
     # Allow pecl to install outside of Cellar
-    extension_dir = Utils.safe_popen_read("#{bin}/php-config", "--extension-dir").chomp
+    extension_dir = Utils.safe_popen_read(bin/"php-config", "--extension-dir").chomp
     orig_ext_dir = File.basename(extension_dir)
     inreplace bin/"php-config", lib/"php", prefix/"pecl"
     %w[development production].each do |mode|
@@ -260,7 +259,7 @@ class Php < Formula
     pecl_path = HOMEBREW_PREFIX/"lib/php/pecl"
     pecl_path.mkpath
     ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
-    extension_dir = Utils.safe_popen_read("#{bin}/php-config", "--extension-dir").chomp
+    extension_dir = Utils.safe_popen_read(bin/"php-config", "--extension-dir").chomp
     php_basename = File.basename(extension_dir)
     php_ext_dir = opt_prefix/"lib/php"/php_basename
 
@@ -337,8 +336,8 @@ class Php < Formula
                     (Formula["libpq"].opt_lib/shared_library("libpq", 5)).to_s
 
     system "#{sbin}/php-fpm", "-t"
-    system "#{bin}/phpdbg", "-V"
-    system "#{bin}/php-cgi", "-m"
+    system bin/"phpdbg", "-V"
+    system bin/"php-cgi", "-m"
     # Prevent SNMP extension to be added
     refute_match(/^snmp$/, shell_output("#{bin}/php -m"),
       "SNMP extension doesn't work reliably with Homebrew on High Sierra")
@@ -347,11 +346,11 @@ class Php < Formula
       port_fpm = free_port
 
       expected_output = /^Hello world!$/
-      (testpath/"index.php").write <<~EOS
+      (testpath/"index.php").write <<~PHP
         <?php
         echo 'Hello world!' . PHP_EOL;
         var_dump(ldap_connect());
-      EOS
+      PHP
       main_config = <<~EOS
         Listen #{port}
         ServerName localhost:#{port}
@@ -399,7 +398,7 @@ class Php < Formula
       pid = fork do
         exec Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd.conf"
       end
-      sleep 3
+      sleep 10
 
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
 
@@ -412,7 +411,7 @@ class Php < Formula
       pid = fork do
         exec Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd-fpm.conf"
       end
-      sleep 3
+      sleep 10
 
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
     ensure
@@ -430,10 +429,10 @@ end
 
 __END__
 diff --git a/build/php.m4 b/build/php.m4
-index 3624a33a8e..d17a635c2c 100644
+index e45b22b7..4624b390 100644
 --- a/build/php.m4
 +++ b/build/php.m4
-@@ -425,7 +425,7 @@ dnl
+@@ -429,7 +429,7 @@ dnl
  dnl Adds a path to linkpath/runpath (LDFLAGS).
  dnl
  AC_DEFUN([PHP_ADD_LIBPATH],[
@@ -442,15 +441,15 @@ index 3624a33a8e..d17a635c2c 100644
      PHP_EXPAND_PATH($1, ai_p)
      ifelse([$2],,[
        _PHP_ADD_LIBPATH_GLOBAL([$ai_p])
-@@ -470,7 +470,7 @@ dnl
- dnl Add an include path. If before is 1, add in the beginning of INCLUDES.
+@@ -476,7 +476,7 @@ dnl paths are prepended to the beginning of INCLUDES.
  dnl
- AC_DEFUN([PHP_ADD_INCLUDE],[
--  if test "$1" != "/usr/include"; then
-+  if test "$1" != "$PHP_OS_SDKPATH/usr/include"; then
-     PHP_EXPAND_PATH($1, ai_p)
-     PHP_RUN_ONCE(INCLUDEPATH, $ai_p, [
-       if test "$2"; then
+ AC_DEFUN([PHP_ADD_INCLUDE], [
+ for include_path in m4_normalize(m4_expand([$1])); do
+-  AS_IF([test "$include_path" != "/usr/include"], [
++  AS_IF([test "$include_path" != "$PHP_OS_SDKPATH/usr/include"], [
+     PHP_EXPAND_PATH([$include_path], [ai_p])
+     PHP_RUN_ONCE([INCLUDEPATH], [$ai_p], [m4_ifnblank([$2],
+       [INCLUDES="-I$ai_p $INCLUDES"],
 diff --git a/configure.ac b/configure.ac
 index 36c6e5e3e2..71b1a16607 100644
 --- a/configure.ac

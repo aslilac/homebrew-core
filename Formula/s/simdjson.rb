@@ -1,19 +1,20 @@
 class Simdjson < Formula
   desc "SIMD-accelerated C++ JSON parser"
   homepage "https://simdjson.org"
-  url "https://github.com/simdjson/simdjson/archive/refs/tags/v3.2.3.tar.gz"
-  sha256 "ab72701b8560c4f93a5de525657b3bf34094f99a1e63bd9db3195d1bcb90aa09"
+  url "https://github.com/simdjson/simdjson/archive/refs/tags/v3.10.1.tar.gz"
+  sha256 "1e8f881cb2c0f626c56cd3665832f1e97b9d4ffc648ad9e1067c134862bba060"
   license "Apache-2.0"
   head "https://github.com/simdjson/simdjson.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "34110267a81f39ce7d54677b9c35914011d0e06e281318ef3afdf948bb0bf369"
-    sha256 cellar: :any,                 arm64_monterey: "8d47209774c9d129bc16980ca2ac3a2c3a2d2e75586e090e62b0f6c02de238fa"
-    sha256 cellar: :any,                 arm64_big_sur:  "054a7ea92c998c64bf388f7de4b1498d383ebf5b4de8ad7926a53844c1fc3190"
-    sha256 cellar: :any,                 ventura:        "e66217d2029318a5b0f1f41b5a7037b4816ee05e52dcc64e977f133d040ef199"
-    sha256 cellar: :any,                 monterey:       "e75d1dc3cca52900510b2c1ec2422fdf82147cd82e82d3c4d53cb93c8297403c"
-    sha256 cellar: :any,                 big_sur:        "a8d5810ddb175bbf268df0048eb8f6a59d814c58238ec22d5b513a5335905eb4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3b6f25dbb9df555dbf54758d5d7eed04365038ddcfae7331350156b7c9e6eb4f"
+    sha256 cellar: :any,                 arm64_sequoia:  "6caaeb2dccf5953efd630bfa19d5f6d12ec229bb29b4f10a405a8c9513b4ba25"
+    sha256 cellar: :any,                 arm64_sonoma:   "c10d30c3b052deb786fba4e0b2e1e14dbb0640826b82e7c6482e7191774c0402"
+    sha256 cellar: :any,                 arm64_ventura:  "3e206709db5ef6cb0839376e0deff999587311b60204c9390c6de152ab7db360"
+    sha256 cellar: :any,                 arm64_monterey: "543289d72912bf50c40ca393e4f87065be1472d1c19e4b1ab6bed02093343f3a"
+    sha256 cellar: :any,                 sonoma:         "6bc43fd1d128554706c37b37d800a6995dbc80e7d26b86786a477fb5d7225397"
+    sha256 cellar: :any,                 ventura:        "17204785c149399ce66c1f03d3ffc275f7032b3a342f54811ccc56c861c48928"
+    sha256 cellar: :any,                 monterey:       "3141a0a0a6aaa0ad3af1d144360a315a3d4fef7cb50d1480db9f0687c999f936"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f97e203d980764ece55c69cebb8ebf750432bd0b1918410f08b83bd252805ee2"
   end
 
   depends_on "cmake" => :build
@@ -31,7 +32,7 @@ class Simdjson < Formula
 
   test do
     (testpath/"test.json").write "{\"name\":\"Homebrew\",\"isNull\":null}"
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <iostream>
       #include <simdjson.h>
       int main(void) {
@@ -39,7 +40,7 @@ class Simdjson < Formula
         simdjson::dom::element json = parser.load("test.json");
         std::cout << json["name"] << std::endl;
       }
-    EOS
+    CPP
 
     system ENV.cxx, "test.cpp", "-std=c++11",
            "-I#{include}", "-L#{lib}", "-lsimdjson", "-o", "test"

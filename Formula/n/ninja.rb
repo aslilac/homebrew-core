@@ -1,8 +1,8 @@
 class Ninja < Formula
   desc "Small build system for use with gyp or CMake"
   homepage "https://ninja-build.org/"
-  url "https://github.com/ninja-build/ninja/archive/v1.11.1.tar.gz"
-  sha256 "31747ae633213f1eda3842686f83c2aa1412e0f5691d1c14dbbcc67fe7400cea"
+  url "https://github.com/ninja-build/ninja/archive/refs/tags/v1.12.1.tar.gz"
+  sha256 "821bdff48a3f683bc4bb3b6f0b5fe7b2d647cf65d52aeb63328c91a6c6df285a"
   license "Apache-2.0"
   head "https://github.com/ninja-build/ninja.git", branch: "master"
 
@@ -12,29 +12,21 @@ class Ninja < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f973424d56f32c88d2de08e26d2ab37c9966ab3f0b6ad5e8d36a953e24a1998e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9258efc6ef75aa56f68844ddf48f8ca050a91a45738c6715de73e5a2fe88dccf"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "293c707dd52fb9136ca3d95f74e63a741a975e4589c0900e9a184bfeb90d0625"
-    sha256 cellar: :any_skip_relocation, ventura:        "51b5d6787ffc70b7b5762942c9329d2341afacbc96c3035f5e46ade9b036af7c"
-    sha256 cellar: :any_skip_relocation, monterey:       "7083778d561200849c37c7763032f157c66ddfdcd9f2a813a685d1fc90ca2799"
-    sha256 cellar: :any_skip_relocation, big_sur:        "3f625fc538dbceeecebb5088bda7b3d2daa8477adb3f9653f01e3eff76983b8d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "96fe0b239b3add346f8e4e2ea7e0713018f49f03e684e80706fcf4cba7b24fcb"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4ccb687bdd51f132eb4e87bda877c7ec7fbd565dd567c59e074083977c7e027b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e0137a7ca41103118431134051e264a38dfcfd90a1d23354527dec7ecd4098d0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ee3cb1d64ad324420cb83866236159703faa91825353d4f2ac70aa8a729d03f7"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4853917b940c67e971ecc4575d490080e88ea812b1af2e9f3b383c5f9012f9eb"
+    sha256 cellar: :any_skip_relocation, sequoia:        "8b078ad9df50b80bd296614204d1dc0a42e9340edd45d0aa0c6576cd538be50f"
+    sha256 cellar: :any_skip_relocation, sonoma:         "b9e7f5d59c29882398cbf1cf9fcf358db480afa96ad9fb51a87aa0da9b5fabd7"
+    sha256 cellar: :any_skip_relocation, ventura:        "4cda186dde7fff9284bc64d2469faf3a6af148e656f9ee9c27d731d1e02bb637"
+    sha256 cellar: :any_skip_relocation, monterey:       "ef5eced95e4a700b49d67acdf1fa25547242ca95e36ed197339dc24f5239c312"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bb1fdec103d46cf08a086a70f0c4bda35927cfdfcef35bad0da2b0b4430c8801"
   end
 
-  # Ninja only needs Python for some non-core functionality.
-  depends_on "python@3.11" => :build
-  uses_from_macos "python" => :test, since: :catalina
-
-  # Fix `source code cannot contain null bytes` for Python 3.11.4+
-  # https://github.com/ninja-build/ninja/pull/2311
-  patch do
-    url "https://github.com/ninja-build/ninja/commit/67834978a6abdfb790dac165b8b1f1c93648e624.patch?full_index=1"
-    sha256 "078c7d08278aebff346b0e7490d98f3d147db88ebfa6abf34be615b5f12bdf42"
-  end
+  uses_from_macos "python" => [:build, :test], since: :catalina
 
   def install
-    system "python3.11", "configure.py", "--bootstrap", "--verbose", "--with-python=python3"
+    system "python3", "configure.py", "--bootstrap", "--verbose", "--with-python=python3"
 
     bin.install "ninja"
     bash_completion.install "misc/bash-completion" => "ninja-completion.sh"

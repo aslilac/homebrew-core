@@ -1,18 +1,17 @@
 class Sn0int < Formula
   desc "Semi-automatic OSINT framework and package manager"
   homepage "https://github.com/kpcyrd/sn0int"
-  url "https://github.com/kpcyrd/sn0int/archive/v0.25.0.tar.gz"
-  sha256 "1a0a65e22ebdea4cc9d876a794c4374354cbf4733e11427190e146d32db37d8b"
+  url "https://github.com/kpcyrd/sn0int/archive/refs/tags/v0.26.1.tar.gz"
+  sha256 "cf10bff93098586ba7dd885bf56af489ce0177bd1889a13b004fc38f026e71ea"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "b22a87efb37627da4ed66db2cab4b00211b372dc852a241cc60f0bfcd81ee5d8"
-    sha256 cellar: :any,                 arm64_monterey: "3fe7d506b479e8c415233f50d779cc5adf0dc74d789e83d7fc5096da0eeffce5"
-    sha256 cellar: :any,                 arm64_big_sur:  "ef3da3327700ce42227eb3b0bdcad1e00acb715c22caa46fe47950d31b0107ab"
-    sha256 cellar: :any,                 ventura:        "dcc44580bf31a965415715da2bf7cb3ad2d2d8445efe2267fccb6468d0852a93"
-    sha256 cellar: :any,                 monterey:       "a8f78088e4d82c0abc026a8e84015edcc9262534dbf9c03d551ac0fb9c4f4cc8"
-    sha256 cellar: :any,                 big_sur:        "387b9b03ae5a1950864d29a3e4cb63c7596138a7e53f90892f482e5f49588e5f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "618d7b14bc76a4a3511809d06c65da23df62cc97d40a008c64b3114ad89da628"
+    sha256 cellar: :any,                 arm64_sequoia: "a547abaa3d17a2f4cae9faddc776c31076e73d6444d8e44eed29db9a7b702d51"
+    sha256 cellar: :any,                 arm64_sonoma:  "3e152a8c520739277a569718374479eab1623e54b7df52a73ac173c11a187830"
+    sha256 cellar: :any,                 arm64_ventura: "367b3eb6203589309734ce6419f41f318287dcbf395fd8410e5e61b5b722557f"
+    sha256 cellar: :any,                 sonoma:        "b00f3aa80e595baeb07464d03118671e43731845dd141209566869e44bce384a"
+    sha256 cellar: :any,                 ventura:       "dafedcdf4f30705f40d806d7725994bdf8fe012caa80591c197049e254e657c4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "799345e368ecb3b46e5ce18b62976a75707f78a3e717d33b5524d6af3b3a9819"
   end
 
   depends_on "pkg-config" => :build
@@ -36,7 +35,7 @@ class Sn0int < Formula
   end
 
   test do
-    (testpath/"true.lua").write <<~EOS
+    (testpath/"true.lua").write <<~LUA
       -- Description: basic selftest
       -- Version: 0.1.0
       -- License: GPL-3.0
@@ -44,7 +43,7 @@ class Sn0int < Formula
       function run()
           -- nothing to do here
       end
-    EOS
+    LUA
     system bin/"sn0int", "run", "-vvxf", testpath/"true.lua"
   end
 end

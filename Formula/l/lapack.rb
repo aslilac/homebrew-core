@@ -1,19 +1,27 @@
 class Lapack < Formula
   desc "Linear Algebra PACKage"
   homepage "https://www.netlib.org/lapack/"
-  url "https://github.com/Reference-LAPACK/lapack/archive/v3.11.tar.gz"
-  sha256 "5a5b3bac27709d8c66286b7a0d1d7bf2d7170ec189a1a756fdf812c97aa7fd10"
-  license "BSD-3-Clause"
+  url "https://github.com/Reference-LAPACK/lapack/archive/refs/tags/v3.12.0.tar.gz"
+  sha256 "eac9570f8e0ad6f30ce4b963f4f033f0f643e7c3912fc9ee6cd99120675ad48b"
+  # LAPACK is BSD-3-Clause-Open-MPI while LAPACKE is BSD-3-Clause
+  license all_of: ["BSD-3-Clause-Open-MPI", "BSD-3-Clause"]
   head "https://github.com/Reference-LAPACK/lapack.git", branch: "master"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "f70b3ce19cf4a9fb328f71caba7b40bacbddda80e9ad196401bcb3e0cd9e4ad7"
-    sha256 cellar: :any,                 arm64_monterey: "c9e7171ba3cc0159086737a3905e7403c81bcd3ad6cc506e955e00ac730eb302"
-    sha256 cellar: :any,                 arm64_big_sur:  "c814d96489b94449715fdab61925f859092e7d4103ec35d42bf46652628e9a52"
-    sha256 cellar: :any,                 ventura:        "7f59f3c3bb3d76b6f44d28bfb0abc7c13970c473b5f53f810acd58060c6a71df"
-    sha256 cellar: :any,                 monterey:       "f0ac2a70102bc54a9f617678161653d7d261966b6a9ec68d22a805f0d3f66658"
-    sha256 cellar: :any,                 big_sur:        "a98f6ed1c5cba50e0887b9599da3c881e83198965afd471f9532effd0dc9491a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "39ebab237ba84c5ba207b2d31e84e75e901bffb769e8ee7680060e9ba36c2ed0"
+    rebuild 1
+    sha256                               arm64_sequoia:  "83296d714b2d6e36d217c846347b6a8379c7c98abf41c78e04c6ccbe92b10c8c"
+    sha256                               arm64_sonoma:   "bd21dff4c9a6b02755665bdc65ecd552225765120f99ed23c07cd60661b40c91"
+    sha256                               arm64_ventura:  "146f145ece5043bc57054f286a40938090fbcbc89b3dffe65156eec700eff66a"
+    sha256                               arm64_monterey: "0ac519dd79d49605b701100b8efed28473ab306956ebc5b7bd2a6e0ce6414e88"
+    sha256 cellar: :any,                 sonoma:         "bcb2bd2f402ea9a3c29e437379d6dda0388d965190c48e070ea9dbf366f5c1e9"
+    sha256 cellar: :any,                 ventura:        "426f67c2f2a95e038fd99521d95805fb0fefc2e9ab7d29f14528ba8c9c751f2d"
+    sha256 cellar: :any,                 monterey:       "832693c8606c45437f9a771ea206551a61bd76b0781901e0fc688f365b17abd1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dcae5519000d77385af41cd16e95af061f744bfd9fc794f9f3c2f4e87330f3ec"
   end
 
   keg_only :shadowed_by_macos, "macOS provides LAPACK in Accelerate.framework"
@@ -28,17 +36,16 @@ class Lapack < Formula
   def install
     ENV.delete("MACOSX_DEPLOYMENT_TARGET")
 
-    mkdir "build" do
-      system "cmake", "..",
-                      "-DBUILD_SHARED_LIBS:BOOL=ON",
-                      "-DLAPACKE:BOOL=ON",
-                      *std_cmake_args
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DBUILD_SHARED_LIBS:BOOL=ON",
+                    "-DLAPACKE:BOOL=ON",
+                    *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"lp.c").write <<~EOS
+    (testpath/"lp.c").write <<~C
       #include "lapacke.h"
       int main() {
         void *p = LAPACKE_malloc(sizeof(char)*100);
@@ -47,7 +54,7 @@ class Lapack < Formula
         }
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "lp.c", "-I#{include}", "-L#{lib}", "-llapacke", "-o", "lp"
     system "./lp"
   end

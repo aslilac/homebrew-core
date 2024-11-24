@@ -1,8 +1,8 @@
 class DjangoCompletion < Formula
   desc "Bash completion for Django"
   homepage "https://www.djangoproject.com/"
-  url "https://github.com/django/django/archive/4.2.4.tar.gz"
-  sha256 "9679e61c2909d885771780155b2dfccb4134fbdb35f8dcdad281faf932c65612"
+  url "https://github.com/django/django/archive/refs/tags/5.1.3.tar.gz"
+  sha256 "e69dbe3cb98b4a7424502d6688b3284f66548080593218dd18fc05ae006b576b"
   license "BSD-3-Clause"
   head "https://github.com/django/django.git", branch: "main"
 
@@ -12,13 +12,7 @@ class DjangoCompletion < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1d91db70d0cb4e6f10054f3ee5d686241776d880e73eef2e4b669c89735927b7"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1d91db70d0cb4e6f10054f3ee5d686241776d880e73eef2e4b669c89735927b7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1d91db70d0cb4e6f10054f3ee5d686241776d880e73eef2e4b669c89735927b7"
-    sha256 cellar: :any_skip_relocation, ventura:        "1d91db70d0cb4e6f10054f3ee5d686241776d880e73eef2e4b669c89735927b7"
-    sha256 cellar: :any_skip_relocation, monterey:       "1d91db70d0cb4e6f10054f3ee5d686241776d880e73eef2e4b669c89735927b7"
-    sha256 cellar: :any_skip_relocation, big_sur:        "1d91db70d0cb4e6f10054f3ee5d686241776d880e73eef2e4b669c89735927b7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6cb5630970238a6e665b498bc7e5daa3d6e0b6e9d756ede9ca9676fde0c40c4c"
+    sha256 cellar: :any_skip_relocation, all: "f8020dfec80acb9ac95891b7deba8c2583b2289dc0be2940b1ba2669b3a9f450"
   end
 
   def install

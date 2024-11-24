@@ -1,8 +1,8 @@
 class Webkitgtk < Formula
   desc "GTK interface to WebKit"
   homepage "https://webkitgtk.org"
-  url "https://webkitgtk.org/releases/webkitgtk-2.40.5.tar.xz"
-  sha256 "7de051a263668621d91a61a5eb1c3771d1a7cec900043d4afef06c326c16037f"
+  url "https://webkitgtk.org/releases/webkitgtk-2.46.3.tar.xz"
+  sha256 "85e09fa6ff9fea49678ba9975dbc64ea3242833f8f8a7d6a8937b2f292fcb28d"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,63 +11,79 @@ class Webkitgtk < Formula
   end
 
   bottle do
-    sha256 x86_64_linux: "38497987334c546f418fa6688d835fbb5729566300c34db6d3f668b6374cefcd"
+    sha256 x86_64_linux: "4f35496689f3e08a5c79b508406cd5c53f0f7989bc2f22f202e5577d03474378"
   end
 
   depends_on "cmake" => :build
+  depends_on "gettext" => :build
   depends_on "gobject-introspection" => :build
-  depends_on "pkg-config" => [:build, :test]
-  depends_on "python@3.11" => :build
+  depends_on "gperf" => :build
+  depends_on "perl" => :build
+  depends_on "pkgconf" => [:build, :test]
+  depends_on "python@3.13" => :build
+  depends_on "ruby" => :build
+  depends_on "unifdef" => :build
+  depends_on "at-spi2-core"
   depends_on "cairo"
   depends_on "enchant"
   depends_on "fontconfig"
   depends_on "freetype"
+  depends_on "gdk-pixbuf"
   depends_on "glib"
   depends_on "gstreamer"
   depends_on "gtk+3"
   depends_on "harfbuzz"
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "jpeg-turbo"
   depends_on "jpeg-xl"
   depends_on "libavif"
+  depends_on "libdrm"
+  depends_on "libepoxy"
   depends_on "libgcrypt"
   depends_on "libnotify"
   depends_on "libpng"
   depends_on "libsecret"
   depends_on "libsoup"
+  depends_on "libtasn1"
   depends_on "libwpe"
+  depends_on "libx11"
   depends_on "libxcomposite"
+  depends_on "libxml2"
+  depends_on "libxslt"
   depends_on "libxt"
   depends_on :linux # Use JavaScriptCore.Framework on macOS.
   depends_on "little-cms2"
   depends_on "mesa"
   depends_on "openjpeg"
+  depends_on "pango"
+  depends_on "sqlite"
+  depends_on "sysprof"
   depends_on "systemd"
+  depends_on "wayland"
   depends_on "webp"
   depends_on "woff2"
   depends_on "wpebackend-fdo"
+  depends_on "zlib"
 
-  uses_from_macos "perl" => :build
-  uses_from_macos "ruby" => :build
-  uses_from_macos "unifdef" => :build
-  uses_from_macos "libxml2"
-  uses_from_macos "libxslt"
-  uses_from_macos "sqlite"
-  uses_from_macos "zlib"
-
-  fails_with gcc: "5"
+  # Backport support for ICU 76+
+  patch do
+    url "https://github.com/WebKit/WebKit/commit/63f7badbada070ebaadd318b2801818ecf7e7ea0.patch?full_index=1"
+    sha256 "0fd1774e02d0c8c91b100aa6189da28df28a65f3d683f87e0e806a80340305dc"
+  end
 
   def install
-    args = %w[
+    args = %W[
       -DPORT=GTK
       -DENABLE_BUBBLEWRAP_SANDBOX=OFF
       -DENABLE_DOCUMENTATION=OFF
       -DENABLE_GAMEPAD=OFF
       -DENABLE_MINIBROWSER=ON
       -DUSE_AVIF=ON
-      -DUSE_GSTREAMER_GL=OFF
+      -DUSE_GTK4=OFF
       -DUSE_JPEGXL=ON
+      -DUSE_LIBBACKTRACE=OFF
       -DUSE_LIBHYPHEN=OFF
+      -DPython_EXECUTABLE=#{which("python3.13")}
     ]
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
@@ -76,7 +92,7 @@ class Webkitgtk < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <gtk/gtk.h>
       #include <webkit2/webkit2.h>
 
@@ -104,7 +120,7 @@ class Webkitgtk < Formula
           g_signal_connect(webView, "close", G_CALLBACK(closeWebViewCb), main_window);
 
           // Load a web page into the browser instance
-          webkit_web_view_load_uri(webView, "http://www.webkitgtk.org/");
+          webkit_web_view_load_uri(webView, "https://www.webkitgtk.org/");
 
           // Make sure that when the browser area becomes visible, it will get mouse
           // and keyboard events
@@ -129,9 +145,9 @@ class Webkitgtk < Formula
           gtk_widget_destroy(window);
           return TRUE;
       }
-    EOS
+    C
 
-    pkg_config_flags = shell_output("pkg-config --cflags --libs gtk+-3.0 webkit2gtk-4.1").chomp.split
+    pkg_config_flags = shell_output("pkgconf --cflags --libs gtk+-3.0 webkit2gtk-4.1").chomp.split
     system ENV.cc, "test.c", *pkg_config_flags, "-o", "test"
     # While we cannot open a browser window in CI, we can make sure that the test binary runs
     # and produces the expected warning.

@@ -1,8 +1,8 @@
 class Libsolv < Formula
   desc "Library for solving packages and reading repositories"
   homepage "https://github.com/openSUSE/libsolv"
-  url "https://github.com/openSUSE/libsolv/archive/refs/tags/0.7.24.tar.gz"
-  sha256 "62743265222a729c7fe94c40f7b90ccc1ac5568f5ee6df46884e7ce3c16c78c7"
+  url "https://github.com/openSUSE/libsolv/archive/refs/tags/0.7.31.tar.gz"
+  sha256 "912aa843447db8a3e7d70f5df743d6e120120e3324394ad6ed7252d23631ade1"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,13 +11,12 @@ class Libsolv < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "b1679237851a718cafccc0d3b370ee2d6765c8c760c3d99937919b651646fedf"
-    sha256 cellar: :any,                 arm64_monterey: "49fc4d0090609edb8c9d2c6a5240ced923bed07b2fc30b00f2d391009f3fc51b"
-    sha256 cellar: :any,                 arm64_big_sur:  "9c6bb275b3a89931f35402651f1bfb6c28cc75886dd0d2b3165f2c5b113ba9cf"
-    sha256 cellar: :any,                 ventura:        "79a48920dd89808d8494da3d4f58c6aaaeb7fc08b5075b15bb02af04d1e73fc4"
-    sha256 cellar: :any,                 monterey:       "2f34464dbfc78d9fa25c5b4a884be9c86672e6123dad19e541213297cbb5f3f3"
-    sha256 cellar: :any,                 big_sur:        "2ecefe667657bbc48d9edf7c4bca1138829ce9766128c991dafb226560302910"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0f42eee624b7ce9c2ff47d2f7f0478abd6d6f42733198dc03227ef5f63096658"
+    sha256 cellar: :any,                 arm64_sequoia: "c68671cb596365de3b624d97e5e52d1d19c5328e47dbd9145b2e09988a822e2b"
+    sha256 cellar: :any,                 arm64_sonoma:  "caf4df4fc8c4400af86be20abb4601d5c3b04982f160f6c30cd185125e50b3ed"
+    sha256 cellar: :any,                 arm64_ventura: "5875e9b286473e11c3a1d608310ae6c347164734b160a280260fa6bbfe753d4b"
+    sha256 cellar: :any,                 sonoma:        "6bad218c039f857f3b53b59e5db5cec16b11f8c2875bfe4e1ad95c0ad0c04e2c"
+    sha256 cellar: :any,                 ventura:       "ab044a3d87dfe4e85d6fcd159c331b2aa1281ed7ddc3ae55353da1fa18684706"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c7cc3e03ccee3c92a488ae641f8ac3344b269dce31952975ef3f087ea21518b0"
   end
 
   depends_on "cmake" => :build
@@ -54,7 +53,7 @@ class Libsolv < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <solv/pool.h>
       #include <solv/repo.h>
 
@@ -65,7 +64,7 @@ class Libsolv < Formula
 
         pool_free(pool);
       }
-    EOS
+    CPP
     system ENV.cc, "test.cpp", "-I#{include}", "-L#{lib}", "-lsolv", "-o", "test"
     system "./test"
   end

@@ -1,19 +1,18 @@
 class Spdlog < Formula
   desc "Super fast C++ logging library"
   homepage "https://github.com/gabime/spdlog"
-  url "https://github.com/gabime/spdlog/archive/v1.12.0.tar.gz"
-  sha256 "4dccf2d10f410c1e2feaff89966bfc49a1abb29ef6f08246335b110e001e09a9"
+  url "https://github.com/gabime/spdlog/archive/refs/tags/v1.15.0.tar.gz"
+  sha256 "9962648c9b4f1a7bbc76fd8d9172555bad1871fdb14ff4f842ef87949682caa5"
   license "MIT"
   head "https://github.com/gabime/spdlog.git", branch: "v1.x"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "79c8ea7065e0350056c24504ffb9a3cee0591e931b51f88f051ef7c4661a491a"
-    sha256 cellar: :any,                 arm64_monterey: "4e7c54a1932489df9f033c6ff38265c9561c749ae70ea8cc5c34b5a58d6d7ba7"
-    sha256 cellar: :any,                 arm64_big_sur:  "a9be7e4e477200f9991fdf83fb40da314dd4fbedbd7dc4b6305f8951d9d49e57"
-    sha256 cellar: :any,                 ventura:        "ef21f4e8f5977e10cca1ee2b747a40810fcaac67695e72f564df8bb6b1455938"
-    sha256 cellar: :any,                 monterey:       "9d58adf3aabf5788f74938cd445d0129e458dbe7a238c88741e634f31debff0c"
-    sha256 cellar: :any,                 big_sur:        "585a56f831fe23ca1f8137e6344a8469fe2f5e411c6a994615ff585be4574ee6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fa1ba7fb7b814469c81c5eae8a607da65a4e6725a90b610a658e24d26ca037e8"
+    sha256 cellar: :any,                 arm64_sequoia: "246130deacdb3cde7faa8e5159c6f03b2175160db08060a6d76ad36500e27175"
+    sha256 cellar: :any,                 arm64_sonoma:  "d1e17b29906ba9ee8fbc5ec3ae90ed4c2cc1b5a28b7d1837a3f106435f77fdef"
+    sha256 cellar: :any,                 arm64_ventura: "d594a2118a23b1817edccbc8b1c05930fd8cc31724b989086ccac6a5f5abc2cd"
+    sha256 cellar: :any,                 sonoma:        "9f1b0e5bd8b2c7fe94cb7f5a71bb97cc14fcff4e98db8606b78638dd01181d91"
+    sha256 cellar: :any,                 ventura:       "c4db7a7c3af2edc21bcc955663cc4bbe63969bcb1ac74996c3de1c4474b7c01a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "60250a68987a49d8aa950e3bdedfaaa2e19b3834813c01e2133c63b6d0f29bee"
   end
 
   depends_on "cmake" => :build
@@ -34,6 +33,7 @@ class Spdlog < Formula
     args = std_cmake_args + %W[
       -Dpkg_config_libdir=#{lib}
       -DSPDLOG_BUILD_BENCH=OFF
+      -DSPDLOG_BUILD_EXAMPLE=OFF
       -DSPDLOG_BUILD_TESTS=OFF
       -DSPDLOG_FMT_EXTERNAL=ON
     ]
@@ -46,7 +46,7 @@ class Spdlog < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include "spdlog/sinks/basic_file_sink.h"
       #include <iostream>
       #include <memory>
@@ -62,7 +62,7 @@ class Spdlog < Formula
           return 1;
         }
       }
-    EOS
+    CPP
 
     system ENV.cxx, "-std=c++11", "test.cpp", "-I#{include}", "-L#{Formula["fmt"].opt_lib}", "-lfmt", "-o", "test"
     system "./test"

@@ -1,46 +1,46 @@
-require "language/node"
-
 class TreeSitter < Formula
   desc "Parser generator tool and incremental parsing library"
   homepage "https://tree-sitter.github.io/"
-  url "https://github.com/tree-sitter/tree-sitter/archive/v0.20.8.tar.gz"
-  sha256 "6181ede0b7470bfca37e293e7d5dc1d16469b9485d13f13a605baec4a8b1f791"
   license "MIT"
   head "https://github.com/tree-sitter/tree-sitter.git", branch: "master"
 
-  bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "80f5d110450dfa623f0ff043bfb9279a03e760aafa8b67a8f919f8371a8a4282"
-    sha256 cellar: :any,                 arm64_monterey: "d65d3a05944e834d25950b9fa1d3d79a306af2c28b209aaac043e546c0577965"
-    sha256 cellar: :any,                 arm64_big_sur:  "20c1f77800a47d9fd3f055a9b33e06f1782e5b897541b6935262efb831d29c45"
-    sha256 cellar: :any,                 ventura:        "0b96dc12579c8693392a737e0939c5956f88d9d7beddb18ee045e127d359096b"
-    sha256 cellar: :any,                 monterey:       "84af6fb8f8980273ecc06099ad359dc100a13e0535c2f5ffe5380e7e4a50baed"
-    sha256 cellar: :any,                 big_sur:        "b025e1d6e7ed804c5cf099b4a6bea0dbbf09752aef4582916678dd88f2cd0ab0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d413c47e7b8641aae812d19b39c3f927088e450eabde992f3d7cc32de7d29aa9"
+  # Remove stable block when patch is no longer needed.
+  stable do
+    url "https://github.com/tree-sitter/tree-sitter/archive/refs/tags/v0.24.4.tar.gz"
+    sha256 "d704832a6bfaac8b3cbca3b5d773cad613183ba8c04166638af2c6e5dfb9e2d2"
+
+    # Fix Neovim freezing in some configurations.
+    # See: https://github.com/neovim/neovim/issues/31163
+    #      https://github.com/tree-sitter/tree-sitter/issues/3930
+    #      https://github.com/tree-sitter/tree-sitter/pull/3898
+    # Remove in next release.
+    patch do
+      url "https://github.com/tree-sitter/tree-sitter/commit/5d1be545c439eba4810f34a14fef17e5f76df6c0.patch?full_index=1"
+      sha256 "5c083354226f945992ec401a6c469b2a7bf9419d7599bca749254b3b28c841ea"
+    end
   end
 
-  depends_on "emscripten" => [:build, :test]
-  depends_on "node" => [:build, :test]
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
+  bottle do
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "b4932e1ed3dd2a8fef9ec480f3bf5175005badefa432f7f2f255cb648a032790"
+    sha256 cellar: :any,                 arm64_sonoma:  "2008cda365e4dbf3e530236811fa37f2a14e65418fdf90e4b7dbd585a076325a"
+    sha256 cellar: :any,                 arm64_ventura: "4c69b394b5dcff232bc9662abfa3d38865ce5d8aced92565107b1ced4a9666cb"
+    sha256 cellar: :any,                 sonoma:        "9e10a26f5bd3d668720bb7cb152f9985fd0b758b07fbe7e56b3bc15c39172129"
+    sha256 cellar: :any,                 ventura:       "037379b3381b736dc9cdb8109db8726a9f80cb8d785077f7b85bead89f910306"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1887aaeef0cf0e07a7e8570332b875a70fd25a6cf0c18c76fe3a7a919a59f5d8"
+  end
+
   depends_on "rust" => :build
+  depends_on "node" => :test
 
   def install
-    system "make", "AMALGAMATED=1"
-    system "make", "install", "PREFIX=#{prefix}"
-
-    # NOTE: This step needs to be done *before* `cargo install`
-    cd "lib/binding_web" do
-      system "npm", "install", *Language::Node.local_npm_install_args
-    end
-    system "script/build-wasm"
-
-    cd "cli" do
-      system "cargo", "install", *std_cargo_args
-    end
-
-    # Install the wasm module into the prefix.
-    # NOTE: This step needs to be done *after* `cargo install`.
-    %w[tree-sitter.js tree-sitter-web.d.ts tree-sitter.wasm package.json].each do |file|
-      (lib/"binding_web").install "lib/binding_web/#{file}"
-    end
+    system "make", "install", "AMALGAMATED=1", "PREFIX=#{prefix}"
+    system "cargo", "install", *std_cargo_args(path: "cli")
   end
 
   test do
@@ -48,14 +48,14 @@ class TreeSitter < Formula
     assert_equal "tree-sitter #{version}", shell_output("#{bin}/tree-sitter --version").strip
 
     # test `tree-sitter generate`
-    (testpath/"grammar.js").write <<~EOS
+    (testpath/"grammar.js").write <<~JS
       module.exports = grammar({
         name: 'YOUR_LANGUAGE_NAME',
         rules: {
           source_file: $ => 'hello'
         }
       });
-    EOS
+    JS
     system bin/"tree-sitter", "generate", "--abi=latest"
 
     # test `tree-sitter parse`
@@ -74,9 +74,10 @@ class TreeSitter < Formula
       ---
       (source_file)
     EOS
-    system "#{bin}/tree-sitter", "test"
+    system bin/"tree-sitter", "test"
 
-    (testpath/"test_program.c").write <<~EOS
+    (testpath/"test_program.c").write <<~C
+      #include <stdio.h>
       #include <string.h>
       #include <tree_sitter/api.h>
       int main(int argc, char* argv[]) {
@@ -101,12 +102,8 @@ class TreeSitter < Formula
         ts_parser_delete(parser);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test_program.c", "-L#{lib}", "-ltree-sitter", "-o", "test_program"
     assert_equal "tree creation failed", shell_output("./test_program")
-
-    # test `tree-sitter build-wasm`
-    ENV.delete "CPATH"
-    system bin/"tree-sitter", "build-wasm"
   end
 end

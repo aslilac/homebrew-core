@@ -3,6 +3,7 @@ class Spiped < Formula
   homepage "https://www.tarsnap.com/spiped.html"
   url "https://www.tarsnap.com/spiped/spiped-1.6.2.tgz"
   sha256 "05d4687d12d11d7f9888d43f3d80c541b7721c987038d085f71c91bb06204567"
+  license "BSD-2-Clause"
 
   livecheck do
     url :homepage
@@ -11,9 +12,12 @@ class Spiped < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia:  "cc2e11183a6531be2d0f36881f229173ed582f99b2072040c9a1a61364783694"
+    sha256 cellar: :any,                 arm64_sonoma:   "cea06166086034d17454f12982c6ea352fb1d6cd9f3e7216c9727c223e414262"
     sha256 cellar: :any,                 arm64_ventura:  "fb49b420bd935b728f767276c0bb19133d745d52fe07a8ebad3877ff09996dfc"
     sha256 cellar: :any,                 arm64_monterey: "293b53d8433d104f8133539224e412209605bc40d2cacaeb253081b95eb65578"
     sha256 cellar: :any,                 arm64_big_sur:  "f30a91f2902faec487f48d0e580a34cc628c6cf4d80bab749ec32e0f38c575f4"
+    sha256 cellar: :any,                 sonoma:         "8212dcae29b5af5c3f157bae33e8358bd6ceb62dbf892b8fb8a1a73b7621d3f5"
     sha256 cellar: :any,                 ventura:        "f655204362f17020c0672a494144c32a8351ff5281e49238b0341c26da065e15"
     sha256 cellar: :any,                 monterey:       "86fc3f6a8ad438e67a726d6e181774aa7af39b664345d6c5d0efbacb1267f86c"
     sha256 cellar: :any,                 big_sur:        "f22668dad3e0af145761bf04d604c12d05a9ac397449e6bcf3b33cb29bf41849"

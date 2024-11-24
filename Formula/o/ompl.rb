@@ -1,10 +1,10 @@
 class Ompl < Formula
   desc "Open Motion Planning Library consists of many motion planning algorithms"
   homepage "https://ompl.kavrakilab.org/"
-  url "https://github.com/ompl/ompl/archive/1.6.0.tar.gz"
+  url "https://github.com/ompl/ompl/archive/refs/tags/1.6.0.tar.gz"
   sha256 "f03daa95d2bbf1c21e91a38786242c245f4740f16aa9e9adbf7c7e0236e3c625"
   license "BSD-3-Clause"
-  revision 2
+  revision 8
   head "https://github.com/ompl/ompl.git", branch: "main"
 
   # We check the first-party download page because the "latest" GitHub release
@@ -15,13 +15,14 @@ class Ompl < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "ccd3ddf46f7dca92ef55b7bb4a489ce963a5fa970704d0d5feb41644fcc669e8"
-    sha256 cellar: :any,                 arm64_monterey: "48dc10208f60928674899e1f2b1dc3b9c23e6dd8fdb418a195e32b3f09f5c91a"
-    sha256 cellar: :any,                 arm64_big_sur:  "f5caee24de18a4433c05b670083ecebeae1be0ed68f8ce1ea352ff72df8b4706"
-    sha256 cellar: :any,                 ventura:        "6e592b53634c02ae3bd77d65ca5f0882a8baa94eab9449a63a42ea1fcedd43d4"
-    sha256 cellar: :any,                 monterey:       "e60fa2eb8226877f3c53e03b8ce68912b6bfeb8bbfd24988406b86c972c1cabb"
-    sha256 cellar: :any,                 big_sur:        "9591de73236c06daed6725fda63c675a8b449f6bdc06c7b2bdf0f5e6d8d8d1b5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "946ff80d88357649aae358dbf969215c303184f241ba0105ffdf3da165d17fc8"
+    sha256 cellar: :any,                 arm64_sequoia:  "8ddf0b61d4b9f4b0113ccb5ce2f77d2101026a614a88b4e539c6c8e0826bbe5e"
+    sha256 cellar: :any,                 arm64_sonoma:   "936f9237df933d9e854ff0abe2d5e42edcc14c3732227dc4fabd8d679175f66f"
+    sha256 cellar: :any,                 arm64_ventura:  "0039002b210c5f23e460cb2a99cad82d1e6db9bc5b9544aebf0dfe3325ecda03"
+    sha256 cellar: :any,                 arm64_monterey: "c0e8254f283aea3532dd73877e364182d96bf70f949db8f90f4a0aab14727922"
+    sha256 cellar: :any,                 sonoma:         "0ee91c9cb10f001e93bdcf38daf438c24aa4314b86020d1bd8c891d2c99ba0df"
+    sha256 cellar: :any,                 ventura:        "ddc6f4e98e47c9c752d8384d3b829196deca92f13e1c92e75aa68ec598c64432"
+    sha256 cellar: :any,                 monterey:       "1be17fd3d56afd8b7f378b3074b26b3679e370cb06ce700dbe66d8fcc065f992"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "474464a4a0bd3c59d6c888ab496c584dd5ccf38da1ebf51edef0a2a161d3278c"
   end
 
   depends_on "cmake" => :build
@@ -46,7 +47,7 @@ class Ompl < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <ompl/base/spaces/RealVectorBounds.h>
       #include <cassert>
       int main(int argc, char *argv[]) {
@@ -55,7 +56,7 @@ class Ompl < Formula
         bounds.setHigh(5);
         assert(bounds.getVolume() == 5 * 5 * 5);
       }
-    EOS
+    CPP
 
     system ENV.cxx, "test.cpp", "-I#{include}/ompl-#{version.major_minor}", "-L#{lib}", "-lompl", "-o", "test"
     system "./test"

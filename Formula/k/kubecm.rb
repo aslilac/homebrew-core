@@ -1,25 +1,24 @@
 class Kubecm < Formula
   desc "KubeConfig Manager"
   homepage "https://kubecm.cloud"
-  url "https://github.com/sunny0826/kubecm/archive/v0.25.0.tar.gz"
-  sha256 "d9152b28f9af4c9f27b3a871fb0efba7aed4f6263d34c39310e5c92a2dfc9a19"
+  url "https://github.com/sunny0826/kubecm/archive/refs/tags/v0.32.0.tar.gz"
+  sha256 "04c02f84a479c4244784195b3623c5c9e60e3325cbfa60bd1ce7b8607ef9266c"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "71798c2ad67d0df1a42aa7e2653764dab6802309063a42a89ecd733a99d7647e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "71798c2ad67d0df1a42aa7e2653764dab6802309063a42a89ecd733a99d7647e"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "71798c2ad67d0df1a42aa7e2653764dab6802309063a42a89ecd733a99d7647e"
-    sha256 cellar: :any_skip_relocation, ventura:        "89013120557c8f236f2bb1478c23ba9e993c9f8647035a3d43babe9980a42cc4"
-    sha256 cellar: :any_skip_relocation, monterey:       "89013120557c8f236f2bb1478c23ba9e993c9f8647035a3d43babe9980a42cc4"
-    sha256 cellar: :any_skip_relocation, big_sur:        "89013120557c8f236f2bb1478c23ba9e993c9f8647035a3d43babe9980a42cc4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7401cc02a5c5bbf588a8416da69dcf0281ee119b15436480c184f586e07ede0b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "be3f6a485d74bb4c2fb53ed12b05e456b7ed7c90029b30e4e268420e5a8e9966"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "be3f6a485d74bb4c2fb53ed12b05e456b7ed7c90029b30e4e268420e5a8e9966"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "be3f6a485d74bb4c2fb53ed12b05e456b7ed7c90029b30e4e268420e5a8e9966"
+    sha256 cellar: :any_skip_relocation, sonoma:        "0a7e35e56b2c052a14a73ee8c0cb6c99ab8dab73c91b74cce2ad58861352ccf1"
+    sha256 cellar: :any_skip_relocation, ventura:       "0a7e35e56b2c052a14a73ee8c0cb6c99ab8dab73c91b74cce2ad58861352ccf1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6cfd5e77cc71565402866bdae608944dbd8efc1b1a1a17e7a1f0010f705ceae7"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = "-s -w -X github.com/sunny0826/kubecm/version.Version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
 
     generate_completions_from_executable(bin/"kubecm", "completion")
   end

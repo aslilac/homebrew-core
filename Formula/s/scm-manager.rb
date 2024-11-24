@@ -1,8 +1,8 @@
 class ScmManager < Formula
   desc "Manage Git, Mercurial, and Subversion repos over HTTP"
   homepage "https://www.scm-manager.org"
-  url "https://packages.scm-manager.org/repository/releases/sonia/scm/packaging/unix/2.46.0/unix-2.46.0.tar.gz"
-  sha256 "be3b48b3c76ce42881399d97e512a3002ea3fcb917cf321ccc1f29081057516d"
+  url "https://packages.scm-manager.org/repository/releases/sonia/scm/packaging/unix/3.5.0/unix-3.5.0.tar.gz"
+  sha256 "9205d013a8344185c0ed67dc1733b4cf8e9cd64a9c3ae8989638eb4263386a38"
   license all_of: ["Apache-2.0", "MIT"]
 
   livecheck do
@@ -11,11 +11,11 @@ class ScmManager < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "f90ff95286b4e579530ae143df6cf02585e9f8ddc21c212a8c1bb276a13e33c6"
+    sha256 cellar: :any_skip_relocation, all: "1ca1a41ce6d1b3a88149a4143a6a6ddcfb5dffd35106b00467a50a392f3ca9ee"
   end
 
   depends_on "jsvc"
-  depends_on "openjdk"
+  depends_on "openjdk@21"
 
   def install
     # Replace pre-built `jsvc` with formula to add Apple Silicon support
@@ -23,7 +23,7 @@ class ScmManager < Formula
     rm Dir["libexec/jsvc-*"]
     libexec.install Dir["*"]
 
-    env = Language::Java.overridable_java_home_env
+    env = Language::Java.overridable_java_home_env("21")
     env["BASEDIR"] = libexec
     env["REPO"] = libexec/"lib"
     (bin/"scm-server").write_env_script libexec/"bin/scm-server", env
@@ -35,14 +35,15 @@ class ScmManager < Formula
 
   test do
     port = free_port
-    cp_r (libexec/"conf").children, testpath
-    inreplace testpath/"server-config.xml" do |s|
-      s.gsub! %r{<SystemProperty .*/>/work}, testpath/"work"
-      s.gsub! "default=\"8080\"", "default=\"#{port}\""
+
+    cp libexec/"conf/config.yml", testpath
+    inreplace testpath/"config.yml" do |s|
+      s.gsub! "./work", testpath/"work"
+      s.gsub! "port: 8080", "port: #{port}"
     end
     ENV["JETTY_BASE"] = testpath
     pid = fork { exec bin/"scm-server" }
-    sleep 30
+    sleep 15
     assert_match "<title>SCM-Manager</title>", shell_output("curl http://localhost:#{port}/scm/")
   ensure
     Process.kill "TERM", pid

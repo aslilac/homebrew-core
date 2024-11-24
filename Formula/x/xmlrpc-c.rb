@@ -1,25 +1,31 @@
 class XmlrpcC < Formula
   desc "Lightweight RPC library (based on XML and HTTP)"
   homepage "https://xmlrpc-c.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/xmlrpc-c/Xmlrpc-c%20Super%20Stable/1.54.06/xmlrpc-c-1.54.06.tgz"
-  sha256 "ae6d0fb58f38f1536511360dc0081d3876c1f209d9eaa54357e2bacd690a5640"
+  url "https://downloads.sourceforge.net/project/xmlrpc-c/Xmlrpc-c%20Super%20Stable/1.59.03/xmlrpc-c-1.59.03.tgz"
+  sha256 "bdb71db42ab0be51591555885d11682b044c1034d4a3296401bf921ec0b233fe"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "784e39351c82ff015db8094e5be996bfc2aa421d5104d3c06a0f86eb02c4af04"
-    sha256 cellar: :any,                 arm64_monterey: "ea86fe58a1b106920a370a8c3f66c09904000a57bb6f4b8644bdde24edac41ab"
-    sha256 cellar: :any,                 arm64_big_sur:  "573d13e3dee5599d3e2abd555efc4b8c2a007d04f53d29baf706a2db6aa53d28"
-    sha256 cellar: :any,                 ventura:        "fbcf76517d21b0b006cc07ad3baac9f2a843908096b361558a021653d53d70f6"
-    sha256 cellar: :any,                 monterey:       "b6a443d43d9b76f0255b7fd43a80a921e545973f1f7348c067a75746a440cfb0"
-    sha256 cellar: :any,                 big_sur:        "cccdf3dc0450ce0efdb49f77651bf8d5263f621752e4fabc4d2db476bb5ea517"
-    sha256 cellar: :any,                 catalina:       "38ed67ec4b4aee657e5c44a1cfb7527d5a5a32cf36d2e551eeb6d5733dfdfcce"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2cd0152929227f84c1f2ec41591f0d9484b82054d75aa99a1ac908df9ac634db"
+    sha256 cellar: :any,                 arm64_sequoia:  "c50dd6bf5c7a278e7b7046bb4fc4c714f376e1ece6d2a2f6b9dc567b2591cbcf"
+    sha256 cellar: :any,                 arm64_sonoma:   "a37de64bbd2ff69db08d29c18be9061c383273fb7a2f4c437bcc97609b2d921d"
+    sha256 cellar: :any,                 arm64_ventura:  "6acfdb7a4974c9dd956b9395b78f0acc1b669e877b23ad6e8acdf162477d86f7"
+    sha256 cellar: :any,                 arm64_monterey: "f81cd7a5a3abc242fda56cf730a27007bec239731168e72cc89711e3f16e5a16"
+    sha256 cellar: :any,                 sonoma:         "dac86be0a0f288eea63ecf9657bf6fdb89a1873dab3b415946b34d61b6640995"
+    sha256 cellar: :any,                 ventura:        "7b6cc04921933e9e7a36eb8bc0ca36f7a1f67e2259385c462424a5f61fefe2ff"
+    sha256 cellar: :any,                 monterey:       "2289714e60026a5ed0645aafed98f02dade60bb6884af5412362c5a3ef271779"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cdbcf2578d239e21752a3f06e0df6d0e27f26e83376536ecd16e62b9b8edfc5e"
   end
+
+  depends_on "pkgconf" => :build
+  depends_on "openssl@3"
 
   uses_from_macos "curl"
   uses_from_macos "libxml2"
 
   def install
+    # Fix compile with newer Clang
+    ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
+
     ENV.deparallelize
     # --enable-libxml2-backend to lose some weight and not statically link in expat
     system "./configure", "--enable-libxml2-backend",
@@ -31,6 +37,6 @@ class XmlrpcC < Formula
   end
 
   test do
-    system "#{bin}/xmlrpc-c-config", "--features"
+    system bin/"xmlrpc-c-config", "--features"
   end
 end

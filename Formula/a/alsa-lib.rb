@@ -1,9 +1,9 @@
 class AlsaLib < Formula
   desc "Provides audio and MIDI functionality to the Linux operating system"
   homepage "https://www.alsa-project.org/"
-  url "https://www.alsa-project.org/files/pub/lib/alsa-lib-1.2.9.tar.bz2"
-  sha256 "dc9c643fdc4ccfd0572cc685858dd41e08afb583f30460b317e4188275f615b2"
-  license "LGPL-2.1-or-later"
+  url "https://www.alsa-project.org/files/pub/lib/alsa-lib-1.2.13.tar.bz2"
+  sha256 "8c4ff37553cbe89618e187e4c779f71a9bb2a8b27b91f87ed40987cc9233d8f6"
+  license all_of: ["LGPL-2.1-or-later", "GPL-2.0-or-later"]
 
   livecheck do
     url "https://www.alsa-project.org/files/pub/lib/"
@@ -11,21 +11,19 @@ class AlsaLib < Formula
   end
 
   bottle do
-    sha256 x86_64_linux: "3ccd8d2162aaaf5fd81ddaad0b5def06fb3053245b6b7ee77019e1620502ad7b"
+    sha256 x86_64_linux: "b5401dcbbfabbbc67667e8c34eead4678555c0c145b492b3daa8fb1730f3b956"
   end
 
   depends_on :linux
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
+    prefix.install "aserver/COPYING" => "COPYING-aserver"
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <alsa/asoundlib.h>
       int main(void)
       {
@@ -33,7 +31,7 @@ class AlsaLib < Formula
           snd_ctl_card_info_alloca(&info);
           return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-lasound", "-o", "test"
     system "./test"
   end

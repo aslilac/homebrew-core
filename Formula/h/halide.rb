@@ -1,9 +1,10 @@
 class Halide < Formula
   desc "Language for fast, portable data-parallel computation"
   homepage "https://halide-lang.org"
-  url "https://github.com/halide/Halide/archive/v16.0.0.tar.gz"
-  sha256 "a0cccee762681ea697124b8172dd65595856d0fa5bd4d1af7933046b4a085b04"
+  url "https://github.com/halide/Halide/archive/refs/tags/v18.0.0.tar.gz"
+  sha256 "1176b42a3e2374ab38555d9316c78e39b157044b5a8e765c748bf3afd2edb351"
   license "MIT"
+  revision 1
   head "https://github.com/halide/Halide.git", branch: "main"
 
   livecheck do
@@ -12,40 +13,61 @@ class Halide < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "1dc8e72c88d4765ca1a4c4fa0aa587be9d4791c252cb570374e902a2f402086e"
-    sha256 cellar: :any,                 arm64_monterey: "d81f24d816d895b0f10755771bfee33a0c03ac895fc1e2a7399849c794eccb37"
-    sha256 cellar: :any,                 arm64_big_sur:  "f356585914ef921814333752a006d9e4033163372aa50c65929c6645a344431e"
-    sha256 cellar: :any,                 ventura:        "0f5126b08161572979ed23b87a1ce7623ee0971dd7a57f44acaebc76578936a0"
-    sha256 cellar: :any,                 monterey:       "95166cdc80500c57799c052f255065b7fb8499c25f5f7a732587c7b8da1563da"
-    sha256 cellar: :any,                 big_sur:        "727ee7167d0f2026de4f7ce5654a601e71485c56573cc766593a748b71849b70"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8ff3882c4b82e3a44a92670c8579b6817447ae304efb6d27c176684e04e9200b"
+    rebuild 3
+    sha256 cellar: :any,                 arm64_sequoia: "a47babd7741a825bbce356c14d356810c285ddbae7ee18dd0c3df827bf8347ba"
+    sha256 cellar: :any,                 arm64_sonoma:  "ca7b252871d4c067737db812d14b3467500e16158b2989086a9df041b5236390"
+    sha256 cellar: :any,                 arm64_ventura: "0d70fd91451260abc7c479759b93bee154123f1cdf5e0d8e725a6b6306bd8acb"
+    sha256 cellar: :any,                 sonoma:        "a2573bcd16dbb7de7025c788374881d8dfdaa313f67032eb9c97b065303b401a"
+    sha256 cellar: :any,                 ventura:       "73cb1225eecf3b0ef6d50e5599bec8f8592c256c3dcf4213df47582849ffcf7d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d53aacb6e8c1c2950cb98ff4dd9f634a9f1e0e95db56644816d8837776c79609"
   end
 
   depends_on "cmake" => :build
   depends_on "pybind11" => :build
+  depends_on "flatbuffers"
   depends_on "jpeg-turbo"
   depends_on "libpng"
+  depends_on "lld"
   depends_on "llvm"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
   fails_with :gcc do
     version "6"
     cause "Requires C++17"
   end
 
+  # Check wabt version in `dependencies/wasm/CMakeLists.txt`.
+  # TODO: Ask upstream to support usage of a system-provided wabt.
+  # TODO: Do we really need a git checkout here?
+  resource "wabt" do
+    url "https://github.com/WebAssembly/wabt.git",
+        tag:      "1.0.33",
+        revision: "963f973469b45969ce198e0c86d3af316790a780"
+  end
+
   def python3
-    "python3.11"
+    "python3.13"
   end
 
   def install
-    system "cmake", "-S", ".", "-B", "build",
-                    "-DCMAKE_INSTALL_RPATH=#{rpath}",
-                    "-DHalide_INSTALL_PYTHONDIR=#{prefix/Language::Python.site_packages(python3)}",
-                    "-DHalide_SHARED_LLVM=ON",
-                    "-DPYBIND11_USE_FETCHCONTENT=OFF",
-                    *std_cmake_args
-    system "cmake", "--build", "build"
-    system "cmake", "--install", "build"
+    builddir = buildpath/"build"
+    (builddir/"_deps/wabt-src").install resource("wabt")
+
+    site_packages = prefix/Language::Python.site_packages(python3)
+    rpaths = [rpath, rpath(source: site_packages/"halide")]
+    args = [
+      "-DCMAKE_INSTALL_RPATH=#{rpaths.join(";")}",
+      "-DHalide_INSTALL_PYTHONDIR=#{site_packages}",
+      "-DHalide_SHARED_LLVM=ON",
+      "-DPYBIND11_USE_FETCHCONTENT=OFF",
+      "-DFLATBUFFERS_USE_FETCHCONTENT=OFF",
+      "-DFETCHCONTENT_SOURCE_DIR_WABT=#{builddir}/_deps/wabt-src",
+      "-DCMAKE_SHARED_LINKER_FLAGS=-llldCommon",
+    ]
+    odie "CMAKE_SHARED_LINKER_FLAGS can be removed from `args`" if build.bottle? && version > "18.0.0"
+    system "cmake", "-S", ".", "-B", builddir, *args, *std_cmake_args
+    system "cmake", "--build", builddir
+    system "cmake", "--install", builddir
   end
 
   test do

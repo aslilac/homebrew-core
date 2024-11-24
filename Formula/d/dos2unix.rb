@@ -1,9 +1,9 @@
 class Dos2unix < Formula
   desc "Convert text between DOS, UNIX, and Mac formats"
   homepage "https://waterlan.home.xs4all.nl/dos2unix.html"
-  url "https://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.5.0.tar.gz"
-  mirror "https://fossies.org/linux/misc/dos2unix-7.5.0.tar.gz"
-  sha256 "7a3b01d01e214d62c2b3e04c3a92e0ddc728a385566e4c0356efa66fd6eb95af"
+  url "https://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.5.2.tar.gz"
+  mirror "https://fossies.org/linux/misc/dos2unix-7.5.2.tar.gz"
+  sha256 "264742446608442eb48f96c20af6da303cb3a92b364e72cb7e24f88239c4bf3a"
   license "BSD-2-Clause"
 
   livecheck do
@@ -12,13 +12,14 @@ class Dos2unix < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f30f0ff347c2857d90a0558af2fa674bcb4d4daadf08da970b9741f7ee24d914"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9fbbcc220adea02b5584446aacf757c097be5c13e2803a8bf4f772ef51cf6501"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2542b8e620eee7b5f7565aa11469d66a93ec43b366a0b494dbe8338fc5dcbe47"
-    sha256 cellar: :any_skip_relocation, ventura:        "f9dd335c6b5e2329c843cb45fd9159188a20668f83f17f83bb74d8787b5c3b30"
-    sha256 cellar: :any_skip_relocation, monterey:       "2f6fea4d8d5b4dbf1038d8dfd53708b89dafbf0e2800a673e8ecb65546ccd325"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8f5a9c2dc29d0df1daa304c5fca1dcbba5e9c14fd3cd85144ba6a871be31c48c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a699ed735f09fa9c74be0fc6955f85d3f36f06f8e5f2a97331e1c9d290e7a604"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "6782d0760a276f44db668e01a49edd85986d20a08fbd35fd1e72346591a37be3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "34b49544a0f299d1b2b0c391927b7c07201274a2c8bf682c0991ced19209501d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e739f5c6536d3fc4fa9a8922197379137322925c4476ee28f52e8e02875f61b9"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "49bf57eaaa0a8fca72406d02a7b3b7d50107736cea3c3c01036543387b9668fc"
+    sha256 cellar: :any_skip_relocation, sonoma:         "599b519868373bb9ee6258f31375f016b3f44242771bf5553ab52d3a2f9177c9"
+    sha256 cellar: :any_skip_relocation, ventura:        "8e7421cfd610a505a2f653dfb064f6fd51a910e4a31b8ec615cc549f579796bf"
+    sha256 cellar: :any_skip_relocation, monterey:       "6b0355a4247caca8cbf8cfd8fe7b6aee2db4e749184ab656b407f6c8b7c637eb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "228436301f23d4b7b80cf0bfcf1f75d7cff50fd3134baf1c2f2d2b25538fa178"
   end
 
   def install
@@ -36,23 +37,23 @@ class Dos2unix < Formula
 
   test do
     # write a file with lf
-    path = testpath/"test.txt"
-    path.write "foo\nbar\n"
+    test_file = testpath/"test.txt"
+    test_file.write "foo\nbar\n"
 
     # unix2mac: convert lf to cr
-    system "#{bin}/unix2mac", path
-    assert_equal "foo\rbar\r", path.read
+    system bin/"unix2mac", test_file
+    assert_equal "foo\rbar\r", test_file.read
 
     # mac2unix: convert cr to lf
-    system "#{bin}/mac2unix", path
-    assert_equal "foo\nbar\n", path.read
+    system bin/"mac2unix", test_file
+    assert_equal "foo\nbar\n", test_file.read
 
     # unix2dos: convert lf to cr+lf
-    system "#{bin}/unix2dos", path
-    assert_equal "foo\r\nbar\r\n", path.read
+    system bin/"unix2dos", test_file
+    assert_equal "foo\r\nbar\r\n", test_file.read
 
     # dos2unix: convert cr+lf to lf
-    system "#{bin}/dos2unix", path
-    assert_equal "foo\nbar\n", path.read
+    system bin/"dos2unix", test_file
+    assert_equal "foo\nbar\n", test_file.read
   end
 end

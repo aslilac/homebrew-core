@@ -1,8 +1,8 @@
 class Apt < Formula
   desc "Advanced Package Tool"
   homepage "https://wiki.debian.org/Apt"
-  url "https://deb.debian.org/debian/pool/main/a/apt/apt_2.7.3.tar.xz"
-  sha256 "9ad2eb2c4f25ce3535d9a5d8056e1fe932d6dbb58c2647cd5fc8df8c9f8def53"
+  url "https://deb.debian.org/debian/pool/main/a/apt/apt_2.9.14.tar.xz"
+  sha256 "c57b1f65854ee4189847157b5d294164ac7cd73cbfd9a5825d5d9ab820762911"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,33 +11,34 @@ class Apt < Formula
   end
 
   bottle do
-    sha256 x86_64_linux: "13103b246df7bed9e3b04b95d01bf0990645732e6698fe03c79832d8691efa4b"
+    sha256 x86_64_linux: "fc1017229fd8f4598e7453cde31bf9199140203647865596272b7dc20e6023bc"
   end
+
+  keg_only "not linked to prevent conflicts with system apt"
 
   depends_on "cmake" => :build
   depends_on "docbook" => :build
   depends_on "docbook-xsl" => :build
   depends_on "doxygen" => :build
-  depends_on "googletest" => :build
+  depends_on "gettext" => :build
   depends_on "libxslt" => :build
   depends_on "po4a" => :build
   depends_on "w3m" => :build
 
-  depends_on "berkeley-db"
+  depends_on "berkeley-db@5" # keep berkeley-db < 6 to avoid AGPL-3.0 restrictions
   depends_on "bzip2"
   depends_on "dpkg"
-  depends_on "gettext"
   depends_on "gnupg"
   depends_on "gnutls"
+  depends_on "libgcrypt"
   depends_on :linux
   depends_on "lz4"
   depends_on "perl"
+  depends_on "systemd"
   depends_on "xxhash"
+  depends_on "xz"
   depends_on "zlib"
-
-  on_linux do
-    keg_only "not linked to prevent conflicts with system apt"
-  end
+  depends_on "zstd"
 
   fails_with gcc: "5"
 
@@ -53,7 +54,7 @@ class Apt < Formula
   end
 
   resource "triehash" do
-    url "https://github.com/julian-klode/triehash/archive/v0.3.tar.gz"
+    url "https://github.com/julian-klode/triehash/archive/refs/tags/v0.3.tar.gz"
     sha256 "289a0966c02c2008cd263d3913a8e3c84c97b8ded3e08373d63a382c71d2199c"
   end
 
@@ -83,23 +84,33 @@ class Apt < Formula
   end
 
   resource "Pod::Parser" do
-    url "https://cpan.metacpan.org/authors/id/M/MA/MAREKR/Pod-Parser-1.66.tar.gz"
-    sha256 "22928a7bffe61b452c05bbbb8f5216d4b9cf9fe2a849b776c25500d24d20df7c"
+    url "https://cpan.metacpan.org/authors/id/M/MA/MAREKR/Pod-Parser-1.67.tar.gz"
+    sha256 "5deccbf55d750ce65588cd211c1a03fa1ef3aaa15d1ac2b8d85383a42c1427ea"
   end
 
   resource "ExtUtils::CChecker" do
-    url "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/ExtUtils-CChecker-0.11.tar.gz"
-    sha256 "117736677e37fc611f5b76374d7f952e1970eb80e1f6ad5150d516e7ae531bf5"
+    url "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/ExtUtils-CChecker-0.12.tar.gz"
+    sha256 "8b87d145337dec1ee754d30871d0b105c180ad4c92c7dc0c7fadd76cec8c57d3"
+  end
+
+  resource "Class::Inspector" do
+    url "https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/Class-Inspector-1.36.tar.gz"
+    sha256 "cc295d23a472687c24489d58226ead23b9fdc2588e522f0b5f0747741700694e"
+  end
+
+  resource "File::ShareDir" do
+    url "https://cpan.metacpan.org/authors/id/R/RE/REHSACK/File-ShareDir-1.118.tar.gz"
+    sha256 "3bb2a20ba35df958dc0a4f2306fc05d903d8b8c4de3c8beefce17739d281c958"
   end
 
   resource "XS::Parse::Keyword::Builder" do
-    url "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/XS-Parse-Keyword-0.36.tar.gz"
-    sha256 "3a4eabeb561e8df50c49f0930a4330e6871df81406abc7a891fb086e364be744"
+    url "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/XS-Parse-Keyword-0.46.tar.gz"
+    sha256 "65a2726a910079499ad4bb83c4178059da43306ae92c8734c8fa17c02f22a01d"
   end
 
   resource "Syntax::Keyword::Try" do
-    url "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/Syntax-Keyword-Try-0.29.tar.gz"
-    sha256 "cc320719d3608daa9514743a43dac2be99cb8ccd989b1fefa285290cb1d59d8f"
+    url "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/Syntax-Keyword-Try-0.30.tar.gz"
+    sha256 "f068f0b9c71fff8fef6d8a9e9ed6951cb7a52b976322bd955181cc5e7b17e692"
   end
 
   def install
@@ -133,7 +144,8 @@ class Apt < Formula
     system "cmake", "-S", ".", "-B", "build",
                     "-DDPKG_DATADIR=#{Formula["dpkg"].opt_libexec}/share/dpkg",
                     "-DDOCBOOK_XSL=#{Formula["docbook-xsl"].opt_prefix}/docbook-xsl",
-                    "-DBERKELEY_INCLUDE_DIRS=#{Formula["berkeley-db"].opt_include}",
+                    "-DBERKELEY_INCLUDE_DIRS=#{Formula["berkeley-db@5"].opt_include}",
+                    "-DWITH_TESTS=OFF",
                     *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"

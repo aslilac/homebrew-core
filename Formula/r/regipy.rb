@@ -3,37 +3,31 @@ class Regipy < Formula
 
   desc "Offline registry hive parsing tool"
   homepage "https://github.com/mkorman90/regipy"
-  url "https://files.pythonhosted.org/packages/e0/f2/61846ba036f840b3cfe9b412dca3ef629bdc7506faafbd56b2c8de987950/regipy-3.1.6.tar.gz"
-  sha256 "edc9fd8501f3374afd49020550bf361235e569959712825fbd2f444d2aeca8d9"
+  url "https://files.pythonhosted.org/packages/99/03/e54da3d86e833d728322ffcf8d13d7af8aa1bc81c9b5f072e9496897628b/regipy-5.0.0.tar.gz"
+  sha256 "386470a3d4187e69bafbbfef6476aea439b5fd58d1e825df921d95ee81cc849a"
   license "MIT"
   head "https://github.com/mkorman90/regipy.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c1b052bd53472b1147ac579e177aed6e33928509a493840a142baf2ad0542fec"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ac231a88e8a51997fbf43eae246f1b304523f701ed31ac0e7d1e4adfeb83db23"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c04755aff613cc591a95327b562b1cca802cc6ed270e348bf6ae7708bce8006c"
-    sha256 cellar: :any_skip_relocation, ventura:        "2f5be65d31a8260064599211abff2f1140d9b84d586d25d9ed0151ff417a3302"
-    sha256 cellar: :any_skip_relocation, monterey:       "8b2c6d2893f7d082bf580c92de1194f5bd74389b00a40ecd3e9f317fdea22be0"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e1fd84bce3ba58d93cd13c60b3ddd9e9b43c3990fe1596b37cc3ca57aa0ba37f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "98a2138104bcf2fd926b940d9dd11b430df67ece72b71eb07ff79ab61decd492"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "1343fcc0a6efcfdc92c54abed0fba3b91ebe75e8d9d08f47ff377388fcf6574c"
   end
 
-  depends_on "python-tabulate"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
   resource "attrs" do
-    url "https://files.pythonhosted.org/packages/97/90/81f95d5f705be17872843536b1868f351805acf6971251ff07c1b8334dbb/attrs-23.1.0.tar.gz"
-    sha256 "6279836d581513a26f1bf235f9acd333bc9115683f14f7e8fae46c98fc50e015"
+    url "https://files.pythonhosted.org/packages/fc/0f/aafca9af9315aee06a89ffde799a10a582fe8de76c563ee80bbcdc08b3fb/attrs-24.2.0.tar.gz"
+    sha256 "5cfb1b9148b5b086569baec03f20d7b6bf3bcacc9a42bebf87ffaaca362f6346"
   end
 
   resource "click" do
-    url "https://files.pythonhosted.org/packages/59/87/84326af34517fca8c58418d148f2403df25303e02736832403587318e9e8/click-8.1.3.tar.gz"
-    sha256 "7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e"
+    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
+    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
   end
 
   resource "construct" do
-    url "https://files.pythonhosted.org/packages/e0/b7/a4a032e94bcfdff481f2e6fecd472794d9da09f474a2185ed33b2c7cad64/construct-2.10.68.tar.gz"
-    sha256 "7b2a3fd8e5f597a5aa1d614c3bd516fa065db01704c72a1efaaeec6ef23d8b45"
+    url "https://files.pythonhosted.org/packages/02/77/8c84b98eca70d245a2a956452f21d57930d22ab88cbeed9290ca630cf03f/construct-2.10.70.tar.gz"
+    sha256 "4d2472f9684731e58cc9c56c463be63baa1447d674e0d66aeb5627b22f512c29"
   end
 
   resource "inflection" do
@@ -42,27 +36,30 @@ class Regipy < Formula
   end
 
   resource "pytz" do
-    url "https://files.pythonhosted.org/packages/5e/32/12032aa8c673ee16707a9b6cdda2b09c0089131f35af55d443b6a9c69c1d/pytz-2023.3.tar.gz"
-    sha256 "1d8ce29db189191fb55338ee6d0387d82ab59f3d00eac103412d64e0ebd0c588"
+    url "https://files.pythonhosted.org/packages/3a/31/3c70bf7603cc2dca0f19bdc53b4537a797747a58875b552c8c413d963a3f/pytz-2024.2.tar.gz"
+    sha256 "2aa355083c50a0f93fa581709deac0c9ad65cca8a9e9beac660adcbd493c798a"
   end
 
-  resource "test_hive" do
-    url "https://raw.githubusercontent.com/mkorman90/regipy/71acd6a65bdee11ff776dbd44870adad4632404c/regipy_tests/data/SYSTEM.xz"
-    sha256 "b1582ab413f089e746da0528c2394f077d6f53dd4e68b877ffb2667bd027b0b0"
+  resource "tabulate" do
+    url "https://files.pythonhosted.org/packages/ec/fe/802052aecb21e3797b8f7902564ab6ea0d60ff8ca23952079064155d1ae1/tabulate-0.9.0.tar.gz"
+    sha256 "0095b12bf5966de529c0feb1fa08671671b3368eec77d7ef7ab114be2c068b3c"
   end
 
   def install
-    venv = virtualenv_create(libexec, "python3.11")
-    venv.pip_install resources.reject { |r| r.name == "test_hive" }
-    venv.pip_install_and_link buildpath
+    virtualenv_install_with_resources
   end
 
   test do
-    resource("test_hive").stage do
-      system bin/"registry-plugins-run", "-p", "computer_name", "-o", "out.json", "SYSTEM"
-      h = JSON.parse(File.read("out.json"))
-      assert_equal h["computer_name"][0]["name"], "WKS-WIN732BITA"
-      assert_equal h["computer_name"][1]["name"], "WIN-V5T3CSP8U4H"
+    resource "homebrew-test_hive" do
+      url "https://raw.githubusercontent.com/mkorman90/regipy/71acd6a65bdee11ff776dbd44870adad4632404c/regipy_tests/data/SYSTEM.xz"
+      sha256 "b1582ab413f089e746da0528c2394f077d6f53dd4e68b877ffb2667bd027b0b0"
     end
+
+    testpath.install resource("homebrew-test_hive")
+
+    system bin/"regipy-plugins-run", "-p", "computer_name", "-o", "out.json", "SYSTEM"
+    h = JSON.parse(File.read("out.json"))
+    assert_equal h["computer_name"][0]["name"], "WKS-WIN732BITA"
+    assert_equal h["computer_name"][1]["name"], "WIN-V5T3CSP8U4H"
   end
 end

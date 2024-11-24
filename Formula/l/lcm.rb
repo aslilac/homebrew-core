@@ -12,13 +12,13 @@ class Lcm < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "cc44fb36fd52595d8ab65e7e9267de9419fb80c041cf29e74913ca26a3cd86f8"
-    sha256 cellar: :any,                 arm64_monterey: "6ba463959fd49363524127fcee429ffe119a691c8413f9e42df797ef0d717f18"
-    sha256 cellar: :any,                 arm64_big_sur:  "f75a796ff74405bfff348ae1064d6ac0f5678ecbfddfc26b02ff673ce7dbc327"
-    sha256 cellar: :any,                 ventura:        "865f99f4c08dde897d55f520fa8aa7d3a9df84240c9281399cb2d7519452c6b5"
-    sha256 cellar: :any,                 monterey:       "dcf73c2d73c974c3df43107b82ba8eea223e3cfa1bcf10529966137f4b135b1a"
-    sha256 cellar: :any,                 big_sur:        "d2140ed962ef6ce8136e72d19fdaf2b4604616b673886b10f0895441e5ed3a7f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "eee0f6f8f16a72525db3c926aeb9bf1860df1a5d031c9aed396bfda055c05114"
+    rebuild 2
+    sha256 cellar: :any,                 arm64_sequoia: "3bc6bba97d622e6cad92654b13a189117a05b102d9dff87714692129f010ef80"
+    sha256 cellar: :any,                 arm64_sonoma:  "2d24850362c0287ebb15776799bf023a6eb05baed1ebbede56a12b7c2391920a"
+    sha256 cellar: :any,                 arm64_ventura: "1589412c5fd3789d077c01981f4c8ef633aea1a2f06448a27b75e4e41e01de3f"
+    sha256 cellar: :any,                 sonoma:        "e965eaa67eaabbfab0cbfcfe4850fb604e436ba8542421f93be5e3013004736d"
+    sha256 cellar: :any,                 ventura:       "b5c5f4ac2c858419c931f30903a7cd07a0d6bceb9740a17d5fc156a58b82280c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "18c704832fce5312938ebef41001b435a111a8a12441837fd2f82d9cc5e0db6c"
   end
 
   depends_on "cmake" => :build
@@ -26,7 +26,11 @@ class Lcm < Formula
   depends_on "glib"
   depends_on "lua"
   depends_on "openjdk"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
+
+  def python3
+    which("python3.13")
+  end
 
   def install
     # Adding RPATH in #{lib}/lua/X.Y/lcm.so and some #{bin}/*.
@@ -35,7 +39,7 @@ class Lcm < Formula
       -DLCM_ENABLE_EXAMPLES=OFF
       -DLCM_ENABLE_TESTS=OFF
       -DLCM_JAVA_TARGET_VERSION=8
-      -DPYTHON_EXECUTABLE=#{which("python3.11")}
+      -DPYTHON_EXECUTABLE=#{python3}
     ]
 
     # `lcm-lua/lualcm_lcm.c:577:9: error: ‘subscription’ may be used uninitialized`

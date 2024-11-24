@@ -1,40 +1,38 @@
 class Faudio < Formula
   desc "Accuracy-focused XAudio reimplementation for open platforms"
   homepage "https://fna-xna.github.io/"
-  url "https://github.com/FNA-XNA/FAudio/archive/23.08.tar.gz"
-  sha256 "bf73c20a2082338fe0b3c283fdb3de08b5f2802bfaea8acc59c70c05567e94af"
+  url "https://github.com/FNA-XNA/FAudio/archive/refs/tags/24.11.tar.gz"
+  sha256 "7aa5fdc762e1abbf4721e793de589eced46eef872ee2b9a03ab79ac81b64082c"
   license "Zlib"
   head "https://github.com/FNA-XNA/FAudio.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "7909bd61a139e77c946d8d3919ac09ed1e35e82f57b3159ae0cbdb30a3c0a99b"
-    sha256 cellar: :any,                 arm64_monterey: "960daea3145afd085d715815435c5a333aeb39dd77de4ae50676a9bb3b717a82"
-    sha256 cellar: :any,                 arm64_big_sur:  "b3dfc29ee3736cccca56e1e615a7c4c6c626f912a4095354e3674420c63f4ef1"
-    sha256 cellar: :any,                 ventura:        "cecd00c5849de7f369eff7d9aad9d26c16f6654b679054caeb0539500d2b48c3"
-    sha256 cellar: :any,                 monterey:       "66d4b9b062e6f71deb030912604c26d56afc14bcc2363aeee58dcca361868fee"
-    sha256 cellar: :any,                 big_sur:        "6d94f3fa9d728ccef942e64c7261811e9d5bd2cf8918ffb95fed3736fea194d0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "912740fe445bd2d8aa012f158364347315ddd2515d487b1f6eac1693f62363de"
+    sha256 cellar: :any,                 arm64_sequoia: "be733be5ba13a13071685c9ff9f370a23f4d19e58350da9ac92bc6881642afa6"
+    sha256 cellar: :any,                 arm64_sonoma:  "329f696f61ada91dbc90760297ceb5161bba0ed91b392e54683572955bc7564b"
+    sha256 cellar: :any,                 arm64_ventura: "199d8456873c4f14b08ee8a0e41f42b56acfa0b40c48b80700a4ff93b1caaf51"
+    sha256 cellar: :any,                 sonoma:        "0a5d5263d6a31b93b6ba01cfb7426595f4b1309bc6a3b44f26b9a460a7f6c8b7"
+    sha256 cellar: :any,                 ventura:       "ce186968b663cd0100bca8b00d1e5f6e003883b60d70d65d4aaacf5bca95b900"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5ca839abc855cc2aaf568b33ce865ab17331b70abea25cf5ae90b1b9aaedaf9c"
   end
 
   depends_on "cmake" => :build
   depends_on "sdl2"
 
   def install
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <FAudio.h>
       int main(int argc, char const *argv[])
       {
         FAudio *audio;
         return FAudioCreate(&audio, 0, FAUDIO_DEFAULT_PROCESSOR);
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-lFAudio", "-o", "test"
     system "./test"
   end

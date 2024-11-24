@@ -2,8 +2,8 @@ class Asymptote < Formula
   desc "Powerful descriptive vector graphics language"
   homepage "https://asymptote.sourceforge.io"
   # Keep version in sync with manual below
-  url "https://downloads.sourceforge.net/project/asymptote/2.86/asymptote-2.86.src.tgz"
-  sha256 "c4ebad1fc3c7b3ce52d89f5fd7e731830d2e6147de7e4c04f8f5cd36cff3c91f"
+  url "https://downloads.sourceforge.net/project/asymptote/2.92/asymptote-2.92.src.tgz"
+  sha256 "9d9b5c6fa7e0fbce3c1e54feb25e2d51d28c4fe7798f24c76cdcae8291a8ea66"
   license "LGPL-3.0-only"
 
   livecheck do
@@ -12,16 +12,16 @@ class Asymptote < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "c12ac4a610d83f3dcca34f349e85b7aa21c9d3d090a98bfc3f98541df182fd71"
-    sha256 arm64_monterey: "3db950622ff0f9af9e90f212bb5d432dc8cc436a5678a2ffc0558692c2077d97"
-    sha256 arm64_big_sur:  "b3ff44aa5d3df47a1066e98b704aac227f399a6539cd3ea8a2d6cb1eee1372ff"
-    sha256 ventura:        "dc5a647b7e543ef4eae17b0b7a819be71bf5e893fdf01571b1d2e9d1c6c4560d"
-    sha256 monterey:       "881a3aaa436253109c3321d7ec72182478c5dd2f7cdfcac3dd4fd15d416d7bef"
-    sha256 big_sur:        "f6206db672499eb6381f93fa308db358f6d157fb17f5c2e0662263eb570014d0"
-    sha256 x86_64_linux:   "cef3ad12215b498c2f88690861ac8cac4b8f31d82c0917ad743bc81365fcf690"
+    sha256 arm64_sequoia: "a2ab1dcc8aec354cde8671c085d0087da9defc0a69b45133235b51722b1da807"
+    sha256 arm64_sonoma:  "14e5d0b73d1a8a8d3b75afe56b483bb891171ca9f54733c7c7be1e6bb12663f7"
+    sha256 arm64_ventura: "924fbbc0946774ebdb79b1acd8d2b15ac9a99c339381949f8329775bfb381723"
+    sha256 sonoma:        "85cb50b11d1bd47bdcfd720da922713a9cac97537b2cee05a97424bdc7e75684"
+    sha256 ventura:       "bf56177a8977e92c6aed5bc61f061d7015099a8d659733a7c145c105fcb3cc4d"
+    sha256 x86_64_linux:  "26492e1f8f727213bff5d06863fd3869c975687a794c8affa408151a19769592"
   end
 
   depends_on "glm" => :build
+  depends_on "pkg-config" => :build
   depends_on "fftw"
   depends_on "ghostscript"
   depends_on "gsl"
@@ -30,17 +30,22 @@ class Asymptote < Formula
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
   uses_from_macos "ncurses"
+  uses_from_macos "zlib"
 
   on_linux do
     depends_on "freeglut"
+    depends_on "libtirpc"
+    depends_on "mesa"
   end
 
   resource "manual" do
-    url "https://downloads.sourceforge.net/project/asymptote/2.86/asymptote.pdf"
-    sha256 "ea28952b1f6d827a84526709d23b3d2d3003a11a008ff4713bd714ef5c8d1c56"
+    url "https://downloads.sourceforge.net/project/asymptote/2.92/asymptote.pdf"
+    sha256 "ba96b049da98207eed38eb3be5c306fbd10ff8b00124e26609d5effe7adbdac6"
   end
 
   def install
+    odie "manual resource needs to be updated" if version != resource("manual").version
+
     system "./configure", *std_configure_args
 
     # Avoid use of MacTeX with these commands
@@ -55,14 +60,13 @@ class Asymptote < Formula
   end
 
   test do
-    assert_equal version, resource("manual").version, "`manual` resource needs updating!"
-
     (testpath/"line.asy").write <<~EOF
       settings.outformat = "pdf";
       size(200,0);
       draw((0,0)--(100,50),N,red);
     EOF
-    system "#{bin}/asy", testpath/"line.asy"
+
+    system bin/"asy", testpath/"line.asy"
     assert_predicate testpath/"line.pdf", :exist?
   end
 end

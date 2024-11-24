@@ -1,19 +1,18 @@
 class Yamlfmt < Formula
   desc "Extensible command-line tool to format YAML files"
   homepage "https://github.com/google/yamlfmt"
-  url "https://github.com/google/yamlfmt/archive/refs/tags/v0.9.0.tar.gz"
-  sha256 "876d8034f689ea053421eddb6654f76ef9fa18b8400146dff78729ead90fbd69"
+  url "https://github.com/google/yamlfmt/archive/refs/tags/v0.14.0.tar.gz"
+  sha256 "351fe18bd821fa3ce3cda48f4f2270bf0b39104ca5dec5d99bd6c84841eb9bcb"
   license "Apache-2.0"
   head "https://github.com/google/yamlfmt.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5a04caa63ad351f5dc222b8a0d54a98b7e9332abc771d3f4fefcafb03fd0c6a8"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5a04caa63ad351f5dc222b8a0d54a98b7e9332abc771d3f4fefcafb03fd0c6a8"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5a04caa63ad351f5dc222b8a0d54a98b7e9332abc771d3f4fefcafb03fd0c6a8"
-    sha256 cellar: :any_skip_relocation, ventura:        "d48a33100a2fa1415a314cb40b7ee10aa01e2786b6363d53a857834c1eb2c414"
-    sha256 cellar: :any_skip_relocation, monterey:       "d48a33100a2fa1415a314cb40b7ee10aa01e2786b6363d53a857834c1eb2c414"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d48a33100a2fa1415a314cb40b7ee10aa01e2786b6363d53a857834c1eb2c414"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2b852e1ef871f6592a12483fca3a666abddb2ac56c68d46109ba72e1a4e9706e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c5594a8b9d5a83f76f8824a17cf83115644e021aeac1ad5a6365dda1dc0aaf80"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c5594a8b9d5a83f76f8824a17cf83115644e021aeac1ad5a6365dda1dc0aaf80"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c5594a8b9d5a83f76f8824a17cf83115644e021aeac1ad5a6365dda1dc0aaf80"
+    sha256 cellar: :any_skip_relocation, sonoma:        "204c0cc28383f3da42f5feb60a40a5f73cd16d090b88260087194b09e2fccdcc"
+    sha256 cellar: :any_skip_relocation, ventura:       "204c0cc28383f3da42f5feb60a40a5f73cd16d090b88260087194b09e2fccdcc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d6f799f0a7d20fee357cf4aca9f9108f423069072ac494bfbaffe722e795d4e5"
   end
 
   depends_on "go" => :build

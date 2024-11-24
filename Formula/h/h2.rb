@@ -1,20 +1,20 @@
 class H2 < Formula
   desc "Java SQL database"
   homepage "https://www.h2database.com/"
-  url "https://github.com/h2database/h2database/releases/download/version-2.2.222/h2-2023-08-22.zip"
-  version "2.2.222"
-  sha256 "0dcc343523f2d52b505b1eecb95143132d2fa1222029597eb572d4a3c0d06535"
+  url "https://github.com/h2database/h2database/releases/download/version-2.3.232/h2-2024-08-11.zip"
+  version "2.3.232"
+  sha256 "aa95a3433b6f434cac43b072b52756fa46c611239b7a0de3a8038501b8dae2af"
   license "MPL-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "c2d28b7a3b91f6eeb7e436756599716d5a70ea0192892d971db1c16585b89c38"
+    sha256 cellar: :any_skip_relocation, all: "5fd92e04e213f01b78acb580651cf0ef22ccc29ea925e903eed2ddf4f907254b"
   end
 
   depends_on "openjdk"
 
   def install
     # Remove windows files
-    rm_f Dir["bin/*.bat"]
+    rm(Dir["bin/*.bat"])
 
     # Fix the permissions on the script
     # upstream issue, https://github.com/h2database/h2database/issues/3254

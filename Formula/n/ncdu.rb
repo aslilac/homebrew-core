@@ -1,19 +1,10 @@
 class Ncdu < Formula
   desc "NCurses Disk Usage"
   homepage "https://dev.yorhel.nl/ncdu"
+  url "https://dev.yorhel.nl/download/ncdu-2.7.tar.gz"
+  sha256 "b218cc14a2bb9852cf951db4e21aec8980e7a8c3aca097e3aa3417f20eb93000"
   license "MIT"
   head "https://g.blicky.net/ncdu.git", branch: "zig"
-
-  # Remove `stable` block when the patch is no longer needed.
-  stable do
-    url "https://dev.yorhel.nl/download/ncdu-2.2.2.tar.gz"
-    sha256 "90d920024e752318b469776ce57e03b3c702d49329ad9825aeeab36c3babf993"
-
-    # Enable install_name rewriting when bottling.
-    # Remove in next release.
-    # https://code.blicky.net/yorhel/ncdu/commit/07a13d9c7397c3341f430e1127e7287fe53ba8b9
-    patch :DATA
-  end
 
   livecheck do
     url :homepage
@@ -21,19 +12,19 @@ class Ncdu < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_ventura:  "6e33f53d26ed222046069f2adcfb1085d8b9a554b1d95150554fb5663d70cac0"
-    sha256 cellar: :any, arm64_monterey: "407ef3a5dc0b76d04b42480ab24fb708d0316043f322079621c73e67ccd3bd54"
-    sha256 cellar: :any, arm64_big_sur:  "3489200d1a842fb13e09c41c3b4aee3a23efa495be76769f4217b3c2ed042e2f"
-    sha256 cellar: :any, ventura:        "bceb9e170df5981294a320a027299278b1f5921fb0329b1b52b841014be3856f"
-    sha256 cellar: :any, monterey:       "4719611c107098d06107643b57105c7fc4a9b65a478a9bd5de554e814f38a17a"
-    sha256 cellar: :any, big_sur:        "eb5904a48c0e57d42b9149f95f0fa6ac455d1cee24c19eb05aad4405b61da9a8"
-    sha256               x86_64_linux:   "85a0bf75cf77e3bca24b48653e71603c798c7d8a39195406a6351c2dfbe58e26"
+    sha256 cellar: :any,                 arm64_sequoia: "94e8907cf6b72057a4cc6913ff0a8b942172f82f231384dc2659c2476ffa7a8e"
+    sha256 cellar: :any,                 arm64_sonoma:  "1041490c1b919a6d63c9108ff77ed89f62fc12c766ca2be16068a2da553abb94"
+    sha256 cellar: :any,                 arm64_ventura: "dbd4d5e5b8d15bfc0923ed9bf43040e04e9f32e8d8d32cae75a26ef1dbc35b3b"
+    sha256 cellar: :any,                 sonoma:        "43a6e24ab5ff83297138f2aec826aa6ccc57ca64b8eb3b2f87e64ad7b60b155d"
+    sha256 cellar: :any,                 ventura:       "4ffc8d1553dbe38037cb3019c4607afb3c0b22399cc72a6d41b37c2f1a0db4af"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bed452df75f7c3eab2ace9ed72104d9a12bc0f75241ab562a1a023b5e5aa9416"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "zig" => :build
   # Without this, `ncdu` is unusable when `TERM=tmux-256color`.
   depends_on "ncurses"
+  depends_on "zstd"
 
   def install
     # Fix illegal instruction errors when using bottles on older CPUs.
@@ -43,8 +34,17 @@ class Ncdu < Formula
     else Hardware.oldest_cpu
     end
 
-    args = %W[--prefix #{prefix} -Drelease-fast=true]
+    args = %W[--prefix #{prefix} --release=fast]
+    args << "-Dpie=true" if OS.mac?
     args << "-Dcpu=#{cpu}" if build.bottle?
+
+    # Workaround for https://github.com/Homebrew/homebrew-core/pull/141453#discussion_r1320821081
+    # Remove this workaround when the same is removed in `zig.rb`.
+    if OS.linux?
+      ENV["NIX_LDFLAGS"] = ENV["HOMEBREW_RPATH_PATHS"].split(":")
+                                                      .map { |p| "-rpath #{p}" }
+                                                      .join(" ")
+    end
 
     # Avoid the Makefile for now so that we can pass `-Dcpu` to `zig build`.
     # https://code.blicky.net/yorhel/ncdu/issues/185
@@ -61,20 +61,3 @@ class Ncdu < Formula
     assert_equal Pathname.pwd.size, output[3][0]["asize"]
   end
 end
-
-__END__
-diff --git a/build.zig b/build.zig
-index 45bd314..aac1b54 100644
---- a/build.zig
-+++ b/build.zig
-@@ -10,6 +10,10 @@ pub fn build(b: *std.build.Builder) void {
-     const exe = b.addExecutable("ncdu", "src/main.zig");
-     exe.setTarget(target);
-     exe.setBuildMode(mode);
-+    if (exe.target.isDarwin()) {
-+        // useful for package maintainers
-+        exe.headerpad_max_install_names = true;
-+    }
-     exe.addCSourceFile("src/ncurses_refs.c", &[_][]const u8{});
-     exe.linkLibC();
-     exe.linkSystemLibrary("ncursesw");

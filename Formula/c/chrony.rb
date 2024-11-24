@@ -1,8 +1,8 @@
 class Chrony < Formula
   desc "Versatile implementation of the Network Time Protocol (NTP)"
   homepage "https://chrony-project.org"
-  url "https://chrony-project.org/releases/chrony-4.4.tar.gz"
-  sha256 "eafb07e6daf92b142200f478856dfed6efc9ea2d146eeded5edcb09b93127088"
+  url "https://chrony-project.org/releases/chrony-4.6.1.tar.gz"
+  sha256 "571ff73fbf0ae3097f0604eca2e00b1d8bb2e91affe1a3494785ff21d6199c5c"
   license "GPL-2.0-only"
 
   livecheck do
@@ -11,22 +11,22 @@ class Chrony < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "cfb99fd7b217e10e1d9ae7690c40e7f863fc6f42111b35ddc1b601a92827df5a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c8b3a86682971e2294dc86510f9a51b5537bc32010d1537c05f2f1b51f6e1e2d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4261a28c36662da557d8e52b70a25948f8096b0ba29f0017d1e19a66ee07f0c9"
-    sha256 cellar: :any_skip_relocation, ventura:        "940ecfd6fb5a46b2d39f182cd10c8f738be2a3bff664c544dd4c7466178b035a"
-    sha256 cellar: :any_skip_relocation, monterey:       "1de81641ae0c6205645751f4f9cbecfa788a7ce14f4dbff4f23675c6d8f5e8e5"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e3917015f55056098ecb2f7526ca50df4ae90cfe6548ce3027708d2196009504"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "38f294460a17ac1720cfe8c46b2958caf0fbf19c2cead23d468acf874d942f91"
+    sha256 cellar: :any,                 arm64_sequoia: "4c6e88d135fc7248907d23dfeeb0dc7d7d59fdb3e4b4bf5d64cb88cbde144e7b"
+    sha256 cellar: :any,                 arm64_sonoma:  "7e9968c5ec5ea5eef8f8e8067102aa76abe5ba51f743ff128ce5a65f77187d38"
+    sha256 cellar: :any,                 arm64_ventura: "92e281e61b4343f5e1adc70edfbd7ef37cee3a810f7ebcbaaaee8494095d73e9"
+    sha256 cellar: :any,                 sonoma:        "47023cbf95a7711a26f5077d40b0a4564b864fbae5eb7d371952120bb4620d53"
+    sha256 cellar: :any,                 ventura:       "a2b6f67ac680be5e10d64b0a8e1c580a64bbd9e53fdabb1b0884562db5b4cef5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "55cd6ef009f00d493b55f8ced8b850f4029c6bc9f17e628303d65d4391df69d4"
   end
 
+  depends_on "pkgconf" => :build
+  depends_on "gnutls"
   depends_on "nettle"
 
   uses_from_macos "libedit"
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--localstatedir=#{var}"
+    system "./configure", "--localstatedir=#{var}", *std_configure_args
     system "make", "install"
   end
 

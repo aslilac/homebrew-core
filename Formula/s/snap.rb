@@ -1,8 +1,9 @@
 class Snap < Formula
   desc "Tool to work with .snap files"
   homepage "https://snapcraft.io/"
-  url "https://github.com/snapcore/snapd/releases/download/2.60.2/snapd_2.60.2.tar.xz"
-  sha256 "cf1f30152614975b14be014d4f6e753705eec04a3d36b54960d528e9044ac54e"
+  url "https://github.com/snapcore/snapd/releases/download/2.66.1/snapd_2.66.1.vendor.tar.xz"
+  version "2.66.1"
+  sha256 "5fa662062562443b2a005ed1aad359d6cc0c74ffbb555af701a4c1f510896b7b"
   license "GPL-3.0-only"
 
   livecheck do
@@ -11,13 +12,12 @@ class Snap < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "288ce9500915342376cf60a7ff373121b7136598b30e6e21c61a47eb61ae1c9d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "288ce9500915342376cf60a7ff373121b7136598b30e6e21c61a47eb61ae1c9d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "288ce9500915342376cf60a7ff373121b7136598b30e6e21c61a47eb61ae1c9d"
-    sha256 cellar: :any_skip_relocation, ventura:        "fe5d3235d1546357b4698f3c2b597408bc3d1959119c688b84985934ca004f0d"
-    sha256 cellar: :any_skip_relocation, monterey:       "fe5d3235d1546357b4698f3c2b597408bc3d1959119c688b84985934ca004f0d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "fe5d3235d1546357b4698f3c2b597408bc3d1959119c688b84985934ca004f0d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2b5d833a28897c20c8d6733d063ea8e80295c1013c8172a8dd01f43463a20db0"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "292b51a255b4a21c81cfa59b0ed71b3a7f9dae5354147d9a19a7d6b03b36f48d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "292b51a255b4a21c81cfa59b0ed71b3a7f9dae5354147d9a19a7d6b03b36f48d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "292b51a255b4a21c81cfa59b0ed71b3a7f9dae5354147d9a19a7d6b03b36f48d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "581416d57a6ee973686987d903d2aa70e03c4643734aefbadfddbba7096438e3"
+    sha256 cellar: :any_skip_relocation, ventura:       "581416d57a6ee973686987d903d2aa70e03c4643734aefbadfddbba7096438e3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "46941233bae0f8e31fd625e5334f313a0c149358ed8c7d39f616c8376627ae36"
   end
 
   depends_on "go" => :build
@@ -36,12 +36,12 @@ class Snap < Formula
 
   test do
     (testpath/"pkg/meta").mkpath
-    (testpath/"pkg/meta/snap.yaml").write <<~EOS
+    (testpath/"pkg/meta/snap.yaml").write <<~YAML
       name: test-snap
       version: 1.0.0
       summary: simple summary
       description: short description
-    EOS
+    YAML
     system bin/"snap", "pack", "pkg"
     system bin/"snap", "version"
   end

@@ -3,7 +3,7 @@ class Tinysvm < Formula
   homepage "http://chasen.org/~taku/software/TinySVM/"
   url "http://chasen.org/~taku/software/TinySVM/src/TinySVM-0.09.tar.gz"
   sha256 "e377f7ede3e022247da31774a4f75f3595ce768bc1afe3de9fc8e962242c7ab8"
-  license "LGPL-2.1"
+  license "LGPL-2.1-or-later"
 
   livecheck do
     url :homepage
@@ -11,9 +11,12 @@ class Tinysvm < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "abf56f8965d9604d945e925ce1d7fe4bb6dfe40a3290f7e60dd7308be6f7e211"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "75db20d17ee9a60546200f1a0329d5f9c66ae6f162d7b821ac888a27016bfc79"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "9d10346e2bcb343d454ce390ad8388b25b3fd0040e9d0d163cf34db818b3d124"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "6c2118088fe8eead47f050a218c6c7c5928f1c127cfebfb6652f845d5fa195fd"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0bc765f1a83890ba72ab3ddd3b7c43d947b4f8e2aaac19807e7703c6ee58158b"
+    sha256 cellar: :any_skip_relocation, sonoma:         "12ea52272fb0b0d6d7a3dbd64037a014c0c8be9c5c1f1d32b1ea89626bb76041"
     sha256 cellar: :any_skip_relocation, ventura:        "0fed16a29b53d89101342664aed44ff3c3341d012ff02ba3b17de3bec6e5ceda"
     sha256 cellar: :any_skip_relocation, monterey:       "06e39f32239001cf5191e4896a8c8714c598513769e08129c182f47aa7f47366"
     sha256 cellar: :any_skip_relocation, big_sur:        "2ead575e862216b468d3f55c0b20789405f25e03667838da0fadeb0bd3931d37"
@@ -35,7 +38,8 @@ class Tinysvm < Formula
     # Needed to select proper getopt, per MacPorts
     ENV.append_to_cflags "-D__GNU_LIBRARY__"
 
-    inreplace "configure", "-O9", "" # clang barfs on -O9
+    # Fix for newer clang
+    ENV.append_to_cflags "-Wno-implicit-int" if DevelopmentTools.clang_build_version >= 1403
 
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
@@ -60,9 +64,9 @@ class Tinysvm < Formula
       -0.12 1168:1.2 3318:1.2 3938:1.8 4481:1
     EOS
 
-    system "#{bin}/svm_learn", "-t", "1", "-d", "2", "-c", "train.svmdata", "test"
-    system "#{bin}/svm_classify", "-V", "train.svmdata", "test"
-    system "#{bin}/svm_model", "test"
+    system bin/"svm_learn", "-t", "1", "-d", "2", "-c", "train.svmdata", "test"
+    system bin/"svm_classify", "-V", "train.svmdata", "test"
+    system bin/"svm_model", "test"
 
     assert_predicate testpath/"test", :exist?
   end

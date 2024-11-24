@@ -3,29 +3,25 @@ class Censys < Formula
 
   desc "Command-line interface for the Censys APIs (censys.io)"
   homepage "https://github.com/censys/censys-python"
-  url "https://files.pythonhosted.org/packages/d2/2f/1b7c7cb70c5e49d89a8d4545c1c5f3b42f68e470331512356d8a27f23041/censys-2.2.4.tar.gz"
-  sha256 "2bcace81886b490b8e9b89e9269ee78ec7442631f5ac6e3fae8c94421a2b9d09"
+  url "https://files.pythonhosted.org/packages/08/69/76c19cff1cac71420eb731300f39bbba90308a23a8bca9bd6a6d5bafdeff/censys-2.2.16.tar.gz"
+  sha256 "c70680ee84630fba20c3d14f1ed0d9c2a5a2d54009d0821fbaa9fed8119c4ee3"
   license "Apache-2.0"
-  revision 1
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "14b455d14124a1a7bdbaa99d3db99584c209eacb3ff3ba10756ea40c0dc15d1e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2831d2f5d3cc977431acd04f5c01d0f0988967bcc477b6838e61ff0268c1273c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9ce0d931dcc975c627b605d6ea401cbaaa79627d69f4e243fec9a995c2931558"
-    sha256 cellar: :any_skip_relocation, ventura:        "0d6621c60de7bc4949311867937f780ce0a749f674017ab60a6f546cc45e6eb0"
-    sha256 cellar: :any_skip_relocation, monterey:       "195b5ebd5b15010aefb11eacbb9a6c19f0a0a97eed2ec508668503126411dcb8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0503f2b979ab194d638d14762bc9c26be6d27384ec74c5dc2afc5cba7f8ac476"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "665013db97a8ba7add0c047da51bdb30ad0d23a6738d8c83c5c076821501ea4a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9e36acd548ff4c4465979d691e4e9bff62a11582845ced13170ff45273cdcaca"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9e36acd548ff4c4465979d691e4e9bff62a11582845ced13170ff45273cdcaca"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "9e36acd548ff4c4465979d691e4e9bff62a11582845ced13170ff45273cdcaca"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7dce2ad308b70be66c2fa28299eca723f80c1027fd97e5d6bcf0714ee2e96fd1"
+    sha256 cellar: :any_skip_relocation, ventura:       "7dce2ad308b70be66c2fa28299eca723f80c1027fd97e5d6bcf0714ee2e96fd1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7f8faad7a5bcd8a478ab3e3ca3761f92d2ecf1cddcaddac03e093358597b879a"
   end
 
-  depends_on "pygments"
-  depends_on "python-certifi"
-  depends_on "python@3.11"
+  depends_on "certifi"
+  depends_on "python@3.13"
 
   resource "argcomplete" do
-    url "https://files.pythonhosted.org/packages/54/c9/41c4dfde7623e053cbc37ac8bc7ca03b28093748340871d4e7f1630780c4/argcomplete-3.1.1.tar.gz"
-    sha256 "6c4c563f14f01440aaffa3eae13441c5db2357b5eec639abe7c0b15334627dff"
+    url "https://files.pythonhosted.org/packages/5f/39/27605e133e7f4bb0c8e48c9a6b87101515e3446003e0442761f6a02ac35e/argcomplete-3.5.1.tar.gz"
+    sha256 "eb1ee355aa2557bd3d0145de7b06b2a45b0ce461e1e7813f5d066039ab4177b4"
   end
 
   resource "backoff" do
@@ -34,13 +30,13 @@ class Censys < Formula
   end
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/2a/53/cf0a48de1bdcf6ff6e1c9a023f5f523dfe303e4024f216feac64b6eb7f67/charset-normalizer-3.2.0.tar.gz"
-    sha256 "3bb3d25a8e6c0aedd251753a79ae98a093c7e7b471faa3aa9a93a81431987ace"
+    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
+    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz"
-    sha256 "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
+    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
+    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
   end
 
   resource "markdown-it-py" do
@@ -53,19 +49,24 @@ class Censys < Formula
     sha256 "bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"
   end
 
+  resource "pygments" do
+    url "https://files.pythonhosted.org/packages/8e/62/8336eff65bcbc8e4cb5d05b55faf041285951b6e80f33e2bff2024788f31/pygments-2.18.0.tar.gz"
+    sha256 "786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"
+  end
+
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/9d/be/10918a2eac4ae9f02f6cfe6414b7a155ccd8f7f9d4380d62fd5b955065c3/requests-2.31.0.tar.gz"
-    sha256 "942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
   end
 
   resource "rich" do
-    url "https://files.pythonhosted.org/packages/e3/12/67d0098eb77005f5e068de639e6f4cfb8f24e6fcb0fd2037df0e1d538fee/rich-13.4.2.tar.gz"
-    sha256 "d653d6bccede5844304c605d5aac802c7cf9621efd700b46c7ec2b51ea914898"
+    url "https://files.pythonhosted.org/packages/aa/9e/1784d15b057b0075e5136445aaea92d23955aad2c93eaede673718a40d95/rich-13.9.2.tar.gz"
+    sha256 "51a2c62057461aaf7152b4d611168f93a9fc73068f8ded2790f29fe2b5366d0c"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/31/ab/46bec149bbd71a4467a3063ac22f4486ecd2ceb70ae8c70d5d8e4c2a7946/urllib3-2.0.4.tar.gz"
-    sha256 "8d22f86aae8ef5e410d4f539fde9ce6b2113a001bb4d189e0aed70642d602b11"
+    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
+    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
   end
 
   def install
@@ -73,8 +74,7 @@ class Censys < Formula
   end
 
   test do
-    assert_match "usage: censys", shell_output("#{bin}/censys --help")
     assert_equal "Censys Python Version: #{version}", shell_output("#{bin}/censys --version").strip
-    assert_match "Successfully configured credentials", pipe_output("#{bin}/censys asm config", "test\nn\n", 0)
+    assert_match "401 (Error Code: unknown), Unauthorized", pipe_output("#{bin}/censys asm config 2>&1", "test", 1)
   end
 end

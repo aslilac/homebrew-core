@@ -1,35 +1,32 @@
 class OpensslAT11 < Formula
   desc "Cryptography and SSL/TLS Toolkit"
   homepage "https://openssl.org/"
-  url "https://www.openssl.org/source/openssl-1.1.1v.tar.gz"
-  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.1.1v.tar.gz"
-  mirror "http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.1.1v.tar.gz"
-  mirror "https://www.openssl.org/source/old/1.1.1/openssl-1.1.1v.tar.gz"
-  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/old/1.1.1/openssl-1.1.1v.tar.gz"
-  mirror "http://www.mirrorservice.org/sites/ftp.openssl.org/source/old/1.1.1/openssl-1.1.1v.tar.gz"
-  sha256 "d6697e2871e77238460402e9362d47d18382b15ef9f246aba6c7bd780d38a6b0"
+  url "https://www.openssl.org/source/openssl-1.1.1w.tar.gz"
+  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.1.1w.tar.gz"
+  mirror "http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.1.1w.tar.gz"
+  mirror "https://www.openssl.org/source/old/1.1.1/openssl-1.1.1w.tar.gz"
+  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/old/1.1.1/openssl-1.1.1w.tar.gz"
+  mirror "http://www.mirrorservice.org/sites/ftp.openssl.org/source/old/1.1.1/openssl-1.1.1w.tar.gz"
+  sha256 "cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8"
   license "OpenSSL"
   version_scheme 1
 
-  livecheck do
-    url "https://www.openssl.org/source/"
-    regex(/href=.*?openssl[._-]v?(1\.1(?:\.\d+)+[a-z]?)\.t/i)
-  end
-
   bottle do
-    sha256 arm64_ventura:  "a031514d1cf28965fb7cee2028fcc270fbcf3d4743cd13195d3b0b8edf3d2d1d"
-    sha256 arm64_monterey: "5260ea8701a05639d63b860eeb290115e384d0c5ae2419f8a724eeeb33365427"
-    sha256 arm64_big_sur:  "ea8ef00ad867294cbf2f9c3a146ef0a037d858ccfca68f192bb31edfa0707a4c"
-    sha256 ventura:        "ae32fc2908db56f5737ce5d250e86494b525d22da8b186a54f8d102d1e6cbcb4"
-    sha256 monterey:       "eda849b5a4a3bf6b3a170b7f39f21bc68da34141d1ce976890d31d6ef5b73df7"
-    sha256 big_sur:        "2c4e50ae61849c5f50e87d92af0d4f5b8810fd3ab1f1da5d31aa138b97cc4643"
-    sha256 x86_64_linux:   "01723a5f0d1e3a98f6dd4ab4a1836e7fc2ed144ccd118626fcf08504a683eba9"
+    rebuild 1
+    sha256 arm64_sequoia:  "e49b48327359eb6f1e1a0c67f4810105d803b560cd0d70c7247f2157f7cffe61"
+    sha256 arm64_sonoma:   "00fe912a43983918e60fa5b009e81347c7775c6bfbcd89ee067dc293f35547f9"
+    sha256 arm64_ventura:  "eaec02db0f43d4f11ff1299ecbcbe182ea30af62b22e5cfaaf6b77d5bbbddbbb"
+    sha256 arm64_monterey: "edb44a1452fe8d30491d156b0cdad749027f2daf80d4e0f04953ee2b192f7dc4"
+    sha256 sonoma:         "8b6e4ba1f184ffe1f74c66e028887aba08c1810ae7c5ed226fe491a6de8bc8e1"
+    sha256 ventura:        "8111bc5385b46990584fa3fc1ecd20b0f0532fa20a7efbef2a5f4ebe2ca5ba2d"
+    sha256 monterey:       "aee993c9e2f76f76b6015446c786ca9fbebf20486c34a52d5047a843bb50fc30"
+    sha256 x86_64_linux:   "076d0f3ec7d6938cd2b360ca39a4f70395214d0a545fe0fa8a6c5d23659b65c2"
   end
 
   keg_only :versioned_formula
 
   # See: https://www.openssl.org/policies/releasestrat.html
-  deprecate! date: "2023-09-11", because: :unsupported
+  disable! date: "2024-10-24", because: :unsupported
 
   depends_on "ca-certificates"
 
@@ -109,6 +106,9 @@ class OpensslAT11 < Formula
     system "make"
     system "make", "install", "MANDIR=#{man}", "MANSUFFIX=ssl"
     system "make", "test"
+
+    # Prevent `brew` from pruning the `certs` and `private` directories.
+    touch %w[certs private].map { |subdir| openssldir/subdir/".keepme" }
   end
 
   def openssldir
@@ -116,7 +116,7 @@ class OpensslAT11 < Formula
   end
 
   def post_install
-    rm_f openssldir/"cert.pem"
+    rm(openssldir/"cert.pem") if (openssldir/"cert.pem").exist?
     openssldir.install_symlink Formula["ca-certificates"].pkgetc/"cert.pem"
   end
 

@@ -1,18 +1,19 @@
 class Fastp < Formula
   desc "Ultra-fast all-in-one FASTQ preprocessor"
   homepage "https://github.com/OpenGene/fastp"
-  url "https://github.com/OpenGene/fastp/archive/refs/tags/v0.23.4.tar.gz"
-  sha256 "4fad6db156e769d46071add8a778a13a5cb5186bc1e1a5f9b1ffd499d84d72b5"
+  url "https://github.com/OpenGene/fastp/archive/refs/tags/v0.24.0.tar.gz"
+  sha256 "42445973c57be9209c753027e99781261c69381013813c576ad447e413ff3d04"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 ventura:      "67d4229c08075e858a8b8a8da5b6e4e4fdf50e4542f4c799d6955de51cbc6ea9"
-    sha256 cellar: :any,                 monterey:     "5e7b279df24f6065f22d52be29a19ac574781a62a57f49449ae8fd49dbaffc08"
-    sha256 cellar: :any,                 big_sur:      "88284d74dc8c61010fe62cdd658c5e9d22db6ef8a7ef0c0b15509f529a153912"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "0589cde1438c370799e468eead88bb2e537bc59ac390512c3b30161315162937"
+    sha256 cellar: :any,                 arm64_sequoia: "b3ab9145befee1c91f94affcbff56639d42d51d0ca15968a77a03fe8f3470e34"
+    sha256 cellar: :any,                 arm64_sonoma:  "84d99c79412d7d1d4a7d0a28ce5c053539a0ece96d9895743c164231b88fbdd7"
+    sha256 cellar: :any,                 arm64_ventura: "c95133f539e6d2028c1dcfe77636746afc8b5cae83f62149e30645aecec8319e"
+    sha256 cellar: :any,                 sonoma:        "2fb9b68f0f5e6394ef0fc4f2e9f3f727169276d7036a8c5bf46b26a99680a5f4"
+    sha256 cellar: :any,                 ventura:       "7280ac0a603254ac8711bb1de17acd0c22fdc067de3ad806e3e74fd60fba439b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1b9af0aa2d7c574f3522b4ca8dfd39df425f995f0b9a09e7a3fb63adee9a5ff6"
   end
 
-  depends_on arch: :x86_64 # isa-l is not supported on ARM
   depends_on "isa-l"
   depends_on "libdeflate"
 

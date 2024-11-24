@@ -1,8 +1,8 @@
 class Qmmp < Formula
   desc "Qt-based Multimedia Player"
   homepage "https://qmmp.ylsoftware.com/"
-  url "https://qmmp.ylsoftware.com/files/qmmp/2.1/qmmp-2.1.4.tar.bz2"
-  sha256 "81b4240d9832a36d954d6a448b1b92d966a2c305e0283b275db07a43453439e3"
+  url "https://qmmp.ylsoftware.com/files/qmmp/2.2/qmmp-2.2.2.tar.bz2"
+  sha256 "53055984b220ec1f825b885db3ebdb54a7a71ac67935438ee4ff9c082f600c4f"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,17 +11,15 @@ class Qmmp < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "422c7f44b240dcf38b093e454635a000fd027646ed611fed747e192520a2e11c"
-    sha256 arm64_monterey: "5bb6abcda9cf57aa44cd7cd4858faa5b2d5bec36d5c211a804a1223b7e11cf9b"
-    sha256 arm64_big_sur:  "3d32a63fa2cf9cb2741d7a00553a5c61c58538fbab25c361c9bcf4a44ab3aeb5"
-    sha256 ventura:        "8c52502afb8da65fa20753d85d79d338d4c04ed5d8756add32ec51ca1ff9dd23"
-    sha256 monterey:       "7febefb29722d5c36458ab97b43afd9f71d3cb4ece495fe9733bf614ac7cda98"
-    sha256 big_sur:        "690bc7ce681afd036929867e69f2909f66bf8df3188c4580fb6924512b46c926"
-    sha256 x86_64_linux:   "9ef1f2d9f39f5cddeb4c8de35bafae03fda90611494f19063140e783f20f0c6a"
+    sha256 cellar: :any,                 arm64_sonoma:  "515b38786fd3299f49dda650f810b4278faeec35ad6003a60ae072c25c93a4d6"
+    sha256 cellar: :any,                 arm64_ventura: "cac00b68eaabb52ee9f93d54da5b68fe52de4cb7f39e798f3716f0c99fadb3cd"
+    sha256 cellar: :any,                 sonoma:        "49a2054e2552565d1942d4fcc916b3402f7ae52b178844694869f7cbcb9dc72b"
+    sha256 cellar: :any,                 ventura:       "83c5f7524a1119d497b34303ffa0df3100d7bb179945e3567574ce0e5befe91c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dde277e48b32110088fa920e36c15d64d5ff5bb1d26e7835dde8bbff01c0f029"
   end
 
-  depends_on "cmake"      => :build
-  depends_on "pkg-config" => :build
+  depends_on "cmake" => :build
+  depends_on "pkgconf" => :build
 
   # TODO: on linux: pipewire
   depends_on "faad2"
@@ -44,6 +42,7 @@ class Qmmp < Formula
   depends_on "libxcb"
   depends_on "libxmp"
   depends_on "mad"
+  depends_on "mpg123"
   depends_on "mplayer"
   depends_on "opus"
   depends_on "opusfile"
@@ -57,16 +56,22 @@ class Qmmp < Formula
   uses_from_macos "curl"
 
   on_macos do
+    depends_on "gettext"
+    depends_on "glib"
     # musepack is not bottled on Linux
     # https://github.com/Homebrew/homebrew-core/pull/92041
     depends_on "musepack"
   end
 
-  fails_with gcc: "5" # ffmpeg is compiled with GCC
+  on_linux do
+    depends_on "alsa-lib"
+    depends_on "libx11"
+    depends_on "mesa"
+  end
 
   resource "qmmp-plugin-pack" do
-    url "https://qmmp.ylsoftware.com/files/qmmp-plugin-pack/2.1/qmmp-plugin-pack-2.1.1.tar.bz2"
-    sha256 "f68484426579f2a0bc68b6be06e7a019fd1c266fca35b764d5788661ddf9bcc4"
+    url "https://qmmp.ylsoftware.com/files/qmmp-plugin-pack/2.2/qmmp-plugin-pack-2.2.1.tar.bz2"
+    sha256 "bfb19dfc657a3b2d882bb1cf4069551488352ae920d8efac391d218c00770682"
   end
 
   def install
@@ -82,6 +87,10 @@ class Qmmp < Formula
       cmake_args << "-DCMAKE_SHARED_LINKER_FLAGS=-Wl,-undefined,dynamic_lookup"
       cmake_args << "-DCMAKE_MODULE_LINKER_FLAGS=-Wl,-undefined,dynamic_lookup"
     end
+
+    # Fix to recognize x11
+    # Issue ref: https://sourceforge.net/p/qmmp-dev/tickets/1177/
+    inreplace "src/plugins/Ui/skinned/CMakeLists.txt", "PkgConfig::X11", "${X11_LDFLAGS}"
 
     system "cmake", "-S", ".", *cmake_args
     system "cmake", "--build", "."

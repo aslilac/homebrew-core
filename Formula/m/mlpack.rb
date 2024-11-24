@@ -1,35 +1,32 @@
 class Mlpack < Formula
   desc "Scalable C++ machine learning library"
   homepage "https://www.mlpack.org"
-  url "https://mlpack.org/files/mlpack-4.2.0.tar.gz"
-  sha256 "f780df984a71029e62eeecdd145fb95deb71b133cefc7840de0ec706d116dd60"
+  url "https://mlpack.org/files/mlpack-4.5.0.tar.gz"
+  sha256 "aab70aee10c134ef3fe568843fe4b3bb5e8901af30ea666f57462ad950682317"
   license all_of: ["BSD-3-Clause", "MPL-2.0", "BSL-1.0", "MIT"]
   head "https://github.com/mlpack/mlpack.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "6b7bb9296ce668c681abc7b124a3f7e43db04ac518fc734174a6182d3000a02e"
-    sha256 cellar: :any,                 arm64_monterey: "61f246b70bc7a71ce08f401a4c45ea0c0fb367ad24434886dd366f2d5164b792"
-    sha256 cellar: :any,                 arm64_big_sur:  "815a02a35f0a843d1c74e1146dcff088bcc6843460d738312a42dc8770c6c045"
-    sha256 cellar: :any,                 ventura:        "afa0360aaef101846a80b27118abbbf82828859b2c71cece4ee33c0ef6059c15"
-    sha256 cellar: :any,                 monterey:       "750e0468a64dbf22163db8a346215e07cd4e7fc26e6fe7ed08413d3110d2e56d"
-    sha256 cellar: :any,                 big_sur:        "6879303fb18f5f69f5c6ed3c4c524b6a31998b3ac4521ad96cbf9179d7a49af3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "71fa55c6229435c86fb2fcdc73c4e84f4ddd2c5c4d8e052a84421ebee0e3425b"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "bec3490448e5bfab166597e1ba21643b11caddc285ddcc09fe72a423d4e2e3fb"
+    sha256 cellar: :any,                 arm64_sonoma:  "18ae29440f9b633ce4e67e63d5b54131587facb18ee38ad222e6dbe6db21f441"
+    sha256 cellar: :any,                 arm64_ventura: "78f145ea6c52f9474b1284d1cd5ae5ef87eb1879e7c38e118b58a1171dcaeec4"
+    sha256 cellar: :any,                 sonoma:        "c940e4b76ff1f06c2a5850cf98f6b81436a9e2114658d3205500470c351d3ad8"
+    sha256 cellar: :any,                 ventura:       "b41d0333a89ff7310e0b2ca93314c20cb49241e4fcf10f6a8f46418f420b8010"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c87e0d6ed36859efb4486844c3fea80f6d6ca4970405e0e864e1e233bfee4e95"
   end
 
   depends_on "cmake" => :build
-  depends_on "doxygen" => :build
   depends_on "pkg-config" => :build
 
   depends_on "armadillo"
-  depends_on "boost"
   depends_on "cereal"
   depends_on "ensmallen"
-  depends_on "graphviz"
 
   resource "stb_image" do
-    url "https://raw.githubusercontent.com/nothings/stb/3ecc60f/stb_image.h"
-    version "2.28"
-    sha256 "38e08c1c5ab8869ae8d605ddaefa85ad3fea24a2964fd63a099c0c0f79c70bcc"
+    url "https://raw.githubusercontent.com/nothings/stb/0bc88af4de5fb022db643c2d8e549a0927749354/stb_image.h"
+    version "2.29"
+    sha256 "c54b15a689e6a1f32c75e2ec23afa442e3e0e37e894b73c1974d08679b20dd5c"
   end
 
   resource "stb_image_write" do
@@ -52,7 +49,7 @@ class Mlpack < Formula
       -DUSE_OPENMP=OFF
       -DARMADILLO_INCLUDE_DIR=#{Formula["armadillo"].opt_include}
       -DENSMALLEN_INCLUDE_DIR=#{Formula["ensmallen"].opt_include}
-      -DARMADILLO_LIBRARY=#{Formula["armadillo"].opt_lib}/#{shared_library("libarmadillo")}
+      -DARMADILLO_LIBRARY=#{Formula["armadillo"].opt_lib/shared_library("libarmadillo")}
       -DSTB_IMAGE_INCLUDE_DIR=#{include/"stb"}
       -DCMAKE_INSTALL_RPATH=#{rpath}
     ]
@@ -66,7 +63,7 @@ class Mlpack < Formula
   end
 
   test do
-    system "#{bin}/mlpack_knn",
+    system bin/"mlpack_knn",
       "-r", "#{pkgshare}/tests/data/GroupLensSmall.csv",
       "-n", "neighbors.csv",
       "-d", "distances.csv",
@@ -83,7 +80,7 @@ class Mlpack < Formula
         Log::Warn << "A false alarm!" << std::endl;
       }
     EOS
-    system ENV.cxx, "test.cpp", "-std=c++14", "-I#{include}", "-L#{Formula["armadillo"].opt_lib}",
+    system ENV.cxx, "-std=c++17", "test.cpp", "-I#{include}", "-L#{Formula["armadillo"].opt_lib}",
                     "-larmadillo", "-L#{lib}", "-o", "test"
     system "./test", "--verbose"
   end

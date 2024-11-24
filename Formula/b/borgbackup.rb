@@ -3,26 +3,25 @@ class Borgbackup < Formula
 
   desc "Deduplicating archiver with compression and authenticated encryption"
   homepage "https://borgbackup.org/"
-  url "https://files.pythonhosted.org/packages/6e/9e/e7a116401ef0c6c2766e4e49e5a3aafaa725ba0ea827305f016339c6c496/borgbackup-1.2.4.tar.gz"
-  sha256 "a4bd54e9469e81b7a30a6711423115abc818d9cd844ecb1ca0e6104bc5374da8"
+  url "https://files.pythonhosted.org/packages/dd/0d/28e60180ce4ae171adba65ce9f8878fce3580c6d2cfdfa998929175105dd/borgbackup-1.4.0.tar.gz"
+  sha256 "c54c45155643fa66fed7f9ff2d134ea0a58d0ac197c18781ddc2fb236bf6ed29"
   license "BSD-3-Clause"
-  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "a80057da725304e83b9e7da142aa27079b3b77e691886f2e2df3c5d5279d56ed"
-    sha256 cellar: :any,                 arm64_monterey: "1e0103426f4cd4c7f433514ef828a32b0cebf7cae11ed526a7017d2c6a46cdb5"
-    sha256 cellar: :any,                 arm64_big_sur:  "05f2643c635826b53bb6692e040dd2f5dd1e1c34bfad740340cf109e77488160"
-    sha256 cellar: :any,                 ventura:        "3ce8161421a316a41699519f4cbada586d6194f70492ec5a5dbb6f4aec09fe95"
-    sha256 cellar: :any,                 monterey:       "e2470014c09b792fa424738aac53189a5b9233071144495b7b0708cc68caecb0"
-    sha256 cellar: :any,                 big_sur:        "3a8cc0298578af2d0815819ab805a364e113485c1036f313d03e23c5a926919b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "350dc1537f9fe4ea846e61bbac8605997e41d7e3e581fc1e0b4369d2dd55be99"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "ea0b6a39efabe6534d4c0d61ac53544ec56e7160c21a6c7554b9a5f1435d2f0c"
+    sha256 cellar: :any,                 arm64_sonoma:  "913762693084b7db20b9dd17f8bf6ad44e9f1b558279126455d316b0d60bfcb4"
+    sha256 cellar: :any,                 arm64_ventura: "8d180c48615881e8375ffec0da4b7f2489b88b13fa639934c24a48b07a395bfc"
+    sha256 cellar: :any,                 sonoma:        "74a7a54445937d1553688936cdc131b58a64b8ebbee692a8bd1f284d8583f03f"
+    sha256 cellar: :any,                 ventura:       "70cbbc7f8cace22332f240aeb6e8ad8036fe2f712b203f75534dd0253d80387b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b362ecca7e4b2d507ed33b16553b61db7d63124584b7d665533ef26971bd278f"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libb2"
   depends_on "lz4"
   depends_on "openssl@3"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
   depends_on "xxhash"
   depends_on "zstd"
 
@@ -31,18 +30,13 @@ class Borgbackup < Formula
   end
 
   resource "msgpack" do
-    url "https://files.pythonhosted.org/packages/dc/a1/eba11a0d4b764bc62966a565b470f8c6f38242723ba3057e9b5098678c30/msgpack-1.0.5.tar.gz"
-    sha256 "c075544284eadc5cddc70f4757331d99dcbc16b2bbd4849d15f8aae4cf36d31c"
+    url "https://files.pythonhosted.org/packages/cb/d0/7555686ae7ff5731205df1012ede15dd9d927f6227ea151e901c7406af4f/msgpack-1.1.0.tar.gz"
+    sha256 "dd432ccc2c72b914e4cb77afce64aab761c1137cc698be3984eee260bcb2896e"
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/47/d5/aca8ff6f49aa5565df1c826e7bf5e85a6df852ee063600c1efa5b932968c/packaging-23.0.tar.gz"
-    sha256 "b6ad297f8907de0fa2fe1ccbd26fdaf387f5f47c7275fedf8cce89f99446cf97"
-  end
-
-  resource "pyparsing" do
-    url "https://files.pythonhosted.org/packages/71/22/207523d16464c40a0310d2d4d8926daffa00ac1f5b1576170a32db749636/pyparsing-3.0.9.tar.gz"
-    sha256 "2b020ecf7d21b687f219b71ecad3631f644a47f01403fa1d1036b0c6416d70fb"
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
   def install
@@ -51,6 +45,7 @@ class Borgbackup < Formula
     ENV["BORG_LIBXXHASH_PREFIX"] = Formula["xxhash"].prefix
     ENV["BORG_LIBZSTD_PREFIX"] = Formula["zstd"].prefix
     ENV["BORG_OPENSSL_PREFIX"] = Formula["openssl@3"].prefix
+
     virtualenv_install_with_resources
 
     man1.install Dir["docs/man/*.1"]
@@ -62,13 +57,15 @@ class Borgbackup < Formula
   test do
     # Create a repo and archive, then test extraction.
     cp test_fixtures("test.pdf"), testpath
+
     Dir.chdir(testpath) do
-      system "#{bin}/borg", "init", "-e", "none", "test-repo"
-      system "#{bin}/borg", "create", "--compression", "zstd", "test-repo::test-archive", "test.pdf"
+      system bin/"borg", "init", "-e", "none", "test-repo"
+      system bin/"borg", "create", "--compression", "zstd", "test-repo::test-archive", "test.pdf"
     end
     mkdir testpath/"restore" do
-      system "#{bin}/borg", "extract", testpath/"test-repo::test-archive"
+      system bin/"borg", "extract", testpath/"test-repo::test-archive"
     end
+
     assert_predicate testpath/"restore/test.pdf", :exist?
     assert_equal File.size(testpath/"restore/test.pdf"), File.size(testpath/"test.pdf")
   end

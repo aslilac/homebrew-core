@@ -1,11 +1,10 @@
-require "language/node"
-
 class HasuraCli < Formula
   desc "Command-Line Interface for Hasura GraphQL Engine"
   homepage "https://hasura.io"
-  url "https://github.com/hasura/graphql-engine/archive/v2.32.1.tar.gz"
-  sha256 "e2b8a113cd34f1b3042a80ed486bedaa10ce29ecebe684b8249539ae70d2c506"
+  url "https://github.com/hasura/graphql-engine/archive/refs/tags/v2.44.0.tar.gz"
+  sha256 "3cd6b1937da62d8508c42b1e28f446a0c695fc10c8de43c7520e2e9c716eabb0"
   license "Apache-2.0"
+  head "https://github.com/hasura/graphql-engine.git", branch: "master"
 
   # There can be a notable gap between when a version is tagged and a
   # corresponding release is created, so we check the "latest" release instead
@@ -16,45 +15,43 @@ class HasuraCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b5c0079394af0a5103ed6276494b152c4479139fe9f7c431a13dc2d7b62045f3"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "106d94de32735c6301e5a6f203d07f4bf567cbfdddb4e29777223ea11eef682b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "aac252619c390239e5b5d9ba6b0396783327f79c36c22a3a8509ad98d7fc4242"
-    sha256 cellar: :any_skip_relocation, ventura:        "b49aa780f24aaddca07054cd0c32f684f200f67cddf7ae9e6666b67226a2535e"
-    sha256 cellar: :any_skip_relocation, monterey:       "51fae5bfb28533d934f43d7d49c05374fe05f5e8d822079ab6ed9acb37dbaf79"
-    sha256 cellar: :any_skip_relocation, big_sur:        "503ead52f0a7166ec82fad313dcbb901effb0488ea494ccf13f39da1decb96cb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "68fcfce9e2a37e56e47f2d3ed648fdb17a6de73d6be11be72ef760ecd1161354"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1b832aecbc4490a78ec5bf29a85c5a3b39e051d9021f763c02116f3371c7855b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1b832aecbc4490a78ec5bf29a85c5a3b39e051d9021f763c02116f3371c7855b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "1b832aecbc4490a78ec5bf29a85c5a3b39e051d9021f763c02116f3371c7855b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c9d37d37777448e0dff756e080834e4ad5d99d02064e22aa22dc6e4da16cd0b0"
+    sha256 cellar: :any_skip_relocation, ventura:       "c9d37d37777448e0dff756e080834e4ad5d99d02064e22aa22dc6e4da16cd0b0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b28dab837f5e89e4f3d2e21351274f68d2447049e7138a76c55e230f552968e3"
   end
+
+  deprecate! date: "2024-10-29", because: "uses `node@18`, which is deprecated"
 
   depends_on "go" => :build
   depends_on "node@18" => :build
 
   def install
-    Language::Node.setup_npm_environment
+    arch = Hardware::CPU.intel? ? "amd64" : Hardware::CPU.arch.to_s
+    os = OS.kernel_name.downcase
+
+    # Based on `make build-cli-ext`, but only build a single host-specific binary
+    cd "cli-ext" do
+      # TODO: Remove `npm add pkg` when https://github.com/hasura/graphql-engine/issues/9440 is resolved.
+      system "npm", "add", "pkg@5.8.1"
+      system "npm", "install", *std_npm_args(prefix: false)
+      system "npm", "run", "prebuild"
+      dest = "./cli/internal/cliext/static-bin/#{os}/#{arch}/cli-ext"
+      system "npx", "pkg", "./build/command.js", "--output", dest, "-t", "host"
+    end
 
     ldflags = %W[
       -s -w
       -X github.com/hasura/graphql-engine/cli/v2/version.BuildVersion=#{version}
       -X github.com/hasura/graphql-engine/cli/v2/plugins.IndexBranchRef=master
     ]
-
-    # Based on `make build-cli-ext`, but only build a single host-specific binary
-    cd "cli-ext" do
-      # TODO: Remove `npm update pkg` when https://github.com/hasura/graphql-engine/issues/9440 is resolved.
-      system "npm", "update", "pkg"
-      system "npm", "install", *Language::Node.local_npm_install_args
-      system "npm", "run", "prebuild"
-      system "./node_modules/.bin/pkg", "./build/command.js", "--output", "./bin/cli-ext-hasura", "-t", "host"
-    end
-
     cd "cli" do
-      arch = Hardware::CPU.intel? ? "amd64" : Hardware::CPU.arch.to_s
-      os = OS.kernel_name.downcase
-
-      cp "../cli-ext/bin/cli-ext-hasura", "./internal/cliext/static-bin/#{os}/#{arch}/cli-ext"
-      system "go", "build", *std_go_args(output: bin/"hasura", ldflags: ldflags), "./cmd/hasura/"
-
-      generate_completions_from_executable(bin/"hasura", "completion", base_name: "hasura", shells: [:bash, :zsh])
+      system "go", "build", *std_go_args(output: bin/"hasura", ldflags:), "./cmd/hasura/"
     end
+
+    generate_completions_from_executable(bin/"hasura", "completion", base_name: "hasura", shells: [:bash, :zsh])
   end
 
   test do

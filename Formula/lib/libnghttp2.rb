@@ -1,12 +1,12 @@
 class Libnghttp2 < Formula
   desc "HTTP/2 C Library"
   homepage "https://nghttp2.org/"
-  url "https://github.com/nghttp2/nghttp2/releases/download/v1.55.1/nghttp2-1.55.1.tar.gz"
-  mirror "http://fresh-center.net/linux/www/nghttp2-1.55.1.tar.gz"
+  url "https://github.com/nghttp2/nghttp2/releases/download/v1.64.0/nghttp2-1.64.0.tar.gz"
+  mirror "http://fresh-center.net/linux/www/nghttp2-1.64.0.tar.gz"
+  mirror "http://fresh-center.net/linux/www/legacy/nghttp2-1.64.0.tar.gz"
   # this legacy mirror is for user to install from the source when https not working for them
   # see discussions in here, https://github.com/Homebrew/homebrew-core/pull/133078#discussion_r1221941917
-  mirror "http://fresh-center.net/linux/www/legacy/nghttp2-1.55.1.tar.gz"
-  sha256 "e12fddb65ae3218b4edc083501519379928eba153e71a1673b185570f08beb96"
+  sha256 "20e73f3cf9db3f05988996ac8b3a99ed529f4565ca91a49eb0550498e10621e8"
   license "MIT"
 
   livecheck do
@@ -14,13 +14,12 @@ class Libnghttp2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "9b8836abe3a3b7e1478fe50d1873f301dd9ae53c2ef814e44e9ce8d73cccc53f"
-    sha256 cellar: :any,                 arm64_monterey: "b1268c97de11fcc3d3cac7bf00e8e452fefa3423febb642e16c319f3fd0f7520"
-    sha256 cellar: :any,                 arm64_big_sur:  "42a0b46f59ed7264764a1d9c488f2a10ac1c11850387e14c4262dea70bb78772"
-    sha256 cellar: :any,                 ventura:        "327740c936f10ab7d2e0e097d9a8450318b66f59ee453070d788c6c14b34a3ed"
-    sha256 cellar: :any,                 monterey:       "ef964731a545c34452f7beabc0f79c8cfb18e935e29cca2d99443dcf5d9ef7e4"
-    sha256 cellar: :any,                 big_sur:        "b3c242387f18d0f00d6491182801987bc686c809e1eb251e03213185e7a0f12a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "608752af10345862d251084d3983a18107fbefce294b10b16520675892a45247"
+    sha256 cellar: :any,                 arm64_sequoia: "f3851a8e7b386b11e2169671cf3b04acf811fceb406a67f94f9f2ecece9c9794"
+    sha256 cellar: :any,                 arm64_sonoma:  "13eddf43c08a660b4efb246dae54ef46fedb6cb083a916fa4900a6906297fd2f"
+    sha256 cellar: :any,                 arm64_ventura: "2a9ac2b92f79808902b895ec2cabd0cdb9551f99256b700e45ae6f0041a3db0f"
+    sha256 cellar: :any,                 sonoma:        "d89b39d43e99f59cd325cf8a61a6aa8a295deebf29c22ab0bc3185ff4ec26a54"
+    sha256 cellar: :any,                 ventura:       "8c755a5d140ed127dba02f303df785f687447cbfa6b302d4e741d819b322ff07"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8b4c922766aa304a0f749d7f9c019cd77f9706ac65ce0223857f60c68760319f"
   end
 
   head do
@@ -31,7 +30,7 @@ class Libnghttp2 < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   # These used to live in `nghttp2`.
   link_overwrite "include/nghttp2"
@@ -50,7 +49,7 @@ class Libnghttp2 < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <nghttp2/nghttp2.h>
       #include <stdio.h>
 
@@ -59,7 +58,7 @@ class Libnghttp2 < Formula
         printf("%s", info->version_str);
         return 0;
       }
-    EOS
+    C
 
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lnghttp2", "-o", "test"
     assert_equal version.to_s, shell_output("./test")

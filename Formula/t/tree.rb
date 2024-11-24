@@ -1,23 +1,19 @@
 class Tree < Formula
   desc "Display directories as trees (with optional color/HTML output)"
-  homepage "http://mama.indstate.edu/users/ice/tree/"
-  url "http://mama.indstate.edu/users/ice/tree/src/tree-2.1.1.tgz"
-  sha256 "d3c3d55f403af7c76556546325aa1eca90b918cbaaf6d3ab60a49d8367ab90d5"
+  homepage "https://oldmanprogrammer.net/source.php?dir=projects/tree"
+  url "https://github.com/Old-Man-Programmer/tree/archive/refs/tags/2.1.3.tar.gz"
+  sha256 "3ffe2c8bb21194b088ad1e723f0cf340dd434453c5ff9af6a38e0d47e0c2723b"
   license "GPL-2.0-or-later"
 
-  livecheck do
-    url "http://mama.indstate.edu/users/ice/tree/src/"
-    regex(/href=.*?tree[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
-
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9b9d20b3e55614447a4ab3bbad644d2989d9477f3a80ea759673d622b6fbe1ef"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4b6062c487cede94dc2de7dba25312c99b8897f7e994f3f3acef325c5ba4ed72"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0993a195d369cb485df2db718bc5fa099cecfe09182e6ae641eb76b8dfe1207f"
-    sha256 cellar: :any_skip_relocation, ventura:        "feb011717a6075f9c7a203cd538015913b60311adb4ae81a07994ed50f0ef54e"
-    sha256 cellar: :any_skip_relocation, monterey:       "2658b197c482c9f78aaf9e27534eb9467fd65894f9aea9c281844f7c1195bcea"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f7988d91bcec536888729d60055cfe1176fcb85db3edf75d742192f61c809978"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "def7fe0895d7e8d0d9c5090effa68e1536a090a613932938ae38fde80e7b2354"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4f39e10fb168ba78da684d3341b9de003cc75de0fe69654816d24eda6d7d834f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f0ff7ec061de0b347ca0c735aa199f30c57439134cc6ea1d8e66243986656924"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b2c2977827a57759b2661878fe661284c4c72ddc0c6a7f8d49e2814392b4f976"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0ef85c4b4b00b63b41159241eefb3f0712326b03f4a3a0f92468fdf339916c98"
+    sha256 cellar: :any_skip_relocation, sonoma:         "fe9c14383700f0f5d8a170be81d9f344006e3a33ca5d14e7a9c6349e414ebac4"
+    sha256 cellar: :any_skip_relocation, ventura:        "3a7806b8309c92599eaeb275b11d872048dd19d572f461c1fe28005873fb9389"
+    sha256 cellar: :any_skip_relocation, monterey:       "3b617ca01cbcfff57c659b7678eeafd02893f8d82945325f3d21fb645db3ed3c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4d57629617283034eb02db149a2f441dab0872fe4b96547999ff0e7376f0c99a"
   end
 
   def install
@@ -34,6 +30,6 @@ class Tree < Formula
   end
 
   test do
-    system "#{bin}/tree", prefix
+    system bin/"tree", prefix
   end
 end

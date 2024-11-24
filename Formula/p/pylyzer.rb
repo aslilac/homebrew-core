@@ -1,22 +1,20 @@
 class Pylyzer < Formula
   desc "Fast static code analyzer & language server for Python"
   homepage "https://github.com/mtshiba/pylyzer"
-  url "https://github.com/mtshiba/pylyzer/archive/refs/tags/v0.0.41.tar.gz"
-  sha256 "0af70ae8d9fb13c4db85e428dbd881224d01768a010b94bb15a6cd82cddf77b0"
+  url "https://github.com/mtshiba/pylyzer/archive/refs/tags/v0.0.71.tar.gz"
+  sha256 "7535555586aef9669e238678e12a7a4003d770c4dd57f1db3f89abf42d27944c"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c0dd86c8abe6653f3a645a921894e372d18e84974d3d21dd052f901c01635701"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "771a25a034d164173f8fd2e038dab0796d5774b2cdc4b24dcbd4753d3f96f853"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d7ca13b938af764a7072e004ee28572026e9afdeff6ac8a6ac1ae28da1e60022"
-    sha256 cellar: :any_skip_relocation, ventura:        "1af09bfd4d14349f4139aa279f795e31ee91f14c374dc020bc1d21298fd37099"
-    sha256 cellar: :any_skip_relocation, monterey:       "c136980ef943cebe799f8851dad7d95a23afa0b95601cc363f2416ca9b6a2f78"
-    sha256 cellar: :any_skip_relocation, big_sur:        "292d5f516c1ac51216903acc45c104eff76ee09c25bfeb0144bfe4ce0ed082e3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "497982ab4a315f0d6a806f711c2a8df26528e10b2e08ea5377080339dea7db75"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cb75144621cb5cd9e865a4e3097333f918379467b872492bd1d49f5b41f12f09"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9aee8a7f49a6c0a6b6019c758775c63ebc7478a8a71d5a2454ca65eaa83228cc"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "fd8e90797bf522f577842772a7cfba46695951651484da53c9ebd92b4d5dfa5b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "9740fdd461a3445e970c983eaa2b46343abbac63aec7f143e0ed1e7977cb68c3"
+    sha256 cellar: :any_skip_relocation, ventura:       "a2dcf3cee76280a826da081a1bb5175a72b02afac111ca35c4f1f986c75d283b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "83e772bf179568d440562829ad78c32119f07978b70ae9430986a7abac83926d"
   end
 
   depends_on "rust" => :build
-  depends_on "python@3.11"
 
   def install
     ENV["HOME"] = buildpath # The build will write to HOME/.erg
@@ -27,9 +25,9 @@ class Pylyzer < Formula
   end
 
   test do
-    (testpath/"test.py").write <<~EOS
+    (testpath/"test.py").write <<~PYTHON
       print("test")
-    EOS
+    PYTHON
 
     expected = <<~EOS
       \e[94mStart checking\e[m: test.py

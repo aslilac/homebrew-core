@@ -7,9 +7,11 @@ class Gtksourceviewmm < Formula
   revision 12
 
   bottle do
+    sha256 cellar: :any,                 arm64_sonoma:   "73d0225ed243ebac279710392bb6f286d709f9934b3f44ca691e7dc591a35e4e"
     sha256 cellar: :any,                 arm64_ventura:  "420a7b698a8d7c40b3c30f4720c0c065e3ee71cda8542a517ae8aea3a3cbccbd"
     sha256 cellar: :any,                 arm64_monterey: "2735fdddc92f3280188428fc9fa83431a700c376bcae4424bca10005dd440c76"
     sha256 cellar: :any,                 arm64_big_sur:  "2b73a79e4c0df491e43dcc3def52858679c0d0ff699c3bb8a003014a7940408b"
+    sha256 cellar: :any,                 sonoma:         "7b9bd3d4532700ded7178c931719fd142c0aebae9b5ab81ddde830969ae29a61"
     sha256 cellar: :any,                 ventura:        "32ba822ec6c84be6a8848adbddfa727fae43613c710a07b9e64a2e5c579ea7f6"
     sha256 cellar: :any,                 monterey:       "337b822adee8ddec4bb8f9f045f10cdb5e624c35fd1bf58aaaa1ab860af3cd73"
     sha256 cellar: :any,                 big_sur:        "cb0781be44de07c6b920d97337eeca3650d9ffc03d99cb0ac0e9da7cf2769b0c"
@@ -19,9 +21,9 @@ class Gtksourceviewmm < Formula
   end
 
   # GTK 2 is EOL: https://blog.gtk.org/2020/12/16/gtk-4-0/
-  deprecate! date: "2023-01-18", because: :unmaintained
+  disable! date: "2024-01-21", because: :unmaintained
 
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "gtkmm"
   depends_on "gtksourceview"
 
@@ -32,16 +34,16 @@ class Gtksourceviewmm < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <gtksourceviewmm.h>
 
       int main(int argc, char *argv[]) {
         gtksourceview::init();
         return 0;
       }
-    EOS
+    CPP
     ENV.libxml2
-    command = "#{Formula["pkg-config"].opt_bin}/pkg-config --cflags --libs gtksourceviewmm-2.0"
+    command = "#{Formula["pkgconf"].opt_bin}/pkg-config --cflags --libs gtksourceviewmm-2.0"
     flags = shell_output(command).strip.split
     system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"

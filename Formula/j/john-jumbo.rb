@@ -14,16 +14,19 @@ class JohnJumbo < Formula
 
   bottle do
     rebuild 1
+    sha256 arm64_sequoia:  "49a789c53d17a46d726ba98b5e4b2bbf8085a8735e57c610a28adfb2d2b22f25"
+    sha256 arm64_sonoma:   "4cc3fcf34d2fdfb2595cd689475d5337267edd8273b2aee87b875e8bbb729017"
     sha256 arm64_ventura:  "82da2e81fdeedfb9a71f1740ff7bfef4641ccce5f31d51fa6d1ca7fdd576f6ef"
     sha256 arm64_monterey: "4bccbd52d70bbdffc767cf12cfe177bf32002504a300de3d52e91ec8d4d19691"
     sha256 arm64_big_sur:  "3441957c8cd6257a3f4d6cda745aaf22d461a9688408e81cebf538b6f5131663"
+    sha256 sonoma:         "e5cdbd5549c1b835b881f67de28cd54ef1fe2f9c6d3147fe9b3577c8a7c88c41"
     sha256 ventura:        "503d1df42838b5d921ab6994410ff2e37b6d3717944fee0440e331f867c8e978"
     sha256 monterey:       "0ace1b1a1ce24edde854033c8bae3c4b3d42379f569f374d9f43b56856f90eae"
     sha256 big_sur:        "7ee4f489b10109d93d69757ffc0cb8b8538e7b391d549d9d133400d39433c22c"
     sha256 x86_64_linux:   "2c1c1fa912ee63f865d0f61c11188f50d1d600e2c8af616175db78c9f51c154a"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "gmp"
   depends_on "openssl@3"
 
@@ -77,8 +80,9 @@ class JohnJumbo < Formula
     ENV.append "CFLAGS", "-DJOHN_SYSTEMWIDE_EXEC='\"#{share}/john\"'"
     ENV.append "CFLAGS", "-DJOHN_SYSTEMWIDE_HOME='\"#{share}/john\"'"
 
-    # Apple's M1 chip has no support for SSE 4.1.
-    ENV.append "CFLAGS", "-mno-sse4.1" if Hardware::CPU.intel? && !MacOS.version.requires_sse4?
+    if build.bottle? && Hardware::CPU.intel? && (!OS.mac? || !MacOS.version.requires_sse4?)
+      ENV.append "CFLAGS", "-mno-sse4.1"
+    end
 
     ENV["OPENSSL_LIBS"] = "-L#{Formula["openssl@3"].opt_lib}"
     ENV["OPENSSL_CFLAGS"] = "-I#{Formula["openssl@3"].opt_include}"

@@ -1,50 +1,60 @@
 class Simutrans < Formula
   desc "Transport simulator"
   homepage "https://www.simutrans.com/"
-  url "svn://servers.simutrans.org/simutrans/trunk/", revision: "10421"
-  version "123.0.1"
+  url "svn://servers.simutrans.org/simutrans/trunk/", revision: "11395"
+  version "124.2.2"
   license "Artistic-1.0"
-  head "https://github.com/aburch/simutrans.git", branch: "master"
+  revision 1
+  head "https://github.com/simutrans/simutrans.git", branch: "master"
 
   livecheck do
     url "https://sourceforge.net/projects/simutrans/files/simutrans/"
     regex(%r{href=.*?/files/simutrans/(\d+(?:[.-]\d+)+)/}i)
-    strategy :page_match
+    strategy :page_match do |page, regex|
+      page.scan(regex).map { |match| match[0].tr("-", ".") }
+    end
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_ventura:  "7724a711b377c830aa0e47224a9ad947de30b6f5f5a53473815c67dcb3ec0979"
-    sha256 cellar: :any,                 arm64_monterey: "07b96b69671a91db8a708c1052fbeaa6d1731ce3803026fdb6a15cefb398df82"
-    sha256 cellar: :any,                 arm64_big_sur:  "576142b4340df99b5539eb8d1169be30809f34e993d9dd4e959e3bcd4d9ca730"
-    sha256 cellar: :any,                 ventura:        "71d3083f4f6699aa4862d88839ef767f31c2a4575b8b8c7b8f4ec0a83695b2f2"
-    sha256 cellar: :any,                 monterey:       "cf6297e4f98a2a7a65dcf8ebeb8dcfff8d7d5e8ff2520cde81e7e7bd4c2e9f85"
-    sha256 cellar: :any,                 big_sur:        "57473a566814dfabb642bf5b0d27bfbe0763213438946034c8c09ab960d12f7a"
-    sha256 cellar: :any,                 catalina:       "9b301316ba5bfcfbfdab0b5572dad74aca6b2e0620a7249a260a750222b997ca"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "57be3936b3b49cd16550d50be872e1dd602af3a965dfc959419d27832299dd3b"
+    sha256 cellar: :any,                 arm64_sequoia:  "57b2b227bd0962278b76f4281e424be3ec7e94227963ec877b63bc438732c2b1"
+    sha256 cellar: :any,                 arm64_sonoma:   "17e41bafcc374a208f3b8fee523624a11fae59833937424c73b1e95a46bd6a50"
+    sha256 cellar: :any,                 arm64_ventura:  "10f6e3b0a13418087ef4279cf6e8bab8749bde9c7cb96ed3d77d6940d9628f1b"
+    sha256 cellar: :any,                 arm64_monterey: "c4a92a1ec038f1e3e62b10eb65e0e924cd1a466a1f439bbdff5d188ed72e8ef0"
+    sha256 cellar: :any,                 sonoma:         "7f5744c508f30e94606b7fa3b80538496a046aaee1ddfd1979a4dd96ec631233"
+    sha256 cellar: :any,                 ventura:        "60fe1014db2324ad72cc22b3fac06e44e56ebaf7970b813dd8c548cd9c1b16d3"
+    sha256 cellar: :any,                 monterey:       "07e5d7e2df39a706705cc6500ff0729f909e8f9a1cc0bea88e276cd868756eb2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "75422ede98ee42a856d407977731f4dd909a00a4d44f657e972800ec5f113111"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
+  depends_on "fluid-synth"
+  depends_on "fontconfig"
   depends_on "freetype"
   depends_on "libpng"
+  depends_on "miniupnpc"
   depends_on "sdl2"
+  depends_on "zstd"
 
+  uses_from_macos "unzip" => :build
+  uses_from_macos "bzip2"
   uses_from_macos "curl"
-  uses_from_macos "unzip"
-
-  fails_with gcc: "5"
+  uses_from_macos "zlib"
 
   resource "pak64" do
-    url "https://downloads.sourceforge.net/project/simutrans/pak64/123-0/simupak64-123-0.zip"
-    sha256 "b8a0a37c682d8f62a3b715c24c49bc738f91d6e1e4600a180bb4d2e9f85b86c1"
+    url "https://downloads.sourceforge.net/project/simutrans/pak64/124-2/simupak64-124-2.zip"
+    sha256 "e690e4647a1a617032a3778a2457c8812cc4510afad0f5bf8524999468146d86"
+  end
+  resource "soundfont" do
+    url "https://src.fedoraproject.org/repo/pkgs/PersonalCopy-Lite-soundfont/PCLite.sf2/629732b7552c12a8fae5b046d306273a/PCLite.sf2"
+    sha256 "ba3304ec0980e07f5a9de2cfad3e45763630cbc15c7e958c32ce06aa9aefd375"
   end
 
   def install
     # These translations are dynamically generated.
-    system "./get_lang_files.sh"
+    system "./tools/get_lang_files.sh"
 
-    system "cmake", "-B", "build", "-S", ".", *std_cmake_args
+    system "cmake", "-B", "build", "-S", ".", "-DSIMUTRANS_USE_REVISION=#{stable.specs[:revision]}", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--build", "build", "--target", "makeobj"
     system "cmake", "--build", "build", "--target", "nettool"
@@ -53,13 +63,14 @@ class Simutrans < Formula
     libexec.install "build/#{simutrans_path}/simutrans" => "simutrans"
     libexec.install Dir["simutrans/*"]
     bin.write_exec_script libexec/"simutrans"
-    bin.install "build/makeobj/makeobj"
-    bin.install "build/nettools/nettool"
+    bin.install "build/src/makeobj/makeobj"
+    bin.install "build/src/nettool/nettool"
 
     libexec.install resource("pak64")
+    (libexec/"music").install resource("soundfont")
   end
 
   test do
-    system "#{bin}/simutrans", "--help"
+    system bin/"simutrans", "--help"
   end
 end

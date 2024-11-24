@@ -1,8 +1,8 @@
 class Byteman < Formula
   desc "Java bytecode manipulation tool for testing, monitoring and tracing"
   homepage "https://byteman.jboss.org/"
-  url "https://downloads.jboss.org/byteman/4.0.21/byteman-download-4.0.21-bin.zip"
-  sha256 "016e2f069e78611e28035d6692dfc674110dc36c0e403c5ef57d464661639359"
+  url "https://downloads.jboss.org/byteman/4.0.23/byteman-download-4.0.23-bin.zip"
+  sha256 "5b6dda957ba86d1ac83713a93d54956adb171f51ace31dd7fb857400bd77765b"
   license "LGPL-2.1-or-later"
   head "https://github.com/bytemanproject/byteman.git", branch: "main"
 
@@ -12,13 +12,14 @@ class Byteman < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "a7c474e3129938730155af19b71dfd73d6280a2bcd75183f70bd0ed5fc754576"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "e65f5c3531d3c1f3de8fbbf2722d236c0bcc3dcf02e803587896ab6457ce619b"
   end
 
   depends_on "openjdk"
 
   def install
-    rm_rf Dir["bin/*.bat"]
+    rm_r(Dir["bin/*.bat"])
     doc.install Dir["docs/*"], "README"
     libexec.install ["bin", "lib", "contrib"]
     pkgshare.install ["sample"]
@@ -32,15 +33,15 @@ class Byteman < Formula
   end
 
   test do
-    (testpath/"src/main/java/BytemanHello.java").write <<~EOS
+    (testpath/"src/main/java/BytemanHello.java").write <<~JAVA
       class BytemanHello {
         public static void main(String... args) {
           System.out.println("Hello, Brew!");
         }
       }
-    EOS
+    JAVA
 
-    (testpath/"brew.btm").write <<~EOS
+    (testpath/"brew.btm").write <<~BTM
       RULE trace main entry
       CLASS BytemanHello
       METHOD main
@@ -56,7 +57,7 @@ class Byteman < Formula
       IF true
       DO traceln("Exiting main")
       ENDRULE
-    EOS
+    BTM
 
     system "#{Formula["openjdk"].bin}/javac", "src/main/java/BytemanHello.java"
 

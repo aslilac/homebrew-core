@@ -1,9 +1,10 @@
 class Ldc < Formula
   desc "Portable D programming language compiler"
   homepage "https://wiki.dlang.org/LDC"
-  url "https://github.com/ldc-developers/ldc/releases/download/v1.34.0/ldc-1.34.0-src.tar.gz"
-  sha256 "3005c6e9c79258538c83979766767a59e3d74f3cb90ac2cb0dce5d7573beb719"
+  url "https://github.com/ldc-developers/ldc/releases/download/v1.39.0/ldc-1.39.0-src.tar.gz"
+  sha256 "839bac36f6073318e36f0b163767e03bdbd3f57d99256b97494ac439b59a4562"
   license "BSD-3-Clause"
+  revision 1
   head "https://github.com/ldc-developers/ldc.git", branch: "master"
 
   livecheck do
@@ -12,42 +13,41 @@ class Ldc < Formula
   end
 
   bottle do
-    sha256                               arm64_ventura:  "e767667f5b24fb730892896f52ec2d7add185a46a2c6b7c24559b34bf7eff78f"
-    sha256                               arm64_monterey: "4a383e12c39336537d92dd6e5296f885743ed4374e0ee5f3dfecbeb99c3fc9ba"
-    sha256                               arm64_big_sur:  "137a8547f17a398ea8ebb1bd691f19207a8c0594496b9410747d1a271f23052a"
-    sha256                               ventura:        "2ea6ea9dfa4c817a79cb110aa8a5315f1ec878fad9c12f8ff54a93c54d05b636"
-    sha256                               monterey:       "48f58b550aa5c05300c664ab83507dd8db613c30cc18664a2d3431e3c200bfdb"
-    sha256                               big_sur:        "dd884922c675c2ecb68b68302e046ce9133f7a4c6b3d185ec72472139ed14a34"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4cb2d844991b2713cf78bace5451d48e5601057e8bc75f7f565fe1f2590e7445"
+    sha256                               arm64_sequoia: "16de7a20bf322c043232d9e452e948a76e39222c4302dd473f56ac54e9f124b3"
+    sha256                               arm64_sonoma:  "a5b5090830d2809662e9eb7fd4ed3264e82720f6845f35cb594cc934603ed84d"
+    sha256                               arm64_ventura: "c41c88fb61a60ec842c81e2c4ca64c065b2c368c83f09365207f7da959dc8cda"
+    sha256                               sonoma:        "83747bfe0e1c14fd8f29c4c3b15f12919057694a1be31b5a66325e9bf74c6aea"
+    sha256                               ventura:       "c48b3f215c92ca8907fd2938adbd987a6c9738607f7adf8c5bcf74401795e07b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0351b9c88bf73003a30db5dec85e71c9e67358a3190563e5fa7b532d28ee8aba"
   end
 
   depends_on "cmake" => :build
   depends_on "libconfig" => :build
   depends_on "pkg-config" => :build
-  # llvm@16 build failure report, https://github.com/ldc-developers/ldc/issues/4478
-  depends_on "llvm@15"
+  depends_on "llvm@18"
+  depends_on "zstd"
 
   uses_from_macos "libxml2" => :build
 
   resource "ldc-bootstrap" do
     on_macos do
       on_arm do
-        url "https://github.com/ldc-developers/ldc/releases/download/v1.28.1/ldc2-1.28.1-osx-arm64.tar.xz"
-        sha256 "9bddeb1b2c277019cf116b2572b5ee1819d9f99fe63602c869ebe42ffb813aed"
+        url "https://github.com/ldc-developers/ldc/releases/download/v1.39.0/ldc2-1.39.0-osx-arm64.tar.xz"
+        sha256 "4f0285d6ab0f335f97a8cae1ebc951eb5e68face0645f2b791b8d5399689ad95"
       end
       on_intel do
-        url "https://github.com/ldc-developers/ldc/releases/download/v1.28.1/ldc2-1.28.1-osx-x86_64.tar.xz"
-        sha256 "9aa43e84d94378f3865f69b08041331c688e031dd2c5f340eb1f3e30bdea626c"
+        url "https://github.com/ldc-developers/ldc/releases/download/v1.39.0/ldc2-1.39.0-osx-x86_64.tar.xz"
+        sha256 "751ebe8c744fa3375a08dfb67d80569e985944f3fb7f551affa5d5052117beb6"
       end
     end
     on_linux do
       on_arm do
-        url "https://github.com/ldc-developers/ldc/releases/download/v1.28.1/ldc2-1.28.1-linux-aarch64.tar.xz"
-        sha256 "158cf484456445d4f59364b6e74881d90ec5fe78956fc62f7f7a4db205670110"
+        url "https://github.com/ldc-developers/ldc/releases/download/v1.39.0/ldc2-1.39.0-linux-aarch64.tar.xz"
+        sha256 "bafba183432dc8c277d07880d6dd17b4b1b3050808bef0be07875a41cda6dfcf"
       end
       on_intel do
-        url "https://github.com/ldc-developers/ldc/releases/download/v1.28.1/ldc2-1.28.1-linux-x86_64.tar.xz"
-        sha256 "0195172c3a18d4eaa15a06193fea295a22e21adbfbcb7037691c630f191bceb2"
+        url "https://github.com/ldc-developers/ldc/releases/download/v1.39.0/ldc2-1.39.0-linux-x86_64.tar.xz"
+        sha256 "f50cdacd11c923b96e57edab15cacff6a30c7ebff4b7e495fc684eed0a27ae17"
       end
     end
   end
@@ -62,6 +62,9 @@ class Ldc < Formula
     ENV.cxx11
     # Fix ldc-bootstrap/bin/ldmd2: error while loading shared libraries: libxml2.so.2
     ENV.prepend_path "LD_LIBRARY_PATH", Formula["libxml2"].opt_lib if OS.linux?
+    # Work around LLVM 16+ build failure due to missing -lzstd when linking lldELF
+    # Issue ref: https://github.com/ldc-developers/ldc/issues/4478
+    inreplace "CMakeLists.txt", " -llldELF ", " -llldELF -lzstd "
 
     (buildpath/"ldc-bootstrap").install resource("ldc-bootstrap")
 
@@ -90,10 +93,12 @@ class Ldc < Formula
     EOS
     system bin/"ldc2", "test.d"
     assert_match "Hello, world!", shell_output("./test")
-    system bin/"ldc2", "-flto=thin", "test.d"
-    assert_match "Hello, world!", shell_output("./test")
-    system bin/"ldc2", "-flto=full", "test.d"
-    assert_match "Hello, world!", shell_output("./test")
+    with_env(PATH: "#{llvm.opt_bin}:#{ENV["PATH"]}") do
+      system bin/"ldc2", "-flto=thin", "--linker=lld", "test.d"
+      assert_match "Hello, world!", shell_output("./test")
+      system bin/"ldc2", "-flto=full", "--linker=lld", "test.d"
+      assert_match "Hello, world!", shell_output("./test")
+    end
     system bin/"ldmd2", "test.d"
     assert_match "Hello, world!", shell_output("./test")
   end

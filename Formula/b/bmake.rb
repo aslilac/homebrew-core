@@ -1,8 +1,8 @@
 class Bmake < Formula
   desc "Portable version of NetBSD make(1)"
   homepage "https://www.crufty.net/help/sjg/bmake.html"
-  url "https://www.crufty.net/ftp/pub/sjg/bmake-20230723.tar.gz"
-  sha256 "c42a0d951ba23f7665331309fbbe21edc01136a23cb9416850b4315be5fb5904"
+  url "https://www.crufty.net/ftp/pub/sjg/bmake-20240921.tar.gz"
+  sha256 "b346579e82d296d1a4da29dea8594e3ee596130b20786dec0f3899a3e11275c2"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,19 +11,17 @@ class Bmake < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "db6d49c2869b56201f7958b09873c5a66b6733cee34007c74420a92ee40bd5bc"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4694103963d57b5163e5fa248d03bffc68b9e884803f6c734ce59672cf43f8b0"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a3c15073cfbae005e99ad980551ab56c9b66fb73bbe229522c191364b1a7eb08"
-    sha256                               ventura:        "7adb54794d81332d95d744a8eed5ffbffc6043fa3c562122ba11d559ecab9c15"
-    sha256                               monterey:       "8744baafb6f2413df4777185b253d96ac00a6732bf8349dc0562227229e7be26"
-    sha256                               big_sur:        "72fe87d4361be9f31ed1141a81ae90f3925b84e9a9ea1879cd09258ba0a56eef"
-    sha256                               x86_64_linux:   "574792eacc0a610a05e7f6aca7bc9ac658ec80308007ba021928af605d615de4"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2c85dbe90351c8e8058ec94af33e389f5c71145dae4735f4e307c719292bb3a5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8786570e597d05a1919c6f8e85a8697783a3eb5019878bee02378e707685c371"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "889ca47c405695cff31837b61892228d5e8278811cdaf427453eb25e95543024"
+    sha256                               sonoma:        "15a393bf9eab11a17f79a2b3011e9ad2ad700cc54fcbd8b7fcb76d56079dfd92"
+    sha256                               ventura:       "a5f8e58133ff960824383ac74cd38e05cd25daaeff84924a8a27c91ae4e5d8b2"
+    sha256                               x86_64_linux:  "4f896ff027fcf4ca3453c53bfe4673fce8904aa6a02eda0f09feede7faf0a57f"
   end
 
-  def install
-    # Don't pre-roff cat pages.
-    inreplace "mk/man.mk", "MANTARGET?", "MANTARGET"
+  uses_from_macos "bc" => :build
 
+  def install
     # -DWITHOUT_PROG_LINK means "don't symlink as bmake-VERSION."
     # shell-ksh test segfaults since macOS 11.
     args = ["--prefix=#{prefix}", "-DWITHOUT_PROG_LINK", "--install", "BROKEN_TESTS=shell-ksh"]

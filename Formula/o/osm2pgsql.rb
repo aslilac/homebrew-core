@@ -1,31 +1,36 @@
 class Osm2pgsql < Formula
   desc "OpenStreetMap data to PostgreSQL converter"
   homepage "https://osm2pgsql.org"
-  url "https://github.com/openstreetmap/osm2pgsql/archive/1.9.1.tar.gz"
-  sha256 "a34b48f8d9f4d61e72e5fd9b3408c92439eea5ab2a6fb907fb9ad22866aa947c"
+  url "https://github.com/openstreetmap/osm2pgsql/archive/refs/tags/2.0.0.tar.gz"
+  sha256 "05c2355b4a59d03a0f9855b4234a3bdc717b078faee625e73357947d1a82fe89"
   license "GPL-2.0-only"
   head "https://github.com/openstreetmap/osm2pgsql.git", branch: "master"
 
   bottle do
-    sha256 arm64_ventura:  "08466c3b278f396ae091544c3d3cf380fb5d8f75da1f6f39225b0569c7320dfc"
-    sha256 arm64_monterey: "5cb6eefb6d205a29ad813a096bebe4289fb3b31f509e1c76c3bbe20ef2fd9132"
-    sha256 arm64_big_sur:  "42f10b9359893ad494afb1c665432549092d362c1865d3665c59f47620820c60"
-    sha256 ventura:        "595477658b8cc3e63aebe3ace58a24d29cbc4047d2ab8bcd841aa808b20c0601"
-    sha256 monterey:       "eb787565b8a7ef457e7caeb43b29372cfecaa2582285e392f3d3596928969ce4"
-    sha256 big_sur:        "23f7add7eecbc4bab0882bc8f7684055a5ccc49d84d7fc75bb299fb3bc3e6c06"
-    sha256 x86_64_linux:   "af955b1b2d0258fb1d959132871fd5a80eae024b37c074332e92708402dfe907"
+    rebuild 1
+    sha256 arm64_sequoia: "ffea3cae27bf62d48968eb9be4ab85440e60fa216231855c97a68ed4e42b8219"
+    sha256 arm64_sonoma:  "b6f235dacd6ba9a51d383689d1b632445108ec701f89793bf40c4e6a55e856b9"
+    sha256 arm64_ventura: "07994b3ea37df9184ad633a9d0a30a571ec4f5e4b07497106a5182797ff455e2"
+    sha256 sonoma:        "1fe7f0b34eeec3f80bf76bb57df61afb08a4018c20234e6b46de2a1bf9e7abc0"
+    sha256 ventura:       "85d2ace7b9134fdfaf2cd64d9ee9c269796524b8aef5e5cd659e1b11401d3a2e"
+    sha256 x86_64_linux:  "574cff38f797341afc455c8d7ee5a996d2ebe376214f38a578f4a79e260d52a7"
   end
 
+  depends_on "boost" => :build
+  depends_on "cli11" => :build
   depends_on "cmake" => :build
+  depends_on "fmt" => :build
+  depends_on "libosmium" => :build
   depends_on "lua" => :build
   depends_on "nlohmann-json" => :build
-  depends_on "boost"
-  depends_on "geos"
+
   depends_on "libpq"
   depends_on "luajit"
   depends_on "proj"
 
+  uses_from_macos "bzip2"
   uses_from_macos "expat"
+  uses_from_macos "zlib"
 
   def install
     # This is essentially a CMake disrespects superenv problem
@@ -34,9 +39,16 @@ class Osm2pgsql < Formula
     inreplace "cmake/FindLua.cmake", /set\(LUA_VERSIONS5( \d\.\d)+\)/,
                                      "set(LUA_VERSIONS5 #{lua_version})"
 
-    args = %w[
+    # Remove bundled libraries
+    rm_r("contrib")
+
+    args = %W[
+      -DEXTERNAL_CLI11=ON
+      -DEXTERNAL_FMT=ON
+      -DEXTERNAL_LIBOSMIUM=ON
+      -DEXTERNAL_PROTOZERO=ON
+      -DPROTOZERO_INCLUDE_DIR=#{Formula["libosmium"].opt_libexec}/include
       -DWITH_LUAJIT=ON
-      -DUSE_PROJ_LIB=6
     ]
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
@@ -45,7 +57,9 @@ class Osm2pgsql < Formula
   end
 
   test do
-    assert_match "Connecting to database failed: connection to server",
-                 shell_output("#{bin}/osm2pgsql /dev/null 2>&1", 1)
+    output = shell_output("#{bin}/osm2pgsql /dev/null 2>&1", 1)
+    assert_match "ERROR: Connecting to database failed", output
+
+    assert_match version.to_s, shell_output("#{bin}/osm2pgsql --version 2>&1")
   end
 end

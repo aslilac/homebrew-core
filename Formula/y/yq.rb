@@ -1,24 +1,23 @@
 class Yq < Formula
   desc "Process YAML, JSON, XML, CSV and properties documents from the CLI"
   homepage "https://github.com/mikefarah/yq"
-  url "https://github.com/mikefarah/yq/archive/v4.35.1.tar.gz"
-  sha256 "b3e079169529ec6b42925d0802c22d86f1ef6e1458dce67eae5a1d6db56cb8c3"
+  url "https://github.com/mikefarah/yq/archive/refs/tags/v4.44.5.tar.gz"
+  sha256 "1505367f4a6c0c4f3b91c6197ffed4112d29ef97c48d0b5e66530cfa851d3f0e"
   license "MIT"
   head "https://github.com/mikefarah/yq.git", branch: "master"
 
   livecheck do
     url :stable
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e0be75603207f48c20c318d72be1589beea10452ac2bc5296018499d478b3889"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e0be75603207f48c20c318d72be1589beea10452ac2bc5296018499d478b3889"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e0be75603207f48c20c318d72be1589beea10452ac2bc5296018499d478b3889"
-    sha256 cellar: :any_skip_relocation, ventura:        "5c01401fcc1b7f7d71ca34b0dcbca1d984b2fcae4de189304f272dfcd59e28ca"
-    sha256 cellar: :any_skip_relocation, monterey:       "5c01401fcc1b7f7d71ca34b0dcbca1d984b2fcae4de189304f272dfcd59e28ca"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5c01401fcc1b7f7d71ca34b0dcbca1d984b2fcae4de189304f272dfcd59e28ca"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d9f35eb5832f15c1627dade905689d4280ec142c50087bbe4e7c70de940441df"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3db43db890d2b7994b7d49c95db9abc850d8ece75953fd841f962348a50c9ad1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3db43db890d2b7994b7d49c95db9abc850d8ece75953fd841f962348a50c9ad1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "3db43db890d2b7994b7d49c95db9abc850d8ece75953fd841f962348a50c9ad1"
+    sha256 cellar: :any_skip_relocation, sonoma:        "58160a43a7ecbd19bb8f688799c094d0405765c6967e6f7073b1d88a757c59be"
+    sha256 cellar: :any_skip_relocation, ventura:       "58160a43a7ecbd19bb8f688799c094d0405765c6967e6f7073b1d88a757c59be"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bca42a0755e01f493d1b24419ad94f5b637d13d9fbfe256e8491c82e27c7e74c"
   end
 
   depends_on "go" => :build

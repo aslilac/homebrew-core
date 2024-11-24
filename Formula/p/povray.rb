@@ -1,10 +1,10 @@
 class Povray < Formula
   desc "Persistence Of Vision RAYtracer (POVRAY)"
   homepage "https://www.povray.org/"
-  url "https://github.com/POV-Ray/povray/archive/v3.7.0.10.tar.gz"
+  url "https://github.com/POV-Ray/povray/archive/refs/tags/v3.7.0.10.tar.gz"
   sha256 "7bee83d9296b98b7956eb94210cf30aa5c1bbeada8ef6b93bb52228bbc83abff"
   license "AGPL-3.0-or-later"
-  revision 7
+  revision 11
   head "https://github.com/POV-Ray/povray.git", branch: "master"
 
   livecheck do
@@ -13,13 +13,14 @@ class Povray < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "92ce02da2ae0eea57acb586fc919264b4918f7696405a7c6a8b66c4d920a0c7d"
-    sha256 arm64_monterey: "aace1bf57f9bba4f26b714a494d388c6b98efd8970130f72774bb658616760ac"
-    sha256 arm64_big_sur:  "3869e58d10d1caa2c94dcfd31c45e01e4b7ea71f99bba45992edd56904732c66"
-    sha256 ventura:        "09afcc0eea5c0093285c6c50b5bc24353d20e2835f9f762df69f6d34d66c2d06"
-    sha256 monterey:       "bb416493be670f03c49257472d316dc361822fada5826b932a02778d6072d0e2"
-    sha256 big_sur:        "017544d66e4526704f389e2d264fa05681e33a0b4a9091dd0d6b6e6d195516a0"
-    sha256 x86_64_linux:   "d35eb08021e4827ebba4d68c8d64107e90c32103fe32445de6bb0fa8b0de9b17"
+    sha256 arm64_sequoia:  "3814912ad793bb6f99aaec46a5b69a7365a07a4f7a776d6aee1573ecfd69efca"
+    sha256 arm64_sonoma:   "5cf35722079d7dd1d6f4f0829ae3cd625a4e9a1e43507fd0c8d8ad73f85ba5d7"
+    sha256 arm64_ventura:  "dfb40a725c12450107ae31a44a361e7b6e7b0a709bd4b53ee2f334b49d21dd3f"
+    sha256 arm64_monterey: "9e8e0917cce94395ae979af1eb47e3a657693fec4574e0b7195eb5bc31d7ecff"
+    sha256 sonoma:         "2eae82eac7281c82ac56a5df270f64801bb43d9cfce6ffecfcf34fe6cefeaeea"
+    sha256 ventura:        "8549b9706027eff9ac82d004592ee2b90bfd3a0033493455b2c4e39cfbf2fca1"
+    sha256 monterey:       "a8c775e06b2740fbf07fcc153a5b910429b71fa992907351d33e34b420162c86"
+    sha256 x86_64_linux:   "f88d3ae2c4a40f22fe92f18b9caff59887a9ac660f93c979b826931775e74b45"
   end
 
   depends_on "autoconf" => :build
@@ -30,6 +31,8 @@ class Povray < Formula
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "openexr"
+
+  uses_from_macos "zlib"
 
   def install
     ENV.cxx11

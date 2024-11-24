@@ -1,28 +1,33 @@
 class SwiftProtobuf < Formula
   desc "Plugin and runtime library for using protobuf with Swift"
   homepage "https://github.com/apple/swift-protobuf"
-  url "https://github.com/apple/swift-protobuf/archive/1.22.1.tar.gz"
-  sha256 "a1c023c2eaf393350800e3cfadbea327c48f072626df4b12f238a52eee3a0f7b"
+  url "https://github.com/apple/swift-protobuf/archive/refs/tags/1.28.2.tar.gz"
+  sha256 "d086deab3ca0b74751fcc1905d268697b0d471e747fb50eced94941f28b35fb8"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/apple/swift-protobuf.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d0c3ad89a86fed8f23163d4fc31a5f8652ccd21640967372685670a0d9647126"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c0adf4afc0fdd0ad5e3b09f8c42df914803e4c3cb844a4e9d8b656fb81aabe03"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8c4be07b3f2f920a4a15b1bc7b212ed8a48b330dc872f3783940f7e0c96d14b1"
-    sha256 cellar: :any_skip_relocation, ventura:        "f353ecca6db6bd4a06bd45d62308720889d2f71cb0767a0079244301ee16fd6a"
-    sha256 cellar: :any_skip_relocation, monterey:       "12fa11360a9034aadf3a63fd96bb2a30082ab9596f8a7e1449ed2d18146d2efe"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5072488cfef69bd220cee4327ad46d9f39bdb49c2045798d8852c71396b473e1"
-    sha256                               x86_64_linux:   "2109d7354d89d9faf3f5faf0d9fdb8161f2e6e9501762070467655105fe47eda"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cd56104efbff42d8793ec02ed212fe8eedd011a045e9063dd9f11fb602a8580a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5d205878109743b4bc66bbdab6ecb6e4271a99a5a2fd929faf6648524107f3cd"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b51e076ed77a2e55bb899f75e4626ff9ff89794362b7fc14d84304c4cf3a9dd5"
+    sha256 cellar: :any_skip_relocation, sonoma:        "67eedb80e3f078c92b6770a09a198bde2cae63dc60b8138b561481b579114433"
+    sha256 cellar: :any_skip_relocation, ventura:       "8d2430ecad2190aa1106d3b917c2bec66a6e4380c3fd741f23515bd24c15ebef"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0290054e89192d859c7bdca84ebf40cb8cd90c0cf3cda9b4bc43ccfd6c6f7961"
   end
 
-  depends_on xcode: ["8.3", :build]
+  depends_on xcode: ["14.3", :build]
   depends_on "protobuf"
 
-  uses_from_macos "swift"
+  uses_from_macos "swift" => :build
 
   def install
-    system "swift", "build", "--disable-sandbox", "-c", "release"
+    args = if OS.mac?
+      ["--disable-sandbox"]
+    else
+      ["--static-swift-stdlib"]
+    end
+    system "swift", "build", *args, "-c", "release"
     bin.install ".build/release/protoc-gen-swift"
     doc.install "Documentation/PLUGIN.md"
   end

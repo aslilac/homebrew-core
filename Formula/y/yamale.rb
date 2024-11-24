@@ -3,55 +3,58 @@ class Yamale < Formula
 
   desc "Schema and validator for YAML"
   homepage "https://github.com/23andMe/Yamale"
-  url "https://files.pythonhosted.org/packages/0c/93/3002a45542579cdd626a011f39bbe19ddcc1fbe0541081824c39ef216147/yamale-4.0.4.tar.gz"
-  sha256 "e524caf71cbbbd15aa295e8bdda01688ac4b5edaf38dd60851ddff6baef383ba"
+  url "https://files.pythonhosted.org/packages/a1/52/0faa32aa15f241a9f950ded276c942db69bce8dda5f19241f6b960080dca/yamale-5.2.1.tar.gz"
+  sha256 "19bbe713d588f07177bc519a46070c0793ed126ea37f425a76055b99703f835a"
   license "MIT"
   head "https://github.com/23andMe/Yamale.git", branch: "master"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "74b1479ab1daeaeb8e1a0048d1ed067c08ff38d7a69817fad6685f4480242959"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "74b1479ab1daeaeb8e1a0048d1ed067c08ff38d7a69817fad6685f4480242959"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "74b1479ab1daeaeb8e1a0048d1ed067c08ff38d7a69817fad6685f4480242959"
-    sha256 cellar: :any_skip_relocation, ventura:        "d3f3df5c8bbfa6008780dae17e10f985f5ec4e6e9f3fdb62190eacc31e33b094"
-    sha256 cellar: :any_skip_relocation, monterey:       "d3f3df5c8bbfa6008780dae17e10f985f5ec4e6e9f3fdb62190eacc31e33b094"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d3f3df5c8bbfa6008780dae17e10f985f5ec4e6e9f3fdb62190eacc31e33b094"
-    sha256 cellar: :any_skip_relocation, catalina:       "d3f3df5c8bbfa6008780dae17e10f985f5ec4e6e9f3fdb62190eacc31e33b094"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6def822a1d3f765f4b8d0ba7c95d5d8a1e6a48fe737128ddaa7b60a6fff6c41f"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "972e3519557190a2fb6f6b22c98b61fe538d5624b14da8d34e0bfa553a30ab92"
+    sha256 cellar: :any,                 arm64_sonoma:  "9bc34bd97e2f3b863536b6d5a496a8d1e302a2c82d9e502a7fe9b5ce292e2928"
+    sha256 cellar: :any,                 arm64_ventura: "59d8b6c4c7d427f1ae7a5d7e12020372d12d9dac4e84112583d928c145062c9c"
+    sha256 cellar: :any,                 sonoma:        "a5b74a8255fd2673d509c7a5d83261c3091d62d756552e5f487e3fa011a2db38"
+    sha256 cellar: :any,                 ventura:       "4771d6bf1e8781dc07095dfc196702fcebad4d668e7cdce136b81e1e0f01a4c8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8896fa98af8cd7309abc1ae9a63ea54da11fdac0029b397481f9644f236fe0e6"
   end
 
-  depends_on "python@3.11"
-  depends_on "pyyaml"
+  depends_on "libyaml"
+  depends_on "python@3.13"
+
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
+  end
 
   def install
     virtualenv_install_with_resources
   end
 
   test do
-    (testpath/"schema.yaml").write <<~EOS
+    (testpath/"schema.yaml").write <<~YAML
       string: str()
       number: num(required=False)
       datetime: timestamp(min='2010-01-01 0:0:0')
-    EOS
-    (testpath/"data1.yaml").write <<~EOS
+    YAML
+    (testpath/"data1.yaml").write <<~YAML
       string: bo is awesome
       datetime: 2011-01-01 00:00:00
-    EOS
-    (testpath/"some_data.yaml").write <<~EOS
+    YAML
+    (testpath/"some_data.yaml").write <<~YAML
       string: one
       number: 3
       datetime: 2015-01-01 00:00:00
-    EOS
+    YAML
     output = shell_output("#{bin}/yamale -s schema.yaml data1.yaml")
     assert_match "Validation success!", output
 
     output = shell_output("#{bin}/yamale -s schema.yaml some_data.yaml")
     assert_match "Validation success!", output
 
-    (testpath/"good.yaml").write <<~EOS
+    (testpath/"good.yaml").write <<~YAML
       ---
       foo: bar
-    EOS
+    YAML
     output = shell_output("#{bin}/yamale -s schema.yaml schema.yaml", 1)
     assert_match "Validation failed!", output
   end

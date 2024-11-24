@@ -1,9 +1,10 @@
 class Pidgin < Formula
   desc "Multi-protocol chat client"
   homepage "https://pidgin.im/"
-  url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.14.12/pidgin-2.14.12.tar.bz2"
-  sha256 "2b05246be208605edbb93ae9edc079583d449e2a9710db6d348d17f59020a4b7"
+  url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.14.13/pidgin-2.14.13.tar.bz2"
+  sha256 "120049dc8e17e09a2a7d256aff2191ff8491abb840c8c7eb319a161e2df16ba8"
   license "GPL-2.0-or-later"
+  revision 1
 
   livecheck do
     url "https://sourceforge.net/projects/pidgin/files/Pidgin/"
@@ -12,34 +13,46 @@ class Pidgin < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "a04309e2217e0983459955016b4460954c613eac84da8283afc8e2f4eb650d9e"
-    sha256 arm64_monterey: "0167e1a59e189d616d909688dadfda1d9648ab7d3f84fbb8db34fb30e259b415"
-    sha256 arm64_big_sur:  "cec31339d3e2a83f61fac179cd72bc2b00e63611a5a2561018db865f659983f5"
-    sha256 ventura:        "4aa98090185eb17a74b68ec64bdf1551382d0778d01e00691395b488a0e3d027"
-    sha256 monterey:       "d6407e69aad79bcf6ad08625510306e10a45e594af1ec225249647e180462b1b"
-    sha256 big_sur:        "e70d0f821cb46ccd6d1e78855125db8c55e2bd4afeae7b20f933ec37de13d9ce"
-    sha256 x86_64_linux:   "e45ab075f267eaa4dee89536c9a4561f3e5676221337274857c268fde1c8ed81"
+    sha256 arm64_sonoma:  "4daf91819dc1a364ada4442d63358657b5cfe68a0e1228fd32d835caf0de1fbd"
+    sha256 arm64_ventura: "30eccf131427daec7b0138ba20c556087e5dbe52d5f9511d9966a0c7050581ab"
+    sha256 sonoma:        "aeb00e3b89912e895925c3164e673c337aca159acf97352cded6b78992e68443"
+    sha256 ventura:       "2534635abc7029ca83767ff1ad5e49cff3e297a4c07c905c5429b32d1864eb60"
+    sha256 x86_64_linux:  "71e0c8873098b5a1bca073c324da03a5848f3fd8d96100afa854f7c4c608d363"
   end
 
   depends_on "intltool" => :build
   depends_on "pkg-config" => :build
+  depends_on "at-spi2-core"
   depends_on "cairo"
-  depends_on "gettext"
+  depends_on "gdk-pixbuf"
+  depends_on "glib"
   depends_on "gnutls"
   depends_on "gtk+"
   depends_on "libgcrypt"
   depends_on "libgnt"
   depends_on "libidn"
   depends_on "libotr"
+  depends_on "ncurses" # due to `libgnt`
   depends_on "pango"
 
   uses_from_macos "cyrus-sasl"
-  uses_from_macos "ncurses"
+  uses_from_macos "expat"
+  uses_from_macos "libxml2"
   uses_from_macos "perl"
   uses_from_macos "tcl-tk"
 
+  on_macos do
+    depends_on "gettext"
+    depends_on "harfbuzz"
+    depends_on "libgpg-error"
+  end
+
   on_linux do
+    depends_on "gettext" => :build
+    depends_on "perl-xml-parser" => :build
+    depends_on "libice"
     depends_on "libsm"
+    depends_on "libx11"
     depends_on "libxscrnsaver"
   end
 
@@ -51,12 +64,20 @@ class Pidgin < Formula
   end
 
   def install
-    ENV.prepend_path "PERL5LIB", Formula["intltool"].libexec/"lib/perl5" unless OS.mac?
+    unless OS.mac?
+      ENV.prepend_path "PERL5LIB", Formula["perl-xml-parser"].libexec/"lib/perl5"
+      # Fix linkage error due to RPATH missing directory with libperl.so
+      perl = DevelopmentTools.locate("perl")
+      perl_archlib = Utils.safe_popen_read(perl.to_s, "-MConfig", "-e", "print $Config{archlib}")
+      ENV.append "LDFLAGS", "-Wl,-rpath,#{perl_archlib}/CORE"
+    end
+
+    ENV["ac_cv_func_perl_run"] = "yes" if OS.mac? && MacOS.version == :high_sierra
+    if DevelopmentTools.clang_build_version >= 1600
+      ENV.append_to_cflags "-Wno-incompatible-function-pointer-types -Wno-int-conversion"
+    end
 
     args = %W[
-      --disable-debug
-      --disable-dependency-tracking
-      --prefix=#{prefix}
       --disable-avahi
       --disable-dbus
       --disable-doxygen
@@ -66,7 +87,9 @@ class Pidgin < Formula
       --disable-gtkspell
       --disable-meanwhile
       --disable-vv
-      --enable-gnutls=yes
+      --enable-consoleui
+      --enable-gnutls
+      --with-ncurses-headers=#{Formula["ncurses"].opt_include}
     ]
 
     args += if OS.mac?
@@ -79,11 +102,8 @@ class Pidgin < Formula
       %W[
         --with-tclconfig=#{Formula["tcl-tk"].opt_lib}
         --with-tkconfig=#{Formula["tcl-tk"].opt_lib}
-        --with-ncurses-headers=#{Formula["ncurses"].opt_include}
       ]
     end
-
-    ENV["ac_cv_func_perl_run"] = "yes" if MacOS.version == :high_sierra
 
     # patch pidgin to read plugins and allow them to live in separate formulae which can
     # all install their symlinks into these directories. See:
@@ -93,7 +113,7 @@ class Pidgin < Formula
     inreplace "pidgin/gtkmain.c", "LIBDIR", "\"#{HOMEBREW_PREFIX}/lib/pidgin\""
     inreplace "pidgin/gtkutils.c", "DATADIR", "\"#{HOMEBREW_PREFIX}/share\""
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
 
     resource("pidgin-otr").stage do
@@ -105,10 +125,10 @@ class Pidgin < Formula
   end
 
   test do
-    system "#{bin}/finch", "--version"
-    system "#{bin}/pidgin", "--version"
+    system bin/"finch", "--version"
+    system bin/"pidgin", "--version"
 
-    pid = fork { exec "#{bin}/pidgin", "--config=#{testpath}" }
+    pid = spawn(bin/"pidgin", "--config=#{testpath}")
     sleep 5
     Process.kill "SIGTERM", pid
   end

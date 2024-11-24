@@ -2,17 +2,17 @@ class Sysdig < Formula
   desc "System-level exploration and troubleshooting tool"
   homepage "https://sysdig.com/"
   license "Apache-2.0"
-  revision 1
+  revision 9
 
   stable do
-    url "https://github.com/draios/sysdig/archive/refs/tags/0.32.1.tar.gz"
-    sha256 "463ea62f3bc870b4dfaa5143abd6b790efb2219f86e8799792768d06de4169f9"
+    url "https://github.com/draios/sysdig/archive/refs/tags/0.38.1.tar.gz"
+    sha256 "68085ea118a4209dbde8f1b75584f9f84610b5856e507ffb0703d8add6331132"
 
-    # Update to value of FALCOSECURITY_LIBS_VERSION found in
-    # https://github.com/draios/sysdig/blob/#{version}/cmake/modules/falcosecurity-libs.cmake
+    # Update to value of FALCOSECURITY_LIBS_VERSION with
+    # VERSION=#{version} && curl -fsSL https://raw.githubusercontent.com/draios/sysdig/$VERSION/cmake/modules/falcosecurity-libs.cmake | grep -o 'set(FALCOSECURITY_LIBS_VERSION "[0-9.]*")' | awk -F'"' '{print $2}'
     resource "falcosecurity-libs" do
-      url "https://github.com/falcosecurity/libs/archive/refs/tags/0.11.3.tar.gz"
-      sha256 "b4f9dc8c1612f4b14207d107bce323a0684dce0dbf018e5b846177992569367b"
+      url "https://github.com/falcosecurity/libs/archive/refs/tags/0.17.2.tar.gz"
+      sha256 "5c4f0c987272b7d5236f6ab2bbe3906ffdaf76b59817b63cf90cc8c387ab5b15"
     end
   end
 
@@ -22,13 +22,12 @@ class Sysdig < Formula
   end
 
   bottle do
-    sha256                               arm64_ventura:  "4b530bced41192a1b18b920f89e1694a035113caf8947f8822f6141c4cbcf923"
-    sha256                               arm64_monterey: "08c29718e1a3fed1901db203bc7631eebf9cb25e2e6359172683490977cd0a0d"
-    sha256                               arm64_big_sur:  "53fa620fe1f96d4d99037adc559c0c4d2a93501288966f2946e318b6a9c68e55"
-    sha256                               ventura:        "9426ed1872f8ca7fdabf940a16e351b7fe1e38952b9750192095298a9acb67f5"
-    sha256                               monterey:       "de2e93c24999e000b8b85c334bd45089440011969998abaf8761d213af20a592"
-    sha256                               big_sur:        "600c1cf07f69cc349b9f4b6f1fe1c43c13a91ccb6238954db69c844578042159"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "10ac4d09025f9968fbb437912c06003e5326ea20363e785ca37bda891eb0b655"
+    sha256                               arm64_sequoia: "b3668c7dddfb5eda1b56f6dd398ce57c9ba4e5bf00de74e9967804ba4c70687e"
+    sha256                               arm64_sonoma:  "b28c113795ca3376d346fceaed9f48d141270da773431d4336be1411c5ea8c1f"
+    sha256                               arm64_ventura: "d31cdef2e6fe756168ac8c48662ccdc234463be01f23d2ba3f198952d3a6aad8"
+    sha256                               sonoma:        "076463db2756ca1de4481c4d00cebc2f96dcd21fa2e773006e35cb37a6408847"
+    sha256                               ventura:       "8ba76ae7889099ba452fa3b6e3ea5710b111c128da59252986779e4687b75092"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "187faf8d4140cd48b16c536e541834e09926b2e38106ba2ae7d6dcee2a1933e8"
   end
 
   head do
@@ -42,25 +41,25 @@ class Sysdig < Formula
   depends_on "cmake" => :build
   depends_on "nlohmann-json" => :build
   depends_on "valijson" => :build
-  depends_on "c-ares"
   depends_on "jsoncpp"
   depends_on "luajit"
+  depends_on "ncurses" # for `newterm` function
   depends_on "re2"
   depends_on "tbb"
+  depends_on "uthash"
   depends_on "yaml-cpp"
 
   uses_from_macos "curl"
-  uses_from_macos "ncurses"
   uses_from_macos "zlib"
 
   on_linux do
     depends_on "libb64" => :build
     depends_on "abseil"
     depends_on "elfutils"
-    depends_on "grpc@1.54"
+    depends_on "grpc"
     depends_on "jq"
     depends_on "openssl@3"
-    depends_on "protobuf@21"
+    depends_on "protobuf"
     depends_on "zstd"
   end
 
@@ -87,7 +86,6 @@ class Sysdig < Formula
       -DBUILD_LIBSCAP_EXAMPLES=OFF
       -DDIR_ETC=#{etc}
       -DFALCOSECURITY_LIBS_SOURCE_DIR=#{buildpath}/falcosecurity-libs
-      -DCMAKE_CXX_FLAGS=-std=c++17
     ]
 
     # `USE_BUNDLED_*=OFF` flags are implied by `USE_BUNDLED_DEPS=OFF`, but let's be explicit.
@@ -95,7 +93,7 @@ class Sysdig < Formula
       args << "-DUSE_BUNDLED_#{dep}=OFF"
     end
 
-    args << "-DBUILD_DRIVER=OFF" if OS.linux?
+    args += ["-DBUILD_DRIVER=OFF", "-DBUILD_LIBSCAP_MODERN_BPF=OFF"] if OS.linux?
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"

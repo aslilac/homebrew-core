@@ -1,32 +1,42 @@
 class ElanInit < Formula
   desc "Lean Theorem Prover installer and version manager"
   homepage "https://github.com/leanprover/elan"
-  url "https://github.com/leanprover/elan/archive/v2.0.1.tar.gz"
-  sha256 "f241cf15a8d18def76311862a5eea5b72d7fabd22bdf88397031e119d0675169"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/leanprover/elan.git", branch: "master"
 
-  bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b0991578dc9c746c9858a46298b3da94cc91bbf284d6b8207d8923c6b9f7cbcb"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "184bf656bcf2cfa1455175aa78b1dd3055d89e190d64808b59568c0f5251e250"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c609a17e65dbf0db2748f90bc5d34bf544a65f2ad1b48419fe133f2521a213ca"
-    sha256 cellar: :any_skip_relocation, ventura:        "9ca99995d526d6f78efdcbae07db35a13cbf3d64affbdd601180158fa79bd21d"
-    sha256 cellar: :any_skip_relocation, monterey:       "fbbc17ec1c310f91e15b49cc3f6613327c2f8a1b2f799f993601ca5d7ad16136"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ca3943b6a7e33dfc3fb3df7a0bd9b9638a5f031fadf122f5c48eef92a219b55e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b426f6a547f3f70f183b3a488eb7f8397502ef734d9e026d2b46203d6f048be6"
+  stable do
+    url "https://github.com/leanprover/elan/archive/refs/tags/v3.1.1.tar.gz"
+    sha256 "b3e3c7dc6cc23dd319725fccf58c898bf4920ff3440c97cb8f3a35fc0d5bbf5c"
+
+    # rust 1.80 build patch, upstream pr ref, https://github.com/leanprover/elan/pull/134
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/815affb24bff77daad4e99e31afed8de42a31312/elan-init/rust-1.80.patch"
+      sha256 "244420efc73ba1fb4908023047fbb1650f783c30e73aa1facb82645d80c7136f"
+    end
   end
 
+  bottle do
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9414f2c97133007a99261abfea1cb188f953939c0b62b85700b56e8042679461"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7aef59f7e264ecf7a2c856e2666e6aafd3ea7eace3eaf43437531490773e0102"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b82859cd41243cd8d4acfc1d28862c32261c4a9f588da90422641dd8992f8bea"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "dda8aedbfe1d28aa4d97b3269cf17088d0efa0843661e548c70c6b7615813db8"
+    sha256 cellar: :any_skip_relocation, sonoma:         "5c6589bc32c581d6d3c614ea1b46ee3497d0859adae548ab2a732ecd1008dafa"
+    sha256 cellar: :any_skip_relocation, ventura:        "efb5e621bf215f9c7061d05ca9f9b1fb251a0c270ea1d323cd5991606e897d93"
+    sha256 cellar: :any_skip_relocation, monterey:       "bfcde921f1b585c26c5150a8cf258d6d5c752ce4d67cab58cafb742562de8e88"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "45ca6bf10c24f0d45e7a81dfe66d94ae87b25ea61b0d635bbcaf46e1d20f153d"
+  end
+
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "coreutils"
   depends_on "gmp"
 
+  uses_from_macos "bzip2"
   uses_from_macos "curl"
   uses_from_macos "zlib"
 
-  on_linux do
-    depends_on "pkg-config" => :build
-  end
-
+  conflicts_with "lean-cli", because: "both install `lean` binaries"
   conflicts_with "lean", because: "`lean` and `elan-init` install the same binaries"
 
   def install

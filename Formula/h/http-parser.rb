@@ -1,14 +1,16 @@
 class HttpParser < Formula
   desc "HTTP request/response parser for c"
   homepage "https://github.com/nodejs/http-parser"
-  url "https://github.com/nodejs/http-parser/archive/v2.9.4.tar.gz"
+  url "https://github.com/nodejs/http-parser/archive/refs/tags/v2.9.4.tar.gz"
   sha256 "467b9e30fd0979ee301065e70f637d525c28193449e1b13fbcb1b1fab3ad224f"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sonoma:   "efaa9e1c93c49751d87a7720f20e87753b08495744cc3018b48a096d5bb9f971"
     sha256 cellar: :any,                 arm64_ventura:  "1f6568eb982eaf9c9e6b42cc382fcb7241089ace5775a18434d06b05e295e9d2"
     sha256 cellar: :any,                 arm64_monterey: "2af85f7a77c43361923e3c334079b393d76525c60cd2844c77da32aeb71ea72d"
     sha256 cellar: :any,                 arm64_big_sur:  "7130d0b0338eaf592eb0510251f95a8a4e580ef9ecc4eaf787ba048204639498"
+    sha256 cellar: :any,                 sonoma:         "de5c6d3abb6d2e147b83c43de7348705e1d5efd89ecc2a12d51fce413c30c302"
     sha256 cellar: :any,                 ventura:        "254dac839c15f32e4e4a03a7c695cd7b99b53c7a296c58eba06cfb15d00b0e82"
     sha256 cellar: :any,                 monterey:       "d4530aca738bc5328a8dc135320588a549997d6df090cf8acbaad32e7ec17ca1"
     sha256 cellar: :any,                 big_sur:        "48d383aa989a940b3918cc83fa2bb6b5fad92c9b4c70018172d36f9e465087e3"
@@ -20,7 +22,7 @@ class HttpParser < Formula
 
   # "http-parser is not actively maintained. New projects and projects looking
   # to migrate should consider llhttp (https://github.com/nodejs/llhttp)."
-  deprecate! date: "2023-01-03", because: :repo_archived
+  disable! date: "2024-01-12", because: :repo_archived
 
   depends_on "coreutils" => :build
 

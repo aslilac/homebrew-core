@@ -1,8 +1,8 @@
 class Kdoctools < Formula
   desc "Create documentation from DocBook"
   homepage "https://api.kde.org/frameworks/kdoctools/html/index.html"
-  url "https://download.kde.org/stable/frameworks/5.109/kdoctools-5.109.0.tar.xz"
-  sha256 "a44e5b5e02ba5857d9dabe391672e889a1cbcd18e4b6a0794f9778af5250e69d"
+  url "https://download.kde.org/stable/frameworks/6.8/kdoctools-6.8.0.tar.xz"
+  sha256 "606863e86d6aa916abb3e3760b73fe9db1832c1e41727349d02cdc8c3ab96ba7"
   license all_of: [
     "BSD-3-Clause",
     "GPL-2.0-or-later",
@@ -11,21 +11,17 @@ class Kdoctools < Formula
   ]
   head "https://invent.kde.org/frameworks/kdoctools.git", branch: "master"
 
-  # We check the tags from the `head` repository because the latest stable
-  # version doesn't seem to be easily available elsewhere.
   livecheck do
-    url :head
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    url "https://download.kde.org/stable/frameworks/"
+    regex(%r{href=.*?v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "d94968a3bb383df27a7df2e13e8218ffd6c311cc9b5ad83b65570bd1d1053601"
-    sha256 cellar: :any,                 arm64_monterey: "074878d7d67515d9e1b06080a1d1f0c8553a4ffbbde02dea95e52f89a70dc5ca"
-    sha256 cellar: :any,                 arm64_big_sur:  "0ff839e1f95fbdf33fc9a37e7c7307d4aeed098a5bca2994b47dc12395301675"
-    sha256 cellar: :any,                 ventura:        "5c9ff58fead157941fa154aed08fd785443a184d982dccc06b114aeda949812a"
-    sha256 cellar: :any,                 monterey:       "1ef8f8a18a21f40f4bcd1d3c1e7b438dc664b6b04505034814551e4557a23154"
-    sha256 cellar: :any,                 big_sur:        "373b3d785d9cbfef68aa24c444b5efbf630acf7e94a24f9d384271ee7a68d501"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ddffc9dd6f3e1a60a8ef661ddf392845bc4188e55e2029df01e6a860f593df1f"
+    sha256 cellar: :any,                 arm64_sonoma:  "14aefab00f324c85adc3a92b40f81a90c0d8df8edc1a5b6dabb55f92d483f768"
+    sha256 cellar: :any,                 arm64_ventura: "c8db5efde998070d1e7e87b9bd11d2a2b521a4c8836bfe544d5b066f711e0422"
+    sha256 cellar: :any,                 sonoma:        "d9fe6398f01265c143d253f4f32e2d9fd1edbef9c78018e689f9f2c9542db030"
+    sha256 cellar: :any,                 ventura:       "3543da15ff0166b5809d4685003c3aed114ad76749752310f5b7e5a3ba26e228"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "19f098d860ca99dd99962b1f0b5f558a69a8f4f0feb14706320df3e85b5af6a6"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -33,9 +29,9 @@ class Kdoctools < Formula
   depends_on "extra-cmake-modules" => [:build, :test]
   depends_on "gettext" => :build
   depends_on "ki18n" => :build
-
   depends_on "docbook-xsl"
   depends_on "karchive"
+  depends_on "qt"
 
   uses_from_macos "libxml2"
   uses_from_macos "libxslt"
@@ -44,26 +40,24 @@ class Kdoctools < Formula
   fails_with gcc: "5"
 
   resource "URI::Escape" do
-    url "https://cpan.metacpan.org/authors/id/S/SI/SIMBABQUE/URI-5.19.tar.gz"
-    sha256 "8fed5f819905c8a8e18f4447034322d042c3536b43c13ac1f09ba92e1a50a394"
+    on_linux do
+      url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/URI-5.27.tar.gz"
+      sha256 "11962d8a8a8496906e5d34774affc235a1c95c112d390c0b4171f3e91e9e2a97"
+    end
   end
 
   def install
-    ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
-    ENV.prepend_path "PERL5LIB", libexec/"lib"
+    if OS.linux?
+      ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
+      ENV.prepend_path "PERL5LIB", libexec/"lib"
 
-    resource("URI::Escape").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make", "install"
+      resource("URI::Escape").stage do
+        system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
+        system "make", "install"
+      end
     end
 
-    args = std_cmake_args + %w[
-      -S .
-      -B build
-      -DBUILD_QCH=ON
-    ]
-
-    system "cmake", *args
+    system "cmake", "-S", ".", "-B", "build", "-DBUILD_QCH=ON", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 
@@ -71,14 +65,17 @@ class Kdoctools < Formula
   end
 
   test do
-    (testpath/"CMakeLists.txt").write <<~EOS
+    qt = Formula["qt"]
+    qt_major = qt.version.major
+
+    (testpath/"CMakeLists.txt").write <<~CMAKE
       cmake_minimum_required(VERSION 3.5)
       include(FeatureSummary)
       find_package(ECM #{version} NO_MODULE)
       set_package_properties(ECM PROPERTIES TYPE REQUIRED)
       set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} "#{pkgshare}/cmake")
-      find_package(Qt5 #{Formula["qt@5"].version} REQUIRED Core)
-      find_package(KF5DocTools REQUIRED)
+      find_package(Qt#{qt_major} #{qt.version} REQUIRED Core)
+      find_package(KF#{qt_major}DocTools REQUIRED)
 
       find_package(LibXslt)
       set_package_properties(LibXslt PROPERTIES TYPE REQUIRED)
@@ -102,18 +99,12 @@ class Kdoctools < Formula
       add_subdirectory(autotests)
       add_subdirectory(tests/create-from-current-dir-test)
       add_subdirectory(tests/kdoctools_install-test)
-    EOS
+    CMAKE
 
     cp_r (pkgshare/"autotests"), testpath
     cp_r (pkgshare/"tests"), testpath
 
-    args = std_cmake_args + %W[
-      -S .
-      -B build
-      -DQt5_DIR=#{Formula["qt@5"].opt_lib}/cmake/Qt5
-    ]
-
-    system "cmake", *args
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
     system "cmake", "--build", "build"
   end
 end

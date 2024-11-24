@@ -1,8 +1,8 @@
 class BoostPython3 < Formula
   desc "C++ library for C++/Python3 interoperability"
   homepage "https://www.boost.org/"
-  url "https://github.com/boostorg/boost/releases/download/boost-1.82.0/boost-1.82.0.tar.xz"
-  sha256 "fd60da30be908eff945735ac7d4d9addc7f7725b1ff6fcdcaede5262d511d21e"
+  url "https://github.com/boostorg/boost/releases/download/boost-1.86.0/boost-1.86.0-b2-nodocs.tar.xz"
+  sha256 "a4d99d032ab74c9c5e76eddcecc4489134282245fffa7e079c5804b92b45f51d"
   license "BSL-1.0"
   head "https://github.com/boostorg/boost.git", branch: "master"
 
@@ -11,21 +11,34 @@ class BoostPython3 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "54a07f5f3d5babda43d7adb2af3cb46b3f756ec3e2b67fe50f6da2aff81c7b41"
-    sha256 cellar: :any,                 arm64_monterey: "518fa733ea9fd88e320a9bdd12c259e76c29f2dd1dae0368ca7016830c0c7b1e"
-    sha256 cellar: :any,                 arm64_big_sur:  "a1a6fe4845cc1fb97e50c408a11a84d1a09fe0163e973d15a6320db83b19a156"
-    sha256 cellar: :any,                 ventura:        "c5222b373a4b2f5b5c7e1f9b9012bd34f70a28b56bf9a691426650a8825a0659"
-    sha256 cellar: :any,                 monterey:       "b097a520137dcc5360df7998b7468b12cb33147cdae3c10ab1270f1e36749aaa"
-    sha256 cellar: :any,                 big_sur:        "65864416a8314dc2669890da5bc0246aa4ea5c73985773ed1cea3082b03d1711"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5129320e1bb52a1c69204df65c31f283c9a0caf8a2b6515833c9d689bd4594cd"
+    sha256 cellar: :any,                 arm64_sequoia:  "66e23ad361052f87a6df6b7afaa5724df91f2ffaa482a6795ede1e0832d7b117"
+    sha256 cellar: :any,                 arm64_sonoma:   "f2f55396a7afed649ea03117ac9ac111ed9bcf9d3ce4a0d2bf709e17c41652fc"
+    sha256 cellar: :any,                 arm64_ventura:  "375db655b7ec5f3baa117e2159871434646d150217ab1505bb3e985c4ad66746"
+    sha256 cellar: :any,                 arm64_monterey: "398d0edf6be250a569c26c27f74fefa4582e98df83beabd16565b4fe1d275840"
+    sha256 cellar: :any,                 sonoma:         "37d7b06e4e101373807fa3d55ea0962bd7ca375734e63fcd05a0ded18b27a334"
+    sha256 cellar: :any,                 ventura:        "db5fd6cdd07b5fdc534a420a119dfab593733a25e0af55b6899c149fe63b8910"
+    sha256 cellar: :any,                 monterey:       "a0181c63ba6f93cbc495a6f0664fe7d45db3e1754a20ac8ffda46572866fa19a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8d0f76e68afe7ed1f5bfc311afc9a7b260b842081a3c988494ce121cea7fe12d"
   end
 
   depends_on "numpy" => :build
   depends_on "boost"
-  depends_on "python@3.11"
+  depends_on "python@3.12"
+
+  # Backport support for numpy>=2
+  patch do
+    url "https://github.com/boostorg/python/commit/0474de0f6cc9c6e7230aeb7164af2f7e4ccf74bf.patch?full_index=1"
+    sha256 "ac4f3e7bd4609c464a493cfe6a0e416bcd14fdadfc5c9f59a4c7d14e19aea80b"
+    directory "libs/python"
+  end
+  patch do
+    url "https://github.com/boostorg/python/commit/99a5352b5cf790c559a7b976c1ba99520431d9d1.patch?full_index=1"
+    sha256 "6a15028cb172ebbf3480d3f00d7d5f6cf03d2d3f7f8baf20b9f4250b43da16aa"
+    directory "libs/python"
+  end
 
   def python3
-    "python3.11"
+    "python3.12"
   end
 
   def install
@@ -82,11 +95,10 @@ class BoostPython3 < Formula
     lib.install buildpath.glob("install-python3/lib/*.*")
     (lib/"cmake").install buildpath.glob("install-python3/lib/cmake/boost_python*")
     (lib/"cmake").install buildpath.glob("install-python3/lib/cmake/boost_numpy*")
-    doc.install (buildpath/"libs/python/doc").children
   end
 
   test do
-    (testpath/"hello.cpp").write <<~EOS
+    (testpath/"hello.cpp").write <<~CPP
       #include <boost/python.hpp>
       char const* greet() {
         return "Hello, world!";
@@ -95,13 +107,13 @@ class BoostPython3 < Formula
       {
         boost::python::def("greet", greet);
       }
-    EOS
+    CPP
 
     pyincludes = shell_output("#{python3}-config --includes").chomp.split
     pylib = shell_output("#{python3}-config --ldflags --embed").chomp.split
     pyver = Language::Python.major_minor_version(python3).to_s.delete(".")
 
-    system ENV.cxx, "-shared", "-fPIC", "hello.cpp", "-L#{lib}", "-lboost_python#{pyver}",
+    system ENV.cxx, "-shared", "-fPIC", "-std=c++14", "hello.cpp", "-L#{lib}", "-lboost_python#{pyver}",
                     "-o", "hello.so", *pyincludes, *pylib
 
     output = <<~EOS

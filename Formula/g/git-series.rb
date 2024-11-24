@@ -1,19 +1,20 @@
 class GitSeries < Formula
   desc "Track changes to a patch series over time"
   homepage "https://github.com/git-series/git-series"
-  url "https://github.com/git-series/git-series/archive/0.9.1.tar.gz"
+  url "https://github.com/git-series/git-series/archive/refs/tags/0.9.1.tar.gz"
   sha256 "c0362e19d3fa168a7cb0e260fcdecfe070853b163c9f2dfd2ad8213289bc7e5f"
   license "MIT"
-  revision 9
+  revision 11
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "1568eef8c171318e5252a2b70cf6c73593cdde9771aad628a4e488f959c549e4"
-    sha256 cellar: :any,                 arm64_monterey: "bc86ff7a61825bfdce2a6526b1c4f093b925015b237431c55a01c81b5689fff8"
-    sha256 cellar: :any,                 arm64_big_sur:  "10dc8abee745d6a0c5050d664c4f215e843eead39c63cd7f8b0b0ea50891a42f"
-    sha256 cellar: :any,                 ventura:        "d9aa7c268d33b8b1dd161bed8b5d3d2634bfc29198f84832642cf6c520342d51"
-    sha256 cellar: :any,                 monterey:       "ea19bae915f274db6c6cda126037cd5360a562f14e479787c7b29bf0e878fe20"
-    sha256 cellar: :any,                 big_sur:        "67f0a92d24fdf4611d3dcaa2a63d47f678f9ff8b4b99a13c47544c713c9654b1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4b14ff0d2da9a97e00e16d8bc216eea5e81675fa3ce956c4461167ac761d6193"
+    sha256 cellar: :any,                 arm64_sequoia:  "07cdafe7f171d1aac9404902f0d201721c7dbda7bb75919091912e327994b682"
+    sha256 cellar: :any,                 arm64_sonoma:   "524192ede385b910c7a60b441a37eb2c38e6b8cc0520c46a97242264040601a1"
+    sha256 cellar: :any,                 arm64_ventura:  "534069e9ffcbf292060e4ef30fca7c1379314d5bcd43a413ce8f2ac793058abe"
+    sha256 cellar: :any,                 arm64_monterey: "57110db5cd6e45abc2512b7481fb0058a6735efef1b1aa8620afbd218ad8ffc9"
+    sha256 cellar: :any,                 sonoma:         "59b9057f0c273441d3f85045a13cd5cfcfe05b4064875959239d7f1ab86d7839"
+    sha256 cellar: :any,                 ventura:        "a5f09b69f4d6a3f3042ee2958150260228e286681c5a0fe770c78e298e9f8928"
+    sha256 cellar: :any,                 monterey:       "f6854b262b06eec4237f8ed177e2e2b492604ba92db05c0d43fe94070a1c791e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e4e30b3ca3b0d4459f63857d9f6979b0976db69777671b37d29e1c9118817ff5"
   end
 
   depends_on "pkg-config" => :build

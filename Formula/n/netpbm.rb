@@ -3,8 +3,8 @@ class Netpbm < Formula
   homepage "https://netpbm.sourceforge.net/"
   # Maintainers: Look at https://sourceforge.net/p/netpbm/code/HEAD/tree/
   # for stable versions and matching revisions.
-  url "https://svn.code.sf.net/p/netpbm/code/stable", revision: "4598"
-  version "11.02.02"
+  url "https://svn.code.sf.net/p/netpbm/code/stable", revision: "4950"
+  version "11.02.11"
   license "GPL-3.0-or-later"
   version_scheme 1
   head "https://svn.code.sf.net/p/netpbm/code/trunk"
@@ -16,13 +16,12 @@ class Netpbm < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "6c840f4a9e62f78fab3a2f140f409e5c22a1478041fa0a494eb27d55106273d8"
-    sha256 arm64_monterey: "1aa95a3bc6e71b4a06ded1caef57e7f614acf1b0910e20597947787de2651e0c"
-    sha256 arm64_big_sur:  "26ec372d9201b345ec374f0c9911525ea6960e5f0c282e1d6afe2a27eab9a75f"
-    sha256 ventura:        "bc30f3abceed01be7d51d2ca0d737278c9eefd205de6441573b1ff1b5b722e33"
-    sha256 monterey:       "f1fbcc5ef9b75d461ee3ef1210285c599840ab1c8481cf3fe97972aad9206786"
-    sha256 big_sur:        "3dd7423c6ad8d7e70d6d9f87d4834ed1038d869b5cb6a3f6e112c7a6d6bf4f54"
-    sha256 x86_64_linux:   "63c63fc14ecda7e707f342ea4c2645039a7f9cb93201c82d1974a330cf0e42e1"
+    sha256 arm64_sequoia: "bdf9bbf06bf3f356e3a07b66e75b25885485128742bab949955d10e490eaddfc"
+    sha256 arm64_sonoma:  "c1a49e6ff031ad726842a467942a257720601ee8e1c706212c42c204355a755e"
+    sha256 arm64_ventura: "dbaf3b3bc0c952493e077ce9ebe1f2079faa2ff83e9e44c73e807eae8836e14d"
+    sha256 sonoma:        "bed02f2b2101528bba5e9ce7ea8a0f34ce02aab7a034c2575fe1573a864435e0"
+    sha256 ventura:       "05af7687ceb593ffb1fc661db38801907067b9954e6e69454f03d2829221e4ea"
+    sha256 x86_64_linux:  "dfe5451a97b233d44ec3e2b83c7f4e896188adf175a09502fd19c46b8f3a376e"
   end
 
   depends_on "jasper"
@@ -60,7 +59,10 @@ class Netpbm < Formula
     end
 
     ENV.deparallelize
-    ENV.append_to_cflags "-Wno-implicit-function-declaration" # Workaround for Xcode 14.3.
+
+    # Fix compile with newer Clang
+    ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
+
     system "make"
     system "make", "package", "pkgdir=#{buildpath}/stage"
 

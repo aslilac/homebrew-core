@@ -1,20 +1,19 @@
 class Sniffglue < Formula
   desc "Secure multithreaded packet sniffer"
   homepage "https://github.com/kpcyrd/sniffglue"
-  url "https://github.com/kpcyrd/sniffglue/archive/v0.15.0.tar.gz"
-  sha256 "ac30c0748a4247d2a36b82d623e88863480c300d3f6bbbdc303077240a8292c5"
+  url "https://github.com/kpcyrd/sniffglue/archive/refs/tags/v0.16.1.tar.gz"
+  sha256 "f30b31861b07160b4efe23eda996491aaf885037d6907227d2230cd0e7db3265"
   license "GPL-3.0-or-later"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "89e5d71d3cddef8835e55dfc9e5605d6cf55e3a2becd96ad4773e87af939d612"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a6f259b1ea3c567419536c66de207f2e2c382041f742c57f2cfc40d73d3076bc"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "691236273406849e741183f18c1fc13de92fb4c99b24abfe3cd4a8b6cf79d925"
-    sha256 cellar: :any_skip_relocation, ventura:        "c6d71697ecb9b1edde9b08f2a5566d73067859549f3900f012b89ce671e84a80"
-    sha256 cellar: :any_skip_relocation, monterey:       "1c130fb065a2bfcac7396277ae4c8d22995202f800defb110915cff1db13a8ce"
-    sha256 cellar: :any_skip_relocation, big_sur:        "69d676dd88ea3974acbfa8eb09c0bb34abfca2769d32a6d5ada2dfae45bdbcbf"
-    sha256 cellar: :any_skip_relocation, catalina:       "f95efe25bbdb5cdd8c9be45246342430ea56a944f93b2cbb93f382fdf345309a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "676a1bb4a02fb1ef5ec6f08a229e2b276bd446b11b99388d592963e958aa8398"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "380179cc72c23149aaed5ef6524bc6f5f2cb6b0c441adf7cfce8d53a26026143"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5184107991133eadf3083906c31ccb12ce9c545f0d23510a791921ce27e7aa6c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5566a2eaa0cd2f09dbfafe380e78347697f1776022aedb042415e799afe19a94"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b735be9699cc3e29c84d333e042f6b3fddc2487936c22c72990c7baa501fa640"
+    sha256 cellar: :any_skip_relocation, sonoma:         "824312cfb5ea09c0783d1401716498ce5e1440ddc598846e7e52584b5ec8abd3"
+    sha256 cellar: :any_skip_relocation, ventura:        "01fe539139d46b95f1595d859147698203873b8a616dbde21166c760bca5cce4"
+    sha256 cellar: :any_skip_relocation, monterey:       "d365e93066e3ee10bb2d0e19388d737475b380d9a2c6b737239335f912cff165"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "199b66e5139f7fd082bb6d3df7795b4c861df4df7fabf0bdd345b33b49c92024"
   end
 
   depends_on "rust" => :build

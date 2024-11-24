@@ -1,29 +1,32 @@
 class Aichat < Formula
-  desc "ChatGPT cli"
+  desc "All-in-one AI-Powered CLI Chat & Copilot"
   homepage "https://github.com/sigoden/aichat"
-  url "https://github.com/sigoden/aichat/archive/v0.8.0.tar.gz"
-  sha256 "9073d96afdab56ff51f392cffa8d04fd70d47602236bd10e58248de5594bfd2a"
+  url "https://github.com/sigoden/aichat/archive/refs/tags/v0.23.0.tar.gz"
+  sha256 "c96341fe4c2223da2e069f16561166e5f699085597c17cdb128e86c0947ac7f6"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/sigoden/aichat.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "586f6e8b98e82c9684e6e40faaef2e76650ff1f8d28cbcf73c5eec2d7e32ce52"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b2e1d6a11c8e3a68434a7b201d75864ae2bb52e66818bebae8e300680b89d004"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ce4f5e090a145e3e8668eff23ef5c3e96490992cafa3584689d300f32b8a4ca1"
-    sha256 cellar: :any_skip_relocation, ventura:        "b39b884380eb96d46df3a1b8449d4c13aee99597c723c0b72bb3d05b5451ee53"
-    sha256 cellar: :any_skip_relocation, monterey:       "851b3fd79ae8365d7ee5bb75230b9ede1d39f12993413e92bd1d846cc2062847"
-    sha256 cellar: :any_skip_relocation, big_sur:        "376447e0fc60cbf980224b66030a4fcd7454e47bebf96044cc0bc3ff7ea6d96b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6ed48064b265ff9b7b847135d6fc8532b4c9fadd51b18c632aa92042c58b78d6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4266d008f9e9005fcbe89869d1261e476c87bc4a840faa33c58604d0de174938"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "63348481cbaef58182930040552c45dc5dc11e95a942e667735439a395ecc675"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d90626570b1b9fe582f9b934dfe914aabaace81e68417faef654c0d4e5e48946"
+    sha256 cellar: :any_skip_relocation, sonoma:        "0f11510b4a768f932e28965accc3eff19cdc5b17b3a030fad80bffbe5e6f9254"
+    sha256 cellar: :any_skip_relocation, ventura:       "65f823dce534a1f357e345e64174858463cf1f1929b97575aa107212b144670d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c1952ec74b5d5f6ac7c0c50e34ac1e98cf90a636ea661588757efb73cf1950c6"
   end
 
   depends_on "rust" => :build
 
   def install
     system "cargo", "install", *std_cargo_args
+    bash_completion.install "scripts/completions/aichat.bash" => "aichat"
+    fish_completion.install "scripts/completions/aichat.fish"
+    zsh_completion.install "scripts/completions/aichat.zsh" => "_aichat"
   end
 
   test do
-    ENV["AICHAT_API_KEY"] = "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    ENV["AICHAT_PLATFORM"] = "openai"
+    ENV["OPENAI_API_KEY"] = "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     output = shell_output("#{bin}/aichat --dry-run math 3.2x4.8")
     assert_match "math 3.2x4.8", output
   end

@@ -1,9 +1,8 @@
 class K3d < Formula
   desc "Little helper to run CNCF's k3s in Docker"
   homepage "https://k3d.io"
-  url "https://github.com/k3d-io/k3d.git",
-    tag:      "v5.6.0",
-    revision: "9748b1e158f3a03e807c6a989edc0fee856ff5a2"
+  url "https://github.com/k3d-io/k3d/archive/refs/tags/v5.7.4.tar.gz"
+  sha256 "419e1bc3a44d57f66512dc2be3cae118482db65ceeb7baba41a6df7ea4300263"
   license "MIT"
 
   livecheck do
@@ -12,13 +11,14 @@ class K3d < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "73d02a1a5976a2762fc3c25bcc7db1f11006229bf717bd37e0570346a36beff0"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "10ea7c24365ec9fd476d65914ba3a12202f576398377f4142be927266ec5c454"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7c9330e5348f29ed3c771725b88b238fb0170665c272c1124bf2c92fda10fab5"
-    sha256 cellar: :any_skip_relocation, ventura:        "5dc8f630f6359f16ecf22db39afaaee3a4b6932a367b33fdbc4cb63c61ccddea"
-    sha256 cellar: :any_skip_relocation, monterey:       "f272bd80a863b995103aff56705abeec411c98d53ef90d215c046ffd41957d6d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e888baaac7cbc22cdc927cd78beab0380f841316cb7314e323e07ac2ab88f522"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a08089f31c6f1411f3d6aa63723e900abbd6a73da89b774c685abc2bbe88e32d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "0428245f1434d4933274c05c543b7880fc95acd62bef43e23662bd844d0e4e4c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0428245f1434d4933274c05c543b7880fc95acd62bef43e23662bd844d0e4e4c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0428245f1434d4933274c05c543b7880fc95acd62bef43e23662bd844d0e4e4c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0428245f1434d4933274c05c543b7880fc95acd62bef43e23662bd844d0e4e4c"
+    sha256 cellar: :any_skip_relocation, sonoma:         "5016f1b09646e1ee720f2fc2155eabac033f778c7bcb98fb3ad2d772cb39a9e8"
+    sha256 cellar: :any_skip_relocation, ventura:        "5016f1b09646e1ee720f2fc2155eabac033f778c7bcb98fb3ad2d772cb39a9e8"
+    sha256 cellar: :any_skip_relocation, monterey:       "5016f1b09646e1ee720f2fc2155eabac033f778c7bcb98fb3ad2d772cb39a9e8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "131c2b406a323e70d54ab687d6126bfb5b4c87cdf16145416aa9458442d46d65"
   end
 
   depends_on "go" => :build
@@ -36,7 +36,7 @@ class K3d < Formula
       -X github.com/k3d-io/k3d/v#{version.major}/version.K3sVersion=#{k3s_version}
     ]
 
-    system "go", "build", "-mod=readonly", *std_go_args(ldflags: ldflags)
+    system "go", "build", "-mod=readonly", *std_go_args(ldflags:)
 
     generate_completions_from_executable(bin/"k3d", "completion")
   end

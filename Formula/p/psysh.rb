@@ -1,18 +1,19 @@
 class Psysh < Formula
   desc "Runtime developer console, interactive debugger and REPL for PHP"
   homepage "https://psysh.org/"
-  url "https://github.com/bobthecow/psysh/releases/download/v0.11.20/psysh-v0.11.20.tar.gz"
-  sha256 "d5dd3bfea13aa9a9ac981924baec4863d620602ef080fdb540373922ef4472fe"
+  url "https://github.com/bobthecow/psysh/releases/download/v0.12.4/psysh-v0.12.4.tar.gz"
+  sha256 "785bddd5650694d9b4d051869a175392f9faac327687ee8a81af0305083072df"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c29b92967878aa521f7513a54ee50dc8e4f9e4e5733abfcf07750498c826b587"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c29b92967878aa521f7513a54ee50dc8e4f9e4e5733abfcf07750498c826b587"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c29b92967878aa521f7513a54ee50dc8e4f9e4e5733abfcf07750498c826b587"
-    sha256 cellar: :any_skip_relocation, ventura:        "4871a3c19623488cceb6f35599fd1d6249c882b455c8f7eccae9dd2c0cbcccc4"
-    sha256 cellar: :any_skip_relocation, monterey:       "4871a3c19623488cceb6f35599fd1d6249c882b455c8f7eccae9dd2c0cbcccc4"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4871a3c19623488cceb6f35599fd1d6249c882b455c8f7eccae9dd2c0cbcccc4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a4697b4b2f3ef1ddcf3435a6313dac67d3a8b678160fad68589428c66e3e465d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e29133c37afee0eb7bb82e3ec24de92452ce1a4972aa87b2762d482ffad1f91c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2a9ad18d62be203e22c1ada2988285cd9818e56e3e733b6fe55885b131055867"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2a9ad18d62be203e22c1ada2988285cd9818e56e3e733b6fe55885b131055867"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2a9ad18d62be203e22c1ada2988285cd9818e56e3e733b6fe55885b131055867"
+    sha256 cellar: :any_skip_relocation, sonoma:         "68803a0946a7f26f35dc444401d13686a399842cd6e5aac0ac8270283ee9780f"
+    sha256 cellar: :any_skip_relocation, ventura:        "68803a0946a7f26f35dc444401d13686a399842cd6e5aac0ac8270283ee9780f"
+    sha256 cellar: :any_skip_relocation, monterey:       "68803a0946a7f26f35dc444401d13686a399842cd6e5aac0ac8270283ee9780f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e711d7a1c572b92355f0279e0e9970e37e296defe7719ad232bb8023cca322f5"
   end
 
   depends_on "php"
@@ -24,9 +25,9 @@ class Psysh < Formula
   test do
     assert_match version.to_s, shell_output("#{bin}/psysh --version")
 
-    (testpath/"src/hello.php").write <<~EOS
+    (testpath/"src/hello.php").write <<~PHP
       <?php echo 'hello brew';
-    EOS
+    PHP
 
     assert_match "hello brew", shell_output("#{bin}/psysh -n src/hello.php")
   end

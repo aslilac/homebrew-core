@@ -1,29 +1,29 @@
 class Sshs < Formula
   desc "Graphical command-line client for SSH"
   homepage "https://github.com/quantumsheep/sshs"
-  url "https://github.com/quantumsheep/sshs/archive/refs/tags/3.4.0.tar.gz"
-  sha256 "f46f9185f97e35cf3b02286631df715027c3b0d374959c7e402a21bd30208f74"
+  url "https://github.com/quantumsheep/sshs/archive/refs/tags/4.5.1.tar.gz"
+  sha256 "c5383138114262fd49ac91c77830f9c6a09f02c5650e5e5cfa8ede1fa3383d96"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "88005c530ba21ad0e8870787ad1895f88a231ea4de1c6f4d20d1688ee8778f5f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f83f76d1d83819e5708c518a9cdc852432263531f6bc6c6cec49d4837ffc74ee"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "41715e062f739e5345013f1accc1f07adccdc26628f3bdd312350cb369af984e"
-    sha256 cellar: :any_skip_relocation, ventura:        "a5f305f6c5a0f348a684fd049c455df58d2c2e77f5f012f9dde095b63d2f3d5e"
-    sha256 cellar: :any_skip_relocation, monterey:       "8ef82182fed86751f6b60f4ab83cf101f99daa2a08c5041b008823ec38704bba"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c22e1abf1d3e2223cff9e4717a49f9317b0649dadc9efd9ce414a6bbd4641290"
-    sha256 cellar: :any_skip_relocation, catalina:       "3571f62b144e746d7c63c71d9b63128393867039165c884c81e94b55843eb9c5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0db2b2dec20f5fd9bdc5d9b18f5e6f7780352991dd9c4b025346b3ad1da3c6a2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "19d90512203685dae5603b8586b4ef32663094fdd8990ae5d861e1ee427bdd0b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "da47dd8e48c44c6ab047184e26dbb0a27e734f4f15054a5a3fa3f5b75aa8bc57"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ab5e15b46f39c867f5b4aa44b3859fbf37755be1154fc53dedf50996c3ce8013"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "df8c14aa827ecce6a3bae2ddc90c0f0c66666c5541b0f1d6c5a54c1f80b6d137"
+    sha256 cellar: :any_skip_relocation, sonoma:         "975ae1e62f123e67307525ee64826b32312b2893b6ede2c22b92073d5af044d8"
+    sha256 cellar: :any_skip_relocation, ventura:        "f0c9be09ebbc8f9d8fbbdbb689080859313fe3d23ce9167c8cba72cfb1314344"
+    sha256 cellar: :any_skip_relocation, monterey:       "f8aa7f03a3795763e1e6f28ebba23259c156845cc6afe3be78baf1e323351b46"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e80926cbd296201a8c52ade54290768a4b977152a551b1310e0df469f8c73114"
   end
 
-  depends_on "go" => :build
+  depends_on "rust" => :build
 
   def install
-    system "make", "build", "VERSION=#{version}", "OUTPUT=#{bin}/sshs"
+    system "cargo", "install", *std_cargo_args
   end
 
   test do
-    assert_equal "sshs version #{version}", shell_output(bin/"sshs --version").strip
+    assert_equal "sshs #{version}", shell_output(bin/"sshs --version").strip
 
     (testpath/".ssh/config").write <<~EOS
       Host "Test"

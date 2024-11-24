@@ -2,30 +2,29 @@ class Packetbeat < Formula
   desc "Lightweight Shipper for Network Data"
   homepage "https://www.elastic.co/products/beats/packetbeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v8.9.1",
-      revision: "3799398872c0f33da4e65019390d055cdfe633bd"
+      tag:      "v8.16.1",
+      revision: "f17e0828f1de9f1a256d3f520324fa6da53daee5"
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "8faf750d4ba72e013e4200354d872a50846a19069fc31c4a2c0e412ab55ba5bd"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ca80d0a14c57f40427465a0eb1b9a3f6b2081cc5e6bb56430e603e3b120c8178"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3e0082f3250c121b559902caf51a5cb90beb2aa230895d595bd97a8c708feb8d"
-    sha256 cellar: :any_skip_relocation, ventura:        "f498f21f75aa62b8fa417d5d512ea40f112f4220a70c3b03b7c536526cf5db63"
-    sha256 cellar: :any_skip_relocation, monterey:       "63a85bb8805f0ba066ed5f8cb629b1a14d7917242a935e8bd2a8123a8b48087e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a8b1904dc200e0af135bec3fa3eec1e9a3c2e9b15ceb08922cd4332bfe6a9bde"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f34b32c69d90061f4e45c316f33025bd5373d1f5b2f20c803ad0a9fcc1dd7b60"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e878a52e942b9b174db2a4340fb425f017c2f7bfa0cbccc75d9b74a94edfb63a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f8f1228bce8639962d014b8db6a27159307cd42f826eabddf10030ed6db3bff5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c196c4b02c7add9ae6e05d025946195412e941d9d60cd7381e252c33e73cca0a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f585040601d89d3576d0701ff1c63f3279bb446ae974fd155ca7fac73e761bb4"
+    sha256 cellar: :any_skip_relocation, ventura:       "6cb3de68e792b4ef263c981800a6f934c1b974386bffd3717bad605075708e7e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8e2a84e128d2a7e3f98775ed1a8b5f40b396956a743c039619362c7338fe94b0"
   end
 
   depends_on "go" => :build
   depends_on "mage" => :build
-  depends_on "python@3.11" => :build
+  depends_on "python@3.12" => :build
 
   uses_from_macos "libpcap"
 
   def install
     # remove non open source files
-    rm_rf "x-pack"
+    rm_r("x-pack")
 
     cd "packetbeat" do
       # prevent downloading binary wheels during python setup

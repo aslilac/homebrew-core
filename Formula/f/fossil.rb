@@ -1,8 +1,8 @@
 class Fossil < Formula
   desc "Distributed software configuration management"
   homepage "https://www.fossil-scm.org/home/"
-  url "https://fossil-scm.org/home/tarball/version-2.22/fossil-src-2.22.tar.gz"
-  sha256 "b90c40beb75308b0eba46b5add6e54a7a9e65ac90ce86ec8d78ae2a4bb8bae60"
+  url "https://fossil-scm.org/home/tarball/version-2.25/fossil-src-2.25.tar.gz"
+  sha256 "611cfa50d08899eb993a5f475f988b4512366cded82688c906cf913e5191b525"
   license "BSD-2-Clause"
   head "https://www.fossil-scm.org/", using: :fossil
 
@@ -12,13 +12,12 @@ class Fossil < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "b94ce3001a82290ee588c9499343db618813a6adafd6b8c43db2b450235940b9"
-    sha256 cellar: :any,                 arm64_monterey: "63c03e0f8f94c3fd55cf749efd9a2285232c9565f46bfc5e2a6196778be08eb0"
-    sha256 cellar: :any,                 arm64_big_sur:  "1b7f99cf2957c1d81fea04817297f0bd5e61c6f82508a750a9b020dd7ed8ca33"
-    sha256 cellar: :any,                 ventura:        "ef4f5d8a5288586ed014f6b9c74b25b7314fe831dfb81023e2c4a44562217ed4"
-    sha256 cellar: :any,                 monterey:       "0b86c60fe15c069e91af5c67eefedbbfbb1933b75efef5ee567bdfc29f856e90"
-    sha256 cellar: :any,                 big_sur:        "a5614d61bfb0a2ab2cfc52f09d2eb6fbd5378ab4e02c5b5b71bfc533844cf83d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "96e5942acbd93788b9cc50b221d66b266b3f6d2532eeedfdcf4cb4c795f976d4"
+    sha256 cellar: :any,                 arm64_sequoia: "b4abf6653c8cd939f8171f95453330bc2e4439767f4b78676f653b83f06fe8a7"
+    sha256 cellar: :any,                 arm64_sonoma:  "f881ded2bbd635a81e887032669862624abf09cc9ff55e75f3555d339bf97e6b"
+    sha256 cellar: :any,                 arm64_ventura: "b352c541a28f690ad7372a6fed1705a88c64c96cf916e2d4ff213e622d7a0375"
+    sha256 cellar: :any,                 sonoma:        "f42cb6c3e9b92de4fe063b03e11c0dd4172685674a83fb979d6f3b9844f476a4"
+    sha256 cellar: :any,                 ventura:       "5ac1165bf2d9ab8b48e381366352d75c56dae82c1281f880543a4223ebafaab2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0b2813cf9265f20b08b1cacc05ab6d884d1c8ed0b16c2b3e3d5577779e637097"
   end
 
   depends_on "openssl@3"
@@ -33,7 +32,7 @@ class Fossil < Formula
       "--disable-fusefs",
     ]
 
-    args << if MacOS.sdk_path_if_needed
+    args << if OS.mac? && MacOS.sdk_path_if_needed
       "--with-tcl=#{MacOS.sdk_path}/System/Library/Frameworks/Tcl.framework"
     else
       "--with-tcl-stubs"
@@ -47,6 +46,6 @@ class Fossil < Formula
   end
 
   test do
-    system "#{bin}/fossil", "init", "test"
+    system bin/"fossil", "init", "test"
   end
 end

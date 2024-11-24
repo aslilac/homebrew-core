@@ -1,9 +1,9 @@
 class Vcpkg < Formula
   desc "C++ Library Manager"
   homepage "https://github.com/microsoft/vcpkg"
-  url "https://github.com/microsoft/vcpkg-tool/archive/2023-08-09.tar.gz"
-  version "2023.08.09"
-  sha256 "ded27cd0959e9c2ac4ad252bf133b476e5fd9cd40f28fff9cd948f4817ae22bf"
+  url "https://github.com/microsoft/vcpkg-tool/archive/refs/tags/2024-11-12.tar.gz"
+  version "2024.11.12"
+  sha256 "046b87f537ab9d8b56918868037afbf59459b702bc7dfe51b66af4895a817cfd"
   license "MIT"
   head "https://github.com/microsoft/vcpkg-tool.git", branch: "main"
 
@@ -12,20 +12,25 @@ class Vcpkg < Formula
   livecheck do
     url :stable
     regex(/v?(\d{4}(?:[._-]\d{2}){2})/i)
-    strategy :github_latest
+    strategy :github_latest do |json, regex|
+      match = json["tag_name"]&.match(regex)
+      next if match.blank?
+
+      match[1].tr("-", ".")
+    end
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "da801ea8675772a643e1728ea3f12b18e6d180d8dfb5e4aed67e818a473d9950"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "65d4db9790011a45f093bac904160056c749d2669143181a0fff1fd243d6e91e"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7634470f665726a158a34f3d85ccc3896db9d61cda60fb0660bba88bcc8b9f36"
-    sha256 cellar: :any_skip_relocation, ventura:        "dd38d37150e4933ba85f24f5b69331ec2276a7dad7b6ee4b7d342bdedbd5ca68"
-    sha256 cellar: :any_skip_relocation, monterey:       "00a21565c3570f4185fef8c3909c1794e7f0fd47980a4b854125e71d82806e41"
-    sha256 cellar: :any_skip_relocation, big_sur:        "509f370ed4c297a3909ca62d90d8e8d3aa87db22788fa265b5625d7e199e6f74"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dc12d0c4a18e485bdf51c8d4aa80c87bc1a15005e314d8df9620cb872d658999"
+    sha256 cellar: :any,                 arm64_sequoia: "5b56a9d149909990a4c4be9e174da623a6a68d01d2c32053139d9942c615c15f"
+    sha256 cellar: :any,                 arm64_sonoma:  "2c6c6c339abd5c5c01df701cceda94541d18dcc333a9cb4d8b20422e520992b5"
+    sha256 cellar: :any,                 arm64_ventura: "fe84e172642a3e1b595d4841481e71a19a65b305f29e593859a30cb397088765"
+    sha256 cellar: :any,                 sonoma:        "2ba277e255094ba0337de2c43211b27a8a44d787b9935471c9510f389d46b0fb"
+    sha256 cellar: :any,                 ventura:       "e667fa488fd8ba3ba11c2430a823c3a21a8a2a82a4b34fdca8bf45463d74e950"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "50a76474af653913a11dfd43e7f7c825641a5663bfb340389accff3b7505d63e"
   end
 
   depends_on "cmake" => :build
+  depends_on "cmrc" => :build
   depends_on "fmt"
   depends_on "ninja" # This will install its own copy at runtime if one isn't found.
 
@@ -33,16 +38,16 @@ class Vcpkg < Formula
 
   def install
     # Improve error message when user fails to set `VCPKG_ROOT`.
-    inreplace "locales/messages.json" do |s|
-      s.gsub! "If you are trying to use a copy of vcpkg that you've built, y", "Y"
-      s.gsub! " to point to a cloned copy of https://github.com/Microsoft/vcpkg", ""
-    end
+    inreplace "include/vcpkg/base/message-data.inc.h",
+              "If you are trying to use a copy of vcpkg that you've built, y",
+              "Y"
 
     system "cmake", "-S", ".", "-B", "build",
                     "-DVCPKG_DEVELOPMENT_WARNINGS=OFF",
                     "-DVCPKG_BASE_VERSION=#{version.to_s.tr(".", "-")}",
                     "-DVCPKG_VERSION=#{version}",
                     "-DVCPKG_DEPENDENCY_EXTERNAL_FMT=ON",
+                    "-DVCPKG_DEPENDENCY_CMAKERC=ON",
                     *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
@@ -58,8 +63,10 @@ class Vcpkg < Formula
   end
 
   test do
+    output = shell_output("#{bin}/vcpkg search sqlite 2>&1", 1)
     # DO NOT CHANGE. If the test breaks then the `inreplace` needs fixing.
-    message = "error: Could not detect vcpkg-root."
-    assert_match message, shell_output("#{bin}/vcpkg search sqlite", 1)
+    # No, really, stop trying to change this.
+    assert_match "You must define", output
+    refute_match "copy of vcpkg that you've built", output
   end
 end

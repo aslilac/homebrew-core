@@ -1,26 +1,27 @@
 class Convco < Formula
   desc "Conventional commits, changelog, versioning, validation"
   homepage "https://convco.github.io"
-  url "https://github.com/convco/convco/archive/refs/tags/v0.4.2.tar.gz"
-  sha256 "1e63e07e3d98aa0bcce10824d9aa2de89f0bda90bad3a322311dba4efe7a1d13"
+  url "https://github.com/convco/convco/archive/refs/tags/v0.6.1.tar.gz"
+  sha256 "ed68341e065f76f22b6d93ff3686836a812f6a031dc7ee00bed7e048b0da4294"
   license "MIT"
   head "https://github.com/convco/convco.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ea517cbafb83b9a4ce1420773d0d89b71eea5ac42ad4f05690dc9ee475554d1a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5322db8557f1ca86ea4a94593ac5fe30efdada6600a6eae4808b697cdf7f1af2"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "426a1db5b23301a0b322ea49dc9e7f9f8ddeab1c6bcd860953ea3bc85b94ebd6"
-    sha256 cellar: :any_skip_relocation, ventura:        "407fb94a65ca83c8be823b86b4b49e0d0ffee37003defea44b654750516ab3e5"
-    sha256 cellar: :any_skip_relocation, monterey:       "2740d00336264d7adb9c143ce7c058add67e3e36680645d809a85d117d899296"
-    sha256 cellar: :any_skip_relocation, big_sur:        "61abb3e9faea2d5b130f19d412d51404ad9d9c84705d94b0ca57589b79f1de24"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b045246fa28644eafc66816dca6b7c738a142f357c4aa0fe7a711c52566e7959"
+    sha256 cellar: :any,                 arm64_sequoia: "e18c04a894c906be8f793678c6eeb79b471253036813a154c4531dc791b941b9"
+    sha256 cellar: :any,                 arm64_sonoma:  "6f3676b484578a35386192edf44e82e2ce028befef87ad40b5b6d6b89995425e"
+    sha256 cellar: :any,                 arm64_ventura: "963b46df26ac69066af13e1cbec5672a6d8005363053e474f099101484b98352"
+    sha256 cellar: :any,                 sonoma:        "05bf86ff418758f4c82fb9e1d931f1f58804c21e35807c79dea4c63127056d76"
+    sha256 cellar: :any,                 ventura:       "ecf3ab426b73d4519e34d2cdd50d070ff8074e3ce2b4131a242a784349504a74"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4e0109d8ad3f830c0307d2350f190ef1afad564ac1af83120cc5fb72e3d41114"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "libgit2"
 
   def install
+    ENV["LIBGIT2_NO_VENDOR"] = "1"
+
     system "cargo", "install", "--no-default-features", *std_cargo_args
 
     bash_completion.install "target/completions/convco.bash" => "convco"

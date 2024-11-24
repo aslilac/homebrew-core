@@ -1,66 +1,68 @@
 class Wget2 < Formula
   desc "Successor of GNU Wget, a file and recursive website downloader"
   homepage "https://gitlab.com/gnuwget/wget2"
-  url "https://gitlab.com/gnuwget/wget2/uploads/83752270de83e103306576e67a1c7c80/wget2-2.0.1.tar.gz"
-  sha256 "0bb7fa03697bb5b8d05e1b5e15b863440826eb845874c4ffb5e32330f9845db1"
+  url "https://ftp.gnu.org/gnu/wget/wget2-2.1.0.tar.gz"
+  sha256 "a05dc5191c6bad9313fd6db2777a78f5527ba4774f665d5d69f5a7461b49e2e7"
   license "GPL-3.0-or-later"
 
+  livecheck do
+    url :stable
+    regex(/href=.*?wget2[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
-    sha256 arm64_ventura:  "fa4432f5f7ce4d83c9fe0a9e89b45f5c9f53c78915538081f8316232f16d363a"
-    sha256 arm64_monterey: "1d39d7e9074e73dd041b3c87e7461c39a9a077239cd6209b2b5cfe6ccfdb1b6e"
-    sha256 arm64_big_sur:  "11191e2efde22f9e98b6f3eb2e1640e720d795b0af23651d65ae4e542eb3a4f7"
-    sha256 ventura:        "b0a0dd524e72ca51c58433fd4f5371b1c7b9ad42a00709a29e9a1c6232f2813a"
-    sha256 monterey:       "e1e86a64b8229d64fc73a56cee68e281ea3f93465d1b22f2653704fed0e3f683"
-    sha256 big_sur:        "95703ee9f7a7c55fd50b3fbe4e77321d1db04ff77dfbae5f080099fa54b672eb"
-    sha256 x86_64_linux:   "7e240a02462644bc2da043b1c90332b62702115338b41eb55463b47620e3df4f"
+    rebuild 1
+    sha256 arm64_sequoia:  "6bc61f262e20d15cd1f079e71cd55e2a642fef0b66efbb77334773faef36aabe"
+    sha256 arm64_sonoma:   "99ca029e3321591fa99a9af0e8b64f562dea3da226b823d35c5af55293b7a991"
+    sha256 arm64_ventura:  "067870948de34bc06ebd36a69046d99fae639622d214272da2e3daac92f2f993"
+    sha256 arm64_monterey: "923e704bf22d606bc90046a3b61e1ec65eee7e0ae557eb08ac3d6671849cf3e4"
+    sha256 sonoma:         "41d146a9305abbf4a5e418e4a45f9a2aa6697a2490f528247cc359c8a0c9f9be"
+    sha256 ventura:        "3f42f84bde572aa62f1c866d436f7a00760a3d7fae407a61c102b8087bd42696"
+    sha256 monterey:       "28caefa64e171177a81c69c77d9252a312cc511028bde86702387f4d4d65a666"
+    sha256 x86_64_linux:   "20df0cbf4bba791786a2e8c0be9ed8a448545e4cf68702a967fd76756c85b251"
   end
 
   depends_on "doxygen" => :build
-  # The pattern used in 'docs/wget2_md2man.sh.in' doesn't work with system sed
-  depends_on "gnu-sed" => :build
   depends_on "graphviz" => :build
-  depends_on "lzip" => :build
+  depends_on "lzlib" => :build # static lib
   depends_on "pandoc" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "texinfo" => :build # Build fails with macOS-provided `texinfo`
 
   depends_on "brotli"
-  depends_on "gettext"
   depends_on "gnutls"
   depends_on "gpgme"
-  depends_on "libassuan"
-  depends_on "libgpg-error"
   depends_on "libidn2"
-  depends_on "libmicrohttpd"
   depends_on "libnghttp2"
   depends_on "libpsl"
-  depends_on "libtasn1"
-  depends_on "lzlib"
-  depends_on "nettle"
-  depends_on "p11-kit"
   depends_on "pcre2"
   depends_on "xz"
   depends_on "zstd"
 
   uses_from_macos "bzip2"
-  uses_from_macos "icu4c"
   uses_from_macos "zlib"
 
-  def install
-    gnused = Formula["gnu-sed"]
-    lzlib = Formula["lzlib"]
-    gettext = Formula["gettext"]
+  on_macos do
+    depends_on "gnu-sed" => :build
+    depends_on "gettext"
+  end
 
+  def install
     # The pattern used in 'docs/wget2_md2man.sh.in' doesn't work with system sed
-    ENV.prepend_path "PATH", gnused.libexec/"gnubin"
+    ENV.prepend_path "PATH", Formula["gnu-sed"].libexec/"gnubin" if OS.mac?
+
+    lzlib = Formula["lzlib"]
     ENV.append "LZIP_CFLAGS", "-I#{lzlib.include}"
     ENV.append "LZIP_LIBS", "-L#{lzlib.lib} -llz"
 
-    system "./configure", *std_configure_args,
-           "--with-bzip2",
-           "--with-lzma",
-           "--with-libintl-prefix=#{gettext.prefix}"
+    args = %w[
+      --disable-silent-rules
+      --with-bzip2
+      --with-lzma
+    ]
+    args << "--with-libintl-prefix=#{Formula["gettext"].prefix}" if OS.mac?
 
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

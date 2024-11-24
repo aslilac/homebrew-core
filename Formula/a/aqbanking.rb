@@ -12,16 +12,18 @@ class Aqbanking < Formula
   end
 
   bottle do
+    sha256 arm64_sequoia:  "478d929f72e9654f1bf72dbef75ca57760a6b41fb06f906ec80124b03e4d3579"
+    sha256 arm64_sonoma:   "40c5e3e65530d65705cf5652d443e980595c39c7f2767e4b3719c8339ca26c6e"
     sha256 arm64_ventura:  "b9a8f344467a7d69267d994da860fade6dda407510eed4398db47f2fd3206408"
     sha256 arm64_monterey: "fcbf229d4ea7dcde5d788e088e4ff30d6f2a1a62ab2498f2e0c2913b0cda32b5"
     sha256 arm64_big_sur:  "60da3b01e9cfeef3b9d47673d8353afec5bdfa87fec21c3df9635c41492861fd"
+    sha256 sonoma:         "27737d104556c605d174dcb3400f04ebeb8093481090e1d14ce457a2f600cbab"
     sha256 ventura:        "c912b990acd3cc02ead0f7619bce81e9feb78f41caa1654b4778569b3050ba2e"
     sha256 monterey:       "b989a7cb5bf36df5b829828f8452a3661d5d370d02bdce63b266fbf10ef38601"
     sha256 big_sur:        "9ab40d81b08b2d798d3dc69a6c7557bb72e07a0891338c92bb972457c0998549"
     sha256 x86_64_linux:   "f7586074ec396a050c9f210d05ae733b9697c0f9f2d366940b6937927f2cd215"
   end
 
-  depends_on "gettext"
   depends_on "gmp"
   depends_on "gwenhywfar"
   depends_on "ktoblzcheck"
@@ -29,15 +31,19 @@ class Aqbanking < Formula
   depends_on "libxmlsec1"
   depends_on "libxslt" # Our libxslt links with libgcrypt
   depends_on "openssl@3"
-  depends_on "pkg-config" # aqbanking-config needs pkg-config for execution
+  depends_on "pkgconf" # aqbanking-config needs pkg-config for execution
+
+  uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   def install
     ENV.deparallelize
+
     inreplace "aqbanking-config.in.in", "@PKG_CONFIG@", "pkg-config"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--enable-cli"
+    system "./configure", "--enable-cli", *std_configure_args
     # This is banking software, so let's run the test suite.
     system "make", "check"
     system "make", "install"

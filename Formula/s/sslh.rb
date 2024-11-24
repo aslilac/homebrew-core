@@ -1,30 +1,30 @@
 class Sslh < Formula
   desc "Forward connections based on first data packet sent by client"
   homepage "https://www.rutschle.net/tech/sslh.shtml"
-  url "https://www.rutschle.net/tech/sslh/sslh-v1.22c.tar.gz"
-  sha256 "8e3742d14edf4119350cfdc7bb96b89134d9218eb6d2a6e1f70891ca18a649b1"
+  url "https://www.rutschle.net/tech/sslh/sslh-v2.1.2.tar.gz"
+  sha256 "dce8e1a77f48017b5164486084f000d9f20de2d54d293385aec18d606f9c61d9"
   license all_of: ["GPL-2.0-or-later", "BSD-2-Clause"]
   head "https://github.com/yrutschle/sslh.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "58a1a9db2ca55d914fe6591146532dbb249ae1ca0228d972830aa69e12861b81"
-    sha256 cellar: :any,                 arm64_monterey: "6a857e6ca21121c84c83092cf997ddafb565827318fc6e810dee157fde76854f"
-    sha256 cellar: :any,                 arm64_big_sur:  "2baa52312b06845b59164cefec82633805e3a25ce30b1838de8588c13a73c37f"
-    sha256 cellar: :any,                 ventura:        "f80f05fc341a8d956642d3a392e9d577c2695642fa2feaa8ef4dfc9feb543623"
-    sha256 cellar: :any,                 monterey:       "ce4dde0de017b628b312535039d166ca0c37a5da30b75814ee697f7841389250"
-    sha256 cellar: :any,                 big_sur:        "d8dc78ae9611573a5af86e21e0ce9a1dc08f8b615a1efa6914a28f09e5d973c2"
-    sha256 cellar: :any,                 catalina:       "54584832683d93d67a4d2ab440da431d5407e6f23ec4fac5d0a31743000f12de"
-    sha256 cellar: :any,                 mojave:         "65ebb8d28f6c458a16e8e942d00135ffc6efa03d23ac6808b015201dfcb86b01"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a1433846d56d6d2bb80d66de1a74514c445ce0105a1215d515f41c96aad51d8b"
+    sha256 cellar: :any,                 arm64_sequoia:  "c1e48be3c7d5714650e0550bd0ba5cf95d981363fd9c867baad75a1b9dc369bd"
+    sha256 cellar: :any,                 arm64_sonoma:   "48021bfa2072f6b756640100af21beeb68f5a6437bdca4242da8281c1782889b"
+    sha256 cellar: :any,                 arm64_ventura:  "5791bf236c993f9e09c8cd6233ad61f78109f40bcf5f346c42fb9577a383d4fe"
+    sha256 cellar: :any,                 arm64_monterey: "196176f2ab3b01d8644a14e76c2a1e312fef2113c2004742d2000f2146dff5a4"
+    sha256 cellar: :any,                 sonoma:         "c5d33746b8f5a26e0676e5a31d9d64541b4aadbe9ad60a45bc564032985ea41d"
+    sha256 cellar: :any,                 ventura:        "2aba25d6903363e7091983832caf60154fa48909c6cb5fe98724a08597c508b8"
+    sha256 cellar: :any,                 monterey:       "d713acd32e00dc43b72e88c0f21339f3e81807b19a9cc255204731efae28d321"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7c6bbc4c2a053fc0d010ebf06322f76f23f7b61db6556c5aca729f611a22f032"
   end
 
   depends_on "libconfig"
+  depends_on "libev"
   depends_on "pcre2"
 
   uses_from_macos "netcat" => :test
 
   def install
-    ENV.deparallelize
+    system "./configure", *std_configure_args
     system "make", "install", "PREFIX=#{prefix}"
   end
 

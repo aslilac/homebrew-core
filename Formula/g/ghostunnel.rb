@@ -1,18 +1,18 @@
 class Ghostunnel < Formula
   desc "Simple SSL/TLS proxy with mutual authentication"
   homepage "https://github.com/ghostunnel/ghostunnel"
-  url "https://github.com/ghostunnel/ghostunnel/archive/refs/tags/v1.7.1.tar.gz"
-  sha256 "b4eced76660e5e4bcdead3a3026608d500576fac574e49371cf9de8c98041b71"
+  url "https://github.com/ghostunnel/ghostunnel/archive/refs/tags/v1.8.2.tar.gz"
+  sha256 "e44105ca591fa1f2e4af1e6b516ae65833b98a5f8e76093179ecb0fc03c0c47c"
   license "Apache-2.0"
   head "https://github.com/ghostunnel/ghostunnel.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f6456eea77410787d8fe28c7f9cae2ae8624fbaffc2fba2e06d11dda74b3bc9c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b66f6e2fec5210fe2189461b3732ff558386fcc98d0850442a5df862bdec0910"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3d37b5c7e36c2192474cbc43bcc966af03534f8c8ab7da0ab192aae4e3650d8f"
-    sha256 cellar: :any_skip_relocation, ventura:        "9fd269914394018868615f572f955d0d0cf733565ef51715ce8c33e0806b440c"
-    sha256 cellar: :any_skip_relocation, monterey:       "7ff079fa2a391da1c5e3cae5b8a117fb8d6db3ab0e0998961cd2253339eb9f2c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "1a675c369ce55275aaa2905e42b1b2ef2f14d1bbc0fb08ca681b442caded0e7b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "89135bb036c1063dbf0293d75366d92104b66492db932daeee6bf8af01df7221"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ab6e62203948bc3fe40061ac7460def7fe7bd1d04f652da49ec997727c549cf0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "fdf0cdbf10be5e5e0f096a71298d024de086ef092b07bcc999c5745872012c76"
+    sha256 cellar: :any_skip_relocation, sonoma:        "670dbb5113ac27a58604a427ce1b7f5b227b7c3175489acb5a446a0d0d722820"
+    sha256 cellar: :any_skip_relocation, ventura:       "461e65e35836026629f68f213b6ecc25ef60a37321feb48be8c950ac542f8e4b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d5a74d14387e5643d7ce02bd297dccf56a6c61c9056bd2508c9e5343e66432f9"
   end
 
   depends_on "go" => :build

@@ -1,25 +1,24 @@
 class S3scanner < Formula
   desc "Scan for misconfigured S3 buckets across S3-compatible APIs!"
   homepage "https://github.com/sa7mon/S3Scanner"
-  url "https://github.com/sa7mon/S3Scanner/archive/refs/tags/v3.0.1.tar.gz"
-  sha256 "ef4702f0e7b2d2575febc1ebc58f9503342e65e8815ed0e7cafe532a134a5c8f"
+  url "https://github.com/sa7mon/S3Scanner/archive/refs/tags/v3.1.1.tar.gz"
+  sha256 "2d333c31909baa21e024d11db1b03647fff3d210d73fa7fa47f598d3d459a20c"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4aa512469b6b7aff876e164956157ee54c89399c372f1167cd1fbd8593172db5"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fa05d32e755dcc635183e99eb8e54f818129a7d44a631ffc65a9c63cdafcceeb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1bca8ab3654f3299393ac55f1a0765dca0a3caf01eba2a524381d5e115401c61"
-    sha256 cellar: :any_skip_relocation, ventura:        "9aa79ea9ceaeaef662aef154fcb919f8c3b360d46ea2e3fb47ddf4f632857520"
-    sha256 cellar: :any_skip_relocation, monterey:       "23553777b35f95aa7f7b243a4c6e5bcd83042e9c9bfa9f7810e8ac6b85346acd"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0a555ed6dfff6696a94f668be5d0226dd757e9ec90663e4f9136af82d56f0e33"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3570835053f9540f07e4010438b16750fbb87ccf0e698a5fd7b848698b00fc7f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2e8d161cfdd4356026c4625343354a2c58c59cc07542cb5b29b7117acffd19b3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2e8d161cfdd4356026c4625343354a2c58c59cc07542cb5b29b7117acffd19b3"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "2e8d161cfdd4356026c4625343354a2c58c59cc07542cb5b29b7117acffd19b3"
+    sha256 cellar: :any_skip_relocation, sonoma:        "aa0fdf4a17911994cb55fb32bb65a3f1eff54436f860fc87e4acd6207c06e048"
+    sha256 cellar: :any_skip_relocation, ventura:       "aa0fdf4a17911994cb55fb32bb65a3f1eff54436f860fc87e4acd6207c06e048"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5e76a8131cd2e58061e5bcfdfd351034b0222016877e349f58431b8b2d3400fb"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = "-s -w -X main.version=v#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do

@@ -4,36 +4,35 @@ class Shaderc < Formula
   license "Apache-2.0"
 
   stable do
-    url "https://github.com/google/shaderc/archive/refs/tags/v2023.6.tar.gz"
-    sha256 "e40fd4a87a56f6610e223122179f086d5c4f11a7e0e2aa461f0325c3a0acc6ae"
+    url "https://github.com/google/shaderc/archive/refs/tags/v2024.3.tar.gz"
+    sha256 "d5c68b5de5d4c7859d9699054493e0a42a2a5eb21b425d63f7b7dd543db0d708"
 
     resource "glslang" do
       # https://github.com/google/shaderc/blob/known-good/known_good.json
       url "https://github.com/KhronosGroup/glslang.git",
-          revision: "76b52ebf77833908dc4c0dd6c70a9c357ac720bd"
+          revision: "467ce01c71e38cf01814c48987a5c0dadd914df4"
     end
 
     resource "spirv-headers" do
       # https://github.com/google/shaderc/blob/known-good/known_good.json
       url "https://github.com/KhronosGroup/SPIRV-Headers.git",
-          revision: "124a9665e464ef98b8b718d572d5f329311061eb"
+          revision: "2a9b6f951c7d6b04b6c21fe1bf3f475b68b84801"
     end
 
     resource "spirv-tools" do
       # https://github.com/google/shaderc/blob/known-good/known_good.json
       url "https://github.com/KhronosGroup/SPIRV-Tools.git",
-          revision: "e553b884c7c9febaa4e52334f683641fb5f196a0"
+          revision: "01c8438ee4ac52c248119b7e03e0b021f853b51a"
     end
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "8dffc0cf4d1fb6e0e512f282b50738bbb758a365c9848f8363e8e3191b8e8158"
-    sha256 cellar: :any,                 arm64_monterey: "012cb597bab3326899b421fc557e8d448c38967801fdebffe20b3af6ddcad253"
-    sha256 cellar: :any,                 arm64_big_sur:  "1940d6e626ab52f840275f6eaac7567b865fd07951f04e996a144ded9b4399f2"
-    sha256 cellar: :any,                 ventura:        "855d90d7e2bd7208510639342f12d95341e801c43c075a25b03d10db2dc5d5d2"
-    sha256 cellar: :any,                 monterey:       "f72d775abe1053fe7e9deaa7383753ff4fb62cea91315668ba64681887f33e96"
-    sha256 cellar: :any,                 big_sur:        "b58f91fba26173a7ee05a7bcf229d8b15a743bfce855eba803485267d00488d7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4a507c8adf294fa23564f31290811b8bb74f5976332e4457cc2d2d056f70f364"
+    sha256 cellar: :any,                 arm64_sequoia: "1b081f14c99cdb93b9e75ff5cb457989fdc8660a9e3bb764e4b9046cfcddaaa4"
+    sha256 cellar: :any,                 arm64_sonoma:  "f0563a0b3c9a0ca136fbfe1d0a0218d8a61d0eab13e308a80536ced0dc2acd25"
+    sha256 cellar: :any,                 arm64_ventura: "81e4be8a39cc4b197772a215230c78fb86f61c3c41898f15adb7409b991c6c98"
+    sha256 cellar: :any,                 sonoma:        "d7908e7504c77cbaad0cc90c172b94b509bed194e1c82f5c01dbeb24ff1bd086"
+    sha256 cellar: :any,                 ventura:       "753ab423ad44a3357d5cbef987d43990f1173e9ba95b1f0b95da7272e06b83a4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "810f75d4cdd8b07b1fdecd9a100fad7eb332662421c7d880feb524e0a4e03b4e"
   end
 
   head do
@@ -53,7 +52,12 @@ class Shaderc < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.11" => :build
+
+  uses_from_macos "python" => :build
+
+  # patch to fix `target "SPIRV-Tools-opt" that is not in any export set`
+  # upstream bug report, https://github.com/google/shaderc/issues/1413
+  patch :DATA
 
   def install
     resources.each do |res|
@@ -73,7 +77,7 @@ class Shaderc < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <shaderc/shaderc.h>
       int main() {
         int version;
@@ -82,9 +86,23 @@ class Shaderc < Formula
           return 1;
         return (profile == shaderc_profile_core) ? 0 : 1;
       }
-    EOS
+    C
     system ENV.cc, "-o", "test", "test.c", "-I#{include}",
                    "-L#{lib}", "-lshaderc_shared"
     system "./test"
   end
 end
+
+__END__
+diff --git a/third_party/CMakeLists.txt b/third_party/CMakeLists.txt
+index d44f62a..dffac6a 100644
+--- a/third_party/CMakeLists.txt
++++ b/third_party/CMakeLists.txt
+@@ -87,7 +87,6 @@ if (NOT TARGET glslang)
+       # Glslang tests are off by default. Turn them on if testing Shaderc.
+       set(GLSLANG_TESTS ON)
+     endif()
+-    set(GLSLANG_ENABLE_INSTALL $<NOT:${SKIP_GLSLANG_INSTALL}>)
+     add_subdirectory(${SHADERC_GLSLANG_DIR} glslang)
+   endif()
+   if (NOT TARGET glslang)

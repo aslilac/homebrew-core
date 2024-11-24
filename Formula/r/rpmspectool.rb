@@ -3,32 +3,33 @@ class Rpmspectool < Formula
 
   desc "Utility for handling RPM spec files"
   homepage "https://github.com/nphilipp/rpmspectool"
-  url "https://files.pythonhosted.org/packages/0d/b9/723a043cca7407717238e7f5f9fd5df562aa4599204fdb1a76d652ebd281/rpmspectool-1.99.7.tar.gz"
-  sha256 "359ab2c743bfe19cde5758e27d798e276aff63e1b9c8bb1bd307e89c07200ed6"
+  url "https://files.pythonhosted.org/packages/7d/cc/53ef9a699df75f3f29f672d0bdf7aae162829e2c98f7b7b5f063fd5d3a46/rpmspectool-1.99.10.tar.gz"
+  sha256 "b79d59388ecba5f8b957c722a43a429b5a728435f5ed0992011e9482850e3583"
   license "GPL-3.0-or-later"
+  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "e6a3984ff1a7e27b7434158d82a9c424d0413aa1b2d5e31c7418d591aec57e40"
-    sha256 cellar: :any_skip_relocation, ventura:       "0bb3455e3b2f5f36ff74f4fbfd74ab0ba3e06905d97ad4add24b0d8cf6130f58"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2806fc85d5ea031c34610e073d70f601c15433d5c3e4f6beb6abc3c9aeb1fd97"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "2f364a63846a90f0e1f6c21a193ba1a478e7b4ad2fa257d19de780ee18797a81"
   end
 
-  depends_on "python@3.11"
+  depends_on "curl"
+  depends_on :linux
+  depends_on "openssl@3"
+  depends_on "python@3.13"
   depends_on "rpm"
-  uses_from_macos "curl"
 
   resource "argcomplete" do
-    url "https://files.pythonhosted.org/packages/54/c9/41c4dfde7623e053cbc37ac8bc7ca03b28093748340871d4e7f1630780c4/argcomplete-3.1.1.tar.gz"
-    sha256 "6c4c563f14f01440aaffa3eae13441c5db2357b5eec639abe7c0b15334627dff"
+    url "https://files.pythonhosted.org/packages/5f/39/27605e133e7f4bb0c8e48c9a6b87101515e3446003e0442761f6a02ac35e/argcomplete-3.5.1.tar.gz"
+    sha256 "eb1ee355aa2557bd3d0145de7b06b2a45b0ce461e1e7813f5d066039ab4177b4"
   end
 
   resource "pycurl" do
-    url "https://files.pythonhosted.org/packages/a8/af/24d3acfa76b867dbd8f1166853c18eefc890fc5da03a48672b38ea77ddae/pycurl-7.45.2.tar.gz"
-    sha256 "5730590be0271364a5bddd9e245c9cc0fb710c4cbacbdd95264a3122d23224ca"
+    url "https://files.pythonhosted.org/packages/c9/5a/e68b8abbc1102113b7839e708ba04ef4c4b8b8a6da392832bb166d09ea72/pycurl-7.45.3.tar.gz"
+    sha256 "8c2471af9079ad798e1645ec0b0d3d4223db687379d17dd36a70637449f81d6b"
   end
 
   def install
-    ENV["PYCURL_SSL_LIBRARY"] = "openssl"
     virtualenv_install_with_resources
   end
 

@@ -1,23 +1,18 @@
-require "language/perl"
-
 class Lcov < Formula
-  include Language::Perl::Shebang
-
   desc "Graphical front-end for GCC's coverage testing tool (gcov)"
   homepage "https://github.com/linux-test-project/lcov"
-  url "https://github.com/linux-test-project/lcov/releases/download/v2.0/lcov-2.0.tar.gz"
-  sha256 "1857bb18e27abe8bcec701a907d5c47e01db4d4c512fc098d1a6acd29267bf46"
+  url "https://github.com/linux-test-project/lcov/releases/download/v2.2/lcov-2.2.tar.gz"
+  sha256 "caf5be723aa9ffe7bb7b0e52be7155e8953949fbf96586d088ebf3de6a9db0d0"
   license "GPL-2.0-or-later"
   head "https://github.com/linux-test-project/lcov.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "551bbc6be7309a7c5d8266eedca0585e2646067ffa80c9edae9399c330e32188"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2456ea19d6f3bd4c9940793756581cfb8ab98a4bcc64fed17b9b48b21fcab511"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f67279c2b2383a28d8fbaf26283a7e89c05f5834f98318396b676728d3c54741"
-    sha256 cellar: :any_skip_relocation, ventura:        "0f46116c2652ec1c173defef26e607c62f6a92ebbf20c8b2a128ddbcdce76aa2"
-    sha256 cellar: :any_skip_relocation, monterey:       "976cd806862faa7b3a461d8b23ba41b75ae376668b27d8837191edff0589be27"
-    sha256 cellar: :any_skip_relocation, big_sur:        "05124b6b34314e60394de24538131ce94d571f228a20d228bbb149fd9fb46f8b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "591f26134c90d5759626fc4ef41fc6b1c0f1e97daaa837e5df901edadd6f4312"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2bd4e5ca082fbe1213948c2d3180fb2f2ee7b4824ce1501152a4b90fc8d0dc5b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f00f31738d826ddeddda85ef58945d5a638d2df77e8bc414a7cf775ff364b9a2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "3bf2c152352abe854f5856ccf29285664b999e5576727c4cc3a39df77b759006"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4052845ee834ad14ef994f406410748e86dce4a0650dfea716415ed14ec5d802"
+    sha256 cellar: :any_skip_relocation, ventura:       "6293f55969368e397f04eab6c1866f3c8ca84383bf35ab55dc2cc8aa34f0f755"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f7b6ff364a4a8dce7ed2dcc5d5aada4237852a1d3955de44e3f63d3ff1d76665"
   end
 
   uses_from_macos "perl"
@@ -40,18 +35,18 @@ class Lcov < Formula
     end
 
     resource "DateTime" do
-      url "https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/DateTime-1.59.tar.gz"
-      sha256 "de3e9a63ce15470b4db4adad4ba6ac8ec297d88c0c6c6b354b081883b0a67695"
+      url "https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/DateTime-1.65.tar.gz"
+      sha256 "0bfda7ff0253fb3d88cf4bdb5a14afb8cea24d147975d5bdf3c88b40e7ab140e"
     end
 
     resource "DateTime::Locale" do
-      url "https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/DateTime-Locale-1.38.tar.gz"
-      sha256 "dd7f6d358279d1df0ea7d78b9127690435246cdf46867500e9888016f9d4c867"
+      url "https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/DateTime-Locale-1.42.tar.gz"
+      sha256 "7d8a138fa32faf24af30a1dbdee4dd11988ddb6a129138004d220b6cc4053cb0"
     end
 
     resource "DateTime::TimeZone" do
-      url "https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/DateTime-TimeZone-2.60.tar.gz"
-      sha256 "f0460d379323905b579bed44e141237a337dc25dd26b6ab0c60ac2b80629323d"
+      url "https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/DateTime-TimeZone-2.62.tar.gz"
+      sha256 "6214f9c9c8dfa2000bae912ef2b8ebc5b163a83a0b5b2a82705162dad63466fa"
     end
 
     resource "namespace::autoclean" do
@@ -65,8 +60,8 @@ class Lcov < Formula
     end
 
     resource "B::Hooks::EndOfScope" do
-      url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/B-Hooks-EndOfScope-0.26.tar.gz"
-      sha256 "39df2f8c007a754672075f95b90797baebe97ada6d944b197a6352709cb30671"
+      url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/B-Hooks-EndOfScope-0.28.tar.gz"
+      sha256 "edac77a17fc36620c8324cc194ce1fad2f02e9fcbe72d08ad0b2c47f0c7fd8ef"
     end
 
     resource "Module::Implementation" do
@@ -85,8 +80,8 @@ class Lcov < Formula
     end
 
     resource "Variable::Magic" do
-      url "https://cpan.metacpan.org/authors/id/V/VP/VPIT/Variable-Magic-0.63.tar.gz"
-      sha256 "ba4083b2c31ff2694f2371333d554c826aaf24b4d98d03e48b5b4a43a2a0e679"
+      url "https://cpan.metacpan.org/authors/id/V/VP/VPIT/Variable-Magic-0.64.tar.gz"
+      sha256 "9f7853249c9ea3b4df92fb6b790c03a60680fc029f44c8bf9894dccf019516bd"
     end
 
     resource "Sub::Exporter::Progressive" do
@@ -135,8 +130,8 @@ class Lcov < Formula
     end
 
     resource "Devel::StackTrace" do
-      url "https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/Devel-StackTrace-2.04.tar.gz"
-      sha256 "cd3c03ed547d3d42c61fa5814c98296139392e7971c092e09a431f2c9f5d6855"
+      url "https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/Devel-StackTrace-2.05.tar.gz"
+      sha256 "63cb6196e986a7e578c4d28b3c780e7194835bfc78b68eeb8f00599d4444888c"
     end
 
     resource "Params::ValidationCompiler" do
@@ -176,7 +171,7 @@ class Lcov < Formula
   end
 
   def install
-    ENV.prepend_create_path "PERL5LIB", libexec+"lib/perl5"
+    ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
 
     resources.each do |r|
       r.stage do
@@ -192,34 +187,24 @@ class Lcov < Formula
       end
     end
 
-    system "make", "PREFIX=#{prefix}", "BIN_DIR=#{bin}", "MAN_DIR=#{man}", "install"
-
-    # Disable dynamic selection of perl which may cause segfault when an
-    # incompatible perl is picked up.
-    # https://github.com/Homebrew/homebrew-core/issues/4936
-    rewrite_shebang detected_perl_shebang, *bin.children
-
+    system "make", "PREFIX=#{prefix}", "install"
     bin.env_script_all_files(libexec/"bin", PERL5LIB: ENV["PERL5LIB"])
   end
 
   test do
-    gcc = ENV.cc
-    gcov = "gcov"
-
-    (testpath/"hello.c").write <<~EOS
+    (testpath/"hello.c").write <<~C
       #include <stdio.h>
-      int main(void)
-      {
-          puts("hello world");
-          return 0;
+      int main() {
+        puts("hello world");
+        return 0;
       }
-    EOS
+    C
 
-    system gcc, "-g", "-O2", "--coverage", "-o", "hello", "hello.c"
+    system ENV.cc, "-g", "-O2", "--coverage", "-o", "hello", "hello.c"
     system "./hello"
-    system "#{bin}/lcov", "--gcov-tool", gcov, "--directory", ".", "--capture", "--output-file", "all_coverage.info"
+    system bin/"lcov", "--gcov-tool", "gcov", "--directory", ".", "--capture", "--output-file", "all_coverage.info"
 
-    assert_predicate testpath/"all_coverage.info", :exist?
+    assert_path_exists testpath/"all_coverage.info"
     assert_includes (testpath/"all_coverage.info").read, testpath/"hello.c"
   end
 end

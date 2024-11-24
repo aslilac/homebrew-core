@@ -1,20 +1,20 @@
 class Osm2pgrouting < Formula
   desc "Import OSM data into pgRouting database"
   homepage "https://pgrouting.org/docs/tools/osm2pgrouting.html"
-  url "https://github.com/pgRouting/osm2pgrouting/archive/v2.3.8.tar.gz"
+  url "https://github.com/pgRouting/osm2pgrouting/archive/refs/tags/v2.3.8.tar.gz"
   sha256 "e3a58bcacf0c8811e0dcf3cf3791a4a7cc5ea2a901276133eacf227b30fd8355"
   license "GPL-2.0-or-later"
-  revision 8
+  revision 13
   head "https://github.com/pgRouting/osm2pgrouting.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b3fdaf7736e3f57e03ee5ab6deea261ff05e170f762449150c8bee8ea6cca162"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e14af470561defe1a20cf4525a6e40216ee20930ec01ee57f4d41590245450bf"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "66bdaeeb3d7413ffaffe445c9b20ef3476695ef07f2ec5c11c50a0c0d52fd6bd"
-    sha256 cellar: :any_skip_relocation, ventura:        "fd4b01a6522b2dab4095605369523d6d91cf6916a76f12cc10ce27a2c9ac96a3"
-    sha256 cellar: :any_skip_relocation, monterey:       "c0cf0ba86c28ef807a0f28c5afc68b7ef84efbe1da1c6a08d1ab8d2a6c199495"
-    sha256 cellar: :any_skip_relocation, big_sur:        "cc040dc98abdf5ebf358dbc4993c1aa473fcd63b4b59a30814682655815a94e6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0ff316a52c203ad1d7ce333198f5c77ad0f86e1ef3ac6ab35fb8017496e5f128"
+    sha256 cellar: :any, arm64_sequoia:  "8d266eab6016b6da8563a322d14fc3ba50c16ac96bdf0731cd26ab93251b8263"
+    sha256 cellar: :any, arm64_sonoma:   "65d7687ba5f23d47d7ee737050706fcd2663cf185d6a8e35a6e8e6ff5cec2d87"
+    sha256 cellar: :any, arm64_ventura:  "88adc64e52319b44b1f3f0e73d9511a3e36db0040859d9b528aa76a02570666d"
+    sha256 cellar: :any, arm64_monterey: "81565a691a1f95000e45594e0f7c938d7960694c5e4722d013bc4fe4c54401ca"
+    sha256 cellar: :any, sonoma:         "1b1702478ac4b650960b2227dd605dc84a6e8d15c5da96d3973a700545425bfc"
+    sha256 cellar: :any, ventura:        "ed29492dadc022e58bb198e7ab20871d3c45272abacbd99d7c350c13d6ae0995"
+    sha256 cellar: :any, monterey:       "0f7cdcc3eb7ddbabf32a02836a733e709a0ebbcd0e4158316536daebf8b67246"
   end
 
   depends_on "cmake" => :build
@@ -27,14 +27,40 @@ class Osm2pgrouting < Formula
 
   fails_with gcc: "5"
 
+  # Fix build failure due to missing include
+  # src/osm_elements/osm_tag.cpp:34:18: error: 'transform' is not a member of 'std'
+  patch :DATA
+
   def install
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args
-      system "make", "install"
+    # Work around an Xcode 15 linker issue which causes linkage against LLVM's
+    # libunwind due to it being present in a library search path.
+    if DevelopmentTools.clang_build_version >= 1500
+      recursive_dependencies
+        .select { |d| d.name.match?(/^llvm(@\d+)?$/) }
+        .map { |llvm_dep| llvm_dep.to_formula.opt_lib }
+        .each { |llvm_lib| ENV.remove "HOMEBREW_LIBRARY_PATHS", llvm_lib }
     end
+
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
     system bin/"osm2pgrouting", "--help"
   end
 end
+
+__END__
+diff --git a/src/osm_elements/osm_tag.cpp b/src/osm_elements/osm_tag.cpp
+index 6f122ec..b41d6ff 100644
+--- a/src/osm_elements/osm_tag.cpp
++++ b/src/osm_elements/osm_tag.cpp
+@@ -20,6 +20,7 @@
+
+
+ #include "osm_elements/osm_tag.h"
++#include <algorithm>
+ #include <string>
+
+ namespace osm2pgr {

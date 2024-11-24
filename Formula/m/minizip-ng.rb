@@ -1,19 +1,20 @@
 class MinizipNg < Formula
   desc "Zip file manipulation library with minizip 1.x compatibility layer"
   homepage "https://github.com/zlib-ng/minizip-ng"
-  url "https://github.com/zlib-ng/minizip-ng/archive/4.0.1.tar.gz"
-  sha256 "63e47a2b4dbac0da501f43f4da74f118dfb3ef0dee0ffbbe89428271002260f8"
+  url "https://github.com/zlib-ng/minizip-ng/archive/refs/tags/4.0.7.tar.gz"
+  sha256 "a87f1f734f97095fe1ef0018217c149d53d0f78438bcb77af38adc21dff2dfbc"
   license "Zlib"
   head "https://github.com/zlib-ng/minizip-ng.git", branch: "dev"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "e484205371faa8b30f0509e38cc1347e70e94d99f9e865ef91479cad893e5ba3"
-    sha256 cellar: :any,                 arm64_monterey: "550ac0a95b97f5804ab42b3b58ad9d2607ece88f7fabf814da5b8b37bedfd4e5"
-    sha256 cellar: :any,                 arm64_big_sur:  "62c51c16e85d601aee766b170086ade14aa5e52558a60961307e119b3061cfb5"
-    sha256 cellar: :any,                 ventura:        "53d10a56a333757da78113d470b41399f56801924ddd1b3931a45a25796e04eb"
-    sha256 cellar: :any,                 monterey:       "e4d99c38740b4b1b6a6e88d1716216ae80b9fc0d4789913dde7a2d0c047b9399"
-    sha256 cellar: :any,                 big_sur:        "dd08374028fcb1670712821f20d109cb416a6929f4327b1bbe4f962a06d6c3ad"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "63f4cfe9d958b6d6ee738b89bb4fe425f82e0ab463b8ecb96d92601dfdf857a2"
+    sha256 cellar: :any,                 arm64_sequoia:  "d622ccfef83d7e940f3741faa660ea65a86b0b88607ad342c9cbf61b7d121908"
+    sha256 cellar: :any,                 arm64_sonoma:   "34b1969b53e8f3432499789af0defac42027c440e32ba1df2a3e31d6a8fd87c5"
+    sha256 cellar: :any,                 arm64_ventura:  "e03beb8fdeabfec130141c86e607020713357766aa2034a26eb373f82044c2bc"
+    sha256 cellar: :any,                 arm64_monterey: "0a74f9330b6f34afc554840df5214649e920b0669c2f4b70235cdb1423bb4e9e"
+    sha256 cellar: :any,                 sonoma:         "32999c125bdfb8e3e6f20a892f8c802ccddc192ed4b9e64f0cabfdbfe1d65f97"
+    sha256 cellar: :any,                 ventura:        "d9ebd676a4d2ad996b0f8d9de8a30ca045552edb4fa381698b37da3c8d7d5295"
+    sha256 cellar: :any,                 monterey:       "7e5f18ef56fe482184ace1a7686ea5d2d1e5423e92558c5b8c58566f53ee72d0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a2ed7856d5ac6319e6e9c09b86aded5d1361c2064296d0dda76c28be0f64692a"
   end
 
   depends_on "cmake" => :build
@@ -28,26 +29,25 @@ class MinizipNg < Formula
     depends_on "openssl@3"
   end
 
-  conflicts_with "minizip", because: "both install a `libminizip.a` library"
-  conflicts_with "libtcod", "libzip", because: "libtcod, libzip and minizip-ng install a `zip.h` header"
-
   def install
-    system "cmake", "-S", ".", "-B", "build/shared",
-                    "-DMZ_FETCH_LIBS=OFF",
-                    "-DBUILD_SHARED_LIBS=ON",
-                    *std_cmake_args
+    args = %w[
+      -DMZ_FETCH_LIBS=OFF
+      -DMZ_LIB_SUFFIX=-ng
+      -DMZ_LIBCOMP=OFF
+      -DMZ_ZLIB=ON
+    ]
+
+    system "cmake", "-S", ".", "-B", "build/shared", "-DBUILD_SHARED_LIBS=ON", *args, *std_cmake_args
     system "cmake", "--build", "build/shared"
     system "cmake", "--install", "build/shared"
 
-    system "cmake", "-S", ".", "-B", "build/static",
-                    "-DMZ_FETCH_LIBS=OFF",
-                    *std_cmake_args
+    system "cmake", "-S", ".", "-B", "build/static", *args, *std_cmake_args
     system "cmake", "--build", "build/static"
-    lib.install "build/static/libminizip.a"
+    lib.install "build/static/libminizip-ng.a"
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdlib.h>
       #include <stdint.h>
       #include <time.h>
@@ -58,9 +58,9 @@ class MinizipNg < Formula
         zipFile hZip = zipOpen2_64("test.zip", APPEND_STATUS_CREATE, NULL, NULL);
         return hZip != NULL && mz_zip_close(NULL) == MZ_PARAM_ERROR ? 0 : 1;
       }
-    EOS
+    C
 
-    system ENV.cc, "test.c", "-I#{include}/minizip", "-L#{lib}", "-lminizip", "-o", "test"
+    system ENV.cc, "test.c", "-I#{include}/minizip-ng", "-L#{lib}", "-lminizip-ng", "-o", "test"
     system "./test"
   end
 end

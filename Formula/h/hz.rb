@@ -1,8 +1,8 @@
 class Hz < Formula
   desc "Golang HTTP framework for microservices"
   homepage "https://github.com/cloudwego/hertz"
-  url "https://github.com/cloudwego/hertz/archive/refs/tags/cmd/hz/v0.6.6.tar.gz"
-  sha256 "ee40bde5d3b25a55dbb8b8c64bd5157939ad9b52056ec753c040757c191c13e5"
+  url "https://github.com/cloudwego/hertz/archive/refs/tags/cmd/hz/v0.9.1.tar.gz"
+  sha256 "0d894328108891d43355c92a7ccb48630fd9c1b9ae8306df81f8ba547ea268ea"
   license "Apache-2.0"
   head "https://github.com/cloudwego/hertz.git", branch: "develop"
 
@@ -12,30 +12,31 @@ class Hz < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5f01d3302ac00d72d69c4fb420049fec7ab1f3e97acbab082c49a6f058f04fb6"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5f01d3302ac00d72d69c4fb420049fec7ab1f3e97acbab082c49a6f058f04fb6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5f01d3302ac00d72d69c4fb420049fec7ab1f3e97acbab082c49a6f058f04fb6"
-    sha256 cellar: :any_skip_relocation, ventura:        "28dc54f8a5ff7edaf95223b92a7326d46961181291fe57d57f8c5aa4cd8b4da2"
-    sha256 cellar: :any_skip_relocation, monterey:       "28dc54f8a5ff7edaf95223b92a7326d46961181291fe57d57f8c5aa4cd8b4da2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "28dc54f8a5ff7edaf95223b92a7326d46961181291fe57d57f8c5aa4cd8b4da2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a91802feee185edbd89ff99a66d8bc74e513735a23a92024b1653b57e24d52af"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "61479a9c40925a86178ac02e323ac67426a2d3125b1e5cefc8758dfaf99b8846"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "88684bfd79820cd12a8b0a67703b52e4fac34cebda709b6f0a1c7e09d30104ab"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "72aaef0246a23f5b96d6273de8ecdb1c5f5057baa6a714ffc448d7225d0a4d4e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8c7e93ea14667b6e3f5b23b2c76ae222dc70700bd8ad61effac10f4194ced37e"
+    sha256 cellar: :any_skip_relocation, sonoma:         "28951831c4ff12ad203d486264eddb667a85f0bcc727cab972f7137da0331315"
+    sha256 cellar: :any_skip_relocation, ventura:        "fab58df6f5785d57cb1cfb76a1b4802ef55edaddf90a10395a43aa12ef66bfa1"
+    sha256 cellar: :any_skip_relocation, monterey:       "94b22308d44a143b1061e3591b8dc4259468f8a9c9a185fd574b9bd681791de3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9788112eb3e8e0bc5251d0884d4d6230b0936969d559747fcc20b062c91dc104"
   end
 
-  depends_on "go" => :build
+  depends_on "go" => [:build, :test]
 
   def install
     cd "cmd/hz" do
       system "go", "build", *std_go_args(ldflags: "-s -w")
     end
-    bin.install_symlink "#{bin}/hz" => "thrift-gen-hertz"
-    bin.install_symlink "#{bin}/hz" => "protoc-gen-hertz"
+    bin.install_symlink bin/"hz" => "thrift-gen-hertz"
+    bin.install_symlink bin/"hz" => "protoc-gen-hertz"
   end
 
   test do
     output = shell_output("#{bin}/hz --version 2>&1")
     assert_match "hz version v#{version}", output
 
-    system "#{bin}/hz", "new", "--mod=test"
+    system bin/"hz", "new", "--mod=test"
     assert_predicate testpath/"main.go", :exist?
     refute_predicate (testpath/"main.go").size, :zero?
   end

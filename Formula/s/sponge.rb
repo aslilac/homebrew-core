@@ -1,24 +1,24 @@
 class Sponge < Formula
   desc "Soak up standard input and write to a file"
   homepage "https://joeyh.name/code/moreutils/"
-  url "https://git.joeyh.name/index.cgi/moreutils.git/snapshot/moreutils-0.67.tar.gz"
-  sha256 "03872f42c22943b21c62f711b693c422a4b8df9d1b8b2872ef9a34bd5d13ad10"
+  url "https://git.joeyh.name/index.cgi/moreutils.git/snapshot/moreutils-0.69.tar.gz"
+  sha256 "0f795d25356ca61544966646fb707d5be0b9864116be0269df5433f62d4e05d1"
   license "GPL-2.0-only"
+  head "https://git.joeyh.name/git/moreutils.git", branch: "master"
 
   livecheck do
-    url "https://git.joeyh.name/index.cgi/moreutils.git"
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    formula "moreutils"
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ce141b2e0b0de716b47b7fc80353fd0c7ca558da0aef82ae1d304f952e3ebfad"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a57254622412effd18a9e7d88753c708c02cb6081d6e899b96daa3eec759a957"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "17b9a2476a46979dcebe8a8902946e1d03554dd197df116ebeaba653aaabbac9"
-    sha256 cellar: :any_skip_relocation, ventura:        "5adfcc6aea4ee0a9713fbac7c112b535ba54cf1e53c3d82f3d7d6f6695203824"
-    sha256 cellar: :any_skip_relocation, monterey:       "4f9f96e4c0aeda3b3e7902a4154442ee6273a2a439e3ba06786b4ece8754b2ed"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9a4fdc2bfe3320b1e048dbc449e0db5399400428cdfed8d8715fef75efbb9255"
-    sha256 cellar: :any_skip_relocation, catalina:       "152ec9fb508d0b368bc9d217f424236c45ef1766dd8d56d9a17eda638e8b38e9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "96b0fb51813140afe463f01ef509665eb4fa8e46b4bbbb6baaa42796101f8d33"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c2222a13d620121800f207f8af1b345e1cbf9e771c322e910e4f65b100c5d160"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9c72b740a203d02fd12bd27949f90e1662fdbbf1c9e19abcde0b66b9d032a9b2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "82d216473d739f924c7b973b4aae9f311c481c3412ebe6f0c1d58f46186327e8"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "35c308698a3368f0e2182e5a0a0b167222ed57f6bac9a0c28f1e13fc45e254b0"
+    sha256 cellar: :any_skip_relocation, sonoma:         "09d8cf8703e517cc9fb003c4ef0b7200a1542a064be631d6da30156cc7f1078f"
+    sha256 cellar: :any_skip_relocation, ventura:        "983d686c95825a8fe56952dadf415a6a0dbacacf281d0d0d51669539c5585f41"
+    sha256 cellar: :any_skip_relocation, monterey:       "7655e10c757e087426d388b1068a1b6dad16bf36c655bbd9436cff37dddaf816"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3ebabd0385ae159408efc8187938abdba896fa7fbac002d1e2efcdb555f15b87"
   end
 
   conflicts_with "moreutils", because: "both install a `sponge` executable"

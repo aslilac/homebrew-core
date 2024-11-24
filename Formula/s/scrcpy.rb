@@ -1,46 +1,46 @@
 class Scrcpy < Formula
   desc "Display and control your Android device"
   homepage "https://github.com/Genymobile/scrcpy"
-  url "https://github.com/Genymobile/scrcpy/archive/v2.1.1.tar.gz"
-  sha256 "6f3d055159cb125eabe940a901bef8a69e14e2c25f0e47554f846e7f26a36c4d"
+  url "https://github.com/Genymobile/scrcpy/archive/refs/tags/v2.7.tar.gz"
+  sha256 "3ceea215f6eccb59535f68a16db6db2b05a8a1c91bdcb4a6e222d3093a9daf8c"
   license "Apache-2.0"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 arm64_ventura:  "8fd1ae7b9d4241048a218f99475f29fac9650d3de7ff527a68524975fe1b47d9"
-    sha256 arm64_monterey: "6a2d920d0763d1fac9facd4d59bc43273eeea22e867c2ac73a4a7d8f1ce6be43"
-    sha256 arm64_big_sur:  "4c1b82c9e96fe9199c70b89ba1a6cc8da1796d1b206e3844d885e8d1d51d0e35"
-    sha256 ventura:        "28cfa8ce0b627b22a52bba40b140d5db462f6325d02a964206f4302f02af784e"
-    sha256 monterey:       "aeac2ec3ab6cb3b6a5bec2c59601893f4cead77c76f7cbad4d6116a3b61d4601"
-    sha256 big_sur:        "269024b209605443de8393a698a9e6d528f4bc8fb72a605749894d53f0def49f"
-    sha256 x86_64_linux:   "f3d222c2d5df53ccfb7af83d4a96fd1acb89c5c07456f91344205411062e9a51"
+    sha256 arm64_sequoia: "f0fee1075318ee78ec35066cff51f5faef4d3af0c81ecdad25686f89394f3aa1"
+    sha256 arm64_sonoma:  "afaf0bf5fc3c48997ca8a36c626e40c673564c638ac951c44d667fc8782e1906"
+    sha256 arm64_ventura: "9ace7a93c8b40a371863463945b703f68424d78433803028bcd9a3b77f619920"
+    sha256 sonoma:        "f3b446582e45ca9972c8de85734ba16d293916479ae73e4f11a2884ef554df50"
+    sha256 ventura:       "84791d738ac1d933573c9ab27f773ab5b378257b4465122f8f1413caaa9d7545"
+    sha256 x86_64_linux:  "694bc1df5e0064f05df84169b5e07f7bbd1f54191d8d35892fc61eb771676d8e"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "ffmpeg"
   depends_on "libusb"
   depends_on "sdl2"
 
-  fails_with gcc: "5"
-
   resource "prebuilt-server" do
-    url "https://github.com/Genymobile/scrcpy/releases/download/v2.1.1/scrcpy-server-v2.1.1"
-    sha256 "9558db6c56743a1dc03b38f59801fb40e91cc891f8fc0c89e5b0b067761f148e"
+    url "https://github.com/Genymobile/scrcpy/releases/download/v2.7/scrcpy-server-v2.7", using: :nounzip
+    sha256 "a23c5659f36c260f105c022d27bcb3eafffa26070e7baa9eda66d01377a1adba"
   end
 
   def install
-    r = resource("prebuilt-server")
-    r.fetch
-    cp r.cached_download, buildpath/"prebuilt-server.jar"
+    odie "prebuilt-server resource needs to be updated" if version != resource("prebuilt-server").version
 
-    mkdir "build" do
-      system "meson", *std_meson_args,
-                      "-Dprebuilt_server=#{buildpath}/prebuilt-server.jar",
-                      ".."
+    buildpath.install resource("prebuilt-server")
+    cp "scrcpy-server-v#{version}", "prebuilt-server.jar"
 
-      system "ninja", "install"
-    end
+    system "meson", "setup", "build", "-Dprebuilt_server=#{buildpath}/prebuilt-server.jar",
+                                      *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
   end
 
   def caveats

@@ -3,8 +3,10 @@ class Openslp < Formula
   homepage "http://www.openslp.org"
   url "https://downloads.sourceforge.net/project/openslp/2.0.0/2.0.0%20Release/openslp-2.0.0.tar.gz"
   sha256 "924337a2a8e5be043ebaea2a78365c7427ac6e9cee24610a0780808b2ba7579b"
+  license "BSD-3-Clause"
 
   bottle do
+    sha256 sonoma:       "9e94160f7db637d08229abcd518e0a67e876cb712e48273fa90ddf00a1b4a994"
     sha256 ventura:      "06a8525267384bb4eea04432b252c8e3063529b99d3d4a7203161115680c9d5c"
     sha256 monterey:     "4fe473351f951da2840deac362acc9d16d5159a30e2e5a84077d1de3ee4dcede"
     sha256 big_sur:      "3cc88f489dfe6e4e9566608ace194fb8e09a8cb28f80947d7454f03494d76341"

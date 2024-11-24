@@ -1,8 +1,8 @@
 class Nuget < Formula
   desc "Package manager for Microsoft development platform including .NET"
   homepage "https://www.nuget.org/"
-  url "https://dist.nuget.org/win-x86-commandline/v6.7.0/nuget.exe" # make sure libexec.install below matches case
-  sha256 "1a98b29bcc3aea4ba8ca66d35523f8e90cb28e54588f9c13589c50af5d8623c9"
+  url "https://dist.nuget.org/win-x86-commandline/v6.12.1/nuget.exe"
+  sha256 "0790bb7a0c898e44b70f2b65e3070b4db8af23897e38b8653d72d268b6e8bb11"
   license "MIT"
 
   livecheck do
@@ -11,12 +11,7 @@ class Nuget < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "33976e7a035a8769424068063bc0e597b84489b0907d1a6c592ca7a020ebb685"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "33976e7a035a8769424068063bc0e597b84489b0907d1a6c592ca7a020ebb685"
-    sha256 cellar: :any_skip_relocation, ventura:        "33976e7a035a8769424068063bc0e597b84489b0907d1a6c592ca7a020ebb685"
-    sha256 cellar: :any_skip_relocation, monterey:       "33976e7a035a8769424068063bc0e597b84489b0907d1a6c592ca7a020ebb685"
-    sha256 cellar: :any_skip_relocation, big_sur:        "33976e7a035a8769424068063bc0e597b84489b0907d1a6c592ca7a020ebb685"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "22a91716384fc612275395eaaa396657efeeb7038a41b136d6de46f7664f5dd8"
+    sha256 cellar: :any_skip_relocation, all: "0d7ac2c90083e7c9d1f9f0aa5ae96e5e3f5e126ff2bec3ea7c96a661bd91dbba"
   end
 
   depends_on "mono"

@@ -1,9 +1,9 @@
 class Glassfish < Formula
   desc "Java EE application server"
   homepage "https://glassfish.org/"
-  url "https://download.eclipse.org/ee4j/glassfish/glassfish-7.0.8.zip"
-  mirror "https://github.com/eclipse-ee4j/glassfish/releases/download/7.0.8/glassfish-7.0.8.zip"
-  sha256 "aabd63a2e6eef19d4e8f2c908035822c59a906bbda89b28a84dd3d2b01fce638"
+  url "https://download.eclipse.org/ee4j/glassfish/glassfish-7.0.18.zip"
+  mirror "https://github.com/eclipse-ee4j/glassfish/releases/download/7.0.18/glassfish-7.0.18.zip"
+  sha256 "873d8f84656bc8d9c6235ff7efb0101a58b130d06bbb2f9f8f61d06892498fe3"
   license "EPL-2.0"
 
   livecheck do
@@ -12,21 +12,23 @@ class Glassfish < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "acb208104a2319421d51c84f585d357a4bfb9b03535b8a5f8dbe169a9c3aa99b"
+    sha256 cellar: :any_skip_relocation, all: "fa1cbfc265bbaa49f52be222278f83a2391a1a76a686317e041d92a4f9b725a5"
   end
 
-  depends_on "openjdk@17"
+  # no java 22 support for glassfish 7.x
+  # https://github.com/eclipse-ee4j/glassfish/blob/master/docs/website/src/main/resources/download.md
+  depends_on "openjdk@21"
 
   conflicts_with "payara", because: "both install the same scripts"
 
   def install
     # Remove all windows files
-    rm_rf Dir["bin/*.bat", "glassfish/bin/*.bat"]
+    rm_r(Dir["bin/*.bat", "glassfish/bin/*.bat"])
 
     libexec.install Dir["*"]
     bin.install Dir["#{libexec}/bin/*"]
 
-    env = Language::Java.overridable_java_home_env("17")
+    env = Language::Java.overridable_java_home_env("21")
     env["GLASSFISH_HOME"] = libexec
     bin.env_script_all_files libexec/"bin", env
 

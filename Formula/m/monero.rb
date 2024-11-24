@@ -1,12 +1,10 @@
 class Monero < Formula
   desc "Official Monero wallet and CPU miner"
   homepage "https://www.getmonero.org/"
-  # TODO: Check if we can use unversioned `protobuf` at version bump
   url "https://github.com/monero-project/monero.git",
-      tag:      "v0.18.2.2",
-      revision: "e06129bb4d1076f4f2cebabddcee09f1e9e30dcc"
+      tag:      "v0.18.3.4",
+      revision: "b089f9ee69924882c5d14dd1a6991deb05d9d1cd"
   license "BSD-3-Clause"
-  revision 3
 
   livecheck do
     url :stable
@@ -14,13 +12,13 @@ class Monero < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "248771c9bc50bc5a7b903cfbe149982ac361a003eb6919069b622854555c913e"
-    sha256 cellar: :any,                 arm64_monterey: "8ad2591d01eaca15eb20e69dcc5348ea2a0c96b0bdb4d9a13bf822d6b3a8e53d"
-    sha256 cellar: :any,                 arm64_big_sur:  "7781801fa13ea21a4233ebd16f46bdfdf0a16409f385ac9e7447b1f4f9cc5972"
-    sha256 cellar: :any,                 ventura:        "eb2bfd2acdc6e8f7c5ec3028a9a09fa34d5eb531dec1f74a5df5c886228bf526"
-    sha256 cellar: :any,                 monterey:       "366c4fcebfe64f5bb031c1efefda3d528b47f019fc1f46a09b8db81ea7c31edf"
-    sha256 cellar: :any,                 big_sur:        "ffc14524e35b93b2734fcbabc5e4fb15a2c27bf81befaccca42e8ec47e63ba56"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ae2653d859456a9f0088d54784ce7e2be713c5675c8fb6443e185fbf64d36a7b"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "af115fd44add6e1643f166d660e97281677fe318a1a25fc34371724b123330f3"
+    sha256 cellar: :any,                 arm64_sonoma:  "d7e8ba33526fa789a65adaddd90eb34e7aa5ec1feca7078c067ae934b93b008d"
+    sha256 cellar: :any,                 arm64_ventura: "77f99a39564dce0c36f1badb749995378b8ebdbf01f76fe9be673da530c7066a"
+    sha256 cellar: :any,                 sonoma:        "9a729294d7b9ad7efbf447dc549a072fe5a5e80b76a2ab64f410dbbae1a8d70d"
+    sha256 cellar: :any,                 ventura:       "0e2a9df38bb06d01d210893852e461b45198a9aa3cc303185c1b96a992f172a5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c7128d896db006e490d80a1d9fd841f5ae27861b150c2cbe9c463280ceb633eb"
   end
 
   depends_on "cmake" => :build
@@ -30,12 +28,18 @@ class Monero < Formula
   depends_on "libsodium"
   depends_on "libusb"
   depends_on "openssl@3"
-  depends_on "protobuf@21"
+  depends_on "protobuf"
   depends_on "readline"
   depends_on "unbound"
   depends_on "zeromq"
 
   conflicts_with "wownero", because: "both install a wallet2_api.h header"
+
+  # Backport fix needed for boost 1.86.0+. Remove in the next release
+  patch do
+    url "https://github.com/monero-project/monero/commit/83dd5152e6d115426afbb57a94a832ec91b58a46.patch?full_index=1"
+    sha256 "b727fe58ff1211080141a0b14eaf451c98b9493195f0c2d356aee7709f0c5ef6"
+  end
 
   def install
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args

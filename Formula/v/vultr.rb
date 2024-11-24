@@ -1,21 +1,18 @@
 class Vultr < Formula
-  desc "Command-line tool for Vultr"
-  homepage "https://jamesclonk.github.io/vultr"
-  url "https://github.com/JamesClonk/vultr/archive/v2.0.3.tar.gz"
-  sha256 "6529d521a7fa006808cd07331f31256e91773ec7e1a0c7839cd14884034fb185"
-  license "MIT"
-  head "https://github.com/JamesClonk/vultr.git", branch: "master"
+  desc "Command-line tool for Vultr services"
+  homepage "https://github.com/vultr/vultr-cli"
+  url "https://github.com/vultr/vultr-cli/archive/refs/tags/v3.4.0.tar.gz"
+  sha256 "966161efc0f65c6f836503dfba9a3e2240ad6e54c76d83817fc99532808cf049"
+  license "Apache-2.0"
+  head "https://github.com/vultr/vultr-cli.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ff5a2ec1fea578672a8beb692ad0f90a93112b58cd7d4d6eda0123b481ab716e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bf784fbadf85aee96b6863bbd93cdb2e3c759e1c933474d318eda62142df3953"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d0d5bffa07a97813ca4eece9a0e396d8a0c76fdd738d5041ad5d82385cb05dda"
-    sha256 cellar: :any_skip_relocation, ventura:        "d1f9f15ac1405ccf00096f864783af3e391cd49dad780beccb4217c4ad1d19ad"
-    sha256 cellar: :any_skip_relocation, monterey:       "cae9e8ccd5b05b5675a6db499a9f4fa88f7e592ed03e377b5abcadfe1a9c399d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e7a764a5516eaf4923bd134a85f2a6a9c4f2b9537ff7b585e8a32a6581975cab"
-    sha256 cellar: :any_skip_relocation, catalina:       "b3fb6e155013b41bd2b48202e70ef0236be3e24b3f87cf1f1234e7a09e2e7e97"
-    sha256 cellar: :any_skip_relocation, mojave:         "7348b1e615d088dc03781613b17b7187827e9cc98e743fa472c617876f6a543a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "76f88487aacbd3d10decefd24e88e9e34e9a956c9b32bb325b34a37caebf71aa"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d5cef44b52842ad75fc500a57ca0530c985a17aef2ae19de28e87cd59e692ed2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d5cef44b52842ad75fc500a57ca0530c985a17aef2ae19de28e87cd59e692ed2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d5cef44b52842ad75fc500a57ca0530c985a17aef2ae19de28e87cd59e692ed2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "2587c93489246ceeb188e6096791f48749f071017c74070b4596a25a58af34b7"
+    sha256 cellar: :any_skip_relocation, ventura:       "2587c93489246ceeb188e6096791f48749f071017c74070b4596a25a58af34b7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d59d5aee65a95ea740c5909b096be5d701cd4e353fdf01ea186c245cc6af6029"
   end
 
   depends_on "go" => :build

@@ -2,18 +2,19 @@ class Gcc < Formula
   desc "GNU compiler collection"
   homepage "https://gcc.gnu.org/"
   license "GPL-3.0-or-later" => { with: "GCC-exception-3.1" }
+  revision 1
   head "https://gcc.gnu.org/git/gcc.git", branch: "master"
 
   stable do
-    url "https://ftp.gnu.org/gnu/gcc/gcc-13.1.0/gcc-13.1.0.tar.xz"
-    mirror "https://ftpmirror.gnu.org/gcc/gcc-13.1.0/gcc-13.1.0.tar.xz"
-    sha256 "61d684f0aa5e76ac6585ad8898a2427aade8979ed5e7f85492286c4dfc13ee86"
+    url "https://ftp.gnu.org/gnu/gcc/gcc-14.2.0/gcc-14.2.0.tar.xz"
+    mirror "https://ftpmirror.gnu.org/gcc/gcc-14.2.0/gcc-14.2.0.tar.xz"
+    sha256 "a7b39bc69cbf9e25826c5a60ab26477001f7c08d85cec04bc0e29cabed6f3cc9"
 
     # Branch from the Darwin maintainer of GCC, with a few generic fixes and
-    # Apple Silicon support, located at https://github.com/iains/gcc-13-branch
+    # Apple Silicon support, located at https://github.com/iains/gcc-14-branch
     patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/5c206c47/gcc/gcc-13.1.0.diff"
-      sha256 "cb4e8a89387f748a744da0273025d0dc2e3c76780cc390b18ada704676afea11"
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/f30c309442a60cfb926e780eae5d70571f8ab2cb/gcc/gcc-14.2.0-r2.diff"
+      sha256 "6c0a4708f35ccf2275e6401197a491e3ad77f9f0f9ef5761860768fa6da14d3d"
     end
   end
 
@@ -23,13 +24,13 @@ class Gcc < Formula
   end
 
   bottle do
-    sha256                               arm64_ventura:  "d2b21a257c73e9b8f9c6bc03e6330ea8ba9fb3e7cdb9eb945d7ff7d96ba9708c"
-    sha256                               arm64_monterey: "5405f3b1ecdabb68e161308f35d72af907af21694a0e2b67f10edb25b2dd8f90"
-    sha256                               arm64_big_sur:  "cc92fced3516bc72b69e31b0495fe416f206b540be02f1c817db96afbcc38f28"
-    sha256                               ventura:        "3abd8c2c88a8e74b5df5c44f9c151ff7e760cf705307ecf3c95762492e777f1e"
-    sha256                               monterey:       "f9cbc7eb14781df9228518a2d02590941206947e7dc419c0b232d523f39b1475"
-    sha256                               big_sur:        "2eb458ed309ea4fa9451ab547fa3d797bd523ba4f50f01d5c997212109b74e5e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cca77a5d6625d3bb711ce40551751974d4cb5c74306329fc2fc8cdcade2ef564"
+    sha256                               arm64_sequoia: "96d8bf02f621cfa180cfe6c466fe0aff2cf3f48eab52ea5a5232cdd2a5cc30c4"
+    sha256                               arm64_sonoma:  "4d94c81d3aea48d77d6e7d7d359d05b48024bac44ade59e08dc3fe0f62539a17"
+    sha256                               arm64_ventura: "2869b13880fbe3d3d9d074e3b5f2dbf3bd0593f826d11b8b10165fd489b94deb"
+    sha256                               sequoia:       "548e5453b0cbf88fe86d63aeef2dacfa7eacc030ccdf037113add3040d64db50"
+    sha256                               sonoma:        "901263863f3f4e8b99f9ffb1cccdb00e5fe74fd1013ac79d37af7ce07f600123"
+    sha256                               ventura:       "7832d72cd4f578e244d5b920f2523e77b8f30328229440a569afa5a88df353fb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0902085b2185b224dd20c2ee5f12d83284cdbb68d0dab1e2edbd4c6603545de6"
   end
 
   # The bottles are built on systems with the CLT installed, and do not work
@@ -42,7 +43,14 @@ class Gcc < Formula
   depends_on "mpfr"
   depends_on "zstd"
 
+  uses_from_macos "flex" => :build
+  uses_from_macos "m4" => :build
   uses_from_macos "zlib"
+
+  on_macos do
+    # macOS make is too old, has intermittent parallel build issue
+    depends_on "make" => :build
+  end
 
   on_linux do
     depends_on "binutils"
@@ -67,7 +75,7 @@ class Gcc < Formula
     #  - Ada and D, which require a pre-existing GCC to bootstrap
     #  - Go, currently not supported on macOS
     #  - BRIG
-    languages = %w[c c++ objc obj-c++ fortran]
+    languages = %w[c c++ objc obj-c++ fortran m2]
 
     pkgversion = "Homebrew GCC #{pkg_version} #{build.used_options*" "}".strip
 
@@ -97,6 +105,8 @@ class Gcc < Formula
       # System headers may not be in /usr/include
       sdk = MacOS.sdk_path_if_needed
       args << "--with-sysroot=#{sdk}" if sdk
+
+      make_args = []
     else
       # Fix cc1: error while loading shared libraries: libisl.so.15
       args << "--with-boot-ldflags=-static-libstdc++ -static-libgcc #{ENV.ldflags}"
@@ -110,11 +120,17 @@ class Gcc < Formula
       # Change the default directory name for 64-bit libraries to `lib`
       # https://stackoverflow.com/a/54038769
       inreplace "gcc/config/i386/t-linux64", "m64=../lib64", "m64="
+      inreplace "gcc/config/aarch64/t-aarch64-linux", "lp64=../lib64", "lp64="
+
+      make_args = %W[
+        BOOT_CFLAGS=-I#{Formula["zlib"].opt_include}
+        BOOT_LDFLAGS=-L#{Formula["zlib"].opt_lib}
+      ]
     end
 
     mkdir "build" do
       system "../configure", *args
-      system "make"
+      system "gmake", *make_args
 
       # Do not strip the binaries on macOS, it makes them unsuitable
       # for loading plugins
@@ -123,11 +139,12 @@ class Gcc < Formula
       # To make sure GCC does not record cellar paths, we configure it with
       # opt_prefix as the prefix. Then we use DESTDIR to install into a
       # temporary location, then move into the cellar path.
-      system "make", install_target, "DESTDIR=#{Pathname.pwd}/../instdir"
+      system "gmake", install_target, "DESTDIR=#{Pathname.pwd}/../instdir"
       mv Dir[Pathname.pwd/"../instdir/#{opt_prefix}/*"], prefix
     end
 
     bin.install_symlink bin/"gfortran-#{version_suffix}" => "gfortran"
+    bin.install_symlink bin/"gm2-#{version_suffix}" => "gm2"
 
     # Provide a `lib/gcc/xy` directory to align with the versioned GCC formulae.
     # We need to create `lib/gcc/xy` as a directory and not a symlink to avoid `brew link` conflicts.
@@ -141,11 +158,11 @@ class Gcc < Formula
     # Rename man7.
     man7.glob("*.7") { |file| add_suffix file, version_suffix }
     # Even when we disable building info pages some are still installed.
-    info.rmtree
+    rm_r(info)
 
     # Work around GCC install bug
     # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105664
-    rm_rf bin.glob("*-gcc-tmp")
+    rm_r(bin.glob("*-gcc-tmp"))
   end
 
   def add_suffix(file, suffix)
@@ -179,7 +196,7 @@ class Gcc < Formula
       specs = libgcc/"specs"
       ohai "Creating the GCC specs file: #{specs}"
       specs_orig = Pathname.new("#{specs}.orig")
-      rm_f [specs_orig, specs]
+      rm([specs_orig, specs].select(&:exist?))
 
       system_header_dirs = ["#{HOMEBREW_PREFIX}/include"]
 
@@ -236,18 +253,18 @@ class Gcc < Formula
   end
 
   test do
-    (testpath/"hello-c.c").write <<~EOS
+    (testpath/"hello-c.c").write <<~C
       #include <stdio.h>
       int main()
       {
         puts("Hello, world!");
         return 0;
       }
-    EOS
-    system "#{bin}/gcc-#{version_suffix}", "-o", "hello-c", "hello-c.c"
+    C
+    system bin/"gcc-#{version_suffix}", "-o", "hello-c", "hello-c.c"
     assert_equal "Hello, world!\n", shell_output("./hello-c")
 
-    (testpath/"hello-cc.cc").write <<~EOS
+    (testpath/"hello-cc.cc").write <<~CPP
       #include <iostream>
       struct exception { };
       int main()
@@ -258,11 +275,11 @@ class Gcc < Formula
           catch (...) { }
         return 0;
       }
-    EOS
-    system "#{bin}/g++-#{version_suffix}", "-o", "hello-cc", "hello-cc.cc"
+    CPP
+    system bin/"g++-#{version_suffix}", "-o", "hello-cc", "hello-cc.cc"
     assert_equal "Hello, world!\n", shell_output("./hello-cc")
 
-    (testpath/"test.f90").write <<~EOS
+    (testpath/"test.f90").write <<~FORTRAN
       integer,parameter::m=10000
       real::a(m), b(m)
       real::fact=0.5
@@ -272,8 +289,19 @@ class Gcc < Formula
       end do
       write(*,"(A)") "Done"
       end
-    EOS
-    system "#{bin}/gfortran", "-o", "test", "test.f90"
+    FORTRAN
+    system bin/"gfortran", "-o", "test", "test.f90"
     assert_equal "Done\n", shell_output("./test")
+
+    (testpath/"hello.mod").write <<~EOS
+      MODULE hello;
+      FROM InOut IMPORT WriteString, WriteLn;
+      BEGIN
+           WriteString("Hello, world!");
+           WriteLn;
+      END hello.
+    EOS
+    system bin/"gm2", "-o", "hello-m2", "hello.mod"
+    assert_equal "Hello, world!\n", shell_output("./hello-m2")
   end
 end

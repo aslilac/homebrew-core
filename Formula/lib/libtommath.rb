@@ -1,22 +1,20 @@
 class Libtommath < Formula
   desc "C library for number theoretic multiple-precision integers"
   homepage "https://www.libtom.net/LibTomMath/"
-  url "https://github.com/libtom/libtommath/releases/download/v1.2.0/ltm-1.2.0.tar.xz"
-  sha256 "b7c75eecf680219484055fcedd686064409254ae44bc31a96c5032843c0e18b1"
+  url "https://github.com/libtom/libtommath/releases/download/v1.3.0/ltm-1.3.0.tar.xz"
+  sha256 "296272d93435991308eb73607600c034b558807a07e829e751142e65ccfa9d08"
   license "Unlicense"
-  revision 3
   head "https://github.com/libtom/libtommath.git", branch: "develop"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "bfe5f7f1184702feaaabed511572425eb81b6b9f4772e2c38b3bd954f91f240e"
-    sha256 cellar: :any,                 arm64_monterey: "ea435dd09c0b6d91970b9dc536520c5edc7ddec508d91843526afb7ca80c878c"
-    sha256 cellar: :any,                 arm64_big_sur:  "b91f82bc2fd4b0e36615b3ce67833e41a5bfde5fc35d0f29b1b20c49bbc31d89"
-    sha256 cellar: :any,                 ventura:        "dd9b7adb10769bdf3dc1db08d6469957e2477a687d964f1517d27e1196f1bd3f"
-    sha256 cellar: :any,                 monterey:       "8df158fbb61b6ef9a160356038b53f404b129f966d0380c23cfc98c24c06613b"
-    sha256 cellar: :any,                 big_sur:        "0f2e569f0625e7f52974b6cc69cdc51ee83dc8c302af03863fb3926fdc9c768f"
-    sha256 cellar: :any,                 catalina:       "35421851dc5c86313eda9b351b5401196d757e4e8de90fd410029862704a5f8d"
-    sha256 cellar: :any,                 mojave:         "631d118cba4e115604723dea978a4c439fd150480f7526bbcd2feec70300da83"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4a78383492eb1c176157a3d720d3f6e64c40cdda284acfca3ecd08f7095ea8b8"
+    sha256 cellar: :any,                 arm64_sequoia:  "180de0f47bf4ce7ec3a513db509d368e148b42e50cf310666bf9c60a78cf778b"
+    sha256 cellar: :any,                 arm64_sonoma:   "6b17949dbb9a6a751816e0a39f441a6028b680d15960fe3fdb6686721dac70f3"
+    sha256 cellar: :any,                 arm64_ventura:  "ebd34b24dcd868425c2ef5496fdb8d48c852c702cdd0cb77f2d9be123b308163"
+    sha256 cellar: :any,                 arm64_monterey: "1e5ac48668cad1a316975799e6467708b5b0e20472ab7dca7bc167e9348e6f89"
+    sha256 cellar: :any,                 sonoma:         "cba9f676decfce08aedbc85a2caf32603d93eb186e93b2af1e96fe8bf595b11f"
+    sha256 cellar: :any,                 ventura:        "b0e54d27c97e9bad7b9377cb2ba3621c59c5ecd2e231d71b2181316febb008b5"
+    sha256 cellar: :any,                 monterey:       "edc215c19f0ee0fd1daa89879a7bc933bf25ddee3b374e4e7b60a8acbaa6f5c3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a7023ad5964a1ccfbbbe850cb0979ffa220a65177efd87e0bb751bcf5a3832ba"
   end
 
   depends_on "libtool" => :build

@@ -1,23 +1,24 @@
 class Openexr < Formula
   desc "High dynamic-range image file format"
   homepage "https://www.openexr.com/"
-  url "https://github.com/AcademySoftwareFoundation/openexr/archive/v3.1.11.tar.gz"
-  sha256 "06b4a20d0791b5ec0f804c855d320a0615ce8445124f293616a086e093f1f1e1"
+  url "https://github.com/AcademySoftwareFoundation/openexr/archive/refs/tags/v3.3.2.tar.gz"
+  sha256 "5013e964de7399bff1dd328cbf65d239a989a7be53255092fa10b85a8715744d"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "70521fc5a3751da3ada8d80bfba75dced5201e659aeb09b05cc37fac7fc4da56"
-    sha256 cellar: :any,                 arm64_monterey: "932626ddcd8e4ae704d3019f396d669261c07a51f3f8403d7e21e0ce5c5256fa"
-    sha256 cellar: :any,                 arm64_big_sur:  "bf9a8ead5761f72046a61ed57202f1f15129d6bedbdfedc36394dcbaf3b22d99"
-    sha256 cellar: :any,                 ventura:        "f3a6d2517f8bc62dbd2ebb46583986727fd86d6cbe4bcef7ea928d2a11c18d32"
-    sha256 cellar: :any,                 monterey:       "3926469f66d680cffd798d48b216d3d7b6ff8b525a99b76094b7d644c955f0b0"
-    sha256 cellar: :any,                 big_sur:        "a21a65950dafb1634796b505da7e008e8ceeb9d8b9949e1b59a753bd860932f5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5a8e3e188d2a47ecfc0d7f1de24a3a142fc82bdc2bfda5c76174e51bef0f9deb"
+    sha256 cellar: :any,                 arm64_sequoia: "15c440ea45fe300c8756c9013538b86d946ed456f425c01afafb33ff1a8da7d5"
+    sha256 cellar: :any,                 arm64_sonoma:  "0fe7eadd18353953998350145a571f9345785dd13d4f7a6b68d4ac76b5981732"
+    sha256 cellar: :any,                 arm64_ventura: "af8d8617924061ea03870e15c819d6517d7af6560eb4636b99bdd30c34eb96e2"
+    sha256 cellar: :any,                 sonoma:        "94a0453a5ec9b940438dd111a56e762275915851d61ea5d5eb43e510172b1e08"
+    sha256 cellar: :any,                 ventura:       "575cdfa90c04906376aa9083f75f0405c38ffb5b033164f140244a3e572d854d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "544108614f9156fde192de0bb340669a48a175b1d1c8e4a549b7ea14011f59c7"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+
   depends_on "imath"
+  depends_on "libdeflate"
 
   uses_from_macos "zlib"
 
@@ -28,19 +29,18 @@ class Openexr < Formula
   link_overwrite "lib/libIlmThread.dylib"
   link_overwrite "lib/libIlmThread.so"
 
-  resource "homebrew-exr" do
-    url "https://github.com/AcademySoftwareFoundation/openexr-images/raw/f17e353fbfcde3406fe02675f4d92aeae422a560/TestImages/AllHalfValues.exr"
-    sha256 "eede573a0b59b79f21de15ee9d3b7649d58d8f2a8e7787ea34f192db3b3c84a4"
-  end
-
   def install
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
+    resource "homebrew-exr" do
+      url "https://github.com/AcademySoftwareFoundation/openexr-images/raw/f17e353fbfcde3406fe02675f4d92aeae422a560/TestImages/AllHalfValues.exr"
+      sha256 "eede573a0b59b79f21de15ee9d3b7649d58d8f2a8e7787ea34f192db3b3c84a4"
+    end
+
     resource("homebrew-exr").stage do
       system bin/"exrheader", "AllHalfValues.exr"
     end

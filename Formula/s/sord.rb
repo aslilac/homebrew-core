@@ -1,8 +1,8 @@
 class Sord < Formula
   desc "C library for storing RDF data in memory"
   homepage "https://drobilla.net/software/sord.html"
-  url "https://download.drobilla.net/sord-0.16.14.tar.xz"
-  sha256 "220fd97d5fcb216e7b85db66f685bfdaad7dc58a50d1f96dfb2558dbc6c4731b"
+  url "https://download.drobilla.net/sord-0.16.16.tar.xz"
+  sha256 "257f876d756143da02ee84c9260af93559d6249dd87f317e70ab5fffcc975fd0"
   license "ISC"
 
   livecheck do
@@ -11,28 +11,28 @@ class Sord < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_ventura:  "20489ceee76a03468222d1664ab094b742974816d2dfee437eab8c12009a16c4"
-    sha256 cellar: :any, arm64_monterey: "96032d07b0ac3f7364b721c935a215c6f792abbf79a8ad6004638794ae65a4d5"
-    sha256 cellar: :any, arm64_big_sur:  "b7ceac3c480159338053a7dd2da2ecab47bf61c238332a10f8700470101cc226"
-    sha256 cellar: :any, ventura:        "2dcbcfef5db2ad4ab4e44addeda16ba5490d9e773015e8137c7005956dd40c28"
-    sha256 cellar: :any, monterey:       "5181253c794efcb69212b0b22573cadd5d2d92161c1b6a725a74c40dcd718f6f"
-    sha256 cellar: :any, big_sur:        "b2f8da7c926a2280fcd124bf494a7307c5a655cd3d266791b03b34556839fda8"
-    sha256 cellar: :any, catalina:       "faf8da2bf68426cb85aafdc8f3caaf2cbb246c2d8369b7c390b803e53b209331"
-    sha256               x86_64_linux:   "b1f84037affacbb7878f87d88c10944681091bc4633f24170e7869ac72aa0182"
+    rebuild 1
+    sha256 cellar: :any, arm64_sequoia:  "9534a78d2099f3cc7938d5c25b23e17d270e977dafd203bd3c5e3d5f292ee915"
+    sha256 cellar: :any, arm64_sonoma:   "ccb2cea1a9eb0a3872148c76b00d4010c871b5c6d08b33a7cf558f44abbccdf6"
+    sha256 cellar: :any, arm64_ventura:  "1f98b5a02176c345ebdfdde01c85ec692674f6e1915f7c78ed4121ff0d593bf3"
+    sha256 cellar: :any, arm64_monterey: "0c86de68f0c8c679798fb812879a10bf1186c08df7d811f31b6ecaa36fbc42fc"
+    sha256 cellar: :any, sonoma:         "4da2463d79cd7dcbd974b6b241d502c11e4e3b98bbd3d99d44bc40ba81021c8d"
+    sha256 cellar: :any, ventura:        "68a1b2a740872fd9c03d81531507bc9cbfcc1eba056c6b54db6026767fc6b6a0"
+    sha256 cellar: :any, monterey:       "a3ea28a4fd497a0b142a2c115a4b0eccfee2735740a98f1b6a1c7e0fe9f5f55a"
+    sha256               x86_64_linux:   "56d3b1402f22c80f6c11ce31151a40bf136f2f1c6dd3b42a7db303206cea91d8"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "pcre"
+  depends_on "pcre2"
   depends_on "serd"
+  depends_on "zix"
 
   def install
-    mkdir "build" do
-      system "meson", *std_meson_args, "-Dtests=disabled", ".."
-      system "ninja"
-      system "ninja", "install"
-    end
+    system "meson", "setup", "build", "-Dtests=disabled", *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
   end
 
   test do

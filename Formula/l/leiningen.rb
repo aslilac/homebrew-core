@@ -1,23 +1,25 @@
 class Leiningen < Formula
   desc "Build tool for Clojure"
   homepage "https://github.com/technomancy/leiningen"
-  url "https://github.com/technomancy/leiningen/archive/2.10.0.tar.gz"
-  sha256 "5f4ae6ef2a9665176138730f00ce008b17de96af99a2ce5e4c3f017b2d4d5659"
+  url "https://github.com/technomancy/leiningen/archive/refs/tags/2.11.2.tar.gz"
+  sha256 "fe9ee17786be6c3cf4615688a2a82c173369657d84c1b2ffc00b7cd5fd7df1bc"
   license "EPL-1.0"
   head "https://github.com/technomancy/leiningen.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "48b5112c02e30233338b114ba4c6bfa70aaa7bac7e4429ef127ddc23703cb620"
+    sha256 cellar: :any_skip_relocation, all: "baffb707e7f1f330bf364946e0f7ffa4c44a1a679be371dc70748717661dc613"
   end
 
   depends_on "openjdk"
 
   resource "jar" do
-    url "https://github.com/technomancy/leiningen/releases/download/2.10.0/leiningen-2.10.0-standalone.jar"
-    sha256 "d27299bad34075ac2864d0bd0559f835c6e2c476c0b0a283bcbdb574fdadbb34"
+    url "https://github.com/technomancy/leiningen/releases/download/2.11.2/leiningen-2.11.2-standalone.jar"
+    sha256 "7d31ae23ae769e927438b0cd55d15a93e7dabab09fd4fc15877979161e108774"
   end
 
   def install
+    odie "jar resource needs to be updated" if build.stable? && version != resource("jar").version
+
     libexec.install resource("jar")
     jar = "leiningen-#{version}-standalone.jar"
 
@@ -46,6 +48,7 @@ class Leiningen < Formula
       (defproject brew-test "1.0"
         :dependencies [[org.clojure/clojure "1.10.3"]])
     EOS
+
     (testpath/"src/brew_test/core.clj").write <<~EOS
       (ns brew-test.core)
       (defn adds-two
@@ -53,6 +56,7 @@ class Leiningen < Formula
         [x]
         (+ x 2))
     EOS
+
     (testpath/"test/brew_test/core_test.clj").write <<~EOS
       (ns brew-test.core-test
         (:require [clojure.test :refer :all]
@@ -61,6 +65,7 @@ class Leiningen < Formula
         (testing "adds-two yields 4 for input of 2"
           (is (= 4 (t/adds-two 2)))))
     EOS
-    system "#{bin}/lein", "test"
+
+    system bin/"lein", "test"
   end
 end

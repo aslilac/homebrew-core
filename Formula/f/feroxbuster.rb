@@ -1,24 +1,29 @@
 class Feroxbuster < Formula
   desc "Fast, simple, recursive content discovery tool written in Rust"
   homepage "https://epi052.github.io/feroxbuster"
-  url "https://github.com/epi052/feroxbuster/archive/refs/tags/v2.10.0.tar.gz"
-  sha256 "687f4b9a09ab146355fcaef132307b0cd802923728ba1fe14029a115f841be57"
+  url "https://github.com/epi052/feroxbuster/archive/refs/tags/v2.11.0.tar.gz"
+  sha256 "61aa0a5654584c015ff58df69091ec40919b38235b20862975a8ab0649467a83"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9a7c91adcf90e281694f90a5ea33ec92068f0b6a0b426d478be48335105ed975"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "010d675e1629077aa018763a45e6125ac7edede22a464566fbef7e44c41416b0"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9185a16b5d3b998c1921e02c3ccae5e2a88ebddc0ba9dc626b39e924dc493fda"
-    sha256 cellar: :any_skip_relocation, ventura:        "429d9d168d9dea419aa46ccb34685e2f78b29d7fe59289831d42313c7b91eedb"
-    sha256 cellar: :any_skip_relocation, monterey:       "835ec2a320d469fe834e1a8732323055e9949d18e3ad45d590fccba12106a5d9"
-    sha256 cellar: :any_skip_relocation, big_sur:        "826829187418f0376b5aa84e669a0713cfd26a4dee8a31ea005f13ec311bae19"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4e778a0c7984dbc9077871f5446e21ef7f565ff95f8a03027df0b72db4808a47"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "51c6011f5593b6dd2012fc7632e03443382dc34366b49fc197bd85c72ac84c14"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b289fbd75851dcf2c824f86931ff583a106797ed7c4aa092461227b9c574d9cb"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "2983e54b04f2de0b30938fcee493c5786dbadc4a6383191c8feb1433b0d96eaa"
+    sha256 cellar: :any_skip_relocation, sonoma:        "fda99a1eb698b711a85c1ca4ff35afc21e42d840c7dab87c5cbc73eb0a62acfc"
+    sha256 cellar: :any_skip_relocation, ventura:       "a95cc0009963be0131251e81639164187a31c869ae4f11c76f033045cc30a33f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c31b3b1589aa43597612d07fcb4c1c2386473f82dcd91ef6e64ebe05338209e3"
   end
 
+  depends_on "pkg-config" => :build
   depends_on "rust" => :build
   depends_on "miniserve" => :test
+  depends_on "openssl@3"
 
   def install
+    # Ensure that the `openssl` crate picks up the intended library.
+    ENV["OPENSSL_DIR"] = Formula["openssl@3"].opt_prefix
+    ENV["OPENSSL_NO_VENDOR"] = "1"
+
     system "cargo", "install", *std_cargo_args
   end
 

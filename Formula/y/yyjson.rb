@@ -1,19 +1,20 @@
 class Yyjson < Formula
   desc "High performance JSON library written in ANSI C"
   homepage "https://github.com/ibireme/yyjson"
-  url "https://github.com/ibireme/yyjson/archive/refs/tags/0.7.0.tar.gz"
-  sha256 "9b91ee48ac1fe5939f747d49f123d9a522b5f4e1e46165c1871936d583628a06"
+  url "https://github.com/ibireme/yyjson/archive/refs/tags/0.10.0.tar.gz"
+  sha256 "0d901cb2c45c5586e3f3a4245e58c2252d6b24bf4b402723f6179523d389b165"
   license "MIT"
   head "https://github.com/ibireme/yyjson.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "b6bac0295145a59d5f71c343db6ac6d1e948df09c6d22bc5bc78ee9fee3808db"
-    sha256 cellar: :any,                 arm64_monterey: "1c1a55c76ee36ae972aec250fb53cce4c0ee20b6a059fe0da32556fa01c8caa9"
-    sha256 cellar: :any,                 arm64_big_sur:  "bb39c4690b578fb5a7d1d23f4e7fc486d711dcca0d468fc81db3e8ca9c3c7505"
-    sha256 cellar: :any,                 ventura:        "4dae75c464e8b0f897de3565b5fd645ac2eaf8bfd8f56b2c435f1ad1772267fa"
-    sha256 cellar: :any,                 monterey:       "f101391775b924424c2b340d8b80dc600ef268711ab8042b973008d81b80fc0b"
-    sha256 cellar: :any,                 big_sur:        "5df824a5bb3b260dc471c9373d525711d1006ff234f719d3e87bf4c10e80b01b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7232926fd910314cd7c9fe6a6426309064d00f3e43025a8a5dd9ec56ddfe0b25"
+    sha256 cellar: :any,                 arm64_sequoia:  "e65d628c23f52ed3078fa3078cb66b8db8e11f4a890598794973fa41b8c17a79"
+    sha256 cellar: :any,                 arm64_sonoma:   "9ab9c2ecf8f02f0c781afa350b60bfedc128100a6fc33a39f8fda630797c10b1"
+    sha256 cellar: :any,                 arm64_ventura:  "8085a2cccc46355a7cd7de87f15b65705e32bc7095edac87a55d0544befce88a"
+    sha256 cellar: :any,                 arm64_monterey: "d83d78ab70d9243f1b1efb995f933de45b24b78bbc304f078ff5b937ff105d00"
+    sha256 cellar: :any,                 sonoma:         "04f0f2b5ec7c3940b6fefe7dfc3a8478b370bae125c7933565584c73f9a28480"
+    sha256 cellar: :any,                 ventura:        "b32d5220a84af677e9ba28e60c90f7c5797a8cf97020a33f16a3bd931bb538d9"
+    sha256 cellar: :any,                 monterey:       "c73550bf23abcf2cd1ab01f1ee704cd933694785cb574115a6b347fc72aa250a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1dec9417966cf48f6459914f0a32d46b608a0fe8068590b2643d1f08e8accf24"
   end
 
   depends_on "cmake" => :build
@@ -25,7 +26,7 @@ class Yyjson < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <yyjson.h>
 
       int main() {
@@ -49,7 +50,7 @@ class Yyjson < Formula
 
         yyjson_doc_free(doc);
       }
-    EOS
+    C
 
     expected_output = <<~EOS
       name: John

@@ -1,28 +1,38 @@
 class Nickel < Formula
   desc "Better configuration for less"
   homepage "https://github.com/tweag/nickel"
-  url "https://github.com/tweag/nickel/archive/refs/tags/1.1.1.tar.gz"
-  sha256 "48f709d5c21c9961bfaaf7a1abc766fc62909afd249e8cd104f72d2a68df601e"
+  url "https://github.com/tweag/nickel/archive/refs/tags/1.9.0.tar.gz"
+  sha256 "c5c0000e6b1618921c1ce23dc90eefb482bdfe9f9716d4ef5cf24a3b99ec4c7d"
   license "MIT"
   head "https://github.com/tweag/nickel.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "276e04824cb230e1be7d64ac60d7f3a0732735b3ba5fc42a8beaded9a618cbc2"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "66c084ddaad46bfc65878b0bd644ca65ba24ddaad661dd812cf252ec8978b72c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "589a92efc3fc2eba9644e6636654b3f8d2c51d6889736ec123a49b22ac5fd6d5"
-    sha256 cellar: :any_skip_relocation, ventura:        "ed7ad80678db0458906fbdf386c8b33b80439769a74d0ce340943930715abab3"
-    sha256 cellar: :any_skip_relocation, monterey:       "67bfe9f283b334d266fc1ef7eaa2df92c3206247998a212f811acd0c350202e7"
-    sha256 cellar: :any_skip_relocation, big_sur:        "53298e2707cc986e6e443aec7b3ddda0d338270764de287b2745dff29eb17f79"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e4fe88a0b96556b6441986344140f9b9038cc25e0ffa8db26f8c6f3e7742cbe8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "506125955cbbd70f1674454cb727c2a3cc5ecda34a83550bb0846846a536ecd6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "49b0abfdd487f8a155eb10496e0627cc60337143c66dec5f883b2e46736eb23a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "54238f41a2b7cccc2e38854dfa2e2b71c18b8467e3bc8a47ed755c59dbcd4e44"
+    sha256 cellar: :any_skip_relocation, sonoma:        "56618f2098ff20ff4f358fb09b4da1d367844824ad5d19237268cb0d965ad1a6"
+    sha256 cellar: :any_skip_relocation, ventura:       "5aab1d707c105c2bf6ff3518ea9215a981e70eea49cbe3fda8297c6e5ea3e7bd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "92cab7bffd980ed4ab4987668fbed7e738c0476d793d0745c9ccd78e236d2e4b"
   end
 
   depends_on "rust" => :build
 
   def install
+    ENV["NICKEL_NIX_BUILD_REV"] = tap.user.to_s
+
     system "cargo", "install", *std_cargo_args(path: "cli")
+
+    generate_completions_from_executable(bin/"nickel", "gen-completions")
   end
 
   test do
-    assert_equal "4", pipe_output(bin/"nickel", "let x = 2 in x + x").strip
+    assert_match version.to_s, shell_output("#{bin}/nickel --version")
+
+    (testpath/"program.ncl").write <<~EOS
+      let s = "world" in "Hello, " ++ s
+    EOS
+
+    output = shell_output("#{bin}/nickel eval program.ncl")
+    assert_match "Hello, world", output
   end
 end

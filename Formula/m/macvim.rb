@@ -2,9 +2,9 @@
 class Macvim < Formula
   desc "GUI for vim, made for macOS"
   homepage "https://github.com/macvim-dev/macvim"
-  url "https://github.com/macvim-dev/macvim/archive/refs/tags/release-177.tar.gz"
-  version "9.0.1677"
-  sha256 "f0c7ce7bc81b1cecb9e9c3c39c35b9a02a3ea1f08f9131a6032f9c8bff6aa8d7"
+  url "https://github.com/macvim-dev/macvim/archive/refs/tags/release-180.tar.gz"
+  version "9.1.0727"
+  sha256 "e1bc74beb3ee594503b5e1e20a9d075b5972bbaa642a91921116531475f46a6f"
   license "Vim"
   head "https://github.com/macvim-dev/macvim.git", branch: "master"
 
@@ -23,24 +23,25 @@ class Macvim < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_ventura:  "21f73599154f9ef9735e61a97d62615b0a45e206af858226c771314c4d7c2a9a"
-    sha256 cellar: :any, arm64_monterey: "4fae5d2ba975d10f3151b011cedfe629c536ce8193b8d5e4ebe47454483293f1"
-    sha256 cellar: :any, arm64_big_sur:  "82f035e74844bf119294c853d9887dec92d5a878758e81d889f6217a89b73bfe"
-    sha256 cellar: :any, ventura:        "ad71a9cd875e50ea1f41bc0fad8448a1a63feea77ea22bc64adb27f07097f81d"
-    sha256 cellar: :any, monterey:       "911ca9a54aa9f50db6f186bf18133626c90e98f2e644241d4b4995af25bc1440"
-    sha256 cellar: :any, big_sur:        "816541af345e5ed66dfc641b36a0e4f4de2a324645fb80389f62dc9ac5a1692c"
+    rebuild 1
+    sha256 cellar: :any, arm64_sequoia: "80e6eed701a2a90d774c3466a1a658eae0602f6514cc179cf5f4094a4a59536f"
+    sha256 cellar: :any, arm64_sonoma:  "0f73e511af34cbe4477d83c907e9b42caf8032b8b2723fc5879d68f00e861dea"
+    sha256 cellar: :any, arm64_ventura: "e9210bbe26673e2cefc2445636b5b1f4a42e1f19369a4aa64071f7a721680b77"
+    sha256 cellar: :any, sonoma:        "eee7dada958ef31d41d97838efce0689d8aac95adb7a782f16ca3147348fbe49"
+    sha256 cellar: :any, ventura:       "663fb344c7d5e0e73373204a8ba3ebf61e348c8b638791340e985a86e62f8961"
   end
 
   depends_on "gettext" => :build
   depends_on "libsodium" => :build
-  depends_on xcode: :build
+  depends_on xcode: :build # for xcodebuild
   depends_on "cscope"
   depends_on "lua"
   depends_on :macos
-  depends_on "python@3.11"
+  depends_on "python@3.13"
   depends_on "ruby"
 
-  conflicts_with "vim", because: "vim and macvim both install vi* binaries"
+  conflicts_with "ex-vi", because: "both install `vi` and `view` binaries"
+  conflicts_with "vim", because: "both install vi* binaries"
 
   def install
     # Avoid issues finding Ruby headers
@@ -75,7 +76,7 @@ class Macvim < Formula
     system "make"
 
     prefix.install "src/MacVim/build/Release/MacVim.app"
-    bin.install_symlink prefix/"MacVim.app/Contents/bin/mvim"
+    %w[gvimtutor mvim vimtutor xxd].each { |e| bin.install_symlink prefix/"MacVim.app/Contents/bin/#{e}" }
 
     # Create MacVim vimdiff, view, ex equivalents
     executables = %w[mvimdiff mview mvimex gvim gvimdiff gview gvimex]
@@ -90,7 +91,7 @@ class Macvim < Formula
     assert_match "+sodium", output
 
     # Simple test to check if MacVim was linked to Homebrew's Python 3
-    py3_exec_prefix = shell_output(Formula["python@3.11"].opt_libexec/"bin/python-config --exec-prefix")
+    py3_exec_prefix = shell_output(Formula["python@3.13"].opt_libexec/"bin/python-config --exec-prefix")
     assert_match py3_exec_prefix.chomp, output
     (testpath/"commands.vim").write <<~EOS
       :python3 import vim; vim.current.buffer[0] = 'hello python3'

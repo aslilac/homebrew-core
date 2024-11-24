@@ -1,19 +1,18 @@
 class Freerdp < Formula
   desc "X11 implementation of the Remote Desktop Protocol (RDP)"
   homepage "https://www.freerdp.com/"
-  # TODO: Check if this can use unversioned ffmpeg at version bump.
-  url "https://github.com/FreeRDP/FreeRDP/archive/2.11.0.tar.gz"
-  sha256 "ccc342d4616c89323c355704d47ab45f6a770559cfff1b3965356d2313d3c3cc"
+  url "https://github.com/FreeRDP/FreeRDP/archive/refs/tags/3.9.0.tar.gz"
+  sha256 "a1d2946c67037bf6bb8aa2f0441c7cacd5e92c835d776cecffb4fcdbaa45ec4f"
   license "Apache-2.0"
+  revision 1
 
   bottle do
-    sha256                               arm64_ventura:  "58f70b2c20926cfffa567da87c1d4c0baf9b8e4138b1677775057ebcf14d952a"
-    sha256                               arm64_monterey: "4fdea2e8fac15fc8f60ac7f7384a35a34680b09e5ba3e9517ff14f499b694552"
-    sha256                               arm64_big_sur:  "a7e9c773895d40954961984a29fbb806876eaeefa5a6c73d35ff511e9496b942"
-    sha256                               ventura:        "c21b21ee90a014211c9f325c737d4a0c4df8d1b730057f7a97cffcef74f15b53"
-    sha256                               monterey:       "ae3fbaa139d41d40369b8549f512b95b865004bca2c53985c984ef95a410c2b4"
-    sha256                               big_sur:        "cf1512f13f78f65a1f25fbf8f48294b862da662d9415cf65077d5983bbe70bd6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b298a8df407472e13b170e8e46ed10bbe24e7d324695ec4f945cdb85c799b840"
+    sha256 arm64_sequoia: "d0389909074b092cba7ff7e0f2ea45353223bf7e2db21f155c1d3cdda432edc7"
+    sha256 arm64_sonoma:  "893d3f63e9d26d03b70a36432c8e226b79c5a451db1b80f6aeaff25b61f217c8"
+    sha256 arm64_ventura: "ab68bfe5dd9fbca26172f850a0b1ae0f4421fd75a2ced3aa111b2a5c6aa8b4fc"
+    sha256 sonoma:        "2f59a023351939d112131480db417e6d44501ab0026be78f4419b25b84ae5ee1"
+    sha256 ventura:       "7c79507c0f96dd4be1205a5e4cbb5043bb689bc5bec31532bdeac6975227231e"
+    sha256 x86_64_linux:  "3df042e5d31336ee9802d5b27d901f8c67993b83c3b85585103af86726243f47"
   end
 
   head do
@@ -23,6 +22,8 @@ class Freerdp < Formula
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+  depends_on "cjson"
+  depends_on "ffmpeg"
   depends_on "jpeg-turbo"
   depends_on "libusb"
   depends_on "libx11"
@@ -35,23 +36,47 @@ class Freerdp < Formula
   depends_on "libxrender"
   depends_on "libxv"
   depends_on "openssl@3"
+  depends_on "pkcs11-helper"
+  depends_on "sdl2"
+  depends_on "sdl2_ttf"
 
   uses_from_macos "cups"
+  uses_from_macos "zlib"
 
   on_linux do
     depends_on "alsa-lib"
-    depends_on "ffmpeg@4"
+    depends_on "ffmpeg"
     depends_on "glib"
+    depends_on "icu4c@76"
+    depends_on "krb5"
+    depends_on "libfuse"
     depends_on "systemd"
     depends_on "wayland"
   end
 
   def install
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args,
-                    "-DWITH_X11=ON",
-                    "-DBUILD_SHARED_LIBS=ON",
-                    "-DWITH_JPEG=ON",
-                    "-DCMAKE_INSTALL_NAME_DIR=#{lib}"
+    ENV.append_to_cflags "-I#{Formula["sdl2_ttf"].opt_include}/SDL2"
+
+    args = %W[
+      -DBUILD_SHARED_LIBS=ON
+      -DCMAKE_INSTALL_NAME_DIR=#{lib}
+      -DWITH_X11=ON
+      -DWITH_JPEG=ON
+      -DWITH_MANPAGES=OFF
+      -DWITH_WEBVIEW=OFF
+      -DWITH_CLIENT_SDL=ON
+    ]
+
+    # Native macOS client and server implementations are unmaintained and use APIs that are obsolete on Sequoia.
+    # Ref: https://github.com/FreeRDP/FreeRDP/issues/10558
+    if OS.mac? && MacOS.version >= :sequoia
+      # As a workaround, force X11 shadow server implementation. Can use -DWITH_SHADOW=OFF if it doesn't work
+      inreplace "server/shadow/CMakeLists.txt", "add_subdirectory(Mac)", "add_subdirectory(X11)"
+
+      args += ["-DWITH_CLIENT_MAC=OFF", "-DWITH_PLATFORM_SERVER=OFF"]
+    end
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

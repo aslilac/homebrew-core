@@ -2,23 +2,28 @@ class Dump1090Mutability < Formula
   desc "ADS-B Ground Station System for RTL-SDR"
   homepage "https://packages.ubuntu.com/jammy/dump1090-mutability"
   url "http://archive.ubuntu.com/ubuntu/pool/universe/d/dump1090-mutability/dump1090-mutability_1.15~20180310.4a16df3+dfsg.orig.tar.gz"
-  version "1.15~20180310.4a16df3+dfsg"
+  version "1.15_20180310-4a16df3-dfsg"
   sha256 "778f389508eccbce6c90d7f56cd01568fad2aaa5618cb5e7c41640a2473905a6"
   license "GPL-2.0-or-later"
+  revision 3
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "65a2246aa5277b6eac0a934c32db640af72b39bdf4913788cea5711ff3f599a8"
-    sha256 cellar: :any,                 arm64_monterey: "74d4061c93d647ace683380b85ab320e96b7e115a30ffe7587bc0c0672a097b5"
-    sha256 cellar: :any,                 arm64_big_sur:  "53aa50bb97ebb0923c0ea340562f523e61018454bfcf78dcc6a6b5509aef6462"
-    sha256 cellar: :any,                 ventura:        "bcdfc614e9496a402d75b7e4decb92704c7c9739fe8fff3f56cc3b1945184065"
-    sha256 cellar: :any,                 monterey:       "7c2a4fc31ec409abf1ac74f68b65325f8d5ff38389b7f2be44b51d8529eeb338"
-    sha256 cellar: :any,                 big_sur:        "331470e3b5efe1732916e5d6e5267dfee973d7be2c5573a4c6a9c2e8f207b1e9"
-    sha256 cellar: :any,                 catalina:       "c2b702a7432ab1dd5086c693d4930103d2386782e43453fb7811a8d415505459"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "51cef04d99c6aeec12b2a1ae03cfcc84059d6fd0060026fc590ef93a3c172e91"
+    sha256 cellar: :any,                 arm64_sequoia:  "efa32621a9a3d6334c711608e079d435f6af49eb4879442ab499cde1b6d3699d"
+    sha256 cellar: :any,                 arm64_sonoma:   "e58f730410669a3d0cebde197feec0c661b6b868518f6bd503f8474fd507c180"
+    sha256 cellar: :any,                 arm64_ventura:  "578b30fb22f49021afbf7828f9a470f2a51872afe33c20f66f4529c300420484"
+    sha256 cellar: :any,                 arm64_monterey: "d7dd9f68dbcc3c0f08e1cb87d09ea24a2f16172196c8d9f82bf57416319333b8"
+    sha256 cellar: :any,                 sonoma:         "8d910c212fa188391204d5e4c7d5cb9c41fba1712164f13e05538636734c2676"
+    sha256 cellar: :any,                 ventura:        "137e2d13e0e5aab68484b897699777c56be1c4c9f5093c057c7d0856ba70a342"
+    sha256 cellar: :any,                 monterey:       "8a474349c0344e7eb93212ca5e0f4a60059d1e1ec9f782171213af120a3e7ee8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6e554a1e935e5eb47e04660041e611ef0a947ab2c8241bc3a25346363ee06ce8"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "librtlsdr"
+
+  on_macos do
+    depends_on "libusb"
+  end
 
   def install
     # Work around failure from GCC 10+ using default of `-fno-common`

@@ -4,8 +4,7 @@ class FileFormula < Formula
   homepage "https://darwinsys.com/file/"
   url "https://astron.com/pub/file/file-5.45.tar.gz"
   sha256 "fc97f51029bb0e2c9f4e3bffefdaf678f0e039ee872b9de5c002a6d09c784d82"
-  # file-formula has a BSD-2-Clause-like license
-  license :cannot_represent
+  license "BSD-2-Clause-Darwin"
   head "https://github.com/file/file.git", branch: "master"
 
   livecheck do
@@ -14,9 +13,12 @@ class FileFormula < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "251cec26310d3a9487bebee946957caf8adfb2b8d9f4c2dc4f950de05e2384fd"
+    sha256 cellar: :any,                 arm64_sonoma:   "46c92c7eeddf54855344d6ca8930eaa1b4119acf988ce42455fdccd20eccb439"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "fe86a1022a44ac24fbd0f8b40a2ee4624335cdc6f1a865f5c5ca8df5fa07b454"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "bdaf9f9b25fcf7ea6c7bdbe44ec3f3cc0d56be0dcec1bbb9c6d4a0fd8d639e9c"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4058375a321cd37c7d6090f446a2da2781e199b58a9b33cf8c4af480d4381836"
+    sha256 cellar: :any,                 sonoma:         "ea555131b8cf53945def5e4686babb38d502b0c907ff5e5eb4402a98e0960bd0"
     sha256 cellar: :any_skip_relocation, ventura:        "e801499f30fee64e03dc573b510c5ddfc9eafd1e258d54e3d2b0c16fc1fb74fa"
     sha256 cellar: :any_skip_relocation, monterey:       "83c75fa244fa2a9d65f2401516a4084805abf69896ff1ba76b1c50e516fd1f82"
     sha256 cellar: :any_skip_relocation, big_sur:        "43280d24f741d9e770a41434fb8877d8004ad610fcec70b63cbc93be8d599efe"
@@ -40,7 +42,7 @@ class FileFormula < Formula
   end
 
   test do
-    system "#{bin}/file", test_fixtures("test.mp3")
+    system bin/"file", test_fixtures("test.mp3")
   end
 end
 

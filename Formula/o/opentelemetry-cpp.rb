@@ -1,43 +1,48 @@
 class OpentelemetryCpp < Formula
   desc "OpenTelemetry C++ Client"
   homepage "https://opentelemetry.io/"
-  # TODO: Check if we can use unversioned `grpc` and `protobuf` at version bump.
-  url "https://github.com/open-telemetry/opentelemetry-cpp/archive/refs/tags/v1.10.0.tar.gz"
-  sha256 "19e8ade04a674c8cf7f0dc6da1f7b0583a27d2cf4dbc03df87894a16a4547834"
+  url "https://github.com/open-telemetry/opentelemetry-cpp/archive/refs/tags/v1.17.0.tar.gz"
+  sha256 "13542725463f1ea106edaef078c2276065cf3da998cb1d3dcf92630daa3f64d4"
   license "Apache-2.0"
+  revision 3
   head "https://github.com/open-telemetry/opentelemetry-cpp.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "de744b63cdd56736dc5009b45226b95d1b92777746c1694e2074ef3d296be357"
-    sha256 cellar: :any,                 arm64_monterey: "ce39b15daeaa4d969237e6cebc8a08e7db522132b2a37f845253b407363910eb"
-    sha256 cellar: :any,                 arm64_big_sur:  "01e3bbe7ddb28bb37c8eb63c062e7e4e14511cffeb6e7eacc03a574389d91b19"
-    sha256 cellar: :any,                 ventura:        "c774edb06f689c87c3234ec83fd207d04c3ba548604c0ecdda07ec94d1d99189"
-    sha256 cellar: :any,                 monterey:       "8b348e4c0f7b23200c1e95609152c91f5abcff35dcff53f4575026ddb24d3793"
-    sha256 cellar: :any,                 big_sur:        "0abfc2f525e2494e29389b6d497a830388334d41803df822c5c1515631c6a26d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "71b52bdb1602500dd947ce4d6361cf6805e9f3d691bd4f8b2214ece5d1b2b053"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "641daf431606b1db8be742517b5de831e76287c4e374db37a3b3e1c51d0d7225"
+    sha256 cellar: :any,                 arm64_sonoma:  "83a5dd311347c1e7faee0eff47a0184a32dfef40f3ab6159ac9a61a47057756b"
+    sha256 cellar: :any,                 arm64_ventura: "227fca82917507f9b1bedfdde99705e45cbffb9579f28c98786ff16ea04fa444"
+    sha256 cellar: :any,                 sonoma:        "d191760b851d6a3b1fe6facce4b91ae6df4665d995fe3ece704291a56fa88316"
+    sha256 cellar: :any,                 ventura:       "688880c32bcac3776ffb69a1cd4ad1a0f0f1356ead4b9673143c3cec3326b919"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b94ec6b8e515389826bb6d1375ab8791a7299ad08ee176e4bd28dc33cbdde420"
   end
 
   depends_on "cmake" => :build
-  depends_on "boost"
-  depends_on "grpc@1.54"
+  depends_on "abseil"
+  depends_on "grpc"
   depends_on "nlohmann-json"
   depends_on "prometheus-cpp"
-  depends_on "protobuf@21"
+  depends_on "protobuf"
+
   uses_from_macos "curl"
+
+  on_macos do
+    depends_on "c-ares"
+    depends_on "openssl@3"
+    depends_on "re2"
+  end
 
   def install
     ENV.append "LDFLAGS", "-Wl,-undefined,dynamic_lookup" if OS.mac?
     system "cmake", "-S", ".", "-B", "build",
+                    "-DBUILD_SHARED_LIBS=ON",
                     "-DCMAKE_CXX_STANDARD=17", # Keep in sync with C++ standard in abseil.rb
                     "-DCMAKE_INSTALL_RPATH=#{rpath}",
-                    "-DBUILD_TESTING=OFF",
                     "-DWITH_ELASTICSEARCH=ON",
                     "-DWITH_EXAMPLES=OFF",
-                    "-DWITH_JAEGER=OFF", # deprecated, needs older `thrift`
-                    "-DWITH_LOGS_PREVIEW=ON",
-                    "-DWITH_METRICS_PREVIEW=ON",
                     "-DWITH_OTLP_GRPC=ON",
                     "-DWITH_OTLP_HTTP=ON",
+                    "-DWITH_ABSEIL=ON",
                     "-DWITH_PROMETHEUS=ON",
                     *std_cmake_args
     system "cmake", "--build", "build"
@@ -72,10 +77,9 @@ class OpentelemetryCpp < Formula
         auto scoped_span = trace_api::Scope(tracer->StartSpan("test"));
       }
     EOS
-    # Manual `protobuf` include can be removed when we depend on unversioned protobuf.
     system ENV.cxx, "test.cc", "-std=c++17",
+                    "-DHAVE_ABSEIL",
                     "-I#{include}", "-L#{lib}",
-                    "-I#{Formula["protobuf@21"].opt_include}",
                     "-lopentelemetry_resources",
                     "-lopentelemetry_exporter_ostream_span",
                     "-lopentelemetry_trace",

@@ -1,14 +1,17 @@
 class LibbitcoinConsensus < Formula
   desc "Bitcoin Consensus Library (optional)"
   homepage "https://github.com/libbitcoin/libbitcoin-consensus"
-  url "https://github.com/libbitcoin/libbitcoin-consensus/archive/v3.8.0.tar.gz"
+  url "https://github.com/libbitcoin/libbitcoin-consensus/archive/refs/tags/v3.8.0.tar.gz"
   sha256 "3f63b233a25323ff81de71a6c96455a6f5141e21cb0678a2304b36b56e771ca2"
-  license "AGPL-3.0"
+  license "AGPL-3.0-or-later"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "0becb75eb0a0540a4cb6554887c3b345777278ec8ed8e5fafd76057722c755c6"
+    sha256 cellar: :any,                 arm64_sonoma:   "12ab6ca60756919e7347031905778cf42151bc6d5294cf9826a7341a69c6b3dc"
     sha256 cellar: :any,                 arm64_ventura:  "495b1ee3bc1d01755b48ced48c019b2bf40f1361c529a1186c66449801f25708"
     sha256 cellar: :any,                 arm64_monterey: "82cdc41015f185c56a5c317ec125d1f6d74e298611afd8e0efb05135668c9a47"
     sha256 cellar: :any,                 arm64_big_sur:  "dbb11bd9f43f28ff31be7248a0c443d7359c7ceeb01227c1c099ea613d869f35"
+    sha256 cellar: :any,                 sonoma:         "6f7adeb8f31361a7962ec8130c23829f8a8c5efe265d54c541bce38642a9fbb4"
     sha256 cellar: :any,                 ventura:        "2f8f5925ff397fd8b1f6f1c499e3828c25830b551e678bbb24898912825fc328"
     sha256 cellar: :any,                 monterey:       "3b0a76702e478bae5a2b864b2bfaf4cbc2f658582454fa4ab0ccf534d4c9fae5"
     sha256 cellar: :any,                 big_sur:        "1ef57e9412ff7a67edd7e7557b8848f321f1355c0841dfb0cf6167a0d2e37447"
@@ -22,7 +25,7 @@ class LibbitcoinConsensus < Formula
   depends_on "pkg-config" => :build
 
   resource "secp256k1" do
-    url "https://github.com/libbitcoin/secp256k1/archive/v0.1.0.20.tar.gz"
+    url "https://github.com/libbitcoin/secp256k1/archive/refs/tags/v0.1.0.20.tar.gz"
     sha256 "61583939f1f25b92e6401e5b819e399da02562de663873df3056993b40148701"
   end
 
@@ -49,7 +52,7 @@ class LibbitcoinConsensus < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <string>
       #include <vector>
       #include <assert.h>
@@ -102,7 +105,7 @@ class LibbitcoinConsensus < Formula
         assert(result == libbitcoin::consensus::verify_result_tx_invalid);
         return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, "-std=c++11", "test.cpp",
                     "-I#{libexec}/include",
                     "-L#{lib}", "-L#{libexec}/lib",

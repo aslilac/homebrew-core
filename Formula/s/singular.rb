@@ -1,9 +1,9 @@
 class Singular < Formula
   desc "Computer algebra system for polynomial computations"
   homepage "https://www.singular.uni-kl.de/"
-  url "https://www.singular.uni-kl.de/ftp/pub/Math/Singular/SOURCES/4-3-2/singular-4.3.2p7.tar.gz"
-  version "4.3.2p7"
-  sha256 "aad23c30066b7fbc011138a98d60532565d76a847eec6bf2938410d93b272ca3"
+  url "https://www.singular.uni-kl.de/ftp/pub/Math/Singular/SOURCES/4-4-0/singular-4.4.0p7.tar.gz"
+  version "4.4.0p7"
+  sha256 "6cc1c64490e9c916488cca4bea67701bdf505d71ad8d98d0391af67e03294518"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -36,13 +36,12 @@ class Singular < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "e4bca358fc37252fdab16cd47f4533a83f71ba7f2f1db6792157964b66a48d99"
-    sha256 arm64_monterey: "217f2210bf75469d9e142ed6caaf7e2a006364a62edb615e9836e2a0c3f15d4c"
-    sha256 arm64_big_sur:  "472b6015c52c58d15e46d0771c8d86e222d523ec6bd3d4dbe46b1dc083210cd5"
-    sha256 ventura:        "30089d5d89ab41ee9131e55b2f70e8332dbdb3767bb2fc8d75e9574549addd13"
-    sha256 monterey:       "5b6c2b618d3c6888a96c387d54359a98d7f9803689022b96d4e26b916de3892e"
-    sha256 big_sur:        "9a3920401516777906706342923e2da4e2086a5e18652a042c5b2231253ae280"
-    sha256 x86_64_linux:   "41b478f1798726bf25a2bc98c2311c4c7fab5e0a743f7c00f04c5e9096547720"
+    sha256 arm64_sequoia: "d752785ea5a5ac347d970ae8130eed0732afda4aa0609a83d1475990ea2e1225"
+    sha256 arm64_sonoma:  "17305f543acbcc40452772d0cfef9daf60dc6978b9ca68540333c351c6c30645"
+    sha256 arm64_ventura: "367b53f9ac95f6bab9abb005502416938fc49f3c1f9fa97f5140a98263235b31"
+    sha256 sonoma:        "95945d1700b8569b5ac5b1a9e27e2f9d10c594651480f3b4bdc1e52fece2815a"
+    sha256 ventura:       "445df653dbd49b401e6f1528bad8d451549c9b680282ac52355e98e958b0aea4"
+    sha256 x86_64_linux:  "b29dafce33a1cce0a663a4cfa333234355aca7fb4f81a3a98f27a7d2159dbbb6"
   end
 
   head do
@@ -56,22 +55,14 @@ class Singular < Formula
   depends_on "gmp"
   depends_on "mpfr"
   depends_on "ntl"
-  depends_on "python@3.11"
-
-  on_macos do
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  depends_on "python@3.13"
+  depends_on "readline"
 
   def install
-    # Run autogen on macOS so that -flat_namespace flag is not used.
-    system "./autogen.sh" if build.head? || OS.mac?
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./autogen.sh" if build.head?
+    system "./configure", *std_configure_args,
                           "--disable-silent-rules",
-                          "--prefix=#{prefix}",
-                          "--with-python=#{which("python3.11")}",
+                          "--with-python=#{which("python3.13")}",
                           "CXXFLAGS=-std=c++11"
     system "make", "install"
   end

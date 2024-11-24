@@ -2,19 +2,18 @@ class Tile38 < Formula
   desc "In-memory geolocation data store, spatial index, and realtime geofence"
   homepage "https://tile38.com/"
   url "https://github.com/tidwall/tile38.git",
-      tag:      "1.32.0",
-      revision: "2b2be89ef80ecf2aaf25b68aa6357c8dbd6bff17"
+      tag:      "1.33.4",
+      revision: "72845124ecbac994e545deef17a78f2774232943"
   license "MIT"
   head "https://github.com/tidwall/tile38.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "536202f0689c5bdf1bb8b0b7d7782e0b4a1dd66852313125b184fb290aab7b0b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "536202f0689c5bdf1bb8b0b7d7782e0b4a1dd66852313125b184fb290aab7b0b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "536202f0689c5bdf1bb8b0b7d7782e0b4a1dd66852313125b184fb290aab7b0b"
-    sha256 cellar: :any_skip_relocation, ventura:        "f379f070ea288b4eebffca8ec565c66b8aeb7221c8785ded1c9412065f8ac0a3"
-    sha256 cellar: :any_skip_relocation, monterey:       "f379f070ea288b4eebffca8ec565c66b8aeb7221c8785ded1c9412065f8ac0a3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f379f070ea288b4eebffca8ec565c66b8aeb7221c8785ded1c9412065f8ac0a3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2d57d4e5a55b99e6a96e0618e1f070d1e8da753b1baa68e11bf1adb62bea81e9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7f3505867be68f631f3bab82fea26833c0f8d43572348a7341af6f0b5e325628"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7f3505867be68f631f3bab82fea26833c0f8d43572348a7341af6f0b5e325628"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "7f3505867be68f631f3bab82fea26833c0f8d43572348a7341af6f0b5e325628"
+    sha256 cellar: :any_skip_relocation, sonoma:        "e38a526c9e424bef2580841f7d6e127984d591b133ea55bf68850b7c0562bb81"
+    sha256 cellar: :any_skip_relocation, ventura:       "e38a526c9e424bef2580841f7d6e127984d591b133ea55bf68850b7c0562bb81"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7f176ff700f17a25d9e979e7e15bef568a66725a56bc82abe2f64d4101cdadaa"
   end
 
   depends_on "go" => :build
@@ -30,8 +29,8 @@ class Tile38 < Formula
       -X github.com/tidwall/tile38/core.GitSHA=#{Utils.git_short_head}
     ].join(" ")
 
-    system "go", "build", *std_go_args(ldflags: ldflags), "-o", bin/"tile38-server", "./cmd/tile38-server"
-    system "go", "build", *std_go_args(ldflags: ldflags), "-o", bin/"tile38-cli", "./cmd/tile38-cli"
+    system "go", "build", *std_go_args(ldflags:), "-o", bin/"tile38-server", "./cmd/tile38-server"
+    system "go", "build", *std_go_args(ldflags:), "-o", bin/"tile38-cli", "./cmd/tile38-cli"
   end
 
   def post_install
@@ -56,7 +55,7 @@ class Tile38 < Formula
   test do
     port = free_port
     pid = fork do
-      exec "#{bin}/tile38-server", "-q", "-p", port.to_s
+      exec bin/"tile38-server", "-q", "-p", port.to_s
     end
     sleep 2
     # remove `$408` in the first line output

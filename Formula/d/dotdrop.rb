@@ -2,33 +2,33 @@ class Dotdrop < Formula
   include Language::Python::Virtualenv
 
   desc "Save your dotfiles once, deploy them everywhere"
-  homepage "https://deadc0de.re/dotdrop"
-  url "https://files.pythonhosted.org/packages/1d/2e/ea86e7cb0998ad742bb1019521857717db184f2b82bba856ba64564d3f02/dotdrop-1.13.2.tar.gz"
-  sha256 "a0dcac9382b823cf9e858e953bed16e409761b77f53d3d87454b1ce6c936858b"
+  homepage "https://github.com/deadc0de6/dotdrop"
+  url "https://files.pythonhosted.org/packages/78/bd/2684d3616a0838675e7355480bef03295ee12074f1d5745a37a18542c1cc/dotdrop-1.14.2.tar.gz"
+  sha256 "b9f44f90f537b6e541704e518cc2a2a424a96a9b865e5b1617bd7d65381d0a1e"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "67d94deffd7fb243472c978a795de8bc17e7d4eea538ce65dc1f75279070554c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e9e9361321b29488c7d8f11f4ad70cf0212c0b106b8f449a8b215fa6d8d6d6d1"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "14242159411f2d3a34311d2a5e7c997d6eae5e50dc6ed429042f5360ac0db6b0"
-    sha256 cellar: :any_skip_relocation, ventura:        "486678c5a859c78bd0ef096b601fe246cab9909ad97fe43ca0dd96042f3a2280"
-    sha256 cellar: :any_skip_relocation, monterey:       "c26ec3ab72a05bdb74ec1e2d959b0ddf9e0d0c9d5e6fcd5d254e849adc690d83"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5f7af07e8f43c7bb1a2ba59505bbd4ac31e32558c4c05e3891a1ecae43261907"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1cf1ebf987beddbf046903615875a8b47473d629e8fa5f759766b429591443ca"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ed26677415348766d3859df72d078952d2c1db1b8a55d7182c1e1309d7235644"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "85e8756f8073495ae5eb3e498f40c21560fae2d74371442daff221f89beb9c56"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "fc7a0fd9e48139e3c58a07e5df9a7613e20f7c470126db4d7008f57397f4b224"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b92173d880662f817fa5eff2c1f8e5511d3bbac96b1bccc482f0c02bae0f37f2"
+    sha256 cellar: :any_skip_relocation, ventura:       "7b5d67d9d88a72c3c383ab7501ff639ef21d246bd24ed7d96aee2e2ea351051d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f4c59d3ae68d5856130e95924ec567c153e455864bd100c6e74fb1ec936065e3"
   end
 
+  depends_on "certifi"
   depends_on "libmagic"
-  depends_on "python-certifi"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/2a/53/cf0a48de1bdcf6ff6e1c9a023f5f523dfe303e4024f216feac64b6eb7f67/charset-normalizer-3.2.0.tar.gz"
-    sha256 "3bb3d25a8e6c0aedd251753a79ae98a093c7e7b471faa3aa9a93a81431987ace"
+    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
+    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
   end
 
   resource "distro" do
-    url "https://files.pythonhosted.org/packages/4b/89/eaa3a3587ebf8bed93e45aa79be8c2af77d50790d15b53f6dfc85b57f398/distro-1.8.0.tar.gz"
-    sha256 "02e111d1dc6a50abb8eed6bf31c3e48ed8b0830d1ea2a1b78c61765c2513fdd8"
+    url "https://files.pythonhosted.org/packages/fc/f8/98eea607f65de6527f8a2e8885fc8015d3e6f5775df186e443e0964a11c3/distro-1.9.0.tar.gz"
+    sha256 "2fa77c6fd8940f116ee1d6b94a2f90b13b5ea8d019b98bc8bafdcabcdd9bdbed"
   end
 
   resource "docopt" do
@@ -37,23 +37,23 @@ class Dotdrop < Formula
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz"
-    sha256 "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
+    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
+    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
   end
 
   resource "jinja2" do
-    url "https://files.pythonhosted.org/packages/7a/ff/75c28576a1d900e87eb6335b063fab47a8ef3c8b4d88524c4bf78f670cce/Jinja2-3.1.2.tar.gz"
-    sha256 "31351a702a408a9e7595a8fc6150fc3f43bb6bf7e319770cbc0db9df9437e852"
+    url "https://files.pythonhosted.org/packages/ed/55/39036716d19cab0747a5020fc7e907f362fbf48c984b14e62127f7e68e5d/jinja2-3.1.4.tar.gz"
+    sha256 "4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"
   end
 
   resource "markupsafe" do
-    url "https://files.pythonhosted.org/packages/6d/7c/59a3248f411813f8ccba92a55feaac4bf360d29e2ff05ee7d8e1ef2d7dbf/MarkupSafe-2.1.3.tar.gz"
-    sha256 "af598ed32d6ae86f1b747b82783958b1a4ab8f617b06fe68795c7f026abbdcad"
+    url "https://files.pythonhosted.org/packages/b4/d2/38ff920762f2247c3af5cbbbbc40756f575d9692d381d7c520f45deb9b8f/markupsafe-3.0.1.tar.gz"
+    sha256 "3e683ee4f5d0fa2dde4db77ed8dd8a876686e3fc417655c2ece9a90576905344"
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/b9/6c/7c6658d258d7971c5eb0d9b69fa9265879ec9a9158031206d47800ae2213/packaging-23.1.tar.gz"
-    sha256 "a392980d2b6cffa644431898be54b0045151319d1e7ec34f0cfed48767dd334f"
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
   resource "python-magic" do
@@ -62,28 +62,23 @@ class Dotdrop < Formula
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/9d/be/10918a2eac4ae9f02f6cfe6414b7a155ccd8f7f9d4380d62fd5b955065c3/requests-2.31.0.tar.gz"
-    sha256 "942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
   end
 
   resource "ruamel-yaml" do
-    url "https://files.pythonhosted.org/packages/63/dd/b4719a290e49015536bd0ab06ab13e3b468d8697bec6c2f668ac48b05661/ruamel.yaml-0.17.32.tar.gz"
-    sha256 "ec939063761914e14542972a5cba6d33c23b0859ab6342f61cf070cfc600efc2"
-  end
-
-  resource "ruamel-yaml-clib" do
-    url "https://files.pythonhosted.org/packages/d5/31/a3e6411947eb7a4f1c669f887e9e47d61a68f9d117f10c3c620296694a0b/ruamel.yaml.clib-0.2.7.tar.gz"
-    sha256 "1f08fd5a2bea9c4180db71678e850b995d2a5f4537be0e94557668cf0f5f9497"
+    url "https://files.pythonhosted.org/packages/29/81/4dfc17eb6ebb1aac314a3eb863c1325b907863a1b8b1382cdffcb6ac0ed9/ruamel.yaml-0.18.6.tar.gz"
+    sha256 "8b27e6a217e786c6fbe5634d8f3f11bc63e0f80f6a5890f28863d9c45aac311b"
   end
 
   resource "tomli-w" do
-    url "https://files.pythonhosted.org/packages/49/05/6bf21838623186b91aedbda06248ad18f03487dc56fbc20e4db384abde6c/tomli_w-1.0.0.tar.gz"
-    sha256 "f463434305e0336248cac9c2dc8076b707d8a12d019dd349f5c1e382dd1ae1b9"
+    url "https://files.pythonhosted.org/packages/d4/19/b65f1a088ee23e37cdea415b357843eca8b1422a7b11a9eee6e35d4ec273/tomli_w-1.1.0.tar.gz"
+    sha256 "49e847a3a304d516a169a601184932ef0f6b61623fe680f836a2aa7128ed0d33"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/31/ab/46bec149bbd71a4467a3063ac22f4486ecd2ceb70ae8c70d5d8e4c2a7946/urllib3-2.0.4.tar.gz"
-    sha256 "8d22f86aae8ef5e410d4f539fde9ce6b2113a001bb4d189e0aed70642d602b11"
+    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
+    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
   end
 
   def install
@@ -92,7 +87,7 @@ class Dotdrop < Formula
 
   test do
     (testpath/"xxx.conf").write("12345678")
-    (testpath/"config.yaml").write <<~EOS
+    (testpath/"config.yaml").write <<~YAML
       config:
         dotpath: .
       dotfiles:
@@ -103,7 +98,7 @@ class Dotdrop < Formula
         home:
           dotfiles:
           - f_xxx
-    EOS
+    YAML
     system bin/"dotdrop", "install", "--profile=home"
     assert_match "12345678", File.read("yyy.conf")
   end

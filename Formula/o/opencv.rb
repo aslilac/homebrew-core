@@ -1,10 +1,11 @@
 class Opencv < Formula
   desc "Open source computer vision library"
   homepage "https://opencv.org/"
-  url "https://github.com/opencv/opencv/archive/refs/tags/4.8.0.tar.gz"
-  sha256 "cbf47ecc336d2bff36b0dcd7d6c179a9bb59e805136af6b9670ca944aef889bd"
+  url "https://github.com/opencv/opencv/archive/refs/tags/4.10.0.tar.gz"
+  sha256 "b2171af5be6b26f7a06b1229948bbb2bdaa74fcf5cd097e0af6378fce50a6eb9"
   license "Apache-2.0"
-  revision 1
+  revision 12
+  head "https://github.com/opencv/opencv.git", branch: "4.x"
 
   livecheck do
     url :stable
@@ -12,24 +13,26 @@ class Opencv < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_ventura:  "1063bfb99f501d17c61cb4405b74e5dac225dd241b70959c1714643fa2c67e99"
-    sha256 arm64_monterey: "d56ffc2df1f236d95acd33a29006b7cca76a782992d7a5cd853a88130cd74fab"
-    sha256 arm64_big_sur:  "c7ab32590a279c6111663bf1385db1697ed38f8dfcabe17bfc0fab51fd6d4fe1"
-    sha256 ventura:        "67da519a616db8e2e736d10b36c747e9315a71a2f61cebcbe724364da3d99522"
-    sha256 monterey:       "818adc426c528ce967886bc8c16d24c1e4b7da64d73795f59d44dc43bf084af9"
-    sha256 big_sur:        "edd092af4ec386c130b24542d2032a1f54b2ebd1c77b0742ae68ad8834cbb065"
-    sha256 x86_64_linux:   "4702a242e34e4fe33075975926e5af45f8b35d5a3db6105be37baf0de833c29b"
+    sha256 arm64_sonoma:  "de25a8e698f799ef0ec18f6a10e68ced4662cbe434b15190bb1ae77a58e082cf"
+    sha256 arm64_ventura: "dd6e20b2ffd3f7d59ca63986c1ebd401a218cf60584f5b06b2633b6ad1183765"
+    sha256 sonoma:        "a1a65f508c0ff07d95b2d14719917bf70a28b39e1224c677dfb6bcfa76c6ff31"
+    sha256 ventura:       "1cfcea05855bb12f02327b073e2ff100a1aa2a09226260d362653ed580bb4009"
+    sha256 x86_64_linux:  "6372c078b4664d54f3b20c7dd89d1acad8c335f31dbd48f895c42c0312223c5d"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+  depends_on "python-setuptools" => :build
+  depends_on "abseil"
   depends_on "ceres-solver"
   depends_on "eigen"
   depends_on "ffmpeg"
+  depends_on "freetype"
+  depends_on "gflags"
   depends_on "glog"
   depends_on "harfbuzz"
   depends_on "jpeg-turbo"
+  depends_on "jsoncpp"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "numpy"
@@ -38,29 +41,36 @@ class Opencv < Formula
   depends_on "openjpeg"
   depends_on "openvino"
   depends_on "protobuf"
-  depends_on "python@3.11"
+  depends_on "python@3.12"
   depends_on "tbb"
+  depends_on "tesseract"
   depends_on "vtk"
   depends_on "webp"
 
   uses_from_macos "zlib"
 
+  on_macos do
+    depends_on "glew"
+    depends_on "imath"
+    depends_on "libarchive"
+  end
+
+  on_linux do
+    depends_on "cairo"
+    depends_on "gdk-pixbuf"
+    depends_on "glib"
+    depends_on "gtk+3"
+  end
+
   fails_with gcc: "5" # ffmpeg is compiled with GCC
 
   resource "contrib" do
-    url "https://github.com/opencv/opencv_contrib/archive/refs/tags/4.8.0.tar.gz"
-    sha256 "b4aef0f25a22edcd7305df830fa926ca304ea9db65de6ccd02f6cfa5f3357dbb"
-  end
-
-  # Fix static build with OpenVINO (https://github.com/opencv/opencv/pull/23963)
-  # Remove patch when available in release.
-  patch do
-    url "https://github.com/opencv/opencv/commit/ef9d14f181ad8cca71443beaf3874de3197d4e47.patch?full_index=1"
-    sha256 "efdf5534479af2e246c162215d5cbc2ae49e962ca58ccd9fef610fa40ee4a4ed"
+    url "https://github.com/opencv/opencv_contrib/archive/refs/tags/4.10.0.tar.gz"
+    sha256 "65597f8fb8dc2b876c1b45b928bbcc5f772ddbaf97539bf1b737623d0604cba1"
   end
 
   def python3
-    "python3.11"
+    "python3.12"
   end
 
   def install
@@ -74,10 +84,10 @@ class Opencv < Formula
 
     # Remove bundled libraries to make sure formula dependencies are used
     libdirs = %w[ffmpeg libjasper libjpeg libjpeg-turbo libpng libtiff libwebp openexr openjpeg protobuf tbb zlib]
-    libdirs.each { |l| (buildpath/"3rdparty"/l).rmtree }
+    libdirs.each { |l| rm_r(buildpath/"3rdparty"/l) }
 
     args = %W[
-      -DCMAKE_CXX_STANDARD=11
+      -DCMAKE_CXX_STANDARD=17
       -DCMAKE_OSX_DEPLOYMENT_TARGET=
       -DBUILD_JASPER=OFF
       -DBUILD_JPEG=OFF
@@ -140,7 +150,11 @@ class Opencv < Formula
     # Ref: https://github.com/opencv/opencv/wiki/CPU-optimizations-build-options
     ENV.runtime_cpu_detection
     if Hardware::CPU.intel? && build.bottle?
-      cpu_baseline = MacOS.version.requires_sse42? ? "SSE4_2" : "SSSE3"
+      cpu_baseline = if OS.mac? && MacOS.version.requires_sse42?
+        "SSE4_2"
+      else
+        "SSSE3"
+      end
       args += %W[-DCPU_BASELINE=#{cpu_baseline} -DCPU_BASELINE_REQUIRE=#{cpu_baseline}]
     end
 
@@ -156,18 +170,21 @@ class Opencv < Formula
 
     # Prevent dependents from using fragile Cellar paths
     inreplace lib/"pkgconfig/opencv#{version.major}.pc", prefix, opt_prefix
+
+    # Replace universal binaries with their native slices
+    deuniversalize_machos
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <opencv2/opencv.hpp>
       #include <iostream>
       int main() {
         std::cout << CV_VERSION << std::endl;
         return 0;
       }
-    EOS
-    system ENV.cxx, "-std=c++11", "test.cpp", "-I#{include}/opencv4", "-o", "test"
+    CPP
+    system ENV.cxx, "-std=c++17", "test.cpp", "-I#{include}/opencv4", "-o", "test"
     assert_equal shell_output("./test").strip, version.to_s
 
     output = shell_output("#{python3} -c 'import cv2; print(cv2.__version__)'")

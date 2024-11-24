@@ -1,8 +1,8 @@
 class Stunnel < Formula
   desc "SSL tunneling program"
   homepage "https://www.stunnel.org/"
-  url "https://www.stunnel.org/downloads/stunnel-5.70.tar.gz"
-  sha256 "7bbc7b9e9a988d76301325db4c110ec360a98ffb8a221c7accbff9c0a8bae2f3"
+  url "https://www.stunnel.org/downloads/stunnel-5.73.tar.gz"
+  sha256 "bc917c3bcd943a4d632360c067977a31e85e385f5f4845f69749bce88183cb38"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,13 +11,14 @@ class Stunnel < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "a3e7fd50914a2755852f86b378cd6c3b37f3fa2b89ca5ce811f35bd5879747ee"
-    sha256 cellar: :any,                 arm64_monterey: "e0e4e78fd7b823a8dd5c970d1f5cf54820119ef7125b43b24dcf80e0a0387029"
-    sha256 cellar: :any,                 arm64_big_sur:  "7c60137bcf285268bff1eb6fffc380ec4d534d98b54e553cc3f6b5d4fb0c5bc3"
-    sha256 cellar: :any,                 ventura:        "64b37b9eb2b294bdb7f478675536dfc7032a26c4072801640fa6dd9c6e817fc5"
-    sha256 cellar: :any,                 monterey:       "9f70e64c9ceba451d790ebcd34b6e480d10697d511dce82afee839d4bfb4221b"
-    sha256 cellar: :any,                 big_sur:        "10c2fd4bb8986a45d3c114ef5e03ded4b16ebf8afb2828ed847f9839647d3cad"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b85856c87cb80d5b7a5159ec26ad9ee792cba186824b19a710a57754cc2555f3"
+    sha256 cellar: :any,                 arm64_sequoia:  "9ebe0bff4ff989f7c813acfc0f3babc0da844d32fc8573f312071de235173258"
+    sha256 cellar: :any,                 arm64_sonoma:   "e906bc39b199cd1a85e6504a76836dafa2ee85512412b6d75a12166c59d39d75"
+    sha256 cellar: :any,                 arm64_ventura:  "31c84b034d02b835932c600829d9b2eaac27c503cd01ccb7237c05fe7922bd29"
+    sha256 cellar: :any,                 arm64_monterey: "91f4e0489c4e7c2186bdeea494fc4190359bc3f1390ee8050997a8beaddaf517"
+    sha256 cellar: :any,                 sonoma:         "af36b6ee1b582ccc58fc5fb2e47aefbe6d33751de4a0608f6eb5dc26463b16c1"
+    sha256 cellar: :any,                 ventura:        "48d97fc738dd0b067cbaaff849b903c8b1cf3f96eca9db64420039c4ae038336"
+    sha256 cellar: :any,                 monterey:       "dcceef2f331ca52a7bb7d59eeeeefe4f406f72bc10f6e431dc0b2c23bd9d2d49"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fe9ad0c808b6d741f750e916b5dd5a3ac510b48b12429a99cb0e6c919774e3b6"
   end
 
   depends_on "openssl@3"

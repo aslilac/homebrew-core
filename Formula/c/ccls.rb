@@ -6,26 +6,23 @@ class Ccls < Formula
   #       https://github.com/Homebrew/homebrew-core/pull/106939
   #       https://github.com/MaskRay/ccls/issues/786
   #       https://github.com/MaskRay/ccls/issues/895
-  # TODO: Check if we can use unversioned `llvm` at version bump.
-  url "https://github.com/MaskRay/ccls/archive/0.20220729.tar.gz"
-  sha256 "af19be36597c2a38b526ce7138c72a64c7fb63827830c4cff92256151fc7a6f4"
+  url "https://github.com/MaskRay/ccls/archive/refs/tags/0.20241108.tar.gz"
+  sha256 "76224663c3554eef9102dca66d804874d0252312d7c7d02941c615c87dcb68af"
   license "Apache-2.0"
-  revision 9
   head "https://github.com/MaskRay/ccls.git", branch: "master"
 
   bottle do
-    sha256                               arm64_ventura:  "3bf73031c131831f360e1fcd68d7267bb080c53b62723a719b07f4348d87ab32"
-    sha256                               arm64_monterey: "fffce7f507ca1db7c1b1dd7914c969f9430b10b84b6db722f9e078e85a17db3c"
-    sha256                               arm64_big_sur:  "1ba6239e608393fb450165fc30f559f72f5e4061560eb46e5551e5fcd0db877a"
-    sha256                               ventura:        "dd6f5f4226c8698be3bee089399f77ba83ce3e187d7425b5b157a8dbcbfb9d36"
-    sha256                               monterey:       "8d4602d4946b959f8d35583b82bae88b1f7ee150f2ca026cd20ab360c2a1a452"
-    sha256                               big_sur:        "d6410e69b34badd6a25203edce2d3d20c28d1ddf0d4080542ffc7d592ca5dc05"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d7b2be6becc5ce199cfc6ea6a1d8eadab24addb7ace49634c2e941d8eaf1d3ed"
+    sha256                               arm64_sequoia: "ece6c26479841524dee0e88a2bf2a777b2574467634a97d97d24faeb727105cc"
+    sha256                               arm64_sonoma:  "e9df0aaf48436855c03f38a7119c9d907c06965a57274fc5448e909ec8e1254a"
+    sha256                               arm64_ventura: "0f697d60ca786fc5c27e35d9d00fffffcb0d0b72d5344d6d8bd3708c0ebb64d4"
+    sha256                               sonoma:        "0c9bbd4d249e1798109104f2952ca47e80e50b68f4203d2641bd5d41e867c8b2"
+    sha256                               ventura:       "6715ce158c2e09795f2d083013bbdf0ca3aa6d3399d91946d3db786decadead4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d4e878b4bccc6d9e2a5c50e06ddf834c1a4c7de4ca1e64d4f4961ceb4ef36993"
   end
 
   depends_on "cmake" => :build
   depends_on "rapidjson" => :build
-  depends_on "llvm@15"
+  depends_on "llvm"
   depends_on macos: :high_sierra # C++ 17 is required
 
   fails_with gcc: "5"
@@ -37,6 +34,7 @@ class Ccls < Formula
   end
 
   def install
+    ENV.append "LDFLAGS", "-Wl,-rpath,#{rpath(target: llvm.opt_lib)}" if OS.linux?
     resource_dir = Utils.safe_popen_read(llvm.opt_bin/"clang", "-print-resource-dir").chomp
     resource_dir.gsub! llvm.prefix.realpath, llvm.opt_prefix
     system "cmake", "-S", ".", "-B", "build", "-DCLANG_RESOURCE_DIR=#{resource_dir}", *std_cmake_args

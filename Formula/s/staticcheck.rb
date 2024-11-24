@@ -1,19 +1,21 @@
 class Staticcheck < Formula
   desc "State of the art linter for the Go programming language"
   homepage "https://staticcheck.io/"
-  url "https://github.com/dominikh/go-tools/archive/2023.1.5.tar.gz"
-  sha256 "fd231014b8d9668dc3d2d583a54c7988453c9b5a42e4ba681a9b4c5be6744546"
+  url "https://github.com/dominikh/go-tools/archive/refs/tags/2024.1.1.tar.gz"
+  sha256 "fa0e5305e91ef126ac7de52c99a04728255fc694d45b0a9a3f1ca026a44828bf"
   license "MIT"
+  revision 1
   head "https://github.com/dominikh/go-tools.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "770befb587e5853b5b4d54068c6ebbecd7db8a2f42628ae27ee979c3a425a93f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "aedbe1af0e12720454a9b2c4728525ba23208865c38ff448d6285d51c3edb558"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b3afc69cc2d66a64b0dcf966df1a89b7a5d083245b2cd0840a49b1fb46545592"
-    sha256 cellar: :any_skip_relocation, ventura:        "1edb5c68d15764852ca462097e53d7c5b618388b7222435d7e3cacdb84056fe0"
-    sha256 cellar: :any_skip_relocation, monterey:       "001e8cc21cb9f26545aa03a1caef8c74eea0ae14a55c4453ef9d3713650c2c5d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a3b4eeb1ead02433dd055be5bbecf6cbbcf00f3dad46e1da42a42beaa549abf3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e499c2bdb9a2a3eb352879b1fac8592b1bb0422522c24eb370c8d95988c8689e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "279420fa5e4c90f00c6a98b7bac30248f2a40d917ea0cd7dde5bc0172d5ba5ae"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "eb16ebbf5ca8c2e791c3ed79770e0b55a554caa1d243ea2fc7b745a56242c9e6"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "eb16ebbf5ca8c2e791c3ed79770e0b55a554caa1d243ea2fc7b745a56242c9e6"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "eb16ebbf5ca8c2e791c3ed79770e0b55a554caa1d243ea2fc7b745a56242c9e6"
+    sha256 cellar: :any_skip_relocation, sonoma:         "4407641b6dcf86ef9fca913f67344de22c88f5c3ead44b028ebbcc0f77a008fb"
+    sha256 cellar: :any_skip_relocation, ventura:        "4407641b6dcf86ef9fca913f67344de22c88f5c3ead44b028ebbcc0f77a008fb"
+    sha256 cellar: :any_skip_relocation, monterey:       "4407641b6dcf86ef9fca913f67344de22c88f5c3ead44b028ebbcc0f77a008fb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "986c7fb269e23ddd8a957b76174775209468590171909c56b64b680fcf061a0e"
   end
 
   depends_on "go"
@@ -23,7 +25,7 @@ class Staticcheck < Formula
   end
 
   test do
-    (testpath/"test.go").write <<~EOS
+    (testpath/"test.go").write <<~GO
       package main
 
       import "fmt"
@@ -33,7 +35,7 @@ class Staticcheck < Formula
         x = 1
         fmt.Println(x)
       }
-    EOS
+    GO
     json_output = JSON.parse(shell_output("#{bin}/staticcheck -f json test.go", 1))
     assert_equal json_output["code"], "S1021"
   end

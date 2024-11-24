@@ -1,10 +1,10 @@
 class Lgogdownloader < Formula
   desc "Unofficial downloader for GOG.com games"
   homepage "https://sites.google.com/site/gogdownloader/"
-  url "https://github.com/Sude-/lgogdownloader/releases/download/v3.11/lgogdownloader-3.11.tar.gz"
-  sha256 "d8d015cce6e002876305517367dc006c332e4d492263173b58bfe5a94b057b09"
+  url "https://github.com/Sude-/lgogdownloader/releases/download/v3.15/lgogdownloader-3.15.tar.gz"
+  sha256 "9946558bb30b72cd5ed712e7fc425eef4b2a1fd22b5475d1a998720800cd25f0"
   license "WTFPL"
-  revision 2
+  revision 1
   head "https://github.com/Sude-/lgogdownloader.git", branch: "master"
 
   livecheck do
@@ -13,13 +13,12 @@ class Lgogdownloader < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "1b9940bd11ba791f39d4836423124bc3d817c8711102fcdeebde9fe19d4bd39e"
-    sha256 cellar: :any,                 arm64_monterey: "cdd02f78418f68f0538c18a2f5e88cd341db4976ff37e81ba0e68e8beb28fcc7"
-    sha256 cellar: :any,                 arm64_big_sur:  "13d37c9e5b87f06a9c1fc59732adf3143d14af10915735e44bf446720d48ef0c"
-    sha256 cellar: :any,                 ventura:        "64e2d38ace1a2b368f57e878d29c0d6f3070c63cdd88976214987bcc9def3409"
-    sha256 cellar: :any,                 monterey:       "ef717cffced5d634ad7a1f898efc203ed5113c14f6746665a657f533126ced7f"
-    sha256 cellar: :any,                 big_sur:        "5af4bd2a87633d351340e80bb07374b5a5f7d662a327b71123c2ba77c8f297e2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "62c4c04f52e8cefa79bf839834aa3d0f7cd4b21b0d2eecc76d7fb1a079c40b89"
+    sha256 cellar: :any,                 arm64_sequoia: "03f042d94ea73b39316154a49ac111eb5620c55704cf2076ec2b068045c368b7"
+    sha256 cellar: :any,                 arm64_sonoma:  "c384eee02a5a785c86ff058fab34795c298fd9cdbbb6a375d59fb1f1f4d4e9c9"
+    sha256 cellar: :any,                 arm64_ventura: "3e0397e020434d2b8473e351c8c4d15622fc39f9fd345332dc26f9873545d7f0"
+    sha256 cellar: :any,                 sonoma:        "e29c38f06b3b2c8519d58f05438ee7c8a904545f02b02545aa4d774dd6a6715a"
+    sha256 cellar: :any,                 ventura:       "bf9b8bd9761c7bfaa1ba45262e387070996eabffc001613aa7c4bf63f15374a2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a21d687adb294894e88d4f2c6173aaf6ec5b293baeb548d5698c94cc0c5b1cd8"
   end
 
   depends_on "cmake" => :build
@@ -29,14 +28,18 @@ class Lgogdownloader < Formula
   depends_on "htmlcxx"
   depends_on "jsoncpp"
   depends_on "rhash"
+  depends_on "tidy-html5"
   depends_on "tinyxml2"
 
   uses_from_macos "curl"
 
   def install
-    system "cmake", "-S", ".", "-B", "build",
-                    "-DJSONCPP_INCLUDE_DIR=#{Formula["jsoncpp"].opt_include}",
-                    *std_cmake_args
+    args = %W[
+      -DJSONCPP_INCLUDE_DIR=#{Formula["jsoncpp"].opt_include}
+      -DBoost_INCLUDE_DIR=#{Formula["boost"].opt_include}
+    ]
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

@@ -1,23 +1,30 @@
 class Aspectj < Formula
   desc "Aspect-oriented programming for Java"
-  homepage "https://www.eclipse.org/aspectj/"
-  url "https://github.com/eclipse-aspectj/aspectj/releases/download/V1_9_20/aspectj-1.9.20.jar"
-  sha256 "ceb53b265132530a18c50fac4da24ce181955b936e7035c38846a8e20949024d"
+  homepage "https://eclipse.dev/aspectj/"
+  url "https://github.com/eclipse-aspectj/aspectj/releases/download/V1_9_22_1/aspectj-1.9.22.1.jar"
+  sha256 "348c98561248197cfebcd568010cd8b037e639873842b47324659e4234b85f45"
   license "EPL-2.0"
 
   livecheck do
     url :stable
-    regex(/^v?(\d+(?:_\d+)+)$/i)
+    regex(/^v?(\d+(?:[._]\d+)+)$/i)
+    strategy :github_latest do |json, regex|
+      match = json["tag_name"]&.match(regex)
+      next if match.blank?
+
+      match[1].tr("_", ".")
+    end
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f4b48e6c7142fc362f6cb890d9a1b2dd8e468455d78388efb35c1d2537e01ebd"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e285595ea161cd01eef9a5e62061d372378f336059429aa44c9adb99a1af1479"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e153cbbb2e89939fa212becd49caf4fa19329aa59abc45ecc096e77ca7df541f"
-    sha256 cellar: :any_skip_relocation, ventura:        "4c83097a3933825d7d30d36833329f710c237bc20055639c7c5fd05f7e911e69"
-    sha256 cellar: :any_skip_relocation, monterey:       "042311ae4e61d5282e9a3ab31b45acc359078df8c06c71b0b94e3aab93bddc4e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "fa6fd4646d33d5c1e69bf47c31d85641ad166e35f87de73a84249c7e11361316"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "54b69d47a18986341f434e615bddc0d985596ae4ec622bd2d09f02d87a4f967c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "54aabd2f689a5d4d2ca3a2ee88a03cae442f4316af396e68a919182d321b0e8c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3e54988e0976a8353299cf6834d7b7a0081f0937cadef5a9d2bf901fdcb4c0cf"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b35032d71ef261589b7c13fd826300db39032c0b683058f4066919b9dca4db15"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "425f8a5c1a68e427643c38437b0a2538e1e11a05fdba830de9c681f93e23634e"
+    sha256 cellar: :any_skip_relocation, sonoma:         "2a19fa57fe4c374b7a7bed752101efa6cc443dae1a2d78e5e1602b55acc6d644"
+    sha256 cellar: :any_skip_relocation, ventura:        "592d0669e3c41fa2e8438ef3cc68377a830f4856bc1fa7b1ce89c778f1424a91"
+    sha256 cellar: :any_skip_relocation, monterey:       "d2eb36aff3ddc79a01510f8a8536ae9acfc5742052744e285aaf0b686250653c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0861454e156f00ad3b6a21034842531e4474506f49a1d4d01f56f773662ec118"
   end
 
   depends_on "openjdk"
@@ -31,14 +38,14 @@ class Aspectj < Formula
   end
 
   test do
-    (testpath/"Test.java").write <<~EOS
+    (testpath/"Test.java").write <<~JAVA
       public class Test {
         public static void main (String[] args) {
           System.out.println("Brew Test");
         }
       }
-    EOS
-    (testpath/"TestAspect.aj").write <<~EOS
+    JAVA
+    (testpath/"TestAspect.aj").write <<~JAVA
       public aspect TestAspect {
         private pointcut mainMethod () :
           execution(public static void main(String[]));
@@ -47,7 +54,7 @@ class Aspectj < Formula
             System.out.print("Aspect ");
           }
       }
-    EOS
+    JAVA
     ENV["CLASSPATH"] = "#{libexec}/#{name}/lib/aspectjrt.jar:test.jar:testaspect.jar"
     system bin/"ajc", "-outjar", "test.jar", "Test.java"
     system bin/"ajc", "-outjar", "testaspect.jar", "-outxml", "TestAspect.aj"

@@ -1,19 +1,20 @@
 class Fmt < Formula
   desc "Open-source formatting library for C++"
   homepage "https://fmt.dev/"
-  url "https://github.com/fmtlib/fmt/archive/refs/tags/10.1.1.tar.gz"
-  sha256 "78b8c0a72b1c35e4443a7e308df52498252d1cefc2b08c9a97bc9ee6cfe61f8b"
+  url "https://github.com/fmtlib/fmt/releases/download/11.0.2/fmt-11.0.2.zip"
+  sha256 "40fc58bebcf38c759e11a7bd8fdc163507d2423ef5058bba7f26280c5b9c5465"
   license "MIT"
   head "https://github.com/fmtlib/fmt.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "87b7f569c29b6c91acf1bb7c2022d67186e932295c8611c1b94e071a0f07b513"
-    sha256 cellar: :any,                 arm64_monterey: "25b3c5f7ff7eb92613836cf3efc9967ec31d85a4e947838833d98f3d99547c47"
-    sha256 cellar: :any,                 arm64_big_sur:  "1567673afd845b6fcbe33561ff59de3d6eef379364ef0137d5ccd79ba5a26982"
-    sha256 cellar: :any,                 ventura:        "322e606bd2b921c777ae93857515cbe4dd308aeaf59a1b130ef9856b5ff22140"
-    sha256 cellar: :any,                 monterey:       "8f03ab26e239eca36bffeaf984a779794832ece7aca7671687f694fd2468b546"
-    sha256 cellar: :any,                 big_sur:        "9a6c2cdbdd62eb546c44789bd97828216c990e251d9aded16fda1526c099191d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4b03e15d3b43614ea56c95232f4c116fc4ebaad6afbc4808cb0780a9c744563b"
+    sha256 cellar: :any,                 arm64_sequoia:  "0960a214392fc344670c2fae5a698799c910743d437c0119756cab9c5395bbd2"
+    sha256 cellar: :any,                 arm64_sonoma:   "244d2f9285c080d0dbef74e2741082754a82d13bf0c1da25130dbbc82d648162"
+    sha256 cellar: :any,                 arm64_ventura:  "13febc98177289f86421181ee4eed45b8d47f88ae4ceb573c4106af2db355bf7"
+    sha256 cellar: :any,                 arm64_monterey: "cfdbcf9079cfe3ec3148408799bdf73f1f8a8ec55e85576ba6884383a756423d"
+    sha256 cellar: :any,                 sonoma:         "3cfdbc8234181a472bfaa81699f68745c741a3f12d394da25926a8c11f2fbc20"
+    sha256 cellar: :any,                 ventura:        "9c1f360c5996c6bc94ce7fd06871fc02016207ae671c4649a28cc163ef8b057b"
+    sha256 cellar: :any,                 monterey:       "656e4cdeba06ddc3b4f7e3b375177217595e4f23f26177f77bb486d117e6fe0d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "63f0d3d18a30bdce1b31b873722c5cb369f8ad7dda2c4e9b258d489a5bc9102e"
   end
 
   depends_on "cmake" => :build
@@ -29,7 +30,7 @@ class Fmt < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <iostream>
       #include <string>
       #include <fmt/format.h>
@@ -39,7 +40,7 @@ class Fmt < Formula
         std::cout << str;
         return 0;
       }
-    EOS
+    CPP
 
     system ENV.cxx, "test.cpp", "-std=c++11", "-o", "test",
                   "-I#{include}",

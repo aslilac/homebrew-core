@@ -1,9 +1,9 @@
 class WildflyAs < Formula
   desc "Managed application runtime for building applications"
   homepage "https://www.wildfly.org/"
-  url "https://github.com/wildfly/wildfly/releases/download/29.0.0.Final/wildfly-29.0.0.Final.tar.gz"
-  sha256 "8916d63a32bb4a7cbd9ac63dabe4ddd34acf04feec75c1e407e6eebfa78c37f0"
-  license "LGPL-2.1-or-later"
+  url "https://github.com/wildfly/wildfly/releases/download/34.0.1.Final/wildfly-34.0.1.Final.tar.gz"
+  sha256 "696a39f46c02ce428b9ceb699260d360514f7e6a920e80ed33e4390bf27d0d2a"
+  license "Apache-2.0"
 
   livecheck do
     url "https://www.wildfly.org/downloads/"
@@ -11,12 +11,11 @@ class WildflyAs < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_ventura:  "a7091f7be4607ca80cefbb695b964b835e2268252636be441e5729a0ffe75a77"
-    sha256 cellar: :any, arm64_monterey: "a7091f7be4607ca80cefbb695b964b835e2268252636be441e5729a0ffe75a77"
-    sha256 cellar: :any, arm64_big_sur:  "a7091f7be4607ca80cefbb695b964b835e2268252636be441e5729a0ffe75a77"
-    sha256 cellar: :any, ventura:        "8ca733567f1dd93d4071dd40d8849865db948e2bbe3fc85f272a8cf9e32aac47"
-    sha256 cellar: :any, monterey:       "8ca733567f1dd93d4071dd40d8849865db948e2bbe3fc85f272a8cf9e32aac47"
-    sha256 cellar: :any, big_sur:        "8ca733567f1dd93d4071dd40d8849865db948e2bbe3fc85f272a8cf9e32aac47"
+    sha256 cellar: :any, arm64_sequoia: "fb742b6730c8fd10510c261dd0afd6906eb386d073cc4f562a1d3f943e492714"
+    sha256 cellar: :any, arm64_sonoma:  "fb742b6730c8fd10510c261dd0afd6906eb386d073cc4f562a1d3f943e492714"
+    sha256 cellar: :any, arm64_ventura: "fb742b6730c8fd10510c261dd0afd6906eb386d073cc4f562a1d3f943e492714"
+    sha256 cellar: :any, sonoma:        "dbc859c263edbbd806c03fdb0d5f01107c2cdd924fba16a2c3e0491b7d7ba530"
+    sha256 cellar: :any, ventura:       "dbc859c263edbbd806c03fdb0d5f01107c2cdd924fba16a2c3e0491b7d7ba530"
   end
 
   # Installs a pre-built `libartemis-native-64.so` file with linkage to libaio.so.1
@@ -61,7 +60,7 @@ class WildflyAs < Formula
 
   test do
     ENV["JBOSS_HOME"] = opt_libexec
-    system "#{opt_libexec}/bin/standalone.sh --version | grep #{version}"
+    ENV["JBOSS_LOG_DIR"] = testpath
 
     port = free_port
 

@@ -1,25 +1,35 @@
 class Feishu2md < Formula
   desc "Convert feishu/larksuite documents to markdown"
   homepage "https://github.com/Wsine/feishu2md"
-  url "https://github.com/Wsine/feishu2md/archive/refs/tags/v2.0.0.tar.gz"
-  sha256 "75f7af31916f5594c0cab11b83c27d3d76a2793c7a8c3f8b161946b515b626d6"
+  url "https://github.com/Wsine/feishu2md/archive/refs/tags/v2.4.0.tar.gz"
+  sha256 "a02bead184c0f9d9c6a64dd5a21b994ff8a86eecd940f6e53ad27e048177003b"
   license "MIT"
+  head "https://github.com/Wsine/feishu2md.git", branch: "main"
+
+  # Upstream creates releases that use a stable tag (e.g., `v1.2.3`) but are
+  # labeled as "pre-release" on GitHub before the version is released, so it's
+  # necessary to use the `GithubLatest` strategy.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5c43560d1c51189e1b25f3d1c95a4985ee74615ed641bca383d4f3f3c67c791a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5c43560d1c51189e1b25f3d1c95a4985ee74615ed641bca383d4f3f3c67c791a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5c43560d1c51189e1b25f3d1c95a4985ee74615ed641bca383d4f3f3c67c791a"
-    sha256 cellar: :any_skip_relocation, ventura:        "f5f071e46875ce80111eec6c4fb4b2cff75d93d339046b98646de6a1712fe33c"
-    sha256 cellar: :any_skip_relocation, monterey:       "f5f071e46875ce80111eec6c4fb4b2cff75d93d339046b98646de6a1712fe33c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f5f071e46875ce80111eec6c4fb4b2cff75d93d339046b98646de6a1712fe33c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9995813ebd0136f20e81f30c9d73788cecb4344024f9f3498d99f997ff0c0948"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "770eec2c17386647a3935e04c6b2227f44b1af33011f526edfeb35566fa78c23"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f121364f539161ad3df2d4d8812b712bdcd6b4b478f26bf31fcd7114935826e4"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f121364f539161ad3df2d4d8812b712bdcd6b4b478f26bf31fcd7114935826e4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f121364f539161ad3df2d4d8812b712bdcd6b4b478f26bf31fcd7114935826e4"
+    sha256 cellar: :any_skip_relocation, sonoma:         "e088621d7b83eee24a03be91b3fbec9186cb1e594f7508aef94bdc86e2fd5da7"
+    sha256 cellar: :any_skip_relocation, ventura:        "e088621d7b83eee24a03be91b3fbec9186cb1e594f7508aef94bdc86e2fd5da7"
+    sha256 cellar: :any_skip_relocation, monterey:       "e088621d7b83eee24a03be91b3fbec9186cb1e594f7508aef94bdc86e2fd5da7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "39114b4d1ef448d8b524e6643235aadc1e57d68443888cef8b7117547ecda4bc"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = "-s -w -X main.version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd"
+    system "go", "build", *std_go_args(ldflags:), "./cmd"
   end
 
   test do

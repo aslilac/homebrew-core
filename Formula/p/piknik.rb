@@ -1,15 +1,18 @@
 class Piknik < Formula
   desc "Copy/paste anything over the network"
   homepage "https://github.com/jedisct1/piknik"
-  url "https://github.com/jedisct1/piknik/archive/0.10.1.tar.gz"
+  url "https://github.com/jedisct1/piknik/archive/refs/tags/0.10.1.tar.gz"
   sha256 "9172acb424d864ba3563bbdb0cd2307815129027eec1a6ca04aee17da7f936c2"
   license "BSD-2-Clause"
   head "https://github.com/jedisct1/piknik.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "90b49184f4c9e4452340c534682d3d53d9d68df3d599222384a29ca7c1e4b454"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1fa42c88345003d888aaac97e08272e03348766992a383fb875039b39cbb99c4"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "ad21c6f5534120bf7b51f809e0441ed40d6c1647fd3df8ae5324f44b4b11d04f"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "3b11a027946eda7b8937861f4458d6d0a8e320fb297fa44ea8a84883e5614b9f"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b503df3a16dfdf25219a598da5ae3c17676ee2367c0db0837403a6f728e4fcb4"
+    sha256 cellar: :any_skip_relocation, sonoma:         "4b86a967d0fc344c84b0e15208d714dfe8ccef4e82e86bf862dc458c1ad5bbed"
     sha256 cellar: :any_skip_relocation, ventura:        "6124866e63102b6c82103a39a6d6287ed0808648e619af94d8ef44df915e22c1"
     sha256 cellar: :any_skip_relocation, monterey:       "28f6e0672fa5745285ec63560821f35c6bf604fa42ad80828bd2ca70eb5d94df"
     sha256 cellar: :any_skip_relocation, big_sur:        "48b98419184b858ff308f4ed96f0ff001f757524c38705337a25adfb960a85ea"
@@ -44,14 +47,14 @@ class Piknik < Formula
     lines = genkeys.lines.grep(/\s+=\s+/).map { |x| x.gsub(/\s+/, " ").gsub(/#.*/, "") }.uniq
     conffile.write lines.join("\n")
     pid = fork do
-      exec "#{bin}/piknik", "-server", "-config", conffile
+      exec bin/"piknik", "-server", "-config", conffile
     end
     begin
       sleep 1
-      IO.popen([{}, "#{bin}/piknik", "-config", conffile, "-copy"], "w+") do |p|
+      IO.popen([{}, bin/"piknik", "-config", conffile, "-copy"], "w+") do |p|
         p.write "test"
       end
-      IO.popen([{}, "#{bin}/piknik", "-config", conffile, "-move"], "r") do |p|
+      IO.popen([{}, bin/"piknik", "-config", conffile, "-move"], "r") do |p|
         clipboard = p.read
         assert_equal clipboard, "test"
       end

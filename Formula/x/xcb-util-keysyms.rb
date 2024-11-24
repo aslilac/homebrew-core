@@ -6,9 +6,12 @@ class XcbUtilKeysyms < Formula
   license "X11"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "bf1324e90b7abdb41f7a6dfa41ce477627ad5d069a09dcfeb51491c5a559b274"
+    sha256 cellar: :any,                 arm64_sonoma:   "71f2367c5777c07deb7cf6edda8a7b7a0d9bf162a467b8ae930c2ad0cdb6c450"
     sha256 cellar: :any,                 arm64_ventura:  "4d62cd700f85b3ba39740bd2dd9872d45aef018e603db2907f9bd1c3e6213d88"
     sha256 cellar: :any,                 arm64_monterey: "8f81bf9c5f646f94ab25dfc84953ae28fc166316263eea913b00cf9e569d455a"
     sha256 cellar: :any,                 arm64_big_sur:  "fab1de02f3c8f6ca3b93921678f2c5c7317f230b05b27790b805d8e2585a1901"
+    sha256 cellar: :any,                 sonoma:         "bbbd83881b3b35058415b32a952b4124e11dcfc48e6a6680920efef22c07fd36"
     sha256 cellar: :any,                 ventura:        "1d54ce19d60722d3b41fe752c4703876c8a17fa62d1be1d8840c8a943374afd7"
     sha256 cellar: :any,                 monterey:       "246f9361f2802f7dac2fdc20c762c2cb50a86c0393b519529b52201e69fff053"
     sha256 cellar: :any,                 big_sur:        "0e25691158d5d28c473634d285e0fbb7ae59eeca5ec55305ea814536e03cd069"
@@ -24,16 +27,15 @@ class XcbUtilKeysyms < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "libxcb"
 
   def install
     system "./autogen.sh" if build.head?
-    system "./configure", "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}",
+    system "./configure", "--disable-silent-rules",
                           "--localstatedir=#{var}",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules"
+                          "--sysconfdir=#{etc}",
+                          *std_configure_args
     system "make"
     system "make", "install"
   end

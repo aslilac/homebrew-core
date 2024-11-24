@@ -1,8 +1,8 @@
 class Mediaconch < Formula
   desc "Conformance checker and technical metadata reporter"
   homepage "https://mediaarea.net/MediaConch"
-  url "https://mediaarea.net/download/binary/mediaconch/23.07/MediaConch_CLI_23.07_GNU_FromSource.tar.bz2"
-  sha256 "3e1bbed484d211a17c829f725c45e67a2debfe72e8ee096609e3a42d09f2fa16"
+  url "https://mediaarea.net/download/binary/mediaconch/24.06/MediaConch_CLI_24.06_GNU_FromSource.tar.bz2"
+  sha256 "2dd68a260ea84fe23031c2caa121ede850f34a8c733e53237205bd018af0b9d9"
   license "BSD-2-Clause"
 
   livecheck do
@@ -11,13 +11,14 @@ class Mediaconch < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "1d87c27cda5fe315dbeb928fe6e670bcfcfffd2a133da79107ec23cbbd509ce6"
-    sha256 cellar: :any,                 arm64_monterey: "6115cb56a93089c7231b9b078c9242311da425efb1068257e9b19d47bfbd8d8a"
-    sha256 cellar: :any,                 arm64_big_sur:  "a8ff06ef886d77d76ab980e366ac8d8a74d67d41ab4240a7994273cb282a55a0"
-    sha256 cellar: :any,                 ventura:        "82cc99ba8e67e4ff478c50824072459bbdd3258a0e3a79328561b355e03367f2"
-    sha256 cellar: :any,                 monterey:       "a3008f2d281cbce671f2f829fc52be9842fd29c525b7b097967bba92b53db8ff"
-    sha256 cellar: :any,                 big_sur:        "2b2895791d1e5f95163ee7b32bbb2921a870f057ae4547c8357a52cd23dc0efd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fc0456b88a06d388cb0aa3ff54c5e4f1b8c897e6abdd8888337ae44be8c3ca66"
+    sha256 cellar: :any,                 arm64_sequoia:  "b1c07f44e462b03a77dfcc566a7d2c814e8d9f6c366c84f33d52116e86e5437e"
+    sha256 cellar: :any,                 arm64_sonoma:   "939859b3e6b27cea95e30dd0249430f53e50dd2482d9e5910089372e1442bc2b"
+    sha256 cellar: :any,                 arm64_ventura:  "e377a3a11dd83320786791b39c255446d8097c154a61d5bcb49409a156faf526"
+    sha256 cellar: :any,                 arm64_monterey: "aa33f61f409e854a4a03ca69de8371ed7a47b872b33928b650662325776ad206"
+    sha256 cellar: :any,                 sonoma:         "5d2cec68e7f1e6b3b5ca0fbbbbcbba2a40dd88c258f4149d8462ddd34100b1e9"
+    sha256 cellar: :any,                 ventura:        "056b82ae9504a3eb15b18d66fe79e94c12c837ed3714faa88009793a93052b52"
+    sha256 cellar: :any,                 monterey:       "70c1594d43d848825434efaf63b21ac294cf0758b53f0fb5bb0da6a22f87f8aa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bc3b5ed1de5f34d66934807b79a38a3fb34b9bde991a6b7172db384e1da19a86"
   end
 
   depends_on "pkg-config" => :build
@@ -26,7 +27,9 @@ class Mediaconch < Formula
   depends_on "sqlite"
 
   uses_from_macos "curl"
+  uses_from_macos "libxml2"
   uses_from_macos "libxslt"
+  uses_from_macos "zlib"
 
   def install
     cd "ZenLib/Project/GNU/Library" do
@@ -63,6 +66,9 @@ class Mediaconch < Formula
   end
 
   test do
-    pipe_output("#{bin}/mediaconch", test_fixtures("test.mp3"))
+    output = shell_output("#{bin}/mediaconch #{test_fixtures("test.mp3")}")
+    assert_match "N/A! #{test_fixtures("test.mp3")}", output
+
+    assert_match version.to_s, shell_output("#{bin}/mediaconch --version")
   end
 end

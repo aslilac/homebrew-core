@@ -1,8 +1,8 @@
 class TerraformLs < Formula
   desc "Terraform Language Server"
   homepage "https://github.com/hashicorp/terraform-ls"
-  url "https://github.com/hashicorp/terraform-ls/archive/v0.31.4.tar.gz"
-  sha256 "85f33382834b2698387c07b476dcc1e64c2928c00df5e830938b6b8873b08fb9"
+  url "https://github.com/hashicorp/terraform-ls/archive/refs/tags/v0.36.0.tar.gz"
+  sha256 "c69ff794cc0459188ebfc118d27344ec9683557000cf67857dc50ca819b9420e"
   license "MPL-2.0"
   head "https://github.com/hashicorp/terraform-ls.git", branch: "main"
 
@@ -12,13 +12,12 @@ class TerraformLs < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "58f641a7f925219c1c538c143fdb5ea5edb38c358aa286879be52abc82ea94f4"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "58f641a7f925219c1c538c143fdb5ea5edb38c358aa286879be52abc82ea94f4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "58f641a7f925219c1c538c143fdb5ea5edb38c358aa286879be52abc82ea94f4"
-    sha256 cellar: :any_skip_relocation, ventura:        "01475698c78aa0986912814fd7eda576f7f11348527090131cd950e308f382a6"
-    sha256 cellar: :any_skip_relocation, monterey:       "01475698c78aa0986912814fd7eda576f7f11348527090131cd950e308f382a6"
-    sha256 cellar: :any_skip_relocation, big_sur:        "01475698c78aa0986912814fd7eda576f7f11348527090131cd950e308f382a6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "188032984cb16e39e6f01d19949e8eb5588e70662a69e1a88f69e1329a626646"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0c99f5d8b34e868bfcdc425e718a493bdb7ca5ac67b6b753cd5633428c8fe15f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0c99f5d8b34e868bfcdc425e718a493bdb7ca5ac67b6b753cd5633428c8fe15f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0c99f5d8b34e868bfcdc425e718a493bdb7ca5ac67b6b753cd5633428c8fe15f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "def85ad807bf8a17c39a052a8a12494afb7f97d9c0f7e1b7b9279cc592fb83b9"
+    sha256 cellar: :any_skip_relocation, ventura:       "def85ad807bf8a17c39a052a8a12494afb7f97d9c0f7e1b7b9279cc592fb83b9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e3980a66778d92171c24f1b5455fc4574cf39610548d732c5dd0e2602d61a268"
   end
 
   depends_on "go" => :build

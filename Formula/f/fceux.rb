@@ -1,33 +1,51 @@
 class Fceux < Formula
   desc "All-in-one NES/Famicom Emulator"
   homepage "https://fceux.com/"
-  url "https://github.com/TASEmulators/fceux.git",
-      tag:      "v2.6.5",
-      revision: "ea6ed69b874e3ae94072f1b4f14b9a8f0fdd774b"
   license "GPL-2.0-only"
-  revision 1
+  revision 4
   head "https://github.com/TASEmulators/fceux.git", branch: "master"
 
+  stable do
+    url "https://github.com/TASEmulators/fceux.git",
+        tag:      "v2.6.6",
+        revision: "34eb7601c415b81901fd02afbd5cfdc84b5047ac"
+
+    # patch for `New timeStamp.cpp file renders fceux x86-only` issue
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/cd40795/fceux/2.6.6-arm.patch"
+      sha256 "0890494f4b5db5fa11b94e418d505cea87dc9b9f55cdc6c97e9b5699aeada4ac"
+    end
+
+    # x265 4.0 build patch, upstream pr ref, https://github.com/TASEmulators/fceux/pull/766
+    patch do
+      url "https://github.com/TASEmulators/fceux/commit/7d5960fe4037f673b4a644af18b663efe215a24d.patch?full_index=1"
+      sha256 "eb16bd9673645a74b1797914564e3fc3867594332334d5921791e7f97f8d36b4"
+    end
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "b6c7083d0ff87dd94a6df0ea89d64af36a388f3d9c3e1d4b6a3ab2e860470a06"
-    sha256 cellar: :any,                 arm64_monterey: "7de6bc6220bb9deb784a968a8b0372b73d3e423dd04f4195b735ac6efe385b5b"
-    sha256 cellar: :any,                 arm64_big_sur:  "776b1e2ad2c87f247b5197d592adc786dbab9c4fa72fc3804a9438b9b44c057c"
-    sha256 cellar: :any,                 ventura:        "669f8328acb34528c9c04751487f6c322e255c3525d264dc7dd49a811227ccb0"
-    sha256 cellar: :any,                 monterey:       "ab2273111bff299b8c43de29ee7653c3ebeacebe62952e312b03e0174b83032f"
-    sha256 cellar: :any,                 big_sur:        "76236a742cc5542b5128ed2f939fcea0ac8c627de7545adc4beb7489bf0e019d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6de0ff7889ad3bcbd933c6f433651078c74afa57ffe7e1d575fde42aa53a806d"
+    sha256 cellar: :any,                 arm64_sonoma:  "c3594d0215425a0e72abe7c7234eaba3dfa46b85dc4dd01ba03dd0f1a422a50e"
+    sha256 cellar: :any,                 arm64_ventura: "ac3ba77489705d69cb38841e46e6387c1f4e0296a0850b86371d428240325d56"
+    sha256 cellar: :any,                 sonoma:        "fe93346ca1683b5dcecb5cf4df2296ea345422354b46714c1f1365a8a962c71c"
+    sha256 cellar: :any,                 ventura:       "bfb3e74a9bb2ebacd321c553eb170991e16fc361c547ae56887b61360b355f08"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bc5e0fd981b3b0245b4b9df311b69fb00fe65fe652622a8d3d30f24d0b18fc44"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+
   depends_on "ffmpeg"
+  depends_on "libarchive"
   depends_on "minizip"
   depends_on "qt"
   depends_on "sdl2"
   depends_on "x264"
+  depends_on "x265"
 
   on_linux do
+    depends_on "mesa"
     depends_on "mesa-glu"
+    depends_on "zlib"
   end
 
   fails_with gcc: "5"
@@ -51,6 +69,6 @@ class Fceux < Formula
     # "This application failed to start because no Qt platform plugin could be initialized."
     ENV["QT_QPA_PLATFORM"] = "minimal" if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
-    system "#{bin}/fceux", "--help"
+    system bin/"fceux", "--help"
   end
 end

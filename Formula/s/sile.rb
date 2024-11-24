@@ -1,18 +1,18 @@
 class Sile < Formula
   desc "Modern typesetting system inspired by TeX"
   homepage "https://sile-typesetter.org"
-  url "https://github.com/sile-typesetter/sile/releases/download/v0.14.11/sile-0.14.11.tar.xz"
-  sha256 "25796088ad57c996527b9417cf4eb3c0402755886221986121a0667f1020452e"
+  url "https://github.com/sile-typesetter/sile/releases/download/v0.15.5/sile-0.15.5.tar.zst"
+  sha256 "d20137b02d16302d287670fd285ad28ac3b8d3af916460aa6bc8cbff9321b9f9"
   license "MIT"
+  revision 2
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "314384bd475c5d9f4a0e2d82da552909a4ba99996fe0b9bd4fbdb2b57dd10090"
-    sha256 cellar: :any,                 arm64_monterey: "a59ed9b675f966e7c16ca600ee1dba18600f141a2116544724b139d5d963f12c"
-    sha256 cellar: :any,                 arm64_big_sur:  "41c0f36c2e6a982f69ed9953915eb6f5b7e9db76a3666fcdb272fc23ee7372e2"
-    sha256 cellar: :any,                 ventura:        "1f51fd443d603b4253e705b84b0bcf8e6794106441f243f390c798ad827d8c9a"
-    sha256 cellar: :any,                 monterey:       "6437a38a6366af054944a06187bf9231f2d1993272dc27c0e514e4587b186d3f"
-    sha256 cellar: :any,                 big_sur:        "048c7a7ce8799750ba94e8360676641a451325113fb382c21a86507c2e52fdf1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "05a272df6d2e9dea92b041758ac2a6d3d70116c4c4a59663e1770e6850e07b7c"
+    sha256 cellar: :any,                 arm64_sequoia: "702f167def540e5073692fb507ca92697cae0e8e97b81b89168323e0f152dcc0"
+    sha256 cellar: :any,                 arm64_sonoma:  "ecf8c93698ea9b91f750ea19aa2451d44f386fcc65631218cba177e5bef21161"
+    sha256 cellar: :any,                 arm64_ventura: "67de009e44089ead45fec336a6056a022c2c54edc107c94bfa3d8df3b9225c6b"
+    sha256 cellar: :any,                 sonoma:        "7d13d7033dae2854c1990fa82eaee4e618a310d0ba557f49b0b5a9996f3be2f9"
+    sha256 cellar: :any,                 ventura:       "41937295233b330a9ec868dd48edee575fdccfc6d0eec2dfe6e5b7924b747878"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fd4ecb72cece35d29db9b4b4485d29b62f7a4decfe32b97d8de0157aa2f89cba"
   end
 
   head do
@@ -23,12 +23,16 @@ class Sile < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "jq" => :build
+  depends_on "pkgconf" => :build
+  depends_on "poppler" => :build
+  depends_on "rust" => :build
+
   depends_on "fontconfig"
   depends_on "harfbuzz"
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "libpng"
-  depends_on "lua"
+  depends_on "luajit"
   depends_on "luarocks"
   depends_on "openssl@3"
 
@@ -36,20 +40,23 @@ class Sile < Formula
   uses_from_macos "expat"
   uses_from_macos "zlib"
 
+  on_macos do
+    depends_on "freetype"
+  end
+
+  resource "compat53" do
+    url "https://luarocks.org/manifests/lunarmodules/compat53-0.12-1.rockspec"
+    sha256 "880cdad8d1789a0756f2023d2c98f36d94e6d2c1cc507190b4f9883420435746"
+  end
+
   resource "linenoise" do
     url "https://luarocks.org/manifests/hoelzro/linenoise-0.9-1.rockspec"
     sha256 "e4f942e0079092993832cf6e78a1f019dad5d8d659b9506692d718d0c0432c72"
   end
 
   resource "lpeg" do
-    url "https://luarocks.org/manifests/gvvaughan/lpeg-1.0.2-1.src.rock"
-    sha256 "e0d0d687897f06588558168eeb1902ac41a11edd1b58f1aa61b99d0ea0abbfbc"
-  end
-
-  # depends on lpeg
-  resource "cosmo" do
-    url "https://luarocks.org/manifests/mascarenhas/cosmo-16.06.04-1.src.rock"
-    sha256 "9c83d50c8b734c0d405f97df9940ddb27578214033fd0e3cfc3e7420c999b9a9"
+    url "https://luarocks.org/manifests/gvvaughan/lpeg-1.1.0-1.src.rock"
+    sha256 "6637fcf4d3ddef7be490a2f0155bd2dcd053272d1bb78c015498709ef9fa75dd"
   end
 
   resource "loadkit" do
@@ -58,8 +65,8 @@ class Sile < Formula
   end
 
   resource "lua_cliargs" do
-    url "https://luarocks.org/manifests/amireh/lua_cliargs-3.0-2.src.rock"
-    sha256 "3c79981292aab72dbfba9eb5c006bb37c5f42ee73d7062b15fdd840c00b70d63"
+    url "https://luarocks.org/manifests/lunarmodules/lua_cliargs-3.0.2-1.src.rock"
+    sha256 "a2dfbd3f0236eaf4b0421dbd06a631d92b550335eb263b7283e1161a6e90d92e"
   end
 
   resource "lua-zlib" do
@@ -97,8 +104,8 @@ class Sile < Formula
 
   # depends on luasocket
   resource "luasec" do
-    url "https://luarocks.org/manifests/brunoos/luasec-1.3.1-1.src.rock"
-    sha256 "234353b695cdec264b22e6ff5472f4f7f70cd10a9b65f6fd4ad65652c786bb20"
+    url "https://luarocks.org/manifests/brunoos/luasec-1.3.2-1.src.rock"
+    sha256 "f93bf9927bd34a5d4f897f4488b285a12bee89c0e7d54b3b36dfcbf43a7ad4e5"
   end
 
   # depends on luafilesystem
@@ -136,8 +143,12 @@ class Sile < Formula
   end
 
   def install
-    lua = Formula["lua"]
-    luaversion = lua.version.major_minor
+    # Workaround for ICU 76+.
+    # Issue ref: https://github.com/sile-typesetter/sile/issues/2152
+    inreplace "configure", '"icu-uc icu-io"', '"icu-uc icu-i18n icu-io"' if build.stable?
+
+    lua = Formula["luajit"]
+    luaversion = "5.1"
     luapath = libexec/"vendor"
 
     paths = %W[
@@ -149,16 +160,17 @@ class Sile < Formula
     ENV["LUA_PATH"] = paths.join(";")
     ENV["LUA_CPATH"] = "#{luapath}/lib/lua/#{luaversion}/?.so"
 
-    ENV.prepend "CPPFLAGS", "-I#{lua.opt_include}/lua"
+    ENV.prepend "CPPFLAGS", "-I#{lua.opt_include}/luajit-2.1"
     ENV.prepend "LDFLAGS", "-L#{lua.opt_lib}"
 
-    zlib_dir = expat_dir = "#{MacOS.sdk_path_if_needed}/usr"
-    if OS.linux?
+    if OS.mac?
+      zlib_dir = expat_dir = "#{MacOS.sdk_path_if_needed}/usr"
+    else
       zlib_dir = Formula["zlib"].opt_prefix
       expat_dir = Formula["expat"].opt_prefix
     end
 
-    args = %W[
+    luarocks_args = %W[
       ZLIB_DIR=#{zlib_dir}
       EXPAT_DIR=#{expat_dir}
       OPENSSL_DIR=#{Formula["openssl@3"].opt_prefix}
@@ -172,18 +184,26 @@ class Sile < Formula
         unpack_dir = Utils.safe_popen_read("luarocks", "unpack", rock).split("\n")[-2]
 
         spec = "#{r.name}-#{r.version}.rockspec"
-        cd(unpack_dir) { system "luarocks", "make", *args, spec }
+        cd(unpack_dir) { system "luarocks", "make", *luarocks_args, spec }
       end
     end
 
+    configure_args = %w[
+      FCMATCH=true
+      --disable-silent-rules
+      --with-system-luarocks
+      --with-system-lua-sources
+      --disable-embeded-resources
+    ]
+
+    # Upstream bug https://github.com/sile-typesetter/sile/issues/2078 triggers
+    # a useless automake cycle when building from the source tarball. This
+    # argument avoids needing the dependency by just making it a noop. Remove
+    # on the next release.
+    configure_args += %w[AUTOMAKE=:]
+
     system "./bootstrap.sh" if build.head?
-    system "./configure", "FCMATCH=true",
-                          "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--with-system-luarocks",
-                          "--with-lua=#{prefix}",
-                          "--prefix=#{prefix}"
+    system "./configure", *configure_args, *std_configure_args
     system "make"
     system "make", "install"
 

@@ -2,19 +2,18 @@ class Metricbeat < Formula
   desc "Collect metrics from your systems and services"
   homepage "https://www.elastic.co/beats/metricbeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v8.9.1",
-      revision: "3799398872c0f33da4e65019390d055cdfe633bd"
+      tag:      "v8.16.1",
+      revision: "f17e0828f1de9f1a256d3f520324fa6da53daee5"
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e12bbf079933e1ec1f4b4f18259d3379eae94f0010d7e1cc6840b3450c713680"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9a4af7f21fd421da1601963ec5325e03927eb587b94717a6761b5868c10652a7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "465c48344aa2e4059ab90063d5407430ad36c409719beb21ffa4c552a58cb8a1"
-    sha256 cellar: :any_skip_relocation, ventura:        "bfb60492474ee830906a1d23fb596814ba9f04757a743f87bdcdd044589bbc25"
-    sha256 cellar: :any_skip_relocation, monterey:       "1dc464c9ae6b51355932eafdc90340d6f7b4cd209a907d2f73c694c9807dfb7c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2848cd520586b9173f10926e9f7294d5fcafcc040f5a9ee6671110fae87b43f5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "927678aeb5ab04d24f6d63d9becbf15496a0328306a7583ffbe1a4539447608a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "af35e18906b37ef3d51b6e340253ddd941dcdc224e45bfc192e9d255b16e161d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "25caf57547a4022a345851621763de9949d1d67c5f828ca62fe87aed35a219cb"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "26f901b91ada341403257bc00cc29103d47e1d6a1844a507c27db2cb54b01915"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6e07cbfd0a40ebdccd3ef6039d19fa1e9760d6c8d0c07f25355335e059ce2913"
+    sha256 cellar: :any_skip_relocation, ventura:       "31da669cb712f33e9c40d966b1377dfe53114e6eb9a40e9c1721a2869f465015"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8f4d9ff70d3ef90d70f97b275900fc1f1153da5d9c0714940a51d2335e01a25c"
   end
 
   depends_on "go" => :build
@@ -24,7 +23,7 @@ class Metricbeat < Formula
 
   def install
     # remove non open source files
-    rm_rf "x-pack"
+    rm_r("x-pack")
 
     cd "metricbeat" do
       # don't build docs because it would fail creating the combined OSS/x-pack
@@ -59,7 +58,7 @@ class Metricbeat < Formula
   end
 
   test do
-    (testpath/"config/metricbeat.yml").write <<~EOS
+    (testpath/"config/metricbeat.yml").write <<~YAML
       metricbeat.modules:
       - module: system
         metricsets: ["load"]
@@ -68,7 +67,7 @@ class Metricbeat < Formula
         enabled: true
         path: #{testpath}/data
         filename: metricbeat
-    EOS
+    YAML
 
     (testpath/"logs").mkpath
     (testpath/"data").mkpath

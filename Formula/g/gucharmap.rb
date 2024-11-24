@@ -1,18 +1,17 @@
 class Gucharmap < Formula
   desc "GNOME Character Map, based on the Unicode Character Database"
   homepage "https://wiki.gnome.org/Apps/Gucharmap"
-  url "https://gitlab.gnome.org/GNOME/gucharmap/-/archive/15.0.4/gucharmap-15.0.4.tar.bz2"
-  sha256 "ddd219ffd22ff72ae9c938d7bd0192a3d63b04bc570ee8214790298418b02078"
+  url "https://gitlab.gnome.org/GNOME/gucharmap/-/archive/16.0.2/gucharmap-16.0.2.tar.bz2"
+  sha256 "f320ad67318dbf0ec26691849c0fe8f5ef4d72e6e78873fb083ad12c94bcda00"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 arm64_ventura:  "a6cc905bd8f7b030c33669b2206a936d5eea7624cda347287c2d4d45d5ebea64"
-    sha256 arm64_monterey: "3a4d12ca000be73e94d1d4cbc9dbf9934b9bac407155c96fe8173c17bbf0c1ec"
-    sha256 arm64_big_sur:  "2de5a4f0c034ec5d64e835929f81e59ee31c3e01a581e1af77af65845a34cb45"
-    sha256 ventura:        "62695da2e8b3d1ed14603b8a9640a41b4333eeca9bf4177b3e8b8aa891227920"
-    sha256 monterey:       "a5fc53ec7eacc87a6d69ea056bf8acf5aa7d4a52641856cf8f221fcebb3941b7"
-    sha256 big_sur:        "5f9512394695d02e16c205c1a3cf6978cc3ba5eab059d5a8e0118945868ad778"
-    sha256 x86_64_linux:   "75c0ad1e82e0a479397f49067c1a4835657642271c1af38e31808c431205df89"
+    sha256 arm64_sequoia: "11517c190dbe6ac8cee546e89ba36df310d0fa838ed7636437f95155d2b62874"
+    sha256 arm64_sonoma:  "fc21d70b9319bbadcc227107d7987e46c3474fbdea88ec219ec27051176f472c"
+    sha256 arm64_ventura: "f884c900fdba9a0a8bf52f00c5a3ec68db46fabec8f4ef4ac1faa8115f7afdbd"
+    sha256 sonoma:        "4ff534da40aab00d5b36677697e061e465288eb59dcab160b26b85da15a6d2a3"
+    sha256 ventura:       "ac90916e94ae7ffc4480793575cc9dc6555463335283252499a30663bb4521b8"
+    sha256 x86_64_linux:  "15d7d8cc50e776aeb271dc07d659815ed08a4fbe5c9cc58cc315b6798b4f01e3"
   end
 
   depends_on "desktop-file-utils" => :build
@@ -23,20 +22,29 @@ class Gucharmap < Formula
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "vala" => :build
+  depends_on "at-spi2-core"
+  depends_on "cairo"
+  depends_on "glib"
   depends_on "gtk+3"
+  depends_on "pango"
+  depends_on "pcre2"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   on_linux do
     depends_on "gettext" => :build
   end
 
   resource "ucd" do
-    url "https://www.unicode.org/Public/15.0.0/ucd/UCD.zip"
-    sha256 "5fbde400f3e687d25cc9b0a8d30d7619e76cb2f4c3e85ba9df8ec1312cb6718c"
+    url "https://www.unicode.org/Public/16.0.0/ucd/UCD.zip"
+    sha256 "c86dd81f2b14a43b0cc064aa5f89aa7241386801e35c59c7984e579832634eb2"
   end
 
   resource "unihan" do
-    url "https://www.unicode.org/Public/15.0.0/ucd/Unihan.zip", using: :nounzip
-    sha256 "24b154691fc97cb44267b925d62064297086b3f896b57a8181c7b6d42702a026"
+    url "https://www.unicode.org/Public/16.0.0/ucd/Unihan.zip", using: :nounzip
+    sha256 "b8f000df69de7828d21326a2ffea462b04bc7560022989f7cc704f10521ef3e0"
   end
 
   def install
@@ -49,7 +57,7 @@ class Gucharmap < Formula
     # ERROR: Assert failed: -Wl,-Bsymbolic-functions is required but not supported
     inreplace "meson.build", "'-Wl,-Bsymbolic-functions'", "" if OS.mac?
 
-    system "meson", *std_meson_args, "build", "-Ducd_path=#{buildpath}/unicode"
+    system "meson", "setup", "build", "-Ducd_path=#{buildpath}/unicode", *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
   end
@@ -59,6 +67,6 @@ class Gucharmap < Formula
   end
 
   test do
-    system "#{bin}/gucharmap", "--version"
+    system bin/"gucharmap", "--version"
   end
 end

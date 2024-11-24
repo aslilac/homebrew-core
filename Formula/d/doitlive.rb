@@ -3,28 +3,27 @@ class Doitlive < Formula
 
   desc "Replay stored shell commands for live presentations"
   homepage "https://doitlive.readthedocs.io/en/latest/"
-  url "https://files.pythonhosted.org/packages/02/5a/ec8769dc1c6f81939c0f7839b885f27b62b79b67fe69fcc67f347c0dd3ff/doitlive-4.4.0.tar.gz"
-  sha256 "1b0031d6ce97778a292b247ccb762fda8212c1b935bc7da6a2be92f677a4ea60"
+  url "https://files.pythonhosted.org/packages/32/75/c94e4d4e7fac8606e199fad35a00b33e4252d00078f25285f91e97e546c0/doitlive-5.1.0.tar.gz"
+  sha256 "b6bcd25f9f037b7e96e34d68549306adb3e8c83f6e92c51ec2b225abc05b25c5"
   license "MIT"
+  revision 1
   head "https://github.com/sloria/doitlive.git", branch: "dev"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e30831be33b71279f10e2a9b6dc2916d43a8d3d07f61fb3beba92226aff1c18c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0ceb7c56bc7a0e3948dc6fd3106b42e3dd96bcd3b074b2166f331c87e54184bb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e812f0e00f8a97226f89afeb3a28b663bff66b4199d0243a60cde4aec752c732"
-    sha256 cellar: :any_skip_relocation, ventura:        "503295bb5da1d97bb1a26ca940efc4c6763cd3a37beccf8b35cb48084c3a8cf5"
-    sha256 cellar: :any_skip_relocation, monterey:       "9b2beb9d7173db0c2f68e199a611492612132b7b309396e3f9be90e3c27e5e9e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "bfa025332c5a6eaa1c8dd821722a6a457afa2577c4583741fcd021ac831d8543"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bb7433cf1708e3ed401318149c637a3e13fde41fae0360b2be50959e5138a4af"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "eae18d34cf330aefd1bec32fdb07945a4c4ec3cce331426d34265dc758c34f35"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9991e43a40f485d6b810ddd53856c70186ebd585800a8785a512b60ad2120ed9"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "8f88c1cbef31bd6f30e2b27313a371994468f78ac39b4dd32a8b073414b863ab"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f1b1a404053a75c01c185829be0fd585f16508a8abad3da9b0c48499e8a54d1c"
+    sha256 cellar: :any_skip_relocation, ventura:       "25c0574a853f230864811bdc57cc9d3ed0ec72619056d4ad76c890cd5dce45b4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "cc26ad664b446225fcc8ab45387172aab3067f0d76814b404f7a9d46dbbfe069"
   end
 
-  depends_on "python@3.11"
-  depends_on "six"
+  depends_on "python@3.13"
 
   resource "click" do
-    url "https://files.pythonhosted.org/packages/27/6f/be940c8b1f1d69daceeb0032fee6c34d7bd70e3e649ccac0951500b4720e/click-7.1.2.tar.gz"
-    sha256 "d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a"
+    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
+    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
   end
 
   resource "click-completion" do
@@ -33,33 +32,28 @@ class Doitlive < Formula
   end
 
   resource "click-didyoumean" do
-    url "https://files.pythonhosted.org/packages/2f/a7/822fbc659be70dcb75a91fb91fec718b653326697d0e9907f4f90114b34f/click-didyoumean-0.3.0.tar.gz"
-    sha256 "f184f0d851d96b6d29297354ed981b7dd71df7ff500d82fa6d11f0856bee8035"
+    url "https://files.pythonhosted.org/packages/30/ce/217289b77c590ea1e7c24242d9ddd6e249e52c795ff10fac2c50062c48cb/click_didyoumean-0.3.1.tar.gz"
+    sha256 "4f82fdff0dbe64ef8ab2279bd6aa3f6a99c3b28c05aa09cbfc07c9d7fbb5a463"
   end
 
-  resource "Jinja2" do
-    url "https://files.pythonhosted.org/packages/7a/ff/75c28576a1d900e87eb6335b063fab47a8ef3c8b4d88524c4bf78f670cce/Jinja2-3.1.2.tar.gz"
-    sha256 "31351a702a408a9e7595a8fc6150fc3f43bb6bf7e319770cbc0db9df9437e852"
+  resource "jinja2" do
+    url "https://files.pythonhosted.org/packages/ed/55/39036716d19cab0747a5020fc7e907f362fbf48c984b14e62127f7e68e5d/jinja2-3.1.4.tar.gz"
+    sha256 "4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"
   end
 
-  resource "MarkupSafe" do
-    url "https://files.pythonhosted.org/packages/1d/97/2288fe498044284f39ab8950703e88abbac2abbdf65524d576157af70556/MarkupSafe-2.1.1.tar.gz"
-    sha256 "7f91197cc9e48f989d12e4e6fbc46495c446636dfc81b9ccf50bb0ec74b91d4b"
-  end
-
-  resource "packaging" do
-    url "https://files.pythonhosted.org/packages/df/9e/d1a7217f69310c1db8fdf8ab396229f55a699ce34a203691794c5d1cad0c/packaging-21.3.tar.gz"
-    sha256 "dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb"
-  end
-
-  resource "pyparsing" do
-    url "https://files.pythonhosted.org/packages/71/22/207523d16464c40a0310d2d4d8926daffa00ac1f5b1576170a32db749636/pyparsing-3.0.9.tar.gz"
-    sha256 "2b020ecf7d21b687f219b71ecad3631f644a47f01403fa1d1036b0c6416d70fb"
+  resource "markupsafe" do
+    url "https://files.pythonhosted.org/packages/b4/d2/38ff920762f2247c3af5cbbbbc40756f575d9692d381d7c520f45deb9b8f/markupsafe-3.0.1.tar.gz"
+    sha256 "3e683ee4f5d0fa2dde4db77ed8dd8a876686e3fc417655c2ece9a90576905344"
   end
 
   resource "shellingham" do
-    url "https://files.pythonhosted.org/packages/bd/e6/fdf53ebbf08016dba98f2b047d4db95790157f0e2eed3b14bb5754271475/shellingham-1.5.0.tar.gz"
-    sha256 "72fb7f5c63103ca2cb91b23dee0c71fe8ad6fbfd46418ef17dbe40db51592dad"
+    url "https://files.pythonhosted.org/packages/58/15/8b3609fd3830ef7b27b655beb4b4e9c62313a4e8da8c676e142cc210d58e/shellingham-1.5.4.tar.gz"
+    sha256 "8dbca0739d487e5bd35ab3ca4b36e11c4078f3a234bfce294b0a0291363404de"
+  end
+
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
   end
 
   def install

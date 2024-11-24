@@ -3,11 +3,16 @@ class Libnova < Formula
   homepage "https://libnova.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/libnova/libnova/v%200.15.0/libnova-0.15.0.tar.gz"
   sha256 "7c5aa33e45a3e7118d77df05af7341e61784284f1e8d0d965307f1663f415bb1"
+  # libnova is LGPL but the libnovaconfig binary is GPL
+  license all_of: ["LGPL-2.0-or-later", "GPL-2.0-or-later"]
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "7c78e76239a8d99361a578d2726073d7cc300261a68effe3c189dd1edc2fbb4f"
+    sha256 cellar: :any,                 arm64_sonoma:   "956371a814a279005c8b801707b40d0d7dce699c481f0bcac0ceb8cf8932505e"
     sha256 cellar: :any,                 arm64_ventura:  "41b9fe3eebdd1080259efefd73a04754c9e0837ee15abb839123d41e53019499"
     sha256 cellar: :any,                 arm64_monterey: "ea8ac3b10dcebb0b96b1d6f1ae08b71be65186fa64c8c4e5b06b512092608b6d"
     sha256 cellar: :any,                 arm64_big_sur:  "4b63bdd901dfc329c9c6caf41a0bb370f5b459f21ec5b09366c364156c38bd06"
+    sha256 cellar: :any,                 sonoma:         "c2a0fd325e308410db0936384e54896d02b00dbd1be5513de8345e95455dfc55"
     sha256 cellar: :any,                 ventura:        "9e1f443063d01b844c19e6bee2e38d70fe102c8a130378b13167105aa25ea4d5"
     sha256 cellar: :any,                 monterey:       "0d520f6d78a8f7cd971fbd36897cb9d442ee2da93c3701d724e8b4eb7195858f"
     sha256 cellar: :any,                 big_sur:        "73650301b811cdf4d5aaaab55961708ac3ccede6900f61222a3dcf94a0b9f4fe"
@@ -33,7 +38,7 @@ class Libnova < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <libnova/julian_day.h>
 
       int main(void)
@@ -43,7 +48,7 @@ class Libnova < Formula
         JD = ln_get_julian_from_sys();
         return 0;
       }
-    EOS
+    C
 
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lnova", "-o", "test"
     system "./test"

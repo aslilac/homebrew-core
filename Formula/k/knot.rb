@@ -1,34 +1,33 @@
 class Knot < Formula
   desc "High-performance authoritative-only DNS server"
   homepage "https://www.knot-dns.cz/"
-  url "https://secure.nic.cz/files/knot-dns/knot-3.3.0.tar.xz"
-  sha256 "cf12ab736c512eb719a221cd3f65bb94f93ff2b477803d9474d1334af73c1533"
+  url "https://knot-dns.nic.cz/release/knot-3.4.2.tar.xz"
+  sha256 "d835285c1057d45effa1479cfe1f107a50e83d11c1c6d36f270deda88799883e"
   license all_of: ["GPL-3.0-or-later", "0BSD", "BSD-3-Clause", "LGPL-2.0-or-later", "MIT"]
 
   livecheck do
-    url "https://secure.nic.cz/files/knot-dns/"
+    url "https://www.knot-dns.cz/download/"
     regex(/href=.*?knot[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    sha256 arm64_ventura:  "1bd7fce0a02506d31eb176eae2a5a50d455112a0878188d9cfbd9190967ae154"
-    sha256 arm64_monterey: "6e1c9c2289d352364d52165570183f8285ffdc6cc9b06254a481fb8a5eb5066c"
-    sha256 arm64_big_sur:  "0cd9c69bab7176a78c1fd96c776c6e593b127cf73260980d61d3bd49dfdfd6b3"
-    sha256 ventura:        "0e02478c76d1e8a605a651d6c14af41a6c5635576dafc9b800aea0790dd36ee7"
-    sha256 monterey:       "f2d81c06165ab7c9e6ac17c75c7ff650b84ea9f391277a420778d7d499235a06"
-    sha256 big_sur:        "dcef3a5e275a6713e481cad7014acf85c1b73e30947b103379bbef21c9f69a33"
-    sha256 x86_64_linux:   "fd0d2497d4fae8e74583accd01537709ed4171b2e58038820719d0f19b547cf8"
+    sha256 arm64_sequoia: "c99d652c3e0778927339e1a581ed85e1267dd47f53f0ae46901af2bd1a21b941"
+    sha256 arm64_sonoma:  "b1375b982f90f121a3465b67f4520ace7b1be0a689d95d519f877458875232f0"
+    sha256 arm64_ventura: "63d2d784d8abfad6ae8506a0519207c1cc56c2fc29747f07f1ed5b5d42cd0521"
+    sha256 sonoma:        "1bb0a2c6fd6f0f8dc76a6beb695621b5b43819c5811175999ec5e84a239da1d2"
+    sha256 ventura:       "173e37d84d4a91c5f39b84b82ba7fbfd90d75c4b28380f287d714663876c3b55"
+    sha256 x86_64_linux:  "327db5594c0d0d87cfadc3d5b9fcde83a617262a7cb963a858eb276549cd2e9a"
   end
 
   head do
-    url "https://gitlab.labs.nic.cz/knot/knot-dns.git"
+    url "https://gitlab.nic.cz/knot/knot-dns.git", branch: "master"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "sphinx-doc" => :build
   depends_on "fstrm"
   depends_on "gnutls"
@@ -41,16 +40,18 @@ class Knot < Formula
   uses_from_macos "libedit"
 
   def install
-    system "autoreconf", "-fvi" if build.head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
+    # https://gitlab.nic.cz/knot/knot-dns/-/blob/master/src/knot/modules/rrl/kru-avx2.c
+    ENV.runtime_cpu_detection if Hardware::CPU.intel?
+
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
+    system "./configure", "--disable-silent-rules",
                           "--with-configdir=#{etc}",
                           "--with-storage=#{var}/knot",
                           "--with-rundir=#{var}/run/knot",
-                          "--prefix=#{prefix}",
                           "--with-module-dnstap",
                           "--enable-dnstap",
-                          "--enable-quic"
+                          "--enable-quic",
+                          *std_configure_args
 
     inreplace "samples/Makefile", "install-data-local:", "disable-install-data-local:"
 

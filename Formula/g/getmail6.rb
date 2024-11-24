@@ -3,8 +3,8 @@ class Getmail6 < Formula
 
   desc "Extensible mail retrieval system with POP3, IMAP4, SSL support"
   homepage "https://getmail6.org/"
-  url "https://github.com/getmail6/getmail6/archive/refs/tags/v6.18.13.tar.gz"
-  sha256 "977a8fbf63494b6278c30f225c7bfbc7cbdfdffddbd2f29fcd887dfb6ce0d509"
+  url "https://github.com/getmail6/getmail6/archive/refs/tags/v6.19.05.tar.gz"
+  sha256 "1b8ae957682f446c4c7103c075605c33c7456a4809788d1b769bd469ee90d38b"
   license "GPL-2.0-only"
 
   # Upstream uses GitHub releases to indicate that a version is released
@@ -16,13 +16,12 @@ class Getmail6 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "70df6a193df6a6444a8b2178a896d5a50e64f3a36f19d0321dde9293e8d95e29"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "70df6a193df6a6444a8b2178a896d5a50e64f3a36f19d0321dde9293e8d95e29"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "70df6a193df6a6444a8b2178a896d5a50e64f3a36f19d0321dde9293e8d95e29"
-    sha256 cellar: :any_skip_relocation, ventura:        "8eafc1243b58796239f1e24d45f124dcc3f1e9373011a4e00db831f11326421d"
-    sha256 cellar: :any_skip_relocation, monterey:       "8eafc1243b58796239f1e24d45f124dcc3f1e9373011a4e00db831f11326421d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8eafc1243b58796239f1e24d45f124dcc3f1e9373011a4e00db831f11326421d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "70df6a193df6a6444a8b2178a896d5a50e64f3a36f19d0321dde9293e8d95e29"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6d0d3044ddc889dca094c9c74de6b9cebc1990c26ae1cf581472b5846e30e62d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6d0d3044ddc889dca094c9c74de6b9cebc1990c26ae1cf581472b5846e30e62d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "6d0d3044ddc889dca094c9c74de6b9cebc1990c26ae1cf581472b5846e30e62d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1ad9fc279bfb480b7f89fcd79da25efa69424986fee612443a57a0442670096d"
+    sha256 cellar: :any_skip_relocation, ventura:       "1ad9fc279bfb480b7f89fcd79da25efa69424986fee612443a57a0442670096d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6d0d3044ddc889dca094c9c74de6b9cebc1990c26ae1cf581472b5846e30e62d"
   end
 
   uses_from_macos "python", since: :catalina

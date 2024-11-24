@@ -1,29 +1,29 @@
 class Terramate < Formula
   desc "Managing Terraform stacks with change detections and code generations"
   homepage "https://terramate.io/docs/cli/"
-  url "https://github.com/terramate-io/terramate/archive/refs/tags/v0.4.0.tar.gz"
-  sha256 "6034479c888eeeb109e8052aaae8a5d3b20ef7eaeb946a887b578336b64e2065"
+  url "https://github.com/terramate-io/terramate/archive/refs/tags/v0.11.2.tar.gz"
+  sha256 "1a59e9f9a1335f4a9bc8e7c8e0d06d73fbca63ce4d2dfa5a48397d9c0862b818"
   license "MPL-2.0"
   head "https://github.com/terramate-io/terramate.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5c4d9339aab664761b7a4b0cfc7d5a8843ee6d04c92db6b47bcf97910c921995"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5c4d9339aab664761b7a4b0cfc7d5a8843ee6d04c92db6b47bcf97910c921995"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5c4d9339aab664761b7a4b0cfc7d5a8843ee6d04c92db6b47bcf97910c921995"
-    sha256 cellar: :any_skip_relocation, ventura:        "e7c03b4b0e0a0f8c1f2dfe904544025ef684d37993a25f2d45d8430a9aa88e0a"
-    sha256 cellar: :any_skip_relocation, monterey:       "e7c03b4b0e0a0f8c1f2dfe904544025ef684d37993a25f2d45d8430a9aa88e0a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e7c03b4b0e0a0f8c1f2dfe904544025ef684d37993a25f2d45d8430a9aa88e0a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b6b6628b6dc340fab7bfd5adef9de1000aafdcfe596d9733a5e9af3e649fad6c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f7bb163ea2e8f00cb6eb2b12f8d57aa7dfa3e9d657dfe17b3309cc8772a85341"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f7bb163ea2e8f00cb6eb2b12f8d57aa7dfa3e9d657dfe17b3309cc8772a85341"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f7bb163ea2e8f00cb6eb2b12f8d57aa7dfa3e9d657dfe17b3309cc8772a85341"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c3c732d8aec318891ae0ab2f6e3a0fc279b7b50403531cc60a686f7ab959d880"
+    sha256 cellar: :any_skip_relocation, ventura:       "c3c732d8aec318891ae0ab2f6e3a0fc279b7b50403531cc60a686f7ab959d880"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "345d878e294d4012477815a4869f17d167af25f26f1ada8863c5cdcc45e2f02b"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd/terramate"
+    system "go", "build", *std_go_args(output: bin/"terramate", ldflags: "-s -w"), "./cmd/terramate"
+    system "go", "build", *std_go_args(output: bin/"terramate-ls", ldflags: "-s -w"), "./cmd/terramate-ls"
   end
 
   test do
-    assert_match "Project root not found", shell_output("#{bin}/terramate list 2>&1", 1)
     assert_match version.to_s, shell_output("#{bin}/terramate version")
+    assert_match version.to_s, shell_output("#{bin}/terramate-ls -version")
   end
 end

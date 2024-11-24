@@ -6,12 +6,13 @@ class Bfg < Formula
   license "GPL-3.0-or-later"
 
   livecheck do
-    url "https://github.com/rtyley/bfg-repo-cleaner.git"
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    url "https://search.maven.org/remotecontent?filepath=com/madgag/bfg/maven-metadata.xml"
+    regex(%r{<version>v?(\d+(?:\.\d+)+)</version>}i)
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "0a259e5976efec25eb23f87c0a68fd949f1ed8fb41964fa774fe95dc1d550928"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "7020c645d5e8175b1055f5bf0c82eb101614706e07c7003c529ed95797d4c9b1"
   end
 
   depends_on "openjdk"
@@ -25,6 +26,6 @@ class Bfg < Formula
   end
 
   test do
-    system "#{bin}/bfg"
+    system bin/"bfg"
   end
 end

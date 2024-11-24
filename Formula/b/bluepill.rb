@@ -2,25 +2,27 @@ class Bluepill < Formula
   desc "Testing tool for iOS that runs UI tests using multiple simulators"
   homepage "https://github.com/MobileNativeFoundation/bluepill"
   url "https://github.com/MobileNativeFoundation/bluepill.git",
-      tag:      "v5.12.3",
-      revision: "a7fcb47aa61b7be6732193c82b697719bf11b813"
+      tag:      "v5.13.0",
+      revision: "a3f6f4b52f994dfb322f507f05263d52869c4e01"
   license "BSD-2-Clause"
   head "https://github.com/MobileNativeFoundation/bluepill.git", branch: "master"
 
-  # Typically the preceding `v` is optional in livecheck regexes but we need it
-  # to be required here to omit older versions that break version comparison
-  # (e.g., 9.0.0). Note: We don't use the `GithubLatest` strategy here because
-  # the "latest" version is sometimes incorrect.
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  # of the Git tags.
   livecheck do
     url :stable
-    regex(/^v(\d+(?:\.\d+)+)$/i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "40c2789182add578ede8a68a27a47ab9a6910ed7a79fc1991c9edebf4062e5e2"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fcee67bb312cd0ae7bcabc30dd64dafde41e3fe2f32fac25d28ce50e7f1da455"
-    sha256 cellar: :any_skip_relocation, ventura:        "620c47806c862b57184492fc17164e35c2c734e7f91e1c28ad830a978b160764"
-    sha256 cellar: :any_skip_relocation, monterey:       "5f6c74a7d099e09ec8ce11f56539bb1d25d5854ad4fb3b4b583360137ab103b5"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "40123f2981d2e731f0a15473049696f035e8e25f0b27752603550c16e904fd05"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a92ddfe4cfcaabe31286b25bea4673891111bb9225751574894552d7bc56fc00"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "48bb18fef3a6ba58029c0167a3bf903b6e7fd88e96af3ccb2dc7cfdcd4846e26"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e562b58dd64848a0f333325f2925883f1f3a8f841d9d122b4d7e0a3db032c5ad"
+    sha256 cellar: :any_skip_relocation, sonoma:         "c1c6546ce0eed8ede74042419f0ce6a242dfa971db31806f6927fff369a3537e"
+    sha256 cellar: :any_skip_relocation, ventura:        "b89586a8fe4f4049de8446d3e55f040ebf645678b7038a2c59b0c5714db11bb3"
+    sha256 cellar: :any_skip_relocation, monterey:       "81990e0749d7b856571867c719d08c2b15ec2414e300ba7dc1a2b0d7dbf6af07"
   end
 
   depends_on xcode: ["14.0", :build]

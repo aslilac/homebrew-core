@@ -1,32 +1,39 @@
 class Influxdb < Formula
   desc "Time series, events, and metrics database"
   homepage "https://influxdata.com/time-series-platform/influxdb/"
+  # When bumping to 3.x, update license stanza to `license any_of: ["Apache-2.0", "MIT"]`
+  # Ref: https://github.com/influxdata/influxdb/blob/main/Cargo.toml#L124
   url "https://github.com/influxdata/influxdb.git",
-      tag:      "v2.7.1",
-      revision: "407fa622e9a0a48516dacc7564f7ba59c8307da9"
+      tag:      "v2.7.10",
+      revision: "f302d9730c3c66577bea7bc7199cfae773bf308e"
   license "MIT"
-  head "https://github.com/influxdata/influxdb.git", branch: "master"
+  head "https://github.com/influxdata/influxdb.git", branch: "main-2.x"
 
-  # The regex below omits a rogue `v9.9.9` tag that breaks version comparison.
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check releases instead of the Git
+  # tags. Upstream maintains multiple major/minor versions and the "latest"
+  # release may be for an older version, so we have to check multiple releases
+  # to identify the highest version.
   livecheck do
     url :stable
-    regex(/^v?((?!9\.9\.9)\d+(?:\.\d+)+)$/i)
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :github_releases
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "670862068c34ac14ec02285f5a595368cfd220b40a1b751048f8c7e841c43b13"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "dfdf6a86156a846eec66077e5e106841db510b1dbb156344a4ce211b0d6ff245"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dd78caabdcf598ab0928142a4c96695e4db7ac2af95002a8fbfb9b5f5fb199d6"
-    sha256 cellar: :any_skip_relocation, ventura:        "47c76305bcaf77dc4b5f1d714a02e28a53dbc7cfd12bb46c662a60e3c08322fa"
-    sha256 cellar: :any_skip_relocation, monterey:       "283ab05e2a2908868cccd57412178ac5d3b38c727e08b9e322fd40db6e45e202"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f42f0c68eddfce6c3bb724b49da6b9922301510627d3ac19462daa44ee4c4b43"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3182bc34bd3089c1a37b2c18301d2d1e9d17901d9360f3a95d804529b969f88f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "3a42b508ddb1b9afa8127abf8b17de6f061bd82cf1e87fd03a82e4d7a17f5f9c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d77bc46ed3327b7b0fdbb00f043c2a1a19d60dea2ba1abc7b456b0132fd27f80"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "39520065d44f4c22f7e063dc7704779a4f6fc30cfbc8f5c726bc8bc24ca7ca92"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1164aadaad10ad149b1751b8c0ccf0b96e671a880ea0ecee3b0bf05537013520"
+    sha256 cellar: :any_skip_relocation, sonoma:         "468a05d3b08bebb974a74c0835fbd390b3b779359b7bb7c0af5be1a6fdc444d5"
+    sha256 cellar: :any_skip_relocation, ventura:        "0d46147e4aed85b578105188ae7d99b1ce5344340ab1ff1dffac84ce3e001e0b"
+    sha256 cellar: :any_skip_relocation, monterey:       "b2b948941a88660812dbade01ef0b6aab00a63f116424c75f68abd831c93d6cd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cfc8959bddb5cd650a48835e00bc4b76402cc3c8d56b9efbadff72eb0e415411"
   end
 
   depends_on "breezy" => :build
   depends_on "go" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "protobuf" => :build
   depends_on "rust" => :build
 
@@ -45,8 +52,8 @@ class Influxdb < Formula
   # NOTE: The version/URL here is specified in scripts/fetch-ui-assets.sh in influxdb.
   # If you're upgrading to a newer influxdb version, check to see if this needs upgraded too.
   resource "ui-assets" do
-    url "https://github.com/influxdata/ui/releases/download/OSS-v2.7.1/build.tar.gz"
-    sha256 "d24e7d48abedf6916ddd649de4f4544e16df6dcb6dd9162d6b16b1a322c80a6f"
+    url "https://github.com/influxdata/ui/releases/download/OSS-2.7.8/build.tar.gz"
+    sha256 "28ace1df37b7860b011e5c1b8c74830b0ec584d2f86c24e58a7c855c168f58a8"
 
     livecheck do
       url "https://raw.githubusercontent.com/influxdata/influxdb/v#{LATEST_VERSION}/scripts/fetch-ui-assets.sh"
@@ -76,7 +83,7 @@ class Influxdb < Formula
       -X main.date=#{time.iso8601}
     ]
 
-    system "go", "build", *std_go_args(output: bin/"influxd", ldflags: ldflags),
+    system "go", "build", *std_go_args(output: bin/"influxd", ldflags:),
            "-tags", "assets,sqlite_foreign_keys,sqlite_json", "./cmd/influxd"
 
     data = var/"lib/influxdb2"

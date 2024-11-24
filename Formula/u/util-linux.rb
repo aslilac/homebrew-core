@@ -1,8 +1,8 @@
 class UtilLinux < Formula
   desc "Collection of Linux utilities"
   homepage "https://github.com/util-linux/util-linux"
-  url "https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.39/util-linux-2.39.2.tar.xz"
-  sha256 "87abdfaa8e490f8be6dde976f7c80b9b5ff9f301e1b67e3899e1f05a59a1531f"
+  url "https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.40/util-linux-2.40.2.tar.xz"
+  sha256 "d78b37a66f5922d70edf3bdfb01a6b33d34ed3c3cafd6628203b2a2b67c8e8b3"
   license all_of: [
     "BSD-3-Clause",
     "BSD-4-Clause-UC",
@@ -24,19 +24,24 @@ class UtilLinux < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "7f404730ebcdb1d661efc780d220f25dfef1ae595991809987397e57b223c82b"
-    sha256 arm64_monterey: "6ef2a1dca2a120bb981f10c99324fc9d6dbe5a423e8c2070a166d0e1eeb77709"
-    sha256 arm64_big_sur:  "672d4028bd8523cd01bb4ef71b235683e3880d698b3ce9b33c2de60f6ec9f9e5"
-    sha256 ventura:        "f1bd7e4fc3e806211d72a5ea07bbf4ed53bbd7cf07c3499de7ab17ea32137f98"
-    sha256 monterey:       "568f6e7c70c468c3d2e12cbde331ea8820f0e1e0cc5892587d8a88ff08f4db35"
-    sha256 big_sur:        "42948dc1d845e1e3e60f7f58194b114efb9f09775053349f1eb4de4e01902473"
-    sha256 x86_64_linux:   "4a7afa9a7913aaf22e5611c74fe313b51829b8c58161aa0578b8b7c11edc794e"
+    rebuild 1
+    sha256 arm64_sequoia:  "8b634a2c63b8d971fcba7ecf937cfc45a2fe9263b5ce6f01ef1704f58c28547e"
+    sha256 arm64_sonoma:   "ae2f7c6c2a844f8cbd3522f85e51cb929d03a8c9eed9a66d14a81b2632f9dcb4"
+    sha256 arm64_ventura:  "b933894463178a94495ced95268b2d66ccdc0c9e2e408b7fdc4b5a36016f228a"
+    sha256 arm64_monterey: "4b0c25db0dcd8f13e1d881b7ecf5eb80ebd53453b56fd0c096a2745b97c90d42"
+    sha256 sonoma:         "ad20c2beac16f7d241569f93d0edd5b19f0bb2fafd62c227747ea20d9f615892"
+    sha256 ventura:        "0b62fc43806131f0b9f96916b0887ad85ae47db2418386721fc3da6d3f49dec7"
+    sha256 monterey:       "1fed3dce8f5487a95fab00de380f3ff3320a43b94ad9949a102466bb6fbc3bbd"
+    sha256 x86_64_linux:   "773c91eea7c86a3a5a18ae1b43a43c9346b190ccf7640bb811e4cadb77a42874"
   end
 
   keg_only :shadowed_by_macos, "macOS provides the uuid.h header"
 
+  depends_on "pkgconf" => :build
+
   uses_from_macos "libxcrypt"
   uses_from_macos "ncurses"
+  uses_from_macos "sqlite"
   uses_from_macos "zlib"
 
   on_macos do
@@ -48,16 +53,29 @@ class UtilLinux < Formula
 
     conflicts_with "bash-completion", because: "both install `mount`, `rfkill`, and `rtcwake` completions"
     conflicts_with "flock", because: "both install `flock` binaries"
+    conflicts_with "ossp-uuid", because: "both install `uuid.3` file"
     conflicts_with "rename", because: "both install `rename` binaries"
+  end
+
+  # uuid_time function compatibility fix on macos
+  # upstream patch PR, https://github.com/util-linux/util-linux/pull/3013
+  patch do
+    url "https://github.com/util-linux/util-linux/commit/9445f477cfcfb3615ffde8f93b1b98c809ee4eca.patch?full_index=1"
+    sha256 "7a7fe4d32806e59f90ca0eb33a9b4eb306e59c9c148493cd6a57f0dea3eafc64"
   end
 
   def install
     args = %w[--disable-silent-rules --disable-asciidoc]
 
     if OS.mac?
+      # Support very old ncurses used on macOS 13 and earlier
+      # https://github.com/util-linux/util-linux/issues/2389
+      ENV.append_to_cflags "-D_XOPEN_SOURCE_EXTENDED" if MacOS.version <= :ventura
+
       args << "--disable-ipcs" # does not build on macOS
       args << "--disable-ipcrm" # does not build on macOS
       args << "--disable-wall" # already comes with macOS
+      args << "--disable-liblastlog2" # does not build on macOS
       args << "--disable-libmount" # does not build on macOS
       args << "--enable-libuuid" # conflicts with ossp-uuid
     else
@@ -74,7 +92,7 @@ class UtilLinux < Formula
       args << "--without-python"
     end
 
-    system "./configure", *std_configure_args, *args
+    system "./configure", *args, *std_configure_args.reject { |s| s["--disable-debug"] }
     system "make", "install"
 
     # install completions only for installed programs
@@ -120,7 +138,7 @@ class UtilLinux < Formula
 
     flags = ["x", "w", "r"] * 3
     perms = flags.each_with_index.reduce("") do |sum, (flag, index)|
-      sum.insert 0, ((stat.mode & (2 ** index)).zero? ? "-" : flag)
+      sum.insert 0, (stat.mode.nobits?(2 ** index) ? "-" : flag)
     end
 
     out = shell_output("#{bin}/namei -lx /usr").split("\n").last.split

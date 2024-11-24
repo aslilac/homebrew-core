@@ -1,8 +1,8 @@
 class BoostMpi < Formula
   desc "C++ library for C++/MPI interoperability"
   homepage "https://www.boost.org/"
-  url "https://github.com/boostorg/boost/releases/download/boost-1.82.0/boost-1.82.0.tar.xz"
-  sha256 "fd60da30be908eff945735ac7d4d9addc7f7725b1ff6fcdcaede5262d511d21e"
+  url "https://github.com/boostorg/boost/releases/download/boost-1.86.0/boost-1.86.0-b2-nodocs.tar.xz"
+  sha256 "a4d99d032ab74c9c5e76eddcecc4489134282245fffa7e079c5804b92b45f51d"
   license "BSL-1.0"
   head "https://github.com/boostorg/boost.git", branch: "master"
 
@@ -11,13 +11,14 @@ class BoostMpi < Formula
   end
 
   bottle do
-    sha256                               arm64_ventura:  "2fadb6b3e273c30ceef188f465175432be8ffa097227f4e7f220e578badd23c6"
-    sha256                               arm64_monterey: "a91ccbcc149a0e9a63b1e35a19430fe270f97ab2f188c7546e1383fd168bbf95"
-    sha256                               arm64_big_sur:  "2bb95f88ca16455df8605835cffbf190e0d341a3f90ceca2b7868da58b326b1e"
-    sha256                               ventura:        "8943122b533bfc1b9eac87018626bf6721282618d935c974c8e7950efdd63c05"
-    sha256                               monterey:       "be43b7b2025bf01376b34c220d7cecae67d4bc69decb7a1afd498e551ca38b99"
-    sha256                               big_sur:        "50304ea86b434e855dbf014b9cf1ac55a932a21da911d735ba9d71be9108f62e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b46177052f005c857caa1430c501f668c585d93242fce1a31d8602fed7617ec9"
+    sha256                               arm64_sequoia:  "5dd36e209d2078c1dd41940ef9385c331858fd896258a3edb74e0b6241c42fd0"
+    sha256                               arm64_sonoma:   "cd8de39d924faafb79c70b7d84d738bda2f383bdfdcb035de6bdd2e81d71638e"
+    sha256                               arm64_ventura:  "77b901a01375abbb1632235485308a617b1e22ae004dd852208ee58bf9a4f209"
+    sha256                               arm64_monterey: "2f10f49dcb735c9b0622166f1de1e3ea24930cc49ebfd3b228496cc60794e989"
+    sha256                               sonoma:         "3f437798825e43afc6796611b586f892b74fd5543a194bbb5ccb1cde1e19f28f"
+    sha256                               ventura:        "e2bc177769687cf0a5cab2f1f2991a28a14955e135c8693ba0feb2a98c3cd537"
+    sha256                               monterey:       "0604125fbddfcba67572ac8a470d09bf3815c3019f2c324e1aebf276e31c990b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b9b97e0eee0f63baba700c64eca133f09445736c871f3cd0f9d396a302a33ca5"
   end
 
   # Test with cmake to avoid issues like:
@@ -75,7 +76,7 @@ class BoostMpi < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <boost/mpi.hpp>
       #include <iostream>
       #include <boost/serialization/string.hpp>
@@ -101,13 +102,14 @@ class BoostMpi < Formula
 
         return 0;
       }
-    EOS
+    CPP
 
     boost = Formula["boost"]
     args = ["-L#{lib}",
             "-L#{boost.lib}",
             "-lboost_mpi-mt",
-            "-lboost_serialization"]
+            "-lboost_serialization",
+            "-std=c++14"]
 
     if OS.linux?
       args << "-Wl,-rpath,#{lib}"

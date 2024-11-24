@@ -1,19 +1,21 @@
 class Ed < Formula
   desc "Classic UNIX line editor"
   homepage "https://www.gnu.org/software/ed/ed.html"
-  url "https://ftp.gnu.org/gnu/ed/ed-1.19.tar.lz"
-  mirror "https://ftpmirror.gnu.org/ed/ed-1.19.tar.lz"
-  sha256 "ce2f2e5c424790aa96d09dacb93d9bbfdc0b7eb6249c9cb7538452e8ec77cd48"
+  url "https://ftp.gnu.org/gnu/ed/ed-1.20.2.tar.lz"
+  mirror "https://ftpmirror.gnu.org/ed/ed-1.20.2.tar.lz"
+  sha256 "65fec7318f48c2ca17f334ac0f4703defe62037bb13cc23920de077b5fa24523"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1d84c3db0a600dc50bd4fa5344a15cb7760ec1e72b9ac436e9cce7cf6296eeeb"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "aa2e563bdbebedbbe3e925d8e69f931541e15b8665ecfcadfdbb5de5f321db2f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "69753a6cd7fc3764d67976f4687c33ea8c682710bdf2e40a6b60e85a47900958"
-    sha256 cellar: :any_skip_relocation, ventura:        "d187dae7f0f051072f6b83d3882acb93cfeda90f152b084d7658e96f4a2503cd"
-    sha256 cellar: :any_skip_relocation, monterey:       "de41723a0dcc7a723634c32c6e37acf375b895cbc47f6eff165e2605c3359dca"
-    sha256 cellar: :any_skip_relocation, big_sur:        "35e506177b499ea82a72317bae1be90b5fdaac7449dc46ecdf2589d96a8c939c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b7dd5e50aebd4e438043cbce5628b46cd35f5d82b4be56241c3d813c7f7d6c94"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "2212d012a399dc0bad58e1685eb8ddd5d1878300ffc1c5ae0d5fceb00b501ec6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e5e2085684e3c92fbfd33c36230d0948bf13fce8d79664894213f514dee00811"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "06825e7936586efb4577e2f00f07763e0e126e3415b3cd83b57af05e5695889e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2b57aba94d5a86dedfef793b7f035c20449d7441b4c2c5c96c8f591181830c79"
+    sha256 cellar: :any_skip_relocation, sonoma:         "738c04bc4f1d593dd2b24c4729ef586d66f5b33bb53085c431798d4b065ecefa"
+    sha256 cellar: :any_skip_relocation, ventura:        "a0dcf2f47ca608af30f5ba70fd1c7c0344a728fcdb4812d2a284a4393ac87728"
+    sha256 cellar: :any_skip_relocation, monterey:       "abcf20b00afa925f070a7840b44b01e57a02fd5ccd06632061863f50103a5c55"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "190b7d16443a9415e21a0ee9d93a106d7890680c428f6bfa1a23f0b7d994c67d"
   end
 
   keg_only :provided_by_macos
@@ -35,7 +37,7 @@ class Ed < Formula
       end
     end
 
-    libexec.install_symlink "gnuman" => "man"
+    (libexec/"gnubin").install_symlink "../gnuman" => "man"
   end
 
   def caveats

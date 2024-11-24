@@ -3,74 +3,79 @@ class SyslogNg < Formula
 
   desc "Log daemon with advanced processing pipeline and a wide range of I/O methods"
   homepage "https://www.syslog-ng.com"
-  url "https://github.com/syslog-ng/syslog-ng/releases/download/syslog-ng-4.2.0/syslog-ng-4.2.0.tar.gz"
-  sha256 "092bd17fd47002c988aebdf81d0ed3f3cfd0e82b388d2453bcaa5e67934f4dda"
+  url "https://github.com/syslog-ng/syslog-ng/releases/download/syslog-ng-4.8.1/syslog-ng-4.8.1.tar.gz"
+  sha256 "e8b8b98c60a5b68b25e3462c4104c35d05b975e6778d38d8a81b8ff7c0e64c5b"
   license all_of: ["LGPL-2.1-or-later", "GPL-2.0-or-later"]
-  revision 1
+  revision 3
+  head "https://github.com/syslog-ng/syslog-ng.git", branch: "master"
 
   bottle do
-    sha256 arm64_ventura:  "4ef97eb024a908a39221bfecee23ed2578b3846c12e62b31004feeeffddf7456"
-    sha256 arm64_monterey: "fe3bcb50386bd8920f3a65b161d0300bb16f212a024cc67c664d2289dacf4971"
-    sha256 arm64_big_sur:  "de9817a4897edd2784b052ea4522b8a0eadaf6412a325c190eebb221db42d630"
-    sha256 ventura:        "eb0c417c37cd153382100bc7941a305db19b1264bd003472fc74465b0d5d41c9"
-    sha256 monterey:       "ad846597fded4dc7bb58fc75403b3480ad113f2d55dfb3288b0ca76c459bfba8"
-    sha256 big_sur:        "9b38e7118f424020b318f7c917fc627adc145ceefb3c93e7a38190d45c0901d0"
-    sha256 x86_64_linux:   "169cb8db5df8ddc1298f6fed1ffa639cab1d68c70b5eaab0d554c4a5c77e40cd"
+    sha256 arm64_sequoia: "86149158243683e80655fca9b14205a07aa82370b95b5f8dc215104cce851aa8"
+    sha256 arm64_sonoma:  "25f047d449af0a1223762e6e72cbbd396da2f44c23d608a2283bb48136af24f9"
+    sha256 arm64_ventura: "c1f738aed968750045d3a425dfbdc64778349c7567f076b0806e27254082e36f"
+    sha256 sonoma:        "c906096942e4c918af73140438889bf9b6f9be72c8444e4065b3cc6bca85cbf2"
+    sha256 ventura:       "792b2a094ea039f40a59ff899b296c37a610d014d78357e3346f66fa343c944d"
+    sha256 x86_64_linux:  "6f91871abc18890308b0330fe4c2b80f7f5b79b312cbc9afc9a4f70fcec1ab4b"
   end
 
-  depends_on "autoconf" => :build
-  depends_on "autoconf-archive" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
   depends_on "pkg-config" => :build
 
+  depends_on "abseil"
   depends_on "glib"
+  depends_on "grpc"
   depends_on "hiredis"
   depends_on "ivykis"
   depends_on "json-c"
   depends_on "libdbi"
   depends_on "libmaxminddb"
   depends_on "libnet"
+  depends_on "libpaho-mqtt"
   depends_on "librdkafka"
   depends_on "mongo-c-driver"
+  depends_on "net-snmp"
   depends_on "openssl@3"
-  depends_on "pcre"
-  depends_on "python@3.11"
+  depends_on "pcre2"
+  depends_on "protobuf"
+  depends_on "python@3.12"
+  depends_on "rabbitmq-c"
   depends_on "riemann-client"
 
   uses_from_macos "curl"
 
-  # patch pyyaml build, remove in next release
-  # relates to https://github.com/yaml/pyyaml/pull/702
-  patch do
-    url "https://github.com/syslog-ng/syslog-ng/commit/246dc5c8425b15a0a1ab0229e44e52f5c0aebe2c.patch?full_index=1"
-    sha256 "7e75103fdeb54c185342d1dce2dc7a215c2d6812be15c5199ce480a62e2a05bf"
+  on_macos do
+    depends_on "gettext"
   end
 
   def install
-    sng_python_ver = Formula["python@3.11"].version.major_minor
+    ENV["VERSION"] = version
 
-    venv_path = libexec/"python-venv"
+    python3 = "python3.12"
+    venv = virtualenv_create(libexec, python3)
+    # FIXME: we should use resource blocks but there is no upstream pip support besides this requirements.txt
+    # https://github.com/syslog-ng/syslog-ng/blob/master/requirements.txt
+    args = std_pip_args(prefix: false, build_isolation: true).reject { |s| s["--no-deps"] }
+    system python3, "-m", "pip", "--python=#{venv.root}/bin/python",
+                          "install", *args, "--requirement=#{buildpath}/requirements.txt"
+
     system "./configure", *std_configure_args,
+                          "CXXFLAGS=-std=c++17",
                           "--disable-silent-rules",
+                          "--enable-all-modules",
                           "--sysconfdir=#{pkgetc}",
-                          "--localstatedir=#{var}/#{name}",
+                          "--localstatedir=#{var/name}",
                           "--with-ivykis=system",
-                          "--with-python=#{sng_python_ver}",
-                          "--with-python-venv-dir=#{venv_path}",
-                          "--disable-afsnmp",
+                          "--with-python=#{Language::Python.major_minor_version python3}",
+                          "--with-python-venv-dir=#{venv.root}",
+                          "--disable-example-modules",
                           "--disable-java",
-                          "--disable-java-modules"
+                          "--disable-java-modules",
+                          "--disable-smtp"
     system "make", "install"
-
-    requirements = lib/"syslog-ng/python/requirements.txt"
-    venv = virtualenv_create(venv_path, "python3.11")
-    venv.pip_install requirements.read
-    cp requirements, venv_path
   end
 
   test do
-    system "#{sbin}/syslog-ng", "--version"
-    system "#{sbin}/syslog-ng", "--cfgfile=#{pkgetc}/syslog-ng.conf", "--syntax-only"
+    output = shell_output("#{sbin}/syslog-ng --version")
+    assert_equal "syslog-ng #{version.major} (#{version})", output.lines.first.chomp
+    system sbin/"syslog-ng", "--cfgfile=#{pkgetc}/syslog-ng.conf", "--syntax-only"
   end
 end

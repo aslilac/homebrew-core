@@ -1,10 +1,9 @@
 class Gh < Formula
   desc "GitHub command-line tool"
-  homepage "https://github.com/cli/cli"
-  url "https://github.com/cli/cli/archive/v2.33.0.tar.gz"
-  sha256 "27e22a8e637501ee8e9d45c702dbc5c5c559c2a4fe59cd3d807e075cdbefddd2"
+  homepage "https://cli.github.com/"
+  url "https://github.com/cli/cli/archive/refs/tags/v2.62.0.tar.gz"
+  sha256 "8b0d44a7fccd0c768d5ef7c3fbd274851b5752084e47761f146852de6539193e"
   license "MIT"
-
   head "https://github.com/cli/cli.git", branch: "trunk"
 
   livecheck do
@@ -13,20 +12,27 @@ class Gh < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "980f985884168b4fcd88a00642de72011668ebc379bc4c8177bedb6efdb1ca39"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0ae02d5d654880e092e12fd47be491744dd17358d21f37ef29e26ffe3dee2fa1"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6be1cc79c42a64887ad81fd1c12eaa1740244faf7a52290878dd5d02cf745ba1"
-    sha256 cellar: :any_skip_relocation, ventura:        "2400551e31fbfe702dce5bed64e686c774be60de641e359bbeae85f1d0ff0d2d"
-    sha256 cellar: :any_skip_relocation, monterey:       "11c6519793bc2ffc8e87ba32cbf76d701d7bfd6b8ea438194d685aa25bf8383d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f0dcf951635595d426d28a8688fe47837f9135f651fbc5e6315b8f74d3cfd019"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "685bfd405d2b75398ad906e53dd9e1065c9195a343cec7072c2698036649cbcf"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "239c26cefbc6c61ba5918191ec8aca05aaf9ed6d2198dccd4cbcebe3b4980d31"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "239c26cefbc6c61ba5918191ec8aca05aaf9ed6d2198dccd4cbcebe3b4980d31"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "239c26cefbc6c61ba5918191ec8aca05aaf9ed6d2198dccd4cbcebe3b4980d31"
+    sha256 cellar: :any_skip_relocation, sonoma:        "676a08da17ba64c45cc11d35b5863e5474a49e16c8b6453c888fac452547e702"
+    sha256 cellar: :any_skip_relocation, ventura:       "96c31aad56ac72fd575ce1bca85e9d23c501eec5e8152057e7094f2092f84838"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f03f5d23d1a203ad698164969dc5c22d48096db832531e217ace54bf939b940a"
   end
 
   depends_on "go" => :build
 
+  deny_network_access! [:postinstall, :test]
+
   def install
+    gh_version = if build.stable?
+      version.to_s
+    else
+      Utils.safe_popen_read("git", "describe", "--tags", "--dirty").chomp
+    end
+
     with_env(
-      "GH_VERSION" => version.to_s,
+      "GH_VERSION" => gh_version,
       "GO_LDFLAGS" => "-s -w -X main.updaterEnabled=cli/cli",
     ) do
       system "make", "bin/gh", "manpages"

@@ -1,33 +1,32 @@
 class Ruff < Formula
   desc "Extremely fast Python linter, written in Rust"
-  homepage "https://beta.ruff.rs/"
-  url "https://github.com/astral-sh/ruff/archive/refs/tags/v0.0.286.tar.gz"
-  sha256 "e2e1427442cde76d16d655f1743a64489337d1864c43540775f64a0456ea0d52"
+  homepage "https://docs.astral.sh/ruff/"
+  url "https://github.com/astral-sh/ruff/archive/refs/tags/0.8.0.tar.gz"
+  sha256 "d2c112522b978a5d8938a98c916f61d3f77553545dce116bded3b7156209a138"
   license "MIT"
   head "https://github.com/astral-sh/ruff.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1633a92f8c8893890e282ed73f60d7075369b77911ed2233cccfa384934d9344"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f0c822e061f1fc9655d219be13227089be7eb0e76ca4e2622611c20660f6a593"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3a89a9e48cd6f35f07efa5b62836eb245d3ac554342747885f48687ba9f01602"
-    sha256 cellar: :any_skip_relocation, ventura:        "f9170f37903ebc54f0593162dcd8c833dfbe0bf9bd3eb0290ecfd758d9064452"
-    sha256 cellar: :any_skip_relocation, monterey:       "ffdb3d697a79e35ecc9fa6f96ecc96dda15bb1554ce4761ceab8706211164a39"
-    sha256 cellar: :any_skip_relocation, big_sur:        "da570919fc6ead326929e1373153ecb35591b8424582b5f8bde51542d6afa8cf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "06ab9ec7071cdc0a4d411345208f47a5b2931b7f5896baf34c3e1c85e521ab61"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cc5fcafbb3547c2a6b404f64a3da2e5816e05ef8fe179e5f5de8a785640ad5b4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5b8a226d9c24bd53056f1e5e060eabd3227a4c303da201e7b00b8d048b988c7e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "740b746449e919a8f94a0f47dcadf009b2f165c05b814d1e37844094ffcdbda3"
+    sha256 cellar: :any_skip_relocation, sonoma:        "bd38c853562db649d5e70989b6fac7df39d9d8c9b364433df79b913e8f0fe19f"
+    sha256 cellar: :any_skip_relocation, ventura:       "1893fe246cedaef13a84345526280b912102cc936bf22b9d07ec3666f1fd8870"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1d1e07ef0617df845cc93936ff9d8c9c4a2a87be5edc822d49dd7b9b2260dbd6"
   end
 
   depends_on "rust" => :build
 
   def install
-    system "cargo", "install", "--no-default-features", *std_cargo_args(path: "crates/ruff_cli")
+    system "cargo", "install", "--no-default-features", *std_cargo_args(path: "crates/ruff")
     generate_completions_from_executable(bin/"ruff", "generate-shell-completion")
   end
 
   test do
-    (testpath/"test.py").write <<~EOS
+    (testpath/"test.py").write <<~PYTHON
       import os
-    EOS
+    PYTHON
 
-    assert_match "`os` imported but unused", shell_output("#{bin}/ruff --quiet #{testpath}/test.py", 1)
+    assert_match "`os` imported but unused", shell_output("#{bin}/ruff check #{testpath}/test.py", 1)
   end
 end

@@ -1,18 +1,19 @@
 class Mods < Formula
-  desc "GPT-4 on the command-line"
+  desc "AI on the command-line"
   homepage "https://github.com/charmbracelet/mods"
-  url "https://github.com/charmbracelet/mods/archive/refs/tags/v0.2.0.tar.gz"
-  sha256 "553a405cd496b85fbcaa29aa2ad0c1170b55063f63903050eb886eb976e2b55e"
+  url "https://github.com/charmbracelet/mods/archive/refs/tags/v1.6.0.tar.gz"
+  sha256 "885388ac0e55ecec92648b721baf5d392e33f146cf5b92f9f23f365d9746cc07"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0639fdbd9d75225ef3b4879efab74d3c3dbd3fedfd07bedc2931efae61fbc27d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0639fdbd9d75225ef3b4879efab74d3c3dbd3fedfd07bedc2931efae61fbc27d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0639fdbd9d75225ef3b4879efab74d3c3dbd3fedfd07bedc2931efae61fbc27d"
-    sha256 cellar: :any_skip_relocation, ventura:        "4864ec2ea12f0cca35ccbc4d1b8080f9434e7ec9e4430e82def3629e5764baee"
-    sha256 cellar: :any_skip_relocation, monterey:       "4864ec2ea12f0cca35ccbc4d1b8080f9434e7ec9e4430e82def3629e5764baee"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4864ec2ea12f0cca35ccbc4d1b8080f9434e7ec9e4430e82def3629e5764baee"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "54b74bc0ad2e733504c28a12451e471462adf905d769dc5267993b8ca6389e53"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "29b3fa4adbd7ff68bf2cbb4389b32d5c72bdddd8813b675b1685a935669fdcee"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "29b3fa4adbd7ff68bf2cbb4389b32d5c72bdddd8813b675b1685a935669fdcee"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "29b3fa4adbd7ff68bf2cbb4389b32d5c72bdddd8813b675b1685a935669fdcee"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "29b3fa4adbd7ff68bf2cbb4389b32d5c72bdddd8813b675b1685a935669fdcee"
+    sha256 cellar: :any_skip_relocation, sonoma:         "6398c20e5b5db7b6470349b46af260956f0931ce86a639891c414fb091cee0b2"
+    sha256 cellar: :any_skip_relocation, ventura:        "6398c20e5b5db7b6470349b46af260956f0931ce86a639891c414fb091cee0b2"
+    sha256 cellar: :any_skip_relocation, monterey:       "6398c20e5b5db7b6470349b46af260956f0931ce86a639891c414fb091cee0b2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "54cf1956b9d32d996c51b904839ba5fc81849d9c735cba1332c14d168c64946d"
   end
 
   depends_on "go" => :build
@@ -20,19 +21,18 @@ class Mods < Formula
   def install
     ldflags = %W[
       -s -w
-      -X main.version=#{version}
-      -X main.commit=homebrew
-      -X main.date=#{time.iso8601}
-      -X main.builtBy=homebrew
+      -X main.Version=#{version}
+      -X main.CommitSHA=#{tap.user}
+      -X main.CommitDate=#{time.iso8601}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do
     ENV["OPENAI_API_KEY"] = "faketest"
 
     output = pipe_output(bin/"mods 2>&1", "Hello, Homebrew!", 1)
-    assert_match "Invalid OpenAI API key", output
+    assert_match "ERROR  Invalid openai API key", output
 
     assert_match version.to_s, shell_output(bin/"mods --version")
   end

@@ -1,8 +1,8 @@
 class Exercism < Formula
   desc "Command-line tool to interact with exercism.io"
   homepage "https://exercism.io/cli/"
-  url "https://github.com/exercism/cli/archive/v3.2.0.tar.gz"
-  sha256 "0411c0feca82725edd824f183a59acca245b29d386f1062120a65d5b57d70e91"
+  url "https://github.com/exercism/cli/archive/refs/tags/v3.5.4.tar.gz"
+  sha256 "58dcd1a62552466b6fa3d3ad62747b1cfeafae5fca3b511c08f5efa9af22539c"
   license "MIT"
   head "https://github.com/exercism/cli.git", branch: "main"
 
@@ -12,13 +12,12 @@ class Exercism < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "dd6ea1891bb24272b163c0615babaf8c8bbb0603739896b5dec139d3a5a84afb"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "dd6ea1891bb24272b163c0615babaf8c8bbb0603739896b5dec139d3a5a84afb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dd6ea1891bb24272b163c0615babaf8c8bbb0603739896b5dec139d3a5a84afb"
-    sha256 cellar: :any_skip_relocation, ventura:        "1858d4a7afcfff7d6bfc0084dc0c9b1dfbe2a370946bc0852b4fe8044bc85a58"
-    sha256 cellar: :any_skip_relocation, monterey:       "1858d4a7afcfff7d6bfc0084dc0c9b1dfbe2a370946bc0852b4fe8044bc85a58"
-    sha256 cellar: :any_skip_relocation, big_sur:        "1858d4a7afcfff7d6bfc0084dc0c9b1dfbe2a370946bc0852b4fe8044bc85a58"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a11d5e9b34228cf919087c2d997287573d901b8a34004d8decfba7f8b89fa26c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9f9da30002c7198b9d75d86c774cc1963e62c62924bba5e541db4e2d5457bb62"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9f9da30002c7198b9d75d86c774cc1963e62c62924bba5e541db4e2d5457bb62"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "9f9da30002c7198b9d75d86c774cc1963e62c62924bba5e541db4e2d5457bb62"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b9666dfef34c3e6fe8fe9dd1fe221f6dce00d86e0c99a820b8aac229875beeec"
+    sha256 cellar: :any_skip_relocation, ventura:       "b9666dfef34c3e6fe8fe9dd1fe221f6dce00d86e0c99a820b8aac229875beeec"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8069217404dd1a17c578009d1e01cd8f021710898257a41d5ab57c19caab60b1"
   end
 
   depends_on "go" => :build

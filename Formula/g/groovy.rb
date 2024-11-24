@@ -1,8 +1,8 @@
 class Groovy < Formula
   desc "Java-based scripting language"
   homepage "https://www.groovy-lang.org/"
-  url "https://groovy.jfrog.io/artifactory/dist-release-local/groovy-zips/apache-groovy-binary-4.0.14.zip"
-  sha256 "7d0bea0e2aa5f27ecbc6c0072595b8830a3aab6908bedd0cc0830c8bc38e1f04"
+  url "https://groovy.jfrog.io/artifactory/dist-release-local/groovy-zips/apache-groovy-binary-4.0.24.zip"
+  sha256 "dbff36835568bec2271876f70bfcca6deb80e1b179453cca934a502ea301bb80"
   license "Apache-2.0"
 
   livecheck do
@@ -11,13 +11,12 @@ class Groovy < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f60f1076ece81604251164b2ad391a819eead9b9ccd7513ecdb8894039f5798c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4a01e482e2df87d06826850f89b7dc928165f1ca60c775b81c94bedf94598403"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8aff4e4d4ab2eb70ec00ad8762c5e0890545a6a6283eddd6a68511306170aa55"
-    sha256 cellar: :any_skip_relocation, ventura:        "254e26f338d56e3e59a9c5740bbea27a35b6d4f13c55b9eff19576c8b07b3650"
-    sha256 cellar: :any_skip_relocation, monterey:       "d715f3d9b2edb3cf815c4718f818dba96d7d5953daa3b206420c1a86b39143cb"
-    sha256 cellar: :any_skip_relocation, big_sur:        "33656f5d4e9f08bda08b9001046ec0f2d45ae17d0de668bd79893ab9272802e7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b62bf1d750f368db0a576be2fc8565f7902a4cb6d8c95d351fb4d5e1cd62c702"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3d59a8f7b20754f9e11357eb3b050580ffcd86d0ec1aa98b07af1bb0be27d826"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3a0ddaa393293c6c8dad39dd5a7ccb4890bbfdd67523e314e30e5164df4591c2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d49da06910f983ebe8d628cf07776e511346b56c8ac27dad9a87ef9d2f2f94e6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "46249a55cc8dbf59ee1602870c08152c81942494c1378ae703895e72ff01f952"
+    sha256 cellar: :any_skip_relocation, ventura:       "36cbcf3d2c38f64d72602b16e85c45aa00d69e0fe29bcabcbbabdf5ede416c16"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7605c3df24ddb016bc31b35101fa72b7bcb040d80822f3fa5fa50df62f83396a"
   end
 
   depends_on "openjdk"
@@ -47,8 +46,8 @@ class Groovy < Formula
     if OS.mac?
       jline_jar = buildpath/"lib/jline-2.14.6.jar"
       resource("jansi-native").stage do
-        # Workaround for Xcode 14.3.
-        ENV.append_to_cflags "-Wno-implicit-function-declaration"
+        # Fix compile with newer Clang
+        ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
 
         system "mvn", "-Dplatform=osx", "prepare-package"
         system "zip", "-d", jline_jar, "META-INF/native/*"
@@ -59,7 +58,7 @@ class Groovy < Formula
     end
 
     # Don't need Windows files.
-    rm_f Dir["bin/*.bat"]
+    rm(Dir["bin/*.bat"])
 
     libexec.install "bin", "conf", "lib"
     bin.install Dir["#{libexec}/bin/*"] - ["#{libexec}/bin/groovy.ico"]

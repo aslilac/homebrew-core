@@ -1,47 +1,29 @@
 class C2048 < Formula
   desc "Console version of 2048"
   homepage "https://github.com/mevdschee/2048.c"
-  url "https://github.com/mevdschee/2048.c.git",
-      revision: "578a5f314e1ce31b57e645a8c0a2c9d9d5539cde"
-  version "0+20150805"
+  url "https://github.com/mevdschee/2048.c/archive/refs/tags/v1.0.1.tar.gz"
+  sha256 "43a357a6d30859f2f6e797ddf96f35c278b5f0ad7dd1bfc70c3b6d3f24e89dcd"
   license "MIT"
   head "https://github.com/mevdschee/2048.c.git", branch: "main"
 
-  livecheck do
-    skip "No version information available"
-  end
-
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e42083282cbcd84c2806771527e8fd9c9204d2dd2d48c55b19eac81481d56fe9"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "aa6a9009c2300a5ecb2dcde91e5c416363d5293e2e166a715eb4792c33e188a2"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "89bc7f84063b8621271115ee8f9c84c836ae1e57a72db5533b11d8247d57e043"
-    sha256 cellar: :any_skip_relocation, ventura:        "9cb25e5e7547b089dbc9cf0ae00bb5ebe227c931817d4ac744295b474d037764"
-    sha256 cellar: :any_skip_relocation, monterey:       "011a8529dc50ea6349f9b1d288ae11fac8e4a4969372c66036b31d158e960b5b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "abe17673a8930d93f04d97f5e209621b83968e28a075578e9b1f42c07464145d"
-    sha256 cellar: :any_skip_relocation, catalina:       "727165d714b210f559b5f5450d6608bed0e7bfbf87c7a7cd5994259b65865411"
-    sha256 cellar: :any_skip_relocation, mojave:         "dd0cc60f407ccb43f471d7123b9a09fa0b2161ee083638a432ee25795a96ca8f"
-    sha256 cellar: :any_skip_relocation, high_sierra:    "e5f553baf87fc7ac9f0fa4471d3e9be29328df167700181d9663f61293436888"
-    sha256 cellar: :any_skip_relocation, sierra:         "d2f33783cf7cd2ac69eaed113d940aca31e02e5863fcdb40e200e3fe9a4d0623"
-    sha256 cellar: :any_skip_relocation, el_capitan:     "8f9e75196f87718be0c572f731cecba0c8cd4e8dc35f8b3027392cd6e1c45f5d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a13bac58f461c8fff9257a3af3f01569d0bf819248ddbf5840bbf1fc9492adfa"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "2ab8b2461f82798497f1fbcabafd377d47dc9de01bdda39ccd1327155c6bd7d9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "70383d07768ee266589fb68153f475d2a532a52d65c9b4735bb591e595247756"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6a00b75193488ac82165f59f6c8cd5999436a1fad98a21302a2f72fc2a363cff"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "9c2e0fda330d41c94bd5ce41e82e04d9e897a4e1fecc8d7951dca3fccabeff0b"
+    sha256 cellar: :any_skip_relocation, sonoma:         "d88c36a1c245aa7c108c9bed1389c4762dbf0e9325a891ecc3c7aeece155dbf7"
+    sha256 cellar: :any_skip_relocation, ventura:        "119185f87ee1a7368b93b6a081b21d4e84e10bcf080deab904d76d90d4bd890f"
+    sha256 cellar: :any_skip_relocation, monterey:       "f9b5374da1d1e2926e5c734632570d9a217d5d20ddaceef28171fef326cc285a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6863918a25b7da026077d19d297b4c6e54185d1ed790027de0c44ae6566baef2"
   end
 
   def install
     system "make"
-    bin.install "2048"
-  end
-
-  def caveats
-    <<~EOS
-      The game supports different color schemes.
-      For the black-to white:
-        2048 blackwhite
-      For the blue-to-red:
-        2048 bluered
-    EOS
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do
-    system "#{bin}/2048", "test"
+    output = shell_output("#{bin}/2048 test")
+    assert_match "All 13 tests executed successfully", output
   end
 end

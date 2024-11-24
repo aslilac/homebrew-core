@@ -1,19 +1,18 @@
 class Railway < Formula
   desc "Develop and deploy code with zero configuration"
   homepage "https://railway.app/"
-  url "https://github.com/railwayapp/cli/archive/refs/tags/v3.4.0.tar.gz"
-  sha256 "7411b02c2353af459d9bbbd809cbdf13df333c84e60d383301e8ff2415bac0b0"
+  url "https://github.com/railwayapp/cli/archive/refs/tags/v3.19.0.tar.gz"
+  sha256 "34bbd190b651a3e12aea9eb4b7963891c8e44a30c80e57170d697332b57a1d25"
   license "MIT"
   head "https://github.com/railwayapp/cli.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4ad4b9dfb47c983b27735a09f29f20bce118901cefab3a0402b59e7275cacf28"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6c8e60f6f335d525bfb0a833138b70cbc1658677e37550d92c4abe72b92326d4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c988b30313d1883df2dc72a257c8a60d75c74ce36f649b2c8350d5224f171c2c"
-    sha256 cellar: :any_skip_relocation, ventura:        "569f78bb00f096556c4c11577faced802f9baad387a1e5b87bfdc014e8eb06dc"
-    sha256 cellar: :any_skip_relocation, monterey:       "6d6326443a2b23be759358ed3713af0f5576a308b49c792c3754d1f9f62375d6"
-    sha256 cellar: :any_skip_relocation, big_sur:        "959f1f52fb4a2b59586acc706255225051907cdccc81ee85cc51cae0518dabd4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "261716596235f9ca89b2edaedbfcd0ec2fce186cdff95ebd83bf487c78d47913"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "10c6d71c38121f002267dfbb728f167e68969b24fe99fe27fda5f98599a28124"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d40496a0d192dcb10f69f76e1ed69b630bc0aa6cbf9c154ed837c08d15ef578a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "008a2f07e99a6beaa6081b13c718c7ff07bac2b44b84c69341ef87d8e0d5c588"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4dc60dd5acbecfe492d5c00a95206df82b2b4375292a24dfc523096bd01b5740"
+    sha256 cellar: :any_skip_relocation, ventura:       "ce982247a056dad7edc8b57dd311a506f0beb9ed7f6aca3ba50fa12881b5a4c1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4faa0fb33338bb045660a2c2b6dfec628bc1c8fefab706de791eb5725824ddd3"
   end
 
   depends_on "rust" => :build
@@ -21,7 +20,6 @@ class Railway < Formula
   def install
     system "cargo", "install", *std_cargo_args
 
-    # Install shell completions
     generate_completions_from_executable(bin/"railway", "completion")
   end
 

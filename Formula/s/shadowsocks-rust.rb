@@ -1,19 +1,18 @@
 class ShadowsocksRust < Formula
   desc "Rust port of Shadowsocks"
   homepage "https://github.com/shadowsocks/shadowsocks-rust"
-  url "https://github.com/shadowsocks/shadowsocks-rust/archive/v1.16.0.tar.gz"
-  sha256 "cda512dcb63f9b88ae678dbb357e790e13fe8c2fee9997ea2a9f88677064bf19"
+  url "https://github.com/shadowsocks/shadowsocks-rust/archive/refs/tags/v1.21.2.tar.gz"
+  sha256 "a2269e896a27a183dfd6d757d130978b46e1ac19f936c4229188d017b7ecf867"
   license "MIT"
   head "https://github.com/shadowsocks/shadowsocks-rust.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "14c417dd58951f805be8c047d6f68f771636ddf3448f0518a35d2e6bac51dbd4"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fbf3e75b1b494cb845d9c1d5ca7f9e1de79b0218dd950900cd408769e626006b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2c7a9fa785eb361949f8d9430331a01633896e8c2ff5ae09dabd9a5402725dbd"
-    sha256 cellar: :any_skip_relocation, ventura:        "db36aa3e08d8ba8fc9ebdfb5b82bcb5df3f5647fb2e0f02c0dfc12f515fa8b1a"
-    sha256 cellar: :any_skip_relocation, monterey:       "8ca9a0bf16df20bafc8514955390cd0114deb772af304b28d98e72553e56952d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e22f9469702830ef1e9aab21b4a9a416528b68ebdda765a67bb2c5c6ca354853"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "09ffd7da1167071c90befbb2b5e2d8aa4be98158d6113763b34b6a64d5929c7e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "aee2a24aba83f9533e2c3dc0242bac48491f0899fa85a509e0c58e4d255fd8d3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "783d1c6e4315eb448e6e3e3434230d159a61b948fa2b9b1afab3cb792c65f43f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "4db87dc876e904ab883fb0d928069fdff23a207545cede652931accc2f3f29b2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c80cbdba9d0cc2eefdcb1d42abea4b6df70c2016a5ecc48daa91db704b0ea3c8"
+    sha256 cellar: :any_skip_relocation, ventura:       "0fd7afe90bce3856f4003ca758fc0e227544f14f2b2b0dc3f5f569a70382188b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "73fea59362a047a2dac5a646f7cec88d6f5b45a6fdfe02992898cbd24314d871"
   end
 
   depends_on "rust" => :build
@@ -26,15 +25,15 @@ class ShadowsocksRust < Formula
     server_port = free_port
     local_port = free_port
 
-    (testpath/"server.json").write <<~EOS
+    (testpath/"server.json").write <<~JSON
       {
           "server":"127.0.0.1",
           "server_port":#{server_port},
           "password":"mypassword",
           "method":"aes-256-gcm"
       }
-    EOS
-    (testpath/"local.json").write <<~EOS
+    JSON
+    (testpath/"local.json").write <<~JSON
       {
           "server":"127.0.0.1",
           "server_port":#{server_port},
@@ -43,7 +42,7 @@ class ShadowsocksRust < Formula
           "local_address":"127.0.0.1",
           "local_port":#{local_port}
       }
-    EOS
+    JSON
     fork { exec bin/"ssserver", "-c", testpath/"server.json" }
     fork { exec bin/"sslocal", "-c", testpath/"local.json" }
     sleep 3

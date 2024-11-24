@@ -1,18 +1,17 @@
 class Nerdfix < Formula
   desc "Find/fix obsolete Nerd Font icons"
   homepage "https://github.com/loichyan/nerdfix"
-  url "https://github.com/loichyan/nerdfix/archive/refs/tags/v0.3.1.tar.gz"
-  sha256 "c1e4264db7de66666c5ddd73b90d7aa32fe5e7afd8a2eb8fe781288e84f93f27"
+  url "https://github.com/loichyan/nerdfix/archive/refs/tags/v0.4.2.tar.gz"
+  sha256 "e56f648db6bfa9a08d4b2adbf3862362ff66010f32c80dc076c0c674b36efd3c"
   license any_of: ["MIT", "Apache-2.0"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bb5c87ddeac8dc0f6f3e8af968db9b2063b2d74ec77df0f415b67c2c27898da3"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "adddcea0e3438970fe8966db87e6645e8c5ad637b232eb511653de0800f13d34"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9817e8b6e248e9db23bd10db514522f09b28adc285c7ab3c72f0e4028bec912b"
-    sha256 cellar: :any_skip_relocation, ventura:        "8e4377979365a134dbfe6ceb713986fb920c44ac101a8733a43b74bc6b597688"
-    sha256 cellar: :any_skip_relocation, monterey:       "6af6516e2d93ccafae14ea25399d491ee2bb972a66d17370337f57781da8aa7b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8e97877cb970fac207f9389544f52977ac28cb526b911bb4ba76d6655b6e65a0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a491cd9e012e1075c7f034cb53fd6c8c22c4d9f5baa8e4416b72b0e12b579099"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b5e050b3eb4e291e14f25b6abb1bbafce0b627e4c9161b4061cc622b011492ef"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c08fe804ef44f8bb8d254817ef6c7ffbe4900d0653a77509a5a10338d5d8142b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "eadf88c586ec7c4911fe67650fce7aac1b78d9149be4e5d60c146014a528caaa"
+    sha256 cellar: :any_skip_relocation, sonoma:        "57dad8812389ebb6707876de647ffb4275a77c7e486e0945571d6096e96ad4d9"
+    sha256 cellar: :any_skip_relocation, ventura:       "a37f03017360965083c43e046918c264f121f435ff5c141d087660b82965e059"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1e921666ec8ea11f6d2874a2980d27840ce8b86659cbe5b580c6cdd408fff35a"
   end
 
   depends_on "rust" => :build

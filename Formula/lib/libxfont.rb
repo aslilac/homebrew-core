@@ -6,9 +6,12 @@ class Libxfont < Formula
   license "MIT"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "7274a6c0a84b2d5a62c3c7cbaeeb39467f6cd133c9f1e549d3d343cf6d413e97"
+    sha256 cellar: :any,                 arm64_sonoma:   "fa76bdfe924cef05ae6293065ec87537cda1d850116b8d8a9b97ed33e5c7b2ca"
     sha256 cellar: :any,                 arm64_ventura:  "e85ca79059256c31175a8b3ed1b04268f6bf81a05e52df6699f53f6b4d88fdc6"
     sha256 cellar: :any,                 arm64_monterey: "7ca1ffead34e1adfcd19864bd1edd9d54c67cebf9f96bb5901b63e850ffcfc95"
     sha256 cellar: :any,                 arm64_big_sur:  "6751afe1988e433646ee650ecc0cf508db5ac90fe9f3760114a8960e7467e13e"
+    sha256 cellar: :any,                 sonoma:         "300eb427bc067d4072b00734d8168604b36b9a07c9e01af60135bc2301018883"
     sha256 cellar: :any,                 ventura:        "a4545c69641b0c902efc13cdbb96bda838b07e773aadf1537575be224203996a"
     sha256 cellar: :any,                 monterey:       "41dd4b2590dcffafe77d8816501406fcfeeb9236ec278f2ba702c28fa4d3d4de"
     sha256 cellar: :any,                 big_sur:        "816829490c6b978eaaa6b068ef42e89f1196be5d186d5c407b670f49dfa7f66b"
@@ -46,7 +49,7 @@ class Libxfont < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include "X11/fonts/fntfilst.h"
       #include "X11/fonts/bitmap.h"
 
@@ -54,7 +57,7 @@ class Libxfont < Formula
         BitmapExtraRec rec;
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c"
     assert_equal 0, $CHILD_STATUS.exitstatus
   end

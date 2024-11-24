@@ -1,25 +1,35 @@
 class AwsSdkCpp < Formula
   desc "AWS SDK for C++"
   homepage "https://github.com/aws/aws-sdk-cpp"
-  # aws-sdk-cpp should only be updated every 5 releases on multiples of 5
   url "https://github.com/aws/aws-sdk-cpp.git",
-      tag:      "1.11.150",
-      revision: "9a7606a6c98e13c759032c2e920c7c64a6a35264"
+      tag:      "1.11.450",
+      revision: "c808a26c2141f0e5be2f830b4a74ad73ec86fb2d"
   license "Apache-2.0"
   head "https://github.com/aws/aws-sdk-cpp.git", branch: "main"
 
+  livecheck do
+    throttle 15
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "1a2fadbe9f256f032575b3451b06d74da59f8a172f9ef8041aa15b22354c41f6"
-    sha256 cellar: :any,                 arm64_monterey: "a7c1f3262c9178d5e916addfcfb299f6cd986dd5ed6686cca6edbb42d99bfff5"
-    sha256 cellar: :any,                 arm64_big_sur:  "fa64540f20b4d7ad41c0c20e582bf8d78ef5767fcbc4a0638f101944344d0303"
-    sha256 cellar: :any,                 ventura:        "39ade63f3da38273b46df6af50e3c332e1c8cee0314467864b2ff78320e432cd"
-    sha256 cellar: :any,                 monterey:       "d112d601bf3ff211e82c6b558fb7b09e047da2fec307008d3638fb4d4ec415c6"
-    sha256 cellar: :any,                 big_sur:        "4c670b91b4320509b2f27bf002baa52d496944608328c4e01b11e1de459d86f4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3c5c1dea3c95cdd1e31de4e22ccd346db3c866d6a2ea9fb6b5b6878e170c80a2"
+    sha256 cellar: :any,                 arm64_sequoia: "692c0415ce1f4b6042e7eda6df561e84bb0846c16d6f327bd4dda24a9bdc132d"
+    sha256 cellar: :any,                 arm64_sonoma:  "412470660fb2aded240a852204d85f3f89f1f222a1af50bb997fef8903b09575"
+    sha256 cellar: :any,                 arm64_ventura: "d5ae47fbadcd6c5ee1dd051aad05a6768ecbc2639b1c8e920308f304129ce169"
+    sha256 cellar: :any,                 sonoma:        "a517b0c2c3c48f5dd1258f96d822d969cc264eff4f77011a83becdd5bde0f00d"
+    sha256 cellar: :any,                 ventura:       "b37f8655d3d60b0798c85bef74198ac295b8e6cb983f5b43e14014b7f47987bc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "34f568507b2fe726173cc2b87e84d535da4ac2b7d9678f99d1815295027b481e"
   end
 
   depends_on "cmake" => :build
+
   uses_from_macos "curl"
+  uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "openssl@3"
+  end
+
+  conflicts_with "s2n", because: "both install s2n/unstable/crl.h"
 
   fails_with gcc: "5"
 
@@ -36,7 +46,7 @@ class AwsSdkCpp < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <aws/core/Version.h>
       #include <iostream>
 
@@ -44,7 +54,7 @@ class AwsSdkCpp < Formula
           std::cout << Aws::Version::GetVersionString() << std::endl;
           return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, "-std=c++11", "test.cpp", "-L#{lib}", "-laws-cpp-sdk-core", "-o", "test"
     system "./test"
   end

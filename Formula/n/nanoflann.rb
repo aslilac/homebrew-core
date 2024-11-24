@@ -1,13 +1,18 @@
 class Nanoflann < Formula
   desc "Header-only library for Nearest Neighbor search with KD-trees"
   homepage "https://github.com/jlblancoc/nanoflann"
-  url "https://github.com/jlblancoc/nanoflann/archive/v1.5.0.tar.gz"
-  sha256 "89aecfef1a956ccba7e40f24561846d064f309bc547cc184af7f4426e42f8e65"
+  url "https://github.com/jlblancoc/nanoflann/archive/refs/tags/v1.6.2.tar.gz"
+  sha256 "c1b8f2e4d32c040249dad14a89dd03c5106a8c56f3e9ca4e60a0836a59259c0c"
   license "BSD-3-Clause"
   head "https://github.com/jlblancoc/nanoflann.git", branch: "master"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "de71214f52280fa97541e405059cd9368388455d8d9c4587462795ce116c933d"
+    sha256 cellar: :any_skip_relocation, all: "cccc62ea14eed8e68abd6d3cf781f2e78d9356cb45259dd806724adfd582908a"
   end
 
   depends_on "cmake" => :build
@@ -28,13 +33,13 @@ class Nanoflann < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <nanoflann.hpp>
       int main() {
         nanoflann::KNNResultSet<size_t> resultSet(1);
         return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, "test.cpp", "-o", "test", "-std=c++11"
     system "./test"
   end

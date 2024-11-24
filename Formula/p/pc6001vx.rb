@@ -1,25 +1,28 @@
 class Pc6001vx < Formula
   desc "PC-6001 emulator"
-  homepage "http://eighttails.seesaa.net/"
-  url "https://eighttails.up.seesaa.net/bin/PC6001VX_4.1.3_src.tar.gz"
-  sha256 "264f135ad89f443b8b103169ca28e95ba488f2ce627c6dc3791e0230587be0d9"
+  # http://eighttails.seesaa.net/ gives 405 error
+  homepage "https://github.com/eighttails/PC6001VX"
+  url "https://eighttails.up.seesaa.net/bin/PC6001VX_4.2.9_src.tar.gz"
+  sha256 "6819cbf3a883a5b613c3b7f29255aa935afdb0c2dcb14c04e644d5b24be117c1"
   license "LGPL-2.1-or-later"
-  revision 1
+  revision 2
   head "https://github.com/eighttails/PC6001VX.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "0ee9f1581e3f9aa34d71b0a6b6e876eb4cc8a5d4da0112b7dc1720066522847e"
-    sha256 cellar: :any,                 arm64_monterey: "67d0d28536684298cd3039c211422983f1a8b9ac5050660fa3c828f7d6cfc51e"
-    sha256 cellar: :any,                 arm64_big_sur:  "9498d150ffac273597ad7efdd01220bc31a90c8a8b62031a5623507b7d82cece"
-    sha256 cellar: :any,                 ventura:        "434cf93c1ee8698062a7123acc56a422d3d5899638808c9bfeb00872d253c32f"
-    sha256 cellar: :any,                 monterey:       "f27093a85a256425a2acac1fa4293da1101cef25f7a74edc693c75cd6bec39c8"
-    sha256 cellar: :any,                 big_sur:        "b8e5990242a9331cda7e78c1b1d3d4117909284f33bb973ab5f1460b7ddbe108"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b212c77721d4e4f67fe1f00b00e64718cf6b859c6a753c54e04139b491c68bf5"
+    sha256 cellar: :any, arm64_sonoma:  "f637d73fb2b4cc282009ec31ff733b3c2a387743acd93dc8a07c589bf913be70"
+    sha256 cellar: :any, arm64_ventura: "c382fb9d7d83f11567071fe8a8f9992efb7b05b945d6c0316ec65a142cee6f8f"
+    sha256 cellar: :any, sonoma:        "b1f76365c1fd422dd0a7ea60d38c3c62a12e4a66bedb8dd5592c0905d20ddba4"
+    sha256 cellar: :any, ventura:       "ebc9b5019ca6e11e1dded702b91d39630b8e1d6f04c30c3ec6f0312251953c98"
   end
 
   depends_on "pkg-config" => :build
   depends_on "ffmpeg"
   depends_on "qt"
+  depends_on "sdl2"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   fails_with gcc: "5" # ffmpeg is compiled with GCC
 
@@ -31,26 +34,29 @@ class Pc6001vx < Formula
                                  ".."
       system "make"
 
-      if OS.mac?
-        prefix.install "PC6001VX.app"
-        bin.write_exec_script "#{prefix}/PC6001VX.app/Contents/MacOS/PC6001VX"
-      else
-        bin.install "PC6001VX"
-      end
+      prefix.install "PC6001VX.app"
+      bin.write_exec_script "#{prefix}/PC6001VX.app/Contents/MacOS/PC6001VX"
     end
   end
 
   test do
-    ENV["QT_QPA_PLATFORM"] = "minimal" unless OS.mac?
+    # locales aren't set correctly within the testing environment
+    ENV["LC_ALL"] = "en_US.UTF-8"
     user_config_dir = testpath/".pc6001vx4"
     user_config_dir.mkpath
     pid = fork do
       exec bin/"PC6001VX"
     end
-    sleep 15
-    assert_predicate user_config_dir/"pc6001vx.ini",
+    sleep 30
+    sleep 30 if Hardware::CPU.intel?
+    assert_predicate user_config_dir/"rom",
                      :exist?, "User config directory should exist"
   ensure
+    # the first SIGTERM signal closes a window which spawns another immediately
+    # after 5 seconds, send a second SIGTERM signal to ensure the process is fully stopped
     Process.kill("TERM", pid)
+    sleep 5
+    Process.kill("TERM", pid)
+    Process.wait(pid)
   end
 end

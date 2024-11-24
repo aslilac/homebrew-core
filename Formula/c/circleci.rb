@@ -3,19 +3,18 @@ class Circleci < Formula
   homepage "https://circleci.com/docs/2.0/local-cli/"
   # Updates should be pushed no more frequently than once per week.
   url "https://github.com/CircleCI-Public/circleci-cli.git",
-      tag:      "v0.1.28811",
-      revision: "b8e132d73d997d28a56e1ad4a20a5bc0ba4c5935"
+      tag:      "v0.1.31151",
+      revision: "591d7b247869fc47c663fad2e756b9e45ca2a302"
   license "MIT"
   head "https://github.com/CircleCI-Public/circleci-cli.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "fed2437cb704190c844973ffd83ff003287337bc58a0e10db710e11bc152e866"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fed2437cb704190c844973ffd83ff003287337bc58a0e10db710e11bc152e866"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fed2437cb704190c844973ffd83ff003287337bc58a0e10db710e11bc152e866"
-    sha256 cellar: :any_skip_relocation, ventura:        "82d38043a9d218ffb20afdcf6c94c4d670046990a9b598751df0572635c2c69c"
-    sha256 cellar: :any_skip_relocation, monterey:       "82d38043a9d218ffb20afdcf6c94c4d670046990a9b598751df0572635c2c69c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "82d38043a9d218ffb20afdcf6c94c4d670046990a9b598751df0572635c2c69c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "61f23dcfe80e82a333e227918f69938ddec7b566529516c197ed28c0e2142f7f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dd7183aa43741eaf1215d725331567b28df0c3b79fe52300a71752e640fd7493"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "dd7183aa43741eaf1215d725331567b28df0c3b79fe52300a71752e640fd7493"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "dd7183aa43741eaf1215d725331567b28df0c3b79fe52300a71752e640fd7493"
+    sha256 cellar: :any_skip_relocation, sonoma:        "348f51f93f629eb708d2c81c11d297a48d5967d4e297dcf0c9df34ed13ba1d47"
+    sha256 cellar: :any_skip_relocation, ventura:       "348f51f93f629eb708d2c81c11d297a48d5967d4e297dcf0c9df34ed13ba1d47"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0bf2ab29b9d8d6418ddfbe1a26adb6d371ee623e3e6f86bc2f49c24531a5dae7"
   end
 
   depends_on "go" => :build
@@ -28,7 +27,7 @@ class Circleci < Formula
       -X github.com/CircleCI-Public/circleci-cli/version.Commit=#{Utils.git_short_head}
       -X github.com/CircleCI-Public/circleci-cli/telemetry.SegmentEndpoint=https://api.segment.io
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
 
     generate_completions_from_executable(bin/"circleci", "--skip-update-check", "completion",
                                         shells: [:bash, :zsh])

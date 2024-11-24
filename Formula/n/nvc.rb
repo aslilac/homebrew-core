@@ -1,18 +1,17 @@
 class Nvc < Formula
   desc "VHDL compiler and simulator"
   homepage "https://github.com/nickg/nvc"
-  url "https://github.com/nickg/nvc/releases/download/r1.10.2/nvc-1.10.2.tar.gz"
-  sha256 "bc162969185bf1732f700bab958bcba0f21a651e3adf00594255773a2e986c32"
+  url "https://github.com/nickg/nvc/releases/download/r1.14.2/nvc-1.14.2.tar.gz"
+  sha256 "420826dc44ed209d7346e183438a654af1816bd802d15fded2f8a9c272a47331"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 arm64_ventura:  "9a2801055498b4f789678fdf20d21ce31fc4476158c78c471bcd66c77a9deb28"
-    sha256 arm64_monterey: "8089031c77506476e44adea7028aabd50e663d5f29db93c30c24e6e267f20db1"
-    sha256 arm64_big_sur:  "96ee0131d33bd685d77719c9acd47a35ea88c882bc384da26788a5ccd8b4c674"
-    sha256 ventura:        "8fb3315ad13753cef209d69049120cee44360e5f0fc12e9ac94835663142d17c"
-    sha256 monterey:       "53259e22a20459511c4bc9db95221cf7143f6c4f989c74d75bb4c1be5d5619a6"
-    sha256 big_sur:        "933b6c17aad3fde3b4e094b0a033f99556af30575ad86a9cc741cda86510fb8a"
-    sha256 x86_64_linux:   "e21561bf7bf9467dc87e434b988a716a13628875edef2e25d6057f3ebcfd6032"
+    sha256 arm64_sequoia: "2f4df4784c3f76d5417fb27611bd0cb0a147c85e7d0b482118dde651c217030f"
+    sha256 arm64_sonoma:  "2b0ee54b5af6f94d794b1158cf2d3f9266055cac560d8761b2de96fec58b66f5"
+    sha256 arm64_ventura: "05c517c0cc6c835c512fb50108a8e7f055ed1f6bbb45e8169394c962e0014dbe"
+    sha256 sonoma:        "0c82323f94cb9367b4f139037d5ee164a7ebcff9c1c01d79f8f67f2a17024c50"
+    sha256 ventura:       "2b949b05bd388a68c7c47099755b07b224fa5e36c9c56e132e4157e321bdab9d"
+    sha256 x86_64_linux:  "5db794ebdbfd9803be1e75133729f1aac9d89aefd1cdc19feb404c970e820666"
   end
 
   head do
@@ -23,16 +22,16 @@ class Nvc < Formula
   end
 
   depends_on "check" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "llvm"
+  depends_on "zstd"
 
   uses_from_macos "flex" => :build
+  uses_from_macos "libffi"
+  uses_from_macos "zlib"
 
-  fails_with gcc: "5" # LLVM is built with GCC
-
-  resource "homebrew-test" do
-    url "https://raw.githubusercontent.com/suoto/vim-hdl-examples/fcb93c287c8e4af7cc30dc3e5758b12ee4f7ed9b/basic_library/very_common_pkg.vhd"
-    sha256 "42560455663d9c42aaa077ca635e2fdc83fda33b7d1ff813da6faa790a7af41a"
+  on_linux do
+    depends_on "elfutils"
   end
 
   def install
@@ -57,6 +56,11 @@ class Nvc < Formula
   end
 
   test do
+    resource "homebrew-test" do
+      url "https://raw.githubusercontent.com/suoto/vim-hdl-examples/fcb93c287c8e4af7cc30dc3e5758b12ee4f7ed9b/basic_library/very_common_pkg.vhd"
+      sha256 "42560455663d9c42aaa077ca635e2fdc83fda33b7d1ff813da6faa790a7af41a"
+    end
+
     testpath.install resource("homebrew-test")
     system bin/"nvc", "-a", testpath/"very_common_pkg.vhd"
     system bin/"nvc", "-a", pkgshare/"examples/wait1.vhd", "-e", "wait1", "-r"

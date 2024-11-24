@@ -1,19 +1,17 @@
 class Sfcgal < Formula
   desc "C++ wrapper library around CGAL"
-  homepage "http://sfcgal.org/"
-  url "https://gitlab.com/Oslandia/SFCGAL/-/archive/v1.4.1/SFCGAL-v1.4.1.tar.gz"
-  sha256 "1800c8a26241588f11cddcf433049e9b9aea902e923414d2ecef33a3295626c3"
+  homepage "https://sfcgal.gitlab.io/SFCGAL/"
+  url "https://gitlab.com/sfcgal/SFCGAL/-/archive/v2.0.0/SFCGAL-v2.0.0.tar.gz"
+  sha256 "11843953f49e7e4432c42fd27d54e1ff7ca55d0cc72507725c2a5d840c2c6535"
   license "LGPL-2.0-or-later"
-  revision 5
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "d2986bd33428614aed8fd61d52e81331003178532ac7749914429786432b1b75"
-    sha256 cellar: :any,                 arm64_monterey: "679e76ea188a7c9aa039dcb762b7ca8375e35009f4b1ac49dd787100ef3705f0"
-    sha256 cellar: :any,                 arm64_big_sur:  "b10a871b2372aeb03c36b2fe9d2b7d45518b2b4ad0d27b5a10e3a133632c6acb"
-    sha256 cellar: :any,                 ventura:        "bf5a5e7d0a59f52e41dd2c6e5137f8ce684fa7b44f1d5dd803ad9a59f3050d76"
-    sha256 cellar: :any,                 monterey:       "bca215c4596244f5de554e14d68774950e8ca9d7f5f0aa1d66da5ef0ee960da8"
-    sha256 cellar: :any,                 big_sur:        "aee4b0a1b0ce8ac96413f603ced79d4139476938eda9ca5caffbce8bd0f90935"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "97ab272a0db9c4e22fa4df1df5d8e78bcf72ea02923b485babfd843b97e8002b"
+    sha256 cellar: :any,                 arm64_sequoia: "7f0234c24f1574be350718dad2f1612124f90631a34d2161f950eff8fad4d808"
+    sha256 cellar: :any,                 arm64_sonoma:  "387e36ad36d122b0aa717bdd99e93c255e61635713f58952d2e2df127f9a6047"
+    sha256 cellar: :any,                 arm64_ventura: "181bfdebb902c3ba670822d6daf26ea65f4f5650989a0e0fb84ca40bfe2e83d2"
+    sha256 cellar: :any,                 sonoma:        "b7d0fb782537f604f54a3c822bf92153287cde911b2358bd8662e314b375e873"
+    sha256 cellar: :any,                 ventura:       "f11493b60f86dbc38b954a8268558d7906799be6067256b36618366bf71ecd43"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "009288471a8e2969d49f20270ea842e90a1af155bc71b3106e338f27c3403d65"
   end
 
   depends_on "cmake" => :build

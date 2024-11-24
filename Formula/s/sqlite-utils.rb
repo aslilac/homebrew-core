@@ -1,43 +1,47 @@
 class SqliteUtils < Formula
   include Language::Python::Virtualenv
+
   desc "CLI utility for manipulating SQLite databases"
   homepage "https://sqlite-utils.datasette.io/"
-  url "https://files.pythonhosted.org/packages/73/4f/a652fe1b36ac71f7f7bd85219f233d3619f327efcfe0a1c235b262a5ab53/sqlite-utils-3.35.tar.gz"
-  sha256 "8f6fe7f8d12772cd5cf4594703a98dcd0c37c0fd6820dd20541ba74b9fca363a"
+  url "https://files.pythonhosted.org/packages/65/c5/a16a5d3f5f64e700a77de3df427ce1fcf5029e38db3352e12a0696448569/sqlite_utils-3.37.tar.gz"
+  sha256 "542a71033d4e7936fe909230ac9794d3e200021838ab63dbaf3ce8f5bc2273a4"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "34725ae562ed519bc6e326f12f1f306fa9ad922b00cc7037376e666bd3c73665"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "dffabc5c395cf06f4b041bd34b13e7d216abc801c7399e668d8a9661d6558744"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5827bb2ab93ba6b17b8e68383683adb8f4c96cee9ba431781c301f7942f8db58"
-    sha256 cellar: :any_skip_relocation, ventura:        "681ca901ebf5e4f5754f3f8f610e09026e75c5b5930395496fc82ee39fc0b5df"
-    sha256 cellar: :any_skip_relocation, monterey:       "0febc2b516e39c75d3abcb93db2c6d685ab98188ff080c787b449b01d3d3f450"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d056df231fd8f5e61ae3f0998fd636f71fb8df04e5d6b41e2b8714164f62b9f1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cc4925dba76d62ac537f0facac529f4c4989d125f02ba705420acc17996d0815"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c5d7100462793220f54b6e7c42cfc8666a2843930d90858e480c237dc615c867"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c5d7100462793220f54b6e7c42cfc8666a2843930d90858e480c237dc615c867"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c5d7100462793220f54b6e7c42cfc8666a2843930d90858e480c237dc615c867"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7d587683efd20531b59572a6b8fba6451ccc6847916c5a6564d7af377df0dbe2"
+    sha256 cellar: :any_skip_relocation, ventura:       "7d587683efd20531b59572a6b8fba6451ccc6847916c5a6564d7af377df0dbe2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7914f646e31f39161b69a8c6597597c1a42c78e99e4d750cfd67241173356614"
   end
 
-  depends_on "python-tabulate"
-  depends_on "python@3.11"
-  depends_on "six"
+  depends_on "python@3.13"
 
   resource "click" do
     url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
     sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
   end
 
-  resource "click-default-group-wheel" do
-    url "https://files.pythonhosted.org/packages/3d/da/f3bbf30f7e71d881585d598f67f4424b2cc4c68f39849542e81183218017/click-default-group-wheel-1.2.2.tar.gz"
-    sha256 "e90da42d92c03e88a12ed0c0b69c8a29afb5d36e3dc8d29c423ba4219e6d7747"
+  resource "click-default-group" do
+    url "https://files.pythonhosted.org/packages/1d/ce/edb087fb53de63dad3b36408ca30368f438738098e668b78c87f93cd41df/click_default_group-1.2.4.tar.gz"
+    sha256 "eb3f3c99ec0d456ca6cd2a7f08f7d4e91771bef51b01bdd9580cc6450fe1251e"
   end
 
   resource "pluggy" do
-    url "https://files.pythonhosted.org/packages/8a/42/8f2833655a29c4e9cb52ee8a2be04ceac61bcff4a680fb338cbd3d1e322d/pluggy-1.2.0.tar.gz"
-    sha256 "d12f0c4b579b15f5e054301bb226ee85eeeba08ffec228092f8defbaa3a4c4b3"
+    url "https://files.pythonhosted.org/packages/96/2d/02d4312c973c6050a18b314a5ad0b3210edb65a906f868e31c111dede4a6/pluggy-1.5.0.tar.gz"
+    sha256 "2cffa88e94fdc978c4c574f15f9e59b7f4201d439195c3715ca9e2486f1d0cf1"
   end
 
   resource "python-dateutil" do
-    url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
-    sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
+    url "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz"
+    sha256 "37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"
+  end
+
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
   end
 
   resource "sqlite-fts4" do
@@ -45,8 +49,15 @@ class SqliteUtils < Formula
     sha256 "78b05eeaf6680e9dbed8986bde011e9c086a06cb0c931b3cf7da94c214e8930c"
   end
 
+  resource "tabulate" do
+    url "https://files.pythonhosted.org/packages/ec/fe/802052aecb21e3797b8f7902564ab6ea0d60ff8ca23952079064155d1ae1/tabulate-0.9.0.tar.gz"
+    sha256 "0095b12bf5966de529c0feb1fa08671671b3368eec77d7ef7ab114be2c068b3c"
+  end
+
   def install
     virtualenv_install_with_resources
+
+    generate_completions_from_executable(bin/"sqlite-utils", shells: [:fish, :zsh], shell_parameter_format: :click)
   end
 
   test do

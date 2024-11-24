@@ -1,18 +1,28 @@
 class Fw < Formula
   desc "Workspace productivity booster"
   homepage "https://github.com/brocode/fw"
-  url "https://github.com/brocode/fw/archive/refs/tags/v2.17.1.tar.gz"
-  sha256 "9b87924c5384c65f7012ae545d40e550f830fdf1b3e75bbbde5f9b4bd64aab86"
+  url "https://github.com/brocode/fw/archive/refs/tags/v2.19.1.tar.gz"
+  sha256 "f949c3e29e11688c3ab2a7448b9fea2caf07d89d95da7bef00976541f4d957e7"
   license "WTFPL"
 
+  # This repository also contains version tags for other tools (e.g., `v4.4.0`
+  # is an `fblog` tag), so we can't reliably determine which tags are for `fw`.
+  # Upstream only creates GitHub releases from `fw` tags, so we have to check
+  # releases instead.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "13c029efb1090dd4fcf1a15087e35ffddcfd53833066cf3024ac07a7fccf73da"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9b6f7ccf8695f125669af21a167f04682de8b06bc59ed0449f25f014747777d6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "682e2015dae56e1b1d8bd901d4b22797e8957fba1f43644b9a1c2d3dbaaaaa2f"
-    sha256 cellar: :any_skip_relocation, ventura:        "324e0456a01ae8991c19c03be19ac8522bd382583bc1d541c7a3e36710a3e127"
-    sha256 cellar: :any_skip_relocation, monterey:       "46cc3b2ed9cf8ba4ba031e2fddbe5692be73ef1033e1792987edbdc07644adf0"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ea5da33052b73031a05f00e3e357f15824f5e2e39251b1cc65af4118f893f449"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bda9d01cd469e187a55c2dae61108572942305cd763ceeecdf97e4d09e3cd7ea"
+    sha256 cellar: :any,                 arm64_sequoia:  "eaa4e9987dabe5659dbac380b90c77fffb7c7b8f22dabef470402e2144dfd28a"
+    sha256 cellar: :any,                 arm64_sonoma:   "9439cde7e0767daed5fef07280f6b6d8545fa34b637e36fd206770d7593a6089"
+    sha256 cellar: :any,                 arm64_ventura:  "df06452ad002deb1ae9228d3fa7291bd71d4c2b9ce7f6fb62fd774641598159b"
+    sha256 cellar: :any,                 arm64_monterey: "93860714a4c377a82c1ff7fcd9c11a4214806327ea635ade5fe450e18db83cca"
+    sha256 cellar: :any,                 sonoma:         "3810d6ee07419f3061037bdc5702a7ed9fccc3d3fa64ee29ea31c825c83ff917"
+    sha256 cellar: :any,                 ventura:        "f9844b68fa6c59d909ffd9a91923e0b676169af3df2606a66ed9ff9a11a23183"
+    sha256 cellar: :any,                 monterey:       "100612ba69fff5018c5641aded4920a3fc8830bdf62abc713b8d134ce8b8ca2e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "057863e093e54e7e4e13a7e82097f3aba99a648bbf528e8ee513c7d3f72838f1"
   end
 
   depends_on "rust" => :build
@@ -21,7 +31,7 @@ class Fw < Formula
   uses_from_macos "zlib"
 
   resource "fw.1" do
-    url "https://github.com/brocode/fw/releases/download/v2.17.0/fw.1"
+    url "https://github.com/brocode/fw/releases/download/v2.19.0/fw.1"
     sha256 "b19e2ccb837e4210d7ee8bb7a33b7c967a5734e52c6d050cc716490cac061470"
   end
 

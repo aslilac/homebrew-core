@@ -2,19 +2,18 @@ class Sfml < Formula
   # Don't update SFML until there's a corresponding CSFML release
   desc "Multi-media library with bindings for multiple languages"
   homepage "https://www.sfml-dev.org/"
-  url "https://www.sfml-dev.org/files/SFML-2.6.0-sources.zip"
-  sha256 "dc477fc7266641709046bd38628c909f5748bd2564b388cf6c750a9e20cdfef1"
+  url "https://www.sfml-dev.org/files/SFML-2.6.2-sources.zip"
+  sha256 "19d6dbd9c901c74441d9888c13cb1399f614fe8993d59062a72cfbceb00fed04"
   license "Zlib"
   head "https://github.com/SFML/SFML.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "f81fcb668f0b343a8863489b33cbe7062a90f7ec28069b86e04339ed2a73a850"
-    sha256 cellar: :any,                 arm64_monterey: "b6f6b53466d4b1ffba4b98d77daa194c323e88fb306225f8fe9960aaff7f4367"
-    sha256 cellar: :any,                 arm64_big_sur:  "30abec4b2f8877b50f044d38fc1b8f10a159bfbf1b093792a86ccd79c6085e8f"
-    sha256 cellar: :any,                 ventura:        "7a7194cecd4e0375834be5f36301789c583c893dbe4b145a8861f8620f1459db"
-    sha256 cellar: :any,                 monterey:       "517fc7a77b3692b139f4323187693ace6c87bd83a1a21698916ac205b75bd655"
-    sha256 cellar: :any,                 big_sur:        "528175b17d67dfd504df6804e03e88671f72b56e35bd68fe83cbcaf7cf404dec"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "93c2c2be521fefca19dc534a177847cde4e70e2e8626847948a55fa911425574"
+    sha256 cellar: :any,                 arm64_sequoia: "dad951fee57489386b190487b5618f951d8fc6dac4f4dd52b8a6d4803c431312"
+    sha256 cellar: :any,                 arm64_sonoma:  "1048b1b45f046e04ba0315e2897385975beda5aa9c66c964df3ee934d744b46d"
+    sha256 cellar: :any,                 arm64_ventura: "9c017c1f6caf97f54ecc06b9c86ce65a5e3b70ec6a1d2d61c61ddb0e8b2ae255"
+    sha256 cellar: :any,                 sonoma:        "37ea58ff8e945e950cb4f41c17947ccb09d1f844d2d3b3e2422b3cbefa6d3832"
+    sha256 cellar: :any,                 ventura:       "e60f193727509cc7f80fb52cc4cb7cfff9df3b86fea68d4322dd3d68ccc4cc79"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "266b693f97a6ebffefc662517d1805b2ce00dd6383a9488e4d760d89afc819f5"
   end
 
   depends_on "cmake" => :build
@@ -38,12 +37,12 @@ class Sfml < Formula
     # Fix "fatal error: 'os/availability.h' file not found" on 10.11 and
     # "error: expected function body after function declarator" on 10.12
     # Requires the CLT to be the active developer directory if Xcode is installed
-    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version <= :high_sierra
+    ENV["SDKROOT"] = MacOS.sdk_path if OS.mac? && MacOS.version <= :high_sierra
 
     # Always remove the "extlibs" to avoid install_name_tool failure
     # (https://github.com/Homebrew/homebrew/pull/35279) but leave the
     # headers that were moved there in https://github.com/SFML/SFML/pull/795
-    rm_rf Dir["extlibs/*"] - ["extlibs/headers"]
+    rm_r(Dir["extlibs/*"] - ["extlibs/headers"])
 
     args = ["-DCMAKE_INSTALL_RPATH=#{lib}",
             "-DSFML_MISC_INSTALL_PREFIX=#{share}/SFML",
@@ -58,13 +57,13 @@ class Sfml < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include "Time.hpp"
       int main() {
         sf::Time t1 = sf::milliseconds(10);
         return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, "-I#{include}/SFML/System", testpath/"test.cpp",
            "-L#{lib}", "-lsfml-system", "-o", "test"
     system "./test"

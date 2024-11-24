@@ -1,60 +1,66 @@
 class CucumberCpp < Formula
   desc "Support for writing Cucumber step definitions in C++"
   homepage "https://cucumber.io"
-  url "https://github.com/cucumber/cucumber-cpp/archive/v0.5.tar.gz"
-  sha256 "9e1b5546187290b265e43f47f67d4ce7bf817ae86ee2bc5fb338115b533f8438"
+  url "https://github.com/cucumber/cucumber-cpp.git",
+      tag:      "v0.7.0",
+      revision: "ceb025fb720f59b3c8d98ab0de02925e7eab225c"
   license "MIT"
-  revision 9
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d540f6ce4b8341c81108b6982fb397ca81ddcdd198f42f2272cde4c663a2c2cf"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d3555ced3da78df86ea2167719051e71050ae478872f5440d4d1f23204f3efb7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b26e8188eba3e33e66af2fee3f89fcfd491575d1a7279dd122dcbf3c97947b9b"
-    sha256 cellar: :any_skip_relocation, ventura:        "b904ae5c64aad86e153669a30bbda4f2d47047599e02a7487c6f68acb4b1606c"
-    sha256 cellar: :any_skip_relocation, monterey:       "84d4a28b5728185faa0c082cc158481fa7636a69010958ea34ffbeae85210301"
-    sha256 cellar: :any_skip_relocation, big_sur:        "1fb0eea94924ccd3bdab9cb11e9647d11c650f0c8c769517e74d3bdb169fb44b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ff0facd9e406ff16390aafc6d412f0a88ce26507b7829aca0aee8e77b7ec95e8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e52705eba218bc405d689160e6e28308ff0f2f33bcddf6ec85898c0cfcab1e1f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8c03f2daaf1def843478d7d144500cef481190e79eb145fcc25844352223412b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c8ae30b6185669938d6bf21a83a84acb8d56bc59194a4b1b28feb6b986d77da9"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6b629690ec414931c52c1796dedc8e8bf5a4dfcf70c73ed7dcc4f091894ec5f3"
+    sha256 cellar: :any_skip_relocation, sonoma:         "082e66cef0aeabaaf1aeb24b4d47396613b37ed28b3739a99452da70a819ca13"
+    sha256 cellar: :any_skip_relocation, ventura:        "fda51f7ecd0df9092e3734f44a3e0fe1ed88a8d9a084e25f2379c70c76ac7243"
+    sha256 cellar: :any_skip_relocation, monterey:       "ad29a2f7f882a4376e053a851645aa251a95679a6099aaa8931c9c3a98160045"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3c9e95d394b01d3a55aee2d7b2add5de066e47843a7c98f58a9a30c58346fff0"
   end
 
   depends_on "cmake" => :build
+  depends_on "nlohmann-json" => :build
   depends_on "ruby" => :test
-  depends_on "boost"
+  depends_on "asio"
+  depends_on "tclap"
 
   def install
-    args = std_cmake_args + %w[
-      -DCUKE_DISABLE_GTEST=on
-      -DCUKE_DISABLE_CPPSPEC=on
-      -DCUKE_DISABLE_FUNCTIONAL=on
-      -DCUKE_DISABLE_BOOST_TEST=on
-      -DCMAKE_CXX_STANDARD=11
+    # TODO: Remove these on next release as they are the defaults
+    args = %w[
+      -DCUKE_ENABLE_BOOST_TEST=OFF
+      -DCUKE_ENABLE_GTEST=OFF
+      -DCUKE_ENABLE_QT=OFF
+      -DCUKE_TESTS_UNIT=OFF
     ]
 
-    system "cmake", ".", *args
-    system "cmake", "--build", "."
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
+
+    doc.install "examples"
   end
 
   test do
-    boost = Formula["boost"]
     ENV.prepend_path "PATH", Formula["ruby"].opt_bin
     ENV["GEM_HOME"] = testpath
     ENV["BUNDLE_PATH"] = testpath
 
-    system "gem", "install", "cucumber", "-v", "5.2.0"
+    system "gem", "install", "cucumber:9.1.1", "cucumber-wire:7.0.0", "--no-document"
 
-    (testpath/"features/test.feature").write <<~EOS
+    (testpath/"features/test.feature").write <<~CUCUMBER
       Feature: Test
         Scenario: Just for test
           Given A given statement
           When A when statement
           Then A then statement
-    EOS
+    CUCUMBER
     (testpath/"features/step_definitions/cucumber.wire").write <<~EOS
       host: localhost
       port: 3902
     EOS
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"features/support/wire.rb").write <<~RUBY
+      require 'cucumber/wire'
+    RUBY
+    (testpath/"test.cpp").write <<~CPP
       #include <cucumber-cpp/generic.hpp>
       GIVEN("^A given statement$") {
       }
@@ -62,27 +68,35 @@ class CucumberCpp < Formula
       }
       THEN("^A then statement$") {
       }
-    EOS
-    system ENV.cxx, "test.cpp", "-o", "test", "-I#{include}", "-L#{lib}",
-           "-lcucumber-cpp", "-I#{boost.opt_include}",
-           "-L#{boost.opt_lib}", "-lboost_regex", "-lboost_system",
-           "-lboost_program_options", "-lboost_filesystem", "-lboost_chrono",
-           "-pthread"
+    CPP
+
+    cxx_args = %W[
+      -std=c++17
+      test.cpp
+      -o
+      test
+      -I#{include}
+      -L#{lib}
+      -lcucumber-cpp
+      -pthread
+    ]
+    system ENV.cxx, *cxx_args
+
     begin
       pid = fork { exec "./test" }
-      sleep 5
+      sleep 1
       expected = <<~EOS
         Feature: Test
 
-          Scenario: Just for test   # features/test.feature:2
-            Given A given statement # test.cpp:2
-            When A when statement   # test.cpp:4
-            Then A then statement   # test.cpp:6
+          Scenario: Just for test
+            Given A given statement
+            When A when statement
+            Then A then statement
 
         1 scenario (1 passed)
         3 steps (3 passed)
       EOS
-      assert_match expected, shell_output("#{testpath}/bin/cucumber --publish-quiet")
+      assert_match expected, shell_output("#{testpath}/bin/cucumber --quiet")
     ensure
       Process.kill("SIGINT", pid)
       Process.wait(pid)

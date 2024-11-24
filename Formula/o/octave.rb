@@ -1,19 +1,25 @@
 class Octave < Formula
   desc "High-level interpreted language for numerical computing"
-  homepage "https://www.gnu.org/software/octave/index.html"
-  url "https://ftp.gnu.org/gnu/octave/octave-8.3.0.tar.xz"
-  mirror "https://ftpmirror.gnu.org/octave/octave-8.3.0.tar.xz"
-  sha256 "919c9494f02ca435e1e3474990e6df8ddef9acbc9c90565e08d40b8f50445ba9"
+  homepage "https://octave.org/index.html"
+  url "https://ftp.gnu.org/gnu/octave/octave-9.2.0.tar.xz"
+  mirror "https://ftpmirror.gnu.org/octave/octave-9.2.0.tar.xz"
+  sha256 "21417afb579105b035cac0bea09201522e384893ae90a781b8727efa32765807"
   license "GPL-3.0-or-later"
+  revision 3
+
+  # New tarballs appear on https://ftp.gnu.org/gnu/octave/ before a release is
+  # announced, so we check the octave.org download page instead.
+  livecheck do
+    url "https://octave.org/download"
+    regex(%r{Octave\s+v?(\d+(?:\.\d+)+)(?:\s*</[^>]+?>)?\s+is\s+the\s+latest\s+stable\s+release}im)
+  end
 
   bottle do
-    sha256 arm64_ventura:  "901b8521e343a0de60e1096397d117968b103ca557a1fb653e0607c91e7f93d0"
-    sha256 arm64_monterey: "5e7b9ff5089ff23909ed78dc0aca353ec16d45b0a582a279206cc477e932e77d"
-    sha256 arm64_big_sur:  "2b9fcc572fde1ce6264755a9338a90635d0dbda529ad75e56f5582ab90c11cd7"
-    sha256 ventura:        "ff96323b25844b0ebe6228f65c4d08ecffcc98e963ff462eafcf2ddab3ac582e"
-    sha256 monterey:       "9d746aee56b620cbd7a1a2a1b8964501f67d32e90d757b4dacce7bb7b61494fa"
-    sha256 big_sur:        "a620fd2a5338720ba4530b98bbf0855d2e959cb75cadce64667be133dd51fcd6"
-    sha256 x86_64_linux:   "a8d62533f922925cb8575cae56a02bfe0d06b2e448ab490cc57ac923dc87df15"
+    sha256 arm64_sonoma:  "6b054b347149fdb9f895d0826a3ddfe19b9073ec69a593495c6eab6604c89b04"
+    sha256 arm64_ventura: "942cffcc4cf845683ecfa339d9a363bb7566c02cf0eed1706c3eac2071817028"
+    sha256 sonoma:        "e78c8cf8381ebec4148d7ef861b88f55d4080454538724096f245c4c80a38444"
+    sha256 ventura:       "9f5e718dd008b07f296158d0e34beeafa43396116bb74d9e6f10e9936b774128"
+    sha256 x86_64_linux:  "bf6732da770cd8e4a8b5ef6ae7e38d7e49d3d005eef2fa691c5ff4a1c68a849f"
   end
 
   head do
@@ -29,7 +35,7 @@ class Octave < Formula
   # Complete list of dependencies at https://wiki.octave.org/Building
   depends_on "gnu-sed" => :build # https://lists.gnu.org/archive/html/octave-maintainers/2016-09/msg00193.html
   depends_on "openjdk" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "arpack"
   depends_on "epstool"
   depends_on "fftw"
@@ -52,14 +58,20 @@ class Octave < Formula
   depends_on "qhull"
   depends_on "qrupdate"
   depends_on "qscintilla2"
-  depends_on "qt@5"
+  depends_on "qt"
   depends_on "rapidjson"
   depends_on "readline"
   depends_on "suite-sparse"
   depends_on "sundials"
   depends_on "texinfo"
 
+  uses_from_macos "bzip2"
   uses_from_macos "curl"
+  uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "little-cms2"
+  end
 
   on_linux do
     depends_on "autoconf"
@@ -71,8 +83,6 @@ class Octave < Formula
   # Dependencies use Fortran, leading to spurious messages about GCC
   cxxstdlib_check :skip
 
-  fails_with gcc: "5"
-
   def install
     # Default configuration passes all linker flags to mkoctfile, to be
     # inserted into every oct/mex build. This is unnecessary and can cause
@@ -81,33 +91,21 @@ class Octave < Formula
               /%OCTAVE_CONF_OCT(AVE)?_LINK_(DEPS|OPTS)%/,
               '""'
 
-    # SUNDIALS 6.4.0 and later needs C++14 for C++ based features
-    # Configure to use gnu++14 instead of c++14 as octave uses GNU extensions
-    ENV.append "CXX", "-std=gnu++14"
-
-    # Qt 5.12 compatibility
-    # https://savannah.gnu.org/bugs/?55187
-    ENV["QCOLLECTIONGENERATOR"] = "qhelpgenerator"
-    # These "shouldn't" be necessary, but the build breaks without them.
-    # https://savannah.gnu.org/bugs/?55883
-    ENV["QT_CPPFLAGS"]="-I#{Formula["qt@5"].opt_include}"
-    ENV.append "CPPFLAGS", "-I#{Formula["qt@5"].opt_include}"
-    ENV["QT_LDFLAGS"]="-F#{Formula["qt@5"].opt_lib}"
-    ENV.append "LDFLAGS", "-F#{Formula["qt@5"].opt_lib}"
+    ENV.prepend_path "PKG_CONFIG_PATH", Formula["qt"].opt_libexec/"lib/pkgconfig" if OS.mac?
 
     system "./bootstrap" if build.head?
-    args = ["--prefix=#{prefix}",
-            "--disable-dependency-tracking",
-            "--disable-silent-rules",
-            "--enable-shared",
-            "--disable-static",
-            "--with-hdf5-includedir=#{Formula["hdf5"].opt_include}",
-            "--with-hdf5-libdir=#{Formula["hdf5"].opt_lib}",
-            "--with-java-homedir=#{Formula["openjdk"].opt_prefix}",
-            "--with-x=no",
-            "--with-blas=-L#{Formula["openblas"].opt_lib} -lopenblas",
-            "--with-portaudio",
-            "--with-sndfile"]
+    args = [
+      "--disable-silent-rules",
+      "--enable-shared",
+      "--disable-static",
+      "--with-hdf5-includedir=#{Formula["hdf5"].opt_include}",
+      "--with-hdf5-libdir=#{Formula["hdf5"].opt_lib}",
+      "--with-java-homedir=#{Formula["openjdk"].opt_prefix}",
+      "--with-x=no",
+      "--with-blas=-L#{Formula["openblas"].opt_lib} -lopenblas",
+      "--with-portaudio",
+      "--with-sndfile",
+    ]
 
     if OS.linux?
       # Explicitly specify aclocal and automake without versions
@@ -124,8 +122,11 @@ class Octave < Formula
       system "aclocal"
     end
 
-    system "./configure", *args
-    system "make", "all"
+    system "./configure", *args, *std_configure_args
+    # https://github.com/Homebrew/homebrew-core/pull/170959#issuecomment-2351023470
+    ENV.deparallelize do
+      system "make", "all"
+    end
 
     # Avoid revision bumps whenever fftw's, gcc's or OpenBLAS' Cellar paths change
     inreplace "src/mkoctfile.cc" do |s|
@@ -141,6 +142,7 @@ class Octave < Formula
   end
 
   test do
+    ENV["LC_ALL"] = "en_US.UTF-8"
     system bin/"octave", "--eval", "(22/7 - pi)/pi"
     # This is supposed to crash octave if there is a problem with BLAS
     system bin/"octave", "--eval", "single ([1+i 2+i 3+i]) * single ([ 4+i ; 5+i ; 6+i])"
@@ -161,5 +163,7 @@ class Octave < Formula
       mkoctfile ('-v', '-std=c++11', '-L#{lib}/octave/#{version}', args{:}, 'oct_demo.cc');
       assert(oct_demo, 42)
     EOS
+    ENV["QT_QPA_PLATFORM"] = "minimal"
+    system bin/"octave", "--gui"
   end
 end

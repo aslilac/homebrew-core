@@ -1,27 +1,29 @@
 class Gleam < Formula
   desc "Statically typed language for the Erlang VM"
   homepage "https://gleam.run"
-  url "https://github.com/gleam-lang/gleam/archive/v0.30.5.tar.gz"
-  sha256 "c698a9cbd2766f6df648a49edfb9c9e4f5cebb4b3d469ec7b0b8f5925fe83771"
+  url "https://github.com/gleam-lang/gleam/archive/refs/tags/v1.6.2.tar.gz"
+  sha256 "12db37408b69ef224d7d77fa6e7422124f6e8956419c48202de41ce182fb075d"
   license "Apache-2.0"
+  head "https://github.com/gleam-lang/gleam.git", branch: "main"
 
-  bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "30e75740a6f8530b55a9cb1c8f9e1faaaa9e9892794707d2778df94301eb3986"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "651a1cb020a7c5f6294d622d13f7d3f8eb80cf279019e7d73e7a57d97ba1fba1"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "305a05bc555e229c34452799733ec4a0b2c0c6a43385e2e3fb2044c8951539bf"
-    sha256 cellar: :any_skip_relocation, ventura:        "0a796fc992ee7ed1e3ce0350815357a25aefd3e0f8b883075349eecf70cc3069"
-    sha256 cellar: :any_skip_relocation, monterey:       "130d1b34fb9915947594ff44e906ec4a60dd0d01624e99e30973599201db0b19"
-    sha256 cellar: :any_skip_relocation, big_sur:        "203b6fbf78fc6481840f1d2c96492ffe7418aca0e2f0241574b36af0d8fbe37f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2bc90ee1581e3c37830036dfa9e232a869b4e2a3597262bcce06e2a78d7bcefd"
+  livecheck do
+    url :stable
+    strategy :github_latest
   end
 
+  bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2f1ebbd321004ed971ee828cdf31928c2e2cb41da0a1912afeff51b565cebfbd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b2803f9ebc81e8a22924e40a9a51ef28de2cdfc5923ed2a59962b8c98303c4e0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "815b6e87316c7baadce2a0193bcae9c97efb2c709822b1f78b3190988aa3837b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "8f7ef37f36a951b55670ba73c701298db2991e60cb04e2f821995d7c4453dc43"
+    sha256 cellar: :any_skip_relocation, ventura:       "4a11c45ce048f22089ef6cfcee533b1ad19dd02ac5983f35c4662d238cdfc80c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6f61a5e3a6c7f504ec9369cbbaef5698d1037d895d22245d215e3f1a73afdcf0"
+  end
+
+  depends_on "pkg-config" => :build
   depends_on "rust" => :build
   depends_on "erlang"
   depends_on "rebar3"
-
-  on_linux do
-    depends_on "pkg-config" => :build
-  end
 
   def install
     system "cargo", "install", *std_cargo_args(path: "compiler-cli")

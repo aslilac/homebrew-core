@@ -1,12 +1,13 @@
 class Libosmium < Formula
   desc "Fast and flexible C++ library for working with OpenStreetMap data"
   homepage "https://osmcode.org/libosmium/"
-  url "https://github.com/osmcode/libosmium/archive/v2.19.0.tar.gz"
-  sha256 "6911a8ca8e81d49205357177982df908af11376919f93b814cccf02f1d4d63e3"
+  url "https://github.com/osmcode/libosmium/archive/refs/tags/v2.20.0.tar.gz"
+  sha256 "3d3e0873c6aaabb3b2ef4283896bebf233334891a7a49f4712af30ca6ed72477"
   license "BSL-1.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "6914081ff3d264c208c771080b8495541c58a97e13454659d2ac0bd3779fb28d"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "9bcbab472389e69a2ad172a5505c6183b7f2a120116bff9ba0b45c4840840b36"
   end
 
   depends_on "boost" => :build
@@ -18,7 +19,7 @@ class Libosmium < Formula
   uses_from_macos "zlib"
 
   resource "protozero" do
-    url "https://github.com/mapbox/protozero/archive/v1.7.1.tar.gz"
+    url "https://github.com/mapbox/protozero/archive/refs/tags/v1.7.1.tar.gz"
     sha256 "27e0017d5b3ba06d646a3ec6391d5ccc8500db821be480aefd2e4ddc3de5ff99"
   end
 
@@ -49,7 +50,7 @@ class Libosmium < Formula
       </osm>
     EOS
 
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <cstdlib>
       #include <iostream>
       #include <osmium/io/xml_input.hpp>
@@ -60,7 +61,7 @@ class Libosmium < Formula
         while (osmium::memory::Buffer buffer = reader.read()) {}
         reader.close();
       }
-    EOS
+    CPP
 
     system ENV.cxx, "test.cpp", "-std=c++11", "-lexpat", "-o", "libosmium_read", "-pthread"
     system "./libosmium_read", "test.osm"

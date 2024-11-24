@@ -1,32 +1,38 @@
 class Nexttrace < Formula
   desc "Open source visual route tracking CLI tool"
-  homepage "https://github.com/sjlleo/nexttrace-core"
-  url "https://github.com/sjlleo/nexttrace-core/archive/refs/tags/v1.1.7-1.tar.gz"
-  sha256 "506db2d92404b8923dd3caaaeab2f3ba2b828e018d3a9721419802a17e828057"
+  homepage "https://nxtrace.github.io/NTrace-core/"
+  url "https://github.com/nxtrace/NTrace-core/archive/refs/tags/v1.3.5.tar.gz"
+  sha256 "8a373935e92bf94959898ce4a6980269270ce5ca88cbe5fb04dd1b3bfeb620fd"
   license "GPL-3.0-only"
-  head "https://github.com/sjlleo/nexttrace-core.git", branch: "main"
+  head "https://github.com/nxtrace/NTrace-core.git", branch: "main"
 
-  bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "edb6bfe29ab3c66487adbc6ee863a1bfd6f1006741b9a4dbde48d26858d29c55"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c7a5005807f8844aa356e676de3542b86ddc45ff2bc527a6d90f95f6b6364b45"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "19ad313119e095cc6c3e05bf18cdd4d918b0b9c6c485a2de1889b878fc1f8044"
-    sha256 cellar: :any_skip_relocation, ventura:        "76eb9765cdf3570f8ac933de43a19b5b8edecee1d520fdaffbdc1861734ad01a"
-    sha256 cellar: :any_skip_relocation, monterey:       "55dd831fe6c888e5050e67dbd1fa1a21883227d0122eb6bf6e7d19be0d206e8c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "027b47219c2e4a8af3a39d1234e219d61421e1140ade6613b43bc235e7c180fd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "58bffb923564bc8d3487cb6a41a04ac3cb15fed7d0f236060c3e8be32120598e"
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  livecheck do
+    url :stable
+    strategy :github_latest
   end
 
-  depends_on "go" => :build
+  bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "33ee30f11117168da4010b9c58bd97aa72a1bb1639315f6add861fe7b34d007d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1b5bee2bef7ceb80340287776cd8c9613232d59f274a27332a7b0858f0dc10d0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "655f5897e273bb725cc69063cc7a86333e76b4acd8b1f21a16165d79e2d56188"
+    sha256 cellar: :any_skip_relocation, sonoma:        "e196e386e5950104b094dc1c5704315c614bff0ac5b7168613281a502a69d0f1"
+    sha256 cellar: :any_skip_relocation, ventura:       "2a95597e78b4bc1093a9507fe988e463a18c1357d5f5ea31a523a9d3c86759bb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "55d83647143535207d8207bf7e90b2f0bf50efcd5ac4edd93b1e36d64cfb6298"
+  end
+
+  # use "go" again after https://github.com/nxtrace/NTrace-core/issues/247 is fixed and released
+  depends_on "go@1.22" => :build
 
   def install
     ldflags = %W[
       -s -w
-      -X github.com/xgadget-lab/nexttrace/config.Version=#{version}
-      -X github.com/xgadget-lab/nexttrace/config.CommitID=brew
-      -X github.com/xgadget-lab/nexttrace/config.BuildDate=#{time.iso8601}
+      -X github.com/nxtrace/NTrace-core/config.Version=#{version}
+      -X github.com/nxtrace/NTrace-core/config.CommitID=brew
+      -X github.com/nxtrace/NTrace-core/config.BuildDate=#{time.iso8601}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   def caveats
@@ -37,14 +43,10 @@ class Nexttrace < Formula
   end
 
   test do
-    # requires `sudo` to start
-    output = if OS.mac?
-      shell_output(bin/"nexttrace --language en 1.1.1.1 2>&1")
-    else
-      shell_output(bin/"nexttrace --language en 1.1.1.1 2>&1", 1)
-    end
-
-    assert_match "traceroute to 1.1.1.1", output
+    # requires `sudo` for linux
+    return_status = OS.mac? ? 0 : 1
+    output = shell_output("#{bin}/nexttrace --language en 1.1.1.1 2>&1", return_status)
+    assert_match "[NextTrace API]", output
     assert_match version.to_s, shell_output(bin/"nexttrace --version")
   end
 end

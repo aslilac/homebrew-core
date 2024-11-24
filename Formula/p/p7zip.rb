@@ -1,15 +1,18 @@
 class P7zip < Formula
   desc "7-Zip (high compression file archiver) implementation"
   homepage "https://github.com/p7zip-project/p7zip"
-  url "https://github.com/p7zip-project/p7zip/archive/v17.05.tar.gz"
+  url "https://github.com/p7zip-project/p7zip/archive/refs/tags/v17.05.tar.gz"
   sha256 "d2788f892571058c08d27095c22154579dfefb807ebe357d145ab2ddddefb1a6"
   license all_of: ["LGPL-2.1-or-later", "GPL-2.0-or-later"]
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e162e6e442c02511ec34dab3936dc326ecdaeb995a65fa786cb585deead847f4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "19bf0feb4e993c7cfad0d42bf8b9820ba67a9ebbd7ad4efd312a4a7953704a1a"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "ba7f3e60841e85ab16ae76e7f0be634e15ea1b0c4a3a631cbe57447cbc9d77b6"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "ed5af58015207456c265187cd73b53a80db239a9029bed1579065faa2391fec1"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "145a4d0ecb748931931030b2e8844d5e007cba92cfed3b4ae07b4f15bc461e22"
+    sha256 cellar: :any_skip_relocation, sonoma:         "2827eb7db9135c059d4498667e08ac37e4e020d39df6df0cebb1080d09cea9c5"
     sha256 cellar: :any_skip_relocation, ventura:        "6b4bac2c955ef9902583dafa2f9bf6e0e3f5d503c81e51c1ed1ddde01b2ae4df"
     sha256 cellar: :any_skip_relocation, monterey:       "91623462e2bdad09edfa899267359fcfd03ab34d8b70176462b1364e6f23f91c"
     sha256 cellar: :any_skip_relocation, big_sur:        "663d0ac5174855af24bf4dd7b729ef5693b7a421327379ba2d210b370f12aef0"

@@ -1,24 +1,24 @@
 class OpenjdkAT8 < Formula
   desc "Development kit for the Java programming language"
   homepage "https://openjdk.java.net/"
-  url "https://github.com/openjdk/jdk8u/archive/refs/tags/jdk8u382-ga.tar.gz"
-  version "1.8.0+382"
-  sha256 "a000ec82e594ccfe46ac1a4aa3d7399532aa53875042f22f16eae9367c4b20eb"
+  url "https://github.com/openjdk/jdk8u/archive/refs/tags/jdk8u432-ga.tar.gz"
+  version "1.8.0-432"
+  BUILD_NUMBER = "b06".freeze # Please update when a new GA release is available: https://wiki.openjdk.org/display/jdk8u.
+  sha256 "6ac8ee2b6932e4632ea2c33fe2320d6ceaca50a67521fac02a67027e40437460"
   license "GPL-2.0-only"
 
   livecheck do
     url :stable
     regex(/^jdk(8u\d+)-ga$/i)
     strategy :git do |tags, regex|
-      tags.map { |tag| tag[regex, 1]&.gsub("8u", "1.8.0+") }.compact
+      tags.filter_map { |tag| tag[regex, 1]&.gsub("8u", "1.8.0+") }
     end
   end
 
   bottle do
-    sha256 cellar: :any,                 ventura:      "9b5ff6be944932238bd1193d1635d2fc6f2f7959e3c6c3b83442c84d7740a0eb"
-    sha256 cellar: :any,                 monterey:     "8f690c5b77189b80fa87bb5f9cd201d65f6a1b92f6971659946d8251affebb58"
-    sha256 cellar: :any,                 big_sur:      "f532b4485fb2b9405fab01e80f0e738721bd8525b97b0c75b38b651dfa139f82"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "ba87ca35a5b1d453e9f70bf015d664e0f8eccae62552fc3499036d891f0aed6f"
+    sha256 cellar: :any,                 sonoma:       "74fcd1c6fb4f0525f752cbadb57405ecac2dc63c9eab76a142b3c5f0fd2fd841"
+    sha256 cellar: :any,                 ventura:      "d80f5850880120a4614a938aed49d8475d639676b2f4726cfa47e106a04973c6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "29e82fd950a5da51998d665b1cb124daf4163bff8d1012fb1fdb9ce0166b9845"
   end
 
   keg_only :versioned_formula
@@ -42,14 +42,15 @@ class OpenjdkAT8 < Formula
     depends_on "fontconfig"
     depends_on "libx11"
     depends_on "libxext"
+    depends_on "libxi"
     depends_on "libxrandr"
     depends_on "libxrender"
     depends_on "libxt"
     depends_on "libxtst"
   end
 
-  # Oracle doesn't serve JDK 7 downloads anymore, so we use Zulu JDK 7 for bootstrapping.
-  # https://www.azul.com/downloads/?version=java-7-lts&package=jdk
+  # NOTE: Oracle doesn't serve JDK 7 downloads anymore, so we use Zulu JDK 7 for bootstrapping.
+  # https://www.azul.com/downloads/?version=java-7-lts&package=jdk&show-old-builds=true#zulu
   resource "boot-jdk" do
     on_macos do
       url "https://cdn.azul.com/zulu/bin/zulu7.56.0.11-ca-jdk7.0.352-macosx_x64.tar.gz"
@@ -61,14 +62,33 @@ class OpenjdkAT8 < Formula
     end
   end
 
+  # NOTE: Since macOS Sonoma or newer don’t include the required headers for JNF (JavaNativeFoundation.framework),
+  # we will use the headers provided at https://github.com/apple/openjdk.
+  resource "JavaNativeFoundation" do
+    on_sonoma :or_newer do
+      url "https://github.com/apple/openjdk/archive/refs/tags/iTunesOpenJDK-1014.0.2.12.1.tar.gz"
+      sha256 "e8556a73ea36c75953078dfc1bafc9960e64593bc01e733bc772d2e6b519fd4a"
+    end
+  end
+
+  # Fix `clang++ -std=gnu++11` compile failure issue on macOS.
+  patch :p0 do
+    url "https://raw.githubusercontent.com/macports/macports-ports/04ad4a17332e391cd359271965d4c6dac87a7eb2/java/openjdk8/files/0001-8181503-Can-t-compile-hotspot-with-c-11.patch"
+    sha256 "a02e0ea7c70390796e46b8b6565f986fedc17a08aa039ee3306438a39a60538a"
+  end
+  patch :p0 do
+    url "https://raw.githubusercontent.com/macports/macports-ports/04ad4a17332e391cd359271965d4c6dac87a7eb2/java/openjdk8/files/0006-Disable-C-11-warnings.patch"
+    sha256 "127d9508b72005e849a6ada6adf04bd49a236731d769810e67793bdf2aa722fe"
+  end
+  patch :p0, :DATA
+
   def install
-    _, _, update = version.to_s.rpartition("+")
+    _, _, update = version.to_s.rpartition("-")
     boot_jdk = buildpath/"boot-jdk"
     resource("boot-jdk").stage boot_jdk
     java_options = ENV.delete("_JAVA_OPTIONS")
 
-    # Work around clashing -I/usr/include and -isystem headers,
-    # as superenv already handles this detail for us.
+    # Work around clashing -I/usr/include and -isystem headers, as superenv already handles this detail for us.
     inreplace "common/autoconf/flags.m4",
               '-isysroot \"$SYSROOT\"', ""
     inreplace "common/autoconf/toolchain.m4",
@@ -83,13 +103,8 @@ class OpenjdkAT8 < Formula
         s.gsub! "$(subst .,,$(MACOSX_VERSION_MIN))", ENV["HOMEBREW_MACOS_VERSION_NUMERIC"]
         s.gsub! "MACOSX_VERSION_MIN=10.7.0", "MACOSX_VERSION_MIN=#{MacOS.version}"
       end
-
-      # Fix Xcode 13 detection.
-      inreplace "common/autoconf/toolchain.m4",
-                "if test \"${XC_VERSION_PARTS[[0]]}\" != \"6\"",
-                "if test \"${XC_VERSION_PARTS[[0]]}\" != \"#{MacOS::Xcode.version.major}\""
     else
-      # Fix linker errors on brewed GCC
+      # Fix linker errors on brewed GCC.
       inreplace "common/autoconf/flags.m4", "-Xlinker -O1", ""
       inreplace "hotspot/make/linux/makefiles/gcc.make", "-Xlinker -O1", ""
     end
@@ -103,6 +118,7 @@ class OpenjdkAT8 < Formula
       --with-milestone=fcs
       --with-native-debug-symbols=none
       --with-update-version=#{update}
+      --with-build-number=#{BUILD_NUMBER}
       --with-vendor-bug-url=#{tap.issues_url}
       --with-vendor-name=#{tap.user}
       --with-vendor-url=#{tap.issues_url}
@@ -117,17 +133,27 @@ class OpenjdkAT8 < Formula
         --with-zlib=system
       ]
 
-      # Work around SDK issues with JavaVM framework.
-      if MacOS.version <= :catalina
-        sdk_path = MacOS::CLT.sdk_path(MacOS.version)
-        ENV["SDKPATH"] = ENV["SDKROOT"] = sdk_path
-        javavm_framework_path = sdk_path/"System/Library/Frameworks/JavaVM.framework/Frameworks"
-        args += %W[
-          --with-extra-cflags=-F#{javavm_framework_path}
-          --with-extra-cxxflags=-F#{javavm_framework_path}
-        ]
-        ldflags << "-F#{javavm_framework_path}"
+      extra_cflags = []
+      extra_cxxflags = []
+
+      # On macOS Sonoma or newer, we provide the missing JNF headers from an external resource.
+      if MacOS.version >= :sonoma
+        resource("JavaNativeFoundation").stage do
+          jnf_headers = buildpath/"jnf-headers"
+          jnf_headers.install Pathname.pwd/"apple/JavaNativeFoundation/JavaNativeFoundation"
+          # Work around for missing 'JavaNativeFoundation/JavaNativeFoundation.h' in MacosxDebuggerLocal.m.
+          (buildpath/"hotspot/agent/src/os/bsd").install_symlink jnf_headers
+          # Add JNF headers to extra flags.
+          extra_cflags << "-I#{jnf_headers}"
+          extra_cxxflags << "-I#{jnf_headers}"
+        end
       end
+
+      # Work around Xcode 16 bug: https://bugs.openjdk.org/browse/JDK-8340341.
+      extra_cflags << "-mllvm -enable-constraint-elimination=0" if DevelopmentTools.clang_build_version == 1600
+
+      args << "--with-extra-cflags=#{extra_cflags.join(" ")}" unless extra_cflags.empty?
+      args << "--with-extra-cxxflags=#{extra_cxxflags.join(" ")}" unless extra_cxxflags.empty?
     else
       args += %W[
         --with-toolchain-type=gcc
@@ -175,16 +201,57 @@ class OpenjdkAT8 < Formula
   end
 
   test do
-    (testpath/"HelloWorld.java").write <<~EOS
+    (testpath/"HelloWorld.java").write <<~JAVA
       class HelloWorld {
         public static void main(String args[]) {
           System.out.println("Hello, world!");
         }
       }
-    EOS
+    JAVA
 
     system bin/"javac", "HelloWorld.java"
 
     assert_match "Hello, world!", shell_output("#{bin}/java HelloWorld")
   end
 end
+
+__END__
+--- jdk/src/share/bin/splashscreen_stubs.c
++++ jdk/src/share/bin/splashscreen_stubs.c
+@@ -61,11 +61,11 @@
+ #define INVOKEV(name) _INVOKE(name, ,;)
+
+ int     DoSplashLoadMemory(void* pdata, int size) {
+-    INVOKE(SplashLoadMemory, NULL)(pdata, size);
++    INVOKE(SplashLoadMemory, 0)(pdata, size);
+ }
+
+ int     DoSplashLoadFile(const char* filename) {
+-    INVOKE(SplashLoadFile, NULL)(filename);
++    INVOKE(SplashLoadFile, 0)(filename);
+ }
+
+ void    DoSplashInit(void) {
+
+--- jdk/src/share/native/com/sun/java/util/jar/pack/jni.cpp
++++ jdk/src/share/native/com/sun/java/util/jar/pack/jni.cpp
+@@ -292,7 +292,7 @@
+
+   if (uPtr->aborting()) {
+     THROW_IOE(uPtr->get_abort_message());
+-    return false;
++    return 0;
+   }
+
+   // We have fetched all the files.
+--- jdk/src/macosx/native/com/sun/media/sound/PLATFORM_API_MacOSX_Ports.cpp
++++ jdk/src/macosx/native/com/sun/media/sound/PLATFORM_API_MacOSX_Ports.cpp
+@@ -609,7 +609,7 @@
+                 // get the channel name
+                 char *channelName;
+                 CFStringRef cfname = NULL;
+-                const AudioObjectPropertyAddress address = {kAudioObjectPropertyElementName, port->scope, ch};
++                const AudioObjectPropertyAddress address = {kAudioObjectPropertyElementName, port->scope, (unsigned)ch};
+                 UInt32 size = sizeof(cfname);
+                 OSStatus err = AudioObjectGetPropertyData(mixer->deviceID, &address, 0, NULL, &size, &cfname);
+                 if (err == noErr) {

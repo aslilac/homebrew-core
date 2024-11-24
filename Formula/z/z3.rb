@@ -1,8 +1,8 @@
 class Z3 < Formula
   desc "High-performance theorem prover"
   homepage "https://github.com/Z3Prover/z3"
-  url "https://github.com/Z3Prover/z3/archive/z3-4.12.2.tar.gz"
-  sha256 "9f58f3710bd2094085951a75791550f547903d75fe7e2fcb373c5f03fc761b8f"
+  url "https://github.com/Z3Prover/z3/archive/refs/tags/z3-4.13.3.tar.gz"
+  sha256 "f59c9cf600ea57fb64ffeffbffd0f2d2b896854f339e846f48f069d23bc14ba0"
   license "MIT"
   head "https://github.com/Z3Prover/z3.git", branch: "master"
 
@@ -13,33 +13,32 @@ class Z3 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "e8006cc04b33c0d2f834c7b73f2887b9832f979600488851b7a5091d13239a7c"
-    sha256 cellar: :any,                 arm64_monterey: "431799c83071ea311fbaf551e6857edc93242e2858beadb8487f564575bd8128"
-    sha256 cellar: :any,                 arm64_big_sur:  "56e46cd536c280cc8fb5e960f0cae7b70cccc0c7891e658aeec1c8a8717dc7b3"
-    sha256 cellar: :any,                 ventura:        "70990b1e46735ced52fe8ee0f8746982d13dbb0ba104b4af21755795e9e79cc1"
-    sha256 cellar: :any,                 monterey:       "80ce63d42c4377b4e4d30299bbb9a99f3adfd2d878936ad6717e63bd73fd28d9"
-    sha256 cellar: :any,                 big_sur:        "6bb2b22e2ac439e31e786f17b4cc6d64e2449b438fbf899b3cd9cc004351ba24"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2f947a5b0ea9e97728008bff971b390dc6140849cebe059a431a7a41dab5ea13"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "4be29dafaf9f041f46684866c182efd08970bd8600f6bbe43e771ca1fb6b1c87"
+    sha256 cellar: :any,                 arm64_sonoma:  "61ecbfb6496b696fb9ed7aee129bc4973d3f5c127590a1c14967544a05735721"
+    sha256 cellar: :any,                 arm64_ventura: "af39185d9cb16d4af24ec7781618750b1bdfcf795557dbc641403db939ed0fdb"
+    sha256 cellar: :any,                 sonoma:        "8eea09139dc8827731f816d8bbd6babc9f859ab24f9eb019a7eaf1d1bab005bf"
+    sha256 cellar: :any,                 ventura:       "d0e27e707910cd91decf89a28917f1bf29d4d64286204f07513efa598cf0400c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b9fee510a5d1b26819ba6a1244e6f86745a117255e5ca5c8e9c8117d8b50a020"
   end
 
   depends_on "cmake" => :build
   # Has Python bindings but are supplementary to the main library
   # which does not need Python.
-  depends_on "python@3.11" => [:build, :test]
+  depends_on "python@3.13" => [:build, :test]
 
   fails_with gcc: "5"
 
   fails_with :clang do
     build 1000
     cause <<-EOS
-      z3-z3-4.12.2/src/ast/ast.h:183:53: error: call to unavailable function 'get': introduced in macOS 10.14
-          int get_int() const { SASSERT(is_int()); return std::get<int>(m_val); }
-                                                          ^~~~~~~~~~~~~
+      Z3 uses modern C++17 features, which is not supported by Apple's clang until
+      later macOS (10.14).
     EOS
   end
 
   def python3
-    which("python3.11")
+    which("python3.13")
   end
 
   def install

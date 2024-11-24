@@ -2,24 +2,20 @@ class RustAnalyzer < Formula
   desc "Experimental Rust compiler front-end for IDEs"
   homepage "https://rust-analyzer.github.io/"
   url "https://github.com/rust-lang/rust-analyzer.git",
-       tag:      "2023-07-24",
-       revision: "99718d0c8bc5aadd993acdcabc1778fc7b5cc572"
-  version "2023-07-24"
+       tag:      "2024-11-18",
+       revision: "ba56d9b9b5f7ae7311b4bd1cc47159d87eb033d0"
   license any_of: ["Apache-2.0", "MIT"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "eee0341042909542b23c5ef6a19a06fa497f67f88f1369d47cce417238bc9b7f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "44bc4ccfb2d4b814ca92b628c4b0d52ba0dfee7ee8c1a348f06b78bd19d86b56"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6fbf7ddfb2455c23acb733e4550938098c24628f447c8bf288395ba1ec713f8c"
-    sha256 cellar: :any_skip_relocation, ventura:        "356146c5ded42f77394755798f362fdd0af72aa9278f07ecc42285c0f80ddf58"
-    sha256 cellar: :any_skip_relocation, monterey:       "971e272f075a5786c54334dbbf36eacf4431d825313865ba1b7a349d06587aeb"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4d7607b361242794c7d3fd05d643fa69610e20b96953005b9de0476f27e9d3d8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ae92c78323a77108a7f485a8904d87bc5f1862eb1ae116c5ab745974a6882dc8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "12544f6a233567ecc4c1acec8f77291807d01720359fcd9d043e0db19d1f2f95"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8f0a4feadd91f4a5c88f47407cfe95c1b93983ba8b80dc8c8c7fc42da963b6a8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "e38ecaaf874cda94559d6a0fd1f8bb326e287bd1408bb6f73cb482d8235b3fde"
+    sha256 cellar: :any_skip_relocation, sonoma:        "748d89ae5fb761274d3b4bc0913dda63bf2bcee8cea5c277124b6ed2f7a22b77"
+    sha256 cellar: :any_skip_relocation, ventura:       "0995229a3af4e3ac9c30795cfef88e71bacf55f924da38f518c8157b15bfe626"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2c64e08afb8b3dc440bd6ef439b15351f1b86a9e64effbc95ecfab8ff45ba9e1"
   end
 
   depends_on "rust" => :build
-
-  conflicts_with "rust", because: "both install `rust-analyzer` binary"
 
   def install
     cd "crates/rust-analyzer" do
@@ -73,6 +69,6 @@ class RustAnalyzer < Formula
 
     output = /Content-Length: \d+\r\n\r\n/
 
-    assert_match output, pipe_output("#{bin}/rust-analyzer", input, 0)
+    assert_match output, pipe_output(bin/"rust-analyzer", input, 0)
   end
 end

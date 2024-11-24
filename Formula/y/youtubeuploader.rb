@@ -1,25 +1,40 @@
 class Youtubeuploader < Formula
   desc "Scripted uploads to Youtube"
   homepage "https://github.com/porjo/youtubeuploader"
-  url "https://github.com/porjo/youtubeuploader/archive/23.02.tar.gz"
-  sha256 "48f4315c713581547cd90b399c51a98f7d8a79c698f9a1f19f8a0d3dc70bd814"
+  url "https://github.com/porjo/youtubeuploader/archive/refs/tags/24.03.tar.gz"
+  sha256 "aca9c3fc9d7325911b0c5a88dc9e3880d0796ec563ad9ac00f6cf59be6b5b87a"
   license "Apache-2.0"
   head "https://github.com/porjo/youtubeuploader.git", branch: "master"
 
+  # Upstream creates stable version tags (e.g., `23.03`) before a release but
+  # the version isn't considered to be released until a corresponding release
+  # is created on GitHub, so it's necessary to use the `GithubLatest` strategy.
+  # https://github.com/porjo/youtubeuploader/issues/169
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "07b89e4ed8ee773dde84b81772471e48ee910d291989d577136c0368cc34f67f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "07b89e4ed8ee773dde84b81772471e48ee910d291989d577136c0368cc34f67f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "07b89e4ed8ee773dde84b81772471e48ee910d291989d577136c0368cc34f67f"
-    sha256 cellar: :any_skip_relocation, ventura:        "a24e908a50675105dd26c9392e9f02f639555c1f00588e450646159279b234c0"
-    sha256 cellar: :any_skip_relocation, monterey:       "a24e908a50675105dd26c9392e9f02f639555c1f00588e450646159279b234c0"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a24e908a50675105dd26c9392e9f02f639555c1f00588e450646159279b234c0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cdb69cdbb2b5e68d63cc9a4234b01cf2ee89f2d2da18a4df1c5b28268e46e29e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5a3eaf329e33673f4fe225827bb5ca48d4068204032aadfba402fecd92dac41e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5a3eaf329e33673f4fe225827bb5ca48d4068204032aadfba402fecd92dac41e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "5a3eaf329e33673f4fe225827bb5ca48d4068204032aadfba402fecd92dac41e"
+    sha256 cellar: :any_skip_relocation, sonoma:        "2def42024252812e8f17c4251a2f92686682e10234825a214909ef4f5fb200d8"
+    sha256 cellar: :any_skip_relocation, ventura:       "2def42024252812e8f17c4251a2f92686682e10234825a214909ef4f5fb200d8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ada9633eac9b099ec8d45e1d21536390380e97cde22ba815468c80cf663a8cef"
   end
 
   depends_on "go" => :build
 
+  # Fix -version flag. Remove on next release.
+  patch do
+    url "https://github.com/porjo/youtubeuploader/commit/56ec5890518760c873b0dd496f3a8b46af81cb65.patch?full_index=1"
+    sha256 "b17bed81b9a6e7d74d665d7cf515e517f24ae27c4438a98d9b2c109c075b5942"
+  end
+
   def install
-    system "go", "build", *std_go_args(ldflags: "-s -X main.appVersion=#{version}")
+    ldflags = "-s -X main.appVersion=#{version}"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/youtubeuploader"
   end
 
   test do
@@ -27,7 +42,7 @@ class Youtubeuploader < Formula
     assert_match version.to_s, shell_output("#{bin}/youtubeuploader -version")
 
     # OAuth
-    (testpath/"client_secrets.json").write <<~EOS
+    (testpath/"client_secrets.json").write <<~JSON
       {
         "installed": {
           "client_id": "foo_client_id",
@@ -40,18 +55,18 @@ class Youtubeuploader < Formula
           "token_uri": "https://accounts.google.com/o/oauth2/token"
         }
       }
-    EOS
+    JSON
 
-    (testpath/"request.token").write <<~EOS
+    (testpath/"request.token").write <<~JSON
       {
         "access_token": "test",
         "token_type": "Bearer",
         "refresh_token": "test",
         "expiry": "2020-01-01T00:00:00.000000+00:00"
       }
-    EOS
+    JSON
 
     output = shell_output("#{bin}/youtubeuploader -filename #{test_fixtures("test.m4a")} 2>&1", 1)
-    assert_match "oauth2: cannot fetch token: 401 Unauthorized", output.strip
+    assert_match 'oauth2: "invalid_client" "The OAuth client was not found."', output
   end
 end

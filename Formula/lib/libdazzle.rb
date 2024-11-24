@@ -4,16 +4,17 @@ class Libdazzle < Formula
   url "https://download.gnome.org/sources/libdazzle/3.44/libdazzle-3.44.0.tar.xz"
   sha256 "3cd3e45eb6e2680cb05d52e1e80dd8f9d59d4765212f0e28f78e6c1783d18eae"
   license "GPL-3.0-or-later"
+  revision 1
 
   bottle do
-    sha256 arm64_ventura:  "2cc26886bfeaa4f330ce3115ec2283b3b4a3edb86f2b1214b93311532eab992f"
-    sha256 arm64_monterey: "fd00728bb05e73562b642a2a36bb24562f97c867710642e08bcc522fbd06ea5e"
-    sha256 arm64_big_sur:  "03413be24801e4b02bf0b72e4900463908267c62849277bcdcd006409ca73dc4"
-    sha256 ventura:        "5fafa8436fae20fdb7d1d9ab1c82c6d6804050c342e4d378a237948b8c2c4b80"
-    sha256 monterey:       "df1d41d43c5d86024ba7d83b13272f324f42ecc555a4cd9670c13e95b027d1ba"
-    sha256 big_sur:        "2ed5d0fad6b1e2b7f8ac25d274aa6e8a5e28924f6b20e08da8fdbc796f2481fd"
-    sha256 catalina:       "aa728a5d7ac88a8c22cb9f022e292c0f121cbe2085f69128df9e4e2e5e862bf3"
-    sha256 x86_64_linux:   "37dc86c031ab20df01037021b776f53af623ceab915e06a7bb8693ad3853d283"
+    sha256 arm64_sequoia:  "87f5700425b73e8a64c2b6af4f2f1ee74028b1921d147ba239a298c10ea12b05"
+    sha256 arm64_sonoma:   "f79987d1cba7d798fe6cb2c824439ddb41dbac57df64c75dc8cf72e66a9c0d25"
+    sha256 arm64_ventura:  "e08d05fceceacb8f02483c79711d7320d9d1888c2307cfb1b65b9a1524f27722"
+    sha256 arm64_monterey: "a3553a76ef15ac7c2268e9ce059d1321c44b8d7fbdf13013f08b8d5f5d23de23"
+    sha256 sonoma:         "2fca358ca672c44ed32595ce7769e77d777e3c62073ed4c445210614d030280a"
+    sha256 ventura:        "2e8a40dcec28ed8a7cdae08bb4d1c1844b9d0dfff1c2da917d75e9259b42cff7"
+    sha256 monterey:       "648477570e7a597bc703e6cfa2ee418aba691ec253e7f40c79c33b3b2e95b8b9"
+    sha256 x86_64_linux:   "7a8395fdb2257d54ffc90ebcb1a95796c87fba132b602c14ed0c42e384bb90e8"
   end
 
   depends_on "gobject-introspection" => :build
@@ -21,26 +22,34 @@ class Libdazzle < Formula
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "vala" => :build
+
+  depends_on "cairo"
+  depends_on "gdk-pixbuf"
   depends_on "glib"
   depends_on "gtk+3"
+  depends_on "pango"
+
+  on_macos do
+    depends_on "at-spi2-core"
+    depends_on "gettext"
+    depends_on "harfbuzz"
+  end
 
   def install
-    mkdir "build" do
-      system "meson", *std_meson_args, "-Dwith_vapi=true", ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+    system "meson", "setup", "build", "-Dwith_vapi=true", *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <dazzle.h>
 
       int main(int argc, char *argv[]) {
         g_assert_false(dzl_file_manager_show(NULL, NULL));
         return 0;
       }
-    EOS
+    C
     atk = Formula["atk"]
     cairo = Formula["cairo"]
     fontconfig = Formula["fontconfig"]

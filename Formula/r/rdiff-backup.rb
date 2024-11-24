@@ -1,30 +1,37 @@
 class RdiffBackup < Formula
+  include Language::Python::Virtualenv
+
   desc "Reverse differential backup tool, over a network or locally"
   homepage "https://rdiff-backup.net/"
-  url "https://files.pythonhosted.org/packages/29/57/2722bf1fd732fed762f3307454df1175314f547ab0f069e2d4bc831d8d40/rdiff-backup-2.2.5.tar.gz"
-  sha256 "86e2826b784ec3ea4ef187d936ee5f15277422c4077efa0156ef67e3139ea08e"
+  url "https://files.pythonhosted.org/packages/e9/9b/487229306904a54c33f485161105bb3f0a6c87951c90a54efdc0fc04a1c9/rdiff-backup-2.2.6.tar.gz"
+  sha256 "d0778357266bc6513bb7f75a4570b29b24b2760348bbf607babfc3a6f09458cf"
   license "GPL-2.0-or-later"
+  revision 2
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "2d2877894989ffa17a12b7ff85dc033ed4674f80ff0985868fc24c5147ceabe8"
-    sha256 cellar: :any,                 arm64_monterey: "c0d1d60d0e87b916d2e6d68c1098d3c1cf2adba542d231ffb3b482370f58ef35"
-    sha256 cellar: :any,                 arm64_big_sur:  "b46a63968555ef77bf46d611b38b8e1812374dadaae58f5fc87effcd3ccfa0e8"
-    sha256 cellar: :any,                 ventura:        "2bb7ed15b8918441f8a7a8f3ff818bacef4a187db469acf9b4f4c8080278a9a8"
-    sha256 cellar: :any,                 monterey:       "83509a3b88f86bd949f58fd8bcbb87cc1249ba7ba87f4b818debbd3471ce5fd2"
-    sha256 cellar: :any,                 big_sur:        "7d0f2d26e70a4048246f7c083783783eeb2a7be1605fa8784265ef21deca8e40"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "70686f1def5208b45dc7f0b896ae5619b0db76be125a82ad9b2443ab14eeef04"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "b037ef3ea3aafd39f744cea23f2523f40d9c80661a074f50069884c55eaade80"
+    sha256 cellar: :any,                 arm64_sonoma:  "b0cf4abfe62e3c09b9345ec38d5c7f65c9837242678e0e7dc320923ed717ecd1"
+    sha256 cellar: :any,                 arm64_ventura: "20fa233aaa55c026ad35248b7a3a2071b8033e6d5ddecce0e63d0fbe91d87e00"
+    sha256 cellar: :any,                 sonoma:        "5691e0d4ef52851e4fa7c4cb79f88d67d36452dd47d5a1ed431c4ea3af28bedf"
+    sha256 cellar: :any,                 ventura:       "695783fe127849af52c616ca92258b2a68a9c9b44d8e0a16b01018188ed09422"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f5337ec00dc8e1870c11e94a94aa00868fc261fe1450d269ed856e7fe610d31c"
   end
 
   depends_on "librsync"
-  depends_on "python@3.11"
-  depends_on "pyyaml"
+  depends_on "libyaml"
+  depends_on "python@3.13"
+
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
+  end
 
   def install
-    python3 = "python3.11"
-    system python3, "-m", "pip", "install", *std_pip_args, "."
+    virtualenv_install_with_resources
   end
 
   test do
-    system "#{bin}/rdiff-backup", "--version"
+    system bin/"rdiff-backup", "--version"
   end
 end

@@ -1,19 +1,18 @@
 class Wgcf < Formula
   desc "Generate WireGuard profile from Cloudflare Warp account"
   homepage "https://github.com/ViRb3/wgcf"
-  url "https://github.com/ViRb3/wgcf/archive/v2.2.19.tar.gz"
-  sha256 "276bd779224ec67c2710c4717a74c67a5c7a9455805457b385d9b8d52af1cff7"
+  url "https://github.com/ViRb3/wgcf/archive/refs/tags/v2.2.23.tar.gz"
+  sha256 "01851eee54954174bc7a0b6528252f5aee0d7996d48094f266011db3f20b1554"
   license "MIT"
   head "https://github.com/ViRb3/wgcf.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9afcf3cf0ae873a9e90d2a9acaa81111e2063126e27daa33f152d8bf25041f75"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "61e37a09b0e10193f7aa9517512b1f3a667e0d17f99bcd176b6012fb76655345"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f6c83b999555495f04ef958acde349c7a55ab85246d7c223015afce0df9cc22c"
-    sha256 cellar: :any_skip_relocation, ventura:        "57af29af6c967821e84ea90c3cdfbc35d432893460b41791aa40e21bf89fcbff"
-    sha256 cellar: :any_skip_relocation, monterey:       "aae0bffdb05bfd4da111262ff06a18ff6daea7b881251629f907355061a2ed68"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a3adfd03320dbb26eaa5fc1d63ecb7c4064dc6c962e908903731c00923816b01"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f1677aebb8be3ef34c820d1a07fe1a5027206df64f353dee2c5c18308eb52392"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f8e9b7e693a160e476f66d0d5bdc0fddfba9049607728223e984340beb9e5a2b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f8e9b7e693a160e476f66d0d5bdc0fddfba9049607728223e984340beb9e5a2b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f8e9b7e693a160e476f66d0d5bdc0fddfba9049607728223e984340beb9e5a2b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "813d70622f506d798ac18a01365536b327fab2d18300e8919bc52b1b3a7f6b87"
+    sha256 cellar: :any_skip_relocation, ventura:       "813d70622f506d798ac18a01365536b327fab2d18300e8919bc52b1b3a7f6b87"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dccfe23fc6f423ca731b56924a44f138907a0a35382b1592a22e3a0406f9bf2a"
   end
 
   depends_on "go" => :build
@@ -25,6 +24,6 @@ class Wgcf < Formula
   end
 
   test do
-    system "#{bin}/wgcf", "trace"
+    system bin/"wgcf", "trace"
   end
 end

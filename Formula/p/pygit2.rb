@@ -1,53 +1,63 @@
 class Pygit2 < Formula
   desc "Bindings to the libgit2 shared library"
   homepage "https://github.com/libgit2/pygit2"
-  url "https://files.pythonhosted.org/packages/db/26/cd0d68706e9511ca07b10d53f42e70d4c57b3504f4a0fd675e4617ad7a60/pygit2-1.12.2.tar.gz"
-  sha256 "56e85d0e66de957d599d1efb2409d39afeefd8f01009bfda0796b42a4b678358"
+  url "https://files.pythonhosted.org/packages/a4/85/c848cdf44214bf541c4a725a0a6e271f8db9f18cfccef702d53f83f1e19a/pygit2-1.16.0.tar.gz"
+  sha256 "7b29a6796baa15fc89d443ac8d51775411d9b1e5b06dc40d458c56c8576b48a2"
   license "GPL-2.0-only" => { with: "GCC-exception-2.0" }
   head "https://github.com/libgit2/pygit2.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_ventura:  "50d0698bb194f8e19ee8b26eca8c3a1362cf468dc0286f8f1e7b5fd08338109b"
-    sha256 cellar: :any,                 arm64_monterey: "ec798b4c494eeaab104671f73e907eeaa14301dd106db94696b3d8851cde6d5e"
-    sha256 cellar: :any,                 arm64_big_sur:  "7e4da4c4d21d93344b34d6db2a37cfeb2e1fefe8b2944580d9454797602e775e"
-    sha256 cellar: :any,                 ventura:        "733df708e7b6c8016704ac3f8ec8392bfaaf36bf0c5005c49045f029d39fae25"
-    sha256 cellar: :any,                 monterey:       "c47fc76186c79f21f38e89d6da8bd31e86138ad687b17bf01306780ce109dcd0"
-    sha256 cellar: :any,                 big_sur:        "743091d3ac0384f3f0aef487da81ea95404a5aaf5f866442e4a101c5c0ef3b02"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dd4e7397d8d8cbe316a2548302deb636c12071bb777c32dd13fadc8a3aa24e99"
+    sha256 cellar: :any,                 arm64_sequoia: "2bdefe79cffeb8fef4504b49bb6e10da8f8f6a1ad4f06de0cd14bcde65e0da06"
+    sha256 cellar: :any,                 arm64_sonoma:  "fd5ecbab353e4990cb4d11972191dbc0a8c29c0768c152a5aab39f29e4de0937"
+    sha256 cellar: :any,                 arm64_ventura: "e6c0cf19f7093ae9addfed9f596bb221c6a7695a6ed8ce971e270e61f64d1a6d"
+    sha256 cellar: :any,                 sonoma:        "0f200d9cfba5fac088a8036163afb1bad97a0c3e51b3595603ce28aca42a29d8"
+    sha256 cellar: :any,                 ventura:       "571795c815fe4588579e6912a0fea4b7e0054cea9f9f9ed89da2f9e56dd24217"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2a94b5d02dc781e9bc927c850b599b34b6915b02f03341c1c744e434a1ae1a25"
   end
 
+  depends_on "python@3.12" => [:build, :test]
+  depends_on "python@3.13" => [:build, :test]
   depends_on "cffi"
   depends_on "libgit2"
-  depends_on "python@3.11"
 
-  def python3
-    "python3.11"
+  def pythons
+    deps.map(&:to_formula)
+        .select { |f| f.name.start_with?("python@") }
+        .map { |f| f.opt_libexec/"bin/python" }
   end
 
   def install
-    system python3, "-m", "pip", "install", *std_pip_args, "."
+    pythons.each do |python3|
+      system python3, "-m", "pip", "install", *std_pip_args(build_isolation: true), "."
+    end
   end
 
   test do
     assert_empty resources, "This formula should not have any resources!"
-    (testpath/"hello.txt").write "Hello, pygit2."
-    system python3, "-c", <<~PYTHON
-      import pygit2
-      repo = pygit2.init_repository('#{testpath}', False) # git init
 
-      index = repo.index
-      index.add('hello.txt')
-      index.write() # git add
+    pythons.each do |python3|
+      pyversion = Language::Python.major_minor_version(python3)
 
-      ref = 'HEAD'
-      author = pygit2.Signature('BrewTestBot', 'testbot@brew.sh')
-      message = 'Initial commit'
-      tree = index.write_tree()
-      repo.create_commit(ref, author, author, message, tree, []) # git commit
-    PYTHON
+      (testpath/"#{pyversion}/hello.txt").write "Hello, pygit2."
+      mkdir pyversion do
+        system python3, "-c", <<~PYTHON
+          import pygit2
+          repo = pygit2.init_repository('#{testpath}/#{pyversion}', False) # git init
 
-    system "git", "status"
-    assert_match "hello.txt", shell_output("git ls-tree --name-only HEAD")
+          index = repo.index
+          index.add('hello.txt')
+          index.write() # git add
+
+          ref = 'HEAD'
+          author = pygit2.Signature('BrewTestBot', 'testbot@brew.sh')
+          message = 'Initial commit'
+          tree = index.write_tree()
+          repo.create_commit(ref, author, author, message, tree, []) # git commit
+        PYTHON
+
+        system "git", "status"
+        assert_match "hello.txt", shell_output("git ls-tree --name-only HEAD")
+      end
+    end
   end
 end

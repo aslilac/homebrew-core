@@ -1,27 +1,24 @@
-require "language/node"
-
 class Mongosh < Formula
   desc "MongoDB Shell to connect, configure, query, and work with your MongoDB database"
-  homepage "https://github.com/mongodb-js/mongosh#readme"
-  url "https://registry.npmjs.org/@mongosh/cli-repl/-/cli-repl-1.10.6.tgz"
-  sha256 "e5e0ed2b2990e0a6666e7452a71789b75c40e573d2f2cf815973bc46377c8b49"
+  homepage "https://github.com/mongodb-js/mongosh"
+  url "https://registry.npmjs.org/@mongosh/cli-repl/-/cli-repl-2.3.3.tgz"
+  sha256 "55e562c01ba25957a2a0b59273adeb6f6012a20babd9fb1f51ff686d806ac516"
   license "Apache-2.0"
 
   bottle do
-    sha256                               arm64_ventura:  "bf8421d71d5dff9706c1c4775a8a89d7977006b2ecfaf07db8b103eac9e74c21"
-    sha256                               arm64_monterey: "3df26b51507754c808696faa820041829f31c523529f5b081a2ed08aa024b647"
-    sha256                               arm64_big_sur:  "dac34c2cb2c1bdae6cd915480a52d73d52d77813ecf532a4ecca2d947bc99e84"
-    sha256                               ventura:        "dd6e5358b3e403b1ea3037fbde81aaa0eeeb791247818329bcf4259164a4fc48"
-    sha256                               monterey:       "3c4ed7eb788f17446424455e40d915598e8f9eb4d6321b23bcb5a98c65752c3c"
-    sha256                               big_sur:        "0b567c68e45696b6b2f91001a827655eac9ed9ceb1764c7a2f04c03428f3815f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f767dab25c0fe933e4741b89f4cd5fd020b994bcabbbb1b3cb29ed03b8cc5f4f"
+    sha256                               arm64_sequoia: "27774756c5f72643f9f6d7d4c60078889e981681a142fdf276fa323998778887"
+    sha256                               arm64_sonoma:  "5587271580f16b3e5f3958f087b48b4e1c38260f55cdc3269c4885d77a038a87"
+    sha256                               arm64_ventura: "81f943f1d6dcde9584b7be6fc3af3d5a73c8718472e4340671193f08c0528a04"
+    sha256                               sonoma:        "844838a7657f0a2fc83f9af5ba3b459b0fb1325825313e208f06f424e9498173"
+    sha256                               ventura:       "9bb8d343960b62e85a40c89ffb9e32a42982b67db6bca6a1a71d16210949cb48"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dc28d067301fafec291a347085c7df1c8594ecf83c0a4705090aaf373374926f"
   end
 
-  depends_on "node@16" # try `node` after https://jira.mongodb.org/browse/MONGOSH-1391
+  depends_on "node"
 
   def install
-    system "#{Formula["node@16"].bin}/npm", "install", *Language::Node.std_npm_install_args(libexec)
-    (bin/"mongosh").write_env_script libexec/"bin/mongosh", PATH: "#{Formula["node@16"].opt_bin}:$PATH"
+    system "npm", "install", *std_npm_args
+    bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
   test do

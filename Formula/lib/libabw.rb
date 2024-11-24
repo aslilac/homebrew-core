@@ -11,9 +11,12 @@ class Libabw < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "a458a7c83461966a67f75a3cb31fa042af7e20befe3ef21de818ca036a8263e7"
+    sha256 cellar: :any,                 arm64_sonoma:   "8ac829af4a67294bc85e6959843282df8944dc88c3d295dca20a1f7914881119"
     sha256 cellar: :any,                 arm64_ventura:  "6ad85dc29ed6262c148bd70631ea06886e1e7fce5d6c8abf66b9486d85e8055b"
     sha256 cellar: :any,                 arm64_monterey: "32cfa5aeedc8f7bff68a474f0bb6cc8d3501b301bb57c3a13c2a3bf535bedada"
     sha256 cellar: :any,                 arm64_big_sur:  "7218127205f7f8cc1032b769e29ec9d12aba7d24c919b5afecde92b5e877953d"
+    sha256 cellar: :any,                 sonoma:         "86c2fb927daac6b886d4262e5ee7481bb783fe76495c3cee38fc156b61531b9b"
     sha256 cellar: :any,                 ventura:        "8e7b0a87423c367ac899cb7459b8d28604f3f75988de7ba3daea77ef2bf70bb0"
     sha256 cellar: :any,                 monterey:       "79862a34d53145dcd6c2435578500f6fa01f8697e294d20001430d07ee4fcde6"
     sha256 cellar: :any,                 big_sur:        "cb183a618afaa39fca1c827c37d3e93c163b160af94290a65f87ca226a129415"
@@ -80,7 +83,7 @@ class Libabw < Formula
       </abiword>
     EOS
 
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <stdio.h>
       #include <string.h>
       #include <librevenge-stream/librevenge-stream.h>
@@ -104,7 +107,7 @@ class Libabw < Formula
         printf("ok\\n");
         return 0;
       }
-    EOS
+    CPP
 
     assert_equal shell_output("#{bin}/abw2text test.abw"), "This word is bold.\n"
 

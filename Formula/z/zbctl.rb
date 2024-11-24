@@ -1,45 +1,28 @@
 class Zbctl < Formula
   desc "Zeebe CLI client"
   homepage "https://docs.camunda.io/docs/apis-clients/cli-client/index/"
-  url "https://github.com/camunda/zeebe.git",
-      tag:      "8.2.12",
-      revision: "87328facf23bbfc324c0e3eb4ddfd8e56522e620"
+  url "https://github.com/camunda-community-hub/zeebe-client-go/archive/refs/tags/v8.6.0.tar.gz"
+  sha256 "849c3f951b923dfa2bd34443d47bc06b705cb8faa10d2be5e0d411c238dc1f72"
   license "Apache-2.0"
-  head "https://github.com/camunda/zeebe.git", branch: "develop"
-
-  # Upstream creates stable version tags (e.g., `v1.2.3`) before a release but
-  # the version isn't considered to be released until a corresponding release
-  # is created on GitHub, so it's necessary to use the `GithubLatest` strategy.
-  livecheck do
-    url :stable
-    strategy :github_latest
-  end
+  head "https://github.com/camunda-community-hub/zeebe-client-go.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4e0e94cda21a8176d48fbc702d0e128674a5b9fe27a2d1dabcf65230d7df5f35"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4e0e94cda21a8176d48fbc702d0e128674a5b9fe27a2d1dabcf65230d7df5f35"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4e0e94cda21a8176d48fbc702d0e128674a5b9fe27a2d1dabcf65230d7df5f35"
-    sha256 cellar: :any_skip_relocation, ventura:        "60adc0565170851478e693626dffd2faf46b551b2734e2d5b9d9471552d9d68a"
-    sha256 cellar: :any_skip_relocation, monterey:       "60adc0565170851478e693626dffd2faf46b551b2734e2d5b9d9471552d9d68a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "60adc0565170851478e693626dffd2faf46b551b2734e2d5b9d9471552d9d68a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "282984f9f757e972e01bb35d9b40728a49c2bb19110738e3031e9761a82d5bc2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1489e5d2afe5a0243c62c1387ba42bdd12bceb5882ee85b8f86acea85efb1a7b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1489e5d2afe5a0243c62c1387ba42bdd12bceb5882ee85b8f86acea85efb1a7b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "1489e5d2afe5a0243c62c1387ba42bdd12bceb5882ee85b8f86acea85efb1a7b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4245328e2a26df964fcf9afe06ee3859950aaacdb7e1fdcb3e77971188c74c3e"
+    sha256 cellar: :any_skip_relocation, ventura:       "4245328e2a26df964fcf9afe06ee3859950aaacdb7e1fdcb3e77971188c74c3e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "93dc50b3cfafaf9fd2fe26864fa7e92fb603d8c097a167c40910a3bef58d3ba3"
   end
 
   depends_on "go" => :build
 
   def install
-    commit = Utils.git_short_head
-    chdir "clients/go/cmd/zbctl" do
-      project = "github.com/camunda/zeebe/clients/go/v8/cmd/zbctl/internal/commands"
-      ldflags = %W[
-        -w
-        -X #{project}.Version=#{version}
-        -X #{project}.Commit=#{commit}
-      ]
-      system "go", "build", "-tags", "netgo", *std_go_args(ldflags: ldflags)
+    project = "github.com/camunda-community-hub/zeebe-client-go/v8/cmd/zbctl/internal/commands"
+    ldflags = "-s -w -X #{project}.Version=#{version} -X #{project}.Commit=#{tap.user}"
+    system "go", "build", "-tags", "netgo", *std_go_args(ldflags:), "./cmd/zbctl"
 
-      generate_completions_from_executable(bin/"zbctl", "completion")
-    end
+    generate_completions_from_executable(bin/"zbctl", "completion")
   end
 
   test do
@@ -50,9 +33,7 @@ class Zbctl < Formula
       "desc = \"transport: Error while dialing: dial tcp 127.0.0.1:26500: connect: connection refused\""
     output = shell_output("#{bin}/zbctl status 2>&1", 1)
     assert_match status_error_message, output
-    # Check version
-    commit = stable.specs[:revision][0..7]
-    expected_version = "zbctl #{version} (commit: #{commit})"
-    assert_match expected_version, shell_output("#{bin}/zbctl version")
+
+    assert_match version.to_s, shell_output("#{bin}/zbctl version")
   end
 end

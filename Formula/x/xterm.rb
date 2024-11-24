@@ -1,9 +1,9 @@
 class Xterm < Formula
   desc "Terminal emulator for the X Window System"
   homepage "https://invisible-island.net/xterm/"
-  url "https://invisible-mirror.net/archives/xterm/xterm-384.tgz"
-  mirror "https://deb.debian.org/debian/pool/main/x/xterm/xterm_384.orig.tar.gz"
-  sha256 "31ef870740ceae020c3c4b4a9601c7f47bfd46672c1aaf2d213a565d64cbc373"
+  url "https://invisible-mirror.net/archives/xterm/xterm-395.tgz"
+  mirror "https://deb.debian.org/debian/pool/main/x/xterm/xterm_395.orig.tar.gz"
+  sha256 "286e3caa5938eae38e202827621567629dfeaae689e8070b413ca11398093dc8"
   license "X11"
 
   livecheck do
@@ -12,13 +12,12 @@ class Xterm < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "237ed591ac78166be805c164fa81cbc6edf015c831f59f1136925429c1f807a4"
-    sha256 arm64_monterey: "d9f66a51ae4ac93eb953fb1f69662c8a8ec53a31cc422061e7a59051528d95d9"
-    sha256 arm64_big_sur:  "9e76b30e573658633a989391e56ef02d93220a946be21bd1999b72accfc18483"
-    sha256 ventura:        "8d5e32b06ff89d6a39074778c14246c1c5593fdc98b7af8253e44fb728365209"
-    sha256 monterey:       "379dcd7ca034170c42ede65ee4b00e3ab1e1cd958485904760c92feea65aff9e"
-    sha256 big_sur:        "ce78a86fe3e7abbf1375b217d2122eeee7cfc50a19247e41df34f4335790f2b0"
-    sha256 x86_64_linux:   "763d87094f32ca3ee8364d2259375716dd2e3fc1c58d0cc9087fd5eec06894c3"
+    sha256 arm64_sequoia: "6da345bd09ba755ca3a9d0ad8396df2e544f832d4c94f24f2d480e26fdc08afe"
+    sha256 arm64_sonoma:  "cc6e912e60d57b2abc2dc8bb14fa4aa6ba5a8724738e336df333461c914ba76f"
+    sha256 arm64_ventura: "e302212168d002ea6334cfb5152f68d7f7df6e82bd5775b1f084151ae69e0cb9"
+    sha256 sonoma:        "f52d6fd12e09e504106fc27267b67b50da3f7866371ed4197df3d10029d3178b"
+    sha256 ventura:       "104061b3dda6a3387ddb6327201fee127367f8ebc30879d9b29cf48bb0a978c1"
+    sha256 x86_64_linux:  "47fc6b48c2f4ca679c4970ac0ee320c484ac1acee8d5a5ef1a4b9d988148087e"
   end
 
   depends_on "fontconfig"
@@ -32,6 +31,8 @@ class Xterm < Formula
   depends_on "libxmu"
   depends_on "libxpm"
   depends_on "libxt"
+
+  uses_from_macos "ncurses"
 
   def install
     system "./configure", "--disable-debug",

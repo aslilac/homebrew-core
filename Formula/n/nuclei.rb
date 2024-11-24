@@ -1,50 +1,30 @@
 class Nuclei < Formula
   desc "HTTP/DNS scanner configurable via YAML templates"
   homepage "https://nuclei.projectdiscovery.io/"
-  url "https://github.com/projectdiscovery/nuclei/archive/v2.9.13.tar.gz"
-  sha256 "3514d9888b323df716041960bdc2469ae16c08db9545de4324d2405380dccc34"
+  url "https://github.com/projectdiscovery/nuclei/archive/refs/tags/v3.3.6.tar.gz"
+  sha256 "7fb42cf5c9c4fa8800d40a997466dbfeac9954e1cae8d98a7af25c19801eb113"
   license "MIT"
   head "https://github.com/projectdiscovery/nuclei.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "8d33f4e8bb9a027c76bf4089c2f93ecb1d27c5121615cf4b609c65454e3a4736"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a2301708655e79e0b06aa73d64b01e281564e77d69b4a124228231ae71ff4054"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b2c5915459ac532eea53cd41f42ffaa8bc1f4efe6e5ce724a2e82d99bc253681"
-    sha256 cellar: :any_skip_relocation, ventura:        "9b8e11ce69607d658628dcf6ed7d4247fe93d776c1a3bf13bd9f95ea27ca9bc5"
-    sha256 cellar: :any_skip_relocation, monterey:       "71f1e352e2e65d507d72a8d559e7ee257b18e20911b843643c2006531cf5a414"
-    sha256 cellar: :any_skip_relocation, big_sur:        "81f267818f3e82ab0ce72944dc76f0bbaa1dccdf64164d9398b184c3857132ce"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b15799665384f89ec7ecc450a32e2277575d4d54585666849e7c8e1dcf943e0b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1600bbd80d7ae1fdd980022008d4b214c84553acc09ba5c375f4d7312f9e8765"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "31b8247e96b04a3e1ceac6d2510acb98c8e6440526f2cdfdfdc174807854ced9"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c083b0c0a474983ab925cd337e689dca59938fa58bc36c85e7e596ca69ce4c5f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "898ac62856f9bc6374fe26e1b0b5218e604f0c67e9988c075a0dc695de7423cc"
+    sha256 cellar: :any_skip_relocation, ventura:       "fc2d69cf5842a8fe07500fc46acf09787b44c17304c6080da3e2ab1c5cf70fac"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b6daaee6f6ec205a28d080ba4795df06223fa12795b1edf83f8cada7295973ef"
   end
 
   depends_on "go" => :build
 
   def install
-    cd "v2/cmd/nuclei" do
-      system "go", "build", *std_go_args(ldflags: "-s -w"), "main.go"
-    end
+    system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd/nuclei"
   end
 
   test do
-    (testpath/"test.yaml").write <<~EOS
-      id: homebrew-test
+    output = shell_output("#{bin}/nuclei -scan-all-ips -disable-update-check example.com 2>&1", 1)
+    assert_match "No results found", output
 
-      info:
-        name: Homebrew test
-        author: bleepnetworks
-        severity: INFO
-        description: Check DNS functionality
-
-      dns:
-        - name: "{{FQDN}}"
-          type: A
-          class: inet
-          recursion: true
-          retries: 3
-          matchers:
-            - type: word
-              words:
-                - "IN\tA"
-    EOS
-    system bin/"nuclei", "-target", "google.com", "-t", "test.yaml", "-config-directory", testpath
+    assert_match version.to_s, shell_output("#{bin}/nuclei -version 2>&1")
   end
 end

@@ -1,19 +1,26 @@
 class DockerCompose < Formula
   desc "Isolated development environments using Docker"
   homepage "https://docs.docker.com/compose/"
-  url "https://github.com/docker/compose/archive/refs/tags/v2.20.3.tar.gz"
-  sha256 "af8025623de3991a15a89575ae4fc4f3f38a17311af9641815500c01f0775950"
+  url "https://github.com/docker/compose/archive/refs/tags/v2.30.3.tar.gz"
+  sha256 "b9b6f45ccad892a3f9353a03b6bdf3f79ea15ee2076f98bf013ef1db40034378"
   license "Apache-2.0"
   head "https://github.com/docker/compose.git", branch: "main"
 
+  # Upstream creates releases that use a stable tag (e.g., `v1.2.3`) but are
+  # labeled as "pre-release" on GitHub before the version is released, so it's
+  # necessary to use the `GithubLatest` strategy.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "be205e463441886a5aca153d209d10d75ee5030d160880f6c2bcf59362cdadc8"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8f7ad1d9819ed0e13bf7154faa1a82ac5d39d43d87a100c7c9fec75874c53d1b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ed5990e62496b639de7ccaf373609c2dad4cf99ca1aee8e17175edfcf9f211ae"
-    sha256 cellar: :any_skip_relocation, ventura:        "a5871051166308cdd2a18e94dc5e559747695d2a7ab99fb941c63831e60128fb"
-    sha256 cellar: :any_skip_relocation, monterey:       "174117b0c540c90033c0835e493f19bf96d5bc97a28dd12f0b2a19e179aa8638"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ebb8717c72cbd00e9dd582318f3a6b0f273e46bab26705d621d0202e04771a68"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2d4d46dd48c230cf2e19b342c2a72bea0d819247282df65daade3737b2b03ebe"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8998e922e61ba74b3785eeb9c39a321245299e78142eb2dac175ac4f55f2975c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "511309143eb081d779d710d41260002a92b873e260609bbcc2318f95516f394d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "19ce7beff8f8d3b175adcb055a21bcd0bf205c7a086996e01bf3d362db377e33"
+    sha256 cellar: :any_skip_relocation, sonoma:        "99214f5d88636f68b3493292c24eb187833baf02bcf4ddc0005dcffa986d0532"
+    sha256 cellar: :any_skip_relocation, ventura:       "e4eb0846aadcad6a5b182f26980e4cc117ebf3ff9708c4ac8b894d6a074ac020"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "effc47ebf7cc761528a85901c75846816a3a667eb098aac5ed7aae17491e2070"
   end
 
   depends_on "go" => :build
@@ -23,14 +30,17 @@ class DockerCompose < Formula
       -s -w
       -X github.com/docker/compose/v2/internal.Version=#{version}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd"
+    system "go", "build", *std_go_args(ldflags:), "./cmd"
+
+    (lib/"docker/cli-plugins").install_symlink bin/"docker-compose"
   end
 
   def caveats
     <<~EOS
-      Compose is now a Docker plugin. For Docker to find this plugin, symlink it:
-        mkdir -p ~/.docker/cli-plugins
-        ln -sfn #{opt_bin}/docker-compose ~/.docker/cli-plugins/docker-compose
+      Compose is a Docker plugin. For Docker to find the plugin, add "cliPluginsExtraDirs" to ~/.docker/config.json:
+        "cliPluginsExtraDirs": [
+            "#{HOMEBREW_PREFIX}/lib/docker/cli-plugins"
+        ]
     EOS
   end
 

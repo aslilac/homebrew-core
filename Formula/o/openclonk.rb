@@ -4,6 +4,7 @@ class Openclonk < Formula
   license "ISC"
   revision 4
 
+  # hasn't worked for a long time, see: https://github.com/openclonk/openclonk/issues/63
   stable do
     url "https://www.openclonk.org/builds/release/7.0/openclonk-7.0-src.tar.bz2"
     sha256 "bc1a231d72774a7aa8819e54e1f79be27a21b579fb057609398f2aa5700b0732"
@@ -38,9 +39,11 @@ class Openclonk < Formula
   end
 
   bottle do
+    sha256 cellar: :any, arm64_sonoma:   "7bc9a7b5af23954e390f74f32d010ecdd5f87ff2a2e93fb078ca376da20f273b"
     sha256 cellar: :any, arm64_ventura:  "69f947dc71896c10d2f3459c7550609b154b65ad325e7c398567d83927bc0bb7"
     sha256 cellar: :any, arm64_monterey: "8df6fbb4658c855b62269b2e2e8662e3ece958a642ff2f364190466660dd4f12"
     sha256 cellar: :any, arm64_big_sur:  "1be50cd57fe2284eab644c8f7b96d2d73e41433bcee445c9ee4e32ecd624ed23"
+    sha256 cellar: :any, sonoma:         "6761b953fefb83365d1c182276555989819bb6d9d8338fa1faa770a720a3a4bc"
     sha256 cellar: :any, ventura:        "2edfeeffc28542ed25b07268667d0901a3682c7f65eb75bcfada1e1667271bc5"
     sha256 cellar: :any, monterey:       "c4f8dfb61e0ebc30ff721e326710424c256cb33bced493c9bcee7badf44e53fc"
     sha256 cellar: :any, big_sur:        "b863f8f7a26d65cc4524210a7d141b5a96948ce1a795268473c5ee4bfd640f35"
@@ -61,6 +64,8 @@ class Openclonk < Formula
     end
   end
 
+  disable! date: "2024-01-16", because: :does_not_build # since 2018
+
   depends_on "cmake" => :build
   depends_on "freealut"
   depends_on "freetype"
@@ -73,7 +78,7 @@ class Openclonk < Formula
   uses_from_macos "zlib"
 
   on_linux do
-    depends_on "pkg-config" => :build
+    depends_on "pkgconf" => :build
     depends_on "libxrandr"
     depends_on "mesa"
     depends_on "openal-soft"
@@ -84,11 +89,14 @@ class Openclonk < Formula
     File.open(buildpath/"tools/osx_bundle_libs", "w") { |f| f.puts "#!/bin/bash" }
 
     # Remove unneeded bundled library to avoid default fallback in build
-    (buildpath/"thirdparty/tinyxml").rmtree
+    rm_r(buildpath/"thirdparty/tinyxml")
 
     # Modify Linux install location for openclonk binary to bin directory
     inreplace "CMakeLists.txt", "install(TARGETS openclonk DESTINATION games)",
                                 "install(TARGETS openclonk DESTINATION bin)"
+
+    # Fix compile with newer Clang
+    ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
 
     ENV.cxx11
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args

@@ -1,18 +1,17 @@
 class Kubecfg < Formula
   desc "Manage complex enterprise Kubernetes environments as code"
   homepage "https://github.com/kubecfg/kubecfg"
-  url "https://github.com/kubecfg/kubecfg/archive/v0.33.0.tar.gz"
-  sha256 "60b8419dc853ef9b61b46c8c1d400e0a715dc5519aaab8ebb304a8e4c0f04fdd"
+  url "https://github.com/kubecfg/kubecfg/archive/refs/tags/v0.35.1.tar.gz"
+  sha256 "b155823bdfb5d48d0ee93c395fa6f1c777fa1e91cf9f87c5d518c432debafa73"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4afb20badd2a1fe23fd6336943d78d8efa1f116542dc0139d9fc02bd77ed11e5"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "298ccf9880c20a1292e0417960154600b3d767525f73bd5f27dac0ff85fbbe0f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "42803811de8c45fc4414df6f7f457bcf0050cce2253e4991e58a2a8ba50b0fe3"
-    sha256 cellar: :any_skip_relocation, ventura:        "42299d639da83470ab897ba661fc2a1f3ae6d7bd3ab673886219d346b6aac6dc"
-    sha256 cellar: :any_skip_relocation, monterey:       "e5e43f651fe7beb49385bbcdf06745f01c4c818a4efb06de44675a5b8de10170"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9bd74ec1c204690abb91cb08f6c860abf8115f1f08234ceea2fd61d4dd61d312"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6fcb019b1ae42493d9ce05ecaf393ac8b9f4659c8c5ad7163c0266179423623f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "988de00eb91dede0a3fc2f92e8c7f730ecb6d3082d53f83bab530319d33a73d8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "631492ce440899bca234188252babb2b8cd810075f24baf09378d2380a9a66fc"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "281d9f50dcdfe23192fcbaa1d2dac49fc7b7a7e5afacb5ebba2cae5149efecf9"
+    sha256 cellar: :any_skip_relocation, sonoma:        "da919317db2dfd838c28518d223a815c32f6b1b2c7043b2d0f4c9b74d2a31802"
+    sha256 cellar: :any_skip_relocation, ventura:       "2ae1628aa64f9a19e6768b87e09c89ae1804b4a4c2913111de764d1d71890d5f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b9267205d670d6b283418680015fbcd3886dab38b6d2804b67a17ac0aaf5a954"
   end
 
   depends_on "go" => :build

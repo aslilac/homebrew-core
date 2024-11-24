@@ -1,25 +1,26 @@
 class Lit < Formula
-  include Language::Python::Virtualenv
-
   desc "Portable tool for LLVM- and Clang-style test suites"
   homepage "https://llvm.org"
-  url "https://files.pythonhosted.org/packages/bf/fa/0b75c53253ebf3ab566be702a9da16f5783862d8c1ae404c907a8830f283/lit-16.0.6.tar.gz"
-  sha256 "84623c9c23b6b14763d637f4e63e6b721b3446ada40bf7001d8fee70b8e77a9a"
+  url "https://files.pythonhosted.org/packages/47/b4/d7e210971494db7b9a9ac48ff37dfa59a8b14c773f9cf47e6bda58411c0d/lit-18.1.8.tar.gz"
+  sha256 "47c174a186941ae830f04ded76a3444600be67d5e5fb8282c3783fba671c4edb"
   license "Apache-2.0" => { with: "LLVM-exception" }
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "30589453540f5364c8ec70c9694adf58552db7be7aaa6cb90a860f9f2aa7edc7"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, all: "8df66dee8e2126345dc2b15090cbafab63258ff6323159976fddff635824824b"
   end
 
   depends_on "llvm" => :test
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
   def python3
-    "python3.11"
+    which("python3.13")
   end
 
+  conflicts_with "luvit", because: "both install `lit` binaries"
+
   def install
-    system python3, *Language::Python.setup_install_args(prefix, python3)
+    system python3, "-m", "pip", "install", *std_pip_args(build_isolation: true), "."
 
     # Install symlinks so that `import lit` works with multiple versions of Python
     python_versions = Formula.names
@@ -35,7 +36,7 @@ class Lit < Formula
   test do
     ENV.prepend_path "PATH", Formula["llvm"].opt_bin
 
-    (testpath/"example.c").write <<~EOS
+    (testpath/"example.c").write <<~C
       // RUN: cc %s -o %t
       // RUN: %t | FileCheck %s
       // CHECK: hello world
@@ -45,16 +46,16 @@ class Lit < Formula
         printf("hello world");
         return 0;
       }
-    EOS
+    C
 
-    (testpath/"lit.site.cfg.py").write <<~EOS
+    (testpath/"lit.site.cfg.py").write <<~PYTHON
       import lit.formats
 
       config.name = "Example"
       config.test_format = lit.formats.ShTest(True)
 
       config.suffixes = ['.c']
-    EOS
+    PYTHON
 
     system bin/"lit", "-v", "."
 

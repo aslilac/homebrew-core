@@ -2,6 +2,7 @@ class GtkMacIntegration < Formula
   desc "Integrates GTK macOS applications with the Mac desktop"
   homepage "https://wiki.gnome.org/Projects/GTK+/OSX/Integration"
   license "LGPL-2.1-only"
+  revision 1
 
   stable do
     url "https://download.gnome.org/sources/gtk-mac-integration/3.0/gtk-mac-integration-3.0.1.tar.xz"
@@ -11,6 +12,16 @@ class GtkMacIntegration < Formula
     patch do
       url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
       sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
+    end
+
+    # Avoid crash when non-UTF-8 locale is set:
+    #   https://trac.macports.org/ticket/65474
+    # Fix merged by upstream via:
+    #   https://gitlab.gnome.org/GNOME/gtk-mac-integration/-/merge_requests/6
+    patch do
+      url "https://raw.githubusercontent.com/macports/macports-ports/a7f8a7049bb8e5c37a3a646bc216c5ab9244d9f6/devel/gtk-osx-application/files/patch-locale-gettext.diff"
+      sha256 "af8a00c278110c4ad47b28b05e86d1a41531f764266d87d5cd843c416c7f7849"
+      directory "src"
     end
   end
 
@@ -23,12 +34,13 @@ class GtkMacIntegration < Formula
 
   bottle do
     rebuild 1
-    sha256 arm64_ventura:  "9074e95f28068dc78a191df93877127a01cf4670bb9ccdfe9146e54a0ff7c0d9"
-    sha256 arm64_monterey: "26d230d66f0a6900e8590fbfa6a6d77fee9b1d42db18a48b457ede3c9fab8485"
-    sha256 arm64_big_sur:  "7151adc39408f9e6b22706c623c2d16f444612e767c6eaba59b0c40f87a0d05d"
-    sha256 ventura:        "3f91d9bc293e808976fee70d4dcaa622a0fdb7b14592679f9b8947c13a741e5b"
-    sha256 monterey:       "802ed17bc9f4420482938c98e2ddcfdcd7b08f77dc56e99d06f1116ac06c974b"
-    sha256 big_sur:        "2cf4342b7faedc47562f7b5a1dc6215b9255833e7bb71e23d6bcddd01deac89d"
+    sha256 arm64_sequoia:  "f59ce737b0f88f41843b30e34d87c58769e99e2f0d59d217d9ddefecc7b2d4db"
+    sha256 arm64_sonoma:   "b538f4f624bda8680cf08cd1a26a41f3dd8e0d16c4c52db4543a737554c068a2"
+    sha256 arm64_ventura:  "f134dfb863936707bcf6927e9fcba8c50fee3faed9084e0fba72b1f7f8352df7"
+    sha256 arm64_monterey: "581818e7d81cb28e844189d94bea6bbd186f166b32bfd36991bc37b662946ab9"
+    sha256 sonoma:         "3d573ee5e2cab82e9c8ae0ca90facc8f075ad2c18395212c13f8d2f60456dcb9"
+    sha256 ventura:        "88b5528e911a68f5eca6bd83b5a6bb2ba64cb34fff84875199762e13a29ff65d"
+    sha256 monterey:       "1c3c9b3f0d821b0bd56ba6dac705e5f3024fbea667249c00fa69273e1f235a5d"
   end
 
   head do
@@ -42,30 +54,37 @@ class GtkMacIntegration < Formula
 
   depends_on "gobject-introspection" => :build
   depends_on "pkg-config" => [:build, :test]
+  depends_on "at-spi2-core"
+  depends_on "cairo"
+  depends_on "gdk-pixbuf"
   depends_on "gettext"
+  depends_on "glib"
   depends_on "gtk+3"
+  depends_on "harfbuzz"
   depends_on :macos
+  depends_on "pango"
 
   def install
     configure = build.head? ? "./autogen.sh" : "./configure"
-    system configure, *std_configure_args,
-                      "--disable-silent-rules",
+
+    system configure, "--disable-silent-rules",
                       "--without-gtk2",
                       "--with-gtk3",
                       "--enable-introspection=yes",
-                      "--enable-python=no"
+                      "--enable-python=no",
+                      *std_configure_args
     system "make", "install"
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <gtkosxapplication.h>
 
       int main(int argc, char *argv[]) {
         gchar *bundle = gtkosx_application_get_bundle_path();
         return 0;
       }
-    EOS
+    C
     flags = shell_output("pkg-config --cflags --libs gtk-mac-integration-gtk3").chomp.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"

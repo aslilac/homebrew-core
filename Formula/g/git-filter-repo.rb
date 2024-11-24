@@ -3,16 +3,16 @@ class GitFilterRepo < Formula
 
   desc "Quickly rewrite git repository history"
   homepage "https://github.com/newren/git-filter-repo"
-  url "https://github.com/newren/git-filter-repo/releases/download/v2.38.0/git-filter-repo-2.38.0.tar.xz"
-  sha256 "db954f4cae9e47c6be3bd3161bc80540d44f5379cb9cf9df498f4e019f0a41a9"
+  url "https://github.com/newren/git-filter-repo/releases/download/v2.45.0/git-filter-repo-2.45.0.tar.xz"
+  sha256 "430a2c4a5d6f010ebeafac6e724e3d8d44c83517f61ea2b2d0d07ed8a6fc555a"
   license "MIT"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "a309651d195fca608c9268b7075f58e018e83fc285e4f43d85546adea28e1d83"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, all: "8e88f02ddedf105ed6992b99298869d4eae1a521f001663c1cd34fc0adee3b73"
   end
 
-  depends_on "python@3.11"
+  depends_on "python@3.13"
   uses_from_macos "git", since: :catalina # git 2.22.0+ is required
 
   def install
@@ -22,7 +22,7 @@ class GitFilterRepo < Formula
   end
 
   test do
-    system "#{bin}/git-filter-repo", "--version"
+    system bin/"git-filter-repo", "--version"
 
     system "git", "init"
     system "git", "config", "user.name", "BrewTestBot"
@@ -34,7 +34,7 @@ class GitFilterRepo < Formula
     # Use --force to accept non-fresh clone run:
     # Aborting: Refusing to overwrite repo history since this does not look like a fresh clone.
     # (expected freshly packed repo)
-    system "#{bin}/git-filter-repo", "--path-rename=foo:bar", "--force"
+    system bin/"git-filter-repo", "--path-rename=foo:bar", "--force"
 
     assert_predicate testpath/"bar", :exist?
   end

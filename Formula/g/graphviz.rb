@@ -1,47 +1,64 @@
 class Graphviz < Formula
   desc "Graph visualization software from AT&T and Bell Labs"
   homepage "https://graphviz.org/"
-  url "https://gitlab.com/graphviz/graphviz.git",
-      tag:      "8.1.0",
-      revision: "edfd3eca48d2ba9fcfcd039dfab01adfd99f484e"
   license "EPL-1.0"
   version_scheme 1
-  head "https://gitlab.com/graphviz/graphviz.git", branch: "main"
 
-  bottle do
-    sha256 arm64_ventura:  "caaacc05e74a2d0c85f99cbc2680b363a63d78d530c7ba0f7434c6279dd4a2a8"
-    sha256 arm64_monterey: "1a27002cb561f9b15d35e323dc71711472ce4458c6f0bda5189d1d759aaf13da"
-    sha256 arm64_big_sur:  "7dfbd680058f0e1555e90ffa2b7374ec8d6aec1bb32809d5912fe0a687096988"
-    sha256 ventura:        "6dbce48400871f8369ac20cc031e9591bf27ca48886a4781c129695d53670c08"
-    sha256 monterey:       "23a91851134daf18d235a79430e38829b57e8caa923ac1578f86386bb2bca3a8"
-    sha256 big_sur:        "8799bc8a912bcb17803d43d76baf97dc07da1b0365143647007aaf5a15ebf447"
-    sha256 x86_64_linux:   "122b9038c040162a041871f88df45668fc3a7e5eb61c590b60b4a54c3a2ec003"
+  stable do
+    url "https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/12.2.0/graphviz-12.2.0.tar.xz"
+    sha256 "66d4acc201536a378a28d5254deeec8cf3e98cc66d7e4cb1cbfa5fc620f86474"
+
+    # Fix -flat_namespace being used on Big Sur and later.
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
+      sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
+    end
   end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
+  bottle do
+    sha256 arm64_sequoia: "1a7f3dcf7da1766a1012e355d496ea66e595b7cd8e9c2fb9bf5a01cbe8342ea1"
+    sha256 arm64_sonoma:  "239f9100b66e90cecd14c2d9d5297739cba49156b3d48b18fc73041e44794fa3"
+    sha256 arm64_ventura: "ae00bb03d4710e302150e187886b1e03a94afb5db73a57583a2d5a81fcc7f331"
+    sha256 sonoma:        "4130ae1666f1ba2654e3a273030e38a01c48f89a92920af712e90bdc8573daaf"
+    sha256 ventura:       "434816d6367af81bdb41ed1778ae9c4982e18b2c563b54bfe739d99fe00c4df6"
+    sha256 x86_64_linux:  "3613779d7832d4e4d0a6ccd4e05ec94a613bcbd238709ffc6d4e11f0dd3e073c"
+  end
+
+  head do
+    url "https://gitlab.com/graphviz/graphviz.git", branch: "main"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+  end
+
   depends_on "bison" => :build
   depends_on "pkg-config" => :build
+  depends_on "cairo"
   depends_on "gd"
+  depends_on "glib"
   depends_on "gts"
   depends_on "libpng"
   depends_on "librsvg"
   depends_on "libtool"
   depends_on "pango"
+  depends_on "webp"
 
   uses_from_macos "flex" => :build
   uses_from_macos "python" => :build
+  uses_from_macos "expat"
+  uses_from_macos "zlib"
 
-  on_linux do
-    depends_on "byacc" => :build
-    depends_on "ghostscript" => :build
+  on_macos do
+    depends_on "fontconfig"
+    depends_on "freetype"
+    depends_on "gdk-pixbuf"
+    depends_on "gettext"
+    depends_on "harfbuzz"
   end
 
   def install
-    args = %W[
-      --disable-debug
-      --disable-dependency-tracking
-      --prefix=#{prefix}
+    args = %w[
+      --disable-silent-rules
       --disable-php
       --disable-swig
       --disable-tcl
@@ -56,8 +73,8 @@ class Graphviz < Formula
       --with-gts
     ]
 
-    system "./autogen.sh"
-    system "./configure", *args
+    system "./autogen.sh" if build.head?
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
   end
@@ -69,6 +86,6 @@ class Graphviz < Formula
       }
     EOS
 
-    system "#{bin}/dot", "-Tpdf", "-o", "sample.pdf", "sample.dot"
+    system bin/"dot", "-Tpdf", "-o", "sample.pdf", "sample.dot"
   end
 end

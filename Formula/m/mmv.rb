@@ -1,26 +1,26 @@
 class Mmv < Formula
   desc "Move, copy, append, and link multiple files"
   homepage "https://github.com/rrthomas/mmv"
-  url "https://github.com/rrthomas/mmv/releases/download/v2.5.1/mmv-2.5.1.tar.gz"
-  sha256 "f7b4cbd3b778909541df3ab11284288eeb05c68d5ad620f354568e82553dec14"
+  url "https://github.com/rrthomas/mmv/releases/download/v2.9.1/mmv-2.9.1.tar.gz"
+  sha256 "7d18332e62a3ffb021121bd1bbad1e93183f36318206899bdf909a473275f3d0"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bcd16fe7537000cf4fdf25a0cca6619863b6e7ff7a0851ebddf910a4ce7d9b1e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "05632ba15c14846978cdb96105031efb3cf64bd49f1ba8c8ccd5f06edf2c3e71"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3fd8416e6082a478ca9e0b8f9e8d362a6c6b099c48c400edd4b483cfb8f24a13"
-    sha256 cellar: :any_skip_relocation, ventura:        "ca03f571a416fab8ef906eea873838332ae69d4e97e8c4349b89915271b97254"
-    sha256 cellar: :any_skip_relocation, monterey:       "0f31cd8ba22cad6f5806250333f0ce885fac184764f2e9e1f05f970880071947"
-    sha256 cellar: :any_skip_relocation, big_sur:        "1f980bf248cde5825884a4126c6dffbf9fc8538a12623d607b743a438c8d01b0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e401678476327b649450fb13a9c083bd1d2185d0f90a7250cea2678d9291c9ba"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ce45354bb8683b8ddcf8fc998838fe0e79515924bbf0c0227d82ceb84e977a23"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "50029e093c2444b882b307849b70aaa2519cb028722bbc1387a3430855b8380b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "842357238ff76a7d18ea045ec3e45cfb937e39de8a4fa9e1916373c948e13488"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7ed255418e3d7880d2b9f6f8b2b00fde29550f62c7f6a8686b0eba5004b39a35"
+    sha256 cellar: :any_skip_relocation, ventura:       "c5f3011b88c439ffe1590316552650288a69ecc0c8b42529649705851e2f5df7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8aeb6754162fe83dd44ad8fc00eef3a0f21c4e345982e82c00340b952f313485"
   end
 
+  depends_on "help2man" => :build # for patch
   depends_on "pkg-config" => :build
   depends_on "bdw-gc"
 
   def install
-    # Workaround for Xcode 14.3.
-    ENV.append_to_cflags "-Wno-implicit-function-declaration"
+    # Fix compile with newer Clang
+    ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
 
     system "./configure", *std_configure_args
     system "make", "install"

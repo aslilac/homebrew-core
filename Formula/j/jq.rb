@@ -1,18 +1,9 @@
 class Jq < Formula
   desc "Lightweight and flexible command-line JSON processor"
-  homepage "https://stedolan.github.io/jq/"
+  homepage "https://jqlang.github.io/jq/"
+  url "https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-1.7.1.tar.gz"
+  sha256 "478c9ca129fd2e3443fe27314b455e211e0d8c60bc8ff7df703873deeee580c2"
   license "MIT"
-
-  stable do
-    url "https://github.com/stedolan/jq/releases/download/jq-1.6/jq-1.6.tar.gz"
-    sha256 "5de8c8e29aaa3fb9cc6b47bb27299f271354ebb72514e3accadc7d38b5bbaa72"
-
-    # Fix -flat_namespace being used on Big Sur and later.
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
-      sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
-    end
-  end
 
   livecheck do
     url :stable
@@ -21,21 +12,18 @@ class Jq < Formula
 
   bottle do
     rebuild 1
-    sha256 cellar: :any,                 arm64_ventura:  "4622927182fbc7bf27c4b706e005fbae2700d15e69a68ef7002aed2676b8a4f7"
-    sha256 cellar: :any,                 arm64_monterey: "f70e1ae8df182b242ca004492cc0a664e2a8195e2e46f30546fe78e265d5eb87"
-    sha256 cellar: :any,                 arm64_big_sur:  "674b3ae41c399f1e8e44c271b0e6909babff9fcd2e04a2127d25e2407ea4dd33"
-    sha256 cellar: :any,                 ventura:        "b70ec02353c5f6cb69d947e1506e71c96d2952ed4099ae3948c6c61420b16ef9"
-    sha256 cellar: :any,                 monterey:       "7fee6ea327062b37d34ef5346a84810a1752cc7146fff1223fab76c9b45686e0"
-    sha256 cellar: :any,                 big_sur:        "bf0f8577632af7b878b6425476f5b1ab9c3bf66d65affb0c455048a173a0b6bf"
-    sha256 cellar: :any,                 catalina:       "820a3c85fcbb63088b160c7edf125d7e55fc2c5c1d51569304499c9cc4b89ce8"
-    sha256 cellar: :any,                 mojave:         "71f0e76c5b22e5088426c971d5e795fe67abee7af6c2c4ae0cf4c0eb98ed21ff"
-    sha256 cellar: :any,                 high_sierra:    "dffcffa4ea13e8f0f2b45c5121e529077e135ae9a47254c32182231662ee9b72"
-    sha256 cellar: :any,                 sierra:         "bb4d19dc026c2d72c53eed78eaa0ab982e9fcad2cd2acc6d13e7a12ff658e877"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2beea2c2c372ccf1081e9a5233fc3020470803254284aeecc071249d76b62338"
+    sha256 cellar: :any,                 arm64_sequoia:  "a10c82b07e393869d4467ad3e8ba26346d026b1ad3533d31dbb5e72abe9a7968"
+    sha256 cellar: :any,                 arm64_sonoma:   "7d01bc414859db57e055c814daa10e9c586626381ea329862ad4300f9fee78ce"
+    sha256 cellar: :any,                 arm64_ventura:  "b1a185e72ca020f08a8de22fabe1ad2425bf48d2e0378c5e07a6678020fa3e15"
+    sha256 cellar: :any,                 arm64_monterey: "8f8c06332f413f5259b360ed65dc3ef21b5d3f2fff35160bc12367e53cbd06bf"
+    sha256 cellar: :any,                 sonoma:         "6bc01de99fd7f091b86880534842132a876f2d3043e3932ea75efc5f51c40aea"
+    sha256 cellar: :any,                 ventura:        "03227348d3845fe16ed261ad020402c1f23c56e73f65799ce278af4bac63c799"
+    sha256 cellar: :any,                 monterey:       "25aab2c539a41e4d67cd3d44353aac3cdd159ea815fec2b8dd82fbf038c559cc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9559d8278cf20ad0294f2059855e1bc9d2bcabfd2bd5b5774c66006d1f201ad8"
   end
 
   head do
-    url "https://github.com/stedolan/jq.git", branch: "master"
+    url "https://github.com/jqlang/jq.git", branch: "master"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -45,11 +33,10 @@ class Jq < Formula
   depends_on "oniguruma"
 
   def install
-    system "autoreconf", "-iv" if build.head?
-    system "./configure", "--disable-dependency-tracking",
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
+    system "./configure", *std_configure_args,
                           "--disable-silent-rules",
-                          "--disable-maintainer-mode",
-                          "--prefix=#{prefix}"
+                          "--disable-maintainer-mode"
     system "make", "install"
   end
 

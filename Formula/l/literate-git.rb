@@ -3,51 +3,67 @@ class LiterateGit < Formula
 
   desc "Render hierarchical git repositories into HTML"
   homepage "https://github.com/bennorth/literate-git"
-  url "https://github.com/bennorth/literate-git/archive/v0.3.1.tar.gz"
-  sha256 "f1dec77584236a5ab2bcee9169e16b5d976e83cd53d279512136bdc90b04940a"
+  url "https://files.pythonhosted.org/packages/7b/cc/1a6c994c90fa34cfa8e90e017c80f838b149fd0262daa24cdb930c091b48/literategit-0.5.0.tar.gz"
+  sha256 "88f9e95749d427c98a397a9c38a845d9760cf3451424441bc217c53c1ec835bd"
   license "GPL-3.0-or-later"
-  revision 13
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "31e0c7b5e24fa754a3a9c093101535e64af4a5e00618fdfe4eea06afcca8ad2e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "268a50887b3929b544fed71277bd93e65c8285fed93d3d81d70b30391fae72d6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e2f80196bf354dc363f82bfacc81bb8872deee508d1f8b2b3fec34d7d64e3c7a"
-    sha256 cellar: :any_skip_relocation, ventura:        "c4270a2bc1b79e32660ad64483746ef2c734a898edd98453976a468903b2c93f"
-    sha256 cellar: :any_skip_relocation, monterey:       "68117dad13005e6bbb6ec4b3e6759137d5a6c2cc9a1a3dc2081cdf4a39b6c637"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9127986e4e878f5711f623f7198d10718e916528ebf81d2d8f70cf901e209fbc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cfdb32662011363420758133f66f4837af84e07ebdae57cf9416057eb66bf815"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "38acae8305d64c0a5f9fdddc6747b0127c4bf05e5590ae9fd333ebab7ac16928"
+    sha256 cellar: :any,                 arm64_sonoma:  "ad2cb4dedf6cb0d0e7f3b0f0cb6e3f71ae9f9bfef06a301241ac2d743ed1afb0"
+    sha256 cellar: :any,                 arm64_ventura: "19821fcb42961968d770cc268ad56d92a778328837f7ea15f2fdef23da9a9cf3"
+    sha256 cellar: :any,                 sonoma:        "c011a534ff7d849844de0181c510512cdc288c48501a481f6d18cf3866c066dc"
+    sha256 cellar: :any,                 ventura:       "bd2fc52016929729adb8e999611235177ee9b6c494e137b8cbedddbe1f2a54ec"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "df5ebfbcfb6385272f1ed1dd383fd43983df87aeeed504cb68a74eae47dd6901"
   end
 
-  depends_on "pygit2"
-  depends_on "python@3.11"
+  depends_on "libgit2"
+  depends_on "python@3.13"
+
+  uses_from_macos "libffi"
 
   on_linux do
     depends_on "pkg-config" => :build
   end
 
-  resource "docopt" do
-    url "https://files.pythonhosted.org/packages/a2/55/8f8cab2afd404cf578136ef2cc5dfb50baa1761b68c9da1fb1e4eed343c9/docopt-0.6.2.tar.gz"
-    sha256 "49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"
+  resource "cffi" do
+    url "https://files.pythonhosted.org/packages/fc/97/c783634659c2920c3fc70419e3af40972dbaf758daa229a7d6ea6135c90d/cffi-1.17.1.tar.gz"
+    sha256 "1c39c6016c32bc48dd54561950ebd6836e1670f2ae46128f67cf49e789c52824"
   end
 
-  resource "Jinja2" do
-    url "https://files.pythonhosted.org/packages/4f/e7/65300e6b32e69768ded990494809106f87da1d436418d5f1367ed3966fd7/Jinja2-2.11.3.tar.gz"
-    sha256 "a6d58433de0ae800347cab1fa3043cebbabe8baa9d29e668f1c768cb87a333c6"
+  resource "click" do
+    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
+    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
+  end
+
+  resource "jinja2" do
+    url "https://files.pythonhosted.org/packages/ed/55/39036716d19cab0747a5020fc7e907f362fbf48c984b14e62127f7e68e5d/jinja2-3.1.4.tar.gz"
+    sha256 "4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"
   end
 
   resource "markdown2" do
-    url "https://files.pythonhosted.org/packages/2b/26/1dd47bdf8adb98e1807b2283a88d6d4379911a2e1a1da266739c038ef8e2/markdown2-2.4.3.tar.gz"
-    sha256 "412520c7b6bba540c2c2067d6be3a523ab885703bf6a81d93963f848b55dfb9a"
+    url "https://files.pythonhosted.org/packages/05/92/22e3645e352562ea9bfc89aeaeb9a76feb79e20907b18bc25d5ca340b50f/markdown2-2.5.1.tar.gz"
+    sha256 "12fc04ea5a87f7bb4b65acf5bf3af1183b20838cc7d543b74c92ec7eea4bbc74"
   end
 
-  resource "MarkupSafe" do
-    url "https://files.pythonhosted.org/packages/b9/2e/64db92e53b86efccfaea71321f597fa2e1b2bd3853d8ce658568f7a13094/MarkupSafe-1.1.1.tar.gz"
-    sha256 "29872e92839765e546828bb7754a68c418d927cd064fd4708fab9fe9c8bb116b"
+  resource "markupsafe" do
+    url "https://files.pythonhosted.org/packages/87/5b/aae44c6655f3801e81aa3eef09dbbf012431987ba564d7231722f68df02d/MarkupSafe-2.1.5.tar.gz"
+    sha256 "d283d37a890ba4c1ae73ffadf8046435c76e7bc2247bbb63c00bd1a709c6544b"
   end
 
-  resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/cb/9f/27d4844ac5bf158a33900dbad7985951e2910397998e85712da03ce125f0/Pygments-2.5.2.tar.gz"
-    sha256 "98c8aa5a9f778fcd1026a17361ddaf7330d1b7c62ae97c3bb0ae73e0b9b6b0fe"
+  resource "pycparser" do
+    url "https://files.pythonhosted.org/packages/1d/b2/31537cf4b1ca988837256c910a668b553fceb8f069bedc4b1c826024b52c/pycparser-2.22.tar.gz"
+    sha256 "491c8be9c040f5390f5bf44a5b07752bd07f56edf992381b05c701439eec10f6"
+  end
+
+  resource "pygit2" do
+    url "https://files.pythonhosted.org/packages/a4/85/c848cdf44214bf541c4a725a0a6e271f8db9f18cfccef702d53f83f1e19a/pygit2-1.16.0.tar.gz"
+    sha256 "7b29a6796baa15fc89d443ac8d51775411d9b1e5b06dc40d458c56c8576b48a2"
+  end
+
+  resource "pygments" do
+    url "https://files.pythonhosted.org/packages/8e/62/8336eff65bcbc8e4cb5d05b55faf041285951b6e80f33e2bff2024788f31/pygments-2.18.0.tar.gz"
+    sha256 "786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"
   end
 
   def install
@@ -64,7 +80,7 @@ class LiterateGit < Formula
     system "git", "add", "bar.txt"
     system "git", "commit", "-m", "bar"
     system "git", "branch", "two"
-    (testpath/"create_url.py").write <<~EOS
+    (testpath/"create_url.py").write <<~PYTHON
       class CreateUrl:
         @staticmethod
         def result_url(sha1):
@@ -72,7 +88,7 @@ class LiterateGit < Formula
         @staticmethod
         def source_url(sha1):
           return ''
-    EOS
+    PYTHON
     assert_match "<!DOCTYPE html>",
       shell_output("git literate-render test one two create_url.CreateUrl")
   end

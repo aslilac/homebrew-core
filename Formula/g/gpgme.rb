@@ -1,9 +1,10 @@
 class Gpgme < Formula
   desc "Library access to GnuPG"
   homepage "https://www.gnupg.org/related_software/gpgme/"
-  url "https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-1.22.0.tar.bz2"
-  sha256 "9551e37081ad3bde81018a0d24f245c3f8206990549598fb31a97a68380a7b71"
+  url "https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-1.24.0.tar.bz2"
+  sha256 "61e3a6ad89323fecfaff176bc1728fb8c3312f2faa83424d9d5077ba20f5f7da"
   license "LGPL-2.1-or-later"
+  revision 1
 
   livecheck do
     url "https://gnupg.org/ftp/gcrypt/gpgme/"
@@ -11,23 +12,23 @@ class Gpgme < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "fc529dd5239bbf289d13f0f01c8e3b62c09ecf28b721d36573e5ec85dbdebd11"
-    sha256 cellar: :any,                 arm64_monterey: "28dd91b3a53218195b80764766578a2248f9bda4f867347c92771f404c68421c"
-    sha256 cellar: :any,                 arm64_big_sur:  "56c71d9cf05e3fc7cf24eb7578d8795e4535be402c24197019155454f92c2022"
-    sha256 cellar: :any,                 ventura:        "278162f8fd37221612f935e297170a144a61f8b1bb9fe6529c0344f738c1bcc9"
-    sha256 cellar: :any,                 monterey:       "413658de4b53231ea36461d0acd434a1af3e18fbe01c15e0c03b5afc418eccca"
-    sha256 cellar: :any,                 big_sur:        "27ee36120bf7846c41982e613236765e23b1af0d05dc9e9813d46b5f3da2336f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "db0bceef522dc84b3f29d1814e151a30b96d82438e093b1ad03f9372779e1196"
+    sha256 cellar: :any,                 arm64_sequoia: "d527527678278ec8a1d1bbbfe47ae4c14ec6efde616ff423a444f620731cfa66"
+    sha256 cellar: :any,                 arm64_sonoma:  "126aa60956ea71060c3a7214a208909f44c5ef3d809b8861a11be31dd88090b9"
+    sha256 cellar: :any,                 arm64_ventura: "ad15a53119725ccc499fea4aa7611fcacd7b0e517913c3d4be5e07bd7a9bac13"
+    sha256 cellar: :any,                 sonoma:        "1f5747663a4d8fa271388a8683ae2d87ab4e10247ef5189b575b980dce82438b"
+    sha256 cellar: :any,                 ventura:       "ded898081e74189b242056b66b5979d86f11de849d4569ddd64c9a9f904e2ec2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bc5a08c5f2e458631a86a0a3447813157356513bfb0649307883fa53f84abac5"
   end
 
-  depends_on "python@3.11" => [:build, :test]
+  depends_on "python-setuptools" => :build
+  depends_on "python@3.13" => [:build, :test]
   depends_on "swig" => :build
   depends_on "gnupg"
   depends_on "libassuan"
   depends_on "libgpg-error"
 
   def python3
-    "python3.11"
+    "python3.13"
   end
 
   def install
@@ -40,25 +41,24 @@ class Gpgme < Formula
     # error: 'auto' not allowed in lambda parameter
     ENV.append "CXXFLAGS", "-std=c++14"
 
-    site_packages = prefix/Language::Python.site_packages(python3)
-    ENV.append_path "PYTHONPATH", site_packages
-    # Work around Homebrew's "prefix scheme" patch which causes non-pip installs
-    # to incorrectly try to write into HOMEBREW_PREFIX/lib since Python 3.10.
+    # Use pip over executing setup.py, which installs a deprecated egg distribution
+    # https://dev.gnupg.org/T6784
     inreplace "lang/python/Makefile.in",
-              /^\s*install\s*\\\n\s*--prefix "\$\(DESTDIR\)\$\(prefix\)"/,
-              "\\0 --install-lib=#{site_packages}"
+              /^\s*\$\$PYTHON setup\.py\s*\\/,
+              "$$PYTHON -m pip install --use-pep517 #{std_pip_args.join(" ")} . && : \\"
 
-    system "./configure", *std_configure_args,
-                          "--disable-silent-rules",
-                          "--enable-static"
+    system "./configure", "--disable-silent-rules",
+                          "--enable-static",
+                          *std_configure_args
     system "make"
     system "make", "install"
 
-    # Rename the `easy-install.pth` file to avoid `brew link` conflicts.
-    site_packages.install site_packages/"easy-install.pth" => "homebrew-gpgme-#{version}.pth"
-
     # avoid triggering mandatory rebuilds of software that hard-codes this path
     inreplace bin/"gpgme-config", prefix, opt_prefix
+
+    # replace libassuan Cellar paths to avoid breakage on libassuan version/revision bumps
+    dep_cellar_path_files = [bin/"gpgme-config", lib/"cmake/Gpgmepp/GpgmeppConfig.cmake"]
+    inreplace dep_cellar_path_files, Formula["libassuan"].prefix.realpath, Formula["libassuan"].opt_prefix
   end
 
   test do

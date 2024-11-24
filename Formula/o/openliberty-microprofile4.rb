@@ -1,8 +1,8 @@
 class OpenlibertyMicroprofile4 < Formula
   desc "Lightweight open framework for Java (Micro Profile 4)"
   homepage "https://openliberty.io"
-  url "https://public.dhe.ibm.com/ibmdl/export/pub/software/openliberty/runtime/release/23.0.0.8/openliberty-microProfile4-23.0.0.8.zip"
-  sha256 "0a1dc86420a43d28633409fa31206c56960f922c22d882659d30dfcf46ea526e"
+  url "https://public.dhe.ibm.com/ibmdl/export/pub/software/openliberty/runtime/release/24.0.0.11/openliberty-microProfile4-24.0.0.11.zip"
+  sha256 "5980e0359ad528076c6e5a06d33295ff5d06a080923273ab0967ad3c843122bc"
   license "EPL-1.0"
 
   livecheck do
@@ -11,15 +11,14 @@ class OpenlibertyMicroprofile4 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "404e6d8131cd818c5b0cccbec75a8ecd2eff953746d4b1692e017168911417c5"
+    sha256 cellar: :any_skip_relocation, all: "989a29f72a3da321a6231b92a3f40e7fcf87d90a231239e6f7ecbb6f264001ae"
   end
 
   depends_on "openjdk"
 
   def install
-    rm_rf Dir["bin/**/*.bat"]
+    rm_r(Dir["bin/**/*.bat"])
 
-    prefix.install_metafiles
     libexec.install Dir["*"]
     (bin/"openliberty-microprofile4").write_env_script "#{libexec}/bin/server",
                                                        Language::Java.overridable_java_home_env

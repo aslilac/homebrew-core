@@ -1,24 +1,22 @@
 class Newsboat < Formula
   desc "RSS/Atom feed reader for text terminals"
   homepage "https://newsboat.org/"
-  url "https://newsboat.org/releases/2.32/newsboat-2.32.tar.xz"
-  sha256 "5b63514572a21e93f4dd3dd6c58f44fdbd9c9e6c6f978329a4766aabb13be6e6"
+  url "https://newsboat.org/releases/2.37/newsboat-2.37.tar.xz"
+  sha256 "4f54dea385c25b95e8ce0df1107f0336db41b18c645368e6164ce1070efba77c"
   license "MIT"
   head "https://github.com/newsboat/newsboat.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 arm64_ventura:  "0ec32791522c13328d2cf935379a61f988b1aa5c7808793cefcdb146be8bd0cc"
-    sha256 arm64_monterey: "32ddb0320262c1ae7cef35fed576ee73cd60b9c66107455d5ae31fe52f1d38bb"
-    sha256 arm64_big_sur:  "c13b6980a07c3b22a28541f76c03dbbfdfb7d96ea6c21a0789c415863541be6b"
-    sha256 ventura:        "ed2a9e2498a09a02ce8a4d73f3b66a9b639177d2b755fd17512fe42e0025f00a"
-    sha256 monterey:       "af5f3f77b02d8420866efc31d6c5d64f2daddb05b6c6baf5e3e1f1538dd26c99"
-    sha256 big_sur:        "66a7d9783b16b06ec00796977b6578cc70da85e9606e0b3fab78461bd7a29e50"
-    sha256 x86_64_linux:   "8c6420dfe0b0d4114d83ecc33bb192dfb4a09893f26a58faf633050e543ea15b"
+    sha256 arm64_sequoia: "300636df7d095784a08a1dc80c767a75f91c6b46428c341665f111763a2e325d"
+    sha256 arm64_sonoma:  "a5c275ca088b11096188d1c16892ad95e31a3c7dde78d1a44c3b3ebde2e25e3f"
+    sha256 arm64_ventura: "afa76014b9eb5526dd94e28258fdda1fc94ea795f3d0384054cd32ae911a2c07"
+    sha256 sonoma:        "c7e9b83443b8d3e92b9a3d87eec6f7175d8f13644286508688f0c0e435ae64f9"
+    sha256 ventura:       "c718942047b57a41b1c0610457603c85c8f74cd1027f4a22d3a21213e8a042ae"
+    sha256 x86_64_linux:  "9b4badabe9019a7b23f157d6548b1d9a52291b5d9a77865082f18c486448d2c3"
   end
 
   depends_on "asciidoctor" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "xz" => :build
   depends_on "gettext"
@@ -91,6 +89,12 @@ class Newsboat < Formula
     # Remove once libsftl is not used anymore
     ENV.prepend_path "PKG_CONFIG_PATH", libexec/"lib/pkgconfig"
     ENV.append "LDFLAGS", "-Wl,-rpath,#{libexec}/lib"
+
+    # Work around Apple's ncurses5.4-config outputting -lncursesw
+    if OS.mac? && MacOS.version >= :sonoma
+      system "gmake", "config", "prefix=#{prefix}"
+      inreplace "config.mk", "-lncursesw", "-lncurses"
+    end
 
     # Call `make` as `gmake` to use Homebrew `make`.
     system "gmake", "install", "prefix=#{prefix}"

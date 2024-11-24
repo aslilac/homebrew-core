@@ -6,21 +6,20 @@ class Legit < Formula
   url "https://files.pythonhosted.org/packages/cb/e4/8cc5904c486241bf2edc4dd84f357fa96686dc85f48eedb835af65f821bf/legit-1.2.0.post0.tar.gz"
   sha256 "949396b68029a8af405ab20c901902341ef6bd55c7fec6dab71141d63d406b11"
   license "BSD-3-Clause"
-  revision 4
+  revision 8
   head "https://github.com/frostming/legit.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ea3be71c3c001f7845997d2863fdb8dc0ca70e1467358598e02a68db80b3ba45"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e454558fb1b1f52f6f3694928a8313506a4891e8e4c8fc3088a6b2a8fa46ddfc"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ba966ba32aafba2f1a02efe4265173ee9022562d8abcabd92e4490132ac79e85"
-    sha256 cellar: :any_skip_relocation, ventura:        "648339c753fb8d94afe1784538803499eb3f325e1415ee3e796ac512fe0660c5"
-    sha256 cellar: :any_skip_relocation, monterey:       "de8deea48c1b5c045242809395714f56b5345e4de68ba661340b5108d8c94222"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f1cd22be4c3a678ca86cec131d5e4f971cad0c795346a9ba49e6ee346cd76367"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e7255d2a8ba3899b90a9cf4d2054e6b866f9a25b5f8575f1255b52fc693923b7"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7e42ca33477abbbd0614ebe49a653974aeeda576e2ea6341f47c6c8a871eed61"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7e42ca33477abbbd0614ebe49a653974aeeda576e2ea6341f47c6c8a871eed61"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "7e42ca33477abbbd0614ebe49a653974aeeda576e2ea6341f47c6c8a871eed61"
+    sha256 cellar: :any_skip_relocation, sonoma:        "aeceabb740479fc3464b46e9fc3e88bfdfa3e893615637cc7d001ad76a5122ee"
+    sha256 cellar: :any_skip_relocation, ventura:       "aeceabb740479fc3464b46e9fc3e88bfdfa3e893615637cc7d001ad76a5122ee"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7e42ca33477abbbd0614ebe49a653974aeeda576e2ea6341f47c6c8a871eed61"
   end
 
-  depends_on "python@3.11"
-  depends_on "six"
+  depends_on "python@3.13"
 
   resource "args" do
     url "https://files.pythonhosted.org/packages/e5/1c/b701b3f4bd8d3667df8342f311b3efaeab86078a840fb826bd204118cc6b/args-0.1.0.tar.gz"
@@ -28,8 +27,8 @@ class Legit < Formula
   end
 
   resource "click" do
-    url "https://files.pythonhosted.org/packages/72/bd/fedc277e7351917b6c4e0ac751853a97af261278a4c7808babafa8ef2120/click-8.1.6.tar.gz"
-    sha256 "48ee849951919527a045bfe3bf7baa8a959c423134e1a5b98c05c20ba75a1cbd"
+    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
+    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
   end
 
   resource "clint" do
@@ -48,18 +47,23 @@ class Legit < Formula
   end
 
   resource "gitdb" do
-    url "https://files.pythonhosted.org/packages/4b/47/dc98f3d5d48aa815770e31490893b92c5f1cd6c6cf28dd3a8ae0efffac14/gitdb-4.0.10.tar.gz"
-    sha256 "6eb990b69df4e15bad899ea868dc46572c3f75339735663b81de79b06f17eb9a"
+    url "https://files.pythonhosted.org/packages/19/0d/bbb5b5ee188dec84647a4664f3e11b06ade2bde568dbd489d9d64adef8ed/gitdb-4.0.11.tar.gz"
+    sha256 "bf5421126136d6d0af55bc1e7c1af1c397a34f5b7bd79e776cd3e89785c2b04b"
   end
 
   resource "gitpython" do
-    url "https://files.pythonhosted.org/packages/87/56/6dcdfde2f3a747988d1693100224fb88fc1d3bbcb3f18377b2a3ef53a70a/GitPython-3.1.32.tar.gz"
-    sha256 "8d9b8cb1e80b9735e8717c9362079d3ce4c6e5ddeebedd0361b228c3a67a62f6"
+    url "https://files.pythonhosted.org/packages/b6/a1/106fd9fa2dd989b6fb36e5893961f82992cf676381707253e0bf93eb1662/GitPython-3.1.43.tar.gz"
+    sha256 "35f314a9f878467f5453cc1fee295c3e18e52f1b99f10f6cf5b1682e968a9e7c"
+  end
+
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
   end
 
   resource "smmap" do
-    url "https://files.pythonhosted.org/packages/21/2d/39c6c57032f786f1965022563eec60623bb3e1409ade6ad834ff703724f3/smmap-5.0.0.tar.gz"
-    sha256 "c840e62059cd3be204b0c9c9f74be2c09d5648eddd4580d9314c3ecde0b30936"
+    url "https://files.pythonhosted.org/packages/88/04/b5bf6d21dc4041000ccba7eb17dd3055feb237e7ffc2c20d3fae3af62baa/smmap-5.0.1.tar.gz"
+    sha256 "dceeb6c0028fdb6734471eb07c0cd2aae706ccaecab45965ee83f11c8d3b1f62"
   end
 
   def install

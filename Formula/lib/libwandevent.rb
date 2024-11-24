@@ -3,16 +3,13 @@ class Libwandevent < Formula
   homepage "https://web.archive.org/web/20220615162419/https://research.wand.net.nz/software/libwandevent.php"
   url "https://web.archive.org/web/20220126151045/https://research.wand.net.nz/software/libwandevent/libwandevent-3.0.2.tar.gz"
   sha256 "48fa09918ff94f6249519118af735352e2119dc4f9b736c861ef35d59466644a"
-  license "GPL-2.0"
-
-  livecheck do
-    url :homepage
-    regex(/href=.*?libwandevent[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
+  license "GPL-2.0-or-later"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sonoma:   "1520337069b3cc6c78f21ef8f4d0fe07b74ef7589f7f0cb976b0c9fde7089d0d"
     sha256 cellar: :any,                 arm64_monterey: "1cd49d09ac626760b7aee5ed8deee8d01338880d89ca3ee05077a16b7ddae100"
     sha256 cellar: :any,                 arm64_big_sur:  "57f916a1558f5b44462c12c98260ab27d0b4c5dd6b9df9502d9d8d19a480e437"
+    sha256 cellar: :any,                 sonoma:         "5cdda4b182fed4bc2d7da9e03105ad4ea17e4b64d4fda748d558e480fa20e077"
     sha256 cellar: :any,                 monterey:       "3a15bfd5275a5edfa5ba3bcff1a6d3f238477386fef790bd1c44c7a5447944d5"
     sha256 cellar: :any,                 big_sur:        "651aea239dab48e29f473c5a181f9dad8420350672a99e063419974599e26674"
     sha256 cellar: :any,                 catalina:       "f175ecabb18921593ddd08bbd0b2aaa5e0a24c85d2964be230cd3a1f0ede22ee"
@@ -23,7 +20,7 @@ class Libwandevent < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "aa30ff4a09850d6c0611845c6a36c981a8648d1fb47afe428d09f28fa7dfa36f"
   end
 
-  deprecate! date: "2023-05-09", because: :repo_removed
+  disable! date: "2024-02-21", because: :repo_removed
 
   # Fix -flat_namespace being used on Big Sur and later.
   patch do
@@ -38,7 +35,7 @@ class Libwandevent < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <sys/time.h>
       #include <libwandevent.h>
 
@@ -46,7 +43,7 @@ class Libwandevent < Formula
         wand_event_init();
         return 0;
       }
-    EOS
+    CPP
     system ENV.cc, "test.cpp", "-L#{lib}", "-lwandevent", "-o", "test"
     system "./test"
   end

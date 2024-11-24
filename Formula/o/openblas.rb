@@ -1,10 +1,15 @@
 class Openblas < Formula
   desc "Optimized BLAS library"
   homepage "https://www.openblas.net/"
-  url "https://github.com/xianyi/OpenBLAS/archive/v0.3.23.tar.gz"
-  sha256 "5d9491d07168a5d00116cdc068a40022c3455bf9293c7cb86a65b1054d7e5114"
-  license "BSD-3-Clause"
-  head "https://github.com/xianyi/OpenBLAS.git", branch: "develop"
+  url "https://github.com/OpenMathLib/OpenBLAS/archive/refs/tags/v0.3.28.tar.gz"
+  sha256 "f1003466ad074e9b0c8d421a204121100b0751c96fc6fcf3d1456bd12f8a00a1"
+  # The main license is BSD-3-Clause. Additionally,
+  # 1. OpenBLAS is based on GotoBLAS2 so some code is under original BSD-2-Clause-Views
+  # 2. lapack-netlib/ is a bundled LAPACK so it is BSD-3-Clause-Open-MPI
+  # 3. interface/{gemmt.c,sbgemmt.c} is BSD-2-Clause
+  # 4. relapack/ is MIT but license is omitted as it is not enabled
+  license all_of: ["BSD-3-Clause", "BSD-2-Clause-Views", "BSD-3-Clause-Open-MPI", "BSD-2-Clause"]
+  head "https://github.com/OpenMathLib/OpenBLAS.git", branch: "develop"
 
   livecheck do
     url :stable
@@ -12,13 +17,14 @@ class Openblas < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "e43a93b3c2ccb704d431d9a624f01e05aa464bd3287b115b1d9a476db0f48b8a"
-    sha256 cellar: :any,                 arm64_monterey: "f0934714025281e16b90d1c66b781bc1dea133fedb22a7835cd974dbfbbb1b88"
-    sha256 cellar: :any,                 arm64_big_sur:  "c093a341cbea15a7eb1912d12a477ca7e9163dd728f433f124f722d21d9cd74b"
-    sha256 cellar: :any,                 ventura:        "014076e0b66f5db4b3211eb9ed8c18fc3d9ce4d3cbe901bfbd22facdc2ec2c01"
-    sha256 cellar: :any,                 monterey:       "aa3c27424af57a25da8475b3dc2b8be40b7da4b9edcc303b311bd20bf5cdf8b9"
-    sha256 cellar: :any,                 big_sur:        "f361cd5b6727ebe326792b4903b811a5dcd38f89ba9634b3c6f6ccf7b4115f9b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "08e872457fcd108a406de1ddfb5f96a749f4719b676b0cca86071b685764637d"
+    sha256 cellar: :any,                 arm64_sequoia:  "8d319fccf7a06b8f0540d8cb864a1fbdcde99f5b2c57574b8effc52bd5cf2faf"
+    sha256 cellar: :any,                 arm64_sonoma:   "0f31a93b4161cf8a6bb9cda77dd41c5285327920e75ef091e587a6f9ed74446e"
+    sha256 cellar: :any,                 arm64_ventura:  "542382c256f30f672e9b2006afb65864ae59383ec80432e2b0dcfd0bda797e82"
+    sha256 cellar: :any,                 arm64_monterey: "b0582fc465c1cd001d994b11efd60b54f47bd8d39ace6a53a289c81e7f6f99c5"
+    sha256 cellar: :any,                 sonoma:         "0ff27b7fa21c56961fcf37d0b4690e843b0ce8e5f967a73223e4b247fa462b1c"
+    sha256 cellar: :any,                 ventura:        "b11f8a96fff66cbdff06a79c5920163185ebc40abf670a90a677156144d3a80a"
+    sha256 cellar: :any,                 monterey:       "569b39c70b716df30d30334d2b5715eba0574a5f28c2316931736e776326aecb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9ac6e26f577d71f531bd0f268616ad2aa845c3c2843154b6206e7a293f017100"
   end
 
   keg_only :shadowed_by_macos, "macOS provides BLAS in Accelerate.framework"
@@ -31,17 +37,24 @@ class Openblas < Formula
     ENV.deparallelize # build is parallel by default, but setting -j confuses it
 
     # The build log has many warnings of macOS build version mismatches.
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
+    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version.to_s if OS.mac?
     ENV["DYNAMIC_ARCH"] = "1"
     ENV["USE_OPENMP"] = "1"
     # Force a large NUM_THREADS to support larger Macs than the VMs that build the bottles
     ENV["NUM_THREADS"] = "56"
+    # See available targets in TargetList.txt
     ENV["TARGET"] = case Hardware.oldest_cpu
     when :arm_vortex_tempest
       "VORTEX"
+    when :westmere
+      "NEHALEM"
     else
       Hardware.oldest_cpu.upcase.to_s
     end
+
+    # Apple Silicon does not support SVE
+    # https://github.com/xianyi/OpenBLAS/issues/4212
+    ENV["NO_SVE"] = "1" if Hardware::CPU.arm?
 
     # Must call in two steps
     system "make", "CC=#{ENV.cc}", "FC=gfortran", "libs", "netlib", "shared"
@@ -52,7 +65,7 @@ class Openblas < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdio.h>
       #include <stdlib.h>
       #include <math.h>
@@ -72,7 +85,7 @@ class Openblas < Formula
         if (fabs(C[4]-21) > 1.e-5) abort();
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lopenblas",
                    "-o", "test"
     system "./test"

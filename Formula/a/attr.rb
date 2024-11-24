@@ -1,9 +1,9 @@
 class Attr < Formula
   desc "Manipulate filesystem extended attributes"
   homepage "https://savannah.nongnu.org/projects/attr"
-  url "https://download.savannah.nongnu.org/releases/attr/attr-2.5.1.tar.gz"
-  mirror "https://mirror.csclub.uwaterloo.ca/nongnu/attr/attr-2.5.1.tar.gz"
-  sha256 "bae1c6949b258a0d68001367ce0c741cebdacdd3b62965d17e5eb23cd78adaf8"
+  url "https://download.savannah.nongnu.org/releases/attr/attr-2.5.2.tar.gz"
+  mirror "https://mirror.csclub.uwaterloo.ca/nongnu/attr/attr-2.5.2.tar.gz"
+  sha256 "39bf67452fa41d0948c2197601053f48b3d78a029389734332a6309a680c6c87"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -12,10 +12,10 @@ class Attr < Formula
   end
 
   bottle do
-    sha256 x86_64_linux: "a05ee49c7e8fcf992d4cc1cf6f1a9f72a6800ddcfa11f70dbf6ab957ed847ff3"
+    rebuild 1
+    sha256 x86_64_linux: "46697ba4e0414c6acfe43dcbbb14df9e2c96b323c7e1255fa8debb75de58f5ee"
   end
 
-  depends_on "gettext" => :build
   depends_on :linux
 
   def install
@@ -29,7 +29,7 @@ class Attr < Formula
 
   test do
     (testpath/"test.txt").write("Hello World!\n")
-    system bin/"attr", "-s", "name", "test.txt"
+    pipe_output "#{bin}/attr -s name test.txt", ""
     assert_match 'Attribute "name" has a 0 byte value for test.txt',
                  shell_output(bin/"attr -l test.txt")
   end

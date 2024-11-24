@@ -1,18 +1,16 @@
 class Docfx < Formula
   desc "Tools for building and publishing API documentation for .NET projects"
   homepage "https://dotnet.github.io/docfx/"
-  url "https://github.com/dotnet/docfx/archive/refs/tags/v2.70.1.tar.gz"
-  sha256 "542ef0550d2155bf4268aed4210bbd56f110902b12d2a5d209f1a1e29d5df9b8"
+  url "https://github.com/dotnet/docfx/archive/refs/tags/2.78.1.tar.gz"
+  sha256 "0f74a09a01cd5d1c2d130c64d798a874842f3f0e9dc04e199c140c54aa40271d"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7d06adbc907510bae108ead21ef544ed2aa6d90ef9ffffa3b75bc3cc0cb10fa0"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9fb9ffad2d6e3819178560a68bca9fbc93962eb51457dbe77655b258b2e27f70"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ee81ddef5a93904d9bcd190fbb6965f763628de168a98c830b5d644c2a29a98b"
-    sha256 cellar: :any_skip_relocation, ventura:        "4e0757aea02babebe3006db545d5031311413f8c4b0f8f2cde943fdab9ac4d37"
-    sha256 cellar: :any_skip_relocation, monterey:       "39096cd25d19aaf3e7846a034f08dfe424e04889bd0c640a070308d6200102e0"
-    sha256 cellar: :any_skip_relocation, big_sur:        "6557147d45ac23542616fa571d55083905bf56694727ad77c6c19b071400c9ab"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c87401f27eebde8533cbbaf65d9bb566a912c3d0ff62847c60feacd9aefeff41"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f1d41d1d6e709cf776ab61bc33de7d2fe60149533470431d3ad2a42886b606e8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "bb6db79a22471f7045a39bead6e4b3a61609aeaf70c201ea9ca42721341c8edd"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "ca7ae34cc6f4c6ab6119852052d77e167c4a1f5dc681a2d2697a42bed8308a6d"
+    sha256 cellar: :any_skip_relocation, ventura:       "31d4bb33864581f36725d4bf9293d7f1dd83571284446cdc00bd079236114f05"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dd055cea5a6d16f04387be5585fce0eec79d4d330630340a1b868d231b2e1b53"
   end
 
   depends_on "dotnet"
@@ -43,7 +41,7 @@ class Docfx < Formula
   end
 
   test do
-    system bin/"docfx", "init", "-q"
+    system bin/"docfx", "init", "--yes", "--output", testpath/"docfx_project"
     assert_predicate testpath/"docfx_project/docfx.json", :exist?,
                      "Failed to generate project"
   end

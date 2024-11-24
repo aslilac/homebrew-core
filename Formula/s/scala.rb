@@ -1,8 +1,8 @@
 class Scala < Formula
   desc "JVM-based programming language"
   homepage "https://www.scala-lang.org/"
-  url "https://github.com/lampepfl/dotty/releases/download/3.3.0/scala3-3.3.0.tar.gz"
-  sha256 "064ee508a8e3b9c69843102c836aa89894148022bf37af3c26a9464dfa101475"
+  url "https://github.com/scala/scala3/releases/download/3.5.2/scala3-3.5.2.tar.gz"
+  sha256 "899de4f9aca56989ce337d8390fbf94967bc70c9e8420e79f375d1c2ad00ff99"
   license "Apache-2.0"
 
   livecheck do
@@ -11,16 +11,22 @@ class Scala < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "41784ddb78f6cd9db263dac250ce491ca8de2f6160ecf23bcffcbb7e8c724262"
+    sha256 cellar: :any_skip_relocation, all: "7a0c887cea761759face114d09e5b29559dac305e7695dd9c0273f039f8edf1e"
   end
 
-  depends_on "openjdk"
+  # Switch back to `openjdk` when supported:
+  # https://docs.scala-lang.org/overviews/jdk-compatibility/overview.html
+  depends_on "openjdk@21"
+
+  conflicts_with "pwntools", because: "both install `common` binaries"
 
   def install
     rm Dir["bin/*.bat"]
     libexec.install "lib"
+    libexec.install "maven2"
+    libexec.install "VERSION"
     prefix.install "bin"
-    bin.env_script_all_files libexec/"bin", Language::Java.overridable_java_home_env
+    bin.env_script_all_files libexec/"bin", Language::Java.overridable_java_home_env("21")
 
     # Set up an IntelliJ compatible symlink farm in 'idea'
     idea = prefix/"idea"

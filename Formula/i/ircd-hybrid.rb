@@ -1,8 +1,8 @@
 class IrcdHybrid < Formula
   desc "High-performance secure IRC server"
   homepage "https://www.ircd-hybrid.org/"
-  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.43/ircd-hybrid-8.2.43.tgz"
-  sha256 "bd0373c780e308c1a6f6989015ff28e1c22999ef764b7b68636b628573c251ef"
+  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.45/ircd-hybrid-8.2.45.tgz"
+  sha256 "951ae032ab04a87b47e602339e07e0d06b6e87bd5a4eb334f3b395be14f75e44"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,14 +11,14 @@ class IrcdHybrid < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "6a81e2c060cd566f402869f96af0ed8c64a0ed34bab832d647e7376b55b208ff"
-    sha256 arm64_monterey: "8278654b1edca6191c1d549e796919b6836e524feb4a59b44860f817965b81da"
-    sha256 arm64_big_sur:  "b3927d1e5ddbfb44800b02eee5fd9fe88fc597589f3810fd1fd41deb20713f4a"
-    sha256 ventura:        "5a528cd1893e00df7ccbfe9b9fb324dc3574da86c6a358113ded14fe7e2407bb"
-    sha256 monterey:       "c7ffbfb6de2e476e248bd63c2b963abee68e684ce4aac3042c9406e12ecad09e"
-    sha256 big_sur:        "2eea0b23275797fe30f9095cbaebb167d707a08250bc66f5a0c729851bba7776"
-    sha256 catalina:       "2a1ce03715e20c3fb69c1716362471a7d1ee2ed4230c8db80347c7ef42986b7e"
-    sha256 x86_64_linux:   "e2bd735a173dbb77da8bb51a30b82844d4225f4ee2e3056c2afbc5c624c623be"
+    sha256 arm64_sequoia:  "ad947c9098ff51224cf64839f4cb44eac442696d49377a311322b9e5feeca7da"
+    sha256 arm64_sonoma:   "3300892aed735776d3f13175baa889f5d7c9d483d7748418c0909f8415531e97"
+    sha256 arm64_ventura:  "23adcd2ed7ea0ec6f2d1697bd9a3387320056d9675da6c7674fadf91a543e8c7"
+    sha256 arm64_monterey: "88fb3d88a5c22db625840ab9c5e0b56602249c398a66a5ec588b384dab3f8dc9"
+    sha256 sonoma:         "6a7ff02a200163d69f6db115ff5b4ac256d9f0f0d206f209496f209bd34a5a5b"
+    sha256 ventura:        "b671e85eb7f66efdd2b797dc67d026d29330f0b9911e246766f7e96108bc2cd5"
+    sha256 monterey:       "032ceb7c545a5fceda538205a747e231505b899c7a3ba81099a59ad08d69ea38"
+    sha256 x86_64_linux:   "d972f1b694aa724347492b9c39a747d63bd46f202f9e86b7fb086fc5bba3f284"
   end
 
   depends_on "openssl@3"
@@ -34,13 +34,12 @@ class IrcdHybrid < Formula
   def install
     ENV.deparallelize # build system trips over itself
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--localstatedir=#{var}",
+    system "./configure", "--localstatedir=#{var}",
                           "--sysconfdir=#{etc}",
-                          "--enable-openssl=#{Formula["openssl@3"].opt_prefix}"
+                          "--with-tls=openssl",
+                          *std_configure_args.reject { |s| s["--disable-debug"] }
     system "make", "install"
-    etc.install "doc/reference.conf" => "ircd.conf"
+    etc.install "doc/reference.modules.conf" => "ircd.conf"
   end
 
   def caveats
@@ -58,6 +57,6 @@ class IrcdHybrid < Formula
   end
 
   test do
-    system "#{bin}/ircd", "-version"
+    system bin/"ircd", "-version"
   end
 end

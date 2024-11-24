@@ -1,23 +1,24 @@
 class SwaggerCodegenAT2 < Formula
   desc "Generate clients, server stubs, and docs from an OpenAPI spec"
-  homepage "https://swagger.io/swagger-codegen/"
-  url "https://github.com/swagger-api/swagger-codegen/archive/v2.4.32.tar.gz"
-  sha256 "6c09797b16e2d17be2592b8dac4d7ef65765eec540c41929a403df59bd9c9fae"
+  homepage "https://swagger.io/tools/swagger-codegen/"
+  url "https://github.com/swagger-api/swagger-codegen/archive/refs/tags/v2.4.43.tar.gz"
+  sha256 "f89a0bf6e1bbf87722e2df26cafbc2bd71931ccbc74d9ba512023abdb2f501fb"
   license "Apache-2.0"
 
   livecheck do
-    url "https://github.com/swagger-api/swagger-codegen.git"
+    url :stable
     regex(/^v?(2(?:\.\d+)+)$/i)
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "95005d8b832a30dc10cbc458e611354f1f156288d36b2cfd60c2880f87768005"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3642046a6316344f9c236097cc5c51c6bdd10c95b7401ab34824bab44f27e275"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "95d594cc6ee387701f713c5479953c7e2e325a2ec11f4385b45bda0a4aa774d6"
-    sha256 cellar: :any_skip_relocation, ventura:        "be20870ef3994ce48953c5d9134e740954d3a4dedab4eda0edaeaaf1ee4faf81"
-    sha256 cellar: :any_skip_relocation, monterey:       "c081a292ef84ca0a23c299d7ce2d7a09f53bdf4e85ffda8a13d8110f8f0ae441"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d44b97fcee0aa0d68ce8cd5a21ef57309ca650c9d1fc852d17f7f1cbabf97d5a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f8233d5aa15bcb8b354b208fe4343d55509c5c79add9a8f94c891ee472bdd0bb"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "0c8c19cb7326af87b628bb2d1711c8089193926d6e43480cbb316e8d3834de81"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0ec03eb20264764e08f6eb7d55e2b55945319d88aa15a5acd0138f08665ccffc"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "87ba049940e4c3d6e41bd2e1362f8c0b3c6c480fc18f2801f37ccf8f93679854"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6085448a085606b84c873be01043b28269f15474a175ffb69312140cf3e0be89"
+    sha256 cellar: :any_skip_relocation, sonoma:         "edaae87ebd119d7a3731e355161f998cf1a8f0cdfbdd438fcbb73532c12a14d5"
+    sha256 cellar: :any_skip_relocation, ventura:        "b29629ce9e98b653bedbbcf082dd8ca09ade52dd1f385502a6e67d58ee2d9172"
+    sha256 cellar: :any_skip_relocation, monterey:       "5c996e897ee9ac5eb15f17e6f4948b3cf114c90fa0e075fd92d70aad78151c9d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "97441b532b971583ef873c3025ef8aac522223d2d505ebd8595edd546e59e420"
   end
 
   keg_only :versioned_formula
@@ -35,7 +36,7 @@ class SwaggerCodegenAT2 < Formula
   end
 
   test do
-    (testpath/"minimal.yaml").write <<~EOS
+    (testpath/"minimal.yaml").write <<~YAML
       ---
       swagger: '2.0'
       info:
@@ -47,8 +48,9 @@ class SwaggerCodegenAT2 < Formula
             responses:
               200:
                 description: OK
-    EOS
-    system "#{bin}/swagger-codegen", "generate", "-i", "minimal.yaml", "-l", "html2"
-    assert_includes File.read(testpath/"index.html"), "<h1>Simple API</h1>"
+    YAML
+
+    system bin/"swagger-codegen", "generate", "-i", "minimal.yaml", "-l", "html2"
+    assert_includes (testpath/"index.html").read, "<h1>Simple API</h1>"
   end
 end

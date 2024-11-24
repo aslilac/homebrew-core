@@ -1,24 +1,26 @@
 class CargoBinstall < Formula
   desc "Binary installation for rust projects"
   homepage "https://github.com/cargo-bins/cargo-binstall"
-  url "https://github.com/cargo-bins/cargo-binstall/archive/refs/tags/v1.3.0.tar.gz"
-  sha256 "966e6cc68265548e9f48d3c51943141d0d82af17409786b2900d65e19fe6622b"
+  url "https://github.com/cargo-bins/cargo-binstall/archive/refs/tags/v1.10.14.tar.gz"
+  sha256 "1894e16ffc7b4431605e24b166469f24b6ed5a015cf4d7ae91983520c9bf98ff"
   license "GPL-3.0-only"
   head "https://github.com/cargo-bins/cargo-binstall.git", branch: "main"
 
+  # Upstream creates releases that use a stable tag (e.g., `v1.2.3`) but are
+  # labeled as "pre-release" on GitHub before the version is released, so it's
+  # necessary to use the `GithubLatest` strategy.
   livecheck do
     url :stable
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "409d241308e3da1a85d5be1c4674d50c0f7d719c635cce75550df2492141af3d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2e65615308513be941a61af61060b7a8d5795012cffa0450f99a0b016799d3ee"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "80387a91df1f527adebb5808c831870e8d61e683f1027051951c7ad7afa901c2"
-    sha256 cellar: :any_skip_relocation, ventura:        "8822165550a624ce825e19285a5f2ba1ade8f393242c1fe1ec2f20ad30363238"
-    sha256 cellar: :any_skip_relocation, monterey:       "cf5cb8b7ca0126d4c3c88ac554223ba71815ee5173e297b6e18be062f9afce6c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "65600475b45a02066ac1eae114ce433abad23487eaa975f25067f8ba654d503d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2be4606c7cc87313399487ae5eba6332ee985c8b603adeb3fca4b4215135cab6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2ff3e6312a451c64ac0733c794ab9cacceb5a5b150a7d044edcb91070ab4c801"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "19a2a9c4ef6452527ffd4e52b48fc234cd3ffa3fccff33b2ea2611d689971da1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "761c169a470a68ab6e5ec7e8b397fbdb83b01b317a3bd34472064a8d9806d6de"
+    sha256 cellar: :any_skip_relocation, sonoma:        "bf18ee7bea8bcc5905ab14c5836ae294a55e9fff1c76948ca23a80dad225c312"
+    sha256 cellar: :any_skip_relocation, ventura:       "14d4f28511e550017d55e09ba15b7c55bea22f5a23193a24fa7ac2efd59ad15e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b8d95c582e92886132cbe76a9162ae36e7cfaa20f711a6cd699be4bc61a1bcca"
   end
 
   depends_on "rust" => :build

@@ -1,11 +1,10 @@
 class Coccinelle < Formula
   desc "Program matching and transformation engine for C code"
-  homepage "https://coccinelle.lip6.fr/"
+  homepage "https://coccinelle.gitlabpages.inria.fr/website/"
   url "https://github.com/coccinelle/coccinelle.git",
-      tag:      "1.1.1",
-      revision: "5444e14106ff17404e63d7824b9eba3c0e7139ba"
+      tag:      "1.3.0",
+      revision: "e1906ad639c5eeeba2521639998eafadf989b0ac"
   license "GPL-2.0-only"
-  revision 1
   head "https://github.com/coccinelle/coccinelle.git", branch: "master"
 
   livecheck do
@@ -14,14 +13,13 @@ class Coccinelle < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "c36d64915f8f1fb1d3f1b11affa180d87cce7c2fab525ca5d43e000d6552ac84"
-    sha256 arm64_monterey: "6d709b2576f84260edf15ed3a6c4e4b4e0cc73bde3819f9d9085f964c761b155"
-    sha256 arm64_big_sur:  "43e22010b8b1f3bf93817d161e2d0e96d907f4a38972d27f91d0231042f70860"
-    sha256 ventura:        "7d44848e93251045e263c647aa95c2fd7639ab2918dcdea672ea12115c0f922d"
-    sha256 monterey:       "9e00a25cc6afe398d4a5ae42300bacd883bf1f570e6c1523ffb43bd3d330ae30"
-    sha256 big_sur:        "270fe7690278277362ebf04707665ae41e3831c21e33d945408f2e7d9737669e"
-    sha256 catalina:       "27b442146b362f44848997fa840389ff9df05317e915147d289a74e1ef4c5a68"
-    sha256 x86_64_linux:   "29a0aeaeb102990cac27cdc3ecc713f2af6366f38c5d3cefb520ef70dcd2fa84"
+    rebuild 1
+    sha256 arm64_sequoia: "5c683addbcf76534570866b19e50f66e5801a21964b83fc0df6be2317908be8e"
+    sha256 arm64_sonoma:  "dc6683b280f7bacbadeb189df0205552008bd59e731c707a6ec8d67bb72a2dcd"
+    sha256 arm64_ventura: "bf402cf474f0e155012f1417285adbd8614e1e739d54fdf9615d3f064488e1fd"
+    sha256 sonoma:        "397ca9ef368f02305f1c3179ea3776c3c2aa7ad882d767b6dfa096e30b5c172b"
+    sha256 ventura:       "e29c54ac0afe552d55999560e56f5fb37a8490a1b6133bcb652cc7afc752b406"
+    sha256 x86_64_linux:  "a21ea74ebf3431b79f8c242a6594995371f1123e8a4aff4fed5c9cecd72967c9"
   end
 
   depends_on "autoconf" => :build
@@ -29,43 +27,29 @@ class Coccinelle < Formula
   depends_on "hevea" => :build
   depends_on "ocaml-findlib" => :build
   depends_on "opam" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
+  depends_on "python@3.12" => :build
   depends_on "ocaml"
   depends_on "pcre"
 
   uses_from_macos "unzip" => :build
 
-  # Bootstrap resource for Ocaml 4.12 compatibility.
-  # Remove when Coccinelle supports Ocaml 4.12 natively
-  resource "stdcompat" do
-    url "https://github.com/thierry-martinez/stdcompat/releases/download/v15/stdcompat-15.tar.gz"
-    sha256 "5e746f68ffe451e7dabe9d961efeef36516b451f35a96e174b8f929a44599cf5"
-  end
-
   def install
-    resource("stdcompat").stage do
-      system "./configure", "--prefix=#{buildpath}/bootstrap"
-      ENV.deparallelize { system "make" }
-      system "make", "install"
-    end
-    ENV.prepend_path "OCAMLPATH", buildpath/"bootstrap/lib"
-
     Dir.mktmpdir("opamroot") do |opamroot|
       ENV["OPAMROOT"] = opamroot
       ENV["OPAMYES"] = "1"
       ENV["OPAMVERBOSE"] = "1"
       system "opam", "init", "--no-setup", "--disable-sandboxing"
+      system "opam", "exec", "--", "opam", "install", ".", "--deps-only", "-y", "--no-depexts"
       system "./autogen"
-      system "opam", "config", "exec", "--", "./configure",
-                            "--disable-dependency-tracking",
-                            "--enable-release",
-                            "--enable-ocaml",
-                            "--enable-opt",
-                            "--with-pdflatex=no",
-                            "--prefix=#{prefix}",
-                            "--libdir=#{lib}"
+      system "opam", "exec", "--", "./configure", "--disable-silent-rules",
+                                                  "--enable-ocaml",
+                                                  "--enable-opt",
+                                                  "--without-pdflatex",
+                                                  "--with-bash-completion=#{bash_completion}",
+                                                  *std_configure_args
       ENV.deparallelize
-      system "opam", "config", "exec", "--", "make"
+      system "opam", "exec", "--", "make"
       system "make", "install"
     end
 
@@ -73,14 +57,14 @@ class Coccinelle < Formula
   end
 
   test do
-    system "#{bin}/spatch", "-sp_file", "#{pkgshare}/simple.cocci",
-                            "#{pkgshare}/simple.c", "-o", "new_simple.c"
+    system bin/"spatch", "-sp_file", "#{pkgshare}/simple.cocci", "#{pkgshare}/simple.c", "-o", "new_simple.c"
     expected = <<~EOS
       int main(int i) {
         f("ca va", 3);
         f(g("ca va pas"), 3);
       }
     EOS
+
     assert_equal expected, (testpath/"new_simple.c").read
   end
 end

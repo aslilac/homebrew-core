@@ -2,29 +2,29 @@ class Heartbeat < Formula
   desc "Lightweight Shipper for Uptime Monitoring"
   homepage "https://www.elastic.co/beats/heartbeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v8.9.1",
-      revision: "3799398872c0f33da4e65019390d055cdfe633bd"
+      tag:      "v8.16.1",
+      revision: "f17e0828f1de9f1a256d3f520324fa6da53daee5"
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6b72a7d2793934e503179820147cca1302e2acac87f7ca99c8952052798d6e75"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "948ecc6a04928a0e433984bcbec061cf13b0d07ab68e5c1b6b79df1b1f64df0d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "216b96a9f517d6174e4aadb7a39467af71d4975d71739031a0d02b99fe139dd8"
-    sha256 cellar: :any_skip_relocation, ventura:        "37aedb85bef85cd2bf6ef5ab3eb653ed7ce5921c962ee969cbb03069d8c99185"
-    sha256 cellar: :any_skip_relocation, monterey:       "997b1633b553488fb07b47f6ef80fdb41896f8fe5efa9a5f75490d7ddf2072f7"
-    sha256 cellar: :any_skip_relocation, big_sur:        "78030b9dac2ee2cbba5c1aa53192f38e75ff4a023decdb3f4f112f428663475a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b6c7db2b0427bff4d3c056260f5ece4dab51675c7ff33fdefa31395d5538e71b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "93e49e150068211d119d50cbdb2e3255577baab17aca54dc5d90a3d09d4a2a44"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9d525150a84d361b47e95bce1e1b500369123d3308dd7afdc3e2b65159efac62"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "3c5a05d73598c196ea751f4deddd2516c4aabed14817d3f2dc3f5f5194cb7a2e"
+    sha256 cellar: :any_skip_relocation, sonoma:        "547a9c35882c778f90064e17503aabbbd2505659fa977e48e6944e0c93771b2c"
+    sha256 cellar: :any_skip_relocation, ventura:       "0dc43ab97b35d318e45dba69da2da09227ce859ddd812d08bb451fd81f5406e0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "babda51cefce2ae2039118dd801c9b457f634163a548bd2d8be6c4afead07cfe"
   end
 
   depends_on "go" => :build
   depends_on "mage" => :build
-  depends_on "python@3.11" => :build
+  depends_on "python@3.12" => :build
+
   uses_from_macos "netcat" => :test
 
   def install
     # remove non open source files
-    rm_rf "x-pack"
+    rm_r("x-pack")
 
     cd "heartbeat" do
       # prevent downloading binary wheels during python setup
@@ -67,7 +67,7 @@ class Heartbeat < Formula
 
     port = free_port
 
-    (testpath/"config/heartbeat.yml").write <<~EOS
+    (testpath/"config/heartbeat.yml").write <<~YAML
       heartbeat.monitors:
       - type: tcp
         schedule: '@every 5s'
@@ -79,7 +79,7 @@ class Heartbeat < Formula
         filename: heartbeat
         codec.format:
           string: '%{[monitor]}'
-    EOS
+    YAML
     fork do
       exec bin/"heartbeat", "-path.config", testpath/"config", "-path.data",
                             testpath/"data"

@@ -1,23 +1,23 @@
 class Cdo < Formula
   desc "Climate Data Operators"
   homepage "https://code.mpimet.mpg.de/projects/cdo"
-  url "https://code.mpimet.mpg.de/attachments/download/28882/cdo-2.2.2.tar.gz"
-  sha256 "419c77315244019af41a296c05066f474cccbf94debfaae9e2106da51bc7c937"
+  url "https://code.mpimet.mpg.de/attachments/download/29649/cdo-2.4.4.tar.gz"
+  sha256 "49f50bd18dacd585e9518cfd4f55548f692426edfb3b27ddcd1c653eab53d063"
   license "GPL-2.0-only"
+  revision 1
 
   livecheck do
-    url "https://code.mpimet.mpg.de/projects/cdo/files"
-    regex(/href=.*?cdo[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    url "https://code.mpimet.mpg.de/projects/cdo/news"
+    regex(/Version (\d+(?:\.\d+)+) released/i)
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7ee063b2b16728c7f3aec6822663bd948c12aa04c88eedf72923b69ac28ac646"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bf27b3f73669012dced5d979f0fa0da10668104b06b1ab51c77b3b4b3098d945"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "13c7779e2597e7b4bcc1bef46033df537e3160e6313a317b0383ee88883afe9e"
-    sha256 cellar: :any_skip_relocation, ventura:        "2b7464bb058d3a5058eed98112470936b31c4dedca6faaaf3a55ba13ec21be46"
-    sha256 cellar: :any_skip_relocation, monterey:       "cd875d8ba47f2017144f2efa4a5208ba7b10f8392c3aded5ce573105a13ec13d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4b6fc23e090613eb2242c22695d1aaecbba8ba898e44f3c0b29ae2b07de68de4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fb42517595a6963b898c777f2a6148acdd72132f8bb7ff0cc3a544cac006250d"
+    sha256 cellar: :any,                 arm64_sequoia: "f5060169bd6908bb24eb3646dd108e4152c15ae02ccd97313488ee877cc8696d"
+    sha256 cellar: :any,                 arm64_sonoma:  "0dfc6b6bc0014245bde240d0a5d7c937861924a0fb23e1750e2c4734a7798c60"
+    sha256 cellar: :any,                 arm64_ventura: "f286a7c3da8e14dd0446e4f927e40c67c521a893ac0dc7cda03c3b659bdc5acb"
+    sha256 cellar: :any,                 sonoma:        "c0ab5a2f663b2957dad59d99d8840a9b43680bb6bcf2a31b18704db3fe31955d"
+    sha256 cellar: :any,                 ventura:       "dc63bef96d309e7a9e4fc6d6011e789deee8b44eff2bf490e112764fa107cd7e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a12fb6328178520d1017b1004ac3a0cea544117a57d62e0fd9e45d64f7d1427e"
   end
 
   depends_on "eccodes"
@@ -27,17 +27,31 @@ class Cdo < Formula
   depends_on "proj"
   uses_from_macos "python" => :build
 
+  on_macos do
+    depends_on "llvm" => :build if DevelopmentTools.clang_build_version <= 1500
+  end
+
+  on_linux do
+    depends_on "util-linux"
+  end
+
+  fails_with :clang do
+    build 1500
+    cause "Requires C++20 support"
+  end
+
   def install
+    ENV.llvm_clang if OS.mac? && DevelopmentTools.clang_build_version <= 1500
+
     args = %W[
-      --disable-dependency-tracking
-      --prefix=#{prefix}
+      --disable-openmp
       --with-eccodes=#{Formula["eccodes"].opt_prefix}
       --with-netcdf=#{Formula["netcdf"].opt_prefix}
       --with-hdf5=#{Formula["hdf5"].opt_prefix}
       --with-szlib=#{Formula["libaec"].opt_prefix}
     ]
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 
@@ -46,7 +60,7 @@ class Cdo < Formula
       R1JJQgABvAEAABz/AAD/gAEBAABkAAAAAAEAAAoAAAAAAAAAAAAgAP8AABIACgB+9IBrbIABLrwA4JwTiBOIQAAAAAAAAXQIgAPEFI2rEBm9AACVLSuNtwvRALldqDul2GV1pw1CbXsdub2q9a/17Yi9o11DE0UFWwRjqsvH80wgS82o3UJ9rkitLcPgxJDVaO9No4XV6EWNPeUSSC7txHi7/aglVaO5uKKtwr2slV5DYejEoKOwpdirLXPIGUAWCya7ntil1amLu4PCtafNp5OpPafFqVWmxaQto72sMzGQJeUxcJkbqEWnOKM9pTOlTafdqPCoc6tAq0WqFarTq2i5M1NdRq2AHWzFpFWj1aJtmAOrhaJzox2nwKr4qQWofaggqz2rkHcog2htuI2YmOB9hZDIpxXA3ahdpzOnDarjqj2k0KlIqM2oyJsjjpODmGu1YtU6WHmNZ5uljcbVrduuOK1DrDWjGKM4pQCmfdVFprWbnVd7Vw1QY1s9VnNzvZiLmGucPZwVnM2bm5yFqb2cHdRQqs2hhZrrm1VGeEQgOduhjbWrqAWfzaANnZOdWJ0NnMWeJQA3Nzc3AAAAAA==
     EOF
     File.binwrite("test.grb", data)
-    system "#{bin}/cdo", "-f", "nc", "copy", "test.grb", "test.nc"
+    system bin/"cdo", "-f", "nc", "copy", "test.grb", "test.nc"
     assert_predicate testpath/"test.nc", :exist?
   end
 end

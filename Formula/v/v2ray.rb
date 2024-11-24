@@ -1,10 +1,9 @@
 class V2ray < Formula
   desc "Platform for building proxies to bypass network restrictions"
   homepage "https://v2fly.org/"
-  url "https://github.com/v2fly/v2ray-core/archive/v5.7.0.tar.gz"
-  sha256 "599fcd264537e39178b6008a11af68816dfd1609e19a9cf8adc8b2a4240ee370"
+  url "https://github.com/v2fly/v2ray-core/archive/refs/tags/v5.22.0.tar.gz"
+  sha256 "df25a873c8f7fb30f44cb6d26b18db264dfa209df5aeb6116fc43df7157fb4b8"
   license all_of: ["MIT", "CC-BY-SA-4.0"]
-  revision 1
   head "https://github.com/v2fly/v2ray-core.git", branch: "master"
 
   livecheck do
@@ -13,35 +12,34 @@ class V2ray < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "38e84f1f30b5835c66cf81834003afdce126f387b9281a4f93165a70863c8ebb"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "38e84f1f30b5835c66cf81834003afdce126f387b9281a4f93165a70863c8ebb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "38e84f1f30b5835c66cf81834003afdce126f387b9281a4f93165a70863c8ebb"
-    sha256 cellar: :any_skip_relocation, ventura:        "16cc7dca1bef1c45ee9989d57c9097fb1bce97f4f75ba854c39628fea6c20ad9"
-    sha256 cellar: :any_skip_relocation, monterey:       "16cc7dca1bef1c45ee9989d57c9097fb1bce97f4f75ba854c39628fea6c20ad9"
-    sha256 cellar: :any_skip_relocation, big_sur:        "16cc7dca1bef1c45ee9989d57c9097fb1bce97f4f75ba854c39628fea6c20ad9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3c09457ba4832a2d44e7bf70be876b04d5de9a4f49bb7a2ac135d96fa86c8a9e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5726a5658386c3946dad3b0a5ba3ec94d6f15ca2c7938118c46fe6752bcd1590"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5726a5658386c3946dad3b0a5ba3ec94d6f15ca2c7938118c46fe6752bcd1590"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "5726a5658386c3946dad3b0a5ba3ec94d6f15ca2c7938118c46fe6752bcd1590"
+    sha256 cellar: :any_skip_relocation, sonoma:        "088b3d50e870d39c5b8ad2aaa707336cc82c5d41a6fb99948e4684c9476e929b"
+    sha256 cellar: :any_skip_relocation, ventura:       "088b3d50e870d39c5b8ad2aaa707336cc82c5d41a6fb99948e4684c9476e929b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d1bdd7e215ad00e02f2582963a9cbca5e76c443400a1a90fd2aa2a2ff039dbfc"
   end
 
   depends_on "go" => :build
 
   resource "geoip" do
-    url "https://github.com/v2fly/geoip/releases/download/202307060057/geoip.dat"
-    sha256 "a200767fcf152a4886c8bbfc8e9b8325cb405dd8076f911a7d49edb3ddf20024"
+    url "https://github.com/v2fly/geoip/releases/download/202411140052/geoip.dat"
+    sha256 "c9114fd3157e44f1234976a3cba6d8ffee28fb8331890f0909d64e5b6677494e"
   end
 
   resource "geoip-only-cn-private" do
-    url "https://github.com/v2fly/geoip/releases/download/202307060057/geoip-only-cn-private.dat"
-    sha256 "6794c150eac1bb8727dc9c3ffb6cc576374ca2b6ec262f8d742007c96966ddc7"
+    url "https://github.com/v2fly/geoip/releases/download/202411140052/geoip-only-cn-private.dat"
+    sha256 "9c437ba446690a2c9be5343ec1c4ab904578a164212fb8c3ea2808d7e78518f7"
   end
 
   resource "geosite" do
-    url "https://github.com/v2fly/domain-list-community/releases/download/20230711133630/dlc.dat"
-    sha256 "bcbad43679badb8eb383f63ed753732d0378042c42199b17edcdfedba6d458b0"
+    url "https://github.com/v2fly/domain-list-community/releases/download/20241112092643/dlc.dat"
+    sha256 "f04433837b88a3f49d7cd6517c91e8f5de4e4496f3d88ef3b7c6be5bb63f4c6f"
   end
 
   def install
     ldflags = "-s -w -buildid="
-    system "go", "build", *std_go_args(ldflags: ldflags, output: libexec/"v2ray"), "./main"
+    system "go", "build", *std_go_args(ldflags:, output: libexec/"v2ray"), "./main"
 
     (bin/"v2ray").write_env_script libexec/"v2ray",
       V2RAY_LOCATION_ASSET: "${V2RAY_LOCATION_ASSET:-#{pkgshare}}"
@@ -67,7 +65,7 @@ class V2ray < Formula
   end
 
   test do
-    (testpath/"config.json").write <<~EOS
+    (testpath/"config.json").write <<~JSON
       {
         "log": {
           "access": "#{testpath}/log"
@@ -97,7 +95,7 @@ class V2ray < Formula
           ]
         }
       }
-    EOS
+    JSON
     output = shell_output "#{bin}/v2ray test -c #{testpath}/config.json"
 
     assert_match "Configuration OK", output

@@ -1,18 +1,12 @@
 class BazelDiff < Formula
   desc "Performs Bazel Target Diffing between two revisions in Git"
   homepage "https://github.com/Tinder/bazel-diff/"
-  url "https://github.com/Tinder/bazel-diff/releases/download/4.8.0/bazel-diff_deploy.jar"
-  sha256 "59af6c4e44cb30ba31ead9bd2257f596d3bb4be64df98b4e3b0ba77eedf75838"
+  url "https://github.com/Tinder/bazel-diff/releases/download/8.1.4/bazel-diff_deploy.jar"
+  sha256 "725e4012d8f68ecbe967138bc973bf0bca22b2b219a34cafbd3e392fb451b2e6"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "957e6fcf470797b9c94bb75462983cda08e09d47304736b9e3aa4ccd66a87eff"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "957e6fcf470797b9c94bb75462983cda08e09d47304736b9e3aa4ccd66a87eff"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "957e6fcf470797b9c94bb75462983cda08e09d47304736b9e3aa4ccd66a87eff"
-    sha256 cellar: :any_skip_relocation, ventura:        "957e6fcf470797b9c94bb75462983cda08e09d47304736b9e3aa4ccd66a87eff"
-    sha256 cellar: :any_skip_relocation, monterey:       "957e6fcf470797b9c94bb75462983cda08e09d47304736b9e3aa4ccd66a87eff"
-    sha256 cellar: :any_skip_relocation, big_sur:        "957e6fcf470797b9c94bb75462983cda08e09d47304736b9e3aa4ccd66a87eff"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ab4d17dd5a9ca64e2e0f7dbb63b15534932e9343baf38962c5b179bb13a603f9"
+    sha256 cellar: :any_skip_relocation, all: "d623f53d5a3906f794ca176070be0f7acefe04a58d6e267293e63a9e035bb7b7"
   end
 
   depends_on "bazel" => :test
@@ -25,6 +19,6 @@ class BazelDiff < Formula
 
   test do
     output = shell_output("#{bin}/bazel-diff generate-hashes --workspacePath=#{testpath} 2>&1", 1)
-    assert_match "Unexpected error during generation of hashes", output
+    assert_match "ERROR: The 'info' command is only supported from within a workspace", output
   end
 end

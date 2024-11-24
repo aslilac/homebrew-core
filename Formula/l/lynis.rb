@@ -1,18 +1,17 @@
 class Lynis < Formula
   desc "Security and system auditing tool to harden systems"
   homepage "https://cisofy.com/lynis/"
-  url "https://github.com/CISOfy/lynis/archive/3.0.9.tar.gz"
-  sha256 "520eb76aee5d350c2a7265414bae302077cd70ed5a0aaf61dec9e43a968b1727"
+  url "https://github.com/CISOfy/lynis/archive/refs/tags/3.1.2.tar.gz"
+  sha256 "b0ed01d30a4415beb78acc47867f8e0779c9966d4febc5f4a31594ba2a0bd44d"
   license "GPL-3.0-only"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f286611cd75569c254b277018a249a9826c71f276ea1ed2cb2dd53265f6f0e9c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f286611cd75569c254b277018a249a9826c71f276ea1ed2cb2dd53265f6f0e9c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f286611cd75569c254b277018a249a9826c71f276ea1ed2cb2dd53265f6f0e9c"
-    sha256 cellar: :any_skip_relocation, ventura:        "b611779c1dc232183529386a76a47492aa2a1424220d9e002317e1a79271cebd"
-    sha256 cellar: :any_skip_relocation, monterey:       "b611779c1dc232183529386a76a47492aa2a1424220d9e002317e1a79271cebd"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b611779c1dc232183529386a76a47492aa2a1424220d9e002317e1a79271cebd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f42606a32b9515dd1dadcf130071dae101cc108dd758fe01ba0c95d447f3954c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0b26eba32da66cef4c85819f95cfece20b4472fa05087b8735704764dd2fd1a3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0b26eba32da66cef4c85819f95cfece20b4472fa05087b8735704764dd2fd1a3"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0b26eba32da66cef4c85819f95cfece20b4472fa05087b8735704764dd2fd1a3"
+    sha256 cellar: :any_skip_relocation, sonoma:        "0828d46f43ade64b6b4ebbaa6bac1d3f4b6f01f9648b004bda56f985ef1ed4e1"
+    sha256 cellar: :any_skip_relocation, ventura:       "0828d46f43ade64b6b4ebbaa6bac1d3f4b6f01f9648b004bda56f985ef1ed4e1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0b26eba32da66cef4c85819f95cfece20b4472fa05087b8735704764dd2fd1a3"
   end
 
   def install

@@ -1,25 +1,22 @@
-require "language/node"
-
 class Artillery < Formula
   desc "Cloud-native performance & reliability testing for developers and SREs"
   homepage "https://artillery.io/"
-  url "https://registry.npmjs.org/artillery/-/artillery-2.0.0-36.tgz"
-  sha256 "850ef6c54bf657ac0a2e4fcf033665d049d9cd5dc79dd42edb7b9183a4cc7b7c"
+  url "https://registry.npmjs.org/artillery/-/artillery-2.0.21.tgz"
+  sha256 "a6582e0389893dc749861d06f4779fc10bbb4ba1501c9b47bfa0dc1ee6ef0fe0"
   license "MPL-2.0"
 
   livecheck do
-    url :stable
+    url "https://registry.npmjs.org/artillery/latest"
     regex(%r{["'][^"' ]*?/artillery[._-]v?(\d+(?:[.-]\d+)+)\.t}i)
   end
 
   bottle do
-    sha256                               arm64_ventura:  "c18941c7743e0ecc5b22e1ac93ed07618139b0ed53adbcbe90b52c40af7de5cb"
-    sha256                               arm64_monterey: "819f6c38fe89d16492880d773a411995df1cabf57d92b686fc081b782ceeba0b"
-    sha256                               arm64_big_sur:  "fdf909e179fdaafeca929e00e2fb121762690c40030560866183717c431ab6f2"
-    sha256                               ventura:        "33bffcdb3d9f09a01a8b6287732b43a4fcab6e5e058c51cb585aece301382a87"
-    sha256                               monterey:       "5defe42c687e6e9341afb290b50f9af13288c947983e026a0a002ef6819bf356"
-    sha256                               big_sur:        "875c025a91c77b0115b82ecd9be28d704d0415c9e442f4990f59be55ded77c17"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3afa035439f247ccf633426a1c9f63f6ab9aac42ca697ee913be36ff1f1a9d7c"
+    sha256                               arm64_sequoia: "c174084835854f3b2aced22c9f0757a812ce5310b881aca219649013af686a1e"
+    sha256                               arm64_sonoma:  "3721080d63033b99429b71e2715c959503935393ffa81ff2d3461b1f5f4ad6bb"
+    sha256                               arm64_ventura: "60483ff57bf8508616c963d3619ebad3862c0b6172023c1fb2be282f9eabf64a"
+    sha256                               sonoma:        "886c98590003880a066bfd51635de8a40fdabc5cf21026ec1a9163ac86e23165"
+    sha256                               ventura:       "7a8ee9928bb7fa176ba69625bfc23464efb506618f3120c59f21a625a3968c71"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "75aa55f1c140266b444bc11cbdd68997443f6e661c4e028beb9972e6eb677c28"
   end
 
   depends_on "node"
@@ -29,14 +26,14 @@ class Artillery < Formula
   end
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
   test do
     system bin/"artillery", "dino", "-m", "let's run some tests!"
 
-    (testpath/"config.yml").write <<~EOS
+    (testpath/"config.yml").write <<~YAML
       config:
         target: "http://httpbin.org"
         phases:
@@ -48,7 +45,7 @@ class Artillery < Formula
                 url: "/headers"
             - post:
                 url: "/response-headers"
-    EOS
+    YAML
 
     assert_match "All VUs finished", shell_output("#{bin}/artillery run #{testpath}/config.yml")
   end

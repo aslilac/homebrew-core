@@ -1,7 +1,7 @@
 class Curaengine < Formula
   desc "C++ 3D printing GCode generator"
   homepage "https://github.com/Ultimaker/CuraEngine"
-  url "https://github.com/Ultimaker/CuraEngine/archive/4.13.1.tar.gz"
+  url "https://github.com/Ultimaker/CuraEngine/archive/refs/tags/4.13.1.tar.gz"
   sha256 "283f62326c6072cdcef9d9b84cb8141a6072747f08e1cae6534d08ad85b1c657"
   license "AGPL-3.0-or-later"
   version_scheme 1
@@ -9,9 +9,11 @@ class Curaengine < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "cdfaed191caccb6b4711b496908dc49943a867d3cf9ed73f05cf8691d41243a2"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "df46dbfdd389c20a311ffe46ccd8807496c60fdbb27ae3ed07f10592b0b8c27d"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "87834e91270428e01cf4c8dfac8ee269f98c2ec52b4fb4a2759e6a7ad3dc9adf"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1f9480ae014cdd9519ceeca9b0ee676b5a0152f6e888fe3d3ab415e83eae71d4"
+    sha256 cellar: :any_skip_relocation, sonoma:         "8969820813eb9cabfc6cc2e72a1d81615601ca3f6db913daab6e45570981519a"
     sha256 cellar: :any_skip_relocation, ventura:        "77ea9ab7d45a4e0b896b556fc2223838902a894d70fdb7c0a7caa500c7538d10"
     sha256 cellar: :any_skip_relocation, monterey:       "bc652202bfd114cc016c7423301bd5c7dc7d309813d0d1b98c1bf970ebcd6cec"
     sha256 cellar: :any_skip_relocation, big_sur:        "dbb7b34444997d50d12d7048209375da2c7070bac81aefe237fd74292ddc7c68"
@@ -20,7 +22,7 @@ class Curaengine < Formula
   end
 
   # Requires extensive patching to build & has minimal installs
-  deprecate! date: "2023-01-06", because: :does_not_build
+  disable! date: "2024-01-12", because: :does_not_build
 
   depends_on "cmake" => :build
 
@@ -51,7 +53,7 @@ class Curaengine < Formula
   test do
     testpath.install resource("fdmextruder_defaults")
     testpath.install resource("fdmprinter_defaults")
-    (testpath/"t.stl").write <<~EOS
+    (testpath/"t.stl").write <<~STL
       solid t
         facet normal 0 -1 0
          outer loop
@@ -61,8 +63,8 @@ class Curaengine < Formula
          endloop
         endfacet
       endsolid Star
-    EOS
+    STL
 
-    system "#{bin}/CuraEngine", "slice", "-j", "fdmprinter.def.json", "-l", "#{testpath}/t.stl"
+    system bin/"CuraEngine", "slice", "-j", "fdmprinter.def.json", "-l", "#{testpath}/t.stl"
   end
 end

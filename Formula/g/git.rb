@@ -1,9 +1,8 @@
 class Git < Formula
   desc "Distributed revision control system"
   homepage "https://git-scm.com"
-  # Don't forget to update the documentation resources along with the url!
-  url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.42.0.tar.xz"
-  sha256 "3278210e9fd2994b8484dd7e3ddd9ea8b940ef52170cdb606daa94d887c93b0d"
+  url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.47.0.tar.xz"
+  sha256 "1ce114da88704271b43e027c51e04d9399f8c88e9ef7542dae7aebae7d87bc4e"
   license "GPL-2.0-only"
   head "https://github.com/git/git.git", branch: "master"
 
@@ -13,13 +12,12 @@ class Git < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "285e7a1328068c872a3a3a57ea0b08520c876e941c0fbf271a24a8684873de83"
-    sha256 arm64_monterey: "2b914b565eed8da4c619abf5d400bc92f54ede50c7c4c1d79b3414a477426e36"
-    sha256 arm64_big_sur:  "e6d1c14112176353897d8b6783193b95fa06afb03e1ca75f08e71c6a3e0305c8"
-    sha256 ventura:        "9363a5d645af38968922ab9c1977dbd9253e9c65d1217823713eaf1bca4c3e11"
-    sha256 monterey:       "6c0fa517a1bf6714d541aeaa2292b0004d0aebedf3ac9da8187e72c35e988fb8"
-    sha256 big_sur:        "7bac9c239924f340325d2546e7704bc02d855741426388a0eb1ee2b76f73b03e"
-    sha256 x86_64_linux:   "90ebffb7885c78afb540c6d36cfdf80b65b62db3288f204eb4975ea20e7c1fc0"
+    sha256 arm64_sequoia: "7c09abec73bcb89e12d067fb023ec7f69df73a903fa1b5eef5121a404af2694c"
+    sha256 arm64_sonoma:  "d4691f0e34143bb274e4d3af579ce5f594d36e649caf3b9fc782c81b68866c59"
+    sha256 arm64_ventura: "d2cc6cabb360f80a7da428124583637405ed6de28f94808261b1f085d6770896"
+    sha256 sonoma:        "adb1b3e9b44d11e9a80054420285aa2f4bfc2481fdb198980a036ecb216fbc71"
+    sha256 ventura:       "b07289bf4b54882ec05a1207694d5cdd8dd99c03de6b78cf0e633a621a0074d8"
+    sha256 x86_64_linux:  "64a6e0fddaabaff55223a88111366967ecb5e73fd15f9af9fae74070eccd52fa"
   end
 
   depends_on "gettext"
@@ -35,13 +33,13 @@ class Git < Formula
   end
 
   resource "html" do
-    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-htmldocs-2.42.0.tar.xz"
-    sha256 "c027ad23614d19685677899527360985ec9186e97528084dc4f8d611f6c3483f"
+    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-htmldocs-2.47.0.tar.xz"
+    sha256 "fab133e8ef4cf825f5014d2fc708461e7a383fd90e52fbbae0b14ca12ede17b6"
   end
 
   resource "man" do
-    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-manpages-2.42.0.tar.xz"
-    sha256 "03e0dc60a077ad31b10119e6619af8b50e652bd5c8a95c891523d73af1e573b9"
+    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-manpages-2.47.0.tar.xz"
+    sha256 "c8dfefa07bddc9e5c2aa48ff03e80a3461d9baa45f46b17b1a43c8e132b1fab8"
   end
 
   resource "Net::SMTP::SSL" do
@@ -50,6 +48,9 @@ class Git < Formula
   end
 
   def install
+    odie "html resource needs to be updated" if build.stable? && version != resource("html").version
+    odie "man resource needs to be updated" if build.stable? && version != resource("man").version
+
     # If these things are installed, tell Git build system not to use them
     ENV["NO_FINK"] = "1"
     ENV["NO_DARWIN_PORTS"] = "1"
@@ -158,7 +159,8 @@ class Git < Formula
     # purged by Homebrew's post-install cleaner because that doesn't check
     # "Library" directories. It is however pointless to keep around as it
     # only contains the perllocal.pod installation file.
-    rm_rf prefix/"Library/Perl"
+    perl_dir = prefix/"Library/Perl"
+    rm_r perl_dir if perl_dir.exist?
 
     # Set the macOS keychain credential helper by default
     # (as Apple's CLT's git also does this).
@@ -179,9 +181,6 @@ class Git < Formula
   end
 
   test do
-    assert_equal version, resource("html").version, "`html` resource needs updating!"
-    assert_equal version, resource("man").version, "`man` resource needs updating!"
-
     system bin/"git", "init"
     %w[haunted house].each { |f| touch testpath/f }
     system bin/"git", "add", "haunted", "house"
