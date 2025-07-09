@@ -3,18 +3,19 @@ class Apprise < Formula
 
   desc "Send notifications from the command-line to popular notification services"
   homepage "https://pypi.org/project/apprise/"
-  url "https://files.pythonhosted.org/packages/92/26/19c26dbf32d31129c50a3568022ae1c9d05c4aac056c0661d9bfea0f7810/apprise-1.9.0.tar.gz"
-  sha256 "b5c93afd6331afe4b63a55d1cea9076e47becb4ba89b562b181c13e25bb0c7d6"
+  url "https://files.pythonhosted.org/packages/f8/1e/fe19c88c3e1ff96f4ea757bae9f6350060ac28be523507053347aa5d67db/apprise-1.9.3.tar.gz"
+  sha256 "f583667ea35b8899cd46318c6cb26f0faf6a4605b119174c2523a012590c65a6"
   license "BSD-3-Clause"
+  revision 2
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "c8410563e9ab8324e1e65d783f09745bc97a3141ca26b2e549c4dec6567ddcf5"
-    sha256 cellar: :any,                 arm64_sonoma:  "4f3079c53e3b844d5880ad27ca72fec9530417e5d31bb86cb066f4d4abc75024"
-    sha256 cellar: :any,                 arm64_ventura: "409bc85b9ad0ea05909423c9b1156dff8cb2dcc19c5e25cdfcb9446d076e5b0c"
-    sha256 cellar: :any,                 sonoma:        "6b233379c79071cf4a6378392479c3a0bab9a3dc1c0200f31fba4b33605d1358"
-    sha256 cellar: :any,                 ventura:       "1e45fbec2e51a3fbc435c069be50e47ab70ba8ada6daa7795d3a8cddfb170728"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d3a6039a267e09b8031cecc3359caaec72941690f165f9c5bf5a85677f05ef01"
+    sha256 cellar: :any,                 arm64_sequoia: "b2a2a2c4d22593b4f902920e37e90e26c36ae7433fa15f0b49d5b0a0bfd4da0b"
+    sha256 cellar: :any,                 arm64_sonoma:  "1adb251b14e2a853a4c4d87078270bbe73b905097d345ada03a8132ddf0b7677"
+    sha256 cellar: :any,                 arm64_ventura: "13abcb9e42c91e1401d988d59ff7bbe680a76a81b452e46fcad758f156a0e23e"
+    sha256 cellar: :any,                 sonoma:        "edf57c6280285d856f65cce0340cf891da6babc5e6f15d6a07071b6f78a1828d"
+    sha256 cellar: :any,                 ventura:       "b34de266a4e33ad7f2477fd054fd4d46c1a32e613538f7c542dd31307bfcc663"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "79d1048684dcd8869ece274486faa0dbc01251f99814f088f9220c866fdfef05"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fdf5fb4db8756632f304419f5ff5ee4d817eef5c0ddf74dfe9e905492fcc2417"
   end
 
   depends_on "certifi"
@@ -22,13 +23,13 @@ class Apprise < Formula
   depends_on "python@3.13"
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
-    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
+    url "https://files.pythonhosted.org/packages/e4/33/89c2ced2b67d1c2a61c19c6751aa8902d46ce3dacb23600a283619f5a12d/charset_normalizer-3.4.2.tar.gz"
+    sha256 "5baececa9ecba31eff645232d59845c07aa030f0c81ee70184a90d35099a0e63"
   end
 
   resource "click" do
-    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
-    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
+    url "https://files.pythonhosted.org/packages/60/6c/8ca2efa64cf75a977a0d7fac081354553ebe483345c734fb6b6515d96bbc/click-8.2.1.tar.gz"
+    sha256 "27c491cc05d968d271d5a1db13e3b5a184636d9d930f148c50b038f0d0646202"
   end
 
   resource "idna" do
@@ -37,13 +38,13 @@ class Apprise < Formula
   end
 
   resource "markdown" do
-    url "https://files.pythonhosted.org/packages/54/28/3af612670f82f4c056911fbbbb42760255801b3068c48de792d354ff4472/markdown-3.7.tar.gz"
-    sha256 "2ae2471477cfd02dbbf038d5d9bc226d40def84b4fe2986e49b59b6b472bbed2"
+    url "https://files.pythonhosted.org/packages/db/7c/0738e5ff0adccd0b4e02c66d0446c03a3c557e02bb49b7c263d7ab56c57d/markdown-3.8.1.tar.gz"
+    sha256 "a2e2f01cead4828ee74ecca9623045f62216aef2212a7685d6eb9163f590b8c1"
   end
 
   resource "oauthlib" do
-    url "https://files.pythonhosted.org/packages/6d/fa/fbf4001037904031639e6bfbfc02badfc7e12f137a8afa254df6c4c8a670/oauthlib-3.2.2.tar.gz"
-    sha256 "9859c40929662bec5d64f34d01c99e093149682a3f38915dc0655d5a633dd918"
+    url "https://files.pythonhosted.org/packages/98/8a/6ea75ff7acf89f43afb157604429af4661a9840b1f2cece602b6a13c1893/oauthlib-3.3.0.tar.gz"
+    sha256 "4e707cf88d7dfc22a8cce22ca736a2eef9967c1dd3845efc0703fc922353eeb2"
   end
 
   resource "pyyaml" do
@@ -52,8 +53,8 @@ class Apprise < Formula
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
-    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
+    url "https://files.pythonhosted.org/packages/e1/0a/929373653770d8a0d7ea76c37de6e41f11eb07559b103b1c02cafb3f7cf8/requests-2.32.4.tar.gz"
+    sha256 "27d0316682c8a29834d3264820024b62a36942083d52caf2f14c0591336d3422"
   end
 
   resource "requests-oauthlib" do
@@ -62,27 +63,27 @@ class Apprise < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
-    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
+    url "https://files.pythonhosted.org/packages/15/22/9ee70a2574a4f4599c47dd506532914ce044817c7752a79b6a51286319bc/urllib3-2.5.0.tar.gz"
+    sha256 "3fc47733c7e419d4bc3f6b3dc2b4f890bb743906a30d56ba4a5bfa4bbff92760"
   end
 
   def install
     virtualenv_install_with_resources
+
+    generate_completions_from_executable(bin/"apprise", shells: [:fish, :zsh], shell_parameter_format: :click)
   end
 
   test do
     # Setup a custom notifier that can be passed in as a plugin
-    file = "#{testpath}/brewtest_notifier.py"
-    apprise_plugin_definition = <<~EOS
+    file = testpath/"brewtest_notifier.py"
+    file.write <<~PYTHON
       from apprise.decorators import notify
 
       @notify(on="brewtest")
       def my_wrapper(body, title, *args, **kwargs):
         # A simple test - print to screen
         print("{}: {}".format(title, body))
-    EOS
-
-    File.write(file, apprise_plugin_definition)
+    PYTHON
 
     charset = Array("A".."Z") + Array("a".."z") + Array(0..9)
     title = charset.sample(32).join

@@ -23,17 +23,19 @@ class Fasttext < Formula
   end
 
   deprecate! date: "2024-03-19", because: :repo_archived
+  disable! date: "2025-03-24", because: :repo_archived
 
   depends_on "cmake" => :build
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
     (testpath/"trainingset").write("__label__brew brew")
     system bin/"fasttext", "supervised", "-input", "trainingset", "-output", "model"
-    assert_predicate testpath/"model.bin", :exist?
+    assert_path_exists testpath/"model.bin"
   end
 end

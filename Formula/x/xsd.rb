@@ -10,12 +10,15 @@ class Xsd < Formula
     regex(/href=.*?xsd[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia: "9bab1b8a054ae9b32e68d6c0ab9ee59435715bcedbdc1206de8b54a5c8210ce5"
     sha256 cellar: :any,                 arm64_sonoma:  "b095172797b397ec3afe2c05033aa138ef2449d982aa8e77b9b26b484cd7fbc9"
     sha256 cellar: :any,                 arm64_ventura: "515effcddd5163ba8ac3fc30f2daf51d5c9380209b376cd4fbbffc54eb823b9e"
     sha256 cellar: :any,                 sonoma:        "dcd70b1bada26e56ead16eaceeced482d7e8c4b84a8894d34073d46ad0c2f57e"
     sha256 cellar: :any,                 ventura:       "d6d34d7402ae33a991c7817a34d6f8bdec2f55bc68ec922b5e112d639f308dd0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "4b203c546a627a452e99687209c707b56a69334aa9dd509bcf80f2e9e2e0c055"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "d2ce6cba3e04b1e0239789b2c57ab98fbf8b465dc8477fb43c184da992002322"
   end
 
@@ -29,6 +32,10 @@ class Xsd < Formula
   resource "libxsd" do
     url "https://www.codesynthesis.com/download/xsd/4.2/libxsd-4.2.0.tar.gz"
     sha256 "55caf0038603883eb39ac4caeaacda23a09cf81cffc8eb55a854b6b06ef2c52e"
+
+    livecheck do
+      formula :parent
+    end
   end
 
   def install
@@ -60,7 +67,7 @@ class Xsd < Formula
       </MeaningOfLife>
     XML
 
-    (testpath/"xsdtest.cxx").write <<~EOS
+    (testpath/"xsdtest.cxx").write <<~CPP
       #include <cassert>
       #include "meaningoflife.hxx"
       int main (int argc, char *argv[]) {
@@ -69,7 +76,7 @@ class Xsd < Formula
         assert(42==*x);
         return 0;
       }
-    EOS
+    CPP
 
     system bin/"xsd", "cxx-tree", "meaningoflife.xsd"
     assert_path_exists testpath/"meaningoflife.hxx"

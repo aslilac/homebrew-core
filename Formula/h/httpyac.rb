@@ -1,17 +1,18 @@
 class Httpyac < Formula
   desc "Quickly and easily send REST, SOAP, GraphQL and gRPC requests"
   homepage "https://httpyac.github.io/"
-  url "https://registry.npmjs.org/httpyac/-/httpyac-6.16.4.tgz"
-  sha256 "2139537b6f368a0fa749e881773c71886022ced16bbd4dcf1d795c276c6441d5"
+  url "https://registry.npmjs.org/httpyac/-/httpyac-6.16.7.tgz"
+  sha256 "e6bc615ef8b58ea9334fcac3e2000eb3e49926dca1ec7087456e9aa6c402000e"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "37eb0fc1a66cd6b3a77188fd9f254cb1494bef9d721a22d611e173a3b15d52a2"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "37eb0fc1a66cd6b3a77188fd9f254cb1494bef9d721a22d611e173a3b15d52a2"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "37eb0fc1a66cd6b3a77188fd9f254cb1494bef9d721a22d611e173a3b15d52a2"
-    sha256 cellar: :any_skip_relocation, sonoma:        "3b1b87abf924b622a3974dc570361f608529b750df4c87dc0a9059b63862f549"
-    sha256 cellar: :any_skip_relocation, ventura:       "3b1b87abf924b622a3974dc570361f608529b750df4c87dc0a9059b63862f549"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "17f73fd6c0b7ed96685867fbfbc8886953e646dc2449a3f1e328e73b1b3d7326"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c661e19ffede29528d8ac52646f9453c17bced8e814b33fc3c078092d28a434e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c661e19ffede29528d8ac52646f9453c17bced8e814b33fc3c078092d28a434e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c661e19ffede29528d8ac52646f9453c17bced8e814b33fc3c078092d28a434e"
+    sha256 cellar: :any_skip_relocation, sonoma:        "866418e856e92498dfcc3efd3f1418a5db7791e0addce76c733a9af8f74064a8"
+    sha256 cellar: :any_skip_relocation, ventura:       "866418e856e92498dfcc3efd3f1418a5db7791e0addce76c733a9af8f74064a8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6db1182a2c0a29553eefb6f3477fcfdbbf5a769a954520ac2ddd8bfe07355cc5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6db1182a2c0a29553eefb6f3477fcfdbbf5a769a954520ac2ddd8bfe07355cc5"
   end
 
   depends_on "node"
@@ -32,9 +33,6 @@ class Httpyac < Formula
       # Replace the vendored pre-built xsel with one we build ourselves
       ln_sf (Formula["xsel"].opt_bin/"xsel").relative_path_from(linux_dir), linux_dir
     end
-
-    # Replace universal binaries with their native slices
-    deuniversalize_machos
   end
 
   test do

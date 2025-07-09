@@ -6,6 +6,8 @@ class Jpegoptim < Formula
   license "GPL-3.0-or-later"
   head "https://github.com/tjko/jpegoptim.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "6f2da3ecfcd521abededbff7aa2d8578773ef9951e9ad2b859fd5cdc05470102"
     sha256 cellar: :any,                 arm64_sonoma:   "ca3a05d563b803911fcec6940ee9a26bd6e7bb21519e5841947635c856e1bc50"
@@ -16,6 +18,7 @@ class Jpegoptim < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "86fb1ec394a43558d382fbc2544050d361e9586dd5dacdf4257a20c1f9244e34"
     sha256 cellar: :any_skip_relocation, monterey:       "aa1622b89c22a2d162c211d818828fa0ef1577e9235f936d36643c8ff02f9494"
     sha256 cellar: :any_skip_relocation, big_sur:        "99529c2dccf16f25d1b31ca8a9d20e638c75a8a13af5875b30fc4174a757c7f9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "0547e662487a78c35cbb4e864224380730a6793cad67414959572cd7c30f08cd"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5e35ae062ab96e9a8bd73a41cdfc896d2366db52f2ed2eb9a67a7a99167f49a2"
   end
 

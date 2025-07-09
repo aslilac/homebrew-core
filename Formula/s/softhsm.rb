@@ -13,6 +13,8 @@ class Softhsm < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 arm64_sequoia:  "469b96859edc8a37e5e3dd99aab7c7f615dad572d7ca71576fe7efa5059244a2"
@@ -25,6 +27,7 @@ class Softhsm < Formula
     sha256 monterey:       "320f44fb1c860b9953b29260ca75fa947c728db78fea1a72c6796d5ea537624d"
     sha256 big_sur:        "ceaa2a468dd99798cb775406dbeaf169565b35517d36b06fdd2abba6ed9d754a"
     sha256 catalina:       "f18b5f1c33b98f07f14233e90e412900a22d79f4b04946bdd1fdd28a04dbda01"
+    sha256 arm64_linux:    "9fc20743d5a7ce1147876d8811fb186a22d37f7c8e55c1dbb8c07a64c08c0a0a"
     sha256 x86_64_linux:   "87b3b85891df32b03e9b362ed76ed435095c6c72d40d460df18986869d701ee5"
   end
 
@@ -34,21 +37,20 @@ class Softhsm < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-    depends_on "pkg-config" => :build
+    depends_on "pkgconf" => :build
   end
 
   depends_on "openssl@3"
 
   def install
     system "sh", "./autogen.sh" if build.head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
+    system "./configure", "--disable-silent-rules",
                           "--sysconfdir=#{etc}/softhsm",
                           "--localstatedir=#{var}",
                           "--with-crypto-backend=openssl",
                           "--with-openssl=#{Formula["openssl@3"].opt_prefix}",
-                          "--disable-gost"
+                          "--disable-gost",
+                          *std_configure_args
     system "make", "install"
   end
 

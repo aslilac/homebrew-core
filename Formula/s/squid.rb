@@ -1,26 +1,31 @@
 class Squid < Formula
   desc "Advanced proxy caching server for HTTP, HTTPS, FTP, and Gopher"
   homepage "https://www.squid-cache.org/"
-  url "http://www.squid-cache.org/Versions/v6/squid-6.12.tar.xz"
-  sha256 "f3df3abb2603a513266f24a5d4699a9f0d76b9f554d1848b67f9c51cd3b3cb50"
+  url "https://github.com/squid-cache/squid/releases/download/SQUID_7_0_2/squid-7.0.2.tar.bz2"
+  sha256 "e34d0759686e4a2baf411801aaf8a4863dc17f32ed4a1d988776110bad36c5ae"
   license "GPL-2.0-or-later"
 
+  # The Git repository contains tags for a higher major version that isn't the
+  # current release series yet, so we check the latest GitHub release instead.
   livecheck do
-    url "https://www.squid-cache.org/Versions/"
-    regex(%r{<td>\s*v?(\d+(?:\.\d+)+)\s*</td>}im)
+    url :stable
+    strategy :github_latest
   end
 
+  no_autobump! because: :incompatible_version_format
+
   bottle do
-    sha256 arm64_sequoia: "46834c46b9dfba33e335871ea5521c52f0970e22492a10a7652e4c6ce7ad60d9"
-    sha256 arm64_sonoma:  "0e5e93eebd07b2919e38a59becf1738a94d36d2ab36e8244fd0f50fb557acab0"
-    sha256 arm64_ventura: "066142a4881ba69f68ab5c80f8997392225b44a3ffe1f6c098a457476ca55eec"
-    sha256 sonoma:        "e47b6716e23cfe55ebc170cc8a563883e2d12bd2a0f7c190dbeaff3dcc3456d0"
-    sha256 ventura:       "66876aa03fd2e9937b29cdb881fb1ced3ffd269209e282a4f2586f61fe3577ae"
-    sha256 x86_64_linux:  "6706fe36e154fa9191414c35176698c6c3204ddae2ee3bdb415bbf5636b3099f"
+    sha256 arm64_sequoia: "fc55d5b5f7193e494077acfaf9da79163f44962d8f24d7bdaa739e0201378768"
+    sha256 arm64_sonoma:  "ce666362fc3920145ec84d9531254bc9fb1a92b508e50f2abcd165b6e369b288"
+    sha256 arm64_ventura: "12f9597158777fbb661390e7adc0897fa6e612ea29b6ba2d215b0f02ac970f4b"
+    sha256 sonoma:        "55798358539c094cdc9f98ab32bc98242a91f6b213be524984d5e2a6b1ee34ac"
+    sha256 ventura:       "e25267b441e7cf447735c507cebe1823dbf59d7877cfa59016e0a27bb44300ec"
+    sha256 arm64_linux:   "31831d1691b5620c39eab2792efc21ced6727a03964701853de1ca2513dff5f5"
+    sha256 x86_64_linux:  "706caba4460341801429861d75907f45be7d6bf01240715b7388753ce4ab3ad3"
   end
 
   head do
-    url "https://git.launchpad.net/squid", using: :git, branch: "v6"
+    url "https://github.com/squid-cache/squid.git", branch: "v6"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -38,15 +43,11 @@ class Squid < Formula
     # For --disable-eui, see:
     # https://www.squid-cache.org/mail-archive/squid-users/201304/0040.html
     args = %W[
-      --disable-debug
-      --disable-dependency-tracking
-      --prefix=#{prefix}
       --localstatedir=#{var}
       --sysconfdir=#{etc}
       --enable-ssl
       --enable-ssl-crtd
       --disable-eui
-      --enable-pf-transparent
       --with-included-ltdl
       --with-gnutls=no
       --with-nettle=no
@@ -57,8 +58,10 @@ class Squid < Formula
       --enable-storeio=yes
     ]
 
+    args << "--enable-pf-transparent" if OS.mac?
+
     system "./bootstrap.sh" if build.head?
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

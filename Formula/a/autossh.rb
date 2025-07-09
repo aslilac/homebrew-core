@@ -11,6 +11,8 @@ class Autossh < Formula
     regex(/href=.*?autossh[._-]v?(\d+(?:\.\d+)+[a-z]?)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "66600f6f9ea804ec6342ea35c6bd26c068802f31dce3eb09ec161eb67fde8415"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d6adeb0a9a13c4e256e4f585524fcb8c7ec49878d876f3d66ecbc9ec62474d16"
@@ -25,6 +27,7 @@ class Autossh < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "2674ee43690b5d99490a0979359fdefa52033650b935547a6353de726f916275"
     sha256 cellar: :any_skip_relocation, high_sierra:    "f88fcb32499fff8aa2899c85fc39dc6678ebed2849791a4312d427d9073b6b98"
     sha256 cellar: :any_skip_relocation, sierra:         "78d258f52bc14a2539da8c6d3ce69db5c062bb70e95130d9f22113720f853c67"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "d60fa3c4409563c4ee150db9420c1690afd67a5ddc4b275164a388543b2d6e54"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "382150d095c1ca848c38eabfd93635ecf9868291ec5cb85bdae6a16a53dc7ea9"
   end
 

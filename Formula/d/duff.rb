@@ -5,6 +5,8 @@ class Duff < Formula
   sha256 "15b721f7e0ea43eba3fd6afb41dbd1be63c678952bf3d80350130a0e710c542e"
   license "Zlib"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c424b8c034bc699eee2d55c766aad34f4f7ea1f46a5c6f0a6a221159917fd396"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bd400550da914ee690f2ff0798da5a8438afcbc68dd337da29b85f694724bdb6"
@@ -20,13 +22,16 @@ class Duff < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "a30c57c79b3cef30518fccc5227e954dd9a2383e15458f85706733dcc1fe188a"
     sha256 cellar: :any_skip_relocation, sierra:         "2af1262a9b02e687c0efc14eed3d837920ab746fe8fca9b12b9361c4729f06ef"
     sha256 cellar: :any_skip_relocation, el_capitan:     "8a469e92a6303d80752ebc80ade382261d263b9c7226ca6652eddc8954e5ff2f"
+    sha256                               arm64_linux:    "80433cfcf07a77634af2a91f787dfeff3d45744977bcd6dee1d90713e7de074f"
     sha256                               x86_64_linux:   "d2e177f7c17a8dad92be2c7597844a572e4db8a8c4bba5db934843325c5edc90"
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    args = ["--mandir=#{man}"]
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

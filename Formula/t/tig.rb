@@ -1,19 +1,18 @@
 class Tig < Formula
   desc "Text interface for Git repositories"
   homepage "https://jonas.github.io/tig/"
-  url "https://github.com/jonas/tig/releases/download/tig-2.5.10/tig-2.5.10.tar.gz"
-  sha256 "f655cc1366fc10058a2bd505bb88ca78e653ff7526c1b81774c44b9d841210e3"
+  url "https://github.com/jonas/tig/releases/download/tig-2.5.12/tig-2.5.12.tar.gz"
+  sha256 "5dda8a098810bb499096e17fc9f69c0a5915a23f46be27209fc8195d7a792108"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "4862a62a7c7967879894e3b095e1182b646d71739d64d18153ab4a63128b72a3"
-    sha256 cellar: :any,                 arm64_sonoma:   "372a23df16908a4ee4675c4dfdb9cd53f95968f6b62244e0e10bd84cb13ad660"
-    sha256 cellar: :any,                 arm64_ventura:  "8fafbc01320019683b4bb381cd95543d788408bcd217286422ab54e3180d2ee8"
-    sha256 cellar: :any,                 arm64_monterey: "7004415dce168189e7f459081d68baadfb8aa781733ae3a858307f0489ae939e"
-    sha256 cellar: :any,                 sonoma:         "e175be4f0484d331b148f01e8868f637b1e71969cafe0007bb6525c9d1e87598"
-    sha256 cellar: :any,                 ventura:        "13140511436346fbef6d45f20e5fffd4858f911601f1a50397fb9f34dbfb1599"
-    sha256 cellar: :any,                 monterey:       "c1a13170d288f0c098e1d5b6703ebbc807dfe32f4d5228f5b6b1c69524aefa08"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a2922e2c8f02dd9b87674969802439d113b62f6bb6af4ff2acd185bb35f3198b"
+    sha256 cellar: :any,                 arm64_sequoia: "ec253fa15a03de0700d9c0f9a14c3ae7b08f571699b3825998206ccabd71064d"
+    sha256 cellar: :any,                 arm64_sonoma:  "edb0ab2037d0f64854b02b1a833112a5270a5dbe141b4e75308c738b6e27d020"
+    sha256 cellar: :any,                 arm64_ventura: "6b982e872791e8a01725f6e1db1c488d9c77e321a0b6769568c503284bb4df1b"
+    sha256 cellar: :any,                 sonoma:        "f01d03e19a861f8bd0f0d98cfefed23d5c981ee985c7493c7db8c5d1cf2665b4"
+    sha256 cellar: :any,                 ventura:       "b0a904409d4bd3b97ec6462c54764284783d2ddf93b66ada941b997215c7abd5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6323819fb231932abc3ffddd85db0338395690e5b024c3a671af0996fd93671b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4a4b4183690c0a092452acce166b01db0e86c0fda649dae1b87ca8f5a2de206f"
   end
 
   head do
@@ -25,6 +24,7 @@ class Tig < Formula
     depends_on "xmlto" => :build
   end
 
+  depends_on "pkgconf" => :build
   # https://github.com/jonas/tig/issues/1210
   depends_on "ncurses"
   depends_on "pcre2"

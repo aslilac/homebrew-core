@@ -1,15 +1,17 @@
 class Metis < Formula
   desc "Programs that partition graphs and order matrices"
-  homepage "http://glaros.dtc.umn.edu/gkhome/views/metis"
-  url "http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/metis-5.1.0.tar.gz"
+  homepage "https://karypis.github.io/glaros/software/metis/overview.html"
+  url "https://karypis.github.io/glaros/files/sw/metis/metis-5.1.0.tar.gz"
   mirror "https://ftp.mcs.anl.gov/pub/pdetools/spack-pkgs/metis-5.1.0.tar.gz"
   sha256 "76faebe03f6c963127dbb73c13eab58c9a3faeae48779f049066a21c087c5db2"
   license "Apache-2.0"
 
   livecheck do
-    url "http://glaros.dtc.umn.edu/gkhome/metis/metis/download"
+    url :homepage
     regex(%r{href=.*?/metis[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "60ef633238eb902353465719c36fb64c5a325f823a203c1079c3e0358f72fd79"
@@ -26,6 +28,7 @@ class Metis < Formula
     sha256 cellar: :any,                 high_sierra:    "88b6965d941a87044150238387971c4bb94ed2ffca327affccaf311d666a2b4b"
     sha256 cellar: :any,                 sierra:         "9c8deed80ece8c24e7ebccbce8410557b27afe711d3f59fccb7d781254d0cc34"
     sha256 cellar: :any,                 el_capitan:     "54f75262475744bc6ad3ba66ac801e03c18bbac00a9bcf0ca9d05853f2022498"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "8703574aca9ad47530cd56fdb31ec1e24b16643390a0cda290e19271a9a47690"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d8daac6acbeaad9583ff26d72a8ad440ac41efb8656973213902bdfe66cd61e6"
   end
 

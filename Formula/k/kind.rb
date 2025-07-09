@@ -1,25 +1,25 @@
 class Kind < Formula
   desc "Run local Kubernetes cluster in Docker"
   homepage "https://kind.sigs.k8s.io/"
-  url "https://github.com/kubernetes-sigs/kind/archive/refs/tags/v0.25.0.tar.gz"
-  sha256 "016c36750be5c5fb81f70e4675ee0a4f278dd929f05273184ff68cae112ce71b"
+  url "https://github.com/kubernetes-sigs/kind/archive/refs/tags/v0.29.0.tar.gz"
+  sha256 "32fcd55671f241b7a782400e1bf1c762f9729526850e7eda08f56451f12268ea"
   license "Apache-2.0"
   head "https://github.com/kubernetes-sigs/kind.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "21d75dd243caf5a92783400b71472fd98e2c806e77f40dcb7c70f7cd081f2bd9"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "21d75dd243caf5a92783400b71472fd98e2c806e77f40dcb7c70f7cd081f2bd9"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "21d75dd243caf5a92783400b71472fd98e2c806e77f40dcb7c70f7cd081f2bd9"
-    sha256 cellar: :any_skip_relocation, sonoma:        "072b9207013e8a64230fae40fdc55d3014db5f42574c6dc988f899ab4635d8bf"
-    sha256 cellar: :any_skip_relocation, ventura:       "072b9207013e8a64230fae40fdc55d3014db5f42574c6dc988f899ab4635d8bf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7e68b6008d3d57cf4cbb5a497e4e99f094e3916c22e187314dff8903efef22b8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9dd60f52284f2aa41b0583a8fecb1374e5783522e85e5798198d913c2df6be6d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9dd60f52284f2aa41b0583a8fecb1374e5783522e85e5798198d913c2df6be6d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "9dd60f52284f2aa41b0583a8fecb1374e5783522e85e5798198d913c2df6be6d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "5aac5b104c34a17b82384b58921975cde430952ea32dbcaac6ddc61387d5fe27"
+    sha256 cellar: :any_skip_relocation, ventura:       "5aac5b104c34a17b82384b58921975cde430952ea32dbcaac6ddc61387d5fe27"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dda1ac55ddad86f969d5849ce0293ee57407acf0d0f7968211d80f63e8f8815b"
   end
 
   depends_on "go" => :build
   depends_on "docker" => :test
 
   def install
-    system "go", "build", *std_go_args
+    system "go", "build", *std_go_args(ldflags: "-s -w")
 
     generate_completions_from_executable(bin/"kind", "completion")
   end

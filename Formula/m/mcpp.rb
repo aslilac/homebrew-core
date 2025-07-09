@@ -10,6 +10,8 @@ class Mcpp < Formula
     regex(%r{url=.*?/mcpp[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "37f98fe44da635f01775091f8196d3eacb4b9dfcab22b5702488714ea4599cba"
@@ -26,6 +28,7 @@ class Mcpp < Formula
     sha256 cellar: :any,                 high_sierra:    "fe1489ca47b0d9e551b4aa1b6cb2a4135848be79e3982856442080f75fcb45d7"
     sha256 cellar: :any,                 sierra:         "cdd368c63dc6403832c938967f8f099ec3d02acfcc5c75ab0426ad1cd213b045"
     sha256 cellar: :any,                 el_capitan:     "0be73930b3dbc8bc247c9a26acbc6115d3f5f665daaabc9ab64606ac6793ace9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e3b5ff7ba12b3476bfdbc98e83a6aefb67ccee2a96201ac521baa85389585e73"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7869ff9d2c9946dd38a7891ea70766983208df755ca0f206016211b3239701c8"
   end
 
@@ -41,16 +44,26 @@ class Mcpp < Formula
     # Fix compile with newer Clang
     ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
 
-    system "./configure", *std_configure_args,
-                          "--enable-mcpplib"
+    # expand.c:713:21: error: assignment to 'char *' from
+    # incompatible pointer type 'LOCATION *' {aka 'struct location *'}
+    ENV.append_to_cflags "-Wno-error=incompatible-pointer-types"
+
+    args = []
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", "--enable-mcpplib", *args, *std_configure_args
     system "make", "install"
   end
 
   test do
-    (testpath/"test.c.in").write <<~EOS
+    # fix `warning: Unknown encoding: C.utf8`
+    ENV["LC_ALL"] = "en_US.UTF-8"
+
+    (testpath/"test.c.in").write <<~C
       #define RET 5
       int main() { return RET; }
-    EOS
+    C
 
     (testpath/"test.c").write shell_output("#{bin}/mcpp test.c.in")
     system ENV.cc, "test.c", "-o", "test"

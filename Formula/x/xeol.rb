@@ -1,17 +1,18 @@
 class Xeol < Formula
   desc "Xcanner for end-of-life software in container images, filesystems, and SBOMs"
   homepage "https://github.com/xeol-io/xeol"
-  url "https://github.com/xeol-io/xeol/archive/refs/tags/v0.10.1.tar.gz"
-  sha256 "1b88234abe2c3a1a8507d73cdb8a69d702d1b4cbf132e2f34b1fac2acf63250e"
+  url "https://github.com/xeol-io/xeol/archive/refs/tags/v0.10.8.tar.gz"
+  sha256 "d26842a3ef75feef22270db4250d16d106e7f9d3ac5f4300ede1b6fc795cdaeb"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2bd3e80ca52292192638e11010c592fb32f5a9c21f3f3692daed0a12112385ec"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5983ddd7e65eaaf3fcfd8e47ebb633062024ed0a23cacc63dca8fff8b09da984"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "f41e6a4a58e186e1026df9037a4b3adbf05d9a5b5d01c285509dd5b5dc518b14"
-    sha256 cellar: :any_skip_relocation, sonoma:        "69bb3213fc0ac10c0d1178920bafd8fe6c7e35032cfb687bd66a5063b0fbecd8"
-    sha256 cellar: :any_skip_relocation, ventura:       "6233ae913cba3a74fddf09b6b6e32f86c61ff257c74a1edc4e8af94b5082a1e0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a369ffdb59174b183b75e8992b77e288de42d3ec2d2bb8428194207552efea50"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "24658c7b39059111b71cfb881708de816018d13145e3c4e4603267c072e944fa"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5d967d219f6d7a044a13dd6e2efaa495947d68e0344699d013c6ad3942f7e1d4"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "3689cdfc20e5b62ed6853f8d71ef4695ba9a9e0884f5965ce5b5f4aafb5a24d9"
+    sha256 cellar: :any_skip_relocation, sonoma:        "504c4e3d827048d30f47dcab2d2717d13ba99e9a8d90e1775b99bfd5f85881d4"
+    sha256 cellar: :any_skip_relocation, ventura:       "3ee6c78f1c51e03f2d26121218c815959e2e7287b0825dbd56f92b7ffd0b0403"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "87ad9b0ee49109813a35ee1d7030457a1bf8a72cf75938562722389dfa1d26ff"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "386c785c6a49becb1da6ae31414ceb1d95b9ad8299d9ebb34afe0c10a6d98dbd"
   end
 
   depends_on "go" => :build

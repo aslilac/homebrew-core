@@ -6,6 +6,8 @@ class Fmpp < Formula
   license "Apache-2.0"
   revision 2
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any_skip_relocation, all: "fd2a84f1e4cb90f27ac04f99af1b5da3499c81e111e78370ebd71f448dd97d12"
@@ -21,7 +23,7 @@ class Fmpp < Formula
   test do
     (testpath/"input").write '<#assign foo="bar"/>${foo}'
     system bin/"fmpp", "input", "-o", "output"
-    assert_predicate testpath/"output", :exist?
+    assert_path_exists testpath/"output"
     assert_equal("bar", File.read("output"))
   end
 end

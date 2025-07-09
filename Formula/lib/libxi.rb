@@ -13,10 +13,11 @@ class Libxi < Formula
     sha256 cellar: :any,                 sonoma:         "912b8268b30dae048b52740eefbacda1b9767dc2db9469a2d34c395e0752c2b0"
     sha256 cellar: :any,                 ventura:        "7a214e9759c6d33f6554c7941f9fb5a08c2805e514a93053f087899df79a0eae"
     sha256 cellar: :any,                 monterey:       "e1621d00c64c524f3e511f93197e6323ae6c8f63d370730b8cc204ff1cd6c5e7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b2b86357aea40aebb92de04c90134a812a6f0f4ead1b0188f4f60b1d1d3846b5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6839d93e4dc8d53688515849ec4ec2d830946d6d26f6cfcca6402390bc0f1867"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libx11"
   depends_on "libxext"
   depends_on "libxfixes"
@@ -26,16 +27,14 @@ class Libxi < Formula
 
   def install
     args = %W[
-      --prefix=#{prefix}
       --sysconfdir=#{etc}
       --localstatedir=#{var}
-      --disable-dependency-tracking
       --disable-silent-rules
       --enable-docs=no
       --enable-specs=no
     ]
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
   end

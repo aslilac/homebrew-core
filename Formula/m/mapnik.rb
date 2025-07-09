@@ -3,10 +3,9 @@ class Mapnik < Formula
   homepage "https://mapnik.org/"
   # needs submodules
   url "https://github.com/mapnik/mapnik.git",
-      tag:      "v4.0.3",
-      revision: "e7a2bacb5d70f9c5fe0941906ce19137c0928522"
+      tag:      "v4.1.1",
+      revision: "bb6aaa0cdd9f54cd08426e9c0fe051bc7a25072c"
   license "LGPL-2.1-or-later"
-  revision 1
   head "https://github.com/mapnik/mapnik.git", branch: "master"
 
   livecheck do
@@ -15,22 +14,23 @@ class Mapnik < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "c2f53c73cb863d507c63ba16d504cd889fdef52f305e56455ddb9a16a78da696"
-    sha256 cellar: :any,                 arm64_sonoma:  "bc951c686a7cce9bf1069a47fb25f9e70be7e201c0929c0df1cc3d3e07bcbec6"
-    sha256 cellar: :any,                 arm64_ventura: "2afa947389d44d8b746c4c597e9fe820f09affd07ad6509ddd9940af219adaec"
-    sha256 cellar: :any,                 sonoma:        "344f16b532559a658cba16cb53c396b03eae00494531cddc1a2bec7d69e28a9a"
-    sha256 cellar: :any,                 ventura:       "7754a4b78717da179701e04485bad90d6f7b0a83e3344a818b296cd6ed2dcca2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "73fce4531add2edd775a13e81a424f0b5e61e46eb92d61d50775e889a0ed8c34"
+    sha256 cellar: :any, arm64_sequoia: "a8a18dcd2aff757d8039104c1eeeff563c50b75beba3d0cdefd0d42cb495509c"
+    sha256 cellar: :any, arm64_sonoma:  "35a80d8fb5c9598e754761f6179fee5a29587a58636c718f4f49c618cdb0d422"
+    sha256 cellar: :any, arm64_ventura: "bbc76eab5faedaad2b735995fc68b889c569065042428966e7cb2c4adeb79118"
+    sha256 cellar: :any, sonoma:        "01cae45f2d7dea3a35bda47e178b411f8143f8263ebf15ab7ce37f1ce5d48400"
+    sha256 cellar: :any, ventura:       "ebd5c3b128627cdddc145760edb09956520e8ec631629ed5da1683a4747277a2"
+    sha256               arm64_linux:   "36be1b0ffdbc17b846e953b52e56f8f48f55eed2deb934a61b1807f9d4d14a5c"
+    sha256               x86_64_linux:  "18d0ae221b4a8b08eadc0ec1c17186e662cfdd2f6afd81b5914299a3fc6a3c04"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "boost"
   depends_on "cairo"
   depends_on "freetype"
   depends_on "gdal"
   depends_on "harfbuzz"
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libpq"
@@ -46,20 +46,21 @@ class Mapnik < Formula
   conflicts_with "svg2png", because: "both install `svg2png` binaries"
 
   def install
-    cmake_args = std_cmake_args
-    cmake_args << "-DBUILD_BENCHMARK:BOOL=OFF"
-    cmake_args << "-DBUILD_DEMO_CPP:BOOL=OFF"
-    cmake_args << "-DBUILD_DEMO_VIEWER:BOOL=OFF"
-    cmake_args << "-DCMAKE_INSTALL_RPATH:PATH=#{rpath}"
+    cmake_args = %W[
+      -DBUILD_BENCHMARK:BOOL=OFF
+      -DBUILD_DEMO_CPP:BOOL=OFF
+      -DBUILD_DEMO_VIEWER:BOOL=OFF
+      -DCMAKE_INSTALL_RPATH:PATH=#{rpath}
+    ]
 
-    system "cmake", "-S", ".", "-B", "build", *cmake_args
+    system "cmake", "-S", ".", "-B", "build", *cmake_args, *std_cmake_args
     system "cmake", "--build", "build"
     system "ctest", "--verbose", "--parallel", ENV.make_jobs, "--test-dir", "build"
     system "cmake", "--install", "build"
   end
 
   test do
-    output = shell_output("#{Formula["pkg-config"].bin}/pkg-config libmapnik --variable prefix").chomp
+    output = shell_output("#{Formula["pkgconf"].bin}/pkgconf libmapnik --variable prefix").chomp
     assert_equal prefix.to_s, output
 
     output = shell_output("#{bin}/mapnik-index --version 2>&1", 1).chomp

@@ -1,8 +1,8 @@
 class Tinymist < Formula
   desc "Language server for Typst"
-  homepage "https://github.com/Myriad-Dreamin/tinymist"
-  url "https://github.com/Myriad-Dreamin/tinymist/archive/refs/tags/v0.12.4.tar.gz"
-  sha256 "2986bd1c524b43a1839d754966fda2659ccf3f26f96573e040b5896405c1835d"
+  homepage "https://myriad-dreamin.github.io/tinymist/"
+  url "https://github.com/Myriad-Dreamin/tinymist/archive/refs/tags/v0.13.14.tar.gz"
+  sha256 "65a5f90297ed89652802993d0b4b9504b2b5ec2b54fd23935b48976301a046d7"
   license "Apache-2.0"
   head "https://github.com/Myriad-Dreamin/tinymist.git", branch: "main"
 
@@ -15,12 +15,13 @@ class Tinymist < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c2d4068624d3cbcdb112e6b33b47013b4accdde36756bc55c73571f92eb18c71"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "58f8bc614b6bf5ac08a48df57dc640850012c1ae41954c9bd89bdc64f5c4bd67"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "f1af17ddd310495bf6096439ea7e49a703da5fca494fd2d28dbe36072d8bbc36"
-    sha256 cellar: :any_skip_relocation, sonoma:        "3355b85389155fbb1811824fef5c618f400c81c6853d19ad7848fdd6356fad7e"
-    sha256 cellar: :any_skip_relocation, ventura:       "42c9f3c6c30d063e526e479a6f4b9d30c44b2e43c33acc5dedb6e332b5954e52"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "21baa6247af206353ebea1067ec2bc792d1d0cbab1fc6e1261f08f2b810c8dbc"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5b1874cea802c1427be1379d4687089dd2dd0fc1a5ab8ba4e3b9d6373ab1d872"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7825434cbc6a64b588b92013811a5fd67380fd6753723a2b54e41e295c8bb4b8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d1febcba3e119d4cd87d751a3390b6d89141532f0b1ed1592d5684b7d323e78d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "fb10f453075db815b295552ea29dd372ac9bc17db199d65b5dc8641075da0a3b"
+    sha256 cellar: :any_skip_relocation, ventura:       "ea096f5a455031efb11c848426f81be6ae7cb6ea1b9afe38e559438427d04fdf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3dfe4a9d9f768172438778bdbf37ee33ceaf5c6db810b5beaee8b10387d7e060"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e38da90107e6373ca7e1df79c21d122f9a13816bda9cd105c04f4aa48f5440c0"
   end
 
   depends_on "rust" => :build

@@ -6,6 +6,8 @@ class Pelikan < Formula
   license "Apache-2.0"
   head "https://github.com/twitter/pelikan.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "cf1eea879a3b1eb8ec2d34616519f383cadea119d9dfec32ef89f93c5de3f248"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "6074fdbebf10e608f76145fc4d41cf9be62d3b3ac67cf6b50ab1a1c21c0da76f"
@@ -21,6 +23,7 @@ class Pelikan < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "a80ae1b508d4eae75d03fc5ad07477039a50a37419681b2472af4f9dc5f240ea"
     sha256 cellar: :any_skip_relocation, sierra:         "37a675674b7ef33f07099029042f56c054f09b5d22400010d583fbfa41c0ce50"
     sha256 cellar: :any_skip_relocation, el_capitan:     "e314ce6288bf76e271bf69ce844e2e846b16cad68ce635faf1e5130c3c6911d0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f6fd25c2f404b5f43c23612cd1c87f1d5f87828da5110c903af3b3c58a66c7b4"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "313be126d5718e0053ce871bbc09446325c24d3bce02117d940dcb45a922c99a"
   end
 

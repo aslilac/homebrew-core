@@ -1,9 +1,10 @@
 class DsdaDoom < Formula
   desc "Fork of prboom+ with a focus on speedrunning"
   homepage "https://github.com/kraflab/dsda-doom"
-  url "https://github.com/kraflab/dsda-doom/archive/refs/tags/v0.28.2.tar.gz"
-  sha256 "5cab9227a5ab1c6fded71321c2d9ae2b481e8defc7f04ea9ca232cb13b856ce6"
+  url "https://github.com/kraflab/dsda-doom/archive/refs/tags/v0.29.3.tar.gz"
+  sha256 "9b9218d26055d2e2a3b830913cfe52f56b2a6dd4a16720634f0bc5dbe560fb84"
   license "GPL-2.0-only"
+  revision 1
   head "https://github.com/kraflab/dsda-doom.git", branch: "master"
 
   livecheck do
@@ -12,18 +13,19 @@ class DsdaDoom < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "db6649329c85718257a641fe1e7fb9786aeb269b472117f4c46c8e225476507e"
-    sha256 arm64_sonoma:  "672879822807be377967aed7039acac226ca7da4242f49f04f697a7cd4bc7bb5"
-    sha256 arm64_ventura: "4fc7d8a2c44c191d1d6eb0d679dbdb38ce63b0d76858fea613bf1fe4edeecbb5"
-    sha256 sonoma:        "5eb2c7e28e9c677dbd6d2b70e6ac704c9f90d809e04cf06133f9101130a685a6"
-    sha256 ventura:       "263b370dcd5a634a5eae6cfe4f0f14ccf5e121cd4750806912616e9d30973d8b"
-    sha256 x86_64_linux:  "bea4d211577ca8450b598010d90ab9f915918bcc7ecbb80bd1d8ff63688029f9"
+    sha256 arm64_sequoia: "a055e107d33729ce1251c9d4dddab9ec29c4df7e62e96875da12d8405ed669fd"
+    sha256 arm64_sonoma:  "f39be35e19a405dfb4f2d19959cc937f64f9d8f7df14ba877ae5e30b0032991b"
+    sha256 arm64_ventura: "891630b837903ceff3bb20177bca6ead60f6d488f5200062e02a2c93b57466d1"
+    sha256 sonoma:        "45485a08e04fcdb05c0c2786431ea68a494032db0b85a494c59a389317a3f03e"
+    sha256 ventura:       "e9a0cd7a8aad28b0c20c588e82b0517ecf84d8b910a96f4b4e5f88bec6efc4fb"
+    sha256 arm64_linux:   "9b892f7df0a302c769bc55e2314d6920ba8d5c9932abffdebde0c25cfc8e27c9"
+    sha256 x86_64_linux:  "ee6294b5d234e411f001f709e963a008dd39a15586295283610337be1b8e1f8f"
   end
 
   depends_on "cmake" => :build
 
-  depends_on "dumb"
   depends_on "fluid-synth"
+  depends_on "libopenmpt"
   depends_on "libvorbis"
   depends_on "libzip"
   depends_on "mad"
@@ -51,9 +53,9 @@ class DsdaDoom < Formula
     system "cmake", "-S", "prboom2", "-B", "build",
                     "-DDOOMWADDIR=#{doomwaddir(HOMEBREW_PREFIX)}",
                     "-DDSDAPWADDIR=#{libexec}",
-                    "-DWITH_DUMB=OM",
                     "-DWITH_FLUIDSYNTH=ON",
                     "-DWITH_IMAGE=ON",
+                    "-DWITH_LIBOPENMPT=ON",
                     "-DWITH_MAD=ON",
                     "-DWITH_PORTMIDI=ON",
                     "-DWITH_VORBISFILE=ON",

@@ -7,6 +7,8 @@ class Dump1090Mutability < Formula
   license "GPL-2.0-or-later"
   revision 3
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "efa32621a9a3d6334c711608e079d435f6af49eb4879442ab499cde1b6d3699d"
     sha256 cellar: :any,                 arm64_sonoma:   "e58f730410669a3d0cebde197feec0c661b6b868518f6bd503f8474fd507c180"
@@ -15,6 +17,7 @@ class Dump1090Mutability < Formula
     sha256 cellar: :any,                 sonoma:         "8d910c212fa188391204d5e4c7d5cb9c41fba1712164f13e05538636734c2676"
     sha256 cellar: :any,                 ventura:        "137e2d13e0e5aab68484b897699777c56be1c4c9f5093c057c7d0856ba70a342"
     sha256 cellar: :any,                 monterey:       "8a474349c0344e7eb93212ca5e0f4a60059d1e1ec9f782171213af120a3e7ee8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "98114d5ca14d3800d2ecd5809e4c49a61d2168a0a569402ea9cf2133b3653ba6"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6e554a1e935e5eb47e04660041e611ef0a947ab2c8241bc3a25346363ee06ce8"
   end
 

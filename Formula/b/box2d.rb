@@ -1,43 +1,51 @@
 class Box2d < Formula
   desc "2D physics engine for games"
   homepage "https://box2d.org"
-  url "https://github.com/erincatto/box2d/archive/refs/tags/v2.4.2.tar.gz"
-  sha256 "85b9b104d256c985e6e244b4227d447897fac429071cc114e5cc819dae848852"
+  url "https://github.com/erincatto/box2d/archive/refs/tags/v3.1.1.tar.gz"
+  sha256 "fb6ef914b50f4312d7d921a600eabc12318bb3c55a0b8c0b90608fa4488ef2e4"
   license "MIT"
   head "https://github.com/erincatto/Box2D.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5fb381cacb973bb83acea61d445f4481e2986077925c462a72f0e42a56204761"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1004520deaab7266d3e2a3376c88c6a5ecbb0a5661fa0f758f9019a3fcaa4afa"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "690e7314d93f6ce71411117355a7bbb20e80af3b6ee5e8ec3dc8a0206f8f8185"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "348e4835ab1d24fa9e5235881f7c2c1093aff7ed608830bdf505f89194190e75"
-    sha256 cellar: :any_skip_relocation, sonoma:         "91c0f27f23c15f669953359c166972a465d9dca11045281050ed3e3bbcb12122"
-    sha256 cellar: :any_skip_relocation, ventura:        "f0aebdc3f3d506c0b2018588cc9cefc6ee66b8d002218f617c16e9011d126656"
-    sha256 cellar: :any_skip_relocation, monterey:       "abc781043d1cc1b62bffcba6593071884bc624451beae3552324b59333449b8a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7fcc479cc9727d27fc40725c5aed9f937a3a5aa06682a6b9affd4a0e7f9d3e74"
+    sha256 cellar: :any,                 arm64_sequoia: "1caaf1c980effd48d3eed26366c13660960a289ac51526b68816679f6284631a"
+    sha256 cellar: :any,                 arm64_sonoma:  "c5ad8a041d04cbefb6674fe3d3337bdcdf451cb7ef311894ff6014245ce7b658"
+    sha256 cellar: :any,                 arm64_ventura: "c3eb47d52d68d2dea3679cf170ec01746dedc77bfc77386d6beb04ad29af28a5"
+    sha256 cellar: :any,                 sonoma:        "37aa98eb7c538baac562620e3aed1187e0d23c713d73c8ec4c2def5c340d049b"
+    sha256 cellar: :any,                 ventura:       "143f1e6e3f276f9e7ec87ea5d8b6f5056ac0388ad9f65c20998d16886e7a51f0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "4c7471357570866b88743c8207c45e190e9478ecd7a0c44fbaf0bb603015df95"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "36086574d8eb78f65b8c94dc4ae1b94e9df18356c2636bf91b3a3bbffcc4805b"
   end
 
   depends_on "cmake" => :build
-  depends_on "doctest" => :test
 
   def install
     args = %w[
-      -DBOX2D_BUILD_UNIT_TESTS=OFF
-      -DBOX2D_BUILD_TESTBED=OFF
-      -DBOX2D_BUILD_EXAMPLES=OFF
+      -DBUILD_SHARED_LIBS=ON
+      -DBOX2D_UNIT_TESTS=OFF
+      -DBOX2D_SAMPLES=OFF
+      -DBOX2D_BENCHMARKS=OFF
     ]
 
-    system "cmake", ".", *args, *std_cmake_args
-    system "cmake", "--build", "."
-    system "cmake", "--install", "."
-    pkgshare.install "unit-test/hello_world.cpp"
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
+
+    include.install Dir["include/*"]
   end
 
   test do
-    system ENV.cxx, pkgshare/"hello_world.cpp",
-                    "-I#{Formula["doctest"].opt_include}/doctest",
-                    "-L#{lib}", "-lbox2d",
-                    "-std=c++11", "-o", testpath/"test"
-    assert_match "[doctest] Status: SUCCESS!", shell_output("./test")
+    (testpath/"test.cpp").write <<~CPP
+      #include <iostream>
+      #include <box2d/base.h>
+
+      int main() {
+        b2Version version = b2GetVersion();
+        std::cout << "Box2D version: " << version.major << "." << version.minor << "." << version.revision << std::endl;
+        return 0;
+      }
+    CPP
+
+    system ENV.cxx, "test.cpp", "-I#{include}", "-L#{lib}", "-lbox2d", "-o", "test"
+    assert_match version.to_s, shell_output("./test")
   end
 end

@@ -5,6 +5,8 @@ class Poster < Formula
   sha256 "1df49dfd4e50ffd66e0b6e279b454a76329a36280e0dc73b08e5b5dcd5cff451"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e1d75eca414c1495f824f18e6b8007e5352233f9afb9c63d2b588f15f0a44cf8"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9391507786944573699dca31e2089215514fbc3785b8cac70bf3576db33328fc"
@@ -20,6 +22,7 @@ class Poster < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "74db7055649cd3f68316b99db48139641f916b4434008300f2bfcd1146f92c77"
     sha256 cellar: :any_skip_relocation, sierra:         "caa5474e5d7baf13ae6495c01a7530146d55531e41c88a469b0e44ee892c4be4"
     sha256 cellar: :any_skip_relocation, el_capitan:     "07702fc6f1d43a3875637f8ff9d3509d6eb913abda301c24c23d824a76a858b6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "23bc2f446f1525bd074e89f5165a233c8e0080d454d00bd4a4dbbab884334ea1"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "623f96d36fc59df594dd8ed5e0073b1d2892e083176346e93821436664351909"
   end
 

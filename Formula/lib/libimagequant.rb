@@ -1,19 +1,18 @@
 class Libimagequant < Formula
   desc "Palette quantization library extracted from pnquant2"
   homepage "https://pngquant.org/lib/"
-  url "https://github.com/ImageOptim/libimagequant/archive/refs/tags/4.3.3.tar.gz"
-  sha256 "c50a59003a4c4ce53c76314e62f1e86d86d882bc09addb13daa0faa9260b9614"
+  url "https://github.com/ImageOptim/libimagequant/archive/refs/tags/4.4.0.tar.gz"
+  sha256 "22f90ad2ba87fe44d8156862798491bf056034f031a9b8b95d720669047ede20"
   license all_of: ["GPL-3.0-or-later", "HPND"]
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "f411bdf39fe60ea4ed53aecdd492797922f06b0689bb04c3f02052af55a18d35"
-    sha256 cellar: :any,                 arm64_sonoma:   "979e2b7ba7184cfa5c8f7f6c6f49ac20483c319421ea0de84e64846683635d5f"
-    sha256 cellar: :any,                 arm64_ventura:  "aa15ba471418f6a856f757c0bd1a5cec72a395dd6165fb047de74a2cb49e1762"
-    sha256 cellar: :any,                 arm64_monterey: "b992cfca22175166db0ff267ad0b1e8e45302670abb24c6766e1ca397239965f"
-    sha256 cellar: :any,                 sonoma:         "c7abdc523621e1b109df3441e62897806e25adf78d5a8ad6458102a9d1d8b2f1"
-    sha256 cellar: :any,                 ventura:        "a73a58ebbfe42f237b93273f9a00b6a074cb98fa44ddd5bc7709531108ab8d47"
-    sha256 cellar: :any,                 monterey:       "dab7441d58d0073025823ae1925c5aa10cd14258f0d134b0fdff4d6f5f7fa6d5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d6c9141dc8c392d162db72c6038c546e7ea82194c517a948ce3c6c43b40ddfe1"
+    sha256 cellar: :any,                 arm64_sequoia: "8784275e2aceca5533694ca52faa75e2694a03f001f965f1035f79a01152dda9"
+    sha256 cellar: :any,                 arm64_sonoma:  "867e588a9f65b89a23e681c78b9eeea2790c0295f77869f98893b7cc8a51b8e4"
+    sha256 cellar: :any,                 arm64_ventura: "f705e5e5888cb00724316dc2913e6ee50b57e271696b7935d298042ee9d9e98a"
+    sha256 cellar: :any,                 sonoma:        "ae9125337223eaf632c9b9505081fb5e17661b1ced908126a7460e80fff87d3e"
+    sha256 cellar: :any,                 ventura:       "bd887016de402061c11307ce5cd7dd8f413b8998aab8ec1244258951088dc072"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "47e8418707d9b441ad61c1ada6c266bf40ce218907703be292fad76decb08063"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "466d5dd7b6128f807b50202517f5c78deb6652fde478e734b3ae99fabd2c45e4"
   end
 
   depends_on "cargo-c" => :build

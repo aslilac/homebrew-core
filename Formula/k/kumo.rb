@@ -10,6 +10,8 @@ class Kumo < Formula
     regex(%r{<version>v?(\d+(?:\.\d+)+)</version>}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any_skip_relocation, all: "964493ca566d7dc73ab4519fa820e7360981acd9d8d343920f843b83642cc008"
@@ -24,6 +26,6 @@ class Kumo < Formula
 
   test do
     system bin/"kumo", "-i", "https://wikipedia.org", "-o", testpath/"wikipedia.png"
-    assert_predicate testpath/"wikipedia.png", :exist?, "Wordcloud was not generated!"
+    assert_path_exists testpath/"wikipedia.png", "Wordcloud was not generated!"
   end
 end

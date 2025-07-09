@@ -7,6 +7,8 @@ class Libbi < Formula
   revision 5
   head "https://github.com/lawmurray/LibBi.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5fef4f3574955d3f11d14e49034c502988764eb169d5b4a74fc8dbbfce461225"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a6cacb6474adcb43e3e4cc0434721b474a8a9749102c397fd0e69fe3ff4e8333"
@@ -15,6 +17,8 @@ class Libbi < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "d5dcac53e5859b062603ed726c70d2d4fb9d46e317a9238ec5e4ff3c973f41cc"
     sha256 cellar: :any_skip_relocation, ventura:        "ef73bed34be4fd7cb1579190d6422266e84aca5bb7da499720bce3ff3f56f7c9"
     sha256 cellar: :any_skip_relocation, monterey:       "70f2987d8bc35f8d6dc5004e02c46e4d8936e30dd2472821f2247126b56bba10"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "9d7b9882a40417f97c719dee775dd0fdf9c54d25c0717a96101105f4cd82540a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "20f25556a4e78e00b4cfd286563a225f5ccb4c200510461dbd21925b662f6e89"
   end
 
   depends_on "automake"
@@ -136,22 +140,17 @@ class Libbi < Formula
     end
 
     system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}", "INSTALLSITESCRIPT=#{bin}"
-
-    # Disable dynamic selection of perl which may cause segfault when an
-    # incompatible perl is picked up.
-    # See, e.g., https://github.com/Homebrew/homebrew-core/issues/4936
-    inreplace "script/libbi", "#!/usr/bin/env perl", "#!/usr/bin/perl"
-
     system "make"
     system "make", "install"
 
     pkgshare.install "Test.bi", "test.conf"
-    bin.env_script_all_files(libexec+"bin", PERL5LIB: ENV["PERL5LIB"])
+    bin.env_script_all_files(libexec/"bin", PERL5LIB: ENV["PERL5LIB"])
   end
 
   test do
+    ENV.append "LDFLAGS", "-Wl,-rpath,#{HOMEBREW_PREFIX}/lib" if OS.linux?
     cp Dir[pkgshare/"Test.bi", pkgshare/"test.conf"], testpath
     system bin/"libbi", "sample", "@test.conf"
-    assert_predicate testpath/"test.nc", :exist?
+    assert_path_exists testpath/"test.nc"
   end
 end

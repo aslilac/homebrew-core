@@ -1,10 +1,9 @@
 class MingwW64 < Formula
   desc "Minimalist GNU for Windows and GCC cross-compilers"
   homepage "https://sourceforge.net/projects/mingw-w64/"
-  url "https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v12.0.0.tar.bz2"
-  sha256 "cc41898aac4b6e8dd5cffd7331b9d9515b912df4420a3a612b5ea2955bbeed2f"
+  url "https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v13.0.0.tar.bz2"
+  sha256 "5afe822af5c4edbf67daaf45eec61d538f49eef6b19524de64897c6b95828caf"
   license "ZPL-2.1"
-  revision 1
 
   livecheck do
     url :stable
@@ -12,18 +11,17 @@ class MingwW64 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "9c50b0cbeac45e0ca35f410e18c14018c665aa4bbdea9adf749ee96e677af13e"
-    sha256 arm64_sonoma:   "00b5146a2b3bbd942ecf749baa930e2f7b1d5a425cadb69a8f233883eb926e63"
-    sha256 arm64_ventura:  "c52e1f08ce3a00d33b125d85bb8a0a12f03f619c35f65ec8eed8adea99e8498f"
-    sha256 arm64_monterey: "883e7f44acb2e714e7a698f576c32a096bf34edc0627f101cd5e48c26f63eb1c"
-    sha256 sonoma:         "dbfb198d40cff9bb93ac41f0a4422fe823fde2fd2610052956dbc4037e51c482"
-    sha256 ventura:        "eed47c1f6336d28f4cebc5644202bfbc8e7723ef16cc8eef1ab50c3577f6a02b"
-    sha256 monterey:       "5c24fa44d33423e55ac48c43575764e522d46675cdea49ad8d1b6d609b7a7509"
-    sha256 x86_64_linux:   "1b00797a89f30786da9886ac657527b5c8e2dc98432679e9fafc7f7d230e9e87"
+    sha256 arm64_sequoia: "cc7fe16c47d1f1f5f9410d05e02149b62ad97dbf77db7d85c05cda4785540579"
+    sha256 arm64_sonoma:  "c9717e6c2afeb5954b82e626a8bbd5f7ace1178ee1fcd13783693022a62c6aea"
+    sha256 arm64_ventura: "2ffcf5043e9003de19185390981b962a78211998eb076047f475c4689e3f29c3"
+    sha256 sonoma:        "9bf52b59b8df4beb447f1fe1df92678fd1a22185039ded5804d74d6c7d61fe50"
+    sha256 ventura:       "2cbccdaebf5b4e406ad8e8716dbeda3a1aa68f10548f5322d2b118ca0ea6c337"
+    sha256 arm64_linux:   "37abe99b98f11b17e639a4368dd6f04dbb756fcfb94ced37d6c4440dcd8756a9"
+    sha256 x86_64_linux:  "e0534e850ad819565968460b4e9135fd1f0351f810f06bef08f232ff7372ae43"
   end
 
   # binutils searches for zstd using pkg-config
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   # Apple's makeinfo is old and has bugs
   depends_on "texinfo" => :build
 
@@ -36,15 +34,15 @@ class MingwW64 < Formula
   uses_from_macos "zlib"
 
   resource "binutils" do
-    url "https://ftp.gnu.org/gnu/binutils/binutils-2.43.1.tar.bz2"
-    mirror "https://ftpmirror.gnu.org/binutils/binutils-2.43.1.tar.bz2"
-    sha256 "becaac5d295e037587b63a42fad57fe3d9d7b83f478eb24b67f9eec5d0f1872f"
+    url "https://ftp.gnu.org/gnu/binutils/binutils-2.44.tar.bz2"
+    mirror "https://ftpmirror.gnu.org/binutils/binutils-2.44.tar.bz2"
+    sha256 "f66390a661faa117d00fab2e79cf2dc9d097b42cc296bf3f8677d1e7b452dc3a"
   end
 
   resource "gcc" do
-    url "https://ftp.gnu.org/gnu/gcc/gcc-14.2.0/gcc-14.2.0.tar.xz"
-    mirror "https://ftpmirror.gnu.org/gcc/gcc-14.2.0/gcc-14.2.0.tar.xz"
-    sha256 "a7b39bc69cbf9e25826c5a60ab26477001f7c08d85cec04bc0e29cabed6f3cc9"
+    url "https://ftp.gnu.org/gnu/gcc/gcc-15.1.0/gcc-15.1.0.tar.xz"
+    mirror "https://ftpmirror.gnu.org/gcc/gcc-15.1.0/gcc-15.1.0.tar.xz"
+    sha256 "e2b09ec21660f01fecffb715e0120265216943f038d0e48a9868713e54f06cea"
   end
 
   def target_archs
@@ -232,7 +230,7 @@ class MingwW64 < Formula
       assert_match "file format pei-#{outarch}", shell_output("#{bin}/#{target}-objdump -a test.exe")
 
       system bin/"#{target}-widl", "example.idl"
-      assert_predicate testpath/"example_s.c", :exist?, "example_s.c should have been created"
+      assert_path_exists testpath/"example_s.c", "example_s.c should have been created"
     end
   end
 end

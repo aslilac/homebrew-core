@@ -4,6 +4,7 @@ class Minica < Formula
   url "https://github.com/jsha/minica/archive/refs/tags/v1.1.0.tar.gz"
   sha256 "4f56ea73d2a943656f8a5b533e554b435bc10f56c12d0b53836e84a96b513bf7"
   license "MIT"
+  head "https://github.com/jsha/minica.git", branch: "master"
 
   livecheck do
     url :stable
@@ -24,11 +25,11 @@ class Minica < Formula
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-o", bin/"minica"
+    system "go", "build", *std_go_args(ldflags: "-s -w")
   end
 
   test do
     system bin/"minica", "--domains", "foo.com"
-    assert_predicate testpath/"minica.pem", :exist?
+    assert_path_exists testpath/"minica.pem"
   end
 end

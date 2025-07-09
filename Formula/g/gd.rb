@@ -6,6 +6,8 @@ class Gd < Formula
   license "GD"
   revision 6
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "c4e22a92d28f3b8a49c10e29cf04f5a9b4b4932691ec4326021bc149ac0dae4c"
     sha256 cellar: :any,                 arm64_sonoma:   "e278f6f79e6ac00c5f0f14bc8980197c89426eab2ba90d8fc1e82da777fb8378"
@@ -16,6 +18,7 @@ class Gd < Formula
     sha256 cellar: :any,                 ventura:        "4a75b4a92fbe6e26a47104496b6bfbaeffa73ac76d4290e68e81603de5b0f41f"
     sha256 cellar: :any,                 monterey:       "4921f275ca5a840aaa215939f80dbb4adef8a13b2bcd43608428518d4730cad4"
     sha256 cellar: :any,                 big_sur:        "f398c94388423665c26840a86d073ba43da0b519ea3b114c58d14e50edbdd47d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "dd5992ca69dd7f7e38228b403e1e4297b56eee6850a7b59a592da2130d158ec7"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "da124ea2c614748107f9683ed08afa140d98a5d429332137f4f6ce17460360ec"
   end
 
@@ -34,6 +37,8 @@ class Gd < Formula
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "webp"
+
+  conflicts_with "mummer", because: "both install `annotate` binaries"
 
   # revert breaking changes in 2.3.3, remove in next release
   patch do

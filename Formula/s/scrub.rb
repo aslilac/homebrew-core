@@ -6,6 +6,8 @@ class Scrub < Formula
   sha256 "43d98d3795bc2de7920efe81ef2c5de4e9ed1f903c35c939a7d65adc416d6cb8"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "6b5104b893d57f47767bfd57cd943551d95cd9b322645a56fdb18ba325904b02"
@@ -22,6 +24,7 @@ class Scrub < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "c9e96dce0a6f2d7c3b32d481aae3a3aa2c0f42cd3c53b10e2fd60c6479ebf128"
     sha256 cellar: :any_skip_relocation, sierra:         "703ee9b222437bf008ceaa25ab802ace51f207bcba8503f88037896aee2fde40"
     sha256 cellar: :any_skip_relocation, el_capitan:     "82343d8c3b64b876f8afb208059c3a916590b45fe7998ee412d91d3df161fc92"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "13552750a7d0fe72a0aba49be8fa09171ef38c2601a0ea859ae279795f076255"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7a70d052c1010c990d18bf17558ef04b4c9949ce65e42c25fddc9f8fcff2f371"
   end
 
@@ -33,9 +36,15 @@ class Scrub < Formula
   end
 
   def install
-    system "./autogen.sh" if build.head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = []
+    if build.head?
+      system "./autogen.sh"
+    elsif OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+      # Help old config scripts identify arm64 linux
+      args << "--build=aarch64-unknown-linux-gnu"
+    end
+
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 
@@ -45,6 +54,6 @@ class Scrub < Formula
 
     output = shell_output("#{bin}/scrub -r -p dod #{path}")
     assert_match "scrubbing #{path}", output
-    refute_predicate path, :exist?
+    refute_path_exists path
   end
 end

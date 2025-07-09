@@ -11,6 +11,8 @@ class Zip < Formula
     regex(%r{url=.*?/v?(\d+(?:\.\d+)+)/zip\d+\.(?:t|zip)}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "525f3c06d55dd30c2c67b44f28070a53c258328b669ce3a36b8d12fb5d533750"
@@ -24,6 +26,7 @@ class Zip < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "fac1760831eeaab6595e56b31f38d2c768de2e7c214a6f646a61ef16429a4b91"
     sha256 cellar: :any_skip_relocation, catalina:       "36f8c3138ed2e1110de5dc4c9ffd3616572ee1e4ec1ea63a3925f6c45e889e0d"
     sha256 cellar: :any_skip_relocation, mojave:         "16f22ea28d2c69d40772820c3e94c0a8510e6f05da4221ffd30b99b47fea5d7c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "05abc07c9a205463418ad94534a9f36f1065555ef3dcf7494be5d77cb9bbd194"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ce503e630831ea12bb87e28c2668a185cb12a94680f4f42b791b6e4a19af2e87"
   end
 
@@ -68,13 +71,13 @@ class Zip < Formula
     (testpath/"test3").write "Moien!"
 
     system bin/"zip", "test.zip", "test1", "test2", "test3"
-    assert_predicate testpath/"test.zip", :exist?
+    assert_path_exists testpath/"test.zip"
     # zip -T needs unzip, disabled under Linux to avoid a circular dependency
     assert_match "test of test.zip OK", shell_output("#{bin}/zip -T test.zip") if OS.mac?
 
     # test bzip2 support that should be automatically linked in using the bzip2 library in macOS
     system bin/"zip", "-Z", "bzip2", "test2.zip", "test1", "test2", "test3"
-    assert_predicate testpath/"test2.zip", :exist?
+    assert_path_exists testpath/"test2.zip"
     # zip -T needs unzip, disabled under Linux to avoid a circular dependency
     assert_match "test of test2.zip OK", shell_output("#{bin}/zip -T test2.zip") if OS.mac?
   end

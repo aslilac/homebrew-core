@@ -6,6 +6,8 @@ class CargoBinutils < Formula
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/rust-embedded/cargo-binutils.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "6367b34d9c10ac1d5172697f7b34ce9b448960084c1584ad1d6b0f19e40b8ee6"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "54c3cd2a10fc84faf03c3dfe9ca8ffeef01811c0a264473430c202b624672539"
@@ -16,6 +18,7 @@ class CargoBinutils < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "06566f6a3668b2ee04e4caada6d092c2be827d17c94d4e3d9dc78b860ae66f24"
     sha256 cellar: :any_skip_relocation, monterey:       "f723cc7c2965cf903f9bb3e0eb825b4d07fcb343f1c4ab13fd8b9042708dd82d"
     sha256 cellar: :any_skip_relocation, big_sur:        "bbffb949c95924792a8467de511a274b2f0243087ebc3caed26f8fce8ae536d3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "624b219c67114ced98abffdaa7d13c8e27722bfce6d8255a220a1ee3f59cbcaa"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "573501160232330f4511aa8928446522801ade98223b640b3202c8ec0871217c"
   end
 
@@ -30,8 +33,8 @@ class CargoBinutils < Formula
     # Show that we can use a different toolchain than the one provided by the `rust` formula.
     # https://github.com/Homebrew/homebrew-core/pull/134074#pullrequestreview-1484979359
     ENV.prepend_path "PATH", Formula["rustup"].bin
-    system "rustup", "default", "beta"
     system "rustup", "set", "profile", "minimal"
+    system "rustup", "default", "beta"
     system "rustup", "component", "add", "llvm-tools-preview"
 
     crate = testpath/"demo-crate"
@@ -45,7 +48,11 @@ class CargoBinutils < Formula
         [package]
         name = "demo-crate"
         version = "0.1.0"
+        edition = "2021"
         license = "MIT"
+
+        [profile.release]
+        debug = true
       TOML
 
       expected = if OS.mac?

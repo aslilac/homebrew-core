@@ -1,10 +1,12 @@
 class Abduco < Formula
   desc "Provides session management: i.e. separate programs from terminals"
-  homepage "https://www.brain-dump.org/projects/abduco"
+  homepage "https://www.brain-dump.org/projects/abduco/"
   url "https://github.com/martanne/abduco/releases/download/v0.6/abduco-0.6.tar.gz"
   sha256 "c90909e13fa95770b5afc3b59f311b3d3d2fdfae23f9569fa4f96a3e192a35f4"
   license "ISC"
   head "https://github.com/martanne/abduco.git", branch: "master"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "216c0c4a4ac3e537b0846cb998b36ea986de0d42fb3b2c50b0dfdd4da38a7418"
@@ -21,6 +23,7 @@ class Abduco < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "8ca092b6fd5a6ad39e3c91186421bca2943af6bfdbae4ea95254b36d1e109a78"
     sha256 cellar: :any_skip_relocation, sierra:         "9367a86666aad4d14cecf2d7c20f897d3eb92d5cd913af43081d80b9452e19fd"
     sha256 cellar: :any_skip_relocation, el_capitan:     "62b4673f4fba1d3c5b201b972e220a2736ec053e0c83b1369bb4e5641a71f8e4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "4e84ed7e82b55ae643f46c6b81488e55535269cb37a95e7eec87a06b60f66427"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2129c6039968a818f71997e800575b581128b56f8783eeb32c990f8a5e8b81ad"
   end
 

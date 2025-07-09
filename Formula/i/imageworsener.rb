@@ -10,6 +10,8 @@ class Imageworsener < Formula
     regex(/href=.*?imageworsener[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "2f5e92e748e1e1993f68bf0e8313742c972c9b466ff60a307c4b8eb3c12ab388"
     sha256 cellar: :any,                 arm64_sonoma:   "5b595eed5b2b5cd87dd3f6cf4585b3a0709ec9a4e7fddc64a54f29056133fee1"
@@ -21,6 +23,7 @@ class Imageworsener < Formula
     sha256 cellar: :any,                 monterey:       "443be530e6d93e197026cf8ec457817446c38c94d84b39a3ca76e7a2282225ae"
     sha256 cellar: :any,                 big_sur:        "7ce254b5dfb0dcd52e39b682cfd21ea665601cd14e9a2a5ab0c923e185ad5261"
     sha256 cellar: :any,                 catalina:       "7301d5557860b7402e3d624c77a208c1e3eb1ed69479d6d3d3f1158a3e3ea079"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "aba845ffa91fb356cfc4f89ef25e24761c0586d43a820cf69013b72e9afe713b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ffeb2d98cb08aca5974ca2ece5a40a42b5bd6e0c2422f0a3013455d00793883d"
   end
 

@@ -1,21 +1,23 @@
 class Oil < Formula
   desc "Bash-compatible Unix shell with more consistent syntax and semantics"
-  homepage "https://www.oilshell.org/"
-  url "https://www.oilshell.org/download/oil-0.24.0.tar.gz"
-  sha256 "f199f5384e72c53eeb8a159ee7ac1b92819adc13a6dc5644ccae33e7ceaa9c72"
+  homepage "https://oils.pub/"
+  url "https://oils.pub/download/oil-0.28.0.tar.gz"
+  sha256 "7fbbad0b5a3f91ccc89aa4b124da2d7b86be09c784a18290b9a76ede043631f3"
   license "Apache-2.0"
 
   livecheck do
-    url "https://www.oilshell.org/releases.html"
+    url "https://oils.pub/releases.html"
     regex(/href=.*?oil[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    sha256 arm64_sequoia: "d83f409a0561c48d8a3d05a0d3ce1e89975fdf4fb99f678fc4a3e801fea4860f"
-    sha256 arm64_sonoma:  "5952024bb52e3635cd5d6661b6c442b628698ba5721c13809de7837ae6a97e54"
-    sha256 arm64_ventura: "db8b40d42bdcfb8033e4c4c2c8d45f3aa8e9272ccd2c441cdaacae678e59050b"
-    sha256 sonoma:        "9be93a8e62ce0032a1e4f044925990a7d174bf744adf814cc5f321ea1e2b581f"
-    sha256 ventura:       "6204da4afc98af8aed93fa1e12995bc62fd7489b9ef74f467e16e1058f5e3351"
+    sha256 arm64_sequoia: "d7f33bcf21c4d633100e696f18c3ac2da6a5040ea33b70b9150c342cf48e82a5"
+    sha256 arm64_sonoma:  "44a9ecb0c3f6fbba0adfb0cb705c0fd598188d21718abc62d2e8ddc5be9a32a4"
+    sha256 arm64_ventura: "c4a576863f7a1f1b5b03c54e8fc13f48c6e1f66b36532e52ec554d131b8e914e"
+    sha256 sonoma:        "9b141902a28ddf300bad945a5fbb29722ed033f67e7df1107670569e08c4a3b8"
+    sha256 ventura:       "9f5cc327440859fe2de73c14326a0e02790ef42f2beb5d573cee0e06449100fc"
+    sha256 arm64_linux:   "d37d926656cb2143910eb8eb1591175c7e479508c665a5069c2e9d6ef9e62e2d"
+    sha256 x86_64_linux:  "cb4af168e569f703d4ed53eb46c52677089ccec0cc5bd391fdc4103666e623ec"
   end
 
   depends_on "readline"
@@ -24,11 +26,27 @@ class Oil < Formula
   conflicts_with "etsh", "omake", because: "both install 'osh' binaries"
 
   def install
+    # Workaround for newer Clang/GCC
+    ENV.append_to_cflags "-Wno-implicit-function-declaration"
+
     system "./configure", "--prefix=#{prefix}",
                           "--datarootdir=#{share}",
                           "--with-readline=#{Formula["readline"].opt_prefix}"
     system "make"
     system "./install"
+
+    # patchelf.rb cannot handle ELF with appended zip data so keep the original files
+    # used at https://github.com/oils-for-unix/oils/blob/master/Makefile#L189-L190
+    libexec.install "_build/oil/ovm-opt.stripped", "_build/oil/bytecode-opy.zip" if build.bottle? && OS.linux?
+  end
+
+  def post_install
+    if libexec.exist?
+      bin.install libexec/"ovm-opt.stripped" => "oil.ovm"
+      (bin/"oil.ovm").binwrite((libexec/"bytecode-opy.zip").binread, mode: "a")
+      (bin/"oil.ovm").chmod(0555)
+      rm_r(libexec)
+    end
   end
 
   test do

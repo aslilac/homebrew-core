@@ -1,21 +1,18 @@
 class Gaze < Formula
   desc "Execute commands for you"
   homepage "https://github.com/wtetsu/gaze"
-  url "https://github.com/wtetsu/gaze/archive/refs/tags/v1.1.6.tar.gz"
-  sha256 "3fd0ab0b3451e78b85bf2104d5b23b3c4d018cc8f2ed824e103761f8a327c713"
+  url "https://github.com/wtetsu/gaze/archive/refs/tags/v1.2.1.tar.gz"
+  sha256 "ba2878f5b0ddd385afbe6c8b3fcf92acdcd722113b97e52d2fafc53ee3cef918"
   license "MIT"
+  head "https://github.com/wtetsu/gaze.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "df60118226195a00b1de47aa613f2dcc6dfcfa979db937a0ba19074538261b93"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "df2807922eaf5decd4f5dca7b979e7c83ab039c82dfdd6e94899656512341b2c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1e5652b24e3da96ec9085d07c4b776b8fa8ebb6315bf5ce8c98361200d1f71b4"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1e5652b24e3da96ec9085d07c4b776b8fa8ebb6315bf5ce8c98361200d1f71b4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1e5652b24e3da96ec9085d07c4b776b8fa8ebb6315bf5ce8c98361200d1f71b4"
-    sha256 cellar: :any_skip_relocation, sonoma:         "65d1da1399d000e7565b3fb49c7015a094f8bf7f840711857e189852b3f64d18"
-    sha256 cellar: :any_skip_relocation, ventura:        "883b90c8117e35667b597728ceb2d23106ab6021fcd920055d85e6230dc74539"
-    sha256 cellar: :any_skip_relocation, monterey:       "883b90c8117e35667b597728ceb2d23106ab6021fcd920055d85e6230dc74539"
-    sha256 cellar: :any_skip_relocation, big_sur:        "883b90c8117e35667b597728ceb2d23106ab6021fcd920055d85e6230dc74539"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7f7c23c489737fd48d591e6093ab500dd9614706e8c98179d65273aad343a84c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "86b270f20437476abf6aa88f367b734e8176376cfd491bdcb83c657388b612e4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "86b270f20437476abf6aa88f367b734e8176376cfd491bdcb83c657388b612e4"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "86b270f20437476abf6aa88f367b734e8176376cfd491bdcb83c657388b612e4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "8165d4fde34b016e36c5455ee3578c475e90e6e13e21f14f07e67738a4ffa4fd"
+    sha256 cellar: :any_skip_relocation, ventura:       "8165d4fde34b016e36c5455ee3578c475e90e6e13e21f14f07e67738a4ffa4fd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5704cda4c55581a1a1c2fbf7e6cce916ad75276ac2bbde5b2389823c0c2f6cdd"
   end
 
   depends_on "go" => :build

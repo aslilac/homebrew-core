@@ -6,12 +6,15 @@ class SqlTranslator < Formula
   license any_of: ["Artistic-1.0-Perl", "GPL-1.0-or-later"]
   revision 3
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia: "6dd6884ab19aeeb5423ef3df3fa1cd27f1168385cc20e6698b29de481e38ed4c"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6dd6884ab19aeeb5423ef3df3fa1cd27f1168385cc20e6698b29de481e38ed4c"
     sha256 cellar: :any_skip_relocation, arm64_ventura: "71f7b2c9530c2e5aa5485d59994e1c02496e4089f259a3a2b7fda64d77609749"
     sha256 cellar: :any_skip_relocation, sonoma:        "1b1a1fecd8bbbf18e8b569021cf91917b4bd0e9247798433bbde8e7a1d43285c"
     sha256 cellar: :any_skip_relocation, ventura:       "8cfcf2ebb680afcd5e2c0ebd8bba4e5e11b70c3e9aa77463822b489c256494cb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "4294a929fd355f853e0d4f11892902b6e9b38f0891849f85e02a22a0cb4c6c77"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "aad013b468ccc8eb007b96d2fd66ca07c3cb67448bf4134d954174945f3be5af"
   end
 
@@ -108,12 +111,12 @@ class SqlTranslator < Formula
   test do
     command = "#{bin}/sqlt -f MySQL -t PostgreSQL --no-comments -"
     sql_input = "create table sqlt ( id int AUTO_INCREMENT );"
-    sql_output = <<~EOS
+    sql_output = <<~SQL
       CREATE TABLE "sqlt" (
         "id" serial
       );
 
-    EOS
+    SQL
     assert_equal sql_output, pipe_output(command, sql_input)
   end
 end

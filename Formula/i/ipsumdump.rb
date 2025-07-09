@@ -11,6 +11,8 @@ class Ipsumdump < Formula
     regex(/href=.*?ipsumdump[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "df39ad78cb2e3dbca54558205978fc4c39ffee8b17f11027f51c62dab42b9da7"
     sha256 arm64_sonoma:   "009a39b4f09dc2d72956618d85b8981ec8288b7320a4072799b670b72c863680"
@@ -26,12 +28,19 @@ class Ipsumdump < Formula
     sha256 high_sierra:    "16c995a9158257d8390cda7223f4d0620b6189c331177336b81f81077ee81620"
     sha256 sierra:         "96148641aa0430d8b80cb3ebad8994d1911d61cad9557155172490579e210eaf"
     sha256 el_capitan:     "a98b6116340b9b459f53310c030e99b8022f546c78cda7fcb040ea87c6e2a5f6"
+    sha256 arm64_linux:    "64cca494a61a1849068d908106a059039b47fe6bae0504056995c2af2f43e2fd"
     sha256 x86_64_linux:   "27e438253bf0b215381e8f27d3898eab9e905181266347997c5f59cfdc46175a"
   end
 
+  # add missing definition for SIOCGSTAMP to support linux arm build
+  patch :DATA
+
   def install
-    system "./configure", "--prefix=#{prefix}"
-    system "make"
+    args = []
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 
@@ -41,3 +50,21 @@ class Ipsumdump < Formula
     assert_match "!data count\n" + ("1\n" * 12), output
   end
 end
+
+__END__
+diff --git a/src/fromdevice.cc b/src/fromdevice.cc
+index 76e2b12..f59d7bd 100644
+--- a/src/fromdevice.cc
++++ b/src/fromdevice.cc
+@@ -28,6 +28,11 @@
+ #else
+ # include <sys/ioccom.h>
+ #endif
++
++#ifndef SIOCGSTAMP
++#define SIOCGSTAMP 0x8906
++#endif
++
+ #if HAVE_NET_BPF_H
+ # include <net/bpf.h>
+ # define PCAP_DONT_INCLUDE_PCAP_BPF_H 1

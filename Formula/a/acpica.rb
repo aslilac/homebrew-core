@@ -1,8 +1,8 @@
 class Acpica < Formula
   desc "OS-independent implementation of the ACPI specification"
   homepage "https://github.com/acpica/acpica"
-  url "https://downloadmirror.intel.com/835329/acpica-unix2-20240927.tar.gz"
-  sha256 "4471a9c92f2f68b84be0647c4376a176fcb68a6289d7679c1b3a430507f65d71"
+  url "https://github.com/acpica/acpica/releases/download/R2025_04_04/acpica-unix2-20250404.tar.gz"
+  sha256 "2abeef0b11d208aa9607d8acde07f3e5cee8cc7a43fc354701efa8075b2e5a9f"
   license any_of: ["Intel-ACPI", "GPL-2.0-only", "BSD-3-Clause"]
   head "https://github.com/acpica/acpica.git", branch: "master"
 
@@ -11,13 +11,16 @@ class Acpica < Formula
     regex(/href=.*?acpica-unix[._-]v?(\d+(?:\.\d+)*)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e365a4578890fecb9ca994a2a7bc162b01aeab1726450d3facfcd4838dd72f89"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4933bbf4367e5b2996e9090e367cf06381105b6881e7c66d0f387ddc62abb530"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "d3c66ef224e8cd8aab50fa7a8d776a6d3315db285c73cc40efa30c7769d85199"
-    sha256 cellar: :any_skip_relocation, sonoma:        "0d013f9272915ad9bc4521a7b1057a87a381a9858332f52cb19472067f80aee0"
-    sha256 cellar: :any_skip_relocation, ventura:       "aece8fec1058cc8c0046ef059bda98ec3301f08da7d2cc224631be2e079a65b3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a885756d3404a92a82f1a077e5ee31b8acb9e511b62e474ab4d48ea94218f8c8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5ea322ed5e903610d9264f0a46378ab8cd867dba115ef74782dce02bcfd51c80"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "dc4284d256259dcb212c0151422a3689136ba2fc7c706196c4913128644b621f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "3b05e09052930c392a5faebd81fdcf4ac304eb0a52ae04914f0a6f2581396518"
+    sha256 cellar: :any_skip_relocation, sonoma:        "140b8b8f802f2ab3e279d54f6f8fe6d0ab267630576d01485bf26dde264f27d8"
+    sha256 cellar: :any_skip_relocation, ventura:       "68c95840000e3a84257a8e9f8d6ef67619e22a468cb53651a9c67579fc95a439"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b86f20efa2264f377f9b690e5624a0758a7b43219fe1f1fc323d774745a97af9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dae5dceec9bd03b975f711f49017095a38102f7dfa995906842dc0023fa602bf"
   end
 
   uses_from_macos "bison" => :build

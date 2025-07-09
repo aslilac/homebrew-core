@@ -5,6 +5,8 @@ class Rnv < Formula
   sha256 "b2a1578773edd29ef7a828b3a392bbea61b4ca8013ce4efc3b5fbc18662c162e"
   license "BSD-3-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "c2d6586422e5ac938d5f27b00ba89881fb64e07b84250b44ac5905bd7189bd92"
     sha256 cellar: :any,                 arm64_sonoma:   "150d0eecdd925b7dd54064578d8e204e0cfbb1575ea100ba13168e2b4e22f4eb"
@@ -20,6 +22,7 @@ class Rnv < Formula
     sha256 cellar: :any,                 high_sierra:    "9bf4571824c6d8e837cfcad7ac5e16c6bfc120d4638f0428cdfb8f14203b8c41"
     sha256 cellar: :any,                 sierra:         "8dd3263bb656dcca22605b12faf4c6f54d65e5040e58a7a464c85b69ca19dc99"
     sha256 cellar: :any,                 el_capitan:     "1c1aa519b786f842b39720e33900e92a2f2f8deef403755e79e2d3b518897ff1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "607237d06383c7a8da2bfa731d52f960d9a9a35ccd465dfee6fcddc485e42d92"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3368e22e32650a6594df96320a449717d447a25d69a8485c907f1e0d10a1c49d"
   end
 

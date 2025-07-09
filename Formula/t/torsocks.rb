@@ -1,23 +1,19 @@
 class Torsocks < Formula
   desc "Use SOCKS-friendly applications with Tor"
   homepage "https://gitlab.torproject.org/tpo/core/torsocks"
-  url "https://gitlab.torproject.org/tpo/core/torsocks/-/archive/v2.4.0/torsocks-v2.4.0.tar.bz2"
-  sha256 "54b2e3255b697fb69bb92388376419bcef1f94d511da3980f9ed5cd8a41df3a8"
+  url "https://gitlab.torproject.org/tpo/core/torsocks/-/archive/v2.5.0/torsocks-v2.5.0.tar.bz2"
+  sha256 "31a917328b221e955230b7663abfbc50d3a9b445a68cb0313c11cf884f8cb41f"
   license "GPL-2.0-only"
   head "https://gitlab.torproject.org/tpo/core/torsocks.git", branch: "main"
 
   bottle do
-    sha256 arm64_sequoia:  "24511f4faf7d3133d800205b74c483c996cc90581944e1680f8985a984e3d071"
-    sha256 arm64_sonoma:   "4c71c0a62393e6bf09c1bb49179b75c0ec74f21cdb44f5a4ddbf0a141c288887"
-    sha256 arm64_ventura:  "1b49807cb5abf53eb47cf3672b9883784fb4f7510472bb562b63d723cbb8d32b"
-    sha256 arm64_monterey: "2cabbbb8642a786a45cb99e1633447ceab14b5df439679f8588814ecb3117aab"
-    sha256 arm64_big_sur:  "8c1b04d704074ee39b0ad3ff78ffa87ce8bd58ddac3eb6fbb20f559f0bbac55f"
-    sha256 sonoma:         "b18ad477d54708a6b751673153b5bc7ed2cc53b6957bfd5c6eeb46008f97f294"
-    sha256 ventura:        "954dc96cc1a7a39d1424639f55e61e7cf650db8b50fac00eb84bec4a98f129af"
-    sha256 monterey:       "65b106a97660e2d27779dca77bf2998df798f4376bc00fd7ba21cbe9ae3f3b26"
-    sha256 big_sur:        "3ccf568b46201f651f12d017b6a507f51150cc5f714ad70e3a456e41fe737b7c"
-    sha256 catalina:       "2e4214a024055b73d0c6f7f7a05c24d872940b4a49735ed2856711c58e37f2b4"
-    sha256 x86_64_linux:   "b2dd5e3cb19d877cb6bb46d58c8c71a03fdc02d1d7bdc7772bc75431df861283"
+    sha256 arm64_sequoia: "9f967a566d267075d63cb069a6d77973bfc4cb5e1244c2ca57171a04352f0b26"
+    sha256 arm64_sonoma:  "b25792853457dbbc903f6aac9d252de7889ba0006c5a0cb904a9428cee03c066"
+    sha256 arm64_ventura: "4593fd902084328734cda9b1bfccd26242211d6beae0c510100630fbf31b07c0"
+    sha256 sonoma:        "df428080ebd167aecf3abb603b6207ad469c9c52c55677a4e8deb0635ef1fac1"
+    sha256 ventura:       "383a9b0bcdc089b45a2a13badbf11aebcf37674b749f086636d432bca79b6f2c"
+    sha256 arm64_linux:   "3a273bb1e5923f05e4caa4d9a269c97020844c935a36845224acf4bf7799e129"
+    sha256 x86_64_linux:  "4b4330e179d1c4a866f8be595ed65c1b443f5cc40e21bb30d0fb6be030c6e6a7"
   end
 
   depends_on "autoconf" => :build

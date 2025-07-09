@@ -5,6 +5,8 @@ class Bvi < Formula
   sha256 "4bba16c2b496963a9b939336c0abcc8d488664492080ae43a86da18cf4ce94f2"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "155c163fed69d7c9468c119e2714fbf9cf0ddaa1a6af01efb6932127ce08ec11"
     sha256 arm64_sonoma:   "72f5bcbe7c2d3b197378232499cb50417317569deaa681cc4d96bb470c5e4bc4"
@@ -15,6 +17,7 @@ class Bvi < Formula
     sha256 ventura:        "e364c299057027e146cf7cd1679636ad001baf22f0eef95af5522508015ffb7e"
     sha256 monterey:       "36075283de952bc4eed2c3a24e8836352356c89d2d9ca4626c05b7ad8b4e8c1a"
     sha256 big_sur:        "e3862607efcfcf5a04da6b8bccfe6ad539866ceed49bb186e6d345c3e77d353f"
+    sha256 arm64_linux:    "86cf2dff41dbd3be743b94df63db9cb7488bb6f7bb03e8104ab238e8c7e3c44e"
     sha256 x86_64_linux:   "77dc1f016b3d7d4ac604688521fe4f49938af1a7c0fd783181e6199deb2af0d7"
   end
 

@@ -10,6 +10,8 @@ class ZitaConvolver < Formula
     regex(/href=.*?zita-convolver[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "4426fc8a54e7e24fa6227c1b38a0f0a8ad3d0957244ea5e29e1092b28f7cade5"
     sha256 cellar: :any,                 arm64_sonoma:   "5b3e06cb4fc6b39c91d964d8a5f960aa7c8a2715907978b26d6d6ab25c4705bf"
@@ -23,6 +25,7 @@ class ZitaConvolver < Formula
     sha256 cellar: :any,                 catalina:       "a616c118732c9f2c3775348e598a972abab7ae67b7cb0f283884cddaa55ce93d"
     sha256 cellar: :any,                 mojave:         "e9bfda6d2d3119f93ea0d570b9b3516d44513c3eafc206543f8fb055707db8fd"
     sha256 cellar: :any,                 high_sierra:    "b8b3326ead45ef0e126488d9c96a181f15888a11b707278c61c2ceeee312b37d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "4756b908b348d2b18c80ad68a255021c9545aa0d8dee560c7139b21b0185c15b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3eb63c0ffaffec4c0e2f1798d73119eb4d124f97e421aa350ad8da0722ca5225"
   end
 

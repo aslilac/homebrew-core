@@ -1,26 +1,29 @@
 class Tabiew < Formula
   desc "TUI to view and query tabular files (CSV,TSV, Parquet, etc.)"
   homepage "https://github.com/shshemi/tabiew"
-  url "https://github.com/shshemi/tabiew/archive/refs/tags/v0.7.1.tar.gz"
-  sha256 "17de20949fbdf89b116ab5270413081ebbcd54c666c7430c69f58e7b12055ecc"
+  url "https://github.com/shshemi/tabiew/archive/refs/tags/v0.10.1.tar.gz"
+  sha256 "d45c9eb79bda74fcd0b9fcfa7c98715ffb0adedc670797b60272b265dc7a67ee"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0ba4fea1d8c66c6f835b5d5a6f5b10ab62ec748e8623ea0778c8e6fbb016075a"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f5b6355eccdd8b7db054475abc98091bbd16a8c2834451879f2841411d564dd9"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "8fc83daaee6786fd9d9537d7a7ad6932ea251b258598a88d2b1c7343667814c6"
-    sha256 cellar: :any_skip_relocation, sonoma:        "e38b999c3d3dcffeee6c24f5663a7eb4281117283713a7237542b6769271552b"
-    sha256 cellar: :any_skip_relocation, ventura:       "76f2b230c3ec123c4a4f0c76f8836a7536820fe59a1b3af70de6ed55d6e89c37"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0c2aef080d530017409580752343eab0b74564fc8534a9fa019b12e566edeb4c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "eef5173c86b3e8159b6ca44973320b3454526b3e7968c0da84163607e83b6cf3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "456e237a2347d861545881d764f0c4c64814ad975f9ceddd443a5ec52b6de9a3"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "4a7b43d5920ca463569aa27b559a0bfc08a1d2bd252d1239178c527172b72c66"
+    sha256 cellar: :any_skip_relocation, sonoma:        "411486fd9dacd7f962a68975f5ed395c0281efa401b43105a766766c9e9e060a"
+    sha256 cellar: :any_skip_relocation, ventura:       "cb186a287fd2dd5798692ed1bd1e451aa28244622d64e4238785fe06b22f4b04"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2a5f7502be71d679856df7cccaf7ce955e7d3adccde772bc649e43fd6d2231f4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "753a449b4306b775f4cc18ca01afd5cd846f5abcc26ebeef6a2d699a69730b4a"
   end
 
   depends_on "rust" => :build
+
+  conflicts_with "watcher", because: "both install `tw` binaries"
 
   def install
     system "cargo", "install", *std_cargo_args
 
     man1.install "target/manual/tabiew.1" => "tw.1"
-    bash_completion.install "target/completion/tw.bash"
+    bash_completion.install "target/completion/tw.bash" => "tw"
     zsh_completion.install "target/completion/_tw"
     fish_completion.install "target/completion/tw.fish"
   end
@@ -41,9 +44,7 @@ class Tabiew < Formula
     sleep 1
     input.close
     sleep 2
-    File.open(testpath/"output.txt") do |f|
-      contents = f.read
-      assert_match "you think?", contents
-    end
+
+    assert_match "you think?", (testpath/"output.txt").read
   end
 end

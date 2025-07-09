@@ -6,6 +6,8 @@ class Libb64 < Formula
   license "CC-PDDC"
   revision 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "210e5acb036ffda3a85af650cdcbda27c8ca804cb099d556a1dfd4779ec17fb7"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a7471a04a5dd363f1ee8f2ee6c215cb99760698a34c73a5a6ce0dbefd519a66a"
@@ -17,6 +19,7 @@ class Libb64 < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "3b2acebf1e9432ef07e0035bfc410fdb8530aace59513ad9fad36fe35a661880"
     sha256 cellar: :any_skip_relocation, big_sur:        "50dafb7c970bfd56ab7c88100df7876d1590c806295987a8268029eb87b7ca2b"
     sha256 cellar: :any_skip_relocation, catalina:       "4f357626774a02fae97f7668665a8e41c96b4cdf041a8b8ba658dbd5f8a86bd9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f3308134e879205166e277b0139eed2ac6a73ccdaf5dce0cea2b087469e698a1"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "8da3dbc95cbf4c396038b3b71fbb2b6b583f72f46277cb6deea7b7afb410e9f7"
   end
 

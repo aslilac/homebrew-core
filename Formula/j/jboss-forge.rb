@@ -10,8 +10,12 @@ class JbossForge < Formula
   # from the /api/metadata endpoint in JSON format.
   livecheck do
     url "https://forge.jboss.org/api/metadata"
-    regex(/["']latestVersion["']:\s*["']([^"']+?)["']/i)
+    strategy :json do |json|
+      json["latestVersion"]
+    end
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 2
@@ -19,6 +23,8 @@ class JbossForge < Formula
   end
 
   depends_on "openjdk"
+
+  conflicts_with "foundry", because: "both install `forge` binaries"
 
   def install
     rm(Dir["bin/*.bat"])

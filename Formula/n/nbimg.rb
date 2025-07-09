@@ -5,6 +5,8 @@ class Nbimg < Formula
   sha256 "f72846656bb8371564c245ab34550063bd5ca357fe8a22a34b82b93b7e277680"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "dcfafb2e1abf197f98f3452c53375aa0f72b9ebef04cb0b7f37d131181551330"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "246aad3351ee67b9e20c9c78a8ecc60e8bcfc7f0fb5ef544b07322af8206e4bf"
@@ -20,12 +22,8 @@ class Nbimg < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "20d4ae1588773f9ccd4ff2181def08297ea1119ca70f39392ef11648cb72270f"
     sha256 cellar: :any_skip_relocation, sierra:         "75fd1505a68d1c499ddcf73e912947910659d9bd127c208cafeb3e8899664fbd"
     sha256 cellar: :any_skip_relocation, el_capitan:     "402904e3588fe5a8ae00d7131fe29821880f31a8ec19fb89e70a79f76e067452"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "c337e9b4f70cc61fda6ad272b9760f456e3a32c36d7d9842e2c3bc44b06134eb"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d4c91a552e56c4f2e78422c8a4721d7ffbb54bb0bdb326e983f9989c5c9500ce"
-  end
-
-  resource "homebrew-test-bmp" do
-    url "https://gist.githubusercontent.com/staticfloat/8253400/raw/41aa4aca5f1aa0a82c85c126967677f830fe98ee/tiny.bmp"
-    sha256 "08556be354e0766eb4a1fd216c26989ad652902040676379e1d0f0b14c12f2e2"
   end
 
   def install
@@ -38,8 +36,13 @@ class Nbimg < Formula
   end
 
   test do
+    resource "homebrew-test-bmp" do
+      url "https://gist.githubusercontent.com/staticfloat/8253400/raw/41aa4aca5f1aa0a82c85c126967677f830fe98ee/tiny.bmp"
+      sha256 "08556be354e0766eb4a1fd216c26989ad652902040676379e1d0f0b14c12f2e2"
+    end
+
     resource("homebrew-test-bmp").stage testpath
     system bin/"nbimg", "-Ftiny.bmp"
-    assert_predicate testpath/"tiny.bmp.nb", :exist?
+    assert_path_exists testpath/"tiny.bmp.nb"
   end
 end

@@ -1,17 +1,18 @@
 class MarkdownlintCli < Formula
   desc "CLI for Node.js style checker and lint tool for Markdown files"
   homepage "https://github.com/igorshubovych/markdownlint-cli"
-  url "https://registry.npmjs.org/markdownlint-cli/-/markdownlint-cli-0.43.0.tgz"
-  sha256 "75f368cda3622f32df0971f834aee6bccaa64b7d1baffce021bb962328be316b"
+  url "https://registry.npmjs.org/markdownlint-cli/-/markdownlint-cli-0.45.0.tgz"
+  sha256 "8ce123a96b7a7f04f4dc684e9423f698fbf715c8f1fd17f2a2e1ce03f34d2a4e"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5b821b6668e1fb447f4be2a67ea43544913b7e17bcd2fd8d7374cd7422239704"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5b821b6668e1fb447f4be2a67ea43544913b7e17bcd2fd8d7374cd7422239704"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "5b821b6668e1fb447f4be2a67ea43544913b7e17bcd2fd8d7374cd7422239704"
-    sha256 cellar: :any_skip_relocation, sonoma:        "3c474cd8d82383adbdb5f98012721beaf18a515754dc9fd4e7affe421a5af6d5"
-    sha256 cellar: :any_skip_relocation, ventura:       "3c474cd8d82383adbdb5f98012721beaf18a515754dc9fd4e7affe421a5af6d5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5b821b6668e1fb447f4be2a67ea43544913b7e17bcd2fd8d7374cd7422239704"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "81aac9f9af154d051df5deb42a3e8aacc9b454622355ff13abbd5e7c7200e43c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "81aac9f9af154d051df5deb42a3e8aacc9b454622355ff13abbd5e7c7200e43c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "81aac9f9af154d051df5deb42a3e8aacc9b454622355ff13abbd5e7c7200e43c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d466f9600586629cf57f503569f663be994a95b5ac0eda32b700f2bb17e2b1fc"
+    sha256 cellar: :any_skip_relocation, ventura:       "d466f9600586629cf57f503569f663be994a95b5ac0eda32b700f2bb17e2b1fc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "81aac9f9af154d051df5deb42a3e8aacc9b454622355ff13abbd5e7c7200e43c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "81aac9f9af154d051df5deb42a3e8aacc9b454622355ff13abbd5e7c7200e43c"
   end
 
   depends_on "node"

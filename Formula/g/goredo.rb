@@ -1,8 +1,8 @@
 class Goredo < Formula
   desc "Go implementation of djb's redo, a Makefile replacement that sucks less"
   homepage "http://www.goredo.cypherpunks.su/"
-  url "http://www.goredo.cypherpunks.su/download/goredo-2.6.2.tar.zst"
-  sha256 "5663ed0da911f1b2c0d13e92cc06ede3738639edb48499eb9e53d38e8e435d75"
+  url "http://www.goredo.cypherpunks.su/download/goredo-2.6.4.tar.zst"
+  sha256 "0e53b444a6eb9c5a13088cd680e2e697a5a0e059710c1ad8e30879fe9dc0770c"
   license "GPL-3.0-only"
 
   livecheck do
@@ -11,13 +11,12 @@ class Goredo < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dc4ef66c53328a68a74eaf8a9175e6bdfc99771776881c5ef8edce16a9594fcb"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "dc4ef66c53328a68a74eaf8a9175e6bdfc99771776881c5ef8edce16a9594fcb"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "dc4ef66c53328a68a74eaf8a9175e6bdfc99771776881c5ef8edce16a9594fcb"
-    sha256 cellar: :any_skip_relocation, sonoma:        "df9cdf7553d9dc649ab23cf622ae38e37437d2b46e6b48cc989bd7342f528c3e"
-    sha256 cellar: :any_skip_relocation, ventura:       "df9cdf7553d9dc649ab23cf622ae38e37437d2b46e6b48cc989bd7342f528c3e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0aab40b938c60be8e24bc8c03cd21ed59324b84902ddfe032075a55e65a889f7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f6b8f202aa96cefec546d73380b45f523cb7d5064e8aea5cc7e1ecbd948b0629"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f6b8f202aa96cefec546d73380b45f523cb7d5064e8aea5cc7e1ecbd948b0629"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f6b8f202aa96cefec546d73380b45f523cb7d5064e8aea5cc7e1ecbd948b0629"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d9154b4746a01f2088c2d9ff5159d83ea61a95ef709b2bca64ea4d2a0c0c6ac0"
+    sha256 cellar: :any_skip_relocation, ventura:       "d9154b4746a01f2088c2d9ff5159d83ea61a95ef709b2bca64ea4d2a0c0c6ac0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a37604c5f3eec8a5def60149db7563234b654211925dd997ce2a016a5cc70ac5"
   end
 
   depends_on "go" => :build

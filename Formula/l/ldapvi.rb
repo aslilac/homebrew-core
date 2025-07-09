@@ -12,6 +12,8 @@ class Ldapvi < Formula
     regex(/href=.*?ldapvi[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "619197cac0a0f9f7c8df2d5ced5e42f95e421c645ae87b7ae0d44048cbec6359"
     sha256 cellar: :any,                 arm64_sonoma:   "1a498cb6fd5153f82c0cfd2a9133dcaf68c280f3da4fa641abdcde5d0d2c4311"
@@ -22,10 +24,11 @@ class Ldapvi < Formula
     sha256 cellar: :any,                 ventura:        "2f876c4180027df3eb3f619f62a72b46969292b348f8c8944d3adb99117746ea"
     sha256 cellar: :any,                 monterey:       "d0a155ea5d43cf0f5917acd48cccd30383cab9b9dd7754eeca465da2b15da8dc"
     sha256 cellar: :any,                 big_sur:        "e7738f50126f4a4b5890215ddb63e85d246729a31e1cd8a260e7dfc45251db9d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f686aa703ff6be2ac2d15a1624e129e168f89f96a9853dbae572c3c16d170004"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3b2deb6f280d0b64a18c53e61aa77b2e46d0907ffe56f30ca81e71ae4447e3a5"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "xz" => :build # Homebrew bug. Shouldn't need declaring explicitly.
 
   depends_on "gettext"

@@ -5,6 +5,8 @@ class Mkclean < Formula
   sha256 "2f5cdcab0e09b65f9fef8949a55ef00ee3dd700e4b4050e245d442347d7cc3db"
   license "BSD-3-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b4d263e75e4ccfdc7eeb90529899374a43f38bafda669dd33c906e533f1e7738"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3d518850ce61f5e54380d36c14e6192ec43b52cc83fec9802a08e557d98a02b7"
@@ -17,15 +19,16 @@ class Mkclean < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "c840bc41e467e5e5da4a58843280ea53238cbc0574a1954904423fccf6a23350"
     sha256 cellar: :any_skip_relocation, catalina:       "233250daa7e3c2b5dea11c5afd8fd2ac6985b054dac3e71ba62f6a7e02f302a8"
     sha256 cellar: :any_skip_relocation, mojave:         "ab570a0a6db26d6dbe08ab347ef3b8f881f77766ce2fbfffdf9a9c3b61a94f46"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "76406007335cf3bd4fde0daa9516bc34a2ace73fcd132ebdabb43513496b9f35"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "784dfd7ae978f145af4b1a57535c915014f82f60f9a1876fd9e5edc69a947066"
   end
 
   depends_on "cmake" => :build
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "-C", "mkclean"
-    bin.install "mkclean/mkclean"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    bin.install "build/mkclean/mkclean"
   end
 
   test do

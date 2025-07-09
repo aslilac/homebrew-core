@@ -2,10 +2,12 @@ class Ykdl < Formula
   include Language::Python::Virtualenv
 
   desc "Video downloader that focus on China mainland video sites"
-  homepage "https://github.com/SeaHOH/ykdl"
+  homepage "https://github.com/LifeActor/ykdl"
   url "https://files.pythonhosted.org/packages/f2/27/f4e7616a139c84a04edb7778db2b3cfb77348ab73020ff232b6551fa8bdd/ykdl-1.8.2.tar.gz"
   sha256 "c689b8e4bf303d1582e40d5039539a1a754f7cf897bce73ec57c7e874e354b19"
   license "MIT"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 2
@@ -14,6 +16,7 @@ class Ykdl < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "97ab80854fd7a7802859506993abdacf466114339a6717a7b0a1010542c3f407"
     sha256 cellar: :any_skip_relocation, sonoma:        "724042f1d05d799c130ad4715877f1b30919f7c0b3e8571f3b9158ad12e1dac0"
     sha256 cellar: :any_skip_relocation, ventura:       "2b8f5f155f13edb4eafb86168bf7e4b3d68ad5a5a68538892458e92233f226fc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "a69f74467e2cf7ce089700c74580f702be503620dab68542b2df565c42b3f247"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "eb541b86eded5d4bcc6262795c769d284a9e3c37f42f70121d43864f4066dc1d"
   end
 

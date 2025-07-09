@@ -5,6 +5,8 @@ class XcbUtil < Formula
   sha256 "5abe3bbbd8e54f0fa3ec945291b7e8fa8cfd3cccc43718f8758430f94126e512"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "f23b606bbe08c4b9fc5ce87f19db91cec6fc152298157af1632cb109f669a83b"
     sha256 cellar: :any,                 arm64_sonoma:   "f29e26409668f49cdebd9f07f926deb60775d4d937ad688ea1676b138e2ac3ec"
@@ -15,6 +17,7 @@ class XcbUtil < Formula
     sha256 cellar: :any,                 ventura:        "d075d423178430bc500bf16be08e20b20a06ae6a24ba581cd105a3b078af6d18"
     sha256 cellar: :any,                 monterey:       "57035a7c42a40246ea3d5ac12906e2832a4ea0aded7000b977a9d6b581e8b5b0"
     sha256 cellar: :any,                 big_sur:        "f42650c534ec07d5c17e612ae9f738c46ddf9fba07623eacbf28865a93eb65df"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e9f845b0c76c96c28ae201d82574694cd56ce41f3b4244a4ca6cb369b5c43d06"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2808f955e6ac8cb3d1262e4a01b589c5148b125eec6c57a6ccf02902cf01b182"
   end
 

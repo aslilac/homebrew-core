@@ -7,6 +7,8 @@ class Unrtf < Formula
   license "GPL-3.0-or-later"
   head "https://hg.savannah.gnu.org/hgweb/unrtf/", using: :hg
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "cea46b40e6483a6d9ca253f214b32830ad9fe133502aeee92b4ff06074da8566"
     sha256 arm64_sonoma:   "b1dc04615894a229fd0ece73e4e96f5a86e6448dc422714d259bee15a9eec0e9"
@@ -21,6 +23,7 @@ class Unrtf < Formula
     sha256 mojave:         "b038c53ba7341cc9365db6cf9d46c6f7c3feba843643168e24a12856a29a6dbb"
     sha256 high_sierra:    "9abc63bdeae500637c8e1d6d31c72be013d0f2cf8ad8e3f1cb6e3babe5b6d94a"
     sha256 sierra:         "4c9e869dad1a76bf4077d9e19cabf9d383ed914b5a1c348dadc1eb0961c23b0a"
+    sha256 arm64_linux:    "97ef0301bf3d4b776f44f968d7e50c6926ee24a5667c405ded4d84eccd762ad1"
     sha256 x86_64_linux:   "c3e2f45e057ebc00b8a825db67d9bd29396038f2beb692edcea2815c7b9d1284"
   end
 
@@ -36,12 +39,12 @@ class Unrtf < Formula
   end
 
   test do
-    (testpath/"test.rtf").write <<~'EOS'
+    (testpath/"test.rtf").write <<~'RTF'
       {\rtf1\ansi
       {\b hello} world
       }
-    EOS
-    expected = <<~EOS
+    RTF
+    expected = <<~HTML
       <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
       <html>
       <head>
@@ -50,7 +53,7 @@ class Unrtf < Formula
       </head>
       <body><b>hello</b> world</body>
       </html>
-    EOS
+    HTML
     assert_equal expected, shell_output("#{bin}/unrtf --html test.rtf")
   end
 end

@@ -3,12 +3,12 @@ class Djhtml < Formula
 
   desc "Django/Jinja template indenter"
   homepage "https://github.com/rtts/djhtml"
-  url "https://files.pythonhosted.org/packages/9f/e8/1919adec35e3a7e02ec874b7a95b811f03ad6dc9efcfe72d18e0a359f12a/djhtml-3.0.7.tar.gz"
-  sha256 "558c905b092a0c8afcbed27dea2f50aa6eb853a658b309e4e0f2bb378bdf6178"
+  url "https://files.pythonhosted.org/packages/49/e8/c2d12facfc47fec732633ea3c2d820298e0e314331fc43bcf694099abcb5/djhtml-3.0.8.tar.gz"
+  sha256 "ec3b4cf25f0959474c7793da1becba654ca9587689ce143955bcbc2638eeabce"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "f04ac1e5d07cff0015fd4bdc56e8f96b67a16836f1a4c7f31392f1f92c93033f"
+    sha256 cellar: :any_skip_relocation, all: "30c255ebe8bca9d8a0251eb1e4eab05d094bb499104dcc5736a899481ff24826"
   end
 
   depends_on "python@3.13"
@@ -19,17 +19,17 @@ class Djhtml < Formula
 
   test do
     test_file = testpath/"test.html"
-    test_file.write <<~EOF
+    test_file.write <<~HTML
       <html>
       <p>Hello, World!</p>
       </html>
-    EOF
+    HTML
 
-    expected_output = <<~EOF
+    expected_output = <<~HTML
       <html>
         <p>Hello, World!</p>
       </html>
-    EOF
+    HTML
 
     system bin/"djhtml", "--tabwidth", "2", test_file
     assert_equal expected_output, test_file.read

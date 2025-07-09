@@ -9,6 +9,8 @@ class Shyaml < Formula
   revision 2
   head "https://github.com/0k/shyaml.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 5
     sha256 cellar: :any,                 arm64_sequoia: "74bc7e9c8716937a88a39c1ad327023297d5f1f55521507be77a43b712ef3d9d"
@@ -16,6 +18,7 @@ class Shyaml < Formula
     sha256 cellar: :any,                 arm64_ventura: "4f7b53eccdb86bdc42971decbb322d3a969b2528f2e298953310d2f8ca230252"
     sha256 cellar: :any,                 sonoma:        "e3fe6328da696bafa084bba416ad7ca30b5f311ec4730a55d5a1fd22c65bad2d"
     sha256 cellar: :any,                 ventura:       "f2877c8235ebc0aeec10fc8b0ccd10d8578688b2b04737f8266a403c9985da46"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ee58b3aa018ac1608838d0622c45f4c19440b1eadbc7c037c292f995efc272ab"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "1a82e1b77d8ad4f34f75ee3f1876aeff1e1dfc6d90bb4602627f5d6c6b0d7107"
   end
 
@@ -35,12 +38,12 @@ class Shyaml < Formula
   end
 
   test do
-    yaml = <<~EOS
+    yaml = <<~YAML
       key: val
       arr:
         - 1st
         - 2nd
-    EOS
+    YAML
     assert_equal "val", pipe_output("#{bin}/shyaml get-value key", yaml, 0)
     assert_equal "1st", pipe_output("#{bin}/shyaml get-value arr.0", yaml, 0)
     assert_equal "2nd", pipe_output("#{bin}/shyaml get-value arr.-1", yaml, 0)

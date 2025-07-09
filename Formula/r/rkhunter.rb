@@ -5,6 +5,8 @@ class Rkhunter < Formula
   sha256 "f750aa3e22f839b637a073647510d7aa3adf7496e21f3c875b7a368c71d37487"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5635d3ac60704bc062b8336a912daa80d97cf9fd8d847572c55d82b8e87bbd60"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3b2a4538360218a1f44f63eb61a24e6b9ecc36dfc613dfb2c404f10f8cb75a7f"
@@ -20,6 +22,7 @@ class Rkhunter < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "35df7b4e420968fc71fc0fc0217716393c624594ff51245c80a969a5bb1569eb"
     sha256 cellar: :any_skip_relocation, sierra:         "8d00f31cf5150d841b22dd3c1cdda33dc8705075529f000d41678d05cb733e0f"
     sha256 cellar: :any_skip_relocation, el_capitan:     "1aca76cf8e890112cad63d353ca8369e301e0e990e5380bb5fc4236ded810147"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "6484f6217389b50e66ad8f992e532cb19e9fd27330510d2303060c2f7de70bbd"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "85138f7ce8fcb3790c94d0322d64315e3d683e50a6a690700b7600cd4ce1fda1"
   end
 

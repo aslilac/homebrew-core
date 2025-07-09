@@ -1,18 +1,18 @@
 class TmuxSessionizer < Formula
   desc "Tool for opening git repositories as tmux sessions"
   homepage "https://github.com/jrmoulton/tmux-sessionizer/"
-  url "https://github.com/jrmoulton/tmux-sessionizer/archive/refs/tags/v0.4.4.tar.gz"
-  sha256 "9dfbe99a3c1fe7f48be0c1ab9056e49f36c4f85d023e24f874254f6791a9894e"
+  url "https://github.com/jrmoulton/tmux-sessionizer/archive/refs/tags/v0.4.5.tar.gz"
+  sha256 "37cceae77bad373452d08b990065e7d1e8ed7b038a0af126aa4403332364530e"
   license "MIT"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "039011d74739cdc73301f6d8d424311d14f14243bf9112c64d12668f303e94eb"
-    sha256 cellar: :any,                 arm64_sonoma:  "fc7eb901dff1deddfc6cb6bf320b473154d3760459bc80cea477f0cfb95d147a"
-    sha256 cellar: :any,                 arm64_ventura: "f4ce96fc1ad1def2e691bb9941d1b9017e5ff90797149f66bf29054548e6e972"
-    sha256 cellar: :any,                 sonoma:        "7ad5de9590ab6392514dd65e4159bd56f7d8edb6708036a1f422cbf251c83896"
-    sha256 cellar: :any,                 ventura:       "b86f4cebc829f1b7717870caa79f1ee5ff91388bfa09e00f13f4672d55e9d046"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e3f45a9334e24a1c2715a766b4fe387fb3a8ed737c7cf8e5e4837ef2ba27e468"
+    sha256 cellar: :any,                 arm64_sequoia: "94a0d5bafb7636d4012332b0e3e5159dd9bb16d487aef5e1382527a26958826b"
+    sha256 cellar: :any,                 arm64_sonoma:  "e8486f6f4e77a8bf58c6213e1f8e68f21e7611ec70aa96934d203cd3cebf9955"
+    sha256 cellar: :any,                 arm64_ventura: "09d3a2e2a754b32137f1dbf0a329b3d49491806a31b8b031217a48444e7b9773"
+    sha256 cellar: :any,                 sonoma:        "b3050eda58cd73739f53d11af0f6111fa1f5957757c7c5fe0cfa328788e9f1f5"
+    sha256 cellar: :any,                 ventura:       "a5f2144f6d7464b5f8283dc94eef025a79a9c8eeb195efc12712a18ce80c3ce1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "4f1c67d572a5c83597dacf9f0a67e2ab8bd6c24298c024739c8a13041ed0412f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a588098f0d380b6fd1ca53a697760e9d4d56a9d828bcd1e7a21041d488c18ff3"
   end
 
   depends_on "pkgconf" => :build
@@ -33,18 +33,12 @@ class TmuxSessionizer < Formula
 
     system "cargo", "install", *std_cargo_args
 
-    generate_completions_from_executable(bin/"tms", "--generate", base_name: "tms")
-  end
-
-  def check_binary_linkage(binary, library)
-    binary.dynamically_linked_libraries.any? do |dll|
-      next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)
-
-      File.realpath(dll) == File.realpath(library)
-    end
+    generate_completions_from_executable(bin/"tms", shell_parameter_format: :clap)
   end
 
   test do
+    require "utils/linkage"
+
     assert_match "Configuration has been stored", shell_output("#{bin}/tms config -p /dev/null")
     assert_match version.to_s, shell_output("#{bin}/tms --version")
 
@@ -54,7 +48,7 @@ class TmuxSessionizer < Formula
       Formula["openssl@3"].opt_lib/shared_library("libssl"),
       Formula["openssl@3"].opt_lib/shared_library("libcrypto"),
     ].each do |library|
-      assert check_binary_linkage(bin/"tms", library),
+      assert Utils.binary_linked_to_library?(bin/"tms", library),
              "No linkage with #{library.basename}! Cargo is likely using a vendored version."
     end
   end

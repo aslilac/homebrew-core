@@ -5,6 +5,8 @@ class Wy60 < Formula
   sha256 "f7379404f0baf38faba48af7b05f9e0df65266ab75071b2ca56195b63fc05ed0"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "6e8b275623922f42137e8d90712e41890ac44f9218dc7ff8d8476068d7497f01"
     sha256 arm64_sonoma:   "e40096fbc12217c535cf856513e7a659c5e496f0a03ac1f3cbbc2c82782dbb5f"
@@ -20,6 +22,7 @@ class Wy60 < Formula
     sha256 high_sierra:    "77fb48cc35956863e1f685b41c885337ca770185edffb250cbed8bd8c5a3070b"
     sha256 sierra:         "f03706d166cfcc0679e696493bd13df30ad0617a92b602b79e3494ba3b1f46fb"
     sha256 el_capitan:     "84d3bfa45582f2816808006f192c7580cedad24de3941a0786b5b36ce29e469c"
+    sha256 arm64_linux:    "49410228b9210e6f2cfb22d8cf47ec007ce53b63ce2ad77980696efa5ea5f61f"
     sha256 x86_64_linux:   "a6e03720948c91ccddf6881bf9770a13ff9b1560b52e4ab007da15257c1bb3c1"
   end
 

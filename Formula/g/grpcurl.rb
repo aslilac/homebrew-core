@@ -1,35 +1,36 @@
 class Grpcurl < Formula
   desc "Like cURL, but for gRPC"
   homepage "https://github.com/fullstorydev/grpcurl"
-  url "https://github.com/fullstorydev/grpcurl/archive/refs/tags/v1.9.1.tar.gz"
-  sha256 "4bc60a920635929bdf9fa9bb5d310fe3f82bccd441a1487680566694400e4304"
+  url "https://github.com/fullstorydev/grpcurl/archive/refs/tags/v1.9.3.tar.gz"
+  sha256 "bb555087f279af156159c86d4d3d5dd3f2991129e4cd6b09114e6851a679340d"
   license "MIT"
+  head "https://github.com/fullstorydev/grpcurl.git", branch: "master"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c5809c9dd0340f5a8a58850e2aedf505a26ddd3739fe719d00d6fc5a38f10875"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "efd68b0efcb47dad3279e83287d949c29a7006b30b6fd0f76703a1b493ea332d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "fa42f3862cb0797efa42180319ce25ea635cfa3a682d1e359da1879323d43a54"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ace40839f0ecf9bedaeef3dc0ac75efcc872ab3c297f6f2cd3125d325a4fa5ac"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b776c9fec3fc86a992c59ef7cdd5a0ce3c9fd2dc47fe93baef60463ac300cff6"
-    sha256 cellar: :any_skip_relocation, ventura:        "653f584dafa843f1f3b4306e905090f91a6d3d275eccf49d3931eabf8540bbd4"
-    sha256 cellar: :any_skip_relocation, monterey:       "e62d02e7c297595290140eca5fae2b725089338e41891bae1816581a44abccca"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4d18d53a4e37806ac19e5e934f8798793d09595fdac978dda5b9581db675e0f2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0b6be18c234287de07dc328bcf18ab337dc9b89a477e20110546d7615bd31815"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0b6be18c234287de07dc328bcf18ab337dc9b89a477e20110546d7615bd31815"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0b6be18c234287de07dc328bcf18ab337dc9b89a477e20110546d7615bd31815"
+    sha256 cellar: :any_skip_relocation, sonoma:        "73e6d2427885ab08ae862f8e43be8b3d988917a1fdc722026cdd587be1629d1e"
+    sha256 cellar: :any_skip_relocation, ventura:       "73e6d2427885ab08ae862f8e43be8b3d988917a1fdc722026cdd587be1629d1e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "14e2492169d85b40c8251c3ca7891c58d35f2f12cd781b720c29582573e12c9a"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-X main.version=#{version}"), "./cmd/grpcurl"
+    system "go", "build", *std_go_args(ldflags: "-s -w -X main.version=#{version}"), "./cmd/grpcurl"
   end
 
   test do
-    (testpath/"test.proto").write <<~EOS
+    (testpath/"test.proto").write <<~PROTO
       syntax = "proto3";
       package test;
       message HelloWorld {
         string hello_world = 1;
       }
-    EOS
+    PROTO
     system bin/"grpcurl", "-msg-template", "-proto", "test.proto", "describe", "test.HelloWorld"
   end
 end

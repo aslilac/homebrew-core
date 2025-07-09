@@ -1,28 +1,33 @@
 class MysqlClientAT80 < Formula
   desc "Open source relational database management system"
-  homepage "https://dev.mysql.com/doc/refman/8.0/en/"
-  url "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-boost-8.0.40.tar.gz"
-  sha256 "eb34a23d324584688199b4222242f4623ea7bca457a3191cd7a106c63a7837d9"
+  # FIXME: Actual homepage fails audit due to Homebrew's user-agent
+  # homepage "https://dev.mysql.com/doc/refman/8.0/en/"
+  homepage "https://github.com/mysql/mysql-server"
+  url "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-boost-8.0.42.tar.gz"
+  sha256 "c2aa67c618edfa1bc379107fe819ca8e94cba5d85f156d1053b8fedc88cc5f8f"
   license "GPL-2.0-only" => { with: "Universal-FOSS-exception-1.0" }
 
   livecheck do
     formula "mysql@8.0"
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 arm64_sequoia: "66cd479cef8a0979a134fc6dc75b1ed0b6d210e96d5199a3727e1d83f696f0dd"
-    sha256 arm64_sonoma:  "e1849e4bd1c7546d473a3cc59d0f8dbdb35239057979488e159987576be1fd56"
-    sha256 arm64_ventura: "a22a65c2c1ca6425a62cb12a602a2398fc49298a18a22c5b53ced9e71accd7bd"
-    sha256 sonoma:        "c524071d6eabb6b16b17e8ee417f43e8147b9bf196774f9deb272b4eb1ba12b4"
-    sha256 ventura:       "530ebc9494e8affdc5408dde06a7f7214d828a90df23b825a8194a7c22b693d5"
-    sha256 x86_64_linux:  "1eeb1576f77d5c82bed931566dda39b99e2f3e14a5cf494d626748ca671c9ef2"
+    sha256 arm64_sequoia: "59d43aed334afcda44273940a08e0a60d50228607fbd57965657f25578e3fd61"
+    sha256 arm64_sonoma:  "ced161166185b2f6c1dc0676b771a4d794eb5bcaa85393411993bb7b8c6a31de"
+    sha256 arm64_ventura: "b18647515429259f046aa0fb49e93929cbed48065d506e6260962b7e4ad87d5e"
+    sha256 sonoma:        "e282d68aadf1142ac6058970a904b323c8483e6a72eda42e987b7078218136d8"
+    sha256 ventura:       "cb190923a14eb844124f48aa292aeb696220f96231dd6be5cac916ea4cb5a7bb"
+    sha256 arm64_linux:   "cf5203c31e25fafe9f5b0663262fcd36abf05be669337ca10a0eedf4bc9deaf8"
+    sha256 x86_64_linux:  "3b94ce7a61aca93ad2c91e7f387231cb490a603e22cb9ed5869a7e7cde2abe25"
   end
 
   keg_only :versioned_formula
 
   depends_on "bison" => :build
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libevent"
   depends_on "libfido2"
   # GCC is not supported either, so exclude for El Capitan.
@@ -33,7 +38,9 @@ class MysqlClientAT80 < Formula
 
   uses_from_macos "libedit"
 
-  fails_with gcc: "5"
+  on_linux do
+    depends_on "libtirpc" => :build
+  end
 
   def install
     # -DINSTALL_* are relative to `CMAKE_INSTALL_PREFIX` (`prefix`)
@@ -58,8 +65,9 @@ class MysqlClientAT80 < Formula
       -DWITHOUT_SERVER=ON
     ]
 
-    system "cmake", ".", *std_cmake_args, *args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

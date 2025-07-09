@@ -11,6 +11,8 @@ class Arpoison < Formula
     regex(/href=.*?arpoison[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "5290454e5c88457099cf20619c7bbb8368c13c8a33365791781c7ef693fa6a1e"
     sha256 cellar: :any,                 arm64_sonoma:   "2c6f2456c9b2ba1ac193df313e5b48ffe0ec438d0a4abce2a0913a77783e04a1"
@@ -24,6 +26,7 @@ class Arpoison < Formula
     sha256 cellar: :any,                 catalina:       "550588e02ce0eb78b47d2d2f9e8b863c29761667aca72e4ad0c0810b13682d9b"
     sha256 cellar: :any,                 mojave:         "c97bb55590119dbda338a24e634f9089bb3e43889a810a7bece231d6304b7bcf"
     sha256 cellar: :any,                 high_sierra:    "ee2eedf6780546bcf4610984d36a773300c5528122d08b7873b640a51f76ee56"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "75d63e2ad84b69dae9d22fde3a7a2faaa8f35b67766ae1ca1e7c7fcfd79de484"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5d1b74e30daecd8e66750565482b964566fbb0b323f86f360de9f0b1ad332cec"
   end
 

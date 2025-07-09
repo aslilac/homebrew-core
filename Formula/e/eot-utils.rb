@@ -10,6 +10,8 @@ class EotUtils < Formula
     regex(/href=.*?eot-utilities[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "dcf1a3953bd2c4baedc5f004a95be4704f19c554d064c27e613a2384edbffd82"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "50db80cb120e30adb337ad7c89a227bc3a2d324f7f86415688704f67fd7afbe9"
@@ -25,6 +27,7 @@ class EotUtils < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "56f30e1b637149b8b34d003ff4c43865175950eb25d528e0cda69dd4e9261b06"
     sha256 cellar: :any_skip_relocation, sierra:         "320909b9801c96b10491dca13de7c793dae8b0d0864839c6b7a65cbaa1e8e036"
     sha256 cellar: :any_skip_relocation, el_capitan:     "b2a4e0f385fa861baf54ac3c483f5599bc96994b3797fe00430653f1a5c28ba4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "8fb16ef58c49f4b1b9029ca5994093ed3305976d8a7f7f5077413135515b3c66"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "48cf7e721c0bd57766f90fa9cde2704d44e997016d814994b2df85d345b90f8d"
   end
 

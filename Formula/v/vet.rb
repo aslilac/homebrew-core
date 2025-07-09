@@ -1,34 +1,31 @@
 class Vet < Formula
   desc "Policy driven vetting of open source dependencies"
   homepage "https://github.com/safedep/vet"
-  url "https://github.com/safedep/vet/archive/refs/tags/v1.8.4.tar.gz"
-  sha256 "183df5a02b190e8182fa89d76e60af692378b742009942f451e83c92e756063b"
+  url "https://github.com/safedep/vet/archive/refs/tags/v1.11.3.tar.gz"
+  sha256 "ef406e7261fadf607fb729d415a0326055f9a07a5f9e5204b4645be4cc056920"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8107f7a025094c29839d890dfe141d24d30baadc94ab7f1c5968db3546bdcf02"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c97211b4408fecc5c3630e89825cbca92e0aa79e641a3a2377aa73e6c6bd2d34"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "52dc2e00606b95bc31b6982e36bafbca3796f87a6f78f0073c1aac3f56c23faf"
-    sha256 cellar: :any_skip_relocation, sonoma:        "e1bac7b63c76dfb859be5dc929c46600a256de5fa001775df64755cec3763f4a"
-    sha256 cellar: :any_skip_relocation, ventura:       "4e028dedfb731e3928904ed4d89f24ce81b95ae36ea7679bfa914f80be1c7474"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f6265d746d8dd309b21fdbfdee7c546fe5392cebee029f407a4ee38babaa9321"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a80c7e166dc2fca8edfecf165d8e036f894ac028763442cf032e67206298b3d4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "86272bd69bd91906bda06a79b306dfa38d6612c3bc925d1bab7b7e28a5365b61"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "11458d2191b6def533d242cbc9540e19ab9b65f9059fca5412ae7a23aa77a8eb"
+    sha256 cellar: :any_skip_relocation, sonoma:        "eb58110461a1027f588b00ce3d4198481a5e44ed8e081c7a8888c685a2096c22"
+    sha256 cellar: :any_skip_relocation, ventura:       "db2a10e6d203fc02298678554ab0c23e802c74d66b25e750118e2dc0f26194cd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "524db74bb3c22451041fcc99d75c50a8fc1dc0d1f9d4f32840f149985f83bb5c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bacc09d33fa196574e6f1e92a54cc9602bdbd7698784aa758949b9a3c9cabd2d"
   end
 
-  depends_on "go" => :build
+  depends_on "go"
 
   def install
-    ldflags = %W[
-      -s -w
-      -X main.commit=#{tap.user}
-      -X main.version=#{version}
-    ]
+    ldflags = "-s -w -X main.version=#{version} -X main.commit=#{tap.user}"
     system "go", "build", *std_go_args(ldflags:)
 
     generate_completions_from_executable(bin/"vet", "completion")
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/vet version 2>&1", 1)
+    assert_match version.to_s, shell_output("#{bin}/vet version 2>&1")
 
     output = shell_output("#{bin}/vet scan parsers 2>&1")
     assert_match "Available Lockfile Parsers", output

@@ -4,7 +4,7 @@ class Povray < Formula
   url "https://github.com/POV-Ray/povray/archive/refs/tags/v3.7.0.10.tar.gz"
   sha256 "7bee83d9296b98b7956eb94210cf30aa5c1bbeada8ef6b93bb52228bbc83abff"
   license "AGPL-3.0-or-later"
-  revision 11
+  revision 13
   head "https://github.com/POV-Ray/povray.git", branch: "master"
 
   livecheck do
@@ -12,15 +12,16 @@ class Povray < Formula
     regex(/^v?(\d+(?:\.\d+)+\.\d{1,4})$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 arm64_sequoia:  "3814912ad793bb6f99aaec46a5b69a7365a07a4f7a776d6aee1573ecfd69efca"
-    sha256 arm64_sonoma:   "5cf35722079d7dd1d6f4f0829ae3cd625a4e9a1e43507fd0c8d8ad73f85ba5d7"
-    sha256 arm64_ventura:  "dfb40a725c12450107ae31a44a361e7b6e7b0a709bd4b53ee2f334b49d21dd3f"
-    sha256 arm64_monterey: "9e8e0917cce94395ae979af1eb47e3a657693fec4574e0b7195eb5bc31d7ecff"
-    sha256 sonoma:         "2eae82eac7281c82ac56a5df270f64801bb43d9cfce6ffecfcf34fe6cefeaeea"
-    sha256 ventura:        "8549b9706027eff9ac82d004592ee2b90bfd3a0033493455b2c4e39cfbf2fca1"
-    sha256 monterey:       "a8c775e06b2740fbf07fcc153a5b910429b71fa992907351d33e34b420162c86"
-    sha256 x86_64_linux:   "f88d3ae2c4a40f22fe92f18b9caff59887a9ac660f93c979b826931775e74b45"
+    sha256 arm64_sequoia: "a43f64589b9b2abbc3dd1460e56c79c0d8473e0b0cdd343f7fae52474450adc9"
+    sha256 arm64_sonoma:  "ffc8acf31801cc124cf903e3ad6014014e6f5e3784938b43f42bcb39758d3f95"
+    sha256 arm64_ventura: "e3b9af45cf02e6e071dac8e9e15681a727817ceb26e21400dd2f10c4c161211e"
+    sha256 sonoma:        "d43346c84ebe723c8099104abe49b6d28850f4597ef07a0be97bf5af616c6384"
+    sha256 ventura:       "bda46d7ccad80bb6488dac7d09fecc8214ff19bd39c267fbc143cb846d4d2882"
+    sha256 arm64_linux:   "4a6efde256e0f9880d0eef16f7f3f7a70208e751a353313f687040e100a3449c"
+    sha256 x86_64_linux:  "757f8971fcd168f2eedea18303542b1566eaf0308fbcee6833de2aa4b11bdc31"
   end
 
   depends_on "autoconf" => :build
@@ -66,10 +67,10 @@ class Povray < Formula
   test do
     # Condensed version of `share/povray-3.7/scripts/allscene.sh` that only
     # renders variants of the famous Utah teapot as a quick smoke test.
-    scenes = Dir["#{share}/povray-3.7/scenes/advanced/teapot/*.pov"]
-    assert !scenes.empty?, "Failed to find test scenes."
+    scenes = share.glob("povray-3.7/scenes/advanced/teapot/*.pov")
+    refute_empty scenes, "Failed to find test scenes."
     scenes.each do |scene|
-      system "#{share}/povray-3.7/scripts/render_scene.sh", ".", scene
+      system share/"povray-3.7/scripts/render_scene.sh", ".", scene
     end
   end
 end

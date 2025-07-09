@@ -7,6 +7,8 @@ class Lasi < Formula
   revision 2
   head "https://svn.code.sf.net/p/lasi/code/trunk"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any,                 arm64_sequoia:  "cacfb48c1b73960804bf1471d86942b79e306cbf737242f31456fd41588798c0"
@@ -20,12 +22,13 @@ class Lasi < Formula
     sha256 cellar: :any,                 big_sur:        "d4d9a1f05e4acef822930f62b4dd5b5f87f815e01523eb41b91df079af35b69b"
     sha256 cellar: :any,                 catalina:       "9c9b3d4df3fef9c27ccc60f51583976cfb7093c5ea345c0dced428e0539b7ede"
     sha256 cellar: :any,                 mojave:         "95eed6a78b95300f4b496bdba60b0542c9b66e5ce96ca7c8fcd081e76eebc675"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "70ef82ea6ebb0ad9deea3e12e5a88db9f24653599a256d0577422b2481f8d498"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a81717d41a1ac50a3f35199b82877d62fce7abb1da670c98cd2abb762e2a1b8b"
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "freetype"
   depends_on "glib"
   depends_on "pango"

@@ -1,17 +1,18 @@
 class DerAscii < Formula
   desc "Reversible DER and BER pretty-printer"
   homepage "https://github.com/google/der-ascii"
-  url "https://github.com/google/der-ascii/archive/refs/tags/v0.4.0.tar.gz"
-  sha256 "b458030fdaf6258fe199e5b183b6e57a716b281472efbfef161a8226322f15d2"
+  url "https://github.com/google/der-ascii/archive/refs/tags/v0.6.0.tar.gz"
+  sha256 "4e5e25b2d3ade22f0dc87264945ece6138858d3c6803143cf39c66183a74c9c5"
   license "Apache-2.0"
+  head "https://github.com/google/der-ascii.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "906262ce021bb1b82d5ac8193ac35cde6283e3b709e8f8577c2f88ae12ad16b1"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "906262ce021bb1b82d5ac8193ac35cde6283e3b709e8f8577c2f88ae12ad16b1"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "906262ce021bb1b82d5ac8193ac35cde6283e3b709e8f8577c2f88ae12ad16b1"
-    sha256 cellar: :any_skip_relocation, sonoma:        "e84b2456ebf6c14329e981217f6bab8a7f6b3343b45f404e4800a03d13947627"
-    sha256 cellar: :any_skip_relocation, ventura:       "e84b2456ebf6c14329e981217f6bab8a7f6b3343b45f404e4800a03d13947627"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c636719021cea3bee4d5d4a9b5b2fa1a456714bef970bded7b52e0b6b19a1b64"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c6b91afa38381784b23ba412b76988d4ee4c88be080ff8cc83e34925a9a5b8f3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c6b91afa38381784b23ba412b76988d4ee4c88be080ff8cc83e34925a9a5b8f3"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c6b91afa38381784b23ba412b76988d4ee4c88be080ff8cc83e34925a9a5b8f3"
+    sha256 cellar: :any_skip_relocation, sonoma:        "be6480d41a86adbc097cb14c49fae031990959b144ea5c23e81254e9394b32a2"
+    sha256 cellar: :any_skip_relocation, ventura:       "be6480d41a86adbc097cb14c49fae031990959b144ea5c23e81254e9394b32a2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8bca066b2304679127bbf35d34a9ecbfb5744d4fa149a373bb3651b47d0d88b6"
   end
 
   depends_on "go" => :build

@@ -13,6 +13,7 @@ class Newman < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "1e795f5512a9fe59808b928884c3026a9ee5c2962053faef9f053d08214a1705"
     sha256 cellar: :any_skip_relocation, ventura:        "1e795f5512a9fe59808b928884c3026a9ee5c2962053faef9f053d08214a1705"
     sha256 cellar: :any_skip_relocation, monterey:       "1e795f5512a9fe59808b928884c3026a9ee5c2962053faef9f053d08214a1705"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "293d0a0e52c8d5c1e3ddebee286788baa6329839f4e664ee12240f7c80b28831"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "fa712cc0a93477ee5448241048937ca8ad4b9f4a21d19a29f30a359e4f4cb833"
   end
 
@@ -25,7 +26,7 @@ class Newman < Formula
 
   test do
     path = testpath/"test-collection.json"
-    path.write <<~EOS
+    path.write <<~JSON
       {
         "info": {
           "_postman_id": "db95eac2-6e1c-48c0-8c3a-f83c5341d4dd",
@@ -59,7 +60,7 @@ class Newman < Formula
           }
         ]
       }
-    EOS
+    JSON
 
     assert_match "newman", shell_output("#{bin}/newman run #{path}")
     assert_equal version.to_s, shell_output("#{bin}/newman --version").strip

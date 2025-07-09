@@ -1,13 +1,14 @@
 class MmCommon < Formula
   desc "Build utilities for C++ interfaces of GTK+ and GNOME packages"
   homepage "https://www.gtkmm.org/"
-  url "https://download.gnome.org/sources/mm-common/1.0/mm-common-1.0.6.tar.xz"
-  sha256 "b55c46037dbcdabc5cee3b389ea11cc3910adb68ebe883e9477847aa660862e7"
+  url "https://download.gnome.org/sources/mm-common/1.0/mm-common-1.0.7.tar.xz"
+  sha256 "494abfce781418259b1e9d8888c73af4de4b6f3be36cc75d9baa8baa0f2a7a39"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, all: "51e28647cb23b6c7259a8487adf36301731684c5d12bdccba36247ef0603312f"
+    sha256 cellar: :any_skip_relocation, all: "9b105ad896eeb16cfc9f158c87db7c4a63b03b3d58ae50fae9984b00feb02c24"
   end
 
   depends_on "meson" => :build
@@ -25,9 +26,9 @@ class MmCommon < Formula
     touch testpath/"test/a"
 
     system bin/"mm-common-prepare", "-c", testpath/"test/a"
-    assert_predicate testpath/"test/compile-binding.am", :exist?
-    assert_predicate testpath/"test/dist-changelog.am", :exist?
-    assert_predicate testpath/"test/doc-reference.am", :exist?
-    assert_predicate testpath/"test/generate-binding.am", :exist?
+    assert_path_exists testpath/"test/compile-binding.am"
+    assert_path_exists testpath/"test/dist-changelog.am"
+    assert_path_exists testpath/"test/doc-reference.am"
+    assert_path_exists testpath/"test/generate-binding.am"
   end
 end

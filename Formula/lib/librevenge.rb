@@ -10,6 +10,8 @@ class Librevenge < Formula
     regex(%r{url=.*?/librevenge[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "8c3a4c2ed4af0c16cffd5ac758a8dc3ccec9ea4f0e620ef9ddc401d506660515"
     sha256 cellar: :any,                 arm64_sonoma:   "0b4b3683933059632de09508e6d49273a7908cf93a729a2899518eeb2313ce5e"
@@ -20,6 +22,7 @@ class Librevenge < Formula
     sha256 cellar: :any,                 ventura:        "cf1a9383368a1c4a7c54c978815fcef64a1e2c64e66183a45e12be72ad8f3ab4"
     sha256 cellar: :any,                 monterey:       "636e3e8ce0e3e775e9ccfaec62c22cd1987db4c50f56e5671cc3eb4bcb002b23"
     sha256 cellar: :any,                 big_sur:        "64e6213d3ef01f6ace0b4e4f46e9b4098ddabe735eafb07a213a21454c47bca9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a66a66d364db186d07e4b705c177b5773e1ee99f19cc00843c26a1baf73a8da4"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "11fd00b1110acb46392ccc91a6fbb54261834a53e256e3d48d6c268e71d7c4b5"
   end
 

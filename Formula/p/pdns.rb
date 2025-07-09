@@ -1,8 +1,8 @@
 class Pdns < Formula
   desc "Authoritative nameserver"
   homepage "https://www.powerdns.com"
-  url "https://downloads.powerdns.com/releases/pdns-4.9.2.tar.bz2"
-  sha256 "f570640427041f4c5c5470d16eff951a7038c353ddc461b2750290ce99b2e3c2"
+  url "https://downloads.powerdns.com/releases/pdns-4.9.7.tar.bz2"
+  sha256 "782875d210de20cee9f22f33ffc59ef1cdc6693c30efcb21f3ce8bf528fb09d4"
   license "GPL-2.0-or-later"
 
   # The first-party download page (https://www.powerdns.com/downloads) isn't
@@ -16,12 +16,13 @@ class Pdns < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "535cd7e7c65f70335ddf11a9b3987763d8c0ad95f27da2fa2bbefb3f7f609aad"
-    sha256 arm64_sonoma:  "8373819cddbb5ad653d70ad4b0d69f36faa074d6b46a5f70a6922311da8069d3"
-    sha256 arm64_ventura: "77b98a0f0c9638c1f593c30ccf792f11d9efc016001b96b31cbac5ff651135fd"
-    sha256 sonoma:        "a0a4db1bfd7e8ba3ec006bbcf750bb1da15573a4a6a2b54bd9427e4c6e9d05c1"
-    sha256 ventura:       "eec08612848bb1ee690b09ee227ddbe697c47ea9477d9aa938da251a408df04a"
-    sha256 x86_64_linux:  "e00dcb42455de9c473ebef4478be1796594b2da80f7a3cbc77feeb5bb417d12a"
+    sha256 arm64_sequoia: "c8a59a4b0c31ef2738fd801b5e9560e09d1aaac79dd45bd706e09332c54bef18"
+    sha256 arm64_sonoma:  "6b5ff34f26082e1066c718512c7f0b49857d769c3b20f1bc59e6771152878174"
+    sha256 arm64_ventura: "eed2cfb31420ea5f1dc9990731601460a20152aa57b3c827516bfccd2e5ae71d"
+    sha256 sonoma:        "4d368093d7c24e0d1f22301d1fd0935d948f4ee00a091c5597bdb87cabeac664"
+    sha256 ventura:       "6d61dc002267dca7a98b2c583dea47a4845d050a12f751ef9e1799fc92876158"
+    sha256 arm64_linux:   "4d7fdac3df230da367e436b7d3ffb397ebc1b35ca8b63fd3ffda798aa62e1871"
+    sha256 x86_64_linux:  "7a5a6b2c4ce154932267aa5e64c878dbbff5f47e54008a6700dfb08de2729dcd"
   end
 
   head do
@@ -33,15 +34,13 @@ class Pdns < Formula
     depends_on "ragel"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "boost"
   depends_on "lua"
   depends_on "openssl@3"
   depends_on "sqlite"
 
   uses_from_macos "curl"
-
-  fails_with gcc: "5" # for C++17
 
   def install
     args = %W[

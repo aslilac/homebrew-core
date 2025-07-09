@@ -5,6 +5,8 @@ class Yetris < Formula
   sha256 "720c222325361e855e2dcfec34f8f0ae61dd418867a87f7af03c9a59d723b919"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b5358a7a07d701232e1a75a4b28f2e66879d973ef3eb9c848552347505f16ea2"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5c29c804faf6d9d78ecec1eeccc4ffe85e94550c222bba9e793e307f805c1d97"
@@ -20,6 +22,7 @@ class Yetris < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "21537f5957c5ce90281195e6d962363920bda756a6c965ca107c329ec712f126"
     sha256 cellar: :any_skip_relocation, sierra:         "cf350d8daaf62f863b7466477aebea02145abf1f14e50ee56ad324c99dcee018"
     sha256 cellar: :any_skip_relocation, el_capitan:     "fd08bc62fc0c4687ed7e76fe604c345a647fb52a348c55cf446fcbf52c7af8dd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "2f5e4bda0d6d949df4cb5b4fa0bd5adb552ec9752e34cbf9f7c106342877f108"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b0d2652ce4673ff9e663dba05e742ff8d0eff4366216c49a051d94df041498a2"
   end
 

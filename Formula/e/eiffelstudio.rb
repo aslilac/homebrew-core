@@ -1,26 +1,29 @@
 class Eiffelstudio < Formula
   desc "Development environment for the Eiffel language"
   homepage "https://www.eiffel.com"
-  url "https://ftp.eiffel.com/pub/download/23.09/pp/PorterPackage_std_23.09_107341.tar"
-  version "23.09.107341"
-  sha256 "f92dad3226b81e695ba6deb752d7b8e84351f1dcab20e18492cc56a2b7d8d4b1"
+  url "https://ftp.eiffel.com/pub/download/25.02/pp/PorterPackage_25.02_rev_98732.tar"
+  version "25.02.98732"
+  sha256 "fd7a1ec2a09e87535f077bdef542fed1665f6790c46b837b44497aec5b65c6dd"
   license "GPL-2.0-only"
 
   livecheck do
     url "https://ftp.eiffel.com/pub/download/latest/pp/"
-    regex(/href=.*?PorterPackage[._-]std[._-]v?(\d+(?:[._-]\d+)+).t/i)
+    regex(/href=.*?PorterPackage[._-]v?(\d+(?:[._-]\d+|[._-]rev)+).t/i)
     strategy :page_match do |page, regex|
-      page.scan(regex).map { |match| match[0].tr("_-", ".") }
+      page.scan(regex).map { |match| match[0].gsub("_rev_", ".") }
     end
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "2c5655afc34eec519316fc5fb3f9c725cbcf50d0bf4827102548bda6387cd12d"
-    sha256 cellar: :any,                 arm64_sonoma:  "0354eb4c3580064948257f7577b9c1a6de298148adcb599530973ab7fd546e71"
-    sha256 cellar: :any,                 arm64_ventura: "24da4037b60feac74beae6588fc4dd998abda669233090597a7d283286b1ab4c"
-    sha256 cellar: :any,                 sonoma:        "64e3fae2de6e0167f75255a50ce952182af971e1085261f08320a5497fc0f300"
-    sha256 cellar: :any,                 ventura:       "268a946d64769df550f47f3446dd068db381666bbcf7614e82f6c53edfc6df71"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ea1bb6c9813e6f2b36b34f5046ed2893ae5ca1349903beefd648976c87f92883"
+    sha256 cellar: :any,                 arm64_sequoia: "4030c9fa5e0a839aae6c9f9f8b04af32d7f45c2203453ee51b23388444a74d67"
+    sha256 cellar: :any,                 arm64_sonoma:  "ee29d34eabd019521717887b411c3a8edae4d29dbfd4c5d5cc20262df03dc6af"
+    sha256 cellar: :any,                 arm64_ventura: "fedc736ae91c56ad1ff16d5dd21a0950ba47ed1dc51df977e20759348aa0e924"
+    sha256 cellar: :any,                 sonoma:        "2b4450d781483aab1345f9453246ab778c820c208d910523c9918da5588aa0b7"
+    sha256 cellar: :any,                 ventura:       "c630a8e2c1aa1857bfc26e40611293c855fa568285b17a1254ba13c8dcf1b162"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "90856df61aa3521fa22d999c3298cbe52f144c705927fee102798a3e2af7f3f2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "00230c658b6733ffde14178ef47d9919dbaf4694ebae211d938423068282aefb"
   end
 
   depends_on "pkgconf" => :build
@@ -40,23 +43,20 @@ class Eiffelstudio < Formula
   end
 
   def install
-    platform = "#{OS.mac? ? "macosx" : OS.kernel_name.downcase}-x86-64"
+    platform = if OS.mac?
+      "macosx-x86-64"
+    else
+      "#{OS.kernel_name.downcase}-#{Hardware::CPU.arch.to_s.tr("_", "-")}"
+    end
 
     # Apply workarounds
     ENV.append_to_cflags "-Wno-incompatible-function-pointer-types" if DevelopmentTools.clang_build_version >= 1500
-    system "tar", "xf", "c.tar.bz2"
-    inreplace "C/CONFIGS/#{platform}" do |s|
-      if OS.mac?
-        # Fix flat namespace usage in C shared library.
-        s.gsub! "-flat_namespace -undefined suppress", "-undefined dynamic_lookup"
-      else
-        # Use ENV.cc to link shared objects instead of directly invoking ld.
-        # Reported upstream: https://support.eiffel.com/report_detail/19873.
-        s.gsub! "sharedlink='ld'", "sharedlink='#{ENV.cc}'"
-        s.gsub! "ldflags=\"-m elf_x86_64\"", "ldflags=''"
-      end
+    if OS.mac?
+      system "tar", "xf", "c.tar.bz2"
+      # Fix flat namespace usage in C shared library.
+      inreplace "C/CONFIGS/#{platform}", "-flat_namespace -undefined suppress", "-undefined dynamic_lookup"
+      system "tar", "cjf", "c.tar.bz2", "C"
     end
-    system "tar", "cjf", "c.tar.bz2", "C"
 
     system "./compile_exes", platform
     system "./make_images", platform

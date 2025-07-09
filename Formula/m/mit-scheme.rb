@@ -13,6 +13,8 @@ class MitScheme < Formula
     strategy :page_match
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "5b2f5cddeb07d989aeb50ed587357c3da57bc2cfbe13dd5e3cc29b754ec6dfc9"
     sha256 arm64_sonoma:   "da2acf2666e321393c150917e783456c04942de61a2b4db2eebfaeaac094168b"
@@ -21,6 +23,7 @@ class MitScheme < Formula
     sha256 sonoma:         "a8ebb5f3d8e66fd9a2924b02bdd0e920e5484890865ea107fdbba9a737dc703c"
     sha256 ventura:        "03ec5e2d199d6736dc7345d4ca3c083a78c53cb024b3874edb0e45aeb7123a2a"
     sha256 monterey:       "72fcee689c1ca44d5834d654490f8368f099e939f4065c4f9f06d24c0022bd19"
+    sha256 arm64_linux:    "3c78aa4816f440ce61da51a88b8bd412e9b46758b5c069484d6d125fb10c8796"
     sha256 x86_64_linux:   "0e910ffb8aff109164099832f8d465f54e9e0c731a0580cb0c794970e3f6ce11"
   end
 
@@ -68,7 +71,7 @@ class MitScheme < Formula
 
   test do
     # https://www.cs.indiana.edu/pub/scheme-repository/code/num/primes.scm
-    (testpath/"primes.scm").write <<~EOS
+    (testpath/"primes.scm").write <<~SCHEME
       ;
       ; primes
       ; By Ozan Yigit
@@ -96,7 +99,7 @@ class MitScheme < Formula
         (sieve (interval-list 2 n)))
 
       ; (primes<= 300)
-    EOS
+    SCHEME
 
     output = shell_output(
       "#{bin}/mit-scheme --load primes.scm --eval '(primes<= 72)' < /dev/null",

@@ -6,6 +6,8 @@ class Cig < Formula
   license "MIT"
   head "https://github.com/stevenjack/cig.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 3
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ba2a840628b58188b54acff96a557a2930ac6fa2a862cf3f075bc15a681dd0ea"
@@ -19,6 +21,7 @@ class Cig < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "c41c70e517158f1a31bb4b29a6fa01b12570001353b8800d55aadd4ddc99080e"
     sha256 cellar: :any_skip_relocation, catalina:       "3ccce3238efd259041dbb0f0427d5ac06cc4dfafdfbfd336ddd0023e02e9dd7d"
     sha256 cellar: :any_skip_relocation, mojave:         "9cf50d9418885990bed7e23b0c2987918d63bef3e7f3e27589c521b6b73160bf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "be676ae224ae098307465166f39eea0d6bcefb82ac48d6c86b76d79e87a4847b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3cda091fe20f715097967b89ee16f611d3f26faac9eb4d3f7861ec5d9cb91201"
   end
 

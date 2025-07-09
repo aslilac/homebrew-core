@@ -1,19 +1,20 @@
 class Networkit < Formula
   desc "Performance toolkit for large-scale network analysis"
   homepage "https://networkit.github.io"
-  url "https://github.com/networkit/networkit/archive/refs/tags/11.0.tar.gz"
-  sha256 "3cba54b384db4adfd88c984805647a3b74ed52168b6178cba6dd58f1cbd73120"
+  url "https://github.com/networkit/networkit/archive/refs/tags/11.1.tar.gz"
+  sha256 "c8db0430f6d7503eaf1e59fbf181374dc9eaa70f572c56d2efa75dd19a3548a9"
   license "MIT"
-  revision 1
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "67512bde8a3002943fbce9661f044a4fe2b9f5d32d9eab170842eeb27886553e"
-    sha256 cellar: :any,                 arm64_sonoma:  "52caf31178048201b41939aea1b67931197ce1a89ff98e61395a4e8da534b891"
-    sha256 cellar: :any,                 arm64_ventura: "cfe6b92239a4fbd03806c6bfe96b21845fad629e9cf8a90c816cd9ecb649ffc9"
-    sha256 cellar: :any,                 sonoma:        "9fcaf27378c203f149f19a4c5017102c1962b016f3869ed024bf960c8c4b047f"
-    sha256 cellar: :any,                 ventura:       "9e861c9718997e41723b0a6bea6710ad70eebef92000f8488fce3547b193b552"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "69a25d994bee1c505e3e08a6bd472b5562d08af6066c4512ed9238474f385dee"
+    sha256 cellar: :any,                 arm64_sequoia: "472a50deee447e0e9e0bf740f00e4b3b249797e3d582a78a343651dddbf761aa"
+    sha256 cellar: :any,                 arm64_sonoma:  "9818772678ceab5b2aa821024375443b8216889f4a70f66793610c3ed0ecb4fc"
+    sha256 cellar: :any,                 arm64_ventura: "2076c895a92bb11a20e247c107f6a190ac1a878cb944601f5de466ac55f49c83"
+    sha256 cellar: :any,                 sonoma:        "7cdd6d09da9f9d9c8fcaee9bbf82c8e7bf8a3a1ee58f21f25e4505a63939df88"
+    sha256 cellar: :any,                 ventura:       "7eafc01948f29effad09481dacf7ade9abee082ca9b1414c2244f0571d2f62bf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e72b1db4cd8a202ba384791c2aa5a67de8bc4dbf5eba902e9b21a6403ad3fadc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d745c520d2e0211881030a888704232e07d48dc6e81fa4079584b886a3f65263"
   end
 
   depends_on "cmake" => :build
@@ -35,12 +36,6 @@ class Networkit < Formula
     which("python3.13")
   end
 
-  # Add compat for numpy 2.0
-  patch do
-    url "https://github.com/networkit/networkit/commit/165503580caac864c7a31558b4c5fee27bcb007e.patch?full_index=1"
-    sha256 "67bd2d1fe3ebccb42ccdd1f7cf5aeea40967caa4e9bc96cc69737dc14ffa9654"
-  end
-
   def install
     site_packages = Language::Python.site_packages(python3)
 
@@ -57,7 +52,7 @@ class Networkit < Formula
   end
 
   test do
-    system python3, "-c", <<~EOS
+    system python3, "-c", <<~PYTHON
       import networkit as nk
       G = nk.graph.Graph(3)
       G.addEdge(0,1)
@@ -66,6 +61,6 @@ class Networkit < Formula
       assert G.degree(0) == 2
       assert G.degree(1) == 2
       assert G.degree(2) == 2
-    EOS
+    PYTHON
   end
 end

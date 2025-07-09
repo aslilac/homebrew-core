@@ -5,6 +5,8 @@ class Helib < Formula
   sha256 "05c87f2b50d4774e16868ba61a7271930dd67f4ad137f30eb0f310969377bc20"
   license "Apache-2.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "7a0fdca928c8a547f654e16f831250201e5446eb0f5b2dc80a8dc6cb775a0975"
     sha256 cellar: :any,                 arm64_sonoma:   "3c872b546835221839113e47e3d5afe25e094e1e9f2ff45379a8e1f82a6c1d6e"
@@ -15,6 +17,7 @@ class Helib < Formula
     sha256 cellar: :any,                 ventura:        "b3daa3e53fdce0c3961eddfac1476cba433db1eebe96047a89be9164adb788cf"
     sha256 cellar: :any,                 monterey:       "2678f6fedfb79ed9b30a086ce2d05a6f551ab9ddced48582d50fad2340d92c6d"
     sha256 cellar: :any,                 big_sur:        "dec80000dc1431cef027b67fab14c516248994758c9a2b8a45ea411dcea27584"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b5f16e098ebf51299e8553b528190c7f8f2ffd3ca3add170bdd277b54800b704"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5e209862dd2093cd1d27e94f10a7403b4fa2d3b258c197d4aeaf3d3af7ecbd3a"
   end
 
@@ -23,13 +26,10 @@ class Helib < Formula
   depends_on "gmp"
   depends_on "ntl"
 
-  fails_with gcc: "5" # for C++17
-
   def install
-    mkdir "build" do
-      system "cmake", "-DBUILD_SHARED=ON", "..", *std_cmake_args
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", "-DBUILD_SHARED=ON", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
     pkgshare.install "examples"
   end
 

@@ -4,23 +4,29 @@ class EasyTag < Formula
   url "https://download.gnome.org/sources/easytag/2.4/easytag-2.4.3.tar.xz"
   sha256 "fc51ee92a705e3c5979dff1655f7496effb68b98f1ada0547e8cbbc033b67dd5"
   license "GPL-2.0-or-later"
-  revision 10
+  revision 12
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 arm64_sequoia:  "69174334e32cc36f5782d2357320dc68e49790a51ea6c1c2d9822e9566aa750f"
-    sha256 arm64_sonoma:   "c20d11415ff4338da9530ca0a9fb2f155105cec63965028b5b045e3b2fa8928c"
-    sha256 arm64_ventura:  "46009b3114243c1b11085877e3bc771160111652ce3cb2950c72a9aaa2702dd7"
-    sha256 arm64_monterey: "fe8d835568ec1832842b1dc9978812269c5ae41bfa678248c2ef5e9ef6db4ad0"
-    sha256 sonoma:         "a5c470008848cd9d62c02f55c224fcd5e5fe40d6b4c7136c96d7586080ccb514"
-    sha256 ventura:        "4943e0cc391ff8084187ffe9ea92b3cd2e106faf5a1ed677603ac52f14c5b8a1"
-    sha256 monterey:       "adeb0d50a0a2f865bf3353264edbbb44b79d9e366aab4a883317264f26408ad5"
-    sha256 x86_64_linux:   "8fc76e69f070f3bc6353479a850ad4cb6884c182bdd1b998624a76c880a10d34"
+    sha256 arm64_sequoia: "d04b63e28faa7da6ebab02e67dbf9b815cb4da4e382d98cac430184426a73f9b"
+    sha256 arm64_sonoma:  "6f77c6d7fe588b1bf054cb77d0a9f3fc1a3021b8197ed2e2f30f08441ebb7749"
+    sha256 arm64_ventura: "7aab98173864bbc6c9be2abd2e1ffaaa0629820740ac7299e3ee31bd858da934"
+    sha256 sonoma:        "01e68eed3d45841e47f3dc5d881a96edcbb687795cb79c94adcf51f83bd291a4"
+    sha256 ventura:       "e66e57435c818f0c4fd5e9a926e4716fee394f91c2391be98f0a5c31514eb897"
+    sha256 arm64_linux:   "8ea78b5349b575c0af14b9b98462173493f74b418330fd4b3408bf307d4139b4"
+    sha256 x86_64_linux:  "7732a032b2ed7d6aafbe639d15ecd7d2583b286b1ba7e6433e6b58d9d9f0935f"
   end
 
+  depends_on "appstream-glib" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
   depends_on "gettext" => :build
   depends_on "intltool" => :build
   depends_on "itstool" => :build
+  depends_on "libtool" => :build
   depends_on "pkgconf" => :build
+  depends_on "yelp-tools" => :build
 
   depends_on "adwaita-icon-theme"
   depends_on "at-spi2-core"
@@ -51,7 +57,23 @@ class EasyTag < Formula
     depends_on "perl-xml-parser" => :build
   end
 
+  # easy-tag doesn't support taglib 2.x
+  patch do
+    url "https://sources.debian.org/data/main/e/easytag/2.4.3-9/debian/patches/03_port-to-taglib-2.patch"
+    sha256 "8b096f58ce08a059a992428fb239f8ab3a5887434bf8db33302a8635d0965aa4"
+  end
+
+  patch do
+    url "https://sources.debian.org/data/main/e/easytag/2.4.3-9/debian/patches/04_taglib-2-further-fix.patch"
+    sha256 "3a5a7880e56a011a291b4b2c2c9ba1d378acc505c7eebd0a306735afc58c7b9f"
+  end
+
   def install
+    inreplace "src/tags/gio_wrapper.cc" do |s|
+      s.gsub! "ulong", "unsigned long"
+    end
+    ENV["LIBTOOLIZE"] = "glibtoolize"
+    system "autoreconf", "--force", "--install", "--verbose"
     ENV.append "LIBS", "-lz"
     ENV["DESTDIR"] = "/"
 

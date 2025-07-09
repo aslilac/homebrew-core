@@ -1,8 +1,8 @@
 class PopplerQt5 < Formula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage "https://poppler.freedesktop.org/"
-  url "https://poppler.freedesktop.org/poppler-24.11.0.tar.xz"
-  sha256 "7723d880565211740c13649d24a300257b86ddd7fa2d208187ff7e5cc8dfbd58"
+  url "https://poppler.freedesktop.org/poppler-25.07.0.tar.xz"
+  sha256 "c504a9066dbdfebe377ad53cec641fd971ee96c4e1e8ca74e6c9c03d46d817ae"
   license "GPL-2.0-only"
   head "https://gitlab.freedesktop.org/poppler/poppler.git", branch: "master"
 
@@ -11,19 +11,19 @@ class PopplerQt5 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "63ce9c2019a382ce59e93c709a6dfc3795495187a025fdd3f0a881cbb870a6fe"
-    sha256 arm64_sonoma:  "5e63d610385c0b51f303d9a7c9ea8874a01126cac0eb5197dc6f8a5060c6186d"
-    sha256 arm64_ventura: "a0d1bea33ec613c93cf2ae349677a0f6ad11028acafa0f5eba48463a14edad94"
-    sha256 sonoma:        "f11d3e4680c6efe4da53f5d7690977995d5f6c39d0e3ed5fcbf43c6a8e5a694e"
-    sha256 ventura:       "0b48db981efc43241966ee56ad56bca3a4db3f15f97e7f8154a8d33efa612f96"
-    sha256 x86_64_linux:  "e03b339d3c70d7667abf88c5983bb3c3b01f6e1402735ccf0eb19008998dcbb8"
+    sha256 arm64_sequoia: "7d0c4b0c62f4c4727b74648105a3a94e58f229f8f8bae2ef4dcb867098b25784"
+    sha256 arm64_sonoma:  "df73b4c6c89a4345b05b63d46d127e2c343ea95650bc4e7fcf08bdd39ab331d3"
+    sha256 arm64_ventura: "8f67de61a8e7236b0c1240ef26d227796be51863dcc878f98432dd14d2f1cbcc"
+    sha256 sonoma:        "fd75ea1034d7e086b10025e089834ef71fd5ed7b1390915f28f854afbfec109d"
+    sha256 ventura:       "227e38fad7490c6ab2de76c31bfad7bb2d4098c9447266e53c6ad6efbeebece3"
+    sha256 x86_64_linux:  "818336dc8bd4f11ac174e8d1f0d077ca90299ab366a680a1412599e05148f5bf"
   end
 
   keg_only "it conflicts with poppler"
 
   depends_on "cmake" => :build
   depends_on "gobject-introspection" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "cairo"
   depends_on "fontconfig"
@@ -48,11 +48,14 @@ class PopplerQt5 < Formula
     depends_on "libassuan"
   end
 
-  fails_with gcc: "5"
-
   resource "font-data" do
     url "https://poppler.freedesktop.org/poppler-data-0.4.12.tar.gz"
     sha256 "c835b640a40ce357e1b83666aabd95edffa24ddddd49b8daff63adb851cdab74"
+
+    livecheck do
+      url "https://poppler.freedesktop.org/"
+      regex(/href=.*?poppler-data[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    end
   end
 
   def install

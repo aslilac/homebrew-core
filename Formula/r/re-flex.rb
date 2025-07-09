@@ -1,17 +1,18 @@
 class ReFlex < Formula
   desc "Regex-centric, fast and flexible scanner generator for C++"
   homepage "https://www.genivia.com/doc/reflex/html"
-  url "https://github.com/Genivia/RE-flex/archive/refs/tags/v5.0.1.tar.gz"
-  sha256 "b74430fe63a6e3e665676d23601e332fcf12714efb798661bf307cb7a230ca4f"
+  url "https://github.com/Genivia/RE-flex/archive/refs/tags/v6.0.0.tar.gz"
+  sha256 "488a778577429408a3390b6aeac796eccaaa1297bb7573feccf3b608b9ae9d95"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0391567b0004d9f3dc666925585fa66ff5456ffd69aabfd86c4806210c101d02"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f3bbc1d5c80d249444e4e8b78f231ce9df3a88df46c40b6e993a6e2bec12b1ee"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "331fcd3fa95fec4dee453d989c316cd389382b05d35ec59b8626b55982425117"
-    sha256 cellar: :any_skip_relocation, sonoma:        "a34892a8aa14f7ca2f3323533e940a4f348706246f54f8850bc7ddbc13d2d106"
-    sha256 cellar: :any_skip_relocation, ventura:       "7eb55d5adaeca42c12bf2c67840899443db4cd924b0aa3298d468c5627c3a9cf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "51d548da31dcbebeec82ada8cf0d2e66b8c087b5f7e179af96fb0bf52f32ce5f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fd73a376e5f349bc84f937515f67e019575c7faff08d44d83d9f1025640344fc"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c735181cd7b4c1e01cd69ecbbf7726fec1fa0810f954b0dadc736a375e0e6806"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "42ed5e3f6a0687fcc791620a482173ff7851c47f5b8f7e322aa4a3232c89f0bb"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3f7f277cb2b2e7a9c39d803d22e0adc07c2b917abac74ef3ceb4f86980373440"
+    sha256 cellar: :any_skip_relocation, ventura:       "e8012a5ccafe1183da6036ea631c56de478bb2f49b07b7e91b16afb21e638838"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "439ee2accbe09eb7469cdaed53a10605c0c78dfa77804ad03a84af9e4066010e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1149cb16ee52afef10cc2c5ef4397480d0dab377381a1d9ebc1399cb4c7d872f"
   end
 
   depends_on "pcre2"
@@ -36,6 +37,6 @@ class ReFlex < Formula
       %%
     EOS
     system bin/"reflex", "--flex", "echo.l"
-    assert_predicate testpath/"lex.yy.cpp", :exist?
+    assert_path_exists testpath/"lex.yy.cpp"
   end
 end

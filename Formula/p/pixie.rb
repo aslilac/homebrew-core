@@ -2,8 +2,8 @@ class Pixie < Formula
   desc "Observability tool for Kubernetes applications"
   homepage "https://px.dev/"
   url "https://github.com/pixie-io/pixie.git",
-      tag:      "release/cli/v0.8.4",
-      revision: "7a468a416fa6fc5762460ad844a9ed06ed80d0f0"
+      tag:      "release/cli/v0.8.8",
+      revision: "042e35639f16d32fced41939c5fbc5085e1272ff"
   license "Apache-2.0"
   head "https://github.com/pixie-io/pixie.git", branch: "main"
 
@@ -13,12 +13,13 @@ class Pixie < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "18e20e27a7db8e12ccbf4a172e6486d6831cdcdb41e1f76b0800f55bf239e9c1"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9ad18273604f5d22def4144d9cdaf237b2da6d3f2564e8cceefe9b96525e530b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "4853ed8ecbc90fa4358c0f5772e91d64047c44c1ba96919c5e9e410d20f49a42"
-    sha256 cellar: :any_skip_relocation, sonoma:        "85b4659b8f54d8f8756faf25924a0bc204cd8511fe66e2bb854d202273887466"
-    sha256 cellar: :any_skip_relocation, ventura:       "b411cacab9ce597c41e24a2ac2345266b3794eea16cf740dbfc6cff1f4b6cb07"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9f5cb05bfa5fa22ebd63bfa33866f3a6750058a3442e6ded36d0cc53c6cda570"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6c7fbaafa23de8f05e452d24747a4edd4c8a0d61a0a01b3ba664ca804c843e8e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "76f8833feb8e94f8f7fb33848057603d35acf63c1d6acdbfd02d3a4c22e863fb"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "1cf672d31b3b683081c257958eb297f56ff5f0b394dc48f51e4be862751f9bce"
+    sha256 cellar: :any_skip_relocation, sonoma:        "8fdd739ced12415fabcad6ceeb96550171e1b585143f274376ec56f776c83d90"
+    sha256 cellar: :any_skip_relocation, ventura:       "afdfd7b18e2528f563336d90b53d9266a72b86d847df1afac796fc70f7f6e8e8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "eac95efb5aa8d4021a5c102cfcba35c8f5be2ebc2ce5f310cea8214699ae5f45"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "da530afc94d1ab1753b32d48e963b6cb6e4c45ef4daaaa2cad0255e54fab966a"
   end
 
   depends_on "go" => :build
@@ -38,7 +39,7 @@ class Pixie < Formula
     ]
     system "go", "build", *std_go_args(ldflags:, output: bin/"px"), "./src/pixie_cli"
 
-    generate_completions_from_executable(bin/"px", "completion", base_name: "px")
+    generate_completions_from_executable(bin/"px", "completion")
   end
 
   test do

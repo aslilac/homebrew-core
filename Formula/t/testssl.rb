@@ -1,14 +1,13 @@
 class Testssl < Formula
   desc "Tool which checks for the support of TLS/SSL ciphers and flaws"
   homepage "https://testssl.sh/"
-  url "https://github.com/drwetter/testssl.sh/archive/refs/tags/v3.0.9.tar.gz"
-  sha256 "75ecbe4470e74f9ad17f4c4ac733be123b0f67d676ed24cc2b30adb41561e05f"
+  url "https://github.com/testssl/testssl.sh/archive/refs/tags/v3.2.1.tar.gz"
+  sha256 "b10fcd6fc25ba3832858ac529bfe391d701b68f12b631482a19be98a9efb176e"
   license "GPL-2.0-only"
-  head "https://github.com/drwetter/testssl.sh.git", branch: "3.2"
+  head "https://github.com/testssl/testssl.sh.git", branch: "3.2"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "98472bbc6189b852365f0a100a38deaa91404d700ae89642ac9c40a1f1d258b3"
+    sha256 cellar: :any_skip_relocation, all: "7b4fe21825f9fdac284931109a0f0bc57b7187e6946115357cad507a86067290"
   end
 
   depends_on "openssl@3"

@@ -1,9 +1,17 @@
 class Libopusenc < Formula
   desc "Convenience library for creating .opus files"
-  homepage "https://opus-codec.org/"
-  url "https://archive.mozilla.org/pub/opus/libopusenc-0.2.1.tar.gz", using: :homebrew_curl
+  homepage "https://www.opus-codec.org/"
+  url "https://ftp.osuosl.org/pub/xiph/releases/opus/libopusenc-0.2.1.tar.gz"
+  mirror "https://archive.mozilla.org/pub/opus/libopusenc-0.2.1.tar.gz"
   sha256 "8298db61a8d3d63e41c1a80705baa8ce9ff3f50452ea7ec1c19a564fe106cbb9"
   license "BSD-3-Clause"
+
+  livecheck do
+    url "https://ftp.osuosl.org/pub/xiph/releases/opus/?C=M&O=D"
+    regex(%r{href=(?:["']?|.*?/)libopusenc[._-]v?(\d+(?:\.\d+)+)\.t}i)
+  end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 1
@@ -19,25 +27,24 @@ class Libopusenc < Formula
     sha256 cellar: :any,                 catalina:       "593106e48c86436fd1908c79f1ef54f206bb37f0983ccb3901190cebe6e78cea"
     sha256 cellar: :any,                 mojave:         "96a05dd8d0071fb38ed14f4f5b64af576baee3719a16fc8fc331ddfa1a4d65ec"
     sha256 cellar: :any,                 high_sierra:    "e5cfb0433abe565b11351f9d6ec3fb44852a8aeb99ef8f6710ee9d899eb97ab3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "c48463ee524577ba28625f68966b402ddd0e90ae2a576c4ea7ffcc59a90ece28"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2545d8277065ed72d4a382d804569d27c55e9d8eb6ffc9511140bda90721edb3"
   end
 
   head do
-    url "https://gitlab.xiph.org/xiph/libopusenc.git"
+    url "https://gitlab.xiph.org/xiph/libopusenc.git", branch: "master"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "opus"
 
   def install
     system "./autogen.sh" if build.head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 

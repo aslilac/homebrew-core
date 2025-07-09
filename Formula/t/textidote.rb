@@ -11,18 +11,17 @@ class Textidote < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9e4522d1907e63af4baca1ff23513e7afebf5e4f1847607114011c939f5fd185"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e2ce5fbb2b7d8c45d6ec7fae3293ba8a40ebab77186d30e82138beb4597a8a7a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "992cf16616bcb97600fe29bee363412c756c7c149b012a0d5009cd026b9b3a6f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c43727c26715f20b4f584dc84f451892795aa2a0ea7acd126b8f60e3b75a7ea6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "699f0bfbe3ec8667be03c956935ded5af3eca9c22ad7a6a627a29dc40224e863"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b1bea00a950a4a7d7770bbc8f88ef2f32cec2d56dd074e2aa0f232e2ee8236c3"
-    sha256 cellar: :any_skip_relocation, ventura:        "ef9b09601f3d6b51e9d3c79c0f025711c103a85583fcd6e6f16eae964217bd27"
-    sha256 cellar: :any_skip_relocation, monterey:       "306ad9dd1d5cfa96ea9976fa349ec38bd0a246f0feaf27223fff86f51bcd879d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "62cb64ee83a30dae725475d3bb5b5260ed74784ce4b7bfe071a2cf0c7bb7a917"
-    sha256 cellar: :any_skip_relocation, catalina:       "2c307c617920b39a668b3b4d877da206912f615bf409cdafa17e4a0063393171"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0571032b89ba4edb5560e4358dab877bcdd15eb8a8d76c8656405362e0da8923"
+    rebuild 3
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3bc15a1fbb32e89fa3aa4f01a348336f1032974eca44c74789719e8e3ee9f391"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5c7874766d3f1f514f1b32435f160c92a0622a19ca8d2b0f7a8f653bfec05445"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "4bf516adb25ff61f3453f6825819e6353e2045619e46c7168ee250a782dc538d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "39c5742e46605837bfb719356ba9aeb9811afa145ef5bdaabe0982704a270a30"
+    sha256 cellar: :any_skip_relocation, ventura:       "e50f6561b290ac98eec57706a01c5a6e644a66b5d12e2c289d81c785d05f6ce4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "1bf9049a7149770b7e587a8a0fd0437750306a7ab810b7f6d878aeca523a54e3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "73b3a785959a0992e981b78f47a4c39932c59f158a3d4c3281fb5ccc5926abc5"
   end
 
   depends_on "ant" => :build
@@ -35,9 +34,11 @@ class Textidote < Formula
 
     # Install the JAR + a wrapper script
     libexec.install "textidote.jar"
-    bin.write_jar_script libexec/"textidote.jar", "textidote"
+    # Fix run with `openjdk` 24.
+    # Reported upstream at https://github.com/sylvainhalle/textidote/issues/265.
+    bin.write_jar_script libexec/"textidote.jar", "textidote", "-Djdk.xml.totalEntitySizeLimit=50000000"
 
-    bash_completion.install "Completions/textidote.bash"
+    bash_completion.install "Completions/textidote.bash" => "textidote"
     zsh_completion.install "Completions/textidote.zsh" => "_textidote"
   end
 
@@ -45,22 +46,22 @@ class Textidote < Formula
     output = shell_output("#{bin}/textidote --version")
     assert_match "TeXtidote", output
 
-    (testpath/"test1.tex").write <<~EOF
-      \\documentclass{article}
-      \\begin{document}
+    (testpath/"test1.tex").write <<~'TEX'
+      \documentclass{article}
+      \begin{document}
         This should fails.
-      \\end{document}
-    EOF
+      \end{document}
+    TEX
 
     output = shell_output("#{bin}/textidote --check en #{testpath}/test1.tex", 1)
     assert_match "The modal verb 'should' requires the verb's base form..", output
 
-    (testpath/"test2.tex").write <<~EOF
-      \\documentclass{article}
-      \\begin{document}
+    (testpath/"test2.tex").write <<~'TEX'
+      \documentclass{article}
+      \begin{document}
         This should work.
-      \\end{document}
-    EOF
+      \end{document}
+    TEX
 
     output = shell_output("#{bin}/textidote --check en #{testpath}/test2.tex")
     assert_match "Everything is OK!", output

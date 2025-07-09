@@ -10,6 +10,8 @@ class Rzip < Formula
     regex(/href=.*?rzip[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e831e4f90ea7d39b9e846ab0d18048bca802d65a6ecd3b61bfe1e55bbe831345"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2632e94c5b807679406f19003c336b49ff755acd982d507ab3c2098e1fe91afb"
@@ -25,6 +27,7 @@ class Rzip < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "fec6b24d1b5d0555a7cdd732846cfc6357d4fca1b3ff59a3c5fa27e3bc2f4d9e"
     sha256 cellar: :any_skip_relocation, sierra:         "89a5e7ab518070df7c3f5091a18a412b72910b58a191222e915b1ed9db6ba570"
     sha256 cellar: :any_skip_relocation, el_capitan:     "4eedb0ca975a72a4591d1e386d1ae01a546fb8401ea4f0b05c0fa71809e159db"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "7d1d3a724cf5d7d9246b696aabea665b928fae0d01600cf63710678c207990e1"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7b409c08d9581b3013a05dc62ebe68c3d6bab99b342e8bc1f2911e9a342b18f0"
   end
 
@@ -51,7 +54,7 @@ class Rzip < Formula
 
     # compress: data.txt -> data.txt.rz
     system bin/"rzip", path
-    refute_predicate path, :exist?
+    refute_path_exists path
 
     # decompress: data.txt.rz -> data.txt
     system bin/"rzip", "-d", "#{path}.rz"

@@ -5,6 +5,8 @@ class Gflags < Formula
   sha256 "34af2f15cf7367513b352bdcd2493ab14ce43692d2dcd9dfc499492966c64dcf"
   license "BSD-3-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any,                 arm64_sequoia:  "5a17163fb7c8fb712f7bee2776e6304e54bb4e7116fe3abb6d2689b1042f8a60"
@@ -16,17 +18,28 @@ class Gflags < Formula
     sha256 cellar: :any,                 ventura:        "6b24b7f057edb2c37d9f423d29ead9a1ebf14e07217f43e0fb7bbf8393b0821c"
     sha256 cellar: :any,                 monterey:       "0436095f47bef8a2165b1829eb8ee6e77c8aa14553ef982bd3c6ecf5c7e9d47b"
     sha256 cellar: :any,                 big_sur:        "4702020c64f73c2e3e23997055a49711600a1af7834652be3923a1edb43a750c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "03c55bb2c70aaab30bf92eab3d2d90880eb647e2c9f070943b12a7723f0723eb"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f11fa1aff8e21d32012f8fbb78a2f954241f4e026b8518a6c874e2d537201629"
   end
 
   depends_on "cmake" => [:build, :test]
 
+  # cmake 4.0 build patch, upstream pr ref, https://github.com/gflags/gflags/pull/367
+  patch do
+    url "https://github.com/gflags/gflags/commit/b14ff3f106149a0a0076aa232ce545580d6e5269.patch?full_index=1"
+    sha256 "84556b5cdfdbaaa154066d2fdd6b0d1d90991ac255600971c364a2c0f9549f84"
+  end
+
   def install
-    mkdir "buildroot" do
-      system "cmake", "..", *std_cmake_args, "-DBUILD_SHARED_LIBS=ON", "-DBUILD_STATIC_LIBS=ON",
-                                             "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
-      system "make", "install"
-    end
+    args = %w[
+      -DBUILD_SHARED_LIBS=ON
+      -DBUILD_STATIC_LIBS=ON
+      -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+    ]
+
+    system "cmake", "-S", ".", "-B", "_build", *args, *std_cmake_args
+    system "cmake", "--build", "_build"
+    system "cmake", "--install", "_build"
   end
 
   test do
@@ -59,7 +72,7 @@ class Gflags < Formula
     assert_match "Foo bar!", shell_output("./test --message='Foo bar!'")
 
     (testpath/"CMakeLists.txt").write <<~CMAKE
-      cmake_minimum_required(VERSION 2.8)
+      cmake_minimum_required(VERSION 4.0)
       project(cmake_test)
       add_executable(${PROJECT_NAME} test.cpp)
       find_package(gflags REQUIRED COMPONENTS static)

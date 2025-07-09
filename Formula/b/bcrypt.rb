@@ -10,6 +10,8 @@ class Bcrypt < Formula
     regex(/href=.*?bcrypt[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ea8bb418fb65a4cded15e0a83c3fecfb5081b435211e832df5c663af5d3007ef"
@@ -24,6 +26,7 @@ class Bcrypt < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "132998cb8e196f506666943a94a26927a19899cb1e45ee8eaf65e5ad0ee7ef8d"
     sha256 cellar: :any_skip_relocation, mojave:         "bb843c3b04f9adf57df1c2d07e30303626eedb0f45695dcaf38d0835ea3e35fd"
     sha256 cellar: :any_skip_relocation, high_sierra:    "883a4a97b7275e91cd90ab9d1ca69fa2a3c0db3544a2d77863a37bda16c51667"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "0ab25224e9e787e4c3f04046857ff47cddb4146186eb63e45e2d898794eb56b3"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "fdc4ce5fa8dfa43b86a28d9f149ca0fe9ed94e698d4f3ca40c5352a9b912734e"
   end
 
@@ -39,9 +42,9 @@ class Bcrypt < Formula
 
   test do
     (testpath/"test.txt").write("Hello World!")
-    pipe_output("#{bin}/bcrypt -r test.txt", "12345678\n12345678\n")
+    pipe_output("#{bin}/bcrypt -r test.txt", "12345678\n12345678\n", 0)
     mv "test.txt.bfe", "test.out.txt.bfe"
-    pipe_output("#{bin}/bcrypt -r test.out.txt.bfe", "12345678\n")
+    pipe_output("#{bin}/bcrypt -r test.out.txt.bfe", "12345678\n", 0)
     assert_equal File.read("test.txt"), File.read("test.out.txt")
   end
 end

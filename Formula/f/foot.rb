@@ -1,20 +1,22 @@
 class Foot < Formula
   desc "Fast, lightweight and minimalistic Wayland terminal emulator"
   homepage "https://codeberg.org/dnkl/foot"
-  url "https://codeberg.org/dnkl/foot/archive/1.19.0.tar.gz"
-  sha256 "148b0b545ca37e15b877ff9f6a768a4ce6feb0ed256f8a5f853cb2e16e3323c1"
+  url "https://codeberg.org/dnkl/foot/archive/1.22.3.tar.gz"
+  sha256 "1c9f09c119c5b24bd1934ce515e70f402b7d1b2c55f8218a16eddaa26e3f6fb0"
   license "MIT"
 
   bottle do
-    sha256 x86_64_linux: "282b21536326523d6fea3cf14c9f1cc70eb20ab55d2ae2ed958b4b4b8071229a"
+    sha256 arm64_linux:  "a345e2e90ac6a7997bed073afc4269b941b9c6aa5bae6b81b585649614cc82d1"
+    sha256 x86_64_linux: "10fd5473034fbd167df7b0e9bc8b75a240e529b07c8a9a0861f9abd7f4862b94"
   end
 
   depends_on "cmake" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "scdoc" => :build
   depends_on "tllist" => :build
+  depends_on "wayland-protocols" => :build
 
   depends_on "fcft"
   depends_on "fontconfig"
@@ -37,20 +39,21 @@ class Foot < Formula
 
     mkdir_p config_dir
 
-    File.write config_file, <<-EOF
+    config_file.write <<~INI
       [cursor]
       style=blok
-    EOF
+    INI
 
     assert_match(
       /blok: not one of 'block', 'underline', 'beam'/,
       shell_output("#{bin}/foot --check-config 2>&1", 230),
     )
 
-    File.write config_file, <<-EOF
+    rm(config_file)
+    config_file.write <<~INI
       [cursor]
       style=block
-    EOF
+    INI
 
     assert_empty shell_output("#{bin}/foot --check-config")
   end

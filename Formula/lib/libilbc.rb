@@ -5,6 +5,8 @@ class Libilbc < Formula
   sha256 "6820081a5fc58f86c119890f62cac53f957adb40d580761947a0871cea5e728f"
   license "BSD-3-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "3e5872934eb657baeb5b1a02dd4f1d41fccb539aa8470718644305bb5ab3cd28"
     sha256 cellar: :any,                 arm64_sonoma:   "4909ecace33503559f651e6bd82cc0cc4e3d1248572f42796ceaa07c85ccb47b"
@@ -17,6 +19,7 @@ class Libilbc < Formula
     sha256 cellar: :any,                 big_sur:        "affe65f4320a2940b69ec54687be6c5387e51d79f3fd418a5dc42924c99eeee0"
     sha256 cellar: :any,                 catalina:       "b75ace51e88894a45e406c7fbe4b4cafc06932b0e5ce90480fdee203aa9ede83"
     sha256 cellar: :any,                 mojave:         "496492e1aaecb1b41ba83eb033b75777ca08333edbb9e67bef23c933b5847cd5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "5848c1f801acd864b6e44672dff531f3cd357e93a64ee64ff8bc3bda3ef6e2a7"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "11914a90369fc2c32d1373c3c8d5a98275c44de6e70301c23067b67310d6bba0"
   end
 

@@ -9,6 +9,8 @@ class Pyinvoke < Formula
   revision 2
   head "https://github.com/pyinvoke/invoke.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any_skip_relocation, all: "0244d25e686d6574fcaf35d14725a415c00b33dd0b2c697fc66a78160d9227a1"
@@ -35,10 +37,10 @@ class Pyinvoke < Formula
     (testpath/"foo"/"bar").mkpath
     (testpath/"baz").mkpath
     system bin/"invoke", "clean"
-    refute_predicate testpath/"foo", :exist?, "\"pyinvoke clean\" should have deleted \"foo\""
-    assert_predicate testpath/"baz", :exist?, "pyinvoke should have left \"baz\""
+    refute_path_exists testpath/"foo", "\"pyinvoke clean\" should have deleted \"foo\""
+    assert_path_exists testpath/"baz", "pyinvoke should have left \"baz\""
     system bin/"invoke", "clean", "--extra=baz"
-    refute_predicate testpath/"foo", :exist?, "\"pyinvoke clean-extra\" should have still deleted \"foo\""
-    refute_predicate testpath/"baz", :exist?, "pyinvoke clean-extra should have deleted \"baz\""
+    refute_path_exists testpath/"foo", "\"pyinvoke clean-extra\" should have still deleted \"foo\""
+    refute_path_exists testpath/"baz", "pyinvoke clean-extra should have deleted \"baz\""
   end
 end

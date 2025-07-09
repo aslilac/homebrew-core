@@ -4,20 +4,21 @@ class Gearman < Formula
   url "https://github.com/gearman/gearmand/releases/download/1.1.21/gearmand-1.1.21.tar.gz"
   sha256 "2688b83e48f26fdcd4fbaef2413ff1a76c9ecb067d1621d0e0986196efecd308"
   license "BSD-3-Clause"
-  revision 3
+  revision 5
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "5cdfdb84c2102f65926d2265929435a919eca018f7535e7cc68c022923065b18"
-    sha256 cellar: :any,                 arm64_sonoma:   "9d1da4a4f4163500fa5526812bc3a0568378e01a89001545bf45cee7c61d5ed7"
-    sha256 cellar: :any,                 arm64_ventura:  "4b43f495ded047c9a8bbf9cd1007151049cebf7cefcde392d00b9e3bb16b6bdb"
-    sha256 cellar: :any,                 arm64_monterey: "93ccbc7bf2fe168924a57d16851206fbf781f3ff78460c66f1e97e5551287bfd"
-    sha256 cellar: :any,                 sonoma:         "af960e8b7736a776909060bb4544f46058ab065a4bef2472b02bd4119142f2c1"
-    sha256 cellar: :any,                 ventura:        "30f5a814200b4eef0fa30ed3a26d526c18cf8fd03e9466e37699c1f16a09ad07"
-    sha256 cellar: :any,                 monterey:       "157e08eabcf0400b1f4c79a678b77433fc3d6c10390b372c641478ed4e5352c4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "285adf59fe86f27e59a6292255c4d62b281db259ec4f6f49a88469a8e0491e3a"
+    sha256 cellar: :any,                 arm64_sequoia: "060faa3a9871dcbbaeef57333b7fa75f078ff5494649708b9dbefa88ae73f163"
+    sha256 cellar: :any,                 arm64_sonoma:  "df3265ff5e08cd1e45980fce280622cc1f193928bc01032af8ee26513b6fef76"
+    sha256 cellar: :any,                 arm64_ventura: "5ca0cc364c7b043186134711deb86d75c91fda9bc3c684040ac927175e646858"
+    sha256 cellar: :any,                 sonoma:        "eb219f8ad13112d89d5c93886c3f50296fbeba85b9fdc3a8f72c7a17fcf40826"
+    sha256 cellar: :any,                 ventura:       "c8481a6f4d55d6b47ae8aac28bb7c44dbbc641fae253d0e074e31d8dabefba83"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6dff3c3b09510935a9099cf7a08f9d8cc83005d2b724b6910bf095ea2fe36697"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b6e753a4c1a89536e1e907a2a4006d947052c7103271289371ca0301d7a9ba83"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "sphinx-doc" => :build
   depends_on "boost"
   depends_on "libevent"

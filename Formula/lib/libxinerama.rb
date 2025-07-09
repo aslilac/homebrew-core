@@ -5,6 +5,8 @@ class Libxinerama < Formula
   sha256 "5094d1f0fcc1828cb1696d0d39d9e866ae32520c54d01f618f1a3c1e30c2085c"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "16a20793dd7f5af12c877b836d798ae0b22e8cd392a7d29b7f35ecf3d9cea19d"
     sha256 cellar: :any,                 arm64_sonoma:   "62f42418dfb296c2e21748bd9902aec2e59acde89316b6340a0fdebe01a934b8"
@@ -16,24 +18,23 @@ class Libxinerama < Formula
     sha256 cellar: :any,                 monterey:       "88432ad0c1e14a8511e0fb345d9bcf0e9ee67e7b634b32b31b75ce2d66ac0051"
     sha256 cellar: :any,                 big_sur:        "0f99b4d8757fdfe3b0c087b1112d49dc625c1d342f6e5c6beba44063f8c1ae33"
     sha256 cellar: :any,                 catalina:       "c11a3acfe1397ac78ff73b16f33781af781bb510773f29c4cde93a80b37ffacc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f0700b04d2961c8e119cced69fde04a873cbc61801fc94e687ccbe727432a24f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d8bcf697bd80954325c6994d562554f890ab0fd6e35ae671f0886a05bcacc29b"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libx11"
   depends_on "libxext"
   depends_on "xorgproto"
 
   def install
     args = %W[
-      --prefix=#{prefix}
       --sysconfdir=#{etc}
       --localstatedir=#{var}
-      --disable-dependency-tracking
       --disable-silent-rules
     ]
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
   end

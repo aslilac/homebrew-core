@@ -10,6 +10,8 @@ class Shmcat < Formula
     regex(%r{url=.*?/shmcat[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "103cda477b51d8e4ef25053b80346b9c7e433ef5db2c3f9efc21e815faf1556b"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b9249f70d6b9d337e959051cc23417d12fda97e704d53ae4cd1be561f9541fb4"
@@ -25,6 +27,7 @@ class Shmcat < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "ff73e6df8b663b4f382098ce75a9ec4634d4658c5378b3ad122de135e30d44ab"
     sha256 cellar: :any_skip_relocation, sierra:         "5ee7bcafe69d653421e29b56cf2e48a55874dc1e092e817a83cb446cda4acf01"
     sha256 cellar: :any_skip_relocation, el_capitan:     "1b6ddaf528253df2e2d5b93e97b6f4ade717ff8f3f6bcf829ed7cf9d9e682539"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "08d6b2ad911eb82d4426537e8958ea7e8e8fe408fa3c9041dde2a14f710b9dfe"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ccb601cd0dfebcb5b7633bf1e8610ba8b1a3858b67feb9848020a3ad1152e780"
   end
 

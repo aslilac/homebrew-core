@@ -4,17 +4,18 @@ class C10t < Formula
   url "https://github.com/udoprog/c10t/archive/refs/tags/1.7.tar.gz"
   sha256 "0e5779d517105bfdd14944c849a395e1a8670bedba5bdab281a0165c3eb077dc"
   license "BSD-3-Clause"
-  revision 9
+  revision 11
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "0221ec0b0d70aa261b1de4b8bf9d6233f03938cd664e7507c032b90804679deb"
-    sha256 cellar: :any,                 arm64_sonoma:   "65c200e6b93a21b12be0194fa4115c56bf86a919e73a9b77a005db40bc5e00f2"
-    sha256 cellar: :any,                 arm64_ventura:  "359e543872760a9b52bda1a3fce09dee9fe58ede5dc73b9ee2002f61ed95cb31"
-    sha256 cellar: :any,                 arm64_monterey: "865a9cd8ba52885d3a1954bc546afd9795e70e23d93daa92defa558d1aede4ad"
-    sha256 cellar: :any,                 sonoma:         "33d13682f5689fd63f5134c293e63512472ba98f588cdb0ce7d546989b41cf85"
-    sha256 cellar: :any,                 ventura:        "7ea5fc2b7cc4c542a65c5548bd8d5a178b4953a99f7003b72e42a6701190f909"
-    sha256 cellar: :any,                 monterey:       "4f861dcd0ad936fa7fd4bbbe4ac529d99fc94c3d0b86b8806d11744cd9bdb093"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "927f577767bb086cb2e8ca6350abceffb3c5cb859bb8c1e2e195a7d596afead7"
+    sha256 cellar: :any,                 arm64_sequoia: "b9cdeef70745ce25fb83a076585191b65f44a937075ed8f165e092c974550f96"
+    sha256 cellar: :any,                 arm64_sonoma:  "56bce6a79dc3ee8b07a0441e2b299dcb8ce0ba98d86e37af244519b8617914bc"
+    sha256 cellar: :any,                 arm64_ventura: "ba333295a388f76a8626f6c68548a02efa8262552aa9e88b4c66c6e1be556e67"
+    sha256 cellar: :any,                 sonoma:        "603ba928df95c77be7960e908145afb1a432174f953e366cacb584721b76158c"
+    sha256 cellar: :any,                 ventura:       "22ae09c19e427bfc4aa514a0de60dc3b6fb1013f6b862422539357e118b3f4e0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "de79ed48a54bef77ca5a116f2adce08f91af261900d11fc4a38250b014ed1cac"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4c4e4c6894ab5e4ab909a70fb123f6b788730806b1d388a59577ba8e2111e8e3"
   end
 
   depends_on "cmake" => :build
@@ -50,10 +51,7 @@ class C10t < Formula
   patch :DATA
 
   def install
-    ENV.cxx11
-    inreplace "test/CMakeLists.txt", "boost_unit_test_framework", "boost_unit_test_framework-mt"
-
-    args = []
+    args = ["-DCMAKE_CXX_STANDARD=11", "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"]
     unless OS.mac?
       args += %W[
         -DCMAKE_LINK_WHAT_YOU_USE=ON

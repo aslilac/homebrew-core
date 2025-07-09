@@ -7,12 +7,15 @@ class Publish < Formula
   revision 2
   head "https://github.com/JohnSundell/Publish.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia: "12bb9d41814cacbe362e02d37825f9eabb5c2c228d2502441389a31deff9cd06"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0d595b1f7732f64fd874095b0c17ec22b77d7261fa83e0324f4657bfd8dbbedf"
     sha256 cellar: :any_skip_relocation, arm64_ventura: "75ad288c89a4abfff3648d4628b71133b15a9da2a7e85ea2ce72558c8b6a5ced"
     sha256 cellar: :any_skip_relocation, sonoma:        "4653f1571901ea7091329d5f935e8a5c05b2c7a5d9a8c8751b9a0ad6052547e4"
     sha256 cellar: :any_skip_relocation, ventura:       "4e568dd197329c4fe8ef509c03dbc0071615353caccd1fca8307b97a039fa08c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f58f789837bfe9b47b668faf048f2324176d665cc91d8f28b8bd3e6644425378"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "dbf8d184068be460c2c8fb09aa1faad7180b1341bd50f670d7ca97a6d93e8672"
   end
 
@@ -36,7 +39,7 @@ class Publish < Formula
   test do
     mkdir testpath/"test" do
       system bin/"publish", "new"
-      assert_predicate testpath/"test"/"Package.swift", :exist?
+      assert_path_exists testpath/"test"/"Package.swift"
     end
   end
 end

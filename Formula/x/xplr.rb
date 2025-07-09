@@ -1,20 +1,19 @@
 class Xplr < Formula
   desc "Hackable, minimal, fast TUI file explorer"
   homepage "https://github.com/sayanarijit/xplr"
-  url "https://github.com/sayanarijit/xplr/archive/refs/tags/v0.21.9.tar.gz"
-  sha256 "345400c2fb7046963b2e0fcca8802b6e523e0fb742d0d893cb7fd42f10072a55"
+  url "https://github.com/sayanarijit/xplr/archive/refs/tags/v1.0.1.tar.gz"
+  sha256 "6d766bc52c49782e3ca8ba7130f1cab95c69e42ff3c15eec2b0ac823ab7a36b3"
   license "MIT"
   head "https://github.com/sayanarijit/xplr.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "723d64bfe826b1e4114a3804f7561e1491fa85ea21155fb59623d73a8e33da31"
-    sha256 cellar: :any,                 arm64_sonoma:   "e12c3daf98f01ef65c0712449f17b2e44941ae864468139028df465b5e6714f9"
-    sha256 cellar: :any,                 arm64_ventura:  "a5e3d5b13f3fae8554777905d97a8a5b5de096de7218f541d34059304b5f7dd1"
-    sha256 cellar: :any,                 arm64_monterey: "4fead8b01327480386b45f7165f05c47dce16e3f575e15f74128739dca1f23ab"
-    sha256 cellar: :any,                 sonoma:         "251c75b3051e9e98a746ee31735042c7067e2269bd31e38aea2b7c1421d1c3aa"
-    sha256 cellar: :any,                 ventura:        "3293d23dcbd6c3b440b053c439eb662234ea9b9beb5f5a71365fb949e2354a40"
-    sha256 cellar: :any,                 monterey:       "bf794adee15ca2eabac6aa3d5ac1cab694a76bd2b787cbd15915b486b02485ca"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a2e5fd49885a71195c2c9e6087e3b8d2f1b6b9c4a866be343db5fd1e067d5915"
+    sha256 cellar: :any,                 arm64_sequoia: "8e2af53ed70887dd5ff966adf2612259865c6db17c485ee9233dedf2f184df1b"
+    sha256 cellar: :any,                 arm64_sonoma:  "c628e2c6d435b8765c2880dfe98dfbdd4a54705e04668d5aeac389bab23d6471"
+    sha256 cellar: :any,                 arm64_ventura: "b1942b6c9b832b987ef777bf1454a805df69b3a5ef2a3be7771c3344a3fe5ba6"
+    sha256 cellar: :any,                 sonoma:        "3792494258c3c05d1724666298be0ff8d9fa5f81fe3213b3a89419353f2cf920"
+    sha256 cellar: :any,                 ventura:       "3cdb674789239cc18e01fd5d1863a3e4fd8f9510608706cc90d08402fca7080a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "940a502af128cb6dadf797a2cf6d4a6acc002bc4c9bbd3f4588a17a80069d0e7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1c025d45df5cdf7e0a3a292d914745099b8a9854a4a61b8316aab72c32e7df22"
   end
 
   depends_on "pkgconf" => :build
@@ -25,15 +24,9 @@ class Xplr < Formula
     system "cargo", "install", "--no-default-features", *std_cargo_args
   end
 
-  def check_binary_linkage(binary, library)
-    binary.dynamically_linked_libraries.any? do |dll|
-      next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)
-
-      File.realpath(dll) == File.realpath(library)
-    end
-  end
-
   test do
+    require "utils/linkage"
+
     input, = Open3.popen2 "SHELL=/bin/sh script -q output.txt"
     input.puts "stty rows 80 cols 130"
     input.puts bin/"xplr"
@@ -46,7 +39,7 @@ class Xplr < Formula
       assert_match testpath.to_s, contents
     end
 
-    assert check_binary_linkage(bin/"xplr",
+    assert Utils.binary_linked_to_library?(bin/"xplr",
                                 Formula["luajit"].opt_lib/shared_library("libluajit")),
            "No linkage with libluajit! Cargo is likely using a vendored version."
   end

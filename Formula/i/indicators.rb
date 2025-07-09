@@ -6,6 +6,8 @@ class Indicators < Formula
   license "MIT"
   head "https://github.com/p-ranav/indicators.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, all: "2322751e34abbf99f523edd2f22119089ce3ce2935ffc919e6ba6c2e2b6f72bc"
@@ -14,8 +16,9 @@ class Indicators < Formula
   depends_on "cmake" => :build
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -57,6 +60,7 @@ class Indicators < Formula
         return 0;
       }
     CPP
+
     system ENV.cxx, "test.cpp", "-std=c++11", "-I#{include}", "-o", "test"
     output = shell_output("./test")
 

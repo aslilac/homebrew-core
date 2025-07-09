@@ -10,6 +10,8 @@ class Exiftags < Formula
     regex(/href=.*?exiftags[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "43f7d6a7bd08e653cfde12d0f3cdcdb371b27bb4912a8f2bcda42120da960cb7"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "499981c69ffb64e8bdc63a1b43a07884fa62a11034112483f00eca053836a031"
@@ -25,6 +27,7 @@ class Exiftags < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "1ba9c96bf8630f50faf8bb5045bace46c5c24962d439a496a6f606b7bc886a08"
     sha256 cellar: :any_skip_relocation, sierra:         "7aaa2a8e78b03e4f842c84a46ce7fb5ed8ff1a956ababde1f26bc716431a67e0"
     sha256 cellar: :any_skip_relocation, el_capitan:     "47d75e83f89d0db4a54d779d9c9820fbb788c102738824e86b83a441d9a60af8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "548670490adcadbf70e7efc3e1fa7193a908abc34e75593bd0bcb52294120f44"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9bb2331fd48ad529d9fe2c1cda8f11370d2982afbcebe6403ed18333d6a86416"
   end
 

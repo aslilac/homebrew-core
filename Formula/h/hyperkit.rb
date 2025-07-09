@@ -12,6 +12,7 @@ class Hyperkit < Formula
 
   # does not build for 13 and 14, and no upstream commits in the past two years
   deprecate! date: "2024-06-06", because: :unmaintained
+  disable! date: "2025-06-21", because: :unmaintained
 
   depends_on "ocaml" => :build
   depends_on "opam" => :build
@@ -59,7 +60,7 @@ class Hyperkit < Formula
         cp(File.join(path_resource_versioned, "initrd.gz"), testpath)
       end
 
-      (testpath / "test_hyperkit.exp").write <<-EOS
+      (testpath/"test_hyperkit.exp").write <<~EXPECT
         #!/usr/bin/env expect -d
         set KERNEL "./vmlinuz"
         set KERNEL_INITRD "./initrd.gz"
@@ -83,7 +84,7 @@ class Hyperkit < Formula
         }
         expect eof
         puts "\\nPASS"
-      EOS
+      EXPECT
       system "expect", "test_hyperkit.exp"
     end
   end

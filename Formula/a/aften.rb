@@ -13,6 +13,8 @@ class Aften < Formula
     regex(%r{url=.*?/aften[._-]v?(\d+(?:\.\d+){2,})\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "c158dd1b9124db377e0119b6d4dc34ce9ecb14e458379ab023165ce6b83715fb"
     sha256 cellar: :any,                 arm64_sonoma:   "918b76d55d51e34cd63b83041517d0a06dd9b10f24a2d35ec8b68fc97a04f589"
@@ -28,6 +30,7 @@ class Aften < Formula
     sha256 cellar: :any,                 high_sierra:    "b1b8facf243da3872f4ddf2fbefb4879228cb5b390f883794b8b115d06e4c6a6"
     sha256 cellar: :any,                 sierra:         "535ef47b08163c8d1d7a66ffda7d3f280c0569a74d9feedbcfc93cd3c55194ca"
     sha256 cellar: :any,                 el_capitan:     "68b4983cc843e2d57854a263038a965a2dd6c473c98111f482ec1c69d09ace83"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "30a63d92db554df38e376c97fd0052b6b01956f89f3bb0b9f81309b11df8a332"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f9e42d32fbd1c37b67e5beb729fba09eed1378d0f44c89b0b313231d478320d7"
   end
 

@@ -10,6 +10,8 @@ class Gloox < Formula
     regex(/Latest stable version.*?href=.*?gloox[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "d4c45c5c9a56bffba60929aa1a994e8566a971d8c0d7b6a9f2c1d267c5588b62"
     sha256 cellar: :any,                 arm64_sonoma:   "b0c90e096ef2a3ee7b05c264338486bfd6df78666baf363e6b6648078f974b97"
@@ -18,10 +20,11 @@ class Gloox < Formula
     sha256 cellar: :any,                 sonoma:         "514e1e0c40baa8b06c66e0501fc51b11d5e4cf5960ad13e0ebb76e84151ed461"
     sha256 cellar: :any,                 ventura:        "4f6f5f81d90b12287ab78c7cda2f2d01342e925e9cd0224c9187d681c7023df7"
     sha256 cellar: :any,                 monterey:       "ec49c912e85c4b02f351d6c171d0b93df8387f1883c380e77e187adf98119a46"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "9e5af4334ef24ff8fd701bfda9a221b82388982e1d8fe166d7ee2c30df2954cc"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "95bec00a34c6fa57dd21c50ebeff2a52af273b3a2a413436f40eaeda30b9511d"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libidn"
   depends_on "openssl@3"
 
@@ -31,12 +34,12 @@ class Gloox < Formula
   patch :DATA
 
   def install
-    system "./configure", *std_configure_args,
-                          "--disable-silent-rules",
+    system "./configure", "--disable-silent-rules",
                           "--with-zlib",
                           "--with-openssl=#{Formula["openssl@3"].opt_prefix}",
                           "--without-tests",
-                          "--without-examples"
+                          "--without-examples",
+                          *std_configure_args
     system "make", "install"
   end
 

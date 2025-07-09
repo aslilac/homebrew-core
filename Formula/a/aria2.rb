@@ -5,6 +5,8 @@ class Aria2 < Formula
   sha256 "60a420ad7085eb616cb6e2bdf0a7206d68ff3d37fb5a956dc44242eb2f79b66b"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "fa42d58d43ca08575c6df1b9c8b6141edc97fdeec4c60fc3e39c50fffc7a301e"
     sha256 arm64_sonoma:   "89117256b91a5a87d4e31fb4054f7a0b45681a97627547b4db7498930486ff05"
@@ -13,6 +15,7 @@ class Aria2 < Formula
     sha256 sonoma:         "7ad8b56e2edf9df28458b88cc88faec5e7ada3bd9b5652420aa6168325a10260"
     sha256 ventura:        "2821ec44b09994465d3bb8f8e4da6af8d2dd70cbdbf92f3b75d18ba65064e681"
     sha256 monterey:       "41ce19b788f94a35025e306afa0f90a85164243d18f7350340cf75b9edf18b6c"
+    sha256 arm64_linux:    "ac394dd527b6cfcfa479e57854c9495dd12490f62074bc368795867688398036"
     sha256 x86_64_linux:   "e459fd063b80457e1d8ead88e3168effb13a80974e4d5e2fcd1bd2a11aa1cb00"
   end
 
@@ -55,6 +58,6 @@ class Aria2 < Formula
 
   test do
     system bin/"aria2c", "https://brew.sh/"
-    assert_predicate testpath/"index.html", :exist?, "Failed to create index.html!"
+    assert_path_exists testpath/"index.html", "Failed to create index.html!"
   end
 end

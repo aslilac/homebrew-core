@@ -5,6 +5,8 @@ class Rgxg < Formula
   sha256 "554741f95dcc320459875c248e2cc347b99f809d9555c957d763d3d844e917c6"
   license "Zlib"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "80c6d906b67ef65832f1724146eef85c50e01d73f3808c87c7b4dd1eadc39102"
     sha256 cellar: :any,                 arm64_sonoma:   "6b1d2f700c3ca6fc03930409bb4ec68cbdbcbb2931facef03d2422369c29f81a"
@@ -18,6 +20,7 @@ class Rgxg < Formula
     sha256 cellar: :any,                 catalina:       "4a07550d93bedfa3b2ac3cb77a8484951321697ca9384d2c2a0301ea261aa954"
     sha256 cellar: :any,                 mojave:         "b410fe9ea150e0fb52326e4f7ce6642f946098b0713c5741c64699de3f55f762"
     sha256 cellar: :any,                 high_sierra:    "286318be76fc55c094da739c44176d5babd814df1e4f0462711aea283db042f5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "28194f32ee9974ae3367a4cc1fe604bd91534171a52a7d7bd0401379591d078f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b2295a106e3ff336aef5f2fccd382d123351ca6e29f863bbf62afaa90072bb16"
   end
 

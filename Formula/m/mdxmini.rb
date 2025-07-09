@@ -5,6 +5,8 @@ class Mdxmini < Formula
   sha256 "9b623b365e893a769084f7a2effedc9ece453c6e3861c571ba503f045471a0e0"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "8bd1fe419459be3167ff34cc8b6e709a2628f8bb38ea47b629dacb96cdce8b24"
     sha256 cellar: :any,                 arm64_sonoma:   "90830127c424435586b2a2f30fbd59422993dcdc7b102f69f85f346d3f9d09cb"
@@ -16,6 +18,7 @@ class Mdxmini < Formula
     sha256 cellar: :any,                 monterey:       "5e384c41501dd14903efefe829b14beb5db30d76bea9f0265aa957ed602fd400"
     sha256 cellar: :any,                 big_sur:        "4516c7fdc7b008d5d1c1447c8dd18c3562edb70619d40c8798933022da471794"
     sha256 cellar: :any,                 catalina:       "b3c9c8caa3da6169fedd4893e27d4156b016715fcbf91c47209c34ec4b536a79"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b3ff3214766af3bc7c54164bec8a57cde4788169be18c7174d44db61c908a4d8"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "152c18564d3252af6530331c08788108b99fbac328066ace0c58f94428fe7b4e"
   end
 

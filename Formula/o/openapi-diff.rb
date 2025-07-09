@@ -1,12 +1,12 @@
 class OpenapiDiff < Formula
   desc "Utility for comparing two OpenAPI specifications"
   homepage "https://github.com/OpenAPITools/openapi-diff"
-  url "https://github.com/OpenAPITools/openapi-diff/archive/refs/tags/2.0.1.tar.gz"
-  sha256 "920e9e9fc126b78aed6900cac18533a6f08348e26aab8e1fd67a9409703548ca"
+  url "https://github.com/OpenAPITools/openapi-diff/archive/refs/tags/2.1.2.tar.gz"
+  sha256 "ed684f34d6f98a3e9658edff6527e1a66cc15cecb24a868c121fa870edea7000"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "c1451c9c5af1a9be6e803e1eadcd7ac808a3ce3eb9fd0ae3229c8ed39af0b795"
+    sha256 cellar: :any_skip_relocation, all: "63097e26ae65fb97c551a7ba762aab931695df8c70adb1be8c4f1f77a6b5ddaa"
   end
 
   depends_on "maven" => :build

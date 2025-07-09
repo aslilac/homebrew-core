@@ -1,14 +1,14 @@
 class Uftrace < Formula
   desc "Function graph tracer for C/C++/Rust"
   homepage "https://uftrace.github.io/slide/"
-  url "https://github.com/namhyung/uftrace/archive/refs/tags/v0.16.tar.gz"
-  sha256 "dd0549f610d186b6f25fa2334a5e82b6ddc232ec6ca088dbb41b3fe66961d6bb"
+  url "https://github.com/namhyung/uftrace/archive/refs/tags/v0.18.tar.gz"
+  sha256 "39b80c97697bbb77ef5455e3455d681de378637b2bae5c8384a76d47d7461eb5"
   license "GPL-2.0-only"
   head "https://github.com/namhyung/uftrace.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 x86_64_linux: "267f5fe8fd86a47b0d476cbaf2e108a9e50398ba387b6fef89843b7fbffcf7e5"
+    sha256 arm64_linux:  "d168854d437568675fb09527efbf9e63f82c82b1dee70a4d93350931e4f4bb8e"
+    sha256 x86_64_linux: "fae03c6f0aedc35cfcf3c75c2631b7173f35e1762aee7ea8d3ae40f32ab1bf7c"
   end
 
   depends_on "pandoc" => :build

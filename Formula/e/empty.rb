@@ -10,6 +10,8 @@ class Empty < Formula
     regex(%r{url=.*?/empty[._-]v?(\d+(?:\.\d+)+[a-z]?)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c189f046cac1c33a86463305d78c4a6b69233414cf539b9ec3b65a13c348b970"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f0e6d00eaaefbe6a60857ff4a530fb8d28bc5f620ec8716d26c16071c2ecc5f4"
@@ -20,6 +22,7 @@ class Empty < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "3fb2717f273099d9011d8382c033afe8d6b7836dc2223b1ac3a301b683a0aea3"
     sha256 cellar: :any_skip_relocation, monterey:       "6ba9bd7cdb7d47260f1c5dc600e93514c2222f7b3e5aab9a2ff5dbcadbf81d13"
     sha256 cellar: :any_skip_relocation, big_sur:        "b8de713e95fe5ac8ffdb15ea679106b41ed858d70d7a96250b9694cfee4fb855"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a2bf64f60c8f3deb34c30f5c0e940dc11cf1d43b6f2fb380ac59a7d6d44954b3"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6e3eeb73345dc8be3472ece5c28260e9592b6acf8cc6bb50abba43376cb10404"
   end
 
@@ -44,6 +47,6 @@ class Empty < Formula
 
     system bin/"empty", "-k", File.read(testpath/"test.pid")
     sleep 1
-    %w[in out test.pid].each { |file| refute_predicate testpath/file, :exist? }
+    %w[in out test.pid].each { |file| refute_path_exists testpath/file }
   end
 end

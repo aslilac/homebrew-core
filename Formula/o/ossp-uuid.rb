@@ -11,6 +11,8 @@ class OsspUuid < Formula
     regex(/href=["']?ossp-uuid[._-]v?(\d+(?:\.\d+)+)\.orig\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "54fe9ac592343b06d7ce62e286cf0afd06f90be6c9aebd779102403c51cd55ea"
     sha256 cellar: :any,                 arm64_sonoma:   "54b71284924df66d47fb0544f6a20c058e4118b0b6c7e4e25938a9e5db0b19f9"
@@ -26,6 +28,7 @@ class OsspUuid < Formula
     sha256 cellar: :any,                 high_sierra:    "a04214b22c58bd5167778925cb9e55b98f28330bcc6c6a37929e6085ea3a0162"
     sha256 cellar: :any,                 sierra:         "3c15cd0e25e3039e0d05b94d14b714745cec3033863d5dc7a6d9ddd7cacc1c71"
     sha256 cellar: :any,                 el_capitan:     "ac4456fc1c29db7e0d565ebdd392cf827be315b52c9eb3abcd113c4c7b981f25"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "d085b0474a2dce5f3e7c587c3fdce4c41a1ae312c5f75657494f69dab899bd8f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ec70863fae3001fc9281f76cef9ac231bd6dbb957c6382457a5848312ee1f1b0"
   end
 
@@ -49,11 +52,16 @@ class OsspUuid < Formula
       s.gsub! %r{^(libdir)=\$\{exec_prefix\}/lib$}, '\1=@\1@'
     end
 
-    system "./configure", "--prefix=#{prefix}",
-                          "--includedir=#{include}/ossp",
-                          "--without-perl",
-                          "--without-php",
-                          "--without-pgsql"
+    args = %W[
+      --includedir=#{include}/ossp
+      --without-perl
+      --without-php
+      --without-pgsql
+    ]
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
   end

@@ -10,6 +10,8 @@ class Jthread < Formula
     regex(/href=.*?jthread[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "0b2a1b4160a03bae62a73f61bd3e2bbedd3a4080f4e2650060a05bb445301c4b"
     sha256 cellar: :any,                 arm64_sonoma:   "4cbc30a2ad38f097c8955fc49b84005364fda4ecc67b24fa3e545394543a2aff"
@@ -25,6 +27,7 @@ class Jthread < Formula
     sha256 cellar: :any,                 high_sierra:    "2d9c8a2d9e52f9419cd1015d982e06d58963e29c43a44f7ddfbbf6f149e20cc0"
     sha256 cellar: :any,                 sierra:         "099b841458d4d6f4ac3f5e7b453d4ec5b2a50f4dd1a6ccac9614ac72a1c1c90f"
     sha256 cellar: :any,                 el_capitan:     "0e846e47e0350f6dc4ca15f5eb6f9e9d2cf7345c115476bc93fc78ac2cb056af"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "629245be8b81ca21008f231fbda9b316d87b06d94b42df62fbd00b8a600efd38"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "0288eb31c63b100814238cd97f4fb9ac7e26fde1bd284b2dfacee67df8de337f"
   end
 
@@ -32,8 +35,9 @@ class Jthread < Formula
   depends_on "pkgconf" => :build
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

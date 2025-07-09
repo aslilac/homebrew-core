@@ -6,6 +6,8 @@ class Mspdebug < Formula
   license "GPL-2.0-or-later"
   head "https://github.com/dlbeer/mspdebug.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256                               arm64_sequoia:  "fffb3b1ca1b99e0186d8a36fa847918c4e533a935df4520a690ec285cdc16df3"
     sha256                               arm64_sonoma:   "b2afc19ddfc781ba82c0a1ec660cd0484285f4341bef4123f56c19b8e99c66c7"
@@ -21,6 +23,7 @@ class Mspdebug < Formula
     sha256                               high_sierra:    "4124d4fbd9e191d941153962bb74aed50cc200c473b5ad5850610a1bc85f87b4"
     sha256                               sierra:         "e16447e04c99d74b8cdc49a063c230c64d09e34402d0221542594f3aacac5940"
     sha256                               el_capitan:     "22fc92bc5a594451eb0d0b943bce812619302c795fdad0ca4305c059ccf10a88"
+    sha256                               arm64_linux:    "c1b911028aeb60adacec4ed8f289bc22d8a5108c4d59a8ea6c99bd2aab79c13d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "591e9d4d6bf5cedceda3db088a416b6c597acdcd65d40856c8f5fd69c49b8c7c"
   end
 

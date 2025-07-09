@@ -10,6 +10,8 @@ class Apgdiff < Formula
     regex(/^release[._-]v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, all: "22236801bcf19f2b8beb312287dc2b3a8d9ebdef2ee0fa56779ed0abc3e44fc4"
@@ -38,28 +40,26 @@ class Apgdiff < Formula
     sql_orig = testpath/"orig.sql"
     sql_new = testpath/"new.sql"
 
-    sql_orig.write <<~EOS
+    sql_orig.write <<~SQL
       SET search_path = public, pg_catalog;
       SET default_tablespace = '';
       CREATE TABLE testtable (field1 integer);
       ALTER TABLE public.testtable OWNER TO fordfrog;
-    EOS
+    SQL
 
-    sql_new.write <<~EOS
+    sql_new.write <<~SQL
       SET search_path = public, pg_catalog;
       SET default_tablespace = '';
       CREATE TABLE testtable (field1 integer,
         field2 boolean DEFAULT false NOT NULL);
       ALTER TABLE public.testtable OWNER TO fordfrog;
-    EOS
+    SQL
 
-    expected = <<~EOS.strip
+    expected = <<~SQL.strip
       ALTER TABLE testtable
       \tADD COLUMN field2 boolean DEFAULT false NOT NULL;
-    EOS
+    SQL
 
-    result = pipe_output("#{bin}/apgdiff #{sql_orig} #{sql_new}").strip
-
-    assert_equal result, expected
+    assert_equal expected, shell_output("#{bin}/apgdiff #{sql_orig} #{sql_new}").strip
   end
 end

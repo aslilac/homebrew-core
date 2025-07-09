@@ -1,20 +1,19 @@
 class Oksh < Formula
   desc "Portable OpenBSD ksh, based on the public domain Korn shell (pdksh)"
   homepage "https://github.com/ibara/oksh"
-  url "https://github.com/ibara/oksh/releases/download/oksh-7.5/oksh-7.5.tar.gz"
-  sha256 "40b895c3f8e9311bfe2b230e9b3786712550ef488ced33bfd7cd3f89fceeed5d"
+  url "https://github.com/ibara/oksh/releases/download/oksh-7.7/oksh-7.7.tar.gz"
+  sha256 "98a758f590bc570e657263f56eb81577a018ff6d2f6e085f8efedf9d68749f95"
   license all_of: [:public_domain, "BSD-3-Clause", "ISC"]
   head "https://github.com/ibara/oksh.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "7ec68a657e499286db0d83ce9382bd151d102f56ce0571d25a408cd62560e800"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "81c51efdca8f0ac4e0f9d69db474ff8c8a104f8eb231362f7a198065c5de9a8e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "24164bb9e10988f028f6356a699b5263dc8f63c47437c36b0f80a01a52f82bc3"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d25457b4ae0806aab2173d986bce4d0f8e27db1ebe6dd17b09034f4a03ab83e6"
-    sha256 cellar: :any_skip_relocation, sonoma:         "278fd1856493cce45ec88ce8e818e2e7f4052d6dff0cade53b096ab7f72edd53"
-    sha256 cellar: :any_skip_relocation, ventura:        "b495c19fd1d9249bbb61688683a5371051e11b500e664eb117a59cd4e1bd7ade"
-    sha256 cellar: :any_skip_relocation, monterey:       "f12671ac6ecf2363bcfcbc93e15eaa027fa55376d83622eefff287aab06aedb7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b8a32647584058e58db08b8cc476c04eace2fef232b78de2f845037a756a292f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9793c9e02f01a8feff896ebd1bf1779f9cd3ce9b028b8f4882c9c11bcfc8eb38"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d1595b03d4c714d2c27d0e62bbcc9d13b68852c19ca3d83d08eb3523277a8555"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d838994b217f2fda5f7863ddf7f7219cfe10d6341109ab8f5049af5ada25b6be"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c7d7155672ef96777d6c99ae22019f151ea78fd6b7df4d5c2017659a796952ca"
+    sha256 cellar: :any_skip_relocation, ventura:       "9c9215d0bc365cceba31c7663bd89d50eb90b20f64f9a54e15e62bbdcbb2e8ab"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "57077f64c3422719c5855422574060ddfd32773c6b59f69842c5d9184a0ff18d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "53579c85a910b31bb43252b91eb9fa6701b47774df80257f5f865ea3c8aa0f8d"
   end
 
   def install

@@ -1,10 +1,12 @@
 class Hotbuild < Formula
   desc "Cross platform hot compilation tool for go"
-  homepage "https://hotbuild.ffactory.org"
+  homepage "https://hotbuild.rustpub.com/"
   url "https://github.com/wandercn/hotbuild/archive/refs/tags/v1.0.8.tar.gz"
   sha256 "662fdc31ca85f5d00ba509edcb177b617d8d6d8894086197347cfdbd17dc7c2f"
   license "MulanPSL-2.0"
   head "https://github.com/wandercn/hotbuild.git", branch: "master"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "fbc85999d55d54744d2d91cb460717d72fc448bd5845222218bf3fcf510fd3ac"

@@ -1,20 +1,21 @@
 class Davix < Formula
   desc "Library and tools for advanced file I/O with HTTP-based protocols"
   homepage "https://github.com/cern-fts/davix"
-  url "https://github.com/cern-fts/davix/releases/download/R_0_8_7/davix-0.8.7.tar.gz"
-  sha256 "78c24e14edd7e4e560392d67147ec8658c2aa0d3640415bdf6bc513afcf695e6"
+  url "https://github.com/cern-fts/davix/releases/download/R_0_8_10/davix-0.8.10.tar.gz"
+  sha256 "66aa9adadee6ff2bae14caba731597ba7a7cd158763d9d80a9cfe395afc17403"
   license "LGPL-2.1-or-later"
   head "https://github.com/cern-fts/davix.git", branch: "devel"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "d21714946afe6a93d3e4784d2ae1f68ad6b40802d566962180a7bcf77394b028"
-    sha256 cellar: :any,                 arm64_sonoma:   "54e5bb08a24253d9e0c4f2e00e04ba10277f02d0608804ed948223e60bad3672"
-    sha256 cellar: :any,                 arm64_ventura:  "f6fc0314f5d39d0230400cdab883e8d5b325108403551c143c76eb4568d675b7"
-    sha256 cellar: :any,                 arm64_monterey: "22c2d25841190dd02dfb5473b9d57cb7fa0f92ca0c85632863d511fa87eab7bb"
-    sha256 cellar: :any,                 sonoma:         "e43d8021be61259e6b69985be4c2aa08650ce2b8b6448ea048447721e4c26a3c"
-    sha256 cellar: :any,                 ventura:        "2067b1e8c55e8908b38b3333e2c5fce53d1c72bfc62c3ba43d3b2ed20c667354"
-    sha256 cellar: :any,                 monterey:       "120f4c46485812389b5033185e3f9e01f7d354aea826606128eff54055c6e3c8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aed179e04a6e34773981aba65e9e38478dd18cce9718a4aa599a4301001a1453"
+    sha256 cellar: :any,                 arm64_sequoia: "da21e84d94a79ee04801da53369791a3150a7b2d258f0157b2d93340d24652d6"
+    sha256 cellar: :any,                 arm64_sonoma:  "05c4246253f683448f3ede09b02520e196a33b4e69a312cbdc9f10b526adbfa2"
+    sha256 cellar: :any,                 arm64_ventura: "32f192b3827668aff416b3ab09450becae5e481f2fb40594b91b863b2da567d6"
+    sha256 cellar: :any,                 sonoma:        "f83caf6a8ef4a3b2a82e5d45eeedbc3ff89a8e2c9d7abfed2995424974d386ab"
+    sha256 cellar: :any,                 ventura:       "5e2607d54a8b793c3d657acd19018c224cca7fc327e25b2ea938019694d41c40"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "57869e453d9e1b81e021f7fc6f1d0584edafd15ebe40721857b86c1fad964eaa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e988353573b61da496468299b761a23199d418796f39d1a19e0c37b870be6883"
   end
 
   depends_on "cmake" => :build
@@ -34,6 +35,8 @@ class Davix < Formula
       -DEMBEDDED_LIBCURL=FALSE
       -DCMAKE_INSTALL_RPATH=#{rpath}
       -DLIB_SUFFIX=
+      -DBENCH_TESTS=FALSE
+      -DDAVIX_TESTS=FALSE
     ]
 
     system "cmake", "-S", ".", "-B", "build", *args

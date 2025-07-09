@@ -1,6 +1,6 @@
 class Slides < Formula
   desc "Terminal based presentation tool"
-  homepage "https://github.com/maaslalani/slides"
+  homepage "https://maaslalani.com/slides/"
   url "https://github.com/maaslalani/slides/archive/refs/tags/v0.9.0.tar.gz"
   sha256 "fcce0dbbe767e0b1f0800e4ea934ee9babbfb18ab2ec4b343e3cd6359cd48330"
   license "MIT"
@@ -27,14 +27,14 @@ class Slides < Formula
   end
 
   test do
-    (testpath/"test.md").write <<-MARKDOWN
-    # Slide 1
-    Content
+    (testpath/"test.md").write <<~MARKDOWN
+      # Slide 1
+      Content
 
-    ---
+      ---
 
-    # Slide 2
-    More Content
+      # Slide 2
+      More Content
     MARKDOWN
 
     # Bubbletea-based apps are hard to test even under PTY.spawn (or via
@@ -42,13 +42,10 @@ class Slides < Formula
     # "<ESC>[6n" to report the cursor position. For now we just run the command
     # for a second and see that it tried to send some ANSI out of it.
     require "pty"
-    r, _, pid = PTY.spawn "#{bin}/slides test.md"
-    sleep 1
-    Process.kill("TERM", pid)
-    begin
-      assert_match(/\e\[/, r.read)
-    rescue Errno::EIO
-      # GNU/Linux raises EIO when read is done on closed pty
+    PTY.spawn(bin/"slides", "test.md") do |r, _, pid|
+      sleep 1
+      Process.kill("TERM", pid)
+      assert_match(/\e\[/, r.read_nonblock(1024))
     end
   end
 end

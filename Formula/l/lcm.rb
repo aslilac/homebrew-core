@@ -1,8 +1,8 @@
 class Lcm < Formula
   desc "Libraries and tools for message passing and data marshalling"
   homepage "https://lcm-proj.github.io/"
-  url "https://github.com/lcm-proj/lcm/archive/refs/tags/v1.5.0.tar.gz"
-  sha256 "590a7d996daa3d33a7f3094e4054c35799a3d7a4780d732be78971323e730eeb"
+  url "https://github.com/lcm-proj/lcm/archive/refs/tags/v1.5.1.tar.gz"
+  sha256 "40ba0b7fb7c9ad06d05e06b4787d743cf11be30eb4f1a03abf4a92641c5b1203"
   license "LGPL-2.1-or-later"
   head "https://github.com/lcm-proj/lcm.git", branch: "master"
 
@@ -12,17 +12,17 @@ class Lcm < Formula
   end
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any,                 arm64_sequoia: "3bc6bba97d622e6cad92654b13a189117a05b102d9dff87714692129f010ef80"
-    sha256 cellar: :any,                 arm64_sonoma:  "2d24850362c0287ebb15776799bf023a6eb05baed1ebbede56a12b7c2391920a"
-    sha256 cellar: :any,                 arm64_ventura: "1589412c5fd3789d077c01981f4c8ef633aea1a2f06448a27b75e4e41e01de3f"
-    sha256 cellar: :any,                 sonoma:        "e965eaa67eaabbfab0cbfcfe4850fb604e436ba8542421f93be5e3013004736d"
-    sha256 cellar: :any,                 ventura:       "b5c5f4ac2c858419c931f30903a7cd07a0d6bceb9740a17d5fc156a58b82280c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "18c704832fce5312938ebef41001b435a111a8a12441837fd2f82d9cc5e0db6c"
+    sha256 cellar: :any,                 arm64_sequoia: "2244b5fa7c8e7c9fad69837d8c87e21b6b934bdb35d730cd29388add2258c388"
+    sha256 cellar: :any,                 arm64_sonoma:  "ae864e359da145328a10f94d4c231a86f4b199d9727d43c15699bdb2024a56a1"
+    sha256 cellar: :any,                 arm64_ventura: "1cd041a8337c350c38de47ce7c2ac015a1819b2a1efb090f6563f42a729fa7fb"
+    sha256 cellar: :any,                 sonoma:        "c442066258d99654dfcc78ba143cb04d5fc74ef1306a14be1d70baafba7ba6bb"
+    sha256 cellar: :any,                 ventura:       "b07445d9724d1e720b4fb24983df5adbbab9fff80cc0621f97aa1429485e8dbb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8a79f1fdc4e500d5b9d21c79802b3d17a9d1c5150ba0a4c11e1fb2b6c7553485"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c2140c559088413340306e19ad843419a48fa5e5747269a25ed975c2945b4340"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "glib"
   depends_on "lua"
   depends_on "openjdk"
@@ -61,13 +61,13 @@ class Lcm < Formula
       }
     EOS
     system bin/"lcm-gen", "-c", "example_t.lcm"
-    assert_predicate testpath/"exlcm_example_t.h", :exist?, "lcm-gen did not generate C header file"
-    assert_predicate testpath/"exlcm_example_t.c", :exist?, "lcm-gen did not generate C source file"
+    assert_path_exists testpath/"exlcm_example_t.h", "lcm-gen did not generate C header file"
+    assert_path_exists testpath/"exlcm_example_t.c", "lcm-gen did not generate C source file"
     system bin/"lcm-gen", "-x", "example_t.lcm"
-    assert_predicate testpath/"exlcm/example_t.hpp", :exist?, "lcm-gen did not generate C++ header file"
+    assert_path_exists testpath/"exlcm/example_t.hpp", "lcm-gen did not generate C++ header file"
     system bin/"lcm-gen", "-j", "example_t.lcm"
-    assert_predicate testpath/"exlcm/example_t.java", :exist?, "lcm-gen did not generate Java source file"
+    assert_path_exists testpath/"exlcm/example_t.java", "lcm-gen did not generate Java source file"
     system bin/"lcm-gen", "-p", "example_t.lcm"
-    assert_predicate testpath/"exlcm/example_t.py", :exist?, "lcm-gen did not generate Python source file"
+    assert_path_exists testpath/"exlcm/example_t.py", "lcm-gen did not generate Python source file"
   end
 end

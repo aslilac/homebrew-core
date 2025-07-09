@@ -17,6 +17,8 @@ class Psftools < Formula
     regex(/Stable Release.+?href=.*?psftools[._-]v?(\d+(?:\.\d+)+)\.t/im)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "12640a4b3994e97fca6c888cdd660d554598bf8bcbb308ceeb9b84215e7d8fb3"
     sha256 cellar: :any,                 arm64_sonoma:   "7b3c2ecfcbac182eeb598a944eb04ae8506330cd0ae1b058a96679f52dad028b"
@@ -29,6 +31,7 @@ class Psftools < Formula
     sha256 cellar: :any,                 big_sur:        "42056401c680e3a2372f2b16c78936b6e06c1cb3f8125f1a7c0fff8d23372de9"
     sha256 cellar: :any,                 catalina:       "ac3cc35325cd2b565044a9e864bbf4b3c2e34a39f46b267ae3fc753d63857a83"
     sha256 cellar: :any,                 mojave:         "8e53985d7a48b4f927d94ac27339ba7d293181b90fe33d05f22c71ff1e48c126"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "cbf0f067b25985fc24add1230dded4b7d54680dcc2d1f4764afc1d5e762ed28f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c750eb92e19169c1bb81129ab8ce270963e9168500b7c59d59d8bb7fc68ee7b4"
   end
 
@@ -49,7 +52,7 @@ class Psftools < Formula
   def install
     # Regenerate `configure` to fix `-flat_namespace`.
     system "autoreconf", "--force", "--install", "--verbose"
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+    system "./configure", "--mandir=#{man}", *std_configure_args
     system "make", "install"
   end
 
@@ -57,7 +60,7 @@ class Psftools < Formula
     # The zip file has a fon in it, use fon2fnts to extract to fnt
     resource("pc8x8font").stage do
       system bin/"fon2fnts", "pc8x8.fon"
-      assert_predicate Pathname.pwd/"PC8X8_9.fnt", :exist?
+      assert_path_exists Pathname.pwd/"PC8X8_9.fnt"
     end
   end
 end

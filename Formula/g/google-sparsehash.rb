@@ -6,6 +6,8 @@ class GoogleSparsehash < Formula
   license "BSD-3-Clause"
   head "https://github.com/sparsehash/sparsehash.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "172ff956a189cea419801e2ce07c5fd7c80f1e7a2372d1c02270a392e272204c"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5fe99f9acb9ab292d249f8c1bc05382687e8a24399447f135f707da6f402ef11"
@@ -19,6 +21,7 @@ class GoogleSparsehash < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "11390608ee72647c06a9735f89535604e6ed2b2531431f9eb81bdf423ab07620"
     sha256 cellar: :any_skip_relocation, mojave:         "11390608ee72647c06a9735f89535604e6ed2b2531431f9eb81bdf423ab07620"
     sha256 cellar: :any_skip_relocation, high_sierra:    "11390608ee72647c06a9735f89535604e6ed2b2531431f9eb81bdf423ab07620"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "236ba9065faa0a1442555222607dce1cb1e12d0b40978749c63b5c39c53d1484"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "dc2afe1af778fc2217f2bc84ab4e38d0cdd96420ac08e4f9e909fa07e83efbdb"
   end
 

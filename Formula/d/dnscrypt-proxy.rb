@@ -1,8 +1,8 @@
 class DnscryptProxy < Formula
   desc "Secure communications between a client and a DNS resolver"
   homepage "https://dnscrypt.info"
-  url "https://github.com/DNSCrypt/dnscrypt-proxy/archive/refs/tags/2.1.5.tar.gz"
-  sha256 "044c4db9a3c7bdcf886ff8f83c4b137d2fd37a65477a92bfe86bf69587ea7355"
+  url "https://github.com/DNSCrypt/dnscrypt-proxy/archive/refs/tags/2.1.12.tar.gz"
+  sha256 "95fe29ed03dad0cdd34d47316ecb15c25f7ef5fab21d9ec52cbfc4743bcf5198"
   license "ISC"
   head "https://github.com/DNSCrypt/dnscrypt-proxy.git", branch: "master"
 
@@ -12,15 +12,12 @@ class DnscryptProxy < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ea768229408e91e1b08f306acd6d792af62769878cf1b698db8685eea45e05b8"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5ba1ce4730b6a4cfc8c9bc0dee6673fa4976fd93210a9cfd0bda31cf323d7788"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1347d13d9ace17fc3ae034f12a3accff227cc6ae72a25a10981456fbd6de7d26"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ed1192dffd1484ecfb6a5802a4e09ad00a16f5d907a09399cfc4132487ad8265"
-    sha256 cellar: :any_skip_relocation, sonoma:         "378fc9e369a39cd6a5274b8a6b61fecb9b409b36730aa1b8458fa7af78fe9495"
-    sha256 cellar: :any_skip_relocation, ventura:        "c27f790ca8f3e0c04b6f6cfc5fc0ccf7527d1e3447bd8728f15398731c008e19"
-    sha256 cellar: :any_skip_relocation, monterey:       "3624afaabee33cee1775589243dd20a6dfb9191bd5589d1a650ee3ee95d660e9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6deb6772518d34e6845e043bf3eb00bfc4831d7a2a422156cf5ba50388b88297"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "38a991fd79def4d2ee222219c359c4fc1c17d40a285a770acffabf3699421e22"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "38a991fd79def4d2ee222219c359c4fc1c17d40a285a770acffabf3699421e22"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "38a991fd79def4d2ee222219c359c4fc1c17d40a285a770acffabf3699421e22"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3964f11eafa485a11c0d7b7643977a2e9f301ef23cea1f16d09e04f251332223"
+    sha256 cellar: :any_skip_relocation, ventura:       "3964f11eafa485a11c0d7b7643977a2e9f301ef23cea1f16d09e04f251332223"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bacbce7fc6809f62c43f35e400c771803a10ad1cbe95369939b8c0ce4cc097d3"
   end
 
   depends_on "go" => :build

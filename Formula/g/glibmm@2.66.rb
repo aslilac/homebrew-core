@@ -1,8 +1,8 @@
 class GlibmmAT266 < Formula
   desc "C++ interface to glib"
-  homepage "https://www.gtkmm.org/"
-  url "https://download.gnome.org/sources/glibmm/2.66/glibmm-2.66.7.tar.xz"
-  sha256 "fe02c1e5f5825940d82b56b6ec31a12c06c05c1583cfe62f934d0763e1e542b3"
+  homepage "https://gtkmm.gnome.org/"
+  url "https://download.gnome.org/sources/glibmm/2.66/glibmm-2.66.8.tar.xz"
+  sha256 "64f11d3b95a24e2a8d4166ecff518730f79ecc27222ef41faf7c7e0340fc9329"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -12,19 +12,18 @@ class GlibmmAT266 < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia:  "09f7e9e0f71ca1c71d18121565ae99838f482f009b6e3fb9789092276fdbb916"
-    sha256 cellar: :any, arm64_sonoma:   "1466172346191c3cf8989fd4bed922ad0bf8ef0b00395b1dd005f1cf6f27db50"
-    sha256 cellar: :any, arm64_ventura:  "9fa6fe82b00364519f11c54063f12cd9bd2f502a92d8a7562292a11e28e445fe"
-    sha256 cellar: :any, arm64_monterey: "8ade0f784ae08c3a84a6fb594039066598fc3c653a096e431a37c03151116d7b"
-    sha256 cellar: :any, sonoma:         "0b33fc5295ae68bed483e2719b3ab0e92abcecb8c4a2a52368b45a3608c7dfee"
-    sha256 cellar: :any, ventura:        "1742adfa35be37169c4c5ee0ae6b37815fe4e7de541a07fd5c36dddbf44910d6"
-    sha256 cellar: :any, monterey:       "1c8f922d8b1b0bb3298fffd5fbb59c308ae9fa375cc0eaf0b0cc7b4150f46568"
-    sha256               x86_64_linux:   "e73a3eb58812790f1057663483cb3047cb1c33f80497faa11393ddf8e411c20b"
+    sha256 cellar: :any, arm64_sequoia: "23856032138e148a0d7103a50a4f52a3401dc95ce471db2e345500078af5af18"
+    sha256 cellar: :any, arm64_sonoma:  "e504bb467b2d501f1a51c18833d3230997065b3b7e709d26cd12edd0699bc9c6"
+    sha256 cellar: :any, arm64_ventura: "df3a2168179942bd0e30135c2d38acd4819bc7f60c88afe31095c130e1be62fc"
+    sha256 cellar: :any, sonoma:        "1c4613edf05f61e532e5841f44041293eef53189381b758b4cc60726246b4537"
+    sha256 cellar: :any, ventura:       "04edc9e5e563d89579423112db929789dff6e422835cbb8d7ce24871f9c24c69"
+    sha256               arm64_linux:   "c0c03f9078ccc7189c9945b060bd044830a446d8c6259bc9501e5a8970fe388a"
+    sha256               x86_64_linux:  "721d4fc5d0339dcc7b41a0429df354191030f838232c62066139b79ef149f643"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "glib"
   depends_on "libsigc++@2"
 
@@ -45,7 +44,7 @@ class GlibmmAT266 < Formula
       }
     CPP
 
-    flags = shell_output("pkg-config --cflags --libs glibmm-2.4").chomp.split
+    flags = shell_output("pkgconf --cflags --libs glibmm-2.4").chomp.split
     system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end

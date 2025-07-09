@@ -5,6 +5,8 @@ class Conman < Formula
   sha256 "cd47d3d9a72579b470dd73d85cd3fec606fa5659c728ff3c1c57e970f4da72a2"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "1173da53dd141c2960aea7c848be0ea4c65897ba0c47e5549656f4142879e2c0"
     sha256 arm64_sonoma:   "12e867d583636858f7ed1b9feb145c2783448252837b0a384f22247f7c9ca605"
@@ -15,6 +17,7 @@ class Conman < Formula
     sha256 ventura:        "694da5ae8b52314bdf7500b9c266f122ea7507c6c3f3355d329e4b13f8c9c6db"
     sha256 monterey:       "e18ed06db8ac7678344e9c55726026570a350b80f8d771b24fa14ec87547d85b"
     sha256 big_sur:        "d589fec5d6868bd0437e053d6cacbb739716033735fa6a2d5f5e4dda70a8eae5"
+    sha256 arm64_linux:    "b5e5d177019a93e60a157a8662ee5fcd5a40100d6472cfcb22707c985808494c"
     sha256 x86_64_linux:   "af3f62841fa09e43d3e42e41f7a1d5eaaa57112851b87221ea46a96a0fad6d52"
   end
 

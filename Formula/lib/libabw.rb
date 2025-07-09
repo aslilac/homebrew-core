@@ -10,6 +10,8 @@ class Libabw < Formula
     regex(/href=.*?libabw[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "a458a7c83461966a67f75a3cb31fa042af7e20befe3ef21de818ca036a8263e7"
     sha256 cellar: :any,                 arm64_sonoma:   "8ac829af4a67294bc85e6959843282df8944dc88c3d295dca20a1f7914881119"
@@ -21,11 +23,12 @@ class Libabw < Formula
     sha256 cellar: :any,                 monterey:       "79862a34d53145dcd6c2435578500f6fa01f8697e294d20001430d07ee4fcde6"
     sha256 cellar: :any,                 big_sur:        "cb183a618afaa39fca1c827c37d3e93c163b160af94290a65f87ca226a129415"
     sha256 cellar: :any,                 catalina:       "01cfa53a2e623a95444477cc924aaa67f362dcf18b5c0780ed271284fa66174b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "974b1ad55085f776105bd4bd54436690dc75fe3552769d18da5babf6288e5ad0"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3080aed8222be7eb35addd5e04c18ed6c0b322832059a07d029ab1c814c2190e"
   end
 
   depends_on "boost" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "librevenge"
 
   uses_from_macos "gperf" => :build
@@ -33,7 +36,7 @@ class Libabw < Formula
   uses_from_macos "zlib"
 
   def install
-    system "./configure", *std_configure_args, "--disable-silent-rules", "--without-docs"
+    system "./configure", "--disable-silent-rules", "--without-docs", *std_configure_args
     system "make", "install"
   end
 
@@ -109,7 +112,7 @@ class Libabw < Formula
       }
     CPP
 
-    assert_equal shell_output("#{bin}/abw2text test.abw"), "This word is bold.\n"
+    assert_equal "This word is bold.\n", shell_output("#{bin}/abw2text test.abw")
 
     args = %W[
       -I#{include/"libabw-0.1"} -I#{Formula["librevenge"].opt_include/"librevenge-0.0"}
@@ -117,6 +120,6 @@ class Libabw < Formula
       -labw-0.1 -lrevenge-stream-0.0 -lrevenge-generators-0.0 -lrevenge-0.0
     ]
     system ENV.cxx, "test.cpp", *args, "-o", "test"
-    assert_equal shell_output(testpath/"test"), "ok\n"
+    assert_equal "ok\n", shell_output(testpath/"test")
   end
 end

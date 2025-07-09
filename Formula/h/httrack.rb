@@ -13,6 +13,8 @@ class Httrack < Formula
     regex(/href=.*?httrack[._-]v?(\d+(?:\.\d+)+)\./i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 arm64_sequoia:  "49d241f3883e9342da2bc7b3344f3bb4ae0e17fb2bd4f476834dbdaf3c190c6d"
@@ -25,6 +27,7 @@ class Httrack < Formula
     sha256 monterey:       "98b7f4c73a1bb5f531bdd455942ceb00226068ec7bf5f32fd8a45b01f9cbb482"
     sha256 big_sur:        "01c1cb899db03ce18211dc2014af7f9a2592b61b32038540a8d8e5e7e40b9386"
     sha256 catalina:       "58d9d2b9cee7fd5e4d3faad7620def7aa029f81b03d92a4150b5269fc38ea963"
+    sha256 arm64_linux:    "89bf73e6fa218309a7a07a8fb6ed1b6a6fd0f5c7928ef2dcea53ba97d25670ea"
     sha256 x86_64_linux:   "b7688c49793f0dab8cd4ec29ec2ac3ecb978d6f15067d0806f9bbc315bdb08f1"
   end
 
@@ -49,6 +52,6 @@ class Httrack < Formula
   test do
     download = "https://raw.githubusercontent.com/Homebrew/homebrew/65c59dedea31/.yardopts"
     system bin/"httrack", download, "-O", testpath
-    assert_predicate testpath/"raw.githubusercontent.com", :exist?
+    assert_path_exists testpath/"raw.githubusercontent.com"
   end
 end

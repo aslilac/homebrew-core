@@ -1,12 +1,12 @@
 class AdwaitaIconTheme < Formula
   desc "Icons for the GNOME project"
   homepage "https://developer.gnome.org"
-  url "https://download.gnome.org/sources/adwaita-icon-theme/47/adwaita-icon-theme-47.0.tar.xz"
-  sha256 "ad088a22958cb8469e41d9f1bba0efb27e586a2102213cd89cc26db2e002bdfe"
+  url "https://download.gnome.org/sources/adwaita-icon-theme/48/adwaita-icon-theme-48.1.tar.xz"
+  sha256 "cbfe9b86ebcd14b03ba838c49829f7e86a7b132873803b90ac10be7d318a6e12"
   license any_of: ["LGPL-3.0-or-later", "CC-BY-SA-3.0"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "02a59c3c9335a81374805e6959a572255f6def77b599ee378ad39a1fe6ff61e7"
+    sha256 cellar: :any_skip_relocation, all: "7d9961f48a4e6835669a7db31a98635573176c50401a1ca4038d78cba2142725"
   end
 
   depends_on "gtk4" => :build # for gtk4-update-icon-cache
@@ -27,7 +27,7 @@ class AdwaitaIconTheme < Formula
     # Someone who understands GTK4 could probably write better tests that
     # check if GTK4 can find the icons.
     png = "audio-headphones.png"
-    assert_predicate share/"icons/Adwaita/16x16/devices/#{png}", :exist?
-    assert_predicate share/"icons/Adwaita/index.theme", :exist?
+    assert_path_exists share/"icons/Adwaita/16x16/devices/#{png}"
+    assert_path_exists share/"icons/Adwaita/index.theme"
   end
 end

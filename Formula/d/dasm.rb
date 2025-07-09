@@ -6,6 +6,8 @@ class Dasm < Formula
   license "GPL-2.0-or-later"
   version_scheme 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "018a5c5e7494685ffa0c9f40846072fff6ba4508efc1b07bd1d45235e02a4eff"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4d556e6302cb3fa636be29a938b48905d5685697dc0875a7f9e469ab4e1307f5"
@@ -19,6 +21,7 @@ class Dasm < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "354cf4953e70e7518fc7ee0b0861a0be21fa80770a60d18a2c0ea0d31deb979d"
     sha256 cellar: :any_skip_relocation, mojave:         "43a9c82d0ed5d8466cdf1bd749c3a94710f76c5a1f1599a5a4538a58616bc95f"
     sha256 cellar: :any_skip_relocation, high_sierra:    "145c79491ba96ba7d21f4085ff3cedf482555e46c9c334fe6c9b2458202bfb8c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "8448f39661a2328dc9579d23cdf837c9dd28ee9d449c446e58f0d8a19b4592b8"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "255217da42c9f1a4b35791323593c0107306e2090fcc69b471d5afb193de7355"
   end
 
@@ -29,12 +32,12 @@ class Dasm < Formula
 
   test do
     path = testpath/"a.asm"
-    path.write <<~EOS
+    path.write <<~ASM
       ; Instructions must be preceded by whitespace
         processor 6502
         org $c000
         jmp $fce2
-    EOS
+    ASM
 
     system bin/"dasm", path
     code = (testpath/"a.out").binread.unpack("C*")

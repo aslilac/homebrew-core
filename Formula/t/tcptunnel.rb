@@ -1,9 +1,11 @@
 class Tcptunnel < Formula
   desc "TCP port forwarder"
-  homepage "https://github.com/vakuum/tcptunnel"
+  homepage "https://vakuumverpackt.de/tcptunnel/"
   url "https://github.com/vakuum/tcptunnel/archive/refs/tags/v0.8.tar.gz"
   sha256 "1926e2636d26570035a5a0292c8d7766c4a9af939881121660df0d0d4513ade4"
   license "GPL-2.0-or-later"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8cda7483257c117ca1f5fa465c9659b2dd6ca6e88705c95c19a299b0bbdd2319"
@@ -20,6 +22,7 @@ class Tcptunnel < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "b70d7f63371b5a638fa4d2f0e1cc3f27995f3f20ca1aa1712bb711bb6c9b928c"
     sha256 cellar: :any_skip_relocation, sierra:         "8243b6410ae3d61df3d9c400be33c24b8da0fd0807161a02f38440c18d984661"
     sha256 cellar: :any_skip_relocation, el_capitan:     "e387a861c4a9ceb3014883c851cdc43a56eddba635e1d313d976095ff78bb686"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "59d0cdd268a8b0d3fe0ca85c547c68b185b5a7b6f1159b3a8eb5ac9f50178785"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b82ce2df1293960dc7d0e4b5b9d809198073121331d7287edacbd5cffe17d94c"
   end
 

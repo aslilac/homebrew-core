@@ -10,11 +10,6 @@ class GhcAT94 < Formula
     any_of: ["LGPL-3.0-or-later", "GPL-2.0-or-later"], # GMP
   ]
 
-  livecheck do
-    url "https://www.haskell.org/ghc/download.html"
-    regex(/href=.*?download[._-]ghc[._-][^"' >]+?\.html[^>]*?>\s*?v?(9\.4(?:\.\d+)+)\s*?</i)
-  end
-
   bottle do
     sha256 cellar: :any,                 arm64_sonoma:   "6c1b596c79d78c3f0129159c35e06734ca148ec11d0b4f91c901ed3c7e38479b"
     sha256 cellar: :any,                 arm64_ventura:  "3c048f7463acff61430ec00d162622e888cece890ee0f6a68f60c5b5104e951b"
@@ -22,10 +17,15 @@ class GhcAT94 < Formula
     sha256 cellar: :any,                 sonoma:         "9ff9d34ffc8ea3598d7291c5b3908e27abf89fa4502bbf9b5eb11589afe66c43"
     sha256 cellar: :any,                 ventura:        "ab3a536d106db981fbf58d8516b561dbf2c9d72b9e3a55e287b96ec65fdf81f6"
     sha256 cellar: :any,                 monterey:       "d1c8c2d9467575bdb2a2e08be2228eb27bdd5732495b991a3e4716e85860e05b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b5ed621fddca655c7334c33e58a1efe70ea2e2d07b13432ad8051d9563b480fb"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "407b41e9345808f2edb9f704f61c3e52df96d45b87c0fc89d823352d02d28990"
   end
 
   keg_only :versioned_formula
+
+  # No longer maintained. 9.4 was removed from current releases on 2024-05-10 with 9.10.1 release.
+  # Ref: https://gitlab.haskell.org/ghc/homepage/-/commit/d0e63a2b3b5aace44248e0ad86d6da8ad74514fc
+  deprecate! date: "2025-01-05", because: :unmaintained
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build

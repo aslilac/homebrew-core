@@ -10,6 +10,8 @@ class Gl2ps < Formula
     regex(/href=.*?gl2ps[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "37edb5bfe08b0943cc9edf1418be8ab73c680074942be25048b3e72af2980f90"
     sha256 cellar: :any,                 arm64_sonoma:   "7c29529c685fb40aa712dc427ff463ac2823b0a2d93a062be9382bdf3ef449e1"
@@ -23,6 +25,7 @@ class Gl2ps < Formula
     sha256 cellar: :any,                 catalina:       "dbdfe5d8458e1224941d6e5707b725ab6872333112dc408dbf35202eddbc8d15"
     sha256 cellar: :any,                 mojave:         "bc857ec44c73448acf748dea7a699e1018a874196dec19659a63aa70a7b5e970"
     sha256 cellar: :any,                 high_sierra:    "6c36dc780b0579f44057cadddb9e1a2e369e2ba9205b68d6c81ebd79defc45b4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "9d47f762d3f0ef7169b9abd3a955295484f36ae310cfec6f3346b785c1b23259"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e85c3e2f25855ef919358e1912f3190ba8e6890cfd5329931638b595cab962d1"
   end
 
@@ -34,8 +37,9 @@ class Gl2ps < Formula
   end
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", "-DCMAKE_POLICY_VERSION_MINIMUM=3.5", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -84,7 +88,7 @@ class Gl2ps < Formula
       return if ENV["HOMEBREW_GITHUB_ACTIONS"]
     end
     system "./test"
-    assert_predicate testpath/"test.eps", :exist?
+    assert_path_exists testpath/"test.eps"
     assert_predicate File.size("test.eps"), :positive?
   end
 end

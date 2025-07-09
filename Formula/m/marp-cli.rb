@@ -1,17 +1,18 @@
 class MarpCli < Formula
   desc "Easily convert Marp Markdown files into static HTML/CSS, PDF, PPT and images"
   homepage "https://github.com/marp-team/marp-cli"
-  url "https://registry.npmjs.org/@marp-team/marp-cli/-/marp-cli-4.0.3.tgz"
-  sha256 "3a13e2bb258dd84b571f852055ecf0a469efafa13386092c20c68f86ec09d702"
+  url "https://registry.npmjs.org/@marp-team/marp-cli/-/marp-cli-4.2.0.tgz"
+  sha256 "cc6ad9252588c05bd0dd8e74ab81a791df7e4cca7e33198237fd575005e68e27"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "14137d16423c3b864243ea7fb014935ec8643be2439bcb2a495e4e365dba3f16"
-    sha256 cellar: :any,                 arm64_sonoma:  "14137d16423c3b864243ea7fb014935ec8643be2439bcb2a495e4e365dba3f16"
-    sha256 cellar: :any,                 arm64_ventura: "14137d16423c3b864243ea7fb014935ec8643be2439bcb2a495e4e365dba3f16"
-    sha256 cellar: :any,                 sonoma:        "5457f17cc6a1eb5b827893c8fd622b9cb13cd1af4077472f873d07ca18e571ce"
-    sha256 cellar: :any,                 ventura:       "5457f17cc6a1eb5b827893c8fd622b9cb13cd1af4077472f873d07ca18e571ce"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "afeff9e33380997aa9932b7c82588df8dd77342166f99f0999d7730a45cc1caf"
+    sha256 cellar: :any,                 arm64_sequoia: "0348f4fa470cc682a28097048fbbdd1aec3606c9492eb278a3a4121320a27e23"
+    sha256 cellar: :any,                 arm64_sonoma:  "0348f4fa470cc682a28097048fbbdd1aec3606c9492eb278a3a4121320a27e23"
+    sha256 cellar: :any,                 arm64_ventura: "0348f4fa470cc682a28097048fbbdd1aec3606c9492eb278a3a4121320a27e23"
+    sha256 cellar: :any,                 sonoma:        "455ca0aa496d062b289b70c9753bc712919d31fec176b830694e8ba7894dd4b4"
+    sha256 cellar: :any,                 ventura:       "455ca0aa496d062b289b70c9753bc712919d31fec176b830694e8ba7894dd4b4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "43ef11b41d81ec796438455c2bce3c72d48717ffb03a71d45b14f2d7520693be"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "01aa03b5eff724585a86885eb5d26bda435ac6b90a84fc458ab195e067fc534c"
   end
 
   depends_on "node"
@@ -44,7 +45,7 @@ class MarpCli < Formula
     MARKDOWN
 
     system bin/"marp", testpath/"deck.md", "-o", testpath/"deck.html"
-    assert_predicate testpath/"deck.html", :exist?
+    assert_path_exists testpath/"deck.html"
     content = (testpath/"deck.html").read
     assert_match "theme:uncover", content
     assert_match "<h1 id=\"hello-homebrew\">Hello, Homebrew!</h1>", content

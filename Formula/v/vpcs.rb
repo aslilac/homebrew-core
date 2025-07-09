@@ -5,6 +5,8 @@ class Vpcs < Formula
   sha256 "dca602d0571ba852c916632c4c0060aa9557dd744059c0f7368860cfa8b3c993"
   license "BSD-2-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c720c9b26f940276b3431e88b4c8ce29cbe2fe616536d0b8419a6e378e09c3af"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4a6670a2833658d64a9be4c0e42f07b7224ef2cf1ea50faafa982f8469a49052"
@@ -20,6 +22,7 @@ class Vpcs < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "ac52b231d875679e7bd4da3a09c6b5bc833e5b93fe5a77749dc834b1d82d21d5"
     sha256 cellar: :any_skip_relocation, sierra:         "78c7e415e9bcbdf28cfdda5d37fce9cc7d735b01d61400b41239e0cdee17ada5"
     sha256 cellar: :any_skip_relocation, el_capitan:     "0f1a65e672fd1d2dbc866279835231ec3737e64c514f38a08bf409807e910222"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "5de5fc1e177ac3651f6c1ea17097307535b8735757ded9e3f693458db2e86827"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5ee66bd58892962238c81873d186c5066fd53490328b2c0db6667532565db008"
   end
 
@@ -28,7 +31,10 @@ class Vpcs < Formula
       if OS.mac?
         system "make", "-f", "Makefile.osx"
       else
-        system "make", "-f", "Makefile.linux"
+        # Avoid conflicting getopt
+        rm "getopt.h"
+        # Use -fcommon to work around multiple definition of `vpc'
+        system "make", "-f", "Makefile.linux", "CCOPT=-fcommon"
       end
       bin.install "vpcs"
     end

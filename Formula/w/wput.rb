@@ -5,6 +5,8 @@ class Wput < Formula
   sha256 "229d8bb7d045ca1f54d68de23f1bc8016690dc0027a16586712594fbc7fad8c7"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c7b895351c316eeb37308ac163b54d36c997c2909a00b7ecf3837081af4a1e4d"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "396180470ace5f8d7640f2097bded1f66af50bac01ba8470ea3023968bc39d6b"
@@ -20,6 +22,7 @@ class Wput < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "e01d35805cd00e8f4d9ba1ab989104d66dc4150648a2288f5f49eea5c17b5025"
     sha256 cellar: :any_skip_relocation, sierra:         "0a8c4296a3e14d8b420f65464293b000dd1bd2e33a802c92e1812f0c267d3f0f"
     sha256 cellar: :any_skip_relocation, el_capitan:     "8e4eeb941d98dc0313b87682b7ae659bbceac59426cf0483c2ae2676cf5b924b"
+    sha256                               arm64_linux:    "ec9a4b8e069c941c18e07b232a30c5e5daf926003d9ff6120b0ac1e21d1f0e5b"
     sha256                               x86_64_linux:   "0fb27e180b9a6f8ef2b3508530874b467449fdac55a347c63f2e86ca360db073"
   end
 

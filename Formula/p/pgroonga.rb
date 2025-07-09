@@ -1,8 +1,8 @@
 class Pgroonga < Formula
   desc "PostgreSQL plugin to use Groonga as index"
   homepage "https://pgroonga.github.io/"
-  url "https://packages.groonga.org/source/pgroonga/pgroonga-3.2.4.tar.gz"
-  sha256 "591aa7cbd4920e01211c0a74e36e6b286aa332d55892615df1c389eb66fd5bff"
+  url "https://packages.groonga.org/source/pgroonga/pgroonga-4.0.1.tar.gz"
+  sha256 "e2dfe40f3a0342e9ce4f1212043c46564fda3678e8cfda8587bbc37b103ebd17"
   license "PostgreSQL"
 
   livecheck do
@@ -11,15 +11,16 @@ class Pgroonga < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "7dee11d56208c67b9beafece4b6a7c7404da6dfa676886360881b90bf91e5679"
-    sha256 cellar: :any,                 arm64_sonoma:  "2158f0b6232901d491cdfaa4711379b96c4c62015d1c229706b0421362703c26"
-    sha256 cellar: :any,                 arm64_ventura: "ec4693dc5b4f3cd0c6f1cfdd3080537491bc5b7a5c4f4ef202fb88c8cf12dc5a"
-    sha256 cellar: :any,                 sonoma:        "7aaa568304d039b29b0104586c6bc059ba3ea6b2786908a3e2e55a3cfbd6b1b9"
-    sha256 cellar: :any,                 ventura:       "3c40a14775b2b5f4caba6baeec0717e64537294d697c5b5bf709ef111b3c010d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "97e067ef693da8269ef9fccfee8f787704dc019714b4637b723d481d8e050b32"
+    sha256 cellar: :any,                 arm64_sequoia: "aa5b5427b783ffc3883f0c7bed63cfa61523ceb262dc8f12828d556744ad1173"
+    sha256 cellar: :any,                 arm64_sonoma:  "4099e0f0a91fc915c153d9065418c6bde0735c33918a553b060b9e72b7d91615"
+    sha256 cellar: :any,                 arm64_ventura: "566650be1da201e6b58e18550dc401de99f37ea306fbc9594e996b6609a1eba2"
+    sha256 cellar: :any,                 sonoma:        "bb3eb6dc07a7dde21c8425cc50a384a345a2d3af35e06e8048763701ce89be03"
+    sha256 cellar: :any,                 ventura:       "ac024d77294e071078565678f948821774d596b97152f8d660c547bfdde11b44"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "d95b94358412a53dc2f15df1f277953581a1a4d2a3ae526b1553c6ee0fd0d29d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3d3a3e602ca372150b2c8b9d3ae993fef0434fd9a86bcea549335c37bd2cd38b"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "postgresql@14" => [:build, :test]
   depends_on "postgresql@17" => [:build, :test]
   depends_on "groonga"

@@ -6,6 +6,8 @@ class SafeRm < Formula
   license "GPL-3.0-or-later"
   head "https://git.launchpad.net/safe-rm", using: :git, branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "553b3046d666998b51823efecce49ce2309b01fe8367dcb95d7b44a4ee16b899"
@@ -18,6 +20,7 @@ class SafeRm < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "cb53a3912e9e93ae9286a694466e97f3e38834034c2fafe06866a1a5b04d0532"
     sha256 cellar: :any_skip_relocation, big_sur:        "e13cda860afbd1897715240f11f06dbd0c2ca6c6834a5ff1a505b31c66ca63fa"
     sha256 cellar: :any_skip_relocation, catalina:       "e9f3f483c1cd132ac44afd0890d93296507f8438d2c7921ff73e4cb7d4cc54c2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "64314d265408ed5be7deb792f7710cffa50f64a442af0f1a138c2edf29719db2"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e91dab1f67e634f6c93fe3461d2839d46c73b6e7fcf7c6f4091dc09b863a3f65"
   end
 
@@ -35,13 +38,13 @@ class SafeRm < Formula
     touch foo
     touch bar
     system bin/"safe-rm", foo
-    refute_predicate foo, :exist?
+    refute_path_exists foo
     if OS.linux?
       shell_output("#{bin}/safe-rm #{bar} 2>&1", 1)
     else
       shell_output("#{bin}/safe-rm #{bar} 2>&1", 64)
     end
 
-    assert_predicate bar, :exist?
+    assert_path_exists bar
   end
 end

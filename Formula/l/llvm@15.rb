@@ -10,6 +10,8 @@ class LlvmAT15 < Formula
     skip "No longer developed or maintained"
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sonoma:   "b767f1c1ae0719c1a8d1b5f7e7c7d9cead4eca26cab4b204c72800e824c06845"
@@ -18,6 +20,7 @@ class LlvmAT15 < Formula
     sha256 cellar: :any,                 sonoma:         "08430f7b9a8b839fbc65b90f6e2ba5f7969daa8a6f05a6863a39b2af500527c1"
     sha256 cellar: :any,                 ventura:        "14244325d6f28f97dc28b77b668696c113696f8abc2e3c334a886c24a62e9f1b"
     sha256 cellar: :any,                 monterey:       "d1cb79d95fc313205141a904d2f631c0e8fea32957f7ddbf91566c2839e81675"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "3a07622bd1154081b35df3aada0d62da27528a5d6fda372aaddb266ba143e6db"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d478121e56352a43a1942f8d93e2a3283772aee536eec2b358907e7e81af912c"
   end
 
@@ -32,28 +35,26 @@ class LlvmAT15 < Formula
   depends_on "cmake" => :build
   # sanitizer_mac.cpp:630:15: error: constexpr function never produces a constant expression [-Winvalid-constexpr]
   # constexpr u16 GetOSMajorKernelOffset() {
-  depends_on maximum_macos: [:sonoma, :build]
-  depends_on "python@3.12" => :build
+  depends_on maximum_macos: [:ventura, :build]
+  depends_on "python@3.12" => [:build, :test]
   depends_on "zstd"
 
-  uses_from_macos "python" => :test
   uses_from_macos "libedit"
   uses_from_macos "libffi", since: :catalina
   uses_from_macos "ncurses"
   uses_from_macos "zlib"
 
   on_linux do
-    depends_on "pkg-config" => :build
+    depends_on "pkgconf" => :build
     depends_on "binutils" # needed for gold
     depends_on "elfutils" # openmp requires <gelf.h>
   end
 
-  # Fails at building LLDB
-  fails_with gcc: "5"
+  def python3
+    "python3.12"
+  end
 
   def install
-    python3 = "python3.12"
-
     # The clang bindings need a little help finding our libclang.
     inreplace "clang/bindings/python/clang/cindex.py",
               /^(\s*library_path\s*=\s*)None$/,
@@ -415,7 +416,7 @@ class LlvmAT15 < Formula
     end
 
     # Testing mlir
-    (testpath/"test.mlir").write <<~EOS
+    (testpath/"test.mlir").write <<~MLIR
       func.func @main() {return}
 
       // -----
@@ -427,7 +428,7 @@ class LlvmAT15 < Formula
 
       // expected-error @+1 {{redefinition of symbol named 'foo'}}
       func.func @foo() { return }
-    EOS
+    MLIR
     system bin/"mlir-opt", "--split-input-file", "--verify-diagnostics", "test.mlir"
 
     (testpath/"scanbuildtest.cpp").write <<~CPP
@@ -451,24 +452,25 @@ class LlvmAT15 < Formula
       shell_output("#{bin}/clang-format -style=google clangformattest.c")
 
     # This will fail if the clang bindings cannot find `libclang`.
-    with_env(PYTHONPATH: prefix/Language::Python.site_packages("python3")) do
-      system "python3", "-c", <<~EOS
+    with_env(PYTHONPATH: prefix/Language::Python.site_packages(python3)) do
+      system python3, "-c", <<~PYTHON
         from clang import cindex
         cindex.Config().get_cindex_library()
-      EOS
+      PYTHON
     end
 
     # Ensure LLVM did not regress output of `llvm-config --system-libs` which for a time
     # was known to output incorrect linker flags; e.g., `-llibxml2.tbd` instead of `-lxml2`.
     # On the other hand, note that a fully qualified path to `dylib` or `tbd` is OK, e.g.,
     # `/usr/local/lib/libxml2.tbd` or `/usr/local/lib/libxml2.dylib`.
+    abs_path_exts = [".tbd", ".dylib"]
     shell_output("#{bin}/llvm-config --system-libs").chomp.strip.split.each do |lib|
       if lib.start_with?("-l")
         assert !lib.end_with?(".tbd"), "expected abs path when lib reported as .tbd"
         assert !lib.end_with?(".dylib"), "expected abs path when lib reported as .dylib"
       else
         p = Pathname.new(lib)
-        if p.extname == ".tbd" || p.extname == ".dylib"
+        if abs_path_exts.include?(p.extname)
           assert p.absolute?, "expected abs path when lib reported as .tbd or .dylib"
         end
       end

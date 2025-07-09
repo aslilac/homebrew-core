@@ -10,6 +10,8 @@ class TokyoDystopia < Formula
     regex(/href=.*?tokyodystopia[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "da35291f169e133bb8dcc321c5114ea62714f6e0eadab7a69cef121e0c76813f"
     sha256 cellar: :any,                 arm64_sonoma:   "16af9fb0facf080bd076d60cd306742fb641f7430cf0c14946e5e37d2d4dcb8c"
@@ -25,6 +27,7 @@ class TokyoDystopia < Formula
     sha256 cellar: :any,                 high_sierra:    "3f00b619720603bd0712b52d01a355124604637c44cab5a3132fda942f195e2c"
     sha256 cellar: :any,                 sierra:         "0a7da80cf5e8892112986d9a51e8cd3804da2a7436b8a03b472f561b06c35890"
     sha256 cellar: :any,                 el_capitan:     "2a9e21b6f57781adb9e3dc673f2e466b817d4a00860b45fa49ded534d4cb0ed4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "6c1c01fa3151f25a7d15fde5db6d0c5e27cf836b8b57d40c4f39bb3a82dddec7"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1babf4df457924711f3ad2fc7e8f9f797950f53de9f1b740290ec1c112ca83e8"
   end
 
@@ -37,11 +40,11 @@ class TokyoDystopia < Formula
   end
 
   test do
-    (testpath/"test.tsv").write <<~EOS
+    (testpath/"test.tsv").write <<~TSV
       1\tUnited States
       55\tBrazil
       81\tJapan
-    EOS
+    TSV
 
     system bin/"dystmgr", "importtsv", "casket", "test.tsv"
     system bin/"dystmgr", "put", "casket", "83", "China"

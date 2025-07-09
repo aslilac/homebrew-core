@@ -1,29 +1,32 @@
 class Resvg < Formula
   desc "SVG rendering tool and library"
-  homepage "https://github.com/RazrFalcon/resvg"
-  url "https://github.com/RazrFalcon/resvg/archive/refs/tags/v0.44.0.tar.gz"
-  sha256 "b45c906b4c72ff46405d74eb98ec1b93842f1528a8e835860f22b057b210306a"
+  homepage "https://github.com/linebender/resvg"
+  url "https://github.com/linebender/resvg/archive/refs/tags/v0.45.1.tar.gz"
+  sha256 "02915519b7409f43110f3cbdc5f87724efd58da1d8516914bdabf060c8a9a178"
   license "MPL-2.0"
-  head "https://github.com/RazrFalcon/resvg.git", branch: "master"
+  head "https://github.com/linebender/resvg.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "28531276a8f61a155cd5d3a13fbb3a4a356b7c097251c204e17145f83693383a"
-    sha256 cellar: :any,                 arm64_sonoma:  "7c252685b1357316339380fa2d9b2234decc48e2225b02850ec62f4302c3d22b"
-    sha256 cellar: :any,                 arm64_ventura: "07ff4b74fc351966c5175af27bc02559f6dc9b4b24da217799f0c40742d1dc44"
-    sha256 cellar: :any,                 sonoma:        "498b1b2d02ff385020bd7d7fe6033b7a79a20903816ef378d1337f7eb1b232ed"
-    sha256 cellar: :any,                 ventura:       "e36cea208fde141c0c174d75b2b6e4a7772633c54c48c7a834e54e045b398395"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "11bf96aa1daaab9003c19e0daac5477387f61cc7132dc3069fb855ca92241e3a"
+    sha256 cellar: :any,                 arm64_sequoia: "034dd22dbb4bf616d68ca85e3b2bdd929f780fcad78ba5b961daba8644f897da"
+    sha256 cellar: :any,                 arm64_sonoma:  "08fe0cffbd93de9a3e9a264c3df96614db26d18eb7afc77f14a30a2a6d5779da"
+    sha256 cellar: :any,                 arm64_ventura: "cde09970ac7839b75906d8c3e7937eb66cefe1c6d3e931e4632a00bf7877aa21"
+    sha256 cellar: :any,                 sonoma:        "3551c00ad4ce2fae49386e1a1fb5a6c63c33ca00c602aa04d9aa988a50a1afb3"
+    sha256 cellar: :any,                 ventura:       "544d2b12b296cfc510382c6ed8ff519224c0cb3d9e9ba127023d18c67535bc41"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "91f4bf60e4faa8f86d61d65d2cc7f51589643721cd565b48cee80492cba5150a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b219d496cf0be62b4172762515ccf8039ec43e9864b2d80b641fff9e5a8ea7f9"
   end
 
+  depends_on "cargo-c" => :build
   depends_on "rust" => :build
+  depends_on "pkgconf" => :test
 
   def install
     system "cargo", "install", *std_cargo_args(path: "crates/usvg")
     system "cargo", "install", *std_cargo_args(path: "crates/resvg")
 
-    system "cargo", "build", "--locked", "--lib", "--manifest-path", "crates/c-api/Cargo.toml", "--release"
-    include.install "crates/c-api/resvg.h", "crates/c-api/ResvgQt.h"
-    lib.install "target/release/#{shared_library("libresvg")}", "target/release/libresvg.a"
+    system "cargo", "cinstall", "--jobs", ENV.make_jobs.to_s, "--release", "--locked",
+                    "--manifest-path", "crates/c-api/Cargo.toml",
+                    "--prefix", prefix, "--libdir", lib
   end
 
   test do
@@ -34,10 +37,10 @@ class Resvg < Formula
     EOS
 
     system bin/"resvg", testpath/"circle.svg", testpath/"test.png"
-    assert_predicate testpath/"test.png", :exist?
+    assert_path_exists testpath/"test.png"
 
     system bin/"usvg", testpath/"circle.svg", testpath/"test.svg"
-    assert_predicate testpath/"test.svg", :exist?
+    assert_path_exists testpath/"test.svg"
 
     (testpath/"test.c").write <<~C
       #include <stdlib.h>
@@ -66,7 +69,9 @@ class Resvg < Formula
         return 0;
       }
     C
-    system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lresvg", "-o", "test"
+
+    flags = shell_output("pkgconf --cflags --libs resvg").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *flags
     assert_equal "160 35", shell_output("./test #{test_fixtures("test.svg")}").chomp
   end
 end

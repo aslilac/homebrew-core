@@ -1,8 +1,8 @@
 class GitLfs < Formula
   desc "Git extension for versioning large files"
-  homepage "https://git-lfs.github.com/"
-  url "https://github.com/git-lfs/git-lfs/releases/download/v3.6.0/git-lfs-v3.6.0.tar.gz"
-  sha256 "9a5d2a598b4096f0fdde5b2ead6038996c657acafe5a89d22b8c2f1b56aeaf36"
+  homepage "https://git-lfs.com/"
+  url "https://github.com/git-lfs/git-lfs/releases/download/v3.7.0/git-lfs-v3.7.0.tar.gz"
+  sha256 "d078b8393514c65c485d1628e610449ba048af746749912bd082d818b2454348"
   license "MIT"
 
   # Upstream creates releases that are sometimes not the latest stable version,
@@ -13,12 +13,12 @@ class GitLfs < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "89ebf5b724d04b05d8bfbb30f3f7def31b858f907dbea09f8fb45be8971aa3a4"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "89ebf5b724d04b05d8bfbb30f3f7def31b858f907dbea09f8fb45be8971aa3a4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "89ebf5b724d04b05d8bfbb30f3f7def31b858f907dbea09f8fb45be8971aa3a4"
-    sha256 cellar: :any_skip_relocation, sonoma:        "e9843027dbca6884d5e4f6894534dbc4c52d59ae33580c4fff4fb29c0b8f7a7f"
-    sha256 cellar: :any_skip_relocation, ventura:       "e9843027dbca6884d5e4f6894534dbc4c52d59ae33580c4fff4fb29c0b8f7a7f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c40bb62ad209374aec8b93c4ec19724fc4b99c15bd2e7429a473ecfdf3105dd1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1e905231194b4144c52b981a2a52868f6fb2c8ffc27099a0771362dc45890879"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1e905231194b4144c52b981a2a52868f6fb2c8ffc27099a0771362dc45890879"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "1e905231194b4144c52b981a2a52868f6fb2c8ffc27099a0771362dc45890879"
+    sha256 cellar: :any_skip_relocation, sonoma:        "db9022729517fff9457056b559e9d43db5bba5531ae9b636f140ce41bb4e0d95"
+    sha256 cellar: :any_skip_relocation, ventura:       "db9022729517fff9457056b559e9d43db5bba5531ae9b636f140ce41bb4e0d95"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6926c738974ed58fb5dec2bf00cbb4f759db8d7e8554c347d7d039a7135ba4da"
   end
 
   depends_on "asciidoctor" => :build

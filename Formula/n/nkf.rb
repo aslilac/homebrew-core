@@ -11,6 +11,8 @@ class Nkf < Formula
     regex(%r{=.*?rel/nkf/v?(\d+(?:\.\d+)+[a-z]?)["' >]}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "67d8e9dea97994ba77574c0be558cb009448a7aa9d3d577b54e3d5728d1fb1d6"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "89c0a1d6d5886045189b7a3e393b451c84ea7abf7e6f68663819b96651c58f58"
@@ -25,6 +27,7 @@ class Nkf < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "85183c457daaecd9a3ce59cea556189ad0131c6134d77e7890643a3fb75e3965"
     sha256 cellar: :any_skip_relocation, high_sierra:    "9af47f293d4531c8d7ec5a81bd041349773f982b9710edca03eb3eb59b02a8b5"
     sha256 cellar: :any_skip_relocation, sierra:         "8d908ee97c34e85ed85c268c895e143d57c7afdd9bc232a75b690067281765fc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "815d1d6de637a2a1b79024544b7c8c9ff9ea634493c33925ac228b4a97f933c3"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "03ddaa51a6fc6341348d4ee40c5a0a7309817b9fb957171b01b8aeab6ea6fe25"
   end
 

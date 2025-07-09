@@ -1,10 +1,12 @@
 class YubikeyAgent < Formula
   desc "Seamless ssh-agent for YubiKeys and other PIV tokens"
-  homepage "https://filippo.io/yubikey-agent"
+  homepage "https://github.com/FiloSottile/yubikey-agent"
   url "https://github.com/FiloSottile/yubikey-agent/archive/refs/tags/v0.1.6.tar.gz"
   sha256 "f156d089376772a34d2995f8261d821369a96a248ab586d27e3be0d9b72d7426"
   license "BSD-3-Clause"
   head "https://github.com/FiloSottile/yubikey-agent.git", branch: "main"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ce973f7cd1e1b5252f039e2fe2154bea75ce4b7439f49ec908774e57e6d15031"
@@ -16,15 +18,16 @@ class YubikeyAgent < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "9f4df13a79a921345e33da19009cd6a15c0371cfbec2a69875072ecc14ad116a"
     sha256 cellar: :any_skip_relocation, monterey:       "0908727c1be05e84776c37cbabdc38519882a1ddc9fe5faddfe60ecf9442bdc2"
     sha256 cellar: :any_skip_relocation, big_sur:        "16270ab84fc500f9ca17817fd35f783c5b272266e4abfaba79c8bc40e0a36cee"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "380ebc52140afe17dee61e6cf3fe76452f9c8968c54c1fb0df8de705dbd02808"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ee44c531db48e87a1f5fdd6f06159d37b4ae2877d80440ca3e437fdb4ec80e58"
   end
 
   depends_on "go" => :build
+  depends_on "pkgconf" => :build
 
   uses_from_macos "pcsc-lite"
 
   on_linux do
-    depends_on "pkgconf" => :build
     depends_on "pinentry"
   end
 
@@ -53,8 +56,8 @@ class YubikeyAgent < Formula
 
   test do
     socket = testpath/"yubikey-agent.sock"
-    fork { exec bin/"yubikey-agent", "-l", socket }
+    spawn bin/"yubikey-agent", "-l", socket
     sleep 1
-    assert_predicate socket, :exist?
+    assert_path_exists socket
   end
 end

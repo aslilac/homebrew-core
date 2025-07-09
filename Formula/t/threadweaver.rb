@@ -1,8 +1,8 @@
 class Threadweaver < Formula
   desc "Helper for multithreaded programming"
   homepage "https://api.kde.org/frameworks/threadweaver/html/index.html"
-  url "https://download.kde.org/stable/frameworks/6.8/threadweaver-6.8.0.tar.xz"
-  sha256 "8864dd30b7a55f751c1ba81abda789a3934964be18ba1c8e694e2bc48768bfde"
+  url "https://download.kde.org/stable/frameworks/6.15/threadweaver-6.15.0.tar.xz"
+  sha256 "1ae0e593182c25ec8a9ee85777ab767b6c37b0f7e7a6851d4b6d49bfe03da1d0"
   license "LGPL-2.0-or-later"
   head "https://invent.kde.org/frameworks/threadweaver.git", branch: "master"
 
@@ -12,19 +12,17 @@ class Threadweaver < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:  "7ee4a0d056bec3460ed6fbf9a39eb8d8f2822327c68c54c81381d33481020ce4"
-    sha256 cellar: :any,                 arm64_ventura: "43b6eb937fe080013c14f7384c78fd05ed3227c20beffe1b9f249c54d60dffe1"
-    sha256 cellar: :any,                 sonoma:        "aed5a5ab81699c18587a78cf6234ee61d18d1f6874de8b175886f31c807d5912"
-    sha256 cellar: :any,                 ventura:       "849828f864bb17e7d31615fc37414b471fead9ad0c31345b0ea13e066b9c46e7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3af781797bba2b148c644ea5eb45667039b6b47e0a06caa3a6d06f3f1a1dd0b1"
+    sha256 cellar: :any,                 arm64_sonoma:  "c5dd179c0ea8c845d9d4ab561b7919f5772b04cb443b4d5e2b2d65e67159b9f5"
+    sha256 cellar: :any,                 arm64_ventura: "be3cce925fe14f0069437b702db9644bb1a12e15bad04c46939a819a197999ea"
+    sha256 cellar: :any,                 sonoma:        "5ec15c300336c413a7dd2c3dc8baa3687593352ea258e20142bcc1472009bdfd"
+    sha256 cellar: :any,                 ventura:       "1932a3270bf85b9375d55f3dac90d43ca0a1f2f71425e060f62f4ff7bf2a2a06"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5589fecc57ac09501e6770664bc945c1c8f68fe698aa0f3264a80c74771eac54"
   end
 
   depends_on "cmake" => [:build, :test]
   depends_on "doxygen" => :build
   depends_on "extra-cmake-modules" => [:build, :test]
   depends_on "qt"
-
-  fails_with gcc: "5"
 
   def install
     system "cmake", "-S", ".", "-B", "build", "-DBUILD_QCH=ON", *std_cmake_args

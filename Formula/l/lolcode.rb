@@ -8,6 +8,8 @@ class Lolcode < Formula
   license "GPL-3.0-or-later"
   head "https://github.com/justinmeza/lci.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8c4074b5d6a8c5412c5be4a9cfc5c2ee4ab4e5ac12338fdd05141d98fbcea538"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "41bf236e028b388c85213b0e45f10fa83aea6c4b283c96f86426313646424a52"
@@ -23,6 +25,7 @@ class Lolcode < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "e6cb7d51d26fe4b54f41a14bf183216bb9ca87a6d0b8db25ebf55e64227ac5aa"
     sha256 cellar: :any_skip_relocation, sierra:         "47b268e8334d901868a6498738772b1c776fe34ab249befa702658489e53dff9"
     sha256 cellar: :any_skip_relocation, el_capitan:     "74920cea828644c7ad0fe3b12ee5c9a4c06a46ec37c2826280327e37e30f5513"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e3b96d74e84ab5da91383bcd19579be2b02dd7da68a240f2d8685195d80ffa21"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "eb5c917e5a669e5fa18ee60946f30fd1bcbd4a257489e440ba694444f9beaf1d"
   end
 
@@ -35,10 +38,11 @@ class Lolcode < Formula
   conflicts_with "lci", because: "both install `lci` binaries"
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+
     # Don't use `make install` for this one file
-    bin.install "lci"
+    bin.install "build/lci"
   end
 
   test do

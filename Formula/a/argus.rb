@@ -11,6 +11,7 @@ class Argus < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "a7fb76b9b7256db647ea6a124882c3cfee5e0838b08cca59494f53ce295caac1"
     sha256 cellar: :any_skip_relocation, sonoma:        "ee799b219fbfca3ff8c1babf20c550ab30274e3fa2e87f964a53a3a47416d65c"
     sha256 cellar: :any_skip_relocation, ventura:       "a48764b6fbf43defc9dfa3505f6bc5e53c683eb2a94a5a05575fb31c16305695"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "466b334735a7bca04ea37ec2c5e1fdaccaa651c75c59fbbc57cad68709dae99d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "f955db69cd767d836e4f1c784f21d22205f3f7ed466218f1837ea89743e3a8c1"
   end
 
@@ -38,6 +39,6 @@ class Argus < Formula
     assert_match "Pages", shell_output(bin/"argus-vmstat") if OS.mac?
     assert_match "Argus Version #{version}", shell_output("#{sbin}/argus -h", 255)
     system sbin/"argus", "-r", test_fixtures("test.pcap"), "-w", testpath/"test.argus"
-    assert_predicate testpath/"test.argus", :exist?
+    assert_path_exists testpath/"test.argus"
   end
 end

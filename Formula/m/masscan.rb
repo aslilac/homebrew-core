@@ -11,6 +11,8 @@ class Masscan < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ba24e0d2c22cbe2291a6e872a1f5d79df7c69922b0cebdbe0864c1caaa664b72"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ed9e05609c9f31867e5da2a9d10eebf62ca405613ff9a11ea82307871b8954f3"
@@ -23,6 +25,7 @@ class Masscan < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "8d21dd16d333a573d7146d13c31dea07df5c72fcfe137af338e6f7722b393dbe"
     sha256 cellar: :any_skip_relocation, catalina:       "a77ea3fd36501d9a0d0398e585f1d30fd64163ca378e6af9660601a10e1ddce3"
     sha256 cellar: :any_skip_relocation, mojave:         "19def74a8381541e80c530a5f0599bc92f067ac3e211ecc173afbbb0aee72752"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "d4a80f8db6ca9a32ba4d160d4165b4ffd0dd8a86f3246724a2c4220288d35c64"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e9fe1b11c5d18f102a83a6497972a7e49298f856adc260f83ac7a3d406824887"
   end
 

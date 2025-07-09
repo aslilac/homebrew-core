@@ -1,13 +1,13 @@
 class Tofuenv < Formula
   desc "OpenTofu version manager inspired by tfenv"
-  homepage "https://github.com/tofuutils/tofuenv"
-  url "https://github.com/tofuutils/tofuenv/archive/refs/tags/v1.0.6.tar.gz"
-  sha256 "a7940ce5ae2700c48df4a7c396ea68f8d37067844c1f80eb55936c39d42edf6f"
+  homepage "https://tofuutils.github.io/tofuenv/"
+  url "https://github.com/tofuutils/tofuenv/archive/refs/tags/v1.0.7.tar.gz"
+  sha256 "047c6a01a0d4c7ded2cf126ae1e891bb3479b2544ec2d2f0d3951de2d08f6c7d"
   license "MIT"
   head "https://github.com/tofuutils/tofuenv.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "ee28b005988edd5b72576d1019be4049ea7d09bb54f79644dfd56b88242017ac"
+    sha256 cellar: :any_skip_relocation, all: "3febcab9a632034fdedf2d4ae0105d4425bcdb12ac73e58b586a1ddf6db36487"
   end
 
   uses_from_macos "unzip"
@@ -24,9 +24,9 @@ class Tofuenv < Formula
   end
 
   test do
-    assert_match "1.6.0-rc1", shell_output("#{bin}/tofuenv list-remote")
-    with_env(TOFUENV_TOFU_VERSION: "1.6.0-rc1", TF_AUTO_INSTALL: "false") do
-      assert_equal "1.6.0-rc1", shell_output("#{bin}/tofuenv version-name").strip
+    assert_match "1.8.7", shell_output("#{bin}/tofuenv list-remote")
+    with_env(TOFUENV_TOFU_VERSION: "1.8.7", TF_AUTO_INSTALL: "false") do
+      assert_equal "1.8.7", shell_output("#{bin}/tofuenv version-name").strip
     end
   end
 end

@@ -12,6 +12,8 @@ class Pcb < Formula
     regex(%r{url=.*?/pcb[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sonoma:   "191403f5cf3241f6322f861bf87c986a5e9e584b718694a09e8d78ffe88090de"
     sha256 arm64_ventura:  "50572577988176158590776ea433364a6198912f1a7a723894850210ed83df8d"
@@ -19,6 +21,7 @@ class Pcb < Formula
     sha256 sonoma:         "c130c3df546d25dc2bd04ecab6bab91443a78ae03fbdc69ddbcd8cc9254cf41f"
     sha256 ventura:        "146de3e1c90e9fd5cd77cbfc9e9f803d3aeff8c15488e8c58f4131dcbd73a920"
     sha256 monterey:       "fcba66246a65011041d14e79b9374017581de797ed85de564ce79358f796caf4"
+    sha256 arm64_linux:    "34ef58a579664a04a77783e8f75f4f4418b7f29de5dcdc8d1db60a030f2634c5"
     sha256 x86_64_linux:   "14d163a567ff23fb93d3c08b11c6e70d0ccd80a6897a01ffe4fdd3e112330ec1"
   end
 
@@ -29,7 +32,7 @@ class Pcb < Formula
   end
 
   depends_on "intltool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "cairo"
   depends_on "dbus"
@@ -67,14 +70,14 @@ class Pcb < Formula
     end
 
     system "./autogen.sh" if build.head?
-    args = std_configure_args + %w[
+    args = %w[
       --disable-update-desktop-database
       --disable-update-mime-database
       --disable-gl
     ]
     args << "--without-x" if OS.mac?
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

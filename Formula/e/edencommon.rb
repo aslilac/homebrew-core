@@ -1,22 +1,24 @@
 class Edencommon < Formula
   desc "Shared library for Watchman and Eden projects"
   homepage "https://github.com/facebookexperimental/edencommon"
-  url "https://github.com/facebookexperimental/edencommon/archive/refs/tags/v2024.11.18.00.tar.gz"
-  sha256 "00917026ccb9faec6b6945f8f4a911098f22419c674f0bd4c8dd8ec4e6a1b1bb"
+  url "https://github.com/facebookexperimental/edencommon/archive/refs/tags/v2025.06.30.00.tar.gz"
+  sha256 "0e27a1dd0272ca13eb0bc103d104ad1a6217a2fc16e06861c4ce81ebb976e741"
   license "MIT"
   head "https://github.com/facebookexperimental/edencommon.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "c905a3b5d93f2d5a77d5f67d27fa77e6b3d31abd29e01407cfb121675f346e8a"
-    sha256 cellar: :any,                 arm64_sonoma:  "d64a0ca601ecb30bf72d954f9a42cecf09736d9b91ef9b72eac25c11a3886960"
-    sha256 cellar: :any,                 arm64_ventura: "14c05e72126921c6a81511398d633f2029ce340244fcaf6e9b9e9afad1221cf9"
-    sha256 cellar: :any,                 sonoma:        "0bf4b9324e335dd9c334368c0bbb158c4d4cd41ab0a9a5ea232371546b8adc46"
-    sha256 cellar: :any,                 ventura:       "70cddbf7d160da20bdc7b47d53bf5b36c374273cc4b30b0cb6d9e4ea87a4bd9d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "17ff017a19bd5b97098ad8fd84bc2b70848a1ffbebf1c1a74f47d593195a81b6"
+    sha256                               arm64_sequoia: "cef4b0ae0e0ccd576a093adaa4e78df499fd99a46412d0a6908ef161d96ba67b"
+    sha256                               arm64_sonoma:  "6642c46cf53f39bbba4e6cca0f8d14ff450887028bb0dade48e70c1108c02326"
+    sha256                               arm64_ventura: "8bb7208a56d9b7a4492d532e280019704aaaf93a89c61a28bad9b4a97238c6d5"
+    sha256 cellar: :any,                 sonoma:        "1dabe57ad124b07f7848178fe21ca37327e6fb20c80cbe660019b2b029c0df5b"
+    sha256 cellar: :any,                 ventura:       "dc47059dc58675c41872b717a0e6233c381f2d51c0577031b7eb7dcb4902ee7f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "5c933de6ce8bbb811e0e27e89bcf9c2525f745ae6ec5da6aeaae8c9f9a8cc6cb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1a08994cb962d298c5e1fe245f7d442828fab675de77aa0346e083c8581dd780"
   end
 
   depends_on "cmake" => :build
   depends_on "googletest" => :build
+  depends_on "mvfst" => :build
   depends_on "wangle" => :build
   depends_on "boost"
   depends_on "fb303"
@@ -68,7 +70,7 @@ class Edencommon < Formula
     system ENV.cxx, "-std=c++17", "-I#{include}", "test.cc",
                     "-L#{lib}", "-L#{Formula["folly"].opt_lib}",
                     "-L#{Formula["boost"].opt_lib}", "-L#{Formula["glog"].opt_lib}", "-L#{Formula["fmt"].opt_lib}",
-                    "-ledencommon_utils", "-lfolly", "-lfmt", "-lboost_context-mt", "-lglog", "-o", "test"
+                    "-ledencommon_utils", "-lfolly", "-lfmt", "-lboost_context", "-lglog", "-o", "test"
     assert_match "ruby", shell_output("./test #{Process.pid}")
   end
 end

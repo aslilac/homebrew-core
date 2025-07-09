@@ -16,10 +16,9 @@ class Bcpp < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "76e722eee04aac5c5ce137cba0c031e42581003f5b27e0e9eefd45011e8c5bc6"
     sha256 cellar: :any_skip_relocation, sonoma:        "3790cb06332cdc0c857a1e780d4edd9ac899d69d4a1a08047b61249ad40456c6"
     sha256 cellar: :any_skip_relocation, ventura:       "2b082e9a692aa8e77fea3c96eb48a25ca75b45a6599207a4ecc2b2e10b1c91b7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "15cd7515cfbe19bfc6cef04b30a3f4bc56104fbbd790c1eeab2d59d487078491"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "e99e6dc868a2b3bd6fcf189124cccaccdd1322ee18a51dc23055e8579d2e28e8"
   end
-
-  fails_with gcc: "5"
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
@@ -35,7 +34,7 @@ class Bcpp < Formula
             test
     EOS
     system bin/"bcpp", "test.txt", "-fnc", "#{etc}/bcpp.cfg"
-    assert_predicate testpath/"test.txt.orig", :exist?
-    assert_predicate testpath/"test.txt", :exist?
+    assert_path_exists testpath/"test.txt.orig"
+    assert_path_exists testpath/"test.txt"
   end
 end

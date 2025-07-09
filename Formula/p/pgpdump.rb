@@ -6,6 +6,8 @@ class Pgpdump < Formula
   license "BSD-3-Clause"
   head "https://github.com/kazu-yamamoto/pgpdump.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "3e1106f448c38f9e3c36c90d622db3e4e0fba0375346446d8b5f8b50acc8fae9"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1486016d74d108d52c41c9b09d8d681bc7a08e553a6e65f1753b37df3ce6e18a"
@@ -14,6 +16,7 @@ class Pgpdump < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "9d251de5de502b17047090b372b041cfa01f36300da79b7cdb31c1a2742d13e8"
     sha256 cellar: :any_skip_relocation, ventura:        "182e8c57659d5aa820da72ba424ffe35387f18982fd203ba19c3eedc15636acf"
     sha256 cellar: :any_skip_relocation, monterey:       "1840aa585133917d6134062341a3f99b6d9f75bae841a5c17f03875f32550860"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "0b513cc3a5634c9f81ac831e5fce2db784e947233439706b34a2dc3b44391714"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ee47fa9dcc4ffe236943ebbb493b3c6b95237576d3b69e1c847025632f9b4e91"
   end
 

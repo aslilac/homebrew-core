@@ -1,8 +1,8 @@
 class Dynare < Formula
   desc "Platform for economic models, particularly DSGE and OLG models"
   homepage "https://www.dynare.org/"
-  url "https://www.dynare.org/release/source/dynare-6.2.tar.xz"
-  sha256 "312a3358bb0735f09b13f996e2d32cfd297292201897c1075c399554398862d9"
+  url "https://www.dynare.org/release/source/dynare-6.4.tar.xz"
+  sha256 "9865e2e7f6b3705155538d5fb1fb0b01bc9decf07250b3b054d3555d651c3843"
   license "GPL-3.0-or-later"
   head "https://git.dynare.org/Dynare/dynare.git", branch: "master"
 
@@ -12,11 +12,11 @@ class Dynare < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:  "671126f94d857b02545ac86704022beeabbc0c4fd2157ddd79c5460dcb6211e1"
-    sha256 cellar: :any, arm64_ventura: "0b12dc3e5e8d91e682298603296284c4c063d48cc661b99b26c950dd906c15d2"
-    sha256 cellar: :any, sonoma:        "863bd394606e7a19c734de48986bfc76e6cc6c43a7d31191ad0e9304fa44c8bd"
-    sha256 cellar: :any, ventura:       "f562fcaedbd71d2f38f6ba7edbad86f0a624b5780585a42381a40c8233882d34"
-    sha256               x86_64_linux:  "576424c0f8bad1fffd803bd071e4cbefb405699599f95bccb65d566a2df69b48"
+    sha256 cellar: :any, arm64_sonoma:  "bd336366a6d2fbf0876dcd623119954bebae19e74f5ae60111ca71ff71e7696d"
+    sha256 cellar: :any, arm64_ventura: "a88c061173833f4eb15b9a1659589115fddb5fd982aacf7c5e75aa2bfa70ed0c"
+    sha256 cellar: :any, sonoma:        "13400a53448afca9149b37214a84b4d38efc436d238d842e493617004c3f1fc9"
+    sha256 cellar: :any, ventura:       "1ec869d738eb08813f4fb125eaae9d2263fff067c4c92abffb79103187c8aa4c"
+    sha256               x86_64_linux:  "c6b2ed4430f6418cb9d5b70848a106617e3ab815f96a4606153f556ecb4bc3f4"
   end
 
   depends_on "bison" => :build
@@ -25,7 +25,7 @@ class Dynare < Formula
   depends_on "flex" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "fftw"
   depends_on "gcc"
   depends_on "gsl"
@@ -102,12 +102,12 @@ class Dynare < Formula
 
     # Replace `makeinfo` with dummy command `true` to prevent generating docs
     # that are not useful to the test.
-    (testpath/"dyn_test.m").write <<~EOS
+    (testpath/"dyn_test.m").write <<~MATLAB
       makeinfo_program true
       pkg prefix #{testpath}/octave
       pkg install statistics-release-#{statistics.version}.tar.gz
       dynare bkk.mod console
-    EOS
+    MATLAB
 
     system Formula["octave"].opt_bin/"octave", "--no-gui",
            "--no-history", "--path", "#{lib}/dynare/matlab", "dyn_test.m"

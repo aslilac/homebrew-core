@@ -2,9 +2,9 @@ class Spades < Formula
   include Language::Python::Shebang
 
   desc "De novo genome sequence assembly"
-  homepage "https://github.com/ablab/spades"
-  url "https://github.com/ablab/spades/releases/download/v4.0.0/SPAdes-4.0.0.tar.gz"
-  sha256 "07c02eb1d9d90f611ac73bdd30ddc242ed51b00c8a3757189e8a8137ad8cfb8b"
+  homepage "https://ablab.github.io/spades/"
+  url "https://github.com/ablab/spades/releases/download/v4.2.0/SPAdes-4.2.0.tar.gz"
+  sha256 "043322129f8536411f1172b7d1c9adfcb6d49d152c10066ccc03e86b6f615a6b"
   license "GPL-2.0-only"
   head "https://github.com/ablab/spades.git", branch: "next"
 
@@ -14,13 +14,13 @@ class Spades < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "36804b795a1a9d5a7b60414c8d4b46ff6bcdbcd9d9e74771170bb9b05e635892"
-    sha256 cellar: :any,                 arm64_sonoma:  "40c88655fd60c534ae6988c153b5e609aca9642612a30d5afb9ef7e014d50b5e"
-    sha256 cellar: :any,                 arm64_ventura: "6421a91f79aa8f03c5dfd76e07562fe92e21c33d1cd136ebc08abc6883991587"
-    sha256 cellar: :any,                 sonoma:        "3c740b96b14eeb5fc184cb8186c0d7a5ebc829d40c1ab04eaa7843a30a6d0853"
-    sha256 cellar: :any,                 ventura:       "582d300f360e60ce1d683dda845193ee256a1513ebdb42814bc81f55e2fb05b6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7fc9c195a2edf4522a54b55a96d66859c8e68d2e69dba7cdec98f53dfd14b37f"
+    sha256 cellar: :any,                 arm64_sequoia: "b503ed91438f312640cda43473783ba4f5499ff5c88574c58dbb0e0c07a139bf"
+    sha256 cellar: :any,                 arm64_sonoma:  "fe494b9af479c627902b8e2508244b3cca845e9254ae7e2e64451c07ee606dc7"
+    sha256 cellar: :any,                 arm64_ventura: "9b267ce7d7d6819ea3b8cfc0b62035581ebfa11db19ae9746c00e701a3abce47"
+    sha256 cellar: :any,                 sonoma:        "f3964e9dc6ec67e93577a58034d5e3d6f819cf0914bc941e4dc7b6ad7df71b15"
+    sha256 cellar: :any,                 ventura:       "7ead159556e176882ea0fcb620761bff7cf44e244789089d9840bea9d09703a5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "14b6d3fa8eb079fafd05061476f678027bf6bc3729f48e94b9698bb79ba8d6f5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a82de520429fc5c7db797cecfbc7f2fa5aba56026d43036d35bb0ff5bc0d2cb5"
   end
 
   depends_on "cmake" => :build
@@ -40,7 +40,12 @@ class Spades < Formula
   end
 
   def install
-    system "cmake", "-S", "src", "-B", "build", *std_cmake_args
+    system "cmake", "-S", "src", "-B", "build", "-DCMAKE_POLICY_VERSION_MINIMUM=3.5", *std_cmake_args
+    # Build bundled zlib-ng with runtime detection
+    with_env(HOMEBREW_CCCFG: ENV["HOMEBREW_CCCFG"]) do
+      ENV.runtime_cpu_detection
+      system "cmake", "--build", "build", "--target", "zlibstatic"
+    end
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
     rewrite_shebang detected_python_shebang, *bin.children

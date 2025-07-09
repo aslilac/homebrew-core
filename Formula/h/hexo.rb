@@ -15,6 +15,7 @@ class Hexo < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "e44df1e02afe2df6e9957c624aa306392d7ef6e9273a65bad30cce1826644443"
     sha256 cellar: :any_skip_relocation, ventura:        "e44df1e02afe2df6e9957c624aa306392d7ef6e9273a65bad30cce1826644443"
     sha256 cellar: :any_skip_relocation, monterey:       "e44df1e02afe2df6e9957c624aa306392d7ef6e9273a65bad30cce1826644443"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "0492ce8c52b9c4040646909acf29b5d237855026d982304e137f497a2bf4455e"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "803c580e42eadd1f4dd66bcb435bbc117df28b3a1e6a9c0c85551940d9d3c79a"
   end
 
@@ -24,9 +25,6 @@ class Hexo < Formula
     mkdir_p libexec/"lib"
     system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
-
-    # Replace universal binaries with their native slices.
-    deuniversalize_machos
   end
 
   test do
@@ -35,6 +33,6 @@ class Hexo < Formula
 
     output = shell_output("#{bin}/hexo init blog --no-install")
     assert_match "Cloning hexo-starter", output.strip
-    assert_predicate testpath/"blog/_config.yml", :exist?
+    assert_path_exists testpath/"blog/_config.yml"
   end
 end

@@ -10,6 +10,8 @@ class Ahcpd < Formula
     regex(/href=.*?ahcpd[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4963298b5a52bcbef584be986fe4a4223a30aefffd2ab6f8372c63c6f8edf075"
@@ -23,6 +25,7 @@ class Ahcpd < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "3f3e332726a04e2cb6a639b18d0092a80cf8d83a9363e75c6579d73ba8ac4d16"
     sha256 cellar: :any_skip_relocation, catalina:       "9320f1465296a364f0d55ffca9342f087b781f0853ad2213b278189bfc062202"
     sha256 cellar: :any_skip_relocation, mojave:         "22a512b076e972064d6b0af3eb696a5d2ee62c06aadd2aea01a0bec886d28379"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "3989aae71302502a2cd749f088ae640087fe698da1cfefc412a9806b7bfde281"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2007cca57256875a13c8dc554e48d2bbfc9b061101bbd2f24f07910b75f0aa00"
   end
 
@@ -57,8 +60,8 @@ class Ahcpd < Formula
     system bin/"ahcpd", "-c", "ahcpd.conf", "-I", pid_file, "-L", log_file, "-D", "lo0"
     sleep(2)
 
-    assert_predicate pid_file, :exist?, "The file containing the PID of the child process was not created."
-    assert_predicate log_file, :exist?, "The file containing the log was not created."
+    assert_path_exists pid_file, "The file containing the PID of the child process was not created."
+    assert_path_exists log_file, "The file containing the log was not created."
 
     Process.kill("TERM", pid_file.read.to_i)
   end

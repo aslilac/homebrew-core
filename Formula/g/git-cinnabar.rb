@@ -2,20 +2,19 @@ class GitCinnabar < Formula
   desc "Git remote helper to interact with mercurial repositories"
   homepage "https://github.com/glandium/git-cinnabar"
   url "https://github.com/glandium/git-cinnabar.git",
-      tag:      "0.6.3",
-      revision: "830a1f2c75fa91cf509020d16d19698a159cf22e"
+      tag:      "0.7.2",
+      revision: "1975d040654a4f015456eef6869e40d32761d083"
   license "GPL-2.0-only"
   head "https://github.com/glandium/git-cinnabar.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "99c02a643befda05778ed9b365be8e082140800e74faf1413e3ba58f23f0c97e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ec8094c3444e434cb9e580e557b91cd3485038298042fd4aebbfeabff8ba7f5f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ddf4e52af50bac133c8877f0e6a1d43a212109486a3fcafbe366ddf6e626db6e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "25b5ee9e84d9727139db12076fa763c60f18672a411ce381abbd1d92e49591f7"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c30765fd16526a147917232d187b8e29942da4f94424a7cdc18590d3603a4318"
-    sha256 cellar: :any_skip_relocation, ventura:        "138a2b8ef8e48750cf057f3b8e10c3a4fe3636e019fa5db296f66ed096e8fcfa"
-    sha256 cellar: :any_skip_relocation, monterey:       "3bea846899473f3954266b82561067e0d91d0ba93ec28cdf6fcf8677be9b47cc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c449068a55d96e667dcbc19f84df226ce39aac3a41b8f5c3be68101667e29c3c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "52a241ac1a64424dd93ba9794a5319f1bedcf64fc3c028e3e89ee7d6cea60e9a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c95e69fb7a618b4bed2e50649d27db679169fed3eccb16676c7edf17ba4ffda7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "675934ba581d5911c174970e37886d46791d36baa49f4e73251ca42673a73b91"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c5f148aa44537226a43200dc72ab9493e7adce2170d0d972191a5f5d3228d253"
+    sha256 cellar: :any_skip_relocation, ventura:       "c85802f34296425e635bf069f74f4eba5bd960aca294df2b0cfc329ab051e842"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f24f9a2e493c0f4cc251f681b993072df26e04ebb9174eed029f2b8877c3e6d6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5ed2073510084eff7527436e382ca7b833384b145e0c786b3fe8d002ae0a5402"
   end
 
   depends_on "rust" => :build
@@ -37,7 +36,6 @@ class GitCinnabar < Formula
     return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
     system "git", "clone", "hg::https://www.mercurial-scm.org/repo/hello"
-    assert_predicate testpath/"hello/hello.c", :exist?,
-                     "hello.c not found in cloned repo"
+    assert_path_exists testpath/"hello/hello.c", "hello.c not found in cloned repo"
   end
 end

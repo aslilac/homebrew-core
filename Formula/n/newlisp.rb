@@ -10,6 +10,8 @@ class Newlisp < Formula
     regex(/href=.*?newlisp[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "c650062494ac00fe19dc828930d6748e11cb89b40b8f9bb248425b7a8dec8cc7"
     sha256 arm64_sonoma:   "0e8d339d431c08f09ddf67a8dd660d483fd3938c0a59f8d7d829e1ead255014d"
@@ -23,6 +25,7 @@ class Newlisp < Formula
     sha256 catalina:       "62fd116459d24ab0db976221fb16fd83a7a7db5447298bcc7f8b0dbf9a55f91f"
     sha256 mojave:         "179146b49c20011f3da4dbdb9b66a6ed66d5dd9f15d07aeca9b8717219a62eeb"
     sha256 high_sierra:    "5a0d4085a0e7fc364b3165be7e92a9dfeb2f4882e1971663ac74c70348a5c4a4"
+    sha256 arm64_linux:    "edfae18568fbac79130190be9410e674c4955be13f666e19b5dd5a1782633ea8"
     sha256 x86_64_linux:   "27f5be3e4e9319afe264a0394127ddbfdaf6d4f8da25b790af9b25d559c23c13"
   end
 

@@ -11,6 +11,8 @@ class Librasterlite2 < Formula
     regex(/href=.*?librasterlite2[._-]v?(\d+(?:\.\d+)+[^.]*?)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "1c3ebad3c0e8d461961ff6e1ea785d762a411493caa8dc0df62f85cc2fd039d8"
     sha256 cellar: :any,                 arm64_sonoma:   "d31a806dc93f565780c5704c3d4ac4d4925f02f3682a1638ee85f384470ceae3"
@@ -21,10 +23,11 @@ class Librasterlite2 < Formula
     sha256 cellar: :any,                 ventura:        "385aeaee7f4a7e565b6368e2577a73ba58f75d7161bbbe480cc1a6eebc12552f"
     sha256 cellar: :any,                 monterey:       "fcc1aba7b865bd46d2986e77c9d9bf3d8dca6641b9c9fb7ebbbeca409692153e"
     sha256 cellar: :any,                 big_sur:        "642c88a5013468fbc96058720beadc6f6aacbb3a47b60530c434b9df4081aa86"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "4fe6861c1f7886a5bdf6cc9782613e8182704503fed2ffb1e088ea08e7081ea3"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "0e91e0eafa3ab9941d7e7b9610089e8398b3259e40951711bc9a70f34c76d0e9"
   end
 
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "cairo"
   depends_on "fontconfig"
   depends_on "freetype"
@@ -111,9 +114,9 @@ class Librasterlite2 < Formula
       }
     C
 
-    pkg_config_flags = shell_output("pkg-config --cflags --libs rasterlite2").chomp.split
-    system ENV.cc, "test.c", *pkg_config_flags, "-o", "test"
+    flags = shell_output("pkgconf --cflags --libs rasterlite2").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *flags
     system testpath/"test"
-    assert_predicate testpath/"from_gif.png", :exist?
+    assert_path_exists testpath/"from_gif.png"
   end
 end

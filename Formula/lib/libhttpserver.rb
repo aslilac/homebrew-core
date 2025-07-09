@@ -6,6 +6,8 @@ class Libhttpserver < Formula
   license "LGPL-2.1-or-later"
   head "https://github.com/etr/libhttpserver.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "a52ab6c0ede296608a7aa71640485e6295b72ae13cfdbb14cbd91c032d9c0af7"
     sha256 cellar: :any,                 arm64_sonoma:   "8656daf385c457a28484c8bff0d6271a5271980ab97899b249c1890274617fb7"
@@ -16,27 +18,22 @@ class Libhttpserver < Formula
     sha256 cellar: :any,                 ventura:        "4bfcce305d2fb4ae798d9b5a0ce54bf7bfc3a6a3636f7a500dee69ecd3161e32"
     sha256 cellar: :any,                 monterey:       "2eb240316761233c156364b47f7e5a1d0a280baaad49530f5e27ae7f19969db5"
     sha256 cellar: :any,                 big_sur:        "f79987ebd2cc129a3ff7a6ee5f3e4ba62cd3926a5fa66554b6b6c32a70661e20"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f4983970f413cd3b10229548e9ead19177cd534aa1aefac1903d4e9a4b7b4d1e"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9d0e06fdd786113649df4bb86729c6fd53c94b77cb6985a0aa43831cdbbb43bc"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libmicrohttpd"
 
   uses_from_macos "curl" => :test
 
   def install
-    args = [
-      "--disable-dependency-tracking",
-      "--disable-silent-rules",
-      "--prefix=#{prefix}",
-    ]
-
     system "./bootstrap"
     mkdir "build" do
-      system "../configure", *args
+      system "../configure", "--disable-silent-rules", *std_configure_args
       system "make", "install"
     end
     pkgshare.install "examples"
@@ -52,7 +49,7 @@ class Libhttpserver < Formula
     system ENV.cxx, "minimal_hello_world.cpp",
       "-std=c++17", "-o", "minimal_hello_world", "-L#{lib}", "-lhttpserver", "-lcurl"
 
-    fork { exec "./minimal_hello_world" }
+    spawn "./minimal_hello_world"
     sleep 3 # grace time for server start
 
     assert_match "Hello, World!", shell_output("curl http://127.0.0.1:#{port}/hello")

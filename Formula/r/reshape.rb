@@ -6,6 +6,8 @@ class Reshape < Formula
   license "MIT"
   head "https://github.com/fabianlindfors/reshape.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "44a403226dcc034a328658eef19b96d0abf441c2042d4777fdad22b74dc4cc41"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b29676af2bbf22ea192ead306a354827084c97c13eec0bac3f51a05117a598d3"
@@ -14,6 +16,7 @@ class Reshape < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "0dfcd8ebd783f1dd0dc53e59c54e513240d690eee50cecfb9ef7e305871b70cd"
     sha256 cellar: :any_skip_relocation, ventura:        "67a29159ee666c5b6f0df160456cdbe810458da743942096972f7afb14d4a652"
     sha256 cellar: :any_skip_relocation, monterey:       "7dfc950175556a422af65fe3385113aced74343cf5d472d8b07542f59dea1e5d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f81a7c24e3998e367e975ee46da03f2fe8c368253e93942c3735787d9d8cab16"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "38e9d423508ef37fa5359093653cf9dd6766419b3480159d7b9dd4fdb65a7677"
   end
 

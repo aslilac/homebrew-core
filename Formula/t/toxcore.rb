@@ -6,15 +6,17 @@ class Toxcore < Formula
   url "https://github.com/TokTok/c-toxcore/releases/download/v0.2.20/c-toxcore-0.2.20.tar.gz"
   sha256 "a9c89a8daea745d53e5d78e7aacb99c7b4792c4400a5a69c71238f45d6164f4c"
   license "GPL-3.0-or-later"
+  revision 2
   head "https://github.com/TokTok/c-toxcore.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "7e2a14e9598e599c0f311145c328d9d274b17c74f03fb4f795db32ac55c826a4"
-    sha256 cellar: :any,                 arm64_sonoma:  "a969319efbe57bc7657603eea87f56a0668d6ea1b042dad62f3f613f98d1b770"
-    sha256 cellar: :any,                 arm64_ventura: "1d9a839019b2ca24cea932c60127b4418cdf1dc7d0a94755799fff1d0c62db9f"
-    sha256 cellar: :any,                 sonoma:        "6466f7b075609f7980cba36ecc5bc35a96ae5558f88ae9f698613600809e591c"
-    sha256 cellar: :any,                 ventura:       "ae3dfbf4c1f8ffaa59cfe4391535180386be2fa811b91234870c7abfabd0272d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a2443ece50296533188f88dc789916e6266a02253915cc56227d627ce41adc42"
+    sha256 cellar: :any,                 arm64_sequoia: "3379c4a841b711aa33e822e3b99fedb344ef6cca8c23ac87ca636f16516bb7ff"
+    sha256 cellar: :any,                 arm64_sonoma:  "61ed64fe45f6ce3191e5c53c04d2d49aa4c5cbfe739971e1f45cb42a7b400754"
+    sha256 cellar: :any,                 arm64_ventura: "6bd944dabdce173a8d838e61b511bbdf0076a69ca244f06b8a4abe057b6df206"
+    sha256 cellar: :any,                 sonoma:        "fbb6f976d3eb729b4a4cb934dbe11abb47ec1f90905c114a35636f3e9c1c3165"
+    sha256 cellar: :any,                 ventura:       "2e8cb55ca687bde4925ae3d4b79bfcff988c7dce31c7a5b12e337392609fe1bf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ff21beb0e5b1a7f90489cd6b5d0130713a6b5c59cdfcc3565b706f3299342112"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1118526ac90564b275c1b5d2373fb942448fe6d2edc513c728eea469d3f8f5d9"
   end
 
   depends_on "cmake" => :build

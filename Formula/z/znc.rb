@@ -1,10 +1,9 @@
 class Znc < Formula
   desc "Advanced IRC bouncer"
   homepage "https://wiki.znc.in/ZNC"
-  url "https://znc.in/releases/znc-1.9.1.tar.gz"
-  sha256 "e8a7cf80e19aad510b4e282eaf61b56bc30df88ea2e0f64fadcdd303c4894f3c"
+  url "https://znc.in/releases/znc-1.10.1.tar.gz"
+  sha256 "4e6e76851dbf2606185972b53ec5decad68fe53b63a56e4df8b8b3c0a6c46800"
   license "Apache-2.0"
-  revision 2
 
   livecheck do
     url "https://znc.in/releases/"
@@ -12,13 +11,13 @@ class Znc < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia: "8e2a03b070797aebc5285ee44bc4f3b24b1e18ea7ede34b99c6d26ec6c10664e"
-    sha256 arm64_sonoma:  "9186e3d185f82706175bf4092af6e0ee4829c90d758b374e3acfe95201f0c7a7"
-    sha256 arm64_ventura: "0afd839114a50990b300740b36473128e79e15032f8b7074c1413c1efa763d97"
-    sha256 sonoma:        "0532ab7f343c502374a812274d63cceb96e88a44a278bfaac02024f7768809b7"
-    sha256 ventura:       "1124fe470899bc70a32f366b18edd5eb2d3d44827484b18113aa56664bebf7f2"
-    sha256 x86_64_linux:  "1d7d7ecea3de12210ed78b1178d3e5afd2aa93f9ffb1985fb0df4ed70d795f0c"
+    sha256 arm64_sequoia: "3f879e3a53f671bf91948290672d9afc4b2c525be1a8391a8edcc579c23a1367"
+    sha256 arm64_sonoma:  "f352b0898686f3e1971ac5f93838267f3f25cc7c5dbc21339866f27d764da5f5"
+    sha256 arm64_ventura: "0559e03b2e5cd7017a819de05f004344156598ca0df4e1a645123cdd61aa0a3b"
+    sha256 sonoma:        "53321095073216bd88a4065e2ddd853d6251fd20ed747833d99a5592eb1f3606"
+    sha256 ventura:       "eadae1e71666ba8f013eb2080e91cce2f34d6e2b0113710cfbcc4b6425b0a1d7"
+    sha256 arm64_linux:   "b2567236b256be9c054c3c51bbb8ba3ec2072137e5d80ebe44414ea5fe33bd4b"
+    sha256 x86_64_linux:  "22d73b1c7debe47b930d2cf16eec7cb509d450c4f01c5e8ba2d6babe3be95a53"
   end
 
   depends_on "cmake" => :build
@@ -26,7 +25,7 @@ class Znc < Formula
   depends_on "pkgconf" => :build
   depends_on "boost"
   depends_on "cctz"
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "openssl@3"
   depends_on "python@3.13"
 
@@ -65,6 +64,6 @@ class Znc < Formula
   test do
     mkdir ".znc"
     system bin/"znc", "--makepem"
-    assert_predicate testpath/".znc/znc.pem", :exist?
+    assert_path_exists testpath/".znc/znc.pem"
   end
 end

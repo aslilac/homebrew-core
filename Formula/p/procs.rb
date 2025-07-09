@@ -1,17 +1,18 @@
 class Procs < Formula
   desc "Modern replacement for ps written in Rust"
   homepage "https://github.com/dalance/procs"
-  url "https://github.com/dalance/procs/archive/refs/tags/v0.14.8.tar.gz"
-  sha256 "b9cf37275bdf1c03786a035c1cd495a93cbf94406eb8c261825d1fd59dcfd61d"
+  url "https://github.com/dalance/procs/archive/refs/tags/v0.14.10.tar.gz"
+  sha256 "7b287ac253fd1d202b0ea6a9a8ba2ed97598cf8e7dfd539bd40e382c6dc6d350"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e407b6a7b0fbae16a9b4481e1be49706cd4142933b385bb2a31e046753f436f4"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "91a463a640b2d5f39cc3587dd32012f544fef8e0ba07ea4fd3e069f9bea6e179"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "f645b5bc0a7bd2d55a16beef0c2d273ae4401010d35a1a91fcd1d041a4fa1f7f"
-    sha256 cellar: :any_skip_relocation, sonoma:        "230c209bb49369b9df04f16c3da5d81544c08ad4c47dda7d762e92c7efd7c2c9"
-    sha256 cellar: :any_skip_relocation, ventura:       "93691438e20273414ae4b1517032e06d266005819a04df5dd1e0d98036a4c945"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "64e15efc995578beb998375a4b0d2b66cee340068f42348bb479da7ecfe1a1c6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5049a80b8fe8d23bbee453de47cbb4347b0d56c173b7a4cfd29b76a7ebc4a900"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "69ffb28f79ffd46055d4ce1a4f98628430d65114cf72d7c329735ea3ec963290"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "cafbe79fabf8648fb1914aab023f3a3444266adda84a92284db37a6ef4d3e393"
+    sha256 cellar: :any_skip_relocation, sonoma:        "009fa13890972f60741b94dc2f3fdb9de285c2dbf1bbb82a5d0a3fa30ad72b0a"
+    sha256 cellar: :any_skip_relocation, ventura:       "a714f28f239c2b5ec662cfbaadc61203680de5ac0f090841960dc1617e8dfcec"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0a756c3aec5df02f365d8a7a42372bc461b9f80132328f6041b299fde1a3d1af"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "343a27e3b76e161887adc165e9867a8b639d6def4d3d65757c7d2dae91ac76c3"
   end
 
   depends_on "rust" => :build

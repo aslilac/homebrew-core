@@ -5,6 +5,8 @@ class Libxpm < Formula
   sha256 "959466c7dfcfcaa8a65055bfc311f74d4c43d9257900f85ab042604d286df0c6"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "a78b3654640de7665b01b2b6e61420a85bba28185aeb13c71677690c558c8c42"
     sha256 cellar: :any,                 arm64_sonoma:   "4e515c10ad6f503a64cbc95c7bded77018f3f9ff5c7edd27f6a1eead7f7152b5"
@@ -13,26 +15,25 @@ class Libxpm < Formula
     sha256 cellar: :any,                 sonoma:         "f46993627dccbd01bf4efbef9bd6bcaa6201dd3ed95845f36d761ac3a6005ad2"
     sha256 cellar: :any,                 ventura:        "b77cec2defe44c7188d60411cb02ff6c04294c01040d28ff52e449196e4bfd72"
     sha256 cellar: :any,                 monterey:       "8876141eb41e3bef55d16ec8a792c328c942fa65556ace6f61fe04eb3a998305"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e44e847b442ad8deda39fe1ce156886a012efec2905091c3cd058fedf43c905b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "42c491e24ddc28e4663b4f630486564c913238fe77b8ca81bb6cfc6758bf715c"
   end
 
   depends_on "gettext" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "gettext"
   depends_on "libx11"
 
   def install
     args = %W[
-      --prefix=#{prefix}
       --sysconfdir=#{etc}
       --localstatedir=#{var}
-      --disable-dependency-tracking
       --disable-open-zfile
       --disable-silent-rules
       --disable-stat-zfile
     ]
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
   end

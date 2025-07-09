@@ -10,6 +10,8 @@ class LibxmlxxAT5 < Formula
     regex(/libxml\+\+[._-]v?(5\.([0-8]\d*?)?[02468](?:\.\d+)*?)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "8b1741fec20807f621a0565fad5b10fff46bdb5e092f7545ccbe7c776d394b5b"
     sha256 cellar: :any,                 arm64_sonoma:   "5437f74e7361d06081dc6da97cd8f7726a0ae705e8157e1a0fc631214904eb37"
@@ -18,12 +20,13 @@ class LibxmlxxAT5 < Formula
     sha256 cellar: :any,                 sonoma:         "d55199dafe752477e6db5375a0635b9ca76ae444288f6ef3d1de9c5ce6e58ddd"
     sha256 cellar: :any,                 ventura:        "fc8d4eb8e4bd8d3eb20b7942557202b9628c5933058bb83c5621f93f4c0b047a"
     sha256 cellar: :any,                 monterey:       "b38022f1cbc5d07e4c5969b98849c218823863f8ec97faf3680cb77545c4c343"
+    sha256                               arm64_linux:    "04bd576bd7befe5da3d2cc17ce5ab1f2232356228e033162aff468209222d9ff"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7e0691b094a3ab56f2add27e4cf43a8d7f6d79a13a61d9fe97d243e2956c6fff"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
 
   uses_from_macos "libxml2"
 
@@ -45,7 +48,7 @@ class LibxmlxxAT5 < Formula
          return 0;
       }
     CPP
-    command = "#{Formula["pkg-config"].opt_bin}/pkg-config --cflags --libs libxml++-5.0"
+    command = "#{Formula["pkgconf"].opt_bin}/pkgconf --cflags --libs libxml++-5.0"
     flags = shell_output(command).strip.split
     system ENV.cxx, "-std=c++17", "test.cpp", "-o", "test", *flags
     system "./test"

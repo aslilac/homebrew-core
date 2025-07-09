@@ -1,22 +1,21 @@
 class Mlt < Formula
   desc "Author, manage, and run multitrack audio/video compositions"
   homepage "https://www.mltframework.org/"
-  url "https://github.com/mltframework/mlt/releases/download/v7.28.0/mlt-7.28.0.tar.gz"
-  sha256 "bc425bf9602213f5f4855b78cfbbcd43eeb78097c508588bde44415963955aa1"
+  url "https://github.com/mltframework/mlt/releases/download/v7.32.0/mlt-7.32.0.tar.gz"
+  sha256 "1ca5aadfe27995c879b9253b3a48d1dcc3b1247ea0b5620b087d58f5521be028"
   license "LGPL-2.1-only"
-  revision 1
   head "https://github.com/mltframework/mlt.git", branch: "master"
 
   bottle do
-    sha256 arm64_sonoma:  "f00c9c76c5bc5a751ce1624e0772c585c709f44875d82440c0a388dbb09cdde9"
-    sha256 arm64_ventura: "e643461ac282fb5edddcb7ff631756018442fbb42049386cdeead1031eb061be"
-    sha256 sonoma:        "4c32850aaf200194157ca6dab467effb8095058f6f31036d16d076ea5cced641"
-    sha256 ventura:       "565336d117b263f8a0aaffc764d9d1e6f10d70d599023aa6b37dc83815491441"
-    sha256 x86_64_linux:  "dbea62eda468a8117ef1f61cba567c1927ec88c7992c7c70b80ef8e863d59262"
+    sha256 arm64_sonoma:  "7af2750dbcf09aca5479d570e56c43a8e180d168a5f7a4603099eac650c3096f"
+    sha256 arm64_ventura: "6c9fe0de14917afb7d7eb5146e5ad011abe85acb19a4fd416380ad35f3258ac9"
+    sha256 sonoma:        "eab1dff7f3e3e2fbf3616e903ab8c90ad7624d80bd1ebd02ad737671025fa657"
+    sha256 ventura:       "7de16a6e73f1f5bd759430b63ae31dd4ccfe2b944d67df61a0e8ff4177d9bdc6"
+    sha256 x86_64_linux:  "b38d747109cfd0aff7ab1826c1f9a1560ac17454fdb7325dca1989a06e9eb611"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "ffmpeg"
   depends_on "fftw"
@@ -48,8 +47,6 @@ class Mlt < Formula
     depends_on "alsa-lib"
     depends_on "pulseaudio"
   end
-
-  fails_with gcc: "5"
 
   def install
     rpaths = [rpath, rpath(source: lib/"mlt")]

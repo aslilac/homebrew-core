@@ -1,17 +1,18 @@
 class SpectralCli < Formula
   desc "JSON/YAML linter and support OpenAPI v3.1/v3.0/v2.0, and AsyncAPI v2.x"
   homepage "https://stoplight.io/open-source/spectral"
-  url "https://registry.npmjs.org/@stoplight/spectral-cli/-/spectral-cli-6.14.2.tgz"
-  sha256 "b05baab337ed4dd1c3bcd5c100ed242e72d3d548e793dc92b9ae0ec921879092"
+  url "https://registry.npmjs.org/@stoplight/spectral-cli/-/spectral-cli-6.15.0.tgz"
+  sha256 "d4e7bd215586ba1619bb495b6d7ecc336431eab9ab0214f0b16ab56a9c145072"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "61fdb4fdac272c0949a8e50089957945963b3c2aea9d619654364c0aa54b4545"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "61fdb4fdac272c0949a8e50089957945963b3c2aea9d619654364c0aa54b4545"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "61fdb4fdac272c0949a8e50089957945963b3c2aea9d619654364c0aa54b4545"
-    sha256 cellar: :any_skip_relocation, sonoma:        "96473c38812b2b4375be4f159b6561436bdde566fdf9e4172029dd5676fcd18d"
-    sha256 cellar: :any_skip_relocation, ventura:       "96473c38812b2b4375be4f159b6561436bdde566fdf9e4172029dd5676fcd18d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "61fdb4fdac272c0949a8e50089957945963b3c2aea9d619654364c0aa54b4545"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0386c9607a723c93d0811eb9876eb84466667f7ad7b2c93ac1c48f2909a5b26c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0386c9607a723c93d0811eb9876eb84466667f7ad7b2c93ac1c48f2909a5b26c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0386c9607a723c93d0811eb9876eb84466667f7ad7b2c93ac1c48f2909a5b26c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6a980039a70ffc224d6285ffe72f96a8253f68c8cb625f79199f6d3c49979946"
+    sha256 cellar: :any_skip_relocation, ventura:       "6a980039a70ffc224d6285ffe72f96a8253f68c8cb625f79199f6d3c49979946"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0386c9607a723c93d0811eb9876eb84466667f7ad7b2c93ac1c48f2909a5b26c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0386c9607a723c93d0811eb9876eb84466667f7ad7b2c93ac1c48f2909a5b26c"
   end
 
   depends_on "node"

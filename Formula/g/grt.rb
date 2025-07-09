@@ -5,6 +5,8 @@ class Grt < Formula
   sha256 "55bcabe7a58916461dc4341758eff2a45bd5b236c263dfe6e58c176c1a7e1ac4"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "074ba306d1024617ace8a0f056a9c55cf8cdb53ede10471eb77eeab5435f6e6d"
     sha256 cellar: :any,                 arm64_sonoma:   "4fb256ad0e810c361d218210ba816f27e7f36d0b03547dba8a503d804c7928d3"
@@ -18,6 +20,7 @@ class Grt < Formula
     sha256 cellar: :any,                 catalina:       "35705ad1d151228e4e8c647cf16fc5b7578b4b777c54e94ebbcc8e19d26bd1f5"
     sha256 cellar: :any,                 mojave:         "830332fffbe52f7eb282eca343977fa27e4ae4978bc9f409df264cba5f37e38c"
     sha256 cellar: :any,                 high_sierra:    "d5a55b3a6b4ca75d3ef37ba47f43ed033215e0d9b5f5a26f738e484f3e428667"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "4e0eeec38e25fa39e7e63c6e2a3a740e088522c789c77ea3361b5d6d7fd30e9f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c9faf092937716c46062df1823e3af440e986eba4d3de6a965fbedd619b4e43e"
   end
 

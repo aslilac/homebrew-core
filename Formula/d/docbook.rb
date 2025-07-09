@@ -11,6 +11,8 @@ class Docbook < Formula
     regex(%r{href=["']?v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, all: "ca237485ebe0b9ab1fc84d87b01b2f322fb285b085133ef727857818283d6d43"
@@ -104,6 +106,6 @@ class Docbook < Formula
   end
 
   test do
-    assert_predicate etc/"xml/catalog", :exist?
+    assert_path_exists etc/"xml/catalog"
   end
 end

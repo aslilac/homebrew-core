@@ -6,6 +6,8 @@ class Rkflashtool < Formula
   license "BSD-2-Clause"
   head "https://git.code.sf.net/p/rkflashtool/Git.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "5b977024f0938d2c9cf116821d05dfa00585f65d06b2158daadd6fdd99db991d"
     sha256 cellar: :any,                 arm64_sonoma:   "5ce2c505c683a80dc90ee03c57e100121f0cbec5e2805e0e85c74f916f1a5fbf"
@@ -21,6 +23,7 @@ class Rkflashtool < Formula
     sha256 cellar: :any,                 high_sierra:    "72e99558b94cd4e26a5aeb62209c99e03f8e91059fbfbe83bdfbd755fc83f54f"
     sha256 cellar: :any,                 sierra:         "cbeb2509bcd210026250c915a9909e8f056e9e2da1f599d7a611695c334f4966"
     sha256 cellar: :any,                 el_capitan:     "7a8b5c66395b179ce38845c36369b1a65c6eacc73fd29227809597257669af6d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "740d373e5d0bb55ce6cda1a391bda5cc95f75f61537f91f5de2b24b7d09cc722"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c38a8b6e2f2f2b8dd7b437c07916c5624076f472392a2899fbb3c397c07bb4a3"
   end
 

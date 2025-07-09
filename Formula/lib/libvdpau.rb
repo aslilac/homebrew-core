@@ -10,6 +10,8 @@ class Libvdpau < Formula
     regex(/^(?:libvdpau[._-])?v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "8baf9479a1307dd3f6819d5953b200195a91d7c522f01b2b4930e9fc750b3615"
     sha256 arm64_sonoma:   "a683463e26fbc2b4d4d56865835d0aa94316c556aa56c1dc55263e307b8bc4cc"
@@ -21,12 +23,13 @@ class Libvdpau < Formula
     sha256 monterey:       "b1ca92eb755c147f47c63a590705159a099cb74f97b0bb3260e26e46979acd04"
     sha256 big_sur:        "19e0e92759c99ab2942d2b750bd32065b31829015bee25c384929a12f9eea5ca"
     sha256 catalina:       "d5bdf31825ef0083a0a426f98de307d1f00376804d03e020d096bee5da273def"
+    sha256 arm64_linux:    "298a8659f47956680197cbcaa0c06efe10ac94b863c0e1c62bf680390315d024"
     sha256 x86_64_linux:   "efe7bfed2aff2b6b4d259a9adc1601a17c8c567750a2dfa0ba354a7d9ba0ca42"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "libx11"
   depends_on "libxext"
   depends_on "xorgproto"
@@ -37,6 +40,6 @@ class Libvdpau < Formula
     system "meson", "install", "-C", "build"
   end
   test do
-    assert_match "-I#{include}", shell_output("pkg-config --cflags vdpau")
+    assert_match "-I#{include}", shell_output("pkgconf --cflags vdpau")
   end
 end

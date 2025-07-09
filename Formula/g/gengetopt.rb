@@ -6,6 +6,8 @@ class Gengetopt < Formula
   sha256 "b941aec9011864978dd7fdeb052b1943535824169d2aa2b0e7eae9ab807584ac"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "91c1d9533d5738baeeff859785ad663d51bb280ba1744f78183efa442b4bc37c"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "6c4ee83de15c84dbd2f8d6759d09e6dade6b25cbcdea6d7399bf5713e02f9cf6"
@@ -20,6 +22,7 @@ class Gengetopt < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "2ae5eeef439a6abc4d1f65965e1bafa9ac5ad0620cb4ef5e9444a4b2dbef1872"
     sha256 cellar: :any_skip_relocation, high_sierra:    "00f2578e7697c01d060a422e1be0ce8f4c6d23b365967ff7b5501d5cd6306dd1"
     sha256 cellar: :any_skip_relocation, sierra:         "57acd0ca20988a1b4f0f16383edb985549597b8a5266316e3a314b7775bab3c0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "44cfbe8a7d55d574a917f8f35264ecf1f4798c3686c8288750ea971b66a0d9d6"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "379c0b354e21a5da13e62c6dbce3edfc1580561fb59015f015769c18cc804a60"
   end
 
@@ -46,8 +49,8 @@ class Gengetopt < Formula
     EOS
 
     pipe_output("#{bin}/gengetopt --file-name=test", ggo, 0)
-    assert_predicate testpath/"test.h", :exist?
-    assert_predicate testpath/"test.c", :exist?
+    assert_path_exists testpath/"test.h"
+    assert_path_exists testpath/"test.c"
     assert_match(/verbose_given/, File.read("test.h"))
   end
 end

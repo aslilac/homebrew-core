@@ -8,6 +8,8 @@ class Zpaq < Formula
   revision 1
   head "https://github.com/zpaq/zpaq.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "0d82a2ae7e022957f0f0675433d8e01622f3ce1a42c2cc7c76ce902f3685744c"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1964b6de47419cc4c995b2f4796afa755213b15efc752b7dadb154bf880599e6"
@@ -20,6 +22,7 @@ class Zpaq < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "2ca2aa378add42b28e3a4513e4176740e013ff9189b7d5d091c998c6ba8ec16f"
     sha256 cellar: :any_skip_relocation, catalina:       "6bedfd3bff1fa1e98b6a41eedf02aa1f7600943f9081624fb9811e69fd3d9ffa"
     sha256 cellar: :any_skip_relocation, mojave:         "6b9d7285117ab09ac91605b8d1b2b2d7b4c05874156968a398273a3d29254cc3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "aa97e3fc826ff8e04382c77af813c2b23dcd5f57a5d336a59043ea7c2ddaaf13"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "fcee2715716cfdbac67ff81332d2cfc39eeae7ff286ff645c3740375b848e8ec"
   end
 

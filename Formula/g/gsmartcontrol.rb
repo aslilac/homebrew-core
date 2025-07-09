@@ -1,23 +1,22 @@
 class Gsmartcontrol < Formula
   desc "Graphical user interface for smartctl"
   homepage "https://gsmartcontrol.shaduri.dev/"
-  url "https://downloads.sourceforge.net/project/gsmartcontrol/1.1.4/gsmartcontrol-1.1.4.tar.bz2"
-  sha256 "fc409f2b8a84cc40bb103d6c82401b9d4c0182d5a3b223c93959c7ad66191847"
+  url "https://downloads.sourceforge.net/project/gsmartcontrol/2.0.2/gsmartcontrol-2.0.2.tar.gz"
+  sha256 "7cebd83fd34883d51e143389aa88f8173ea7b67c760b12b7de847f3c3c8cee34"
   license any_of: ["GPL-2.0-only", "GPL-3.0-only"]
-  revision 1
 
   bottle do
-    sha256 arm64_sequoia:  "1916242e52844623186a4201ab67c2628709cd82848547346551ef12287e44fd"
-    sha256 arm64_sonoma:   "52f08b5e92b71c55d6a4473e80fb5e1ae28ab5047a945c56d9f4f70890f9118f"
-    sha256 arm64_ventura:  "3aee46b42e8a8612fcade8c0cd1999c6138c9e1336609a597074b384718e2ec4"
-    sha256 arm64_monterey: "dc55153f945458a5b23a761059a57eaa4061b68cb5b5b67233fb78b8f084ebdc"
-    sha256 sonoma:         "476e51e7542659e03c0b9ca44168cb46903583255a94f473273dd5a87b9ea6ba"
-    sha256 ventura:        "99e1970cfadccca078b0c4b6974b23c30e2fa163a286215cb1c11bbf1860a715"
-    sha256 monterey:       "425969b9249d3222383c4834850710e5b2a919720201c61fd547e4c8fd298a03"
-    sha256 x86_64_linux:   "13ae669fbe45d24eef652a14415e744470be3a8863b472b41b328b808fd134d5"
+    sha256 arm64_sequoia: "fec689ece510c21ae0589fce4d135a403f7b59904e2fd565d00079a21d3cf2e2"
+    sha256 arm64_sonoma:  "dfb1e49374740cbeb2392d5b645e12df3669389f45e575eae5114cf2bbd89f4b"
+    sha256 arm64_ventura: "06c41cd9e482c9477e5e06131536cd9b678d52bf4e547cfc48414eb645ec4fd0"
+    sha256 sonoma:        "3c772fa791354268934693ea60962ffbe839ca07219b9a69925e7bd862d0ff61"
+    sha256 ventura:       "244de0b2b1617a8a7f71210230f94fd32d3f77a87745a4e3a893e6621e1da4f2"
+    sha256 arm64_linux:   "5213f0cf402797e0e3d08a4ed283272fa701bf0ff1a876b468eedf4489464086"
+    sha256 x86_64_linux:  "6cd4fa97e19fee44f12fe02e4d7edf882c098c80d83472d036d61f8e730c7b81"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "cmake" => :build
+  depends_on "pkgconf" => :build
   depends_on "atkmm@2.28"
   depends_on "cairo"
   depends_on "cairomm@1.14"
@@ -27,24 +26,38 @@ class Gsmartcontrol < Formula
   depends_on "gtkmm3"
   depends_on "libsigc++@2"
   depends_on "pangomm@2.46"
-  depends_on "pcre" # PCRE2 issue: https://github.com/ashaduri/gsmartcontrol/issues/40
   depends_on "smartmontools"
 
   on_macos do
+    depends_on "llvm" => :build if DevelopmentTools.clang_build_version <= 1500
+
     depends_on "at-spi2-core"
     depends_on "gdk-pixbuf"
     depends_on "gettext"
     depends_on "harfbuzz"
     depends_on "pango"
+    depends_on "pcre2"
+  end
+
+  fails_with :clang do
+    build 1500
+    cause "Requires C++20 support"
+  end
+
+  fails_with :gcc do
+    version "10"
+    cause "Requires C++20"
   end
 
   def install
-    system "./configure", "--disable-silent-rules", *std_configure_args
-    system "make"
-    system "make", "install"
+    ENV.llvm_clang if OS.mac? && DevelopmentTools.clang_build_version <= 1500
+
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    system "#{sbin}/gsmartcontrol", "--version"
+    system sbin/"gsmartcontrol", "--version"
   end
 end

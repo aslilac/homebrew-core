@@ -1,9 +1,9 @@
 class Sevenzip < Formula
   desc "7-Zip is a file archiver with a high compression ratio"
   homepage "https://7-zip.org"
-  url "https://7-zip.org/a/7z2408-src.tar.xz"
-  version "24.08"
-  sha256 "aa04aac906a04df59e7301f4c69e9f48808e6c8ecae4eb697703a47bfb0ac042"
+  url "https://7-zip.org/a/7z2500-src.tar.xz"
+  version "25.00"
+  sha256 "bff9e69b6ca73a5b8715d7623870a39dc90ad6ce1f4d1070685843987af1af9b"
   license all_of: ["LGPL-2.1-or-later", "BSD-3-Clause"]
   head "https://github.com/ip7z/7zip.git", branch: "main"
 
@@ -12,15 +12,16 @@ class Sevenzip < Formula
     regex(/>\s*Download\s+7-Zip\s+v?(\d+(?:\.\d+)+)\s+\([^)]+?\)/im)
   end
 
+  no_autobump! because: :incompatible_version_format
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "65c7e8d750dda852ba3dd5a115dec5d48f325f0ba4c7a8613d8b419a036b7025"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0e4c37bf5f69c3ab0d8fe655309460979fb7d386d8a3ab8a065f3f373d13c3d4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2adc083c39a4d5ea0c9ac51d7b9586a6674d889b477278491624258c090df53b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f7cc362f47157bd92d5dc6a5ec610152f84139415dc33e62dc650edd63e7ddf1"
-    sha256 cellar: :any_skip_relocation, sonoma:         "6876934f5b0b35008adb3ecf9ee4ed5c35836ed79abb2a44d7abbe9608e3c7a5"
-    sha256 cellar: :any_skip_relocation, ventura:        "5f23f76b0f729ce8917906fefdad7ac15d25bf8e8f438b80e11bdd042afbac29"
-    sha256 cellar: :any_skip_relocation, monterey:       "68b37e835438f9c97b66c3e558342a6b0cc9bc8c9bfa419bbe2e68ee4c976a55"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9e409a242b3268db2c404b35524ee7131cc6f750fb9cc6f3b934280ab46454fe"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ab3975bc6b23804b1f5f69a15d111ab6e0902f3243dee0a31144ad2c43f2f345"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "91a7cef5b9997aa066cd08365d21f62533d29eb9e1dbe866afbf0028dd41219f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d302ec0f78738b4928d3892786645e9d8d54d409429e846b72cc3eaeda1e4731"
+    sha256 cellar: :any_skip_relocation, sonoma:        "98ec0655ef9bcceb227440709028a063548d635b931e2371235dc348574c3126"
+    sha256 cellar: :any_skip_relocation, ventura:       "e1873b78a25ce506db2b641eaf50699be4aabe0c36eab3434519b09d0b6c3d8e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "afd02970b919ed47c1288acfa53ced5cb1b6193c8f3dfd5b9d59de9396143cba"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6cd9b10b9406cf7bfdc8616073f63f5df3f79063e6f57df4756b5999e0739e9b"
   end
 
   def install

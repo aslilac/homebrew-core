@@ -6,6 +6,8 @@ class Pick < Formula
   license "MIT"
   head "https://github.com/mptre/pick.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c5df3f1f792d5df3784e7d7e8204de908bb43f7ec0830bf576eedc58de28c683"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "cf2e439d81bbe3a7cc2fadf74c2b22835087deb28ece7b39a05312372e551d86"
@@ -19,6 +21,7 @@ class Pick < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "754879e53b48743051bb1571bb4b6180a415ac36af8deaf335f5c193326d232f"
     sha256 cellar: :any_skip_relocation, mojave:         "55596e8ab28fd4fc36d064f6395c38ce51314bcc0d2f2f3862515a683bc92182"
     sha256 cellar: :any_skip_relocation, high_sierra:    "0fc521881c760d4f9e4f8625795716e0e1c0e1ed1522ccb5efd055313b2729bc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a8633db6fbcdff4972f69dc32b3a304f117f00a1bae82122488c8294df775c02"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e5c80628af5eda75fa3d34827529f3f482c0dc058c1016f5a6033deca9d22566"
   end
 

@@ -1,13 +1,12 @@
 class Libosmium < Formula
   desc "Fast and flexible C++ library for working with OpenStreetMap data"
   homepage "https://osmcode.org/libosmium/"
-  url "https://github.com/osmcode/libosmium/archive/refs/tags/v2.20.0.tar.gz"
-  sha256 "3d3e0873c6aaabb3b2ef4283896bebf233334891a7a49f4712af30ca6ed72477"
+  url "https://github.com/osmcode/libosmium/archive/refs/tags/v2.22.0.tar.gz"
+  sha256 "8f74e3f6ba295baa7325ae5606e8f74ad9056f1d6ab4555c50bff6aa8246f366"
   license "BSL-1.0"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "9bcbab472389e69a2ad172a5505c6183b7f2a120116bff9ba0b45c4840840b36"
+    sha256 cellar: :any_skip_relocation, all: "02ce13c6248f0566b846579f0325c94f2e2385e9f00c7163b04b27636304ce57"
   end
 
   depends_on "boost" => :build
@@ -19,17 +18,22 @@ class Libosmium < Formula
   uses_from_macos "zlib"
 
   resource "protozero" do
-    url "https://github.com/mapbox/protozero/archive/refs/tags/v1.7.1.tar.gz"
-    sha256 "27e0017d5b3ba06d646a3ec6391d5ccc8500db821be480aefd2e4ddc3de5ff99"
+    url "https://github.com/mapbox/protozero/archive/refs/tags/v1.8.0.tar.gz"
+    sha256 "d95ca543fc42bd22b8c4bce1e6d691ce1711eda4b4910f7863449e6517fade6b"
   end
 
   def install
     resource("protozero").stage { libexec.install "include" }
-    system "cmake", ".", "-DINSTALL_GDALCPP=ON",
-                         "-DINSTALL_UTFCPP=ON",
-                         "-DPROTOZERO_INCLUDE_DIR=#{libexec}/include",
-                         *std_cmake_args
-    system "make", "install"
+
+    args = %W[
+      -DINSTALL_GDALCPP=ON
+      -DINSTALL_UTFCPP=ON
+      -DPROTOZERO_INCLUDE_DIR=#{libexec}/include
+    ]
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -63,7 +67,7 @@ class Libosmium < Formula
       }
     CPP
 
-    system ENV.cxx, "test.cpp", "-std=c++11", "-lexpat", "-o", "libosmium_read", "-pthread"
+    system ENV.cxx, "test.cpp", "-std=c++17", "-lexpat", "-o", "libosmium_read", "-pthread"
     system "./libosmium_read", "test.osm"
   end
 end

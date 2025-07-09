@@ -1,10 +1,10 @@
 class Checkmake < Formula
   desc "Linter/analyzer for Makefiles"
-  homepage "https://github.com/mrtazz/checkmake"
-  url "https://github.com/mrtazz/checkmake/archive/refs/tags/0.2.2.tar.gz"
+  homepage "https://github.com/checkmake/checkmake"
+  url "https://github.com/checkmake/checkmake/archive/refs/tags/0.2.2.tar.gz"
   sha256 "4e5914f1ee3e5f384d605406f30799bf556a06b9785d5b0e555fd88b43daf19c"
   license "MIT"
-  head "https://github.com/mrtazz/checkmake.git", branch: "main"
+  head "https://github.com/checkmake/checkmake.git", branch: "main"
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c64480b72e17320c970baf104cb6c69a2c9aa54365dd66c2a0a97a9ac0a2581d"
@@ -16,6 +16,7 @@ class Checkmake < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "836d536fe0255fc744a2fa630572e54477f8e59ab19006ddfebb09be51fd14c0"
     sha256 cellar: :any_skip_relocation, monterey:       "16692c95f5e36286cfeedfe914b239200d428b7ed64c1ae61c931c1568dcdbdd"
     sha256 cellar: :any_skip_relocation, big_sur:        "e8f88660a76082b44e64c8485238aaf46d5e18575ea11ce47c93a2466af24bcd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "3f014f3713165ff2f13b59b28db7d7a7672d57b12514284477372bd097dea574"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "920aea0127e9224ec538e4c4f1f1e4fafec0f6e10610687e60c20d053cc02f0e"
   end
 

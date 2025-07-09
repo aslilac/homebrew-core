@@ -8,6 +8,8 @@ class ChromeExport < Formula
   license "ISC"
   revision 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, all: "4eb537cddb8040188b19d7e91771f1e85f31760b36b053f57d606e2356110f2a"
@@ -27,11 +29,11 @@ class ChromeExport < Formula
     cp_r (pkgshare/"test").children, testpath
     system bin/"export-chrome-bookmarks", "Bookmarks",
            "bookmarks_actual_output.html"
-    assert_predicate testpath/"bookmarks_actual_output.html", :exist?
+    assert_path_exists testpath/"bookmarks_actual_output.html"
     assert_equal (testpath/"bookmarks_expected_output.html").read,
                  (testpath/"bookmarks_actual_output.html").read
     system bin/"export-chrome-history", "History", "history_actual_output.html"
-    assert_predicate testpath/"history_actual_output.html", :exist?
+    assert_path_exists testpath/"history_actual_output.html"
     assert_equal (testpath/"history_expected_output.html").read,
                  (testpath/"history_actual_output.html").read
   end

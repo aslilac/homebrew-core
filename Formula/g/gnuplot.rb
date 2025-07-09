@@ -1,8 +1,8 @@
 class Gnuplot < Formula
   desc "Command-driven, interactive function plotting"
   homepage "http://www.gnuplot.info/"
-  url "https://downloads.sourceforge.net/project/gnuplot/gnuplot/6.0.1/gnuplot-6.0.1.tar.gz"
-  sha256 "e85a660c1a2a1808ff24f7e69981ffcbac66a45c9dcf711b65610b26ea71379a"
+  url "https://downloads.sourceforge.net/project/gnuplot/gnuplot/6.0.3/gnuplot-6.0.3.tar.gz"
+  sha256 "2344e78bc78b296f66636a5d9e561b709b61d360185b718583c97a329f7ace5e"
   license "gnuplot"
 
   livecheck do
@@ -11,13 +11,11 @@ class Gnuplot < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "31e6f7110b730420b3ac2e7919bdf128fd909a4d9dbb9d1787a0f65ef474efe1"
-    sha256 arm64_ventura:  "5e05d74c6652c77fe6b8fd3f953b6b73e2caf9ee368239db1459711f1702ec51"
-    sha256 arm64_monterey: "6aada3a5ef6da20c8f69ddfa9d13e40d59100c5059e2c708a74eb415e4be42b7"
-    sha256 sonoma:         "7a91c6ee6dbf39500c8bf80a724455962adafc5b57ceb253b0027de6eace3b2b"
-    sha256 ventura:        "63406cc108fc87421ed64824e6e1669af19c3aa14124299067c309357216ad5a"
-    sha256 monterey:       "602ff0a1306589b94be8cc51973c2bf65eb7f7db0e59d37ac58e13aad6fcaeac"
-    sha256 x86_64_linux:   "f30caf00d7eaee69c2c32ced03b03ade4217bafc9e9ea06051c4adf619114633"
+    sha256 arm64_sonoma:  "b7cc6a9005b433016d1a299b7d043f366ad2bee264c8535daffe6c2b1d06a605"
+    sha256 arm64_ventura: "822e4d22b9df476fd361a1ed7484262fe563b0d054767c4ba1f0cb46c5244a83"
+    sha256 sonoma:        "21c6df11dfcc4a8c37c638b6a5309a3dd21521a450a2cd50a3f8a75d32044de6"
+    sha256 ventura:       "8705988645194796eb3492c98d96665c06d1fd371dd71ffbf670f25646fdc80f"
+    sha256 x86_64_linux:  "90fb58d1b3fad449a5ad9b729420c5f42126ae1a3c1b66204dd4eb43d3d05c9a"
   end
 
   head do
@@ -29,7 +27,7 @@ class Gnuplot < Formula
   end
 
   depends_on "gnu-sed" => :build # https://sourceforge.net/p/gnuplot/bugs/2676/
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "cairo"
   depends_on "gd"
@@ -45,8 +43,6 @@ class Gnuplot < Formula
     depends_on "gettext"
     depends_on "harfbuzz"
   end
-
-  fails_with gcc: "5"
 
   def install
     args = %W[
@@ -97,6 +93,6 @@ class Gnuplot < Formula
       set output "#{testpath}/graph.txt";
       plot sin(x);
     EOS
-    assert_predicate testpath/"graph.txt", :exist?
+    assert_path_exists testpath/"graph.txt"
   end
 end

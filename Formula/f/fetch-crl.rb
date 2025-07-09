@@ -10,6 +10,8 @@ class FetchCrl < Formula
     regex(/href=.*?fetch-crl[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "52ab61a76d3a769a87f1f61f0d4c22ff747180d99afb62ad4e91a0a1d8b957af"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7677617f4cba5505e09c4ba9200801b8633cf95a56f6c242ce137ae217a5c967"
@@ -20,6 +22,7 @@ class FetchCrl < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "cefc451865fffbb827a6c2cb4603960bd672a69dca19b512811912bbb6cdc83a"
     sha256 cellar: :any_skip_relocation, monterey:       "cefc451865fffbb827a6c2cb4603960bd672a69dca19b512811912bbb6cdc83a"
     sha256 cellar: :any_skip_relocation, big_sur:        "cefc451865fffbb827a6c2cb4603960bd672a69dca19b512811912bbb6cdc83a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "7a73a914498af4f926cba98dd81c1fce335d36ca25ed0561650ff5a28ab4ab14"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ad140d4dcb26765b4ab846846e7a2a0a2cd422405a123d1ad0b11c02f38193da"
   end
 

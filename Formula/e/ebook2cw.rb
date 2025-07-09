@@ -10,6 +10,8 @@ class Ebook2cw < Formula
     regex(/href=.*?ebook2cw[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "8ee60330873ad88bbe4346269b4ce0f1c1598382e98ebfae5a264d8af4474148"
     sha256 arm64_sonoma:   "db414d0d717be52093b787e79f866d82e2f91fbdf7290b89b194ce5da6a2116b"
@@ -20,6 +22,7 @@ class Ebook2cw < Formula
     sha256 ventura:        "eb4f79ba7941e073eb076731d020a3c948b086602b18eaf27dd819e51611d9f5"
     sha256 monterey:       "875f2b989098018048e20711591dfde60aa903c6aaf9a18b7850a4388898c741"
     sha256 big_sur:        "07d3d9f7a7446a9686a1a2052fca0f7fc40e1b111445e2cba1425fbd7afbbb4c"
+    sha256 arm64_linux:    "65bb32893afbbf13664b9cad4885392d89f3129483d274d46b0f690b492c2706"
     sha256 x86_64_linux:   "269994f635db4fc4570e9d0684051e883bbfba824be06bd8bf420ed8189fdf2b"
   end
 
@@ -42,9 +45,9 @@ class Ebook2cw < Formula
 
   test do
     pipe_output("#{bin}/ebook2cw -o test", "test mp3 file generation")
-    assert_predicate testpath/"test0000.mp3", :exist?
+    assert_path_exists testpath/"test0000.mp3"
 
     pipe_output("#{bin}/ebook2cw -O -o test", "test ogg file generation")
-    assert_predicate testpath/"test0000.ogg", :exist?
+    assert_path_exists testpath/"test0000.ogg"
   end
 end

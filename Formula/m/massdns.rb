@@ -5,6 +5,8 @@ class Massdns < Formula
   sha256 "93b14431496b358ee9f3a5b71bd9618fe4ff1af8c420267392164f7b2d949559"
   license "GPL-3.0-only"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a9a5d00f32970e270e6d1ab85b7ec437efdd1b74e1e4b40f6d938f74f74ee7f0"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e7c9496b840fee8c62fdde8b1799a12e957ccf055a938d34c115c4a1791c9aac"
@@ -13,6 +15,7 @@ class Massdns < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "0faf77da9ccb9971a4007ef15e811faaadb03cef023719efce6538a7a4a1e21d"
     sha256 cellar: :any_skip_relocation, ventura:        "d849531a2de18b6f920761dd14353f4bd843814e6dce35a02e526998ae26b17d"
     sha256 cellar: :any_skip_relocation, monterey:       "e91304ed064fb3001ab55bb5a61bc7830c29681583c00d001e943911e9789b75"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "1b8fc5d3cb53ae0d3f3b7e94757c3ec2cf458fec82695bda03aee3f7461f006c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "191060c2099a28427517a56d63ba4ca14c410870a44ec6a2621fbdb2394853f4"
   end
 

@@ -14,6 +14,8 @@ class Rtmpdump < Formula
     regex(/href=.*?rtmpdump[._-]v?(\d+(?:[.+]\d+)+)[^"' >]*?\.orig\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "4d88c286ea074e6dc9612679d33f1e25910dce5cd4c4a3f9f2dcdec8ad950516"
     sha256 cellar: :any,                 arm64_sonoma:   "fc5748b95d47c39bb4d633090cc0a7b5fe90bda5ef163fa5b8809272c9bf4618"
@@ -24,6 +26,7 @@ class Rtmpdump < Formula
     sha256 cellar: :any,                 ventura:        "b27c24194ded10a47b93a379efae8ead4b04a6d3e8e34bc3a70942380b1ed68b"
     sha256 cellar: :any,                 monterey:       "b942d0dee2c95a00b3fd080c50d1f0d715448ae3147bbb18cf5adb758cb63798"
     sha256 cellar: :any,                 big_sur:        "794073edbf7402af7750b21fbcb44c5df038d6d3606450bd6a453dc92b6b3b09"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "d3f2a6eb1d6c8409c69a89db67cb545acf7c6c568f0a57f6df7d7108cce87df8"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "0ab7f054fd0b01975be1893437235c61e2761ed9fb54e7880a854ca37809d57e"
   end
 
@@ -34,7 +37,7 @@ class Rtmpdump < Formula
   conflicts_with "flvstreamer", because: "both install 'rtmpsrv', 'rtmpsuck' and 'streams' binary"
 
   # Patch for OpenSSL 1.1 compatibility
-  # Taken from https://github.com/JudgeZarbi/RTMPDump-OpenSSL-1.1
+  # Taken from https://github.com/DJ-Huntress/RTMPDump-OpenSSL-1.1
   patch :p0 do
     url "https://raw.githubusercontent.com/Homebrew/formula-patches/85fa66a9/rtmpdump/openssl-1.1.diff"
     sha256 "3c9167e642faa9a72c1789e7e0fb1ff66adb11d721da4bd92e648cb206c4a2bd"

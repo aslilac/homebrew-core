@@ -1,24 +1,31 @@
 class Krakend < Formula
   desc "Ultra-High performance API Gateway built in Go"
   homepage "https://www.krakend.io/"
-  url "https://github.com/krakendio/krakend-ce/archive/refs/tags/v2.7.2.tar.gz"
-  sha256 "7dae53c65e46fea0bfea04d2c48f3fd0ada29d8ba94a7d97fccf4632bd067859"
+  url "https://github.com/krakend/krakend-ce/archive/refs/tags/v2.10.1.tar.gz"
+  sha256 "1fa65d8bc41aefba3264762acffabbc6f06d1ca1228c2ad71d3fc2118af8bec2"
   license "Apache-2.0"
+  head "https://github.com/krakend/krakend-ce.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a5e9504308ab6a66b2076ad0a98dc247132c460af21d25f899e24afab7332866"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e54c08be7e967c1cfa79ae1c1c0f58c9bf2eeff837b237b4cfa9dc53c99a67ba"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a6076f63b9d36baeaec5fabcf47890f71433b11e013bfe95560c15bbad3731d3"
-    sha256 cellar: :any_skip_relocation, sonoma:        "4663bd621d5eb1f61aacf45f286742d45dd7cecdea04bda27b7a119ae69093a3"
-    sha256 cellar: :any_skip_relocation, ventura:       "56d5cb44c1bb08393cfdd31b3073df7a5f390cf8c0dbc3fe5dae27d10d624c9c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5132790c24c6cdf5f3d221e71b15eabc6fe1e7d632d09b8d0e6f8a60bb1a97dd"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2244be62e6e2879367218e39e29ee83c8428fe2a3fda096a65205be1974429ab"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e0b77c4d61c7da6e02d8da83e510759e1de52e5fcc86cd6aa337f8c34c49d9f8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "4e7a60fb925b9293c48480c648c5fb2f1d27fba8504e70827558cedbad7e7982"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7db6e72b5d1ae367b40e233d1e17197f489ee1d34aa73260628e520fe6cdf0f6"
+    sha256 cellar: :any_skip_relocation, ventura:       "41b11391cb8ee48c390cc14f4f6b0cb2f664ece0d71d5bceaf6d0f6ee0bdd44a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0a8931a602e13dcf42d0b12ee150b1297c753df2703717452d266379f62bd9f4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "66b354c4a36f74a5aada12edff011b115cce098a288bd504ffc9c73b4af5a0d9"
   end
 
   depends_on "go" => :build
 
   def install
-    system "make", "build"
-    bin.install "krakend"
+    ldflags = %W[
+      -s -w
+      -X github.com/krakendio/krakend-ce/v2/pkg.Version=#{version}
+      -X github.com/luraproject/lura/v2/core.KrakendVersion=#{version}
+    ]
+
+    system "go", "build", *std_go_args(ldflags:), "./cmd/krakend-ce"
   end
 
   test do

@@ -1,17 +1,18 @@
 class Rex < Formula
   desc "Command-line tool which executes commands on remote servers"
   homepage "https://www.rexify.org"
-  url "https://cpan.metacpan.org/authors/id/F/FE/FERKI/Rex-1.15.0.tar.gz"
-  sha256 "a02f2a1ec1d612cd12019adddb6b8971a437404b88ea31bb18f13a890128f3a7"
+  url "https://cpan.metacpan.org/authors/id/F/FE/FERKI/Rex-1.16.1.tar.gz"
+  sha256 "b66ff756db8c8479ab99d2c9ec9827bf624b8bca2e96ef9ccf2395e279731662"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9f5b4c63e054063f8d02ba85b8c5235b8ce1c5ef684c697be583a80c02ae3960"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9f5b4c63e054063f8d02ba85b8c5235b8ce1c5ef684c697be583a80c02ae3960"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "36a9b428132fe463f8ac235bb91cf1a61c38229e71435a380c8b8bab67a48089"
-    sha256 cellar: :any_skip_relocation, sonoma:        "fba5b6163d27441c8a03afe2c29311b435833810aa8433639181bf9266e110dd"
-    sha256 cellar: :any_skip_relocation, ventura:       "76b8ff9c88d6c0cdc7969756e62cec006e5f64101213c33c2cfcb6e0b0e0a689"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bba4b386cf1f7aca7cc2cadba6d1e6d6a1ed715fe06cbd0897b7e67d93984d59"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f0c9642847deaa4d8bf040a6d54def45ce7aa3f658109a7eabc731fb073901cb"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f0c9642847deaa4d8bf040a6d54def45ce7aa3f658109a7eabc731fb073901cb"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "903b511e474d98b27fd8324272b7925ee37afc311c1a18ebef0eb3abcd196029"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3088c8f5ad9aed2584b405494fdbb10928c7c833ce9da45444e2b1e105d4fde7"
+    sha256 cellar: :any_skip_relocation, ventura:       "ded62b5eeb9a01e7a2ea466a8e162d0c102bc5c1f13ef306694fe563f4d515ee"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "bb6348230177ed3b004e9f8ef6bd3cb79a208ae983ed1ba6efa79b9617f73329"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2f05c3c843367e1ee2ea8d40c6797dc332b3a1ea5f739381a330a83c279e3eca"
   end
 
   uses_from_macos "expat"
@@ -46,8 +47,8 @@ class Rex < Formula
     end
 
     resource "Scalar::Util" do
-      url "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/Scalar-List-Utils-1.68.tar.gz"
-      sha256 "23317e4346fe8747f0167eccd1881d6369aa71023f014cd6f846988843295906"
+      url "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/Scalar-List-Utils-1.69.tar.gz"
+      sha256 "49108037dc31ba4953aa8be57c1c72f3e922dde1fa328f1eb39a329f1e6314fc"
     end
 
     resource "YAML" do
@@ -116,8 +117,8 @@ class Rex < Formula
     end
 
     resource "Module::Build::Tiny" do
-      url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/Module-Build-Tiny-0.051.tar.gz"
-      sha256 "74fdce35e8cd4d787bc2d4fc1d43a291b7bbced4e94dc5fc592bd81ca93a98e9"
+      url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/Module-Build-Tiny-0.052.tar.gz"
+      sha256 "bd10452c9f24d4b4fe594126e3ad231bab6cebf16acda40a4e8dc784907eb87f"
     end
 
     resource "HTTP::Daemon" do
@@ -151,8 +152,8 @@ class Rex < Formula
     end
 
     resource "LWP::UserAgent" do
-      url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/libwww-perl-6.77.tar.gz"
-      sha256 "94a907d6b3ea8d966ef43deffd4fa31f5500142b4c00489bfd403860a5f060e4"
+      url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/libwww-perl-6.79.tar.gz"
+      sha256 "f2526e9a33ac96715cc47fbf5b4bec1a8c51720330b24e3974c2c5ae07a9c5e7"
     end
 
     resource "LWP::MediaTypes" do
@@ -191,8 +192,8 @@ class Rex < Formula
     end
 
     resource "URI" do
-      url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/URI-5.31.tar.gz"
-      sha256 "b9c4d58b2614b8611ae03a95a6d60ed996f4b311ef3cd5a937b92f1825ecc564"
+      url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/URI-5.32.tar.gz"
+      sha256 "9632067d34e14e0dae2da94631c4f25a387fcc48d06fa29330e8b3c04c4e913d"
     end
 
     resource "WWW::RobotRules" do
@@ -266,8 +267,8 @@ class Rex < Formula
   test do
     assert_match "(R)?ex #{version}", shell_output("#{bin}/rex -v"), "rex -v is expected to print out Rex version"
     system bin/"rexify", "brewtest"
-    assert_predicate testpath/"brewtest/Rexfile", :exist?,
-                     "rexify is expected to create a new Rex project and pre-populate its Rexfile"
+    assert_path_exists testpath/"brewtest/Rexfile",
+"rexify is expected to create a new Rex project and pre-populate its Rexfile"
   end
 
   private

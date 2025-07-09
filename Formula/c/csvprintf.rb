@@ -5,6 +5,8 @@ class Csvprintf < Formula
   sha256 "df034c676b512081f92727f4f36ad38e4d5d91d20a4a9abd52f10885b6c475e7"
   license "Apache-2.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "68dca765189cde9bb909b876cb833c3fe9f0e6cd98c7dddf470511374a4b1900"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "63b05c840d8e8778e8852c48c86f9d016a5836d166be5ea1e903139447df6e2d"
@@ -15,6 +17,7 @@ class Csvprintf < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "2bfcd4960b00c49f40191b1223bafe95cecb6e97a9b85de96980efffc32f1309"
     sha256 cellar: :any_skip_relocation, monterey:       "99b257d8a7e4b36c4595c7254450ead9356ac66540179d4339334ad1ecf7693c"
     sha256 cellar: :any_skip_relocation, big_sur:        "ae2efc4c958a8eab84e0c2009720ace1c8862d46e26bbf10fc79b3908b3ae5e6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "11cb695074fd290b7e8cde5ab31824468a1193a4cea9b6ec28e1440878437ad5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "bd6ad4105c7f8e55381dbd107a613b9ef790e39c4b14b35bd97808fb14cddaaf"
   end
 

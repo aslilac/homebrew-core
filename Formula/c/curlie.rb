@@ -1,19 +1,18 @@
 class Curlie < Formula
   desc "Power of curl, ease of use of httpie"
   homepage "https://github.com/rs/curlie"
-  url "https://github.com/rs/curlie/archive/refs/tags/v1.7.2.tar.gz"
-  sha256 "b2ced685c6d2cde951cbd894ecc16df2f987f9d680830bcf482a7dcd22165116"
+  url "https://github.com/rs/curlie/archive/refs/tags/v1.8.2.tar.gz"
+  sha256 "846ca3c5f2cca60c15eaef24949cf49607f09bdd68cbe9d81a2a026e434fa715"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "acbbd0d3410d0700c655c45233c9bf2d936f5e7ac6fe39cee18a2aba2ab118a5"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "47bf51d69cfc8d16acc0e7a7754d67cff06e934f1df856c7c62d4cb117ce8d05"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "47bf51d69cfc8d16acc0e7a7754d67cff06e934f1df856c7c62d4cb117ce8d05"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "47bf51d69cfc8d16acc0e7a7754d67cff06e934f1df856c7c62d4cb117ce8d05"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c4bf5ea0b7864ba51f58e6fe41fca0f8ea55a1455f55445129685135f849c1da"
-    sha256 cellar: :any_skip_relocation, ventura:        "c4bf5ea0b7864ba51f58e6fe41fca0f8ea55a1455f55445129685135f849c1da"
-    sha256 cellar: :any_skip_relocation, monterey:       "c4bf5ea0b7864ba51f58e6fe41fca0f8ea55a1455f55445129685135f849c1da"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ef8133ced104b6e62026f4c285e60870805c9c96b85ad2583d1af3e55c2695d8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "63443e27253ec013a3bb25c18a4c1f0da439ce63cf484e5dd18fdc5e56be082f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "63443e27253ec013a3bb25c18a4c1f0da439ce63cf484e5dd18fdc5e56be082f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "63443e27253ec013a3bb25c18a4c1f0da439ce63cf484e5dd18fdc5e56be082f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "0989be89b84c97a2e8b9e1efcf124844728919f3ff7b9aab9bb3d832f042358e"
+    sha256 cellar: :any_skip_relocation, ventura:       "0989be89b84c97a2e8b9e1efcf124844728919f3ff7b9aab9bb3d832f042358e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c9cbe19380adf9f5226a886617ebaddb6fda4fb1fb1a130851a128f88f46011b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8923e92fa583529ba8dcbdea7eacda66601bece881eeb33217787198a3434dad"
   end
 
   depends_on "go" => :build

@@ -26,12 +26,13 @@ class Httpdiff < Formula
 
   # https://github.com/jgrahamc/httpdiff/issues/21
   deprecate! date: "2024-02-20", because: :unmaintained
+  disable! date: "2025-02-24", because: :unmaintained
 
   depends_on "go" => :build
 
   def install
     ENV["GO111MODULE"] = "auto"
-    system "go", "build", "-o", bin/"httpdiff"
+    system "go", "build", *std_go_args(ldflags: "-s -w")
   end
 
   test do

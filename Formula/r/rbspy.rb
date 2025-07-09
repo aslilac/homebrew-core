@@ -1,17 +1,18 @@
 class Rbspy < Formula
   desc "Sampling profiler for Ruby"
   homepage "https://rbspy.github.io/"
-  url "https://github.com/rbspy/rbspy/archive/refs/tags/v0.27.0.tar.gz"
-  sha256 "ff5bf1c1b0cb012737bb7892a7f24f5030099b5633581d98a684f7837d06e3ce"
+  url "https://github.com/rbspy/rbspy/archive/refs/tags/v0.34.1.tar.gz"
+  sha256 "dfc75d5a28364903afb8c19d47491a4e09d3dc3c5eb3129b132a54f233fb719d"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bb4fea45a5f2302fdb9012d3e93ce59ef36dced65ab966d263adbb5f8d3933ce"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "121fac33c3412bfc04dffabf2a0739a53e120cdf6cf76bc1660309c8cf44bdda"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "27cf7b8d354a27b430cc5901e8aec1b201cea750e7497affcf5a9465f611ff0f"
-    sha256 cellar: :any_skip_relocation, sonoma:        "0ed55329e082d39b535b742a37300e4afa13ba58aabe5fb23c01735ffee693a4"
-    sha256 cellar: :any_skip_relocation, ventura:       "fc33b07671ceb096d9c4ad9ae927b9aad0da3bd3045ae83626229fd777d5cfd5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9447d30ea69decb019e322e6e8c9edbb46d0023df51f36e69278e2e800289fb0"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5d9acf098a9cc08bca0f060c9e601991c173d2c88b0fcd97235db38507985f22"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4c1f14aaff920da812d5b11a666eef97bfad17a2967f3100f54bc2b213fecc05"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "1dd63419604e367fe3dd7dd1ffb8554403b8bf64faa71282f23ef15273b29cb4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b8b23018e1ef457057335bcfbaf7d2f4d112035af4e6a09fd9a424def7954ba6"
+    sha256 cellar: :any_skip_relocation, ventura:       "3a4d1e24c895bd60967b06503577e20381d58664aa24c6698efcb54f74558244"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7ff9ad252586e4e39b610deec8295bc70e0353b2d2b9f0c3402854389f6888b5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2cc3831ba4a1ad6e20fe77662aea1d66ecb71082ccd8836cdb5aaed7b93bc752"
   end
 
   depends_on "rust" => :build

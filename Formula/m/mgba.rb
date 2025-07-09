@@ -1,10 +1,9 @@
 class Mgba < Formula
   desc "Game Boy Advance emulator"
   homepage "https://mgba.io/"
-  url "https://github.com/mgba-emu/mgba/archive/refs/tags/0.10.3.tar.gz"
-  sha256 "be2cda7de3da8819fdab0c659c5cd4c4b8ca89d9ecddeeeef522db6d31a64143"
+  url "https://github.com/mgba-emu/mgba/archive/refs/tags/0.10.5.tar.gz"
+  sha256 "91d6fbd32abcbdf030d58d3f562de25ebbc9d56040d513ff8e5c19bee9dacf14"
   license "MPL-2.0"
-  revision 1
   head "https://github.com/mgba-emu/mgba.git", branch: "master"
 
   livecheck do
@@ -13,18 +12,16 @@ class Mgba < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "2c4dbac84443147a058fcd1d4ae9c43ecc7e1a838279f92cdaf7765702b9d166"
-    sha256 arm64_sonoma:   "d25d99aa5db8c8e0c860a7687b81fba01607282028f9e27cce4c1f92fddf7a6a"
-    sha256 arm64_ventura:  "b7a07ec0ed66d699a0fa40a780aa46b2bf22491223beb111b33e16df6ae1e94c"
-    sha256 arm64_monterey: "948767938e7aeaeabd951f600a1907018e42f3eabf559a97a5865074b2e1ca4f"
-    sha256 sonoma:         "3089a1cdc7212c1b45bd4cb8f09909f76fb2fd11cc2900d9ed4ceff82b958545"
-    sha256 ventura:        "7ecd5443f866e0de40fcfac597266bda37fe1cb0fe2f4b5ba6cbf297f57279ca"
-    sha256 monterey:       "6cc7a183ecfe59b30ed0211682fcc04ba755bd40d42a98deed8e032831abdbca"
-    sha256 x86_64_linux:   "36cf3e2fd99036777e5dfe0566a34003e526c5b6e500e5afd9ac2f3db24d19d0"
+    sha256 arm64_sequoia: "d8ebe6fbc8f70d57496bdebbc8fc268c85f0ffbfa43c75803f99373ad8e2c7c4"
+    sha256 arm64_sonoma:  "384c4b392c485731de5660702fb07898aeeb84f75cf0034d8e9fb2d3d0580fa4"
+    sha256 arm64_ventura: "2fbcf8eb43d84643bb7b785700ce107b73cdbe2355ae7fd644bae4a5b27a1365"
+    sha256 sonoma:        "b48c92a1317213099f472790e21a95b2706caa5d4dc926d265947557fef71511"
+    sha256 ventura:       "9c1ea93c98a50f653d8420817ca951ed455e8f9d9e75326e15ff490e89d4bb1c"
+    sha256 x86_64_linux:  "1fcfaba1760543dc1cdbdf8c3f2a020d98aefe30d2050ee58d792ca2e6fb550f"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "ffmpeg"
   depends_on "libepoxy"
@@ -54,11 +51,12 @@ class Mgba < Formula
     args = []
     args << "-DUSE_DISCORD_RPC=OFF" if OS.linux?
 
-    # Disable CMake fixup_bundle to prevent copying dylibs into app bundle
-    inreplace "src/platform/qt/CMakeLists.txt", "fixup_bundle(", "# \\0"
-
-    # Install .app bundle into prefix, not prefix/Applications
-    inreplace "src/platform/qt/CMakeLists.txt", "Applications", "."
+    inreplace "src/platform/qt/CMakeLists.txt" do |s|
+      # Disable CMake fixup_bundle to prevent copying dylibs into app bundle
+      s.gsub! "fixup_bundle(", "# \\0"
+      # Install .app bundle into prefix, not prefix/Applications
+      s.gsub! "Applications", "."
+    end
 
     # Fix OpenGL linking on macOS.
     if OS.mac?

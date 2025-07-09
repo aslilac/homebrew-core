@@ -10,6 +10,8 @@ class LibvoAacenc < Formula
     regex(%r{url=.*?/vo-aacenc[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "364ec1b50f38e6b1b0dc5e1ea7b12b624e249aea41810491669c9356ff96feac"
     sha256 cellar: :any,                 arm64_sonoma:   "1e337ddc61248e2bba763f27de3fd1f3699a68e03fdf369e95ef39fd3dd5fac2"
@@ -25,6 +27,7 @@ class LibvoAacenc < Formula
     sha256 cellar: :any,                 high_sierra:    "761ecbbaaa2a944d077040692fc62fe2e929ec788ca7e23b3fb25e6ee1b88d3a"
     sha256 cellar: :any,                 sierra:         "9430e86c9f25aa9fcccf0a19cc6125c9397c23b311b993b1adf83cbe330cd9b4"
     sha256 cellar: :any,                 el_capitan:     "e9a59439f8eec4cdc4d273afb49cbd8f8357862d4d8c7c5d9d9d38588ec6d810"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e99e7f98b9c8754ad124303c8cd233596755f32f251a49c1ba61a52d8d2808ad"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "baed718396b9a19dea7de513f7991b72afcb2aae17504a7bbbaf9f0a40d355e4"
   end
 

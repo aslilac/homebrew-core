@@ -1,20 +1,11 @@
 class ArchiSteamFarm < Formula
   desc "Application for idling Steam cards from multiple accounts simultaneously"
   homepage "https://github.com/JustArchiNET/ArchiSteamFarm"
+  url "https://github.com/JustArchiNET/ArchiSteamFarm.git",
+      tag:      "6.1.7.8",
+      revision: "fc198d6eae34532bc5b8e569857c36f060600a58"
   license "Apache-2.0"
   head "https://github.com/JustArchiNET/ArchiSteamFarm.git", branch: "main"
-
-  stable do
-    url "https://github.com/JustArchiNET/ArchiSteamFarm.git",
-        tag:      "6.0.8.7",
-        revision: "6dddaa59926c1e48419e5d374deef8aa712ad610"
-
-    # Backport support for .NET 9
-    patch do
-      url "https://github.com/JustArchiNET/ArchiSteamFarm/commit/1b626caa538605281c6a73cf8ab2b056bc771a39.patch?full_index=1"
-      sha256 "03f45f93b018194abd7a00857156de5a4737ed10cf7b816f251fffbbe76975f8"
-    end
-  end
 
   livecheck do
     url :stable
@@ -22,12 +13,12 @@ class ArchiSteamFarm < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "960adeaff2e039c5c59e600bbbd996c1bf6d5b12594a2595989a55b3ccbdf8a0"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e1db6b00c6a2fa5c3c7f953b5db7a9d7c1bb213a8ed266e6858e850b9c8690eb"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "6d8fc4fd032faaff8b6172dd324ed30179d6bf003bf05b63deb2b5dff86e8278"
-    sha256 cellar: :any_skip_relocation, ventura:       "c633fb38c5abf7af72a254306938c60a76a2b9b3aae00274c8dc85f40bdf74d5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "035547ccccc53eaad19716b09a33b860d454c6f6326645709848a524f4338d54"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "aa787051dfff7c67a2b048f3aa2b1212289906f4a9d32e345845f6c7db67706d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9b484bba422f2485157842adf227119448849544ce1fbed4cfcac1f0509dff5f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "7b162256552ad890b8830a4a59585ed67f0d80820f667a119f5fdf695ce18ad6"
+    sha256 cellar: :any_skip_relocation, ventura:       "0557f54d636356faea00d5e9db3b9f91452387bf27664cdbb7cc2f85f492934e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3810116d24f10d3e34cc30737e081cb3566bf6d6bb3112cc3136d690506a80a8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fd0024b3edfc330cb469ad63174368d1fef67f561bb098de2e03e3088b037294"
   end
 
   depends_on "node" => :build

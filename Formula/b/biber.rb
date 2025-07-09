@@ -12,6 +12,7 @@ class Biber < Formula
     sha256 cellar: :any,                 arm64_ventura: "b80c954f868b87585d8c3b91494b3a9549d58a6df88d9b7028b4091d6882c230"
     sha256 cellar: :any,                 sonoma:        "f5667829fe7fe597422cbaf2ab17c11fc4a130c6579551908639aec9539bb15d"
     sha256 cellar: :any,                 ventura:       "83dd4a86705a0730f1bb52cb8a0556533efdd03b673d24737c16deabc17cc5d5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "002218b381d6dab70c5ccfa0ff7bf89e8a7a22dc178e922c2469a01a47b89373"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "4038ee28a6d598309e506acc878f6f3554e1af17ab02851282c993e51db8a0cd"
   end
 
@@ -681,27 +682,27 @@ class Biber < Formula
     cp (pkgshare/"test").children, testpath
     output = shell_output("#{bin}/biber --validate-control --convert-control annotations")
     assert_match "Output to annotations.bbl", output
-    assert_predicate testpath/"annotations.bcf.html", :exist?
-    assert_predicate testpath/"annotations.blg", :exist?
-    assert_predicate testpath/"annotations.bbl", :exist?
+    assert_path_exists testpath/"annotations.bcf.html"
+    assert_path_exists testpath/"annotations.blg"
+    assert_path_exists testpath/"annotations.bbl"
 
-    (testpath/"test.bib").write <<~EOS
+    (testpath/"test.bib").write <<~BIBTEX
       @book{test,
         author = {Test},
         title = {Test}
       }
-    EOS
-    (testpath/"test.latex").write <<~EOS
-      \\documentclass{article}
-      \\usepackage[backend=biber]{biblatex}
-      \\bibliography{test}
-      \\begin{document}
-      \\cite{test}
-      \\printbibliography
-      \\end{document}
-    EOS
+    BIBTEX
+    (testpath/"test.latex").write <<~'LATEX'
+      \documentclass{article}
+      \usepackage[backend=biber]{biblatex}
+      \bibliography{test}
+      \begin{document}
+      \cite{test}
+      \printbibliography
+      \end{document}
+    LATEX
     system Formula["texlive"].bin/"pdflatex", "-interaction=errorstopmode", testpath/"test.latex"
     system bin/"biber", "test"
-    assert_predicate testpath/"test.bbl", :exist?
+    assert_path_exists testpath/"test.bbl"
   end
 end

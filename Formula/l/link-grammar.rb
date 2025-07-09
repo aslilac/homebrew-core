@@ -13,6 +13,7 @@ class LinkGrammar < Formula
     sha256 arm64_ventura: "094dbdda6530047c3088035b5b16c9315b43c1e6252fcbcbbbb706c075dc1487"
     sha256 sonoma:        "a6ef066ddfc0d3bb883ca2b8344f2a54d293d1c418856a9e607735a0230de93f"
     sha256 ventura:       "87d8eeae3531cc7a818c7667df6856941cafa353fc71c38edcfa2c5462da7268"
+    sha256 arm64_linux:   "4dce0e98628d42ff1cb3df7ac9f73a37b96c5d28f43e82cb37740ea35a527f6b"
     sha256 x86_64_linux:  "46e825822f99d43ea7eeab2751ba0e4bc36a63de3dbfed1446cb5639b5814fe1"
   end
 
@@ -21,7 +22,7 @@ class LinkGrammar < Formula
   depends_on "autoconf-archive" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "python@3.13" => :build
   depends_on "swig" => :build
 
@@ -36,8 +37,8 @@ class LinkGrammar < Formula
     ENV["PYTHON_LIBS"] = "-undefined dynamic_lookup"
     inreplace "bindings/python/Makefile.am", "$(PYTHON_LDFLAGS) -module -no-undefined",
                                              "$(PYTHON_LDFLAGS) -module"
-    system "autoreconf", "--verbose", "--install", "--force"
-    system "./configure", *std_configure_args, "--with-regexlib=c"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--with-regexlib=c", *std_configure_args
 
     # Work around error due to install using detected path inside Python formula.
     # install: .../site-packages/linkgrammar.pth: Operation not permitted

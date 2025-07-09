@@ -5,6 +5,8 @@ class Noweb < Formula
   sha256 "7b32657128c8e2cb1114cca55023c58fa46789dcffcbe3dabde2c8a82fe57802"
   license "BSD-2-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f18c4be4fa20125e8adc57369970446c02ceed59304f52ef1e595967db4842dc"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f4a47b231de7c9f6e04f77ecf8ea59edb7658da0fae7b10d9d3d6d7b80577aeb"
@@ -15,6 +17,7 @@ class Noweb < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "ad26424a2647f8feb82d8735c6792b755bd56d7c720ffa64101fbd3061d4d94c"
     sha256 cellar: :any_skip_relocation, monterey:       "ab0cabc785cdc9c5d34cb9e41e518eac9411dc3c6fe249ba4ac82dcd830ba851"
     sha256 cellar: :any_skip_relocation, big_sur:        "1c9575804e168b4ec6c8f28f6fd1748d509726a35704ee1ca7469257380617c5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "c2fb0ea050c3968ff76ff68f19043aeab5898c7c47d2310b779044ce2f6c709d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7b0483e38e12bf0bcc968685af551d17a421ff7d27cf0433082fc08bd5135a0d"
   end
 

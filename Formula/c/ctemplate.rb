@@ -7,6 +7,8 @@ class Ctemplate < Formula
   revision 1
   head "https://github.com/olafvdspek/ctemplate.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 3
     sha256 cellar: :any,                 arm64_sequoia:  "acd3dba90331797c66b476e02edfb172fc67566fa46866d4b6c72605bb331030"
@@ -18,6 +20,7 @@ class Ctemplate < Formula
     sha256 cellar: :any,                 ventura:        "8395eba52adc92de5ec11316fd65082dba1f5c934750cd86d7ec68ab7c40251d"
     sha256 cellar: :any,                 monterey:       "3403981879581767866598b52b148046e46362102620c6220a06464add516197"
     sha256 cellar: :any,                 big_sur:        "d47aa3297f5e44511790bb0fb1bf4e7eb5d37c599b9c9b661133d68f821b7048"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "d8952fd11178e7d1378d3be330d5cb5d393d15837544f375700badd9044d5d38"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "376a70935eec4f3f5965bcd0b39603f25459b8995d12d124c3ab10184e15f3ae"
   end
 
@@ -25,8 +28,6 @@ class Ctemplate < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   uses_from_macos "python" => :build
-
-  fails_with gcc: "5"
 
   def install
     system "./autogen.sh"

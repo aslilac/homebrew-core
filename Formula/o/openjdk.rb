@@ -1,8 +1,8 @@
 class Openjdk < Formula
   desc "Development kit for the Java programming language"
   homepage "https://openjdk.java.net/"
-  url "https://github.com/openjdk/jdk23u/archive/refs/tags/jdk-23.0.1-ga.tar.gz"
-  sha256 "0e058ae2956871aafc5be33960b6e0f8dd954d234d590d249bcb3b619b579a0a"
+  url "https://github.com/openjdk/jdk24u/archive/refs/tags/jdk-24.0.1-ga.tar.gz"
+  sha256 "2ccaaf7c5f03b6f689347df99e6e34cd6d3b30bc56af815c8c152a6eeb6a6c25"
   license "GPL-2.0-only" => { with: "Classpath-exception-2.0" }
 
   livecheck do
@@ -11,18 +11,19 @@ class Openjdk < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "5cba5c9149f823770a7aa5ddd12f8e0d48263284bfc8151b066d9c60b5945f04"
-    sha256 cellar: :any, arm64_sonoma:  "176f8199a78576ee2c58ff0991fe39715f5bfa2b3696f1524dd02d189b2bbecb"
-    sha256 cellar: :any, arm64_ventura: "28f082ca3d5a172b9991546169f74fbe1f69a9dbd3e96dc0fe02aa35e0332454"
-    sha256 cellar: :any, sonoma:        "0af938cb313d757ceadccb67ecb37ea8744de3a672ec23ee7fd19afd1ed9ff98"
-    sha256 cellar: :any, ventura:       "c682b196a6eb18f671c7f995d9c48ce8e88db01767822283f4ab3f74b3c51ce6"
-    sha256               x86_64_linux:  "873413e010c1bf4a928801aa74bd8d20fb8053a6bc303a74486ad17653d35e9e"
+    sha256 cellar: :any, arm64_sequoia: "f75d5d24e460d26c1cdc01b60d9a523c9913ebc3b738931db4a18f051dd291a3"
+    sha256 cellar: :any, arm64_sonoma:  "f38043248a4160c4fd1c4090e4f77083a892a58c4ee94776807f711f4a784458"
+    sha256 cellar: :any, arm64_ventura: "18e5a1046b1c05b9336598bb9408659f694baf12e2de8059c99b35228e705e9b"
+    sha256 cellar: :any, sonoma:        "f8c4ede8652ac9f1d66b12b9f20462f54eb377b015dd5d1849e945d2364a534f"
+    sha256 cellar: :any, ventura:       "96d0d0908e1bcd114aa685287685eda27b253d9a4176963cbda84279da24b906"
+    sha256               arm64_linux:   "d50b7447042596d2a6e252bb16bfefb48862d777a25c095aedbb360cf96194a7"
+    sha256               x86_64_linux:  "649d2e733181bb670bb63098a912a9e24a55fcd697c30eb7738fa06db31f9cdd"
   end
 
   keg_only :shadowed_by_macos
 
   depends_on "autoconf" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on xcode: :build # for metal
   depends_on "freetype"
   depends_on "giflib"
@@ -49,37 +50,28 @@ class Openjdk < Formula
     depends_on "libxtst"
   end
 
-  fails_with gcc: "5"
-
   # From https://jdk.java.net/archive/
   resource "boot-jdk" do
     on_macos do
       on_arm do
-        url "https://download.java.net/java/GA/jdk22.0.2/c9ecb94cd31b495da20a27d4581645e8/9/GPL/openjdk-22.0.2_macos-aarch64_bin.tar.gz"
-        sha256 "3dab98730234e1a87aec14bcb8171d2cae101e96ff4eed1dab96abbb08e843fd"
+        url "https://download.java.net/java/GA/jdk23.0.2/6da2a6609d6e406f85c491fcb119101b/7/GPL/openjdk-23.0.2_macos-aarch64_bin.tar.gz"
+        sha256 "bff699bb27455c2bb51d6e8f2467b77a4833388412aa2d95ec1970ddfb0e7b6c"
       end
       on_intel do
-        url "https://download.java.net/java/GA/jdk22.0.2/c9ecb94cd31b495da20a27d4581645e8/9/GPL/openjdk-22.0.2_macos-x64_bin.tar.gz"
-        sha256 "e8b3ec7a7077711223d31156e771f11723cd7af31c2017f1bd2eda20855940fb"
+        url "https://download.java.net/java/GA/jdk23.0.2/6da2a6609d6e406f85c491fcb119101b/7/GPL/openjdk-23.0.2_macos-x64_bin.tar.gz"
+        sha256 "b4cc7d7b51520e99308e1b4d3f8467790072c42319b9d3838ec8cfd4f69f0bc1"
       end
     end
     on_linux do
       on_arm do
-        url "https://download.java.net/java/GA/jdk22.0.2/c9ecb94cd31b495da20a27d4581645e8/9/GPL/openjdk-22.0.2_linux-aarch64_bin.tar.gz"
-        sha256 "25fba2bd5585e1e9923134dc827f2bd5a2beaca3d242ae00b7e68c152faf7ba6"
+        url "https://download.java.net/java/GA/jdk23.0.2/6da2a6609d6e406f85c491fcb119101b/7/GPL/openjdk-23.0.2_linux-aarch64_bin.tar.gz"
+        sha256 "8e9b2c7e0f138de785dc754ad1dfa067671de66672b5e84bb7f6f6c219a6b02b"
       end
       on_intel do
-        url "https://download.java.net/java/GA/jdk22.0.2/c9ecb94cd31b495da20a27d4581645e8/9/GPL/openjdk-22.0.2_linux-x64_bin.tar.gz"
-        sha256 "41536f115668308ecf4eba92aaf6acaeb0936225828b741efd83b6173ba82963"
+        url "https://download.java.net/java/GA/jdk23.0.2/6da2a6609d6e406f85c491fcb119101b/7/GPL/openjdk-23.0.2_linux-x64_bin.tar.gz"
+        sha256 "017f4ed8e8234d85e5bc1e490bb86f23599eadb6cfc9937ee87007b977a7d762"
       end
     end
-  end
-
-  # Fix build with `--with-harfbuzz=system`.
-  # https://github.com/openjdk/jdk/pull/19739
-  patch do
-    url "https://github.com/openjdk/jdk/commit/ba5a4670b8ad86fefb41a939752754bf36aac9dc.patch?full_index=1"
-    sha256 "ff6c66f3fa81bef3fb18e88196c520cfa867aa5d57ebf26574635723b4d06d16"
   end
 
   def install
@@ -138,8 +130,21 @@ class Openjdk < Formula
     end
     args << "--with-extra-ldflags=#{ldflags.join(" ")}"
 
+    # Workaround for Xcode 16 bug: https://bugs.openjdk.org/browse/JDK-8340341.
     if DevelopmentTools.clang_build_version == 1600
       args << "--with-extra-cflags=-mllvm -enable-constraint-elimination=0"
+    end
+
+    # Temporary workaround for the "sed: RE error: illegal byte sequence" issue on macOS 15 and later (on_arm).
+    # See https://bugs.openjdk.org/browse/JDK-8353948 for more details.
+    # Could be removed in openjdk@25, though it might be resolved earlier if plans change.
+    # References:
+    # - Related bug: https://bugs.openjdk.org/browse/JDK-8354449
+    # - Upstream PR: https://github.com/openjdk/jdk/pull/24601
+    if OS.mac? && MacOS.version >= :sequoia && Hardware::CPU.arm?
+      (buildpath/"src/java.xml.crypto/share/classes" /
+        "com/sun/org/apache/xml/internal/security/resource" /
+        "xmlsecurity_de.properties").unlink
     end
 
     system "bash", "configure", *args

@@ -5,6 +5,13 @@ class Openmama < Formula
   sha256 "5c09b5c73467c4122fe275c0f880c70e4b9f6f8d1ecbaa1aeeac7d8195d9ffef"
   license "LGPL-2.1-only"
 
+  livecheck do
+    url :stable
+    regex(/^OpenMAMA[._-]v?(\d+(?:\.\d+)+)(?:-release)?$/i)
+  end
+
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "786b187f472ddd357f105cffc281cf4f8382b46ae31c5b428a5f1d8038c812ae"
     sha256 cellar: :any,                 arm64_sonoma:   "7b9ff5f5a5bacec5396c90a71d3f473c917aa5bf33cd403cc6f5eb4259f5f8b5"
@@ -15,6 +22,7 @@ class Openmama < Formula
     sha256 cellar: :any,                 ventura:        "31d87546029420927fd22a57abb347c9e90886cdc3d1b53d835658100fd3f302"
     sha256 cellar: :any,                 monterey:       "411572b9bbc3d14e3ed1fa4037fd1a8cce714111b8557a2771f810408e263170"
     sha256 cellar: :any,                 big_sur:        "b0484f0ae2366f8c6170164c8067f42dd0f94a9e0afaefe3dc68924c4a57cbe0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a4ecfe08949d2b93113900c434389b2e662998c0dad4a23e76150dac15a53f97"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "62da575388fea1bf4abd1799475004e328344c01351504d33c61aac0de464e46"
   end
 

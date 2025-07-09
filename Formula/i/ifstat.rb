@@ -10,6 +10,8 @@ class Ifstat < Formula
     regex(/href=["']?ifstat[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "7929e573cc9e8172c16c8a9d4a5c3ff51fb02ba824a70c4e749cea56e9d33ed2"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "077e591c44a830e200e6587ea68eefdc06be3fd5ab6eafe867743b3f24a4d498"
@@ -25,6 +27,7 @@ class Ifstat < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "8e385a8fdf00266e63bd7a3af17cdcf07da3cb86a08bd3431cfa3b4cc88bb7a5"
     sha256 cellar: :any_skip_relocation, sierra:         "99eada14bfc555bd8f64d447bddd8a53c7325afed40446e5edbcfb5d7bdc7dd6"
     sha256 cellar: :any_skip_relocation, el_capitan:     "e3b3f843c9fba2770a49dd7abcdacc30aa6b5e57f06b5ed96f09d20ada58bd6f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "ccc66717dd6d93615459286fc714279141b2bbbaabe598dbc0aab40215161a43"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "80bb1ac13a6750229f428e108b349523896fa1bbe1823300f07e366e58cfa1c9"
   end
 

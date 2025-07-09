@@ -5,6 +5,8 @@ class Dc3dd < Formula
   sha256 "bd1b66d20a4020ab94b512e56d76cb5f86470d0216081586d596366927cb8d8b"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "1cdfecc59688663ad056a3dc3db19a87d5e7c6356f9f88c33695126b0270639c"
     sha256 arm64_sonoma:   "31e4adf9ec3c885a693cc149e6319e6ca2b4e8af140a4b72c6a537196daa2e21"
@@ -15,6 +17,7 @@ class Dc3dd < Formula
     sha256 ventura:        "f65cccfafa99f62c687eb87c64cfdb3492f8050e86a268045d73f53f5c5dfe97"
     sha256 monterey:       "b8270f518be57090a150e2d78048b8f2e6a81e16092007e48bef6e5e567a4cf3"
     sha256 big_sur:        "f61a5f9196c0c30c9087d92b22522db1c344137406a3272381add30d49c9621f"
+    sha256 arm64_linux:    "f56498b96fad1eb7f15ad686bf19360f92844322299627e0e20c57c3a5d5c219"
     sha256 x86_64_linux:   "bdaae1ff1efcea3319dbf1e84f68c1d51a1b12e8a8eae4c13f2e2069084051c7"
   end
 
@@ -53,6 +56,9 @@ class Dc3dd < Formula
       --infodir=#{info}
       gl_cv_func_stpncpy=yes
     ]
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
     system "./configure", *args
     system "make"
     system "make", "install"

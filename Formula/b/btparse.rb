@@ -1,9 +1,11 @@
 class Btparse < Formula
   desc "BibTeX utility libraries"
-  homepage "https://metacpan.org/pod/distribution/Text-BibTeX/btparse/doc/btparse.pod"
+  homepage "https://metacpan.org/dist/Text-BibTeX/view/btparse/doc/btparse.pod"
   url "https://cpan.metacpan.org/authors/id/A/AM/AMBS/btparse/btparse-0.35.tar.gz"
   sha256 "631bf1b79dfd4c83377b416a12c349fe88ee37448dc82e41424b2f364a99477b"
   license "GPL-2.0-or-later"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "7da3060367c602412a91935267f6f8eef48d2c15fc0e5fcfd7a8bc42423ba281"
@@ -19,22 +21,29 @@ class Btparse < Formula
     sha256 cellar: :any,                 mojave:         "d69b814282b1205eb311f2b8f1f2d0077e2adeef72c2a010084eec34ffef7b71"
     sha256 cellar: :any,                 high_sierra:    "92fe826bfbaed8583343dbae8d2cf51d6161658e8ecd44a4bf7a308ab1f06d61"
     sha256 cellar: :any,                 sierra:         "b31041f88e5253fd880d38190b4828f8c9cee34f141352d5c3b70b33e18d824f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a38cb6010173a8291ff7f70a323775f1131adfcdb6a755a7ebdf3e8269397353"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "eb28ef3caa60d179c008ab9fbd54395014c35119cb9b1c1f2168a3e6bde294d0"
   end
 
   def install
     # workaround for Xcode 14.3
-    ENV.append "CFLAGS", "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
+    if DevelopmentTools.clang_build_version >= 1403 || (OS.linux? && Hardware::CPU.arm?)
+      ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
+    end
 
     # Fix flat namespace usage
     inreplace "configure", "${wl}-flat_namespace ${wl}-undefined ${wl}suppress", "${wl}-undefined ${wl}dynamic_lookup"
 
-    system "./configure", "--mandir=#{man}", *std_configure_args
+    args = []
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", "--mandir=#{man}", *args, *std_configure_args
     system "make", "install"
   end
 
   test do
-    (testpath/"test.bib").write <<~EOS
+    (testpath/"test.bib").write <<~BIBTEX
       @article{mxcl09,
         title={{H}omebrew},
         author={{H}owell, {M}ax},
@@ -43,7 +52,7 @@ class Btparse < Formula
         page={42},
         year={2009}
       }
-    EOS
+    BIBTEX
 
     system bin/"bibparse", "-check", "test.bib"
   end

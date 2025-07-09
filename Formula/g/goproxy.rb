@@ -1,10 +1,12 @@
 class Goproxy < Formula
   desc "Global proxy for Go modules"
-  homepage "https://github.com/goproxyio/goproxy"
+  homepage "https://goproxy.io/"
   url "https://github.com/goproxyio/goproxy/archive/refs/tags/v2.0.7.tar.gz"
   sha256 "d87f3928467520f8d6b0ba8adcbf5957dc6eb2dc9936249edd6568ceb01a71ca"
   license "MIT"
   head "https://github.com/goproxyio/goproxy.git", branch: "master"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4628f23dc61779b619443f499de2c7c9c59af86728a04b0c87f6e6230d99ba0b"

@@ -26,6 +26,7 @@ class Snag < Formula
 
   # https://github.com/Tonkpils/snag/issues/66
   deprecate! date: "2024-02-24", because: :unmaintained
+  disable! date: "2025-02-24", because: :unmaintained
 
   depends_on "go" => :build
 
@@ -54,6 +55,6 @@ class Snag < Formula
       Process.kill "TERM", pid
       Process.wait pid
     end
-    assert_predicate testpath/"snagged", :exist?
+    assert_path_exists testpath/"snagged"
   end
 end

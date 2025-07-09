@@ -1,8 +1,8 @@
 class Poco < Formula
   desc "C++ class libraries for building network and internet-based applications"
   homepage "https://pocoproject.org/"
-  url "https://pocoproject.org/releases/poco-1.13.3/poco-1.13.3-all.tar.gz"
-  sha256 "4ddb6a8f8c7a2f190eacb27d886f3913fa945cdbd2acd2d66029a0ec7ff06af0"
+  url "https://pocoproject.org/releases/poco-1.14.1/poco-1.14.1-all.tar.gz"
+  sha256 "c4b547070eec8330302ffbfee1d6ba02da2e0e120626f6c5dd52192e5b641f34"
   license "BSL-1.0"
   head "https://github.com/pocoproject/poco.git", branch: "master"
 
@@ -12,19 +12,19 @@ class Poco < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "96a50f8923b4699d1890b3fc2827735e228d28c18dc86468281b8e09bb83ffb6"
-    sha256 cellar: :any,                 arm64_sonoma:   "0157b0a09d116cf06b48a3c72b1881b1fbbb5ed8381b3d33d610e8a52704889a"
-    sha256 cellar: :any,                 arm64_ventura:  "14578602e8263f409f53650f350f1b12604f0b1c5d383a3cbe725bb013d33e70"
-    sha256 cellar: :any,                 arm64_monterey: "0ddac0c410ae4736c2b3f08f573a3469c2c1782f3e0319961ee9ced46243a7ca"
-    sha256 cellar: :any,                 sonoma:         "7780757339153f4bcafbc573136672ccb00919940873637d12ee511a7be6b737"
-    sha256 cellar: :any,                 ventura:        "2af274bec83cfe072d1f5dece0f264547c92d00d7f1eab53f7171b5f3e39f365"
-    sha256 cellar: :any,                 monterey:       "a3186ef99d124cfe0d7eae11982a5fac52bbf822aab99350ab3a43ef6fa9336d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c13ac64e439e3d4a95988e224aa85fe8d8d8f22edd989100986022252d4288a5"
+    sha256 cellar: :any,                 arm64_sequoia: "efd50007f2f6f18fc7d94f03e20796008daefe8a062ebac08bc3731de6a170a7"
+    sha256 cellar: :any,                 arm64_sonoma:  "f16b1697467095c8f3e11397022619892223504aeae27d7d33a9c11d655080ee"
+    sha256 cellar: :any,                 arm64_ventura: "72df7a28c1e8bb067246452e788a8f1e05de8e748956591b91914227d0217fdb"
+    sha256 cellar: :any,                 sonoma:        "814fd9e9e80d345389f66784f78537fce57f887b8710c88320ab70ec9b36e7ce"
+    sha256 cellar: :any,                 ventura:       "1e6d1e5b6b0f37747880611b53bfee90133dd8efb6830ac894c141c34dd9c330"
+    sha256                               arm64_linux:   "95eb6763038beb833471ceb4c86ac9259d509b78d164ea16704c7009d17a3f72"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b9d80b80347cabba99b05c81ea5cb87c2ade6e93bb6dc445bab172cd48cfc29d"
   end
 
   depends_on "cmake" => :build
   depends_on "openssl@3"
   depends_on "pcre2"
+  depends_on "utf8proc"
 
   uses_from_macos "expat"
   uses_from_macos "sqlite"

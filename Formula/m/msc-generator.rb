@@ -4,6 +4,7 @@ class MscGenerator < Formula
   url "https://gitlab.com/api/v4/projects/31167732/packages/generic/msc-generator/8.6.2/msc-generator-8.6.2.tar.gz"
   sha256 "7d565cf5ff39e2ecb04d29daec0eaf674278f6d0a1cb507eed580fe8bc8a0893"
   license "AGPL-3.0-or-later"
+  revision 2
 
   livecheck do
     url "https://gitlab.com/api/v4/projects/31167732/packages"
@@ -16,22 +17,23 @@ class MscGenerator < Formula
     end
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 arm64_sequoia:  "1bb7414a5ad949e5a749e09c6a536a41cf7bfa40c8719b7b8a6280f0f227fb8c"
-    sha256 arm64_sonoma:   "5f94fd009e0b2fd06ed13995705298907f56a32111a9d4c489c49abf7519be72"
-    sha256 arm64_ventura:  "1226239916c31e57bc51801d867655d282a32258141dd3a63d698b5569d4312f"
-    sha256 arm64_monterey: "81caf56a7e9225793493479648d42c6233f0eca6892f11ce0e8dd21b95b3c99d"
-    sha256 sonoma:         "4b3319591e9619626d4c259fd4c22bdf68e6c025174a433a69c98891deb6b581"
-    sha256 ventura:        "12ef3f1a32694a0cd00547eee5e65096d1dc99d2eb33e68973865cffc70e730a"
-    sha256 monterey:       "56419db7a86687d8aca908bf5e62c7ffda0f373a4c97670bbdadf2819ff94f04"
-    sha256 x86_64_linux:   "b679c4ec1606b7be9c65ba4d7e320b3a48eb7f5bac32374315448ee871e0ec1a"
+    sha256 arm64_sequoia: "3cdbc7b3e6e76935d8137755cdb09b81330d42975583a5ce2425a2374b200b3a"
+    sha256 arm64_sonoma:  "88bdd770e655a3ecc1e658ed6ab9e011f1e191b684fd18b834e678c9b52e942e"
+    sha256 arm64_ventura: "ab50303d1a9387e595e09790310a4b750df105ff5aed97923655670ffd380502"
+    sha256 sonoma:        "90cbf56c86a7226c2acfab592458ed4f7b3fe6ec8cb1f295c7e4a4cab1219732"
+    sha256 ventura:       "5ecfd64dfdf430d0675887a87db3ba5384aa065622f2b27d4df90f64f92e6e95"
+    sha256 arm64_linux:   "b9141ada79ad184c1070d5bfadf8b9ff6ab510477f8e30e3f5854c957ed7c065"
+    sha256 x86_64_linux:  "f77209ae4d99b827722eda2193aa9265dd27b4679ab4f9a0de405c33e1a0c529"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "bison" => :build
   depends_on "help2man" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "cairo"
   depends_on "fontconfig"
   depends_on "gcc"
@@ -92,7 +94,7 @@ class MscGenerator < Formula
     # Construct a simple chart and check if PNG is generated (the default output format)
     (testpath/"simple.signalling").write("a->b;")
     system bin/"msc-gen", "simple.signalling"
-    assert_predicate testpath/"simple.png", :exist?
+    assert_path_exists testpath/"simple.png"
     bytes = File.binread(testpath/"simple.png")
     assert_equal bytes[0..7], "\x89PNG\r\n\x1a\n".force_encoding("ASCII-8BIT")
   end

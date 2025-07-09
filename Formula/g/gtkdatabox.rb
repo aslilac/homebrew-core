@@ -6,6 +6,8 @@ class Gtkdatabox < Formula
   license "LGPL-2.1-or-later"
   revision 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "5754a6b703bfc85c30adfe1f78b4f5e3416a4d9f04d9531d1c43fb584e136307"
     sha256 cellar: :any,                 arm64_sonoma:   "c4c95de47b74f0a924c88543dfbfc01999cf3491ce8bac5e77b0db2a265bb0e9"
@@ -14,10 +16,11 @@ class Gtkdatabox < Formula
     sha256 cellar: :any,                 sonoma:         "bfaacbe85617357013ed6368753b261bc87963366680eac5f73cf85183710f96"
     sha256 cellar: :any,                 ventura:        "7a86f4f2915d37de33ae84232fa05588e576a2e0698321501b3a75e0aedd9ace"
     sha256 cellar: :any,                 monterey:       "abc35085101b1fdde0163eb859927e6dcc35e2d38451d033b78206cb24814fa0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "60cc0df3c42c25bf990182f6a0e7655292bca03dfcf43821421d0e45a7b02b75"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1585023f5e6799a8eab163fae37ba597262d3352a01f2bee7763359224f94388"
   end
 
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "cairo"
   depends_on "glib"
   depends_on "gtk+3"
@@ -31,7 +34,7 @@ class Gtkdatabox < Formula
   end
 
   def install
-    system "./configure", *std_configure_args.reject { |s| s["--disable-debug"] }
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 
@@ -46,8 +49,8 @@ class Gtkdatabox < Formula
       }
     C
 
-    pkg_config_flags = shell_output("pkg-config --cflags --libs gtkdatabox").chomp.split
-    system ENV.cc, "test.c", "-o", "test", *pkg_config_flags
+    flags = shell_output("pkgconf --cflags --libs gtkdatabox").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *flags
     # Disable this part of test on Linux because display is not available.
     system "./test" if OS.mac?
   end

@@ -1,17 +1,18 @@
 class Gnmic < Formula
   desc "GNMI CLI client and collector"
   homepage "https://gnmic.openconfig.net"
-  url "https://github.com/openconfig/gnmic/archive/refs/tags/v0.39.1.tar.gz"
-  sha256 "beaa239bfb02d907e13f07fecfc4329730319965adbb1a24106e7b42f60a67b4"
+  url "https://github.com/openconfig/gnmic/archive/refs/tags/v0.41.0.tar.gz"
+  sha256 "79db2cdd7dfe55edefdb7dcdd1c4403fdc5cb9378385f23456d16a740cc6ec24"
   license "Apache-2.0"
+  head "https://github.com/openconfig/gnmic.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "68711dfb00bbc487f277bcf2527a0b64f75cee80a05f002305f79bc36670d109"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "68711dfb00bbc487f277bcf2527a0b64f75cee80a05f002305f79bc36670d109"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "68711dfb00bbc487f277bcf2527a0b64f75cee80a05f002305f79bc36670d109"
-    sha256 cellar: :any_skip_relocation, sonoma:        "059b74fd5ec7bf50a210781650e30fc00c7e50581b3bd82e3a87f9b52e19fcd2"
-    sha256 cellar: :any_skip_relocation, ventura:       "059b74fd5ec7bf50a210781650e30fc00c7e50581b3bd82e3a87f9b52e19fcd2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5ba9ae17f1994b7b1cb0055a876078485f0c859f0d69a1e201d69cb5d28794ef"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f1d0cbcd8a25bb3cddc1880de6cb9851c5f5ed23e08670f39ea478f49e5077d0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f1d0cbcd8a25bb3cddc1880de6cb9851c5f5ed23e08670f39ea478f49e5077d0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f1d0cbcd8a25bb3cddc1880de6cb9851c5f5ed23e08670f39ea478f49e5077d0"
+    sha256 cellar: :any_skip_relocation, sonoma:        "28a7a8bbe69b73b932b7fe953b2a7eb9f92292d353e0fb0849bfa3974a7646e0"
+    sha256 cellar: :any_skip_relocation, ventura:       "28a7a8bbe69b73b932b7fe953b2a7eb9f92292d353e0fb0849bfa3974a7646e0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "095e1928f48bbb9fa6b0ed71308a4937f504de09242908080ce62d8f0c5f3de2"
   end
 
   depends_on "go" => :build

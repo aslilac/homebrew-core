@@ -10,6 +10,8 @@ class Lzop < Formula
     regex(/href=.*?lzop[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "e29c398855c02fe9980a6365c4285c941988a3baa6fae5357dde1ae2ffed178e"
     sha256 cellar: :any,                 arm64_sonoma:   "3cb9969e29778a627ab2a0c634bc43f30c73ffff9960c51fa27f6eb1945b3ea1"
@@ -25,6 +27,7 @@ class Lzop < Formula
     sha256 cellar: :any,                 high_sierra:    "d42fafd3f1f39d9ab512f755bd216edd24002caf8a4da82f80818fe2c29f0556"
     sha256 cellar: :any,                 sierra:         "73c2ce334be9317ca79509aec3acef2fa1eff0ffb69fdc10b3850b7f51101f72"
     sha256 cellar: :any,                 el_capitan:     "26e49bf0d06fb60d7cd5c431634966f28993edc250c4d06b0db26b28aae3cd0d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "fe1868793eded05a6b15a8015c7859cbd527f183d319469b2dc25981d667e6ca"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "15ba7328bdcb1e9789b03851966efb4cd6ccc3feb35cfbc37a364be6fc4c77e7"
   end
 
@@ -42,7 +45,7 @@ class Lzop < Formula
     path.write text
 
     system bin/"lzop", "test"
-    assert_predicate testpath/"test.lzo", :exist?
+    assert_path_exists testpath/"test.lzo"
     rm path
 
     system bin/"lzop", "-d", "test.lzo"

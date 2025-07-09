@@ -6,6 +6,13 @@ class Libnsgif < Formula
   license "MIT"
   head "https://git.netsurf-browser.org/libnsgif.git", branch: "master"
 
+  livecheck do
+    url :homepage
+    regex(/href=.*?libnsgif[._-]v?(\d+(?:\.\d+)+)[._-]src\.t/i)
+  end
+
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "1b496d526be94479c22a33a721be3f7c5afe6ec2c0c62d2a9be03b04cce5cb19"
     sha256 cellar: :any,                 arm64_sonoma:   "fb3bd5d0ed63cb47edc86bded832614216985a5f020d4d3e9acf28c05a7d0d8b"
@@ -14,6 +21,7 @@ class Libnsgif < Formula
     sha256 cellar: :any,                 sonoma:         "7cd6863f98da0e27df13a0a97e80a346077c055408386a7a38dbe60ed67a6ec7"
     sha256 cellar: :any,                 ventura:        "09d9fcad4d83227aec32245847c57beb11a30a5cb8f65ff91977c90cec0e8f0a"
     sha256 cellar: :any,                 monterey:       "c9d626fb8d00576af6ab58d5b64c5485d176969bda7160bccc853f636b910211"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e7dc3ff5a7922684bd75589aa24b77305fe31093ad5b14fdfb3f626f9631035e"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7daa143db902d9ecc5a9133f4a82a430c6c4bd14bd5de120f879c82a39b1fb91"
   end
 

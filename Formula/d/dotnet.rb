@@ -2,32 +2,43 @@ class Dotnet < Formula
   desc ".NET Core"
   homepage "https://dotnet.microsoft.com/"
   license "MIT"
+  version_scheme 1
   head "https://github.com/dotnet/dotnet.git", branch: "main"
 
   stable do
     # Source-build tag announced at https://github.com/dotnet/source-build/discussions
-    url "https://github.com/dotnet/dotnet/archive/refs/tags/v9.0.0.tar.gz"
-    sha256 "ade10f909a684c2a056b8b0ec3a30e1570ce2b83c46c5f621a4464d02729af9f"
+    url "https://github.com/dotnet/dotnet/archive/refs/tags/v9.0.7.tar.gz"
+    sha256 "f68182b95fa441efb63b2a71ca3f98498b664e8d81964690ce4ec4f855981a44"
 
     resource "release.json" do
-      url "https://github.com/dotnet/dotnet/releases/download/v9.0.0/release.json"
-      sha256 "2a08862e4cd0095c743deccd8e34f3188261772cc775a7c6cdbfc9237727edda"
+      url "https://github.com/dotnet/dotnet/releases/download/v9.0.7/release.json"
+      sha256 "b812e7e8e30aa47fdea32e68932f1cc23569419f27f4f5ff441160e53f1cff94"
+
+      livecheck do
+        formula :parent
+      end
     end
   end
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+\.\d+\.\d{1,2})$/i)
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "846716ea37ae27f2be05098226bef127d27c650798f07085417ba8a610b1cf6f"
-    sha256 cellar: :any,                 arm64_sonoma:  "f12bdbf90b2a57fc29349cb78123cd7f8eab584b27cf859c4413ae07a3f4a6bc"
-    sha256 cellar: :any,                 arm64_ventura: "9a4970542023cb1cf76566978f7f6ee9d5e5b3890e47edc64d507468fc382558"
-    sha256 cellar: :any,                 ventura:       "7e315138a9da1bb22c057f063d89d08297609a2196c2f6a5d25ccd405a6e2cef"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "23cad8699a8133d024cea4cb20f31d829911bffc9acd2586c9ea3811fd51df29"
+    sha256 cellar: :any,                 arm64_sequoia: "3c54ec18dd398c12d9b3acbeff0035c8c26ffc207ba9cc968706347376c8b436"
+    sha256 cellar: :any,                 arm64_sonoma:  "becdc41681bc5d0b3909765e12427af2d3d97cd706a6eb40246285eef9d24162"
+    sha256 cellar: :any,                 arm64_ventura: "2c7b96f5ebcecba40674ad288fc85c683a0a1eb03769825273fea145d134bc9a"
+    sha256 cellar: :any,                 ventura:       "1a4f9857880a0221d34c99a134cf7f1104fe3c36167c0302a858af4fecb039f8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e56bc127bd146f1fe824bacce689be414ff6079367075f836279a1b5d5d7be62"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bdb49499d4e711256bd209c523bd58f65154381df83ea6aa912883aae229aaaa"
   end
 
   depends_on "cmake" => :build
   depends_on "pkgconf" => :build
   depends_on "rapidjson" => :build
   depends_on "brotli"
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "openssl@3"
 
   uses_from_macos "python" => :build, since: :catalina
@@ -42,6 +53,11 @@ class Dotnet < Formula
     depends_on "libunwind"
     depends_on "lttng-ust"
   end
+
+  conflicts_with cask: "dotnet"
+  conflicts_with cask: "dotnet-sdk"
+  conflicts_with cask: "dotnet-sdk@preview"
+  conflicts_with cask: "dotnet@preview"
 
   def install
     if OS.mac?
@@ -92,16 +108,16 @@ class Dotnet < Formula
   end
 
   def caveats
-    <<~TEXT
+    <<~CAVEATS
       For other software to find dotnet you may need to set:
         export DOTNET_ROOT="#{opt_libexec}"
-    TEXT
+    CAVEATS
   end
 
   test do
     target_framework = "net#{version.major_minor}"
 
-    (testpath/"test.cs").write <<~CSHARP
+    (testpath/"test.cs").write <<~CS
       using System;
 
       namespace Homebrew
@@ -115,7 +131,7 @@ class Dotnet < Formula
           }
         }
       }
-    CSHARP
+    CS
 
     (testpath/"test.csproj").write <<~XML
       <Project Sdk="Microsoft.NET.Sdk">
@@ -145,8 +161,8 @@ class Dotnet < Formula
     # Test to avoid uploading broken Intel Sonoma bottle which has stack overflow on restore.
     # See https://github.com/Homebrew/homebrew-core/issues/197546
     resource "docfx" do
-      url "https://github.com/dotnet/docfx/archive/refs/tags/v2.77.0.tar.gz"
-      sha256 "03c13ca2cdb4a476365ef8f5b7f408a6cf6e35f0193c959d7765c03dd4884bfb"
+      url "https://github.com/dotnet/docfx/archive/refs/tags/v2.78.3.tar.gz"
+      sha256 "d97142ff71bd84e200e6d121f09f57d28379a0c9d12cb58f23badad22cc5c1b7"
     end
     resource("docfx").stage do
       system bin/"dotnet", "restore", "src/docfx", "--disable-build-servers", "--no-cache"

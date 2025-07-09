@@ -11,6 +11,8 @@ class Bitlbee < Formula
     regex(/href=.*?bitlbee[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 arm64_sequoia:  "b657d232b9e5c995bad586bebabccbf58cab67a71f81dcc20ef65ba7685c7c5c"
@@ -23,6 +25,7 @@ class Bitlbee < Formula
     sha256 monterey:       "58b2fb9b50a1c3ed78f9b8945abb8aa883da058170cd0255a44f01681c660f6c"
     sha256 big_sur:        "3d4a68524f64b5abca2cdb3cca9eb60fe6ab30c98bd12cddf4f736fb3c1dda54"
     sha256 catalina:       "c7280a6ea53c3336f710b12617c2fa68bd4b75829962728002f72006e3163ffc"
+    sha256 arm64_linux:    "1e4d10f608c4b7af9664596201441fb1c8896d8fb708f7cd060dba134465cf0b"
     sha256 x86_64_linux:   "046736bbc9acefad55c69d5acbe77d4f96123d6a1ab49db0179d95f5cb72eec6"
   end
 

@@ -3,6 +3,7 @@ name: Scheduled online check
 on:
   push:
     branches:
+      - main
       - master
     paths:
       - .github/workflows/scheduled.yml
@@ -30,9 +31,9 @@ env:
 jobs:
   create_matrix:
     if: startsWith( github.repository, 'Homebrew/' )
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container:
-      image: ghcr.io/homebrew/ubuntu22.04:master
+      image: ghcr.io/homebrew/ubuntu22.04:main
     outputs:
       json: ${{ steps.matrix.outputs.json }}
     env:
@@ -40,7 +41,7 @@ jobs:
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@main
         with:
           core: true
           cask: false
@@ -96,7 +97,7 @@ jobs:
     if: startsWith( github.repository, 'Homebrew/' )
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/homebrew/ubuntu22.04:master
+      image: ghcr.io/homebrew/ubuntu22.04:main
     permissions:
       issues: write
     needs: create_matrix
@@ -112,7 +113,7 @@ jobs:
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@main
         with:
           core: true
           cask: false
@@ -123,6 +124,12 @@ jobs:
         run: |
           brew install curl
           echo "HOMEBREW_FORCE_BREWED_CURL=1" >>"${GITHUB_ENV}"
+
+      - name: Install Homebrew subversion if needed for downloading sources
+        run: |
+          if comm -23 <(brew deps --include-implicit --direct "$FORMULA" | sort) <(brew deps --direct "$FORMULA" | sort) | grep -Fqx subversion; then
+            brew install subversion
+          fi
 
       - name: Check formula source is not archived.
         id: archived
@@ -161,19 +168,7 @@ jobs:
       - name: Check bottle attestation
         id: attestation
         if: always()
-        shell: brew ruby {0}
-        env:
-          HOMEBREW_FORMULA: ${{ matrix.name }}
-        run: |
-          require "attestation"
-          formula = Formulary.factory(ENV.fetch("HOMEBREW_FORMULA"))
-          bottle = formula.bottle
-
-          # TODO: Check attestations for all os-arch variations
-          exit 0 if bottle.blank?
-
-          bottle.fetch
-          Homebrew::Attestation.check_core_attestation(bottle)
+        run: brew verify --os=all --arch=all "$FORMULA"
 
       - name: Report attestation issues
         if: failure() && steps.attestation.conclusion == 'failure'

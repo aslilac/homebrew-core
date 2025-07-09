@@ -14,6 +14,8 @@ class Civl < Formula
     end
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, all: "71c991aa3a7b29a8c41578d2220e02bbaad9b42d000b3119a0f054bd57892f82"
@@ -47,6 +49,6 @@ class Civl < Formula
     example = pkgshare/"examples/concurrency/locksBad.cvl"
     assert_match "The program MAY NOT be correct.",
                  shell_output("#{bin}/civl verify #{example}")
-    assert_predicate testpath/"CIVLREP/locksBad_log.txt", :exist?
+    assert_path_exists testpath/"CIVLREP/locksBad_log.txt"
   end
 end

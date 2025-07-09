@@ -12,6 +12,8 @@ class Dcraw < Formula
     regex(/href=.*?dcraw[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "a083652ace0c260b03d51e3a34412dd5f9213cf146dca60f6d5d2a1ecbc8c191"
     sha256 cellar: :any,                 arm64_sonoma:   "031ab39857064c76f12dd142d9d95aab39f43b0474049c846c82fe3b024876c8"
@@ -22,6 +24,7 @@ class Dcraw < Formula
     sha256 cellar: :any,                 ventura:        "2ece1b23d5c77ada535e6e4ae803b9d8060296838cfe92818c191b1e49dceba8"
     sha256 cellar: :any,                 monterey:       "82b85b19458214ddae5f12e22a13e160b5a771d1111020d559a3b19bfed3798f"
     sha256 cellar: :any,                 big_sur:        "baf800fb4217afc09f8fc06f3512780898018e72e8862be65f016ea1b89fb91d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "2783cb8eca424cae5dece8fd11a9aa41c533d14861791aaf66cd60391e75619a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e450712cc23c8501e21e7ff438480b0debcb27703a6ba4dcea9e6b00a2ec6fac"
   end
 

@@ -1,18 +1,18 @@
 class JoplinCli < Formula
   desc "Note taking and to-do application with synchronization capabilities"
   homepage "https://joplinapp.org/"
-  url "https://registry.npmjs.org/joplin/-/joplin-3.0.1.tgz"
-  sha256 "86217bd4b98a6a9e6b31ee3c716f6f83e2b90ff600bc436b47a428842494b5d4"
+  url "https://registry.npmjs.org/joplin/-/joplin-3.3.1.tgz"
+  sha256 "b0cc8590966d01eaa5a5d60bdec870ed51c342c80b1ebcbfb33eef222a1c4b01"
   license "MIT"
 
   bottle do
-    rebuild 2
-    sha256                               arm64_sequoia: "ef52961768cf19e1ae2b2fe9ae69e0d45e55fd06eae126e3cedfb19bc8f8ddf1"
-    sha256                               arm64_sonoma:  "87e1f9bd03fa1eca5a6680739cd6cbd76872750194dca1bdba2593e3e8addf52"
-    sha256                               arm64_ventura: "25fc7404867f2ea85f84a37ce14bb81eee7d3f4e4eabfd0db0be60e3b1a6910d"
-    sha256                               sonoma:        "dd3f5f4c75acb229cd3145a733ede897363144e029845b3a50193e460012e1ff"
-    sha256                               ventura:       "cb4c150b0a7ec1fecc06804fe287d863d9f80e6ad734a914258f4d7fd9a1b6be"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7b1f734064440c1e742dbeb9bc55c4f633c1393783b70fc88deec51a990abeeb"
+    sha256                               arm64_sequoia: "76470d9d9c29307d8b35f53a13a7754fc6575d78386de65caaa91ab3ca9f3527"
+    sha256                               arm64_sonoma:  "6f3c853e5d2f9be1bd6f0266fbb64be2c7018cbca3d3577adbd75c1f95ee538a"
+    sha256                               arm64_ventura: "36d5c93be1e4e9db96eb44ea46e3d20ddc68540474e3233e57581cf35fa7b9ff"
+    sha256                               sonoma:        "f18ca7fe37ccf6a4744fa00541bf8fabb95fffcc5907eb9f8403cb9d8ae91d70"
+    sha256                               ventura:       "44a51b383c515b2634a21c66ac5c96d45a39832db7bb55aade89b822b44a6f39"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9fa082d02615325e6393d5d1d559c1f6243fb165240a7f7a396c23a4b235a5db"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b9738157fd59266c3a6622d6444de5446d3c5fdbfb1c1ef0ec983e57b3478659"
   end
 
   depends_on "pkgconf" => :build

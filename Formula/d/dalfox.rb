@@ -1,20 +1,20 @@
 class Dalfox < Formula
   desc "XSS scanner and utility focused on automation"
   homepage "https://dalfox.hahwul.com"
-  url "https://github.com/hahwul/dalfox/archive/refs/tags/v2.9.3.tar.gz"
-  sha256 "4f0d746e887a42132ccbcea73450748a4f025d81faaa6817ce617bb0372105fd"
+  url "https://github.com/hahwul/dalfox/archive/refs/tags/v2.12.0.tar.gz"
+  sha256 "b87848b17cac23352d674e63fee554ae6b976a53fe3e62822512232030430cd5"
   license "MIT"
   head "https://github.com/hahwul/dalfox.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b6743620830cf863fc799cb8cd09f454f1f4d5b660d82fc03cc897b0fc668870"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4c65ecc87b57da0ddcd9bd81a61270c4b8f37cda54e2b54bfa1ad554529dd411"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4c65ecc87b57da0ddcd9bd81a61270c4b8f37cda54e2b54bfa1ad554529dd411"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4c65ecc87b57da0ddcd9bd81a61270c4b8f37cda54e2b54bfa1ad554529dd411"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e04ac808f686150e9434d4d180b1b90584e054e17f41800dd46fbce391b36e75"
-    sha256 cellar: :any_skip_relocation, ventura:        "e04ac808f686150e9434d4d180b1b90584e054e17f41800dd46fbce391b36e75"
-    sha256 cellar: :any_skip_relocation, monterey:       "e04ac808f686150e9434d4d180b1b90584e054e17f41800dd46fbce391b36e75"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d29b5c65f9f4da17add6bea4f885c6efab4d4028950268276f08d515d9563ac8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "511a887b38f2fca677528e0c5c90f540a85b931ea28d4474062b83c92b23f31b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "511a887b38f2fca677528e0c5c90f540a85b931ea28d4474062b83c92b23f31b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "511a887b38f2fca677528e0c5c90f540a85b931ea28d4474062b83c92b23f31b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "54a0c02b8dbfb0aec78818fa5aa7f843f0936ce46afc5b0a52fc69c79c8add7a"
+    sha256 cellar: :any_skip_relocation, ventura:       "54a0c02b8dbfb0aec78818fa5aa7f843f0936ce46afc5b0a52fc69c79c8add7a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "45314adf0430c025d71fc1154ece4ea12e4f80da6335beb55f12fcea02c3575d"
   end
 
   depends_on "go" => :build
@@ -29,7 +29,7 @@ class Dalfox < Formula
     assert_match version.to_s, shell_output("#{bin}/dalfox version 2>&1")
 
     url = "http://testphp.vulnweb.com/listproducts.php?cat=123&artist=123&asdf=ff"
-    output = shell_output("#{bin}/dalfox url #{url}")
-    assert_match "[POC][G][GET][BUILTIN]", output
+    output = shell_output("#{bin}/dalfox url \"#{url}\" 2>&1")
+    assert_match "Finish Scan!", output
   end
 end

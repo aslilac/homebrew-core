@@ -1,17 +1,18 @@
 class AwsAmplify < Formula
   desc "Build full-stack web and mobile apps in hours. Easy to start, easy to scale"
-  homepage "https://aws.amazon.com/amplify"
-  url "https://registry.npmjs.org/@aws-amplify/cli-internal/-/cli-internal-12.13.1.tgz"
-  sha256 "2b32f0a6a39995b8ef2e1cf0937b4efef5fefe9c3d25a3a300bdbad301f9de63"
+  homepage "https://aws.amazon.com/amplify/"
+  url "https://registry.npmjs.org/@aws-amplify/cli-internal/-/cli-internal-14.0.0.tgz"
+  sha256 "73169aa41a3b43a7c291cd573a512221a222196e43464a43e19f2c6fd327e25d"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "317c3ee851873728ef57fd4dcd7add1bb53bd54a5e8b0fcf9b680cdb244a3edd"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "317c3ee851873728ef57fd4dcd7add1bb53bd54a5e8b0fcf9b680cdb244a3edd"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "317c3ee851873728ef57fd4dcd7add1bb53bd54a5e8b0fcf9b680cdb244a3edd"
-    sha256 cellar: :any_skip_relocation, sonoma:        "1564f00eecef188eca8ce458bfd35e3e9684017d7040d9c0e9b40d7739e4ed15"
-    sha256 cellar: :any_skip_relocation, ventura:       "1564f00eecef188eca8ce458bfd35e3e9684017d7040d9c0e9b40d7739e4ed15"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bff27297bcc5b3e627031fa2d634da3b73b609ac184379cd01854550f8782ba9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "26d899ba91a0f6b99213827e6e317367693cae9d57b65db697ecf06b8b6619c9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "26d899ba91a0f6b99213827e6e317367693cae9d57b65db697ecf06b8b6619c9"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "26d899ba91a0f6b99213827e6e317367693cae9d57b65db697ecf06b8b6619c9"
+    sha256 cellar: :any_skip_relocation, sonoma:        "064687b55885ff2fe6caa2efc25e127a09d4d36a9f9c98d411d9013b27cad73f"
+    sha256 cellar: :any_skip_relocation, ventura:       "064687b55885ff2fe6caa2efc25e127a09d4d36a9f9c98d411d9013b27cad73f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "26d899ba91a0f6b99213827e6e317367693cae9d57b65db697ecf06b8b6619c9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a16be6775ab478fbe3dc806f0fd3e62f2b7f82355974d267253814fdee03ed32"
   end
 
   depends_on "node"

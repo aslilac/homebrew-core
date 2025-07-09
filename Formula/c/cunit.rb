@@ -5,6 +5,8 @@ class Cunit < Formula
   sha256 "f5b29137f845bb08b77ec60584fdb728b4e58f1023e6f249a464efa49a40f214"
   license "LGPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "ed2227559e5ab1d8239ee28d11b8728832ac2301041631b31702a12be8f0d3fe"
     sha256 cellar: :any,                 arm64_sonoma:   "92297087d6f77632f4db7fb8c436ba6f70c9da28fdc11e56cb975a86ea27cc90"
@@ -20,6 +22,7 @@ class Cunit < Formula
     sha256 cellar: :any,                 high_sierra:    "23fdc88eeb1c4cf8d58e281e046f2e45a56860c0091e5c76f757f01679d143d2"
     sha256 cellar: :any,                 sierra:         "dc987998ebcfc175c9c9e70c6b83db4197bd5b79d383235b85ee8a30835785df"
     sha256 cellar: :any,                 el_capitan:     "0b92535641c86f38bf7a3a1b08a07aa6523e4c0135792dd92829e00579a5e3a9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "3ccc99f7c608efe03b30e0e008a0cfcac24582f6189157a155e1cb6fe7901ed4"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a0cf6507f41f3b367c36329688073277d4db50e61b048e39360f1e58cf2482e6"
   end
 

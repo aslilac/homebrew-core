@@ -9,6 +9,8 @@ class Twoping < Formula
   revision 1
   head "https://github.com/rfinnie/2ping.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 5
     sha256 cellar: :any_skip_relocation, all: "5153c17a69826ba8fa3274c858acc3c608cf7b9208fa683043fcda9bed6311c1"
@@ -28,8 +30,8 @@ class Twoping < Formula
     run [opt_bin/"2ping", "--listen", "--quiet"]
     keep_alive true
     require_root true
-    log_path "/dev/null"
-    error_log_path "/dev/null"
+    log_path File::NULL
+    error_log_path File::NULL
   end
 
   test do

@@ -6,6 +6,8 @@ class Grsync < Formula
   license "GPL-2.0-only"
   revision 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "7acba4db4f6cd2ad09e1cffff1f7c0d24c46cbc611c8ed9c7e78a604b746b2cf"
     sha256 arm64_sonoma:   "abf6159ff6f8b96053d162b2022ed8609af8c059c79348ae5557c28afeecc562"
@@ -14,11 +16,12 @@ class Grsync < Formula
     sha256 sonoma:         "17172832ac98aded38af454786303dc8f9d3b61e90470a4330a7774ae5885dd4"
     sha256 ventura:        "2049a7ee4bb92a609351d65b0c16adc5bee3f81cdfa580ade205dfcef48d8b4d"
     sha256 monterey:       "e6eb367af3e6e6cd9d08aeb7089bf2842422c9c727df241f11fce7a2239a3d64"
+    sha256 arm64_linux:    "855b9f2180841ac05b112906346852effcaf37d1e0ccdfc11b6561f947da4a85"
     sha256 x86_64_linux:   "e69fa72c81515369642531c0e5fc7febe6953d082721eb5b1e839c0f7a72a597"
   end
 
   depends_on "intltool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "gettext"
   depends_on "glib"
   depends_on "gtk+3"
@@ -46,6 +49,6 @@ class Grsync < Formula
   test do
     # running the executable always produces the GUI, which is undesirable for the test
     # so we'll just check if the executable exists
-    assert_predicate bin/"grsync", :exist?
+    assert_path_exists bin/"grsync"
   end
 end

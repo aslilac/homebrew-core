@@ -1,20 +1,11 @@
 class Sapling < Formula
   desc "Source control client"
   homepage "https://sapling-scm.com"
+  url "https://github.com/facebook/sapling/archive/refs/tags/0.2.20250521-115337+25ed6ac4.tar.gz"
+  version "0.2.20250521-115337-25ed6ac4"
+  sha256 "53c48bb807a7c65965a9f9f154f955ec4ccbce6696f721db73d0873e4bf03244"
   license "GPL-2.0-or-later"
   head "https://github.com/facebook/sapling.git", branch: "main"
-
-  stable do
-    url "https://github.com/facebook/sapling/archive/refs/tags/0.2.20240718-145624+f4e9df48.tar.gz"
-    version "0.2.20240718-145624-f4e9df48"
-    sha256 "8081d405cddb9dc4eadd96f4c948b7686b0b61f641c068fc87b9c27518fb619e"
-
-    # Backport fix for Python 3.12
-    patch do
-      url "https://github.com/facebook/sapling/commit/65a7e9097fb9280aef7c50ecdf08b5755288490a.patch?full_index=1"
-      sha256 "ca59aebef870bad9887b927b68c1be76a01bb905f5eb76cf2f0d2499b3b0c306"
-    end
-  end
 
   livecheck do
     url :stable
@@ -22,14 +13,15 @@ class Sapling < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    rebuild 2
-    sha256 cellar: :any,                 arm64_sequoia: "60bcea0cc8d231647295709c7b3d4e02a12c41fc01e42008a166ebe34605fae3"
-    sha256 cellar: :any,                 arm64_sonoma:  "3fa0437a9e393c5351a924b7043e6437e7103a432214c0b45330b59125743f2d"
-    sha256 cellar: :any,                 arm64_ventura: "62de9035cb2918f4ed281c75db35d3ba307734815860342cd3b1173596fd5419"
-    sha256 cellar: :any,                 sonoma:        "53b8e3e1cee4803014e4e2020d0a8a9331234859fcb2144dbbfa5bbcd3f18361"
-    sha256 cellar: :any,                 ventura:       "cc3b90c7bf62e9dab0695598a52b7aed57906f9a4e5f4b2a0e2a37b31760fb36"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "595d837e78b2fcbeae267fe54256134c38d6094fae4a49ee0fae330890045844"
+    sha256 cellar: :any,                 arm64_sequoia: "68b681bdf583a8244cc12d20040bbc2bf72b483003e5f72718a02bf1eb1a4b6b"
+    sha256 cellar: :any,                 arm64_sonoma:  "ba622027c69cacce85eceb38fb55ec67a3567cc443e2cf171856be99140c8659"
+    sha256 cellar: :any,                 arm64_ventura: "d627d3b0eac2220c1babc65f6edd21e22f8d52c49da837be04adbad790af7294"
+    sha256 cellar: :any,                 sonoma:        "7ddc287232eac9b2999e0f1a6e4cbf85492c229afee18aa563e8625414b09149"
+    sha256 cellar: :any,                 ventura:       "53b00042db69f2fda7927ec5f4bcaf81b80b91d364f63539c1b5da4268bf0e8e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3b90ffdd93cb0040aac0e050c9004bdcc9d7e9e2c23bb654166786eaf14efd1d"
   end
 
   depends_on "cmake" => :build
@@ -41,8 +33,9 @@ class Sapling < Formula
   depends_on "libssh2"
   depends_on "node"
   depends_on "openssl@3"
-  depends_on "python@3.12"
+  depends_on "python@3.12" # Python 3.13 issue: https://github.com/facebook/sapling/issues/980
 
+  uses_from_macos "llvm" => :build # for libclang
   uses_from_macos "bzip2"
   # curl-config on ventura builds do not report http2 feature,
   # this is a workaround to allow to build against system curl
@@ -112,15 +105,9 @@ class Sapling < Formula
     system "make", "-C", "eden/scm", "install-oss", "PREFIX=#{prefix}", "PYTHON=#{python3}", "PYTHON3=#{python3}"
   end
 
-  def check_binary_linkage(binary, library)
-    binary.dynamically_linked_libraries.any? do |dll|
-      next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)
-
-      File.realpath(dll) == File.realpath(library)
-    end
-  end
-
   test do
+    require "utils/linkage"
+
     assert_equal "Sapling #{version}", shell_output("#{bin}/sl --version").chomp
 
     system bin/"sl", "config", "--user", "ui.username", "Sapling <sapling@sapling-scm.com>"
@@ -141,7 +128,7 @@ class Sapling < Formula
     dylibs << (Formula["curl"].opt_lib/shared_library("libcurl")) if OS.linux?
 
     dylibs.each do |library|
-      assert check_binary_linkage(bin/"sl", library),
+      assert Utils.binary_linked_to_library?(bin/"sl", library),
              "No linkage with #{library.basename}! Cargo is likely using a vendored version."
     end
   end

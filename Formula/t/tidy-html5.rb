@@ -11,6 +11,8 @@ class TidyHtml5 < Formula
     regex(/^v?(\d+\.\d*?[02468](?:\.\d+)*)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "570d2482168cd8be11bb433f743f934bf7797a952863cd282230111b5de15a73"
     sha256 cellar: :any,                 arm64_sonoma:   "42f788763482699cc7ead38ace15bce63e075ee20c070bbb74db279002d66af6"
@@ -23,16 +25,16 @@ class TidyHtml5 < Formula
     sha256 cellar: :any,                 big_sur:        "9127cf10347816285db70f0ec794a08433e44426f9f4320d5fecedbdcfb15e2b"
     sha256 cellar: :any,                 catalina:       "fe486f6a2455b7c59eac3ba8a5e4b2e1a6ff49bb6440465d9470013a23a5fe0f"
     sha256 cellar: :any,                 mojave:         "4ae3afab500044dfd0fb4cf982ce9411859f50548149cc4f99f8720de1bbd754"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "ff4664d175a951b8e595d017608fcf0981cb95cbba3c094fc8366ea1b1f9cd05"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2f80a0abaed47dfa224213a413fbe6f23d1a538cf4bfeb633296f5e7e465fb2d"
   end
 
   depends_on "cmake" => :build
 
   def install
-    cd "build/cmake"
-    system "cmake", "../..", *std_cmake_args
-    system "make"
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "builddir", *std_cmake_args
+    system "cmake", "--build", "builddir"
+    system "cmake", "--install", "builddir"
   end
 
   test do

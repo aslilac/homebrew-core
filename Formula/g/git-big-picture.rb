@@ -7,6 +7,8 @@ class GitBigPicture < Formula
   sha256 "cccbd3e35dfe6d0ce86d06079e80cf9219cb25f887c7a782e2808e740dc23c3a"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 3
     sha256 cellar: :any_skip_relocation, arm64_sequoia: "0427911937b4a1b43a56835c6a4d80f1c3513d32cfe571739f56f12979620851"
@@ -14,6 +16,7 @@ class GitBigPicture < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "0427911937b4a1b43a56835c6a4d80f1c3513d32cfe571739f56f12979620851"
     sha256 cellar: :any_skip_relocation, sonoma:        "0427911937b4a1b43a56835c6a4d80f1c3513d32cfe571739f56f12979620851"
     sha256 cellar: :any_skip_relocation, ventura:       "0427911937b4a1b43a56835c6a4d80f1c3513d32cfe571739f56f12979620851"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2e09e1171d0a5c340d69e47b4942a14d5a2c6f797c5b33875ad3c69806b7310f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "12e262c0aa73b5a7be00a9b803134175ad2856493590e0f80f2385fcaa3f3c6d"
   end
 

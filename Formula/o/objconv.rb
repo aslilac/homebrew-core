@@ -17,6 +17,8 @@ class Objconv < Formula
     end
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "2b4714a356e16792f3980afc77dc4be1dc71f422b1f018581add5627a7029938"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4e8ce3fb8918b114d7db84a03abb75f67cdc66f19278aad8cde5b22e11db7522"
@@ -27,6 +29,7 @@ class Objconv < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "17dd03b46e6b029335e573035c4ab7fb60bb17ce8a64d83109a711df0ed8124d"
     sha256 cellar: :any_skip_relocation, monterey:       "362a2f558092bd6268378d3248d477a10aa8dd771d54d7f1e8f12f2bd91b9952"
     sha256 cellar: :any_skip_relocation, big_sur:        "2853283d56d4f091e9931fa84f10652f0a9e3df302471bfc523a317b7cd3c02c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b4006dcb1682c6f8c22ba8956c307e6124def71c1aa47b227b2232de81426f91"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c0377932fae0f1e90636136f000858e53e8ca96e2a00c1554a5a217766b9cb7b"
   end
 

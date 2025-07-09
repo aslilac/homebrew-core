@@ -1,17 +1,19 @@
 class Gitsign < Formula
   desc "Keyless Git signing using Sigstore"
   homepage "https://github.com/sigstore/gitsign"
-  url "https://github.com/sigstore/gitsign/archive/refs/tags/v0.11.0.tar.gz"
-  sha256 "5c3d6aaf54cc482638756d32f8a201f65ddb88885368e29a9a2ebd20c9c5f00b"
+  url "https://github.com/sigstore/gitsign/archive/refs/tags/v0.13.0.tar.gz"
+  sha256 "646a86c2ff1786c2879b323304a1559c0b7f78913b9c825faa8612f6855be6b3"
   license "Apache-2.0"
+  head "https://github.com/sigstore/gitsign.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ab494ff5ee1a8285de439b716caa7583921d7306f31ea728363897b8d64027f4"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ab494ff5ee1a8285de439b716caa7583921d7306f31ea728363897b8d64027f4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "ab494ff5ee1a8285de439b716caa7583921d7306f31ea728363897b8d64027f4"
-    sha256 cellar: :any_skip_relocation, sonoma:        "556b44958ae647b69db84b6fcc0e1585b9e208efd60cd04a72e6048f3114c9e5"
-    sha256 cellar: :any_skip_relocation, ventura:       "ff7316b17434f076950a74a5f55fbbec46b31b6c7dd0081a596bff5be33729d9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0a9b208e65656564acdc4651a3a3f78dc5d52accee7bbc2efd92c7fc99c86579"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bb69be6710bca5b749df22b3e2667ccf6c956bb3bcbb3514233fc1c6b25d5ebd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "bb69be6710bca5b749df22b3e2667ccf6c956bb3bcbb3514233fc1c6b25d5ebd"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "bb69be6710bca5b749df22b3e2667ccf6c956bb3bcbb3514233fc1c6b25d5ebd"
+    sha256 cellar: :any_skip_relocation, sonoma:        "e3eef280e52665777633f316053e44d2592a085352b96336fbe40e53aed80602"
+    sha256 cellar: :any_skip_relocation, ventura:       "6167f0a2d13d9bf172de4677fe293375f0aa39190681f5b5c15f76f5429dec35"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dc2ec9b3d99c682cf9e036d6eb7b596116df6b38e469264c0f3cb909e4bc37b1"
   end
 
   depends_on "go" => :build
@@ -22,6 +24,8 @@ class Gitsign < Formula
       -X github.com/sigstore/gitsign/pkg/version.gitVersion=#{version}
     ]
     system "go", "build", *std_go_args(ldflags:)
+    system "go", "build", *std_go_args(ldflags:, output: bin/"gitsign-credential-cache"),
+      "./cmd/gitsign-credential-cache"
 
     generate_completions_from_executable(bin/"gitsign", "completion")
   end

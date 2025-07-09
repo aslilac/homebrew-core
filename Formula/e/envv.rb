@@ -5,6 +5,8 @@ class Envv < Formula
   sha256 "1db05b46904e0cc4d777edf3ea14665f6157ade0567359e28663b5b00f6fa59a"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "2110b9d05836da02e31062ad025810c86e863d23c8a585dcb227da34c20e3376"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "58710a70856d6c30fbb8615800486e82d73abd17eb31e557ecd4b9aa41bfda7d"
@@ -20,6 +22,7 @@ class Envv < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "35e2781067a3f5429c36546a20faca9d4762882bf3908122efc58c8b752968e9"
     sha256 cellar: :any_skip_relocation, sierra:         "cc30a2317f78124c609d6313a33cea58c9d428a95903966da4cb42051630ef97"
     sha256 cellar: :any_skip_relocation, el_capitan:     "3b2fb0b35749280461b3982797ceea34bfa42d63cb5c6547986cf106669ee744"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "1a4f95cc571b62d3b42a9e96261ad3c1a79a0c22c9b2f09e1773f59748ca3e86"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9cb0c8481042567e17ff04b7d5dd3cc46fccbc0e321203770791588fc51d11b7"
   end
 
@@ -42,7 +45,7 @@ class Envv < Formula
     assert_equal "mylist=B:C; export mylist", shell_output("#{bin}/envv del mylist A").strip
     assert_equal "mylist=A:B; export mylist", shell_output("#{bin}/envv del mylist C").strip
 
-    assert_equal "", shell_output("#{bin}/envv add mylist B").strip
+    assert_empty shell_output("#{bin}/envv add mylist B").strip
     assert_equal "mylist=B:A:C; export mylist", shell_output("#{bin}/envv add mylist B 1").strip
     assert_equal "mylist=A:C:B; export mylist", shell_output("#{bin}/envv add mylist B 99").strip
 

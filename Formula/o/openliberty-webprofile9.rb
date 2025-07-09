@@ -7,8 +7,10 @@ class OpenlibertyWebprofile9 < Formula
 
   livecheck do
     url "https://openliberty.io/api/builds/data"
-    regex(/openliberty[._-]v?(\d+(?:\.\d+)+)\.zip/i)
+    regex(/openliberty[._-]webProfile9[._-]v?(\d+(?:\.\d+)+)\.zip/i)
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 1
@@ -37,12 +39,12 @@ class OpenlibertyWebprofile9 < Formula
 
     begin
       system bin/"openliberty-webprofile9", "start"
-      assert_predicate testpath/"servers/.pid/defaultServer.pid", :exist?
+      assert_path_exists testpath/"servers/.pid/defaultServer.pid"
     ensure
       system bin/"openliberty-webprofile9", "stop"
     end
 
-    refute_predicate testpath/"servers/.pid/defaultServer.pid", :exist?
+    refute_path_exists testpath/"servers/.pid/defaultServer.pid"
     assert_match "<feature>webProfile-9.1</feature>", (testpath/"servers/defaultServer/server.xml").read
   end
 end

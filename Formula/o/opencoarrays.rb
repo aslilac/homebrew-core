@@ -7,12 +7,15 @@ class Opencoarrays < Formula
   revision 5
   head "https://github.com/sourceryinstitute/opencoarrays.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia: "e263b0b0243719cdaf1ef02de84c8d70c52b1ba4b75254e75eec540daba88fde"
     sha256 cellar: :any,                 arm64_sonoma:  "8c6e809fff5e543d60f2ee038ca04aa99e398a69b3aec9db067249c84b2beef0"
     sha256 cellar: :any,                 arm64_ventura: "343c2414094be734db3423e6c2fab208320996971c0475f27e9b4328e20307a3"
     sha256 cellar: :any,                 sonoma:        "bf66d20a900e5b7880971a9d5c0801cc9b18f3f4fded8be925bf482fb9b86d00"
     sha256 cellar: :any,                 ventura:       "6918670d6f5c0b401d2aaea00dc994ac8a5879ec7430c0212c058c7a8654f90e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "565fc597f9fee0da1af004bf3ac41b7b161468d4c6814e5d67fb2d3280a0a2ac"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "3be56cc15f1203f55853c88f265444b90868d9228e88fc3c405b5219e401eab5"
   end
 

@@ -1,9 +1,10 @@
 class Bigloo < Formula
   desc "Scheme implementation with object system, C, and Java interfaces"
   homepage "https://www-sop.inria.fr/indes/fp/Bigloo/"
-  url "ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo-4.5b.tar.gz"
-  sha256 "864d525ee6a7ff339fd9a8c973cc46bf9a623a3827d84bfb6e04a29223707da5"
+  url "https://www-sop.inria.fr/indes/fp/Bigloo/download/bigloo-4.6a.tar.gz"
+  sha256 "9705ec3de00cc1c51ee7699894841a3770c06a874215b45635b8844ae6daf0a6"
   license "GPL-2.0-or-later"
+  head "https://github.com/manuel-serrano/bigloo.git", branch: "master"
 
   livecheck do
     url "https://www-sop.inria.fr/indes/fp/Bigloo/download.html"
@@ -12,9 +13,12 @@ class Bigloo < Formula
 
   bottle do
     rebuild 1
-    sha256 sonoma:       "7c420cdf1da7454605ebda44ec9ab6c90dad2d9e3a8f6cb43bfb6341479f4971"
-    sha256 ventura:      "c9c8be5bd55652c23c05de35d1c7f704a851003a0a2759741a1fbe50c75bc458"
-    sha256 x86_64_linux: "57660e09f1eea22c2e2faae872353d1c1229e76a19d4dddbee07978bbe94e312"
+    sha256 arm64_sequoia: "9e898912750ff4524755d1523733824a82dfec9f4767f516a1cb0df291d02f6a"
+    sha256 arm64_sonoma:  "fc56675d3c2d9dc400d02d0ba451fd0890e0af8530fddb01ae2f7a0b0e7732d5"
+    sha256 arm64_ventura: "863ef84f5fe7ecde18164f1fd2b39a89d578aa6e5bee1d174441c455e9ff4dd1"
+    sha256 sonoma:        "e8530b989fb53f9b92bc7de0e67291c8b74b10f615de0ba3afc6f2c2d806be77"
+    sha256 ventura:       "0c5e0237240777f5e8471f3c0fbe471638fdf56d3308ddf021273b14ae88df6e"
+    sha256 x86_64_linux:  "26df19d7509a28fdc224f29265138d5c4c7644e02256bda6c272614ef41ba09b"
   end
 
   depends_on "autoconf" => :build
@@ -22,7 +26,6 @@ class Bigloo < Formula
   depends_on "libtool" => :build
   depends_on "pkgconf" => :build
 
-  depends_on arch: :x86_64
   depends_on "bdw-gc"
   depends_on "gmp"
   depends_on "libunistring"
@@ -37,10 +40,6 @@ class Bigloo < Formula
   end
 
   def install
-    # Remove when included in a release:
-    # https://github.com/manuel-serrano/bigloo/commit/8b2a912c7c668a2a0bfa2ec30bc68bfdd05d2d7f
-    ENV.append_to_cflags "-Wno-incompatible-function-pointer-types" if DevelopmentTools.clang_build_version >= 1500
-
     # Force bigloo not to use vendored libraries
     inreplace "configure", /(^\s+custom\w+)=yes$/, "\\1=no"
 
@@ -69,7 +68,6 @@ class Bigloo < Formula
     end
 
     system "./configure", *args, *std_configure_args
-
     system "make"
     system "make", "install"
 
@@ -79,11 +77,11 @@ class Bigloo < Formula
   end
 
   test do
-    program = <<~EOS
+    program = <<~SCHEME
       (display "Hello World!")
       (newline)
       (exit)
-    EOS
-    assert_match "Hello World!\n", pipe_output("#{bin}/bigloo -i -", program)
+    SCHEME
+    assert_match "Hello World!\n", pipe_output("#{bin}/bigloo -i -", program, 0)
   end
 end

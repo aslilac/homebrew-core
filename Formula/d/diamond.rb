@@ -1,17 +1,18 @@
 class Diamond < Formula
   desc "Accelerated BLAST compatible local sequence aligner"
   homepage "https://www.wsi.uni-tuebingen.de/lehrstuehle/algorithms-in-bioinformatics/software/diamond/"
-  url "https://github.com/bbuchfink/diamond/archive/refs/tags/v2.1.10.tar.gz"
-  sha256 "c6ede5df30d9d496af314e740964c35a0e358458d9c8d9b8dd517d69828d9981"
+  url "https://github.com/bbuchfink/diamond/archive/refs/tags/v2.1.12.tar.gz"
+  sha256 "0a11a09ee58f95a3b2e864d61957066faae8a37abaa120353c0faad5d0ff0778"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5f8557081c35b772cee8de8e2751f03097a47e8293d57026329b06f09128a1a5"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5e8dc8ece677609259392d2e5c818ca3330eb30290baa043b946ba68eb7c73f6"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "81ff44a3ae176084f63ad0395203b6711061804eef5c5ecec98ee1050e3daf46"
-    sha256 cellar: :any_skip_relocation, sonoma:        "d5d57d55a193ed25775b6d3798d47e6201ba6514b1b496296aae4b0f9786b0eb"
-    sha256 cellar: :any_skip_relocation, ventura:       "3e12a967c882d12655033b9dab86a70329b2f260b6dbc26d49aba9fdde02441c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "11a1e9d0e3831b31f7f0ddb66fd73d85a35cc82018d5344680f7eedda772b190"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fff873950d646cf971fe6ca178c14cb98bb52be7c49492c68ddb41ddce68beb7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ada44d444c51756e35427d8786f758791f8e5feaa692f5d428fdaef829f8025c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d5ae80023e3367a9ffb850fbad6a3a02cdc41bf1c63b9d46dbb0dfc47373dbc3"
+    sha256 cellar: :any_skip_relocation, sonoma:        "8eda8e413a9e30a1685ad9aa6dc71145eb9af09a725131a5541f91df49548f54"
+    sha256 cellar: :any_skip_relocation, ventura:       "5d01a78af15bfd158aa2c779f6e654ff2423c038b44ded09fc14655be2bb0ec9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "d28af69aea9ecc04dd5331448669f6e634b938439469b2f3f1e1f6c97958cf2e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b5476ecbbe5d8d39152e5094d131912a989c4245a723c3c8a7d0819488a132ae"
   end
 
   depends_on "cmake" => :build
@@ -19,8 +20,9 @@ class Diamond < Formula
   uses_from_macos "zlib"
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", "-DCMAKE_POLICY_VERSION_MINIMUM=3.5", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -44,6 +46,7 @@ class Diamond < Formula
       ffetesrsvaqagvqwrdlgslqapppgftpfsclslpsswdyrrppprpanfcifsrdg
       vspcXpgwsrspdlvirpprppkvlglqaXatapg
     EOS
+
     output = shell_output("#{bin}/diamond makedb --in nr.faa -d nr 2>&1")
     assert_match "Database sequences  6\n  Database letters  572", output
   end

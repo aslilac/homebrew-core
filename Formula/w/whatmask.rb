@@ -22,17 +22,15 @@ class Whatmask < Formula
   end
 
   deprecate! date: "2024-02-29", because: :repo_removed
+  disable! date: "2025-03-04", because: :repo_removed
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
 
   def install
     # The included ./configure file is too old to work with Xcode 12
-    system "autoreconf", "--verbose", "--install", "--force"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--mandir=#{man}",
-                          "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--mandir=#{man}", *std_configure_args
     system "make", "install"
   end
 

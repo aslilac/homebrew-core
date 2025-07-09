@@ -5,13 +5,17 @@ class Ntfs3g < Formula
   sha256 "f20e36ee68074b845e3629e6bced4706ad053804cbaf062fbae60738f854170c"
   license all_of: ["GPL-2.0-or-later", "LGPL-2.0-or-later"]
 
+  # GitHub release descriptions contain a link to the `stable` tarball.
   livecheck do
     url :head
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "13c0f887f2cef53978d28dfcb8c1a3f69f8c70407bf2267ad6033eef0b5cfc2c"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "3fe3041e69391706e917d335a8d6bebd1dd502126e5d19e4b0fabded9a3e40f7"
   end
 
@@ -27,7 +31,7 @@ class Ntfs3g < Formula
   depends_on "pkgconf" => :build
   depends_on "coreutils" => :test
   depends_on "gettext"
-  depends_on "libfuse@2"
+  depends_on "libfuse@2" # FUSE 3 issue: https://github.com/tuxera/ntfs-3g/issues/54
   depends_on :linux # on macOS, requires closed-source macFUSE
 
   def install

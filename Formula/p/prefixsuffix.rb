@@ -6,6 +6,8 @@ class Prefixsuffix < Formula
   license "GPL-2.0-or-later"
   revision 10
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256                               arm64_sequoia:  "30ef0ba35485343f36734f212295160cedd798991dfa2abd35a6b60f7f95405e"
     sha256                               arm64_sonoma:   "6e197205c70b3923ae50f5f33bd203810348f2846a3eabaf86839a978c598426"
@@ -14,12 +16,13 @@ class Prefixsuffix < Formula
     sha256                               sonoma:         "e5750bf2bc2db7e78a87ce10a8e348c15b6cc8f560a1ee4f97dafcd3968a8dc9"
     sha256                               ventura:        "5226011c5383e3328b4872a1e559ce249b5da4f817c7d4bfab2d417ce0fc095f"
     sha256                               monterey:       "4a0a8c588c5d78a1bffbeeeb1f6dc566fb1ff39de91900ce2d089af27e19fd5e"
+    sha256                               arm64_linux:    "74bcf8905a1953a54f17b65d4c68b48d0fb78e0d5f3988204e99620aa6b474bc"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1bd8de221d43b7d0d511a7a0cb6ebd3a35f045524a02917cf839eb426ae65d41"
   end
 
   depends_on "gettext" => :build
   depends_on "intltool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "atkmm@2.28"
   depends_on "glib"
@@ -49,13 +52,14 @@ class Prefixsuffix < Formula
     ENV.prepend_path "PERL5LIB", Formula["perl-xml-parser"].libexec/"lib/perl5" unless OS.mac?
 
     ENV.cxx11
-    system "./configure", "--disable-silent-rules", "--disable-schemas-compile",
-                          *std_configure_args.reject { |s| s["--disable-debug"] }
+    system "./configure", "--disable-silent-rules",
+                          "--disable-schemas-compile",
+                          *std_configure_args
     system "make", "install"
   end
 
   def post_install
-    system "#{Formula["glib"].opt_bin}/glib-compile-schemas", "#{HOMEBREW_PREFIX}/share/glib-2.0/schemas"
+    system Formula["glib"].opt_bin/"glib-compile-schemas", HOMEBREW_PREFIX/"share/glib-2.0/schemas"
   end
 
   test do

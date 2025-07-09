@@ -22,6 +22,7 @@ class Access < Formula
 
   # service sunset notice, https://web.archive.org/web/20240707220001/https://indent.com/
   deprecate! date: "2024-07-07", because: :unmaintained
+  disable! date: "2025-07-07", because: :unmaintained
 
   depends_on "go" => :build
 

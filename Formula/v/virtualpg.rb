@@ -10,6 +10,8 @@ class Virtualpg < Formula
     regex(/href=.*?virtualpg[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia: "8e204f28da296c7deb1ce80831b2bfe8d7456aa540642c554de86f031c7aabad"
@@ -17,6 +19,7 @@ class Virtualpg < Formula
     sha256 cellar: :any,                 arm64_ventura: "666a4cdf6831d4a2d8ca68c9f1674a23215d947dae38c6a5a966f051d172ba4d"
     sha256 cellar: :any,                 sonoma:        "19e10266fbc74189b0acd7ed6e8d9026008ccf7f7731ef66cbe093caf2e79ec8"
     sha256 cellar: :any,                 ventura:       "8f2292bbe12befda53781d168e3a0dc8fdbf3b387e53abf920a25971605b42cc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e8800783153dea8ff0de92a169b8a9810aa69e0682ca0fd567c983d8925e42c1"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "6a3eea533c6345f3ba72760bb196a0c673414e87b02763a4cb48f260acdce535"
   end
 

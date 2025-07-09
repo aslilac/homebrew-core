@@ -9,6 +9,8 @@ class S3cmd < Formula
   revision 1
   head "https://github.com/s3tools/s3cmd.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia: "b14b322ca3b3b43c0f0ef051dee2908cf1c16482d4e7ba74a1865860c8956edd"
@@ -16,6 +18,7 @@ class S3cmd < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "b14b322ca3b3b43c0f0ef051dee2908cf1c16482d4e7ba74a1865860c8956edd"
     sha256 cellar: :any_skip_relocation, sonoma:        "95771bafe9227af6ab7289809d0e989403d0a41f538db66afd963048fbc7a18a"
     sha256 cellar: :any_skip_relocation, ventura:       "95771bafe9227af6ab7289809d0e989403d0a41f538db66afd963048fbc7a18a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b9423264039751971eb13ebd7df19bbe138a14280e71f633cc0a396285e1dcd1"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "7ff809e6935a4f1e5973d1e6d60ee4f04d9aecc4151f3a734df55d4ea3609b90"
   end
 
@@ -42,7 +45,14 @@ class S3cmd < Formula
   end
 
   test do
-    assert_match ".s3cfg: None", shell_output("#{bin}/s3cmd ls s3://brewtest 2>&1", 78)
+    (testpath/".s3cfg").write <<~INI
+      [default]
+      access_key = FAKE_KEY
+      secret_key = FAKE_SECRET
+    INI
+    output = shell_output("#{bin}/s3cmd ls s3://brewtest 2>&1", 77)
+    assert_match "ERROR: S3 error: 403 (InvalidAccessKeyId)", output
+
     assert_match "s3cmd version #{version}", shell_output("#{bin}/s3cmd --version")
   end
 end

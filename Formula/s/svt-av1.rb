@@ -1,27 +1,60 @@
 class SvtAv1 < Formula
   desc "AV1 encoder"
   homepage "https://gitlab.com/AOMediaCodec/SVT-AV1"
-  url "https://gitlab.com/AOMediaCodec/SVT-AV1/-/archive/v2.2.1/SVT-AV1-v2.2.1.tar.bz2"
-  sha256 "3fd002b88816506f84b6d624659be5cbadb4cdf5a11258a5cbc6bfc488c82d01"
+  url "https://gitlab.com/AOMediaCodec/SVT-AV1/-/archive/v3.0.2/SVT-AV1-v3.0.2.tar.bz2"
+  sha256 "7548a380cd58a46998ab4f1a02901ef72c37a7c6317c930cde5df2e6349e437b"
   license "BSD-3-Clause"
   head "https://gitlab.com/AOMediaCodec/SVT-AV1.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "b4ebfab3d3697247524c182b84ecdd03df646cb646aa922b7b844ddd9454032f"
-    sha256 cellar: :any,                 arm64_sonoma:   "c6286d14ed2e49b1258acc3c3a5f6eb8139ba6cbd99b72f4a9ee33704a7d3db5"
-    sha256 cellar: :any,                 arm64_ventura:  "60999334966012dfcd9697d0c9d5ba1659aa4260e061149d9e94272c37721810"
-    sha256 cellar: :any,                 arm64_monterey: "37e32b9bd08e1dcb6b1637a2f61fd81723e089f9d8cba24d874396256d9a8ca4"
-    sha256 cellar: :any,                 sonoma:         "974fe9df82f74045f99246c1960fd1d2a613a5d5387dc8edc024867a4d64a392"
-    sha256 cellar: :any,                 ventura:        "478337cfa8ea15ad1cc8f401f8cad22ca4879e7dfb2f8509f52f2a9f9ee8aba2"
-    sha256 cellar: :any,                 monterey:       "fc42a8ac4e250d8e75dd4633285341dbb228de0bc8710cbacccc0cac6fa0f55b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b5171551831f7bdb18ecd55525efbc1189ab6f772ccb586ff9ba19d5f0ef6575"
+    sha256 cellar: :any,                 arm64_sequoia: "e93837b76e46e9cfff5d2826fdeb6312842353b899d3e851c81d943e3cb87b57"
+    sha256 cellar: :any,                 arm64_sonoma:  "21b309a7920d93b2f017114dfb76c770406bd5238e8fdd74b68717f50f4b9b59"
+    sha256 cellar: :any,                 arm64_ventura: "3c65e6a356f2f09e9c8c7f1e9ca6ed44668646c70e4385a7319c2f4a0a58b181"
+    sha256 cellar: :any,                 sonoma:        "075d6d284e3c9ec2c83b0295e8a7de3a98f5e80cd20a8829ab5a8c05e72acd3b"
+    sha256 cellar: :any,                 ventura:       "4e251d72c313bde400f5a8cacda21b165c28177ea7c3a16f0a56fbfb115f677b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8cdfe2836145ff6d33e546172d80acb58ae823f12bd43dd11163f285c885d7b5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7e47620efee4766014dbfe212857f627f5b04c0cd30c99f57e53c145dd553820"
   end
 
   depends_on "cmake" => :build
   depends_on "nasm" => :build
 
+  # Match the version of cpuinfo specified in https://gitlab.com/AOMediaCodec/SVT-AV1/-/blob/master/cmake/cpuinfo.cmake
+  resource "cpuinfo" do
+    url "https://github.com/1480c1/cpuinfo/archive/e649baaa95efeb61517c06cc783287d4942ffe0e.tar.gz"
+    sha256 "f89abf172b93d75a79a5456fa778a401ab2fc4ef84d538f5c4df7c6938591c6f"
+  end
+
   def install
-    system "cmake", "-S", ".", "-B", "build", "-DCMAKE_INSTALL_RPATH=#{rpath}", *std_cmake_args
+    # Features are enabled based on compiler support, and then the appropriate
+    # implementations are chosen at runtime.
+    # See https://gitlab.com/AOMediaCodec/SVT-AV1/-/blob/master/Source/Lib/Codec/common_dsp_rtcd.c
+    ENV.runtime_cpu_detection
+
+    (buildpath/"cpuinfo").install resource("cpuinfo")
+
+    cd "cpuinfo" do
+      args = %W[
+        -DCPUINFO_BUILD_TOOLS=OFF
+        -DCPUINFO_BUILD_UNIT_TESTS=OFF
+        -DCPUINFO_BUILD_MOCK_TESTS=OFF
+        -DCPUINFO_BUILD_BENCHMARKS=OFF
+        -DCMAKE_INSTALL_PREFIX=#{buildpath}/cpuinfo-install
+        -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+      ] + std_cmake_args.reject { |arg| arg.start_with? "-DCMAKE_INSTALL_PREFIX=" }
+
+      system "cmake", "-S", ".", "-B", "cpuinfo-build", *args
+      system "cmake", "--build", "cpuinfo-build"
+      system "cmake", "--install", "cpuinfo-build"
+    end
+
+    args = %W[
+      -DCMAKE_INSTALL_RPATH=#{rpath}
+      -DUSE_CPUINFO=SYSTEM
+      -Dcpuinfo_DIR=#{buildpath/"cpuinfo-install/share/cpuinfo"}
+    ]
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
@@ -34,6 +67,6 @@ class SvtAv1 < Formula
 
     testpath.install resource("homebrew-testvideo")
     system bin/"SvtAv1EncApp", "-w", "64", "-h", "64", "-i", "video_64x64_yuv420p_25frames.yuv", "-b", "output.ivf"
-    assert_predicate testpath/"output.ivf", :exist?
+    assert_path_exists testpath/"output.ivf"
   end
 end

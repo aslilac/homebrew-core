@@ -6,6 +6,8 @@ class Carton < Formula
   license any_of: ["Artistic-1.0-Perl", "GPL-1.0-or-later"]
   head "https://github.com/perl-carton/carton.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "228551b5317d850f5ba6cc3dcf31eced4f9df54d28a804ce0dbf24652ca30e75"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "378f8a49ede0e31685f2086f07967294534e910c18d5427542b2b9093dbe57c2"
@@ -17,6 +19,7 @@ class Carton < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "ae0fcb618fd8b91fb40d7e52ed07d1ccb8a76ef5fabe0f7a73772f7f63a9979f"
     sha256 cellar: :any_skip_relocation, big_sur:        "ae0fcb618fd8b91fb40d7e52ed07d1ccb8a76ef5fabe0f7a73772f7f63a9979f"
     sha256 cellar: :any_skip_relocation, catalina:       "ae0fcb618fd8b91fb40d7e52ed07d1ccb8a76ef5fabe0f7a73772f7f63a9979f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "7b81c0ac17f7fe741e5129166180f44ea13271b3dd283efd97dd4b5b4b0f9cb3"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2b241c14b6caf27b5e0a7eb694e31c186a60670a72a47834eda4883947ce5b89"
   end
 

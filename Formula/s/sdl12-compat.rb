@@ -11,6 +11,8 @@ class Sdl12Compat < Formula
     regex(/^release[._-]v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "7629feebea88788075d1b222b1096b9f7c1a412fa7dfd5874cfc9ecedeb3cee3"
     sha256 cellar: :any,                 arm64_sonoma:   "4948b9d4e38766595d0c173458b97c00121834dd6b4161496a09fec4fc094950"
@@ -19,6 +21,7 @@ class Sdl12Compat < Formula
     sha256 cellar: :any,                 sonoma:         "e5a972e8c3bd9012f6dca3512f1953c4f7f9b1f1580b7066b930fa9fabc54150"
     sha256 cellar: :any,                 ventura:        "f355c15e6d99d002a44af8689e835ab14765f0abea078b40c1301283cbd28535"
     sha256 cellar: :any,                 monterey:       "30cbfb49ab9560fcce09b372ad986a74caa3007704012454f76cc4416dfa0e93"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "80c3aba4d8108403066285fc7841895247ae5bfbf9e75c188cb5667cd14cee7b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ac00966975256217cace0e9acf45e8659d5d668e16972a072eb6c298ff630fa2"
   end
 
@@ -42,11 +45,11 @@ class Sdl12Compat < Formula
   end
 
   test do
-    assert_predicate lib/shared_library("libSDL"), :exist?
+    assert_path_exists lib/shared_library("libSDL")
     versioned_libsdl = "libSDL-1.2"
     versioned_libsdl << ".0" if OS.mac?
-    assert_predicate lib/shared_library(versioned_libsdl), :exist?
-    assert_predicate lib/"libSDLmain.a", :exist?
+    assert_path_exists lib/shared_library(versioned_libsdl)
+    assert_path_exists lib/"libSDLmain.a"
     assert_equal version.to_s, shell_output("#{bin}/sdl-config --version").strip
 
     (testpath/"test.c").write <<~C

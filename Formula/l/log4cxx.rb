@@ -1,25 +1,24 @@
 class Log4cxx < Formula
   desc "Library of C++ classes for flexible logging"
   homepage "https://logging.apache.org/log4cxx/index.html"
-  url "https://www.apache.org/dyn/closer.lua?path=logging/log4cxx/1.3.0/apache-log4cxx-1.3.0.tar.gz"
-  mirror "https://archive.apache.org/dist/logging/log4cxx/1.3.0/apache-log4cxx-1.3.0.tar.gz"
-  sha256 "801520fe8b664df2216c5194524a03efb234326f24347e778c27e4f59f913c42"
+  url "https://www.apache.org/dyn/closer.lua?path=logging/log4cxx/1.4.0/apache-log4cxx-1.4.0.tar.gz"
+  mirror "https://archive.apache.org/dist/logging/log4cxx/1.4.0/apache-log4cxx-1.4.0.tar.gz"
+  sha256 "3d2d1f356a546c14562763aaf15fcc3fd59d4ffeb5a2f68fcb0bbd7571ed6f96"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "dc0e35478e8d145eb1d00e622ee641f1b69b5e4922b5e62cd6f40bba5e243fe3"
-    sha256 cellar: :any,                 arm64_sonoma:  "9dc096c5dda72f4bb58ae947b45668d60e9afbc4a4fa897e0e165f9071f46fab"
-    sha256 cellar: :any,                 arm64_ventura: "4692f58f8f661c207dc7e74198b8efe766981c11e1efd620c9401f7bc5806ef3"
-    sha256 cellar: :any,                 sonoma:        "f1839934223cce206804d2342975fd31aa3d8acab39e9e5f6bac3bee36cf3511"
-    sha256 cellar: :any,                 ventura:       "cbf741236036414c70cf27666fd7d88143cb762967762fc31b21f347d0c27e5e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "17829bf537d780bb62f4dacb2a1420ce07915eea0add5f4a4d11914c18e2e354"
+    sha256 cellar: :any,                 arm64_sequoia: "6b6a997c8d90c6512afae918d7b44b86bb7d01f76d23b74ff2e78f85b37fe874"
+    sha256 cellar: :any,                 arm64_sonoma:  "485bed48c83644ecb085b6484dfe3649ed67fbad384c8eb9218f1bf434743887"
+    sha256 cellar: :any,                 arm64_ventura: "317df9001cb2c399dff56f52a27c5a5bc97e1b6c94916f5adae651270980b36c"
+    sha256 cellar: :any,                 sonoma:        "daaa2bc0fd4e9a91892c625d9f41f6e87237d54811eb5b4afec1bd35d84a482c"
+    sha256 cellar: :any,                 ventura:       "da0e6890b5b2188e034584dbeea0327f475dfa305e1e482d457c93d5708bbc12"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "47823f5f2c6cb811c3c8b853b5989dba6277d0344adae7adde4d34dffd49b4c3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1b594119142a0c99175b561b2048a7272e93091a039ea3f1d45671eddec0a625"
   end
 
   depends_on "cmake" => :build
   depends_on "apr"
   depends_on "apr-util"
-
-  fails_with gcc: "5" # needs C++17 or Boost
 
   def install
     system "cmake", "-S", ".", "-B", "build", "-DBUILD_SHARED_LIBS=ON", *std_cmake_args

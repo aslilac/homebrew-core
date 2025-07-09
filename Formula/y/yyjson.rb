@@ -1,26 +1,25 @@
 class Yyjson < Formula
   desc "High performance JSON library written in ANSI C"
   homepage "https://github.com/ibireme/yyjson"
-  url "https://github.com/ibireme/yyjson/archive/refs/tags/0.10.0.tar.gz"
-  sha256 "0d901cb2c45c5586e3f3a4245e58c2252d6b24bf4b402723f6179523d389b165"
+  url "https://github.com/ibireme/yyjson/archive/refs/tags/0.11.1.tar.gz"
+  sha256 "610a38a5e59192063f5f581ce0c3c1869971c458ea11b58dfe00d1c8269e255d"
   license "MIT"
   head "https://github.com/ibireme/yyjson.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "e65d628c23f52ed3078fa3078cb66b8db8e11f4a890598794973fa41b8c17a79"
-    sha256 cellar: :any,                 arm64_sonoma:   "9ab9c2ecf8f02f0c781afa350b60bfedc128100a6fc33a39f8fda630797c10b1"
-    sha256 cellar: :any,                 arm64_ventura:  "8085a2cccc46355a7cd7de87f15b65705e32bc7095edac87a55d0544befce88a"
-    sha256 cellar: :any,                 arm64_monterey: "d83d78ab70d9243f1b1efb995f933de45b24b78bbc304f078ff5b937ff105d00"
-    sha256 cellar: :any,                 sonoma:         "04f0f2b5ec7c3940b6fefe7dfc3a8478b370bae125c7933565584c73f9a28480"
-    sha256 cellar: :any,                 ventura:        "b32d5220a84af677e9ba28e60c90f7c5797a8cf97020a33f16a3bd931bb538d9"
-    sha256 cellar: :any,                 monterey:       "c73550bf23abcf2cd1ab01f1ee704cd933694785cb574115a6b347fc72aa250a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1dec9417966cf48f6459914f0a32d46b608a0fe8068590b2643d1f08e8accf24"
+    sha256 cellar: :any,                 arm64_sequoia: "be33f4c52f3a3ca9e3bec1672536ba743a3b1635d42179ab9173b945b9d4a6c4"
+    sha256 cellar: :any,                 arm64_sonoma:  "6ff845ea14ced22f1f3585c87f32dcbbfdcc43da79b047c2b7e03eb403edabb7"
+    sha256 cellar: :any,                 arm64_ventura: "a27c8654370e7639f4358137195d56e38bd8b99f32eaa9d3bbf530b449116b5c"
+    sha256 cellar: :any,                 sonoma:        "d0c7ae8b75e9aaca959798ab7e39093f7afcd76584bcc46edb8c74425af4c255"
+    sha256 cellar: :any,                 ventura:       "4f6b77f8784820f415fcc8ce870181dccae2a7c6b322d46e781d3ebdedda20e5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "91527b3761383f2f462b56111bff0add9a29daa372db3a81a69ca6e2102874e3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7cc670a7221472e4bc8893a82e54b0d7c7a777486db590d1b068714b7e107570"
   end
 
   depends_on "cmake" => :build
 
   def install
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, "-DBUILD_SHARED_LIBS=ON"
+    system "cmake", "-S", ".", "-B", "build", "-DBUILD_SHARED_LIBS=ON", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

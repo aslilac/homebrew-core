@@ -1,8 +1,8 @@
 class Zigmod < Formula
   desc "Package manager for the Zig programming language"
   homepage "https://nektro.github.io/zigmod/"
-  url "https://github.com/nektro/zigmod/archive/refs/tags/r93.tar.gz"
-  sha256 "302162e6ba66ee8abe028b5d61fe1c474ec50eadfb6481dc782702126fddb639"
+  url "https://github.com/nektro/zigmod/archive/refs/tags/r98.tar.gz"
+  sha256 "a7fc24e2784bf35660e7736b92f63049cbd6c98693724c930a1755284c20cabc"
   license "MIT"
 
   livecheck do
@@ -11,12 +11,12 @@ class Zigmod < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "420f7558e02cced834ae9109dfb12b93a864510c582af36d097cbb25a3379fc0"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3ada99291a14a4b050d9021469d4912be19098785d6d557ccfd09f7613dbce43"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "6dde24eaa99843a68b0f5c59f95c3a7116afd326b315d8a30f519cd6eb099c79"
-    sha256 cellar: :any_skip_relocation, sonoma:        "61702ca7b0671790b8598c55957f3cd53b6f215907be3add1f9de06f3da746ad"
-    sha256 cellar: :any_skip_relocation, ventura:       "dfd79a1b16483e86d85867b7494952d6a9c05dbc26c0924fd952106370e41500"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "41a39652f9ed4f90a02280a3064bfa9a16746fda7af518d886280e86dceeb068"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9ff38379c6544b1c8d59e7f8859a8b0f525e28641daf2169cc678dfadf7e08da"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "81e04b9abb26106139fc02dd432eb6414765fb628fcc94cb438eca21d546b300"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "452789666788c8fc49734e0b45e2387766129a7df577680375419299f45a1b23"
+    sha256 cellar: :any_skip_relocation, sonoma:        "59088c6d7e3d66a9831c094a37a2f5cef94f41efdb795c32ff28b158f470a66f"
+    sha256 cellar: :any_skip_relocation, ventura:       "1a50f4a916744e595d706c2981e2de16945ecc0b2b783d98fde78a39bc34f16e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e666d0c5fe0d8de4c76617fd9dbf0584470919b89946b730f637b303ef45ed00"
   end
 
   depends_on "pkgconf" => :build
@@ -30,20 +30,22 @@ class Zigmod < Formula
     else Hardware.oldest_cpu
     end
 
+    # do not use std_zig_args
+    # https://github.com/nektro/zigmod/pull/109
     args = %W[
       --prefix #{prefix}
       -Dtag=#{version}
       -Dmode=ReleaseSafe
       -Dstrip=true
+      -fno-rosetta
     ]
 
     args << "-Dcpu=#{cpu}" if build.bottle?
-
     system "zig", "build", *args
   end
 
   test do
-    (testpath/"zig.mod").write <<~EOS
+    (testpath/"zigmod.yml").write <<~YAML
       id: 89ujp8gq842x6mzok8feypwze138n2d96zpugw44hcq7406r
       name: zigmod
       main: src/lib.zig
@@ -52,18 +54,18 @@ class Zigmod < Formula
       min_zig_version: 0.11.0
       dependencies:
         - src: git https://github.com/nektro/zig-yaml
-    EOS
+    YAML
 
-    (testpath/"src/lib.zig").write <<~EOS
+    (testpath/"src/lib.zig").write <<~ZIG
       const std = @import("std");
       pub fn main() !void {
         std.log.info("Hello, world!");
       }
-    EOS
+    ZIG
 
     system bin/"zigmod", "fetch"
-    assert_predicate testpath/"deps.zig", :exist?
-    assert_predicate testpath/"zigmod.lock", :exist?
+    assert_path_exists testpath/"deps.zig"
+    assert_path_exists testpath/"zigmod.lock"
 
     assert_match version.to_s, shell_output("#{bin}/zigmod version")
   end

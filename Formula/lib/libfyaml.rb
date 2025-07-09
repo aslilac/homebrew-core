@@ -5,6 +5,8 @@ class Libfyaml < Formula
   sha256 "7731edc5dfcc345d5c5c9f6ce597133991a689dabede393cd77bae89b327cd6d"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "4296a8c80863d912ba93d237d0635b4b6568dfaec713cd69d5424ea77ad4097e"
     sha256 cellar: :any,                 arm64_sonoma:   "f048b398ea675ff84cffed39be72aad7aebc2ff7b343291e82982e1d8aa299bc"
@@ -13,6 +15,7 @@ class Libfyaml < Formula
     sha256 cellar: :any,                 sonoma:         "6758d7c2b7667096e19a1b6f5a41b072fe34aafda17650fc873b781eeebc7211"
     sha256 cellar: :any,                 ventura:        "24121cefb2cdd277652bfc857f9fd2b01042769aeeb9a622aba142e978ba99c0"
     sha256 cellar: :any,                 monterey:       "4730aa6a64ffd960a0d82cbcc69734ffddb7abf29ae27450dfed7fc818a17935"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "d657e265f72bf3f8704c2d903d419ecbf89ad79803c4b67563e619733530117d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1e4efc82a84ba883c56fe0ee85008a68a91863460ae0eae5dc02952143c8983d"
   end
 

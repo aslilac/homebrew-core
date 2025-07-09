@@ -1,18 +1,19 @@
 class Convco < Formula
   desc "Conventional commits, changelog, versioning, validation"
   homepage "https://convco.github.io"
-  url "https://github.com/convco/convco/archive/refs/tags/v0.6.1.tar.gz"
-  sha256 "ed68341e065f76f22b6d93ff3686836a812f6a031dc7ee00bed7e048b0da4294"
+  url "https://github.com/convco/convco/archive/refs/tags/v0.6.2.tar.gz"
+  sha256 "6f8e58f8572a785e32d287cad80d174303a5db5abc4ce0cf50022e05125549dd"
   license "MIT"
-  head "https://github.com/convco/convco.git", branch: "master"
+  head "https://github.com/convco/convco.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "e18c04a894c906be8f793678c6eeb79b471253036813a154c4531dc791b941b9"
-    sha256 cellar: :any,                 arm64_sonoma:  "6f3676b484578a35386192edf44e82e2ce028befef87ad40b5b6d6b89995425e"
-    sha256 cellar: :any,                 arm64_ventura: "963b46df26ac69066af13e1cbec5672a6d8005363053e474f099101484b98352"
-    sha256 cellar: :any,                 sonoma:        "05bf86ff418758f4c82fb9e1d931f1f58804c21e35807c79dea4c63127056d76"
-    sha256 cellar: :any,                 ventura:       "ecf3ab426b73d4519e34d2cdd50d070ff8074e3ce2b4131a242a784349504a74"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4e0109d8ad3f830c0307d2350f190ef1afad564ac1af83120cc5fb72e3d41114"
+    sha256 cellar: :any,                 arm64_sequoia: "e1c093220b014473d3a149c15ae6b832e5bd00a29f53e4536e7e61c5f5d23fc7"
+    sha256 cellar: :any,                 arm64_sonoma:  "8735477bfe61112d9b04356962c578a92ce2b446cb05086932e9ef8d2c452a28"
+    sha256 cellar: :any,                 arm64_ventura: "e66f77d70c4c03b8a9057b0bb1625bc299a53f6ff009df8360a337ec1295cc76"
+    sha256 cellar: :any,                 sonoma:        "e43a535594de8583f7313f689d34110c44d8470848187d3996f1c3ec1ff91d0f"
+    sha256 cellar: :any,                 ventura:       "cb1e5727f7cfee8c3a2c83e916cf870a99ee440d238727cc3d89c8d062eedc69"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8a970e8d83d06d8484d388e474354b61c547792c1e27ed72ad2f8eb0d6008b80"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "889fe4c5139b8dd815723ed30fad7566fdee06967247cfae99bf5604ec394991"
   end
 
   depends_on "pkgconf" => :build

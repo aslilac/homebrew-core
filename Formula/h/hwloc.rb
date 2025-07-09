@@ -1,8 +1,8 @@
 class Hwloc < Formula
   desc "Portable abstraction of the hierarchical topology of modern architectures"
   homepage "https://www.open-mpi.org/projects/hwloc/"
-  url "https://download.open-mpi.org/release/hwloc/v2.11/hwloc-2.11.2.tar.bz2"
-  sha256 "f7f88fecae067100f1a1a915b658add0f4f71561259482910a69baea22fe8409"
+  url "https://download.open-mpi.org/release/hwloc/v2.12/hwloc-2.12.1.tar.bz2"
+  sha256 "38a90328bb86259f9bb2fe1dc57fd841e111d1e6358012bef23dfd95d21dc66b"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,12 +11,13 @@ class Hwloc < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "5e06b0910951fc93871258bc0470121dee0d30b8648a3486f28560b11b113aa4"
-    sha256 cellar: :any,                 arm64_sonoma:  "3326ee8e9bc54d139eef489ace43a53cc0ea4bb1791cadef30f8ac7072923958"
-    sha256 cellar: :any,                 arm64_ventura: "a9f8c1727ac42f73b51b014f71d0682200e7b08e3f46ed2e03a1db47ba58525a"
-    sha256 cellar: :any,                 sonoma:        "2b05c795f132fb9cba84ec4b2e3b66ab3b8d819b807b3777dafe9b9e3dda1327"
-    sha256 cellar: :any,                 ventura:       "02ca60d14701ebf17edfb09ce815dce1babf56006225d0b345223537fb9e8760"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "68ac02a2a9f8af59f6f453515f445c30a106c6cd34b2d947d6be71af103e96c5"
+    sha256 cellar: :any,                 arm64_sequoia: "90fafd57899d674e5f653f5c7c9d964f992877eb2a1d74364ea9cb14f9063149"
+    sha256 cellar: :any,                 arm64_sonoma:  "ed649bbbddd8352d9d7c8e36f9968cb1975b86378a2ee686637977e6f7a59190"
+    sha256 cellar: :any,                 arm64_ventura: "1b19f3b8775e2ed4ec5ec212199c136e3f427321bc4fc19c5a35df543405fbab"
+    sha256 cellar: :any,                 sonoma:        "270040ceedd93532189119df30d37a666125a16b7679bfb8466e5795d5e788cf"
+    sha256 cellar: :any,                 ventura:       "d0052e70d0877350983882f598575d38d81e771fe4d567491eae9f25789d45e5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "27aadfd1d6983986febec9f2feab8092bbe86561403bcbb6ce1072bcfb0db2e4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e0cdd5ecab9208d5919050bfecdb84dee087fccaa460d4832e4ed3e859441a9c"
   end
 
   head do

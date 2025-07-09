@@ -10,6 +10,8 @@ class Rgf < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b562241e4a197e502fe1483c9a613bb9c32c272a94583a6f8ef26a1844ed644e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a6b81f03b0a52638c91d73ed4681476019f1d1ca9be5f61a2e044e48af2b6fe7"
@@ -21,6 +23,7 @@ class Rgf < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "38590bb69ccb839d3e426f41c8ab17027f22e6de79fcee7eab17836f94c73728"
     sha256 cellar: :any_skip_relocation, big_sur:        "e487b14cb36a718bdf90e2b5d8fecc8850664045bdd0a54437704f98a3abcc12"
     sha256 cellar: :any_skip_relocation, catalina:       "e7865fed340b07b2bdf21c3e70fe2ec82019a58e5758e66314d0a48ba7982d4a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "6f11ae925171c29d72b392dde35ae3b131801a15c744d29c0abb82026b5cb2f0"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4cd5ac79b7dd6fb913e3ca16bdb1ca96e596f3aecd293a6059d70b1ea7d5abdd"
   end
 

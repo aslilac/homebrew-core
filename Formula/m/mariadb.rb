@@ -1,9 +1,8 @@
 class Mariadb < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  # TODO: Build with `-DWITH_LIBFMT=system` when fmt >= 11
-  url "https://archive.mariadb.org/mariadb-11.6.2/source/mariadb-11.6.2.tar.gz"
-  sha256 "7bad85bd1c77168afcae5db1396c0c52044dc044f7eae6fff5ac3cd4dec89bbd"
+  url "https://archive.mariadb.org/mariadb-11.8.2/source/mariadb-11.8.2.tar.gz"
+  sha256 "b2162cdf5e9317d8a8621cbeda83999324fc0ac8944210e14abb5fe0a9fea3ef"
   license "GPL-2.0-only"
 
   livecheck do
@@ -18,18 +17,19 @@ class Mariadb < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "7062cdab377f1e6edda560e1634ce08e44a64fdb1ee5825584d9ce379742aa46"
-    sha256 arm64_sonoma:  "f991ae1d9404fb23b3b61e522e9c17aa87365fc3e24d31b4639930773ecb2dc3"
-    sha256 arm64_ventura: "881af9b755c71ed838a3cc9c208a9928af60530539705a8a40f1ba2e8d4729d3"
-    sha256 sonoma:        "69d2edbf6b7888cfba5461ad445a32b2e6f1debc834530356c27f6d34d74b2a9"
-    sha256 ventura:       "37a34771e6da7726e3d9428a073a230cdcaf277db54c1219a0a964c1dada1887"
-    sha256 x86_64_linux:  "f2e42e6c4e6589287c1ad1de569ceab4c2cc78f61c60f27428b3b6c71baf71cf"
+    sha256 arm64_sequoia: "8e08c5a51cbc601380fe15910ee5125fbde2bd77c8d1890d5ebc521ad0d70424"
+    sha256 arm64_sonoma:  "a4286e2a03ceb9b44e411b3ef990eae18c0c47ced9c5e31e1d973be0b597ea78"
+    sha256 arm64_ventura: "1dc60ebda7ace5530f135d5df4b1bd9a0c9e3bf77165abccc4f8b57d70d0923f"
+    sha256 sonoma:        "fede2f4bad07d091fc504197718dc3cf9b538a7eeee13cc1b8e97741eb8a014e"
+    sha256 ventura:       "0c9beca76b42288a9d883aa16f744837e24c35a43e3c80cc92e693630560154c"
+    sha256 arm64_linux:   "8c3194c1f935cab5046c1342e598dbe04e30e6fd01d3a22e7bd7e16c5278e75c"
+    sha256 x86_64_linux:  "e7b76e119978b1bac6d8f704de2e8512000c329e77c152ea4fd4b510eb46664c"
   end
 
   depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "fmt" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "groonga"
   depends_on "lz4"
   depends_on "lzo"
@@ -55,11 +55,10 @@ class Mariadb < Formula
   end
 
   conflicts_with "mysql", "percona-server", because: "mariadb, mysql, and percona install the same binaries"
-  conflicts_with "mytop", because: "both install `mytop` binaries"
-
-  fails_with gcc: "5"
 
   def install
+    ENV.runtime_cpu_detection
+
     # Set basedir and ldata so that mysql_install_db can find the server
     # without needing an explicit path to be set. This can still
     # be overridden by calling --basedir= when calling.
@@ -81,6 +80,7 @@ class Mariadb < Formula
       -DINSTALL_DOCDIR=share/doc/#{name}
       -DINSTALL_INFODIR=share/info
       -DINSTALL_MYSQLSHAREDIR=share/mysql
+      -DWITH_LIBFMT=system
       -DWITH_PCRE=system
       -DWITH_SSL=system
       -DWITH_ZLIB=system
@@ -121,6 +121,9 @@ class Mariadb < Formula
     inreplace "#{prefix}/support-files/mysql.server", /^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2"
 
     bin.install_symlink prefix/"support-files/mysql.server"
+
+    # Fix user variable used by su_kill - Credit: https://stackoverflow.com/questions/59936589
+    inreplace "#{prefix}/support-files/mysql.server", /^user='mysql'/, "user=$(whoami)"
 
     # Move sourced non-executable out of bin into libexec
     libexec.install "#{bin}/wsrep_sst_common"

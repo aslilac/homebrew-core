@@ -6,6 +6,8 @@ class Argtable < Formula
   sha256 "8f77e8a7ced5301af6e22f47302fdbc3b1ff41f2b83c43c77ae5ca041771ddbf"
   license "LGPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "ac1c99cc90796da54dcfa48415939944d6608a1284d6c1eb2650d43717a4d622"
     sha256 cellar: :any,                 arm64_sonoma:   "0f2a92f017739cf52ff30229bbbb87fed5e9d818ae9655685227d5f72a94825a"
@@ -21,6 +23,7 @@ class Argtable < Formula
     sha256 cellar: :any,                 high_sierra:    "e68b3df66d638a024c3b57b069bcdebfbdabb230a9c851de886321c2b3df7099"
     sha256 cellar: :any,                 sierra:         "9485d1e045ed40c0145eb867f9d24425ccedd53b4f0cb0ec949139b0c99507c7"
     sha256 cellar: :any,                 el_capitan:     "0a720e738557215bf1b58fa642ec2fc51971da38e98b987862fcd05cc54756f7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "cb7cc898c5016f533115709f43cb216842c242caf7aa2e4b8e5a178cc9c9572b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "784464fba494301f0f28dfe309112e99267a2a9084243916283ba7c6e2db0a48"
   end
 
@@ -34,8 +37,11 @@ class Argtable < Formula
     # Fix compile with newer Clang
     ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = []
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

@@ -1,18 +1,18 @@
 class Ipmiutil < Formula
   desc "IPMI server management utility"
   homepage "https://ipmiutil.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/ipmiutil/ipmiutil-3.1.9.tar.gz"
-  sha256 "5ae99bdd1296a8e25cea839784ec39ebca57b0e3701b2d440b8e02e22dc4bc95"
+  url "https://downloads.sourceforge.net/project/ipmiutil/ipmiutil-3.2.1.tar.gz"
+  sha256 "04811b2e657ff98cd31e44b91a700c9f33c4c9dd93a36c8fc987de1f47c24024"
   license all_of: ["BSD-2-Clause", "BSD-3-Clause", "GPL-2.0-or-later"]
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cae2294a98966889ce7158ab6506ed7b1f87e6d981bff197e8c8a34c9f6ea9c3"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "25a7bf60f294710207ada5b75c6cbbc0e7a5762ff06199151d676816dc9dd384"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "07ad84d82b2d7b16e484b81b8057e10911a82c880b9516dcad3b7e564028b6b4"
-    sha256 cellar: :any_skip_relocation, sonoma:        "1a79a69b51f5ea2e478d2b912900e6713eb91d7006b0e9ec73d597efcf4b81fe"
-    sha256 cellar: :any_skip_relocation, ventura:       "9d83f92e6b0c65b464c3cdaae66d13d7995fc875a76069180078758a1819048a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1a68d7956c2c4f06a13bd4ba7d67a05e3ca5e771030463db32b49d7426a0fdfc"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b18ce2d2673c32032f3448fee24b12041f9295d308ae2cd8012673e5d493140e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2d8932e2a1bb40be9409d1e6af6d317b358639854bb8bede8968cae75ddc47ab"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "3352de5466ef543f219504b8ea5cb36ae4b86394230792b3e58a608fb44a5b09"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c0a5db5e377eefc09019ff44dc4acead6bc7d39a5fbc905c69d2ec09f67b34a7"
+    sha256 cellar: :any_skip_relocation, ventura:       "81ce2a5170ab9e89315a1120048f357ae8b7658fce50b53caab7856b30615e11"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2e4cdaa053ef9087f6876ec170bee57b33179a2f3878f16fd2ea2ad9d7218492"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e8cb1651c4cb5ff74bbf0de01df94c49af156e8dd92df446a6cc105bf50be73c"
   end
 
   on_macos do
@@ -22,9 +22,6 @@ class Ipmiutil < Formula
   end
 
   conflicts_with "renameutils", because: "both install `icmd` binaries"
-
-  # add upstream build patch, upstream bug report, https://sourceforge.net/p/ipmiutil/support-requests/61/
-  patch :DATA
 
   def install
     # Workaround for newer Clang
@@ -56,52 +53,3 @@ class Ipmiutil < Formula
     system bin/"ipmiutil", "delloem", "help"
   end
 end
-
-__END__
-diff --git a/util/oem_dell.c b/util/oem_dell.c
-index b474ee3..b4d8112 100644
---- a/util/oem_dell.c
-+++ b/util/oem_dell.c
-@@ -4,6 +4,7 @@
-  *
-  * Change history:
-  *  08/17/2011 ARCress - included in ipmiutil source tree
-+ *  09/18/2024 ARCress - fix macos compile error with vFlashstr
-  *
-  */
- /******************************************************************
-@@ -157,8 +158,14 @@ static uint8_t SetLEDSupported=0;
- 
- volatile uint8_t IMC_Type = IMC_IDRAC_10G;
- 
-+typedef struct
-+{
-+    int val;
-+    char *str;
-+} vFlashstr;
- 
--const struct vFlashstr vFlash_completion_code_vals[] = {
-+// const struct vFlashstr vFlash_completion_code_vals[] = {
-+const vFlashstr  vFlash_completion_code_vals[] = {
- 	{0x00, "SUCCESS"},
- 	{0x01, "NO_SD_CARD"},
- 	{0x63, "UNKNOWN_ERROR"},
-@@ -250,7 +257,8 @@ static void ipmi_powermonitor_usage(void);
- 
- /* vFlash Function prototypes */
- static int ipmi_delloem_vFlash_main(void * intf, int  argc, char ** argv);
--const char * get_vFlash_compcode_str(uint8_t vflashcompcode, const struct vFlashstr *vs);
-+// const char * get_vFlash_compcode_str(uint8_t vflashcompcode, const struct vFlashstr *vs);
-+const char * get_vFlash_compcode_str(uint8_t vflashcompcode, const vFlashstr *vs);
- static int ipmi_get_sd_card_info(void* intf);
- static int ipmi_delloem_vFlash_process(void* intf, int current_arg, char ** argv);
- static void ipmi_vFlash_usage(void);
-@@ -4818,7 +4826,7 @@ static int ipmi_delloem_vFlash_main (void * intf, int  argc, char ** argv)
- *
- ******************************************************************/
- const char * 
--get_vFlash_compcode_str(uint8_t vflashcompcode, const struct vFlashstr *vs)
-+get_vFlash_compcode_str(uint8_t vflashcompcode, const vFlashstr *vs)
- {
- 	static char un_str[32];
- 	int i;

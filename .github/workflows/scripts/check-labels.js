@@ -24,7 +24,7 @@ module.exports = async ({github, context, core}, formulae_detect, dependent_test
       return
     }
 
-    var linux_runner = 'ubuntu-22.04'
+    var linux_runner = 'ubuntu-latest'
     if (label_names.includes(`CI-linux-self-hosted${deps_suffix}`)) {
       linux_runner = 'linux-self-hosted-1'
     } else if (label_names.includes(`CI-linux-large-runner${deps_suffix}`)) {
@@ -70,12 +70,7 @@ module.exports = async ({github, context, core}, formulae_detect, dependent_test
     }
 
     const test_bot_formulae_args = ["--only-formulae", "--junit", "--only-json-tab", "--skip-dependents"]
-    test_bot_formulae_args.push(`--testing-formulae="${formulae_detect.testing_formulae}"`)
-    test_bot_formulae_args.push(`--added-formulae="${formulae_detect.added_formulae}"`)
-    test_bot_formulae_args.push(`--deleted-formulae="${formulae_detect.deleted_formulae}"`)
-
     const test_bot_dependents_args = ["--only-formulae-dependents", "--junit"]
-    test_bot_dependents_args.push(`--tested-formulae="${formulae_detect.testing_formulae}"`)
 
     if (label_names.includes(`CI-test-bot-fail-fast${deps_suffix}`)) {
       console.log(`CI-test-bot-fail-fast${deps_suffix} label found. Passing --fail-fast to brew test-bot.`)

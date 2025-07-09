@@ -5,6 +5,8 @@ class Netmask < Formula
   sha256 "7e4801029a1db868cfb98661bcfdf2152e49d436d41f8748f124d1f4a3409d83"
   license "GPL-2.0-only"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "34b5efeb5d392402b007185b47d974e9a664dad743bcc135dae35e9db685c2b9"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "393080df1ab114d1d2beec62850676aa931445fe1b5dc99cad1b0454efe2a1ab"
@@ -16,6 +18,7 @@ class Netmask < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "278a82473770a98ef3704737f2c2f4902ad818af931ff3bb872798f3c9169424"
     sha256 cellar: :any_skip_relocation, big_sur:        "6e304176fcc71ee0657520960c4e6b12304ef9bce2a73135b5ff69d0fe68e2ac"
     sha256 cellar: :any_skip_relocation, catalina:       "1561dc4ab182e2a3ac7f66553f9a7695683467201355969a041199464333c029"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a282249ce6794465154293b1548ee88268476ba2447836f50356253fbd6577c9"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1cb4bad8bac486dc82f994b64c823e9830afc267992fbe48dfda89eb7687729a"
   end
 

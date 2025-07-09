@@ -1,27 +1,48 @@
 class Opencv < Formula
   desc "Open source computer vision library"
   homepage "https://opencv.org/"
-  url "https://github.com/opencv/opencv/archive/refs/tags/4.10.0.tar.gz"
-  sha256 "b2171af5be6b26f7a06b1229948bbb2bdaa74fcf5cd097e0af6378fce50a6eb9"
   license "Apache-2.0"
-  revision 12
-  head "https://github.com/opencv/opencv.git", branch: "4.x"
+  revision 1
+
+  stable do
+    url "https://github.com/opencv/opencv/archive/refs/tags/4.11.0.tar.gz"
+    sha256 "9a7c11f924eff5f8d8070e297b322ee68b9227e003fd600d4b8122198091665f"
+
+    resource "contrib" do
+      url "https://github.com/opencv/opencv_contrib/archive/refs/tags/4.11.0.tar.gz"
+      sha256 "2dfc5957201de2aa785064711125af6abb2e80a64e2dc246aca4119b19687041"
+
+      livecheck do
+        formula :parent
+      end
+    end
+  end
 
   livecheck do
     url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 arm64_sonoma:  "de25a8e698f799ef0ec18f6a10e68ced4662cbe434b15190bb1ae77a58e082cf"
-    sha256 arm64_ventura: "dd6e20b2ffd3f7d59ca63986c1ebd401a218cf60584f5b06b2633b6ad1183765"
-    sha256 sonoma:        "a1a65f508c0ff07d95b2d14719917bf70a28b39e1224c677dfb6bcfa76c6ff31"
-    sha256 ventura:       "1cfcea05855bb12f02327b073e2ff100a1aa2a09226260d362653ed580bb4009"
-    sha256 x86_64_linux:  "6372c078b4664d54f3b20c7dd89d1acad8c335f31dbd48f895c42c0312223c5d"
+    sha256 arm64_sonoma:  "14e468ccb54da0d671e31730284f933508d5195a208aca7a9b08541ada70c32a"
+    sha256 arm64_ventura: "b70e530ca8d0aeb8e6bc91a13c5d1fffd114fce6807f517b8d87c9375cf18b05"
+    sha256 sonoma:        "b2ff125058f1b6c8b409c3510d833fbd22ee9a025663f8acb91bab12d03aec5e"
+    sha256 ventura:       "690e423d0e51cca672a27d570f452ed7d8d867ba43d808ac7fb5156768d5d6c5"
+    sha256 x86_64_linux:  "f91667972adca2f3e7e286ab0a8cd1623b7b14954f01d233a7efb8143cf66e85"
+  end
+
+  head do
+    url "https://github.com/opencv/opencv.git", branch: "master"
+
+    resource "contrib" do
+      url "https://github.com/opencv/opencv_contrib.git", branch: "master"
+    end
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "python-setuptools" => :build
   depends_on "abseil"
   depends_on "ceres-solver"
@@ -41,7 +62,7 @@ class Opencv < Formula
   depends_on "openjpeg"
   depends_on "openvino"
   depends_on "protobuf"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
   depends_on "tbb"
   depends_on "tesseract"
   depends_on "vtk"
@@ -62,15 +83,8 @@ class Opencv < Formula
     depends_on "gtk+3"
   end
 
-  fails_with gcc: "5" # ffmpeg is compiled with GCC
-
-  resource "contrib" do
-    url "https://github.com/opencv/opencv_contrib/archive/refs/tags/4.10.0.tar.gz"
-    sha256 "65597f8fb8dc2b876c1b45b928bbcc5f772ddbaf97539bf1b737623d0604cba1"
-  end
-
   def python3
-    "python3.12"
+    "python3.13"
   end
 
   def install
@@ -78,9 +92,6 @@ class Opencv < Formula
 
     # Avoid Accelerate.framework
     ENV["OpenBLAS_HOME"] = Formula["openblas"].opt_prefix
-
-    # Reset PYTHONPATH, workaround for https://github.com/Homebrew/homebrew-science/pull/4885
-    ENV.delete("PYTHONPATH")
 
     # Remove bundled libraries to make sure formula dependencies are used
     libdirs = %w[ffmpeg libjasper libjpeg libjpeg-turbo libpng libtiff libwebp openexr openjpeg protobuf tbb zlib]
@@ -126,14 +137,12 @@ class Opencv < Formula
       -DPYTHON3_EXECUTABLE=#{which(python3)}
     ]
 
-    args += [
-      "-DCMAKE_FIND_PACKAGE_PREFER_CONFIG=ON", # https://github.com/protocolbuffers/protobuf/issues/12292
-      "-Dprotobuf_MODULE_COMPATIBLE=ON", # https://github.com/protocolbuffers/protobuf/issues/1931
-    ]
-
-    # Disable precompiled headers and force opencv to use brewed libraries on Linux
-    if OS.linux?
-      args += %W[
+    args += if OS.mac?
+      # Requires closed-source, pre-built Orbbec SDK on macOS
+      ["-DWITH_OBSENSOR=OFF"]
+    else
+      # Disable precompiled headers and force opencv to use brewed libraries on Linux
+      %W[
         -DENABLE_PRECOMPILED_HEADERS=OFF
         -DJPEG_LIBRARY=#{Formula["jpeg-turbo"].opt_lib}/libjpeg.so
         -DOpenBLAS_LIB=#{Formula["openblas"].opt_lib}/libopenblas.so
@@ -170,22 +179,27 @@ class Opencv < Formula
 
     # Prevent dependents from using fragile Cellar paths
     inreplace lib/"pkgconfig/opencv#{version.major}.pc", prefix, opt_prefix
-
-    # Replace universal binaries with their native slices
-    deuniversalize_machos
   end
 
   test do
     (testpath/"test.cpp").write <<~CPP
+      #include <opencv2/core.hpp>
+      #include <opencv2/imgcodecs.hpp>
       #include <opencv2/opencv.hpp>
       #include <iostream>
       int main() {
         std::cout << CV_VERSION << std::endl;
+        cv::Mat img = cv::imread("#{test_fixtures("test.jpg")}", cv::IMREAD_COLOR);
+        if (img.empty()) {
+          std::cerr << "Could not read test.jpg fixture" << std::endl;
+          return 1;
+        }
         return 0;
       }
     CPP
-    system ENV.cxx, "-std=c++17", "test.cpp", "-I#{include}/opencv4", "-o", "test"
-    assert_equal shell_output("./test").strip, version.to_s
+    system ENV.cxx, "-std=c++17", "test.cpp", "-I#{include}/opencv4", "-o", "test",
+                    "-L#{lib}", "-lopencv_core", "-lopencv_imgcodecs"
+    assert_equal version.to_s, shell_output("./test").strip
 
     output = shell_output("#{python3} -c 'import cv2; print(cv2.__version__)'")
     assert_equal version.to_s, output.chomp

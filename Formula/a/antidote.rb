@@ -1,13 +1,12 @@
 class Antidote < Formula
   desc "Plugin manager for zsh, inspired by antigen and antibody"
-  homepage "https://getantidote.github.io/"
-  url "https://github.com/mattmc3/antidote/archive/refs/tags/v1.9.7.tar.gz"
-  sha256 "67245a39d9719251e295cbeae7b050c99eccff5b978badd1e4b61e90575a6fac"
+  homepage "https://antidote.sh/"
+  url "https://github.com/mattmc3/antidote/archive/refs/tags/v1.9.10.tar.gz"
+  sha256 "4beb9074da75bfe44a502db61542c557af1a6206a3cdd6e36c3f0743d71417ec"
   license "MIT"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "1b3319c82801c1955368a98bfb8167d57983760f2e5d7ce98fe0ac3495808715"
+    sha256 cellar: :any_skip_relocation, all: "f137ff897aab2a92deb3b181c4e1809cfb47ec02e033b567d4ad83a49c1ddeb9"
   end
 
   uses_from_macos "zsh"
@@ -26,13 +25,14 @@ class Antidote < Formula
   end
 
   test do
-    (testpath/".zshrc").write <<~EOS
+    (testpath/".zshrc").write <<~SHELL
       export GIT_TERMINAL_PROMPT=0
       export ANTIDOTE_HOME=~/.zplugins
       source #{pkgshare}/antidote.zsh
-    EOS
+    SHELL
+
     system "zsh", "--login", "-i", "-c", "antidote install rupa/z"
     assert_equal (testpath/".zsh_plugins.txt").read, "rupa/z\n"
-    assert_predicate testpath/".zplugins/https-COLON--SLASH--SLASH-github.com-SLASH-rupa-SLASH-z/z.sh", :exist?
+    assert_path_exists testpath/".zplugins/https-COLON--SLASH--SLASH-github.com-SLASH-rupa-SLASH-z/z.sh"
   end
 end

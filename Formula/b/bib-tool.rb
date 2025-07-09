@@ -5,6 +5,16 @@ class BibTool < Formula
   sha256 "e1964d199b0726f431f9a1dc4ff7257bb3dba879b9fa221803e0aa7840dee0e0"
   license "GPL-2.0-or-later"
 
+  livecheck do
+    url :stable
+    regex(/^BibTool[._-]v?(\d+(?:[._-]\d+)+)$/i)
+    strategy :git do |tags, regex|
+      tags.map { |tag| tag[regex, 1]&.tr("_", ".") }
+    end
+  end
+
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256                               arm64_sequoia:  "ce609aa4354f5b345611a48f17823affc614c23600940ec1c90b9945b7199512"
     sha256                               arm64_sonoma:   "20a1020682e98e6b692a2096aea9d9963c6294f12c810ce0aa9135ca26bf6da1"
@@ -18,6 +28,7 @@ class BibTool < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "26f2121d720fa6ffc20547b0bfc6754930f6b8660b51f634c686279dae7e73ce"
     sha256 cellar: :any_skip_relocation, mojave:         "d75a1a60204b002cc06acc025cfdc74db76a563b9bb508876d0e45d771f61dc8"
     sha256 cellar: :any_skip_relocation, high_sierra:    "0d92e3fead68380fc84cbf5517d2ed2eecdfcbfc1fc14c6343f51ee60d43f948"
+    sha256                               arm64_linux:    "950aa4606e27f585b5845def489fa649687dcbfa927b7ceb79d2186c7c0e5cfc"
     sha256                               x86_64_linux:   "26d038986c5f22a7fd14898391052bd93ac18d34374c2662624efd50ff86a137"
   end
 
@@ -28,7 +39,7 @@ class BibTool < Formula
   end
 
   test do
-    (testpath/"test.bib").write <<~EOS
+    (testpath/"test.bib").write <<~BIBTEX
       @article{Homebrew,
           title   = {Something},
           author  = {Someone},
@@ -37,7 +48,7 @@ class BibTool < Formula
           number  = {2},
           pages   = {3--4}
       }
-    EOS
+    BIBTEX
 
     system bin/"bibtool", "test.bib"
   end

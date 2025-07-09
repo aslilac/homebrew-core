@@ -3,24 +3,28 @@ class Forbidden < Formula
 
   desc "Bypass 4xx HTTP response status codes and more"
   homepage "https://github.com/ivan-sincek/forbidden"
-  url "https://files.pythonhosted.org/packages/a3/bd/07a1b00ed63815153713a6b7fa814174b798ab0c1fa97d6e6b6d0d50ccab/forbidden-12.6.tar.gz"
-  sha256 "c4bee241622d64b813295f9f58681fb05cc3fd547264ef6bd6495c2fca74f605"
+  url "https://files.pythonhosted.org/packages/ed/80/eb80e899c8ac2357aa9b001600e64177a1a68c32b466becadf1eb0a09e01/forbidden-13.2.tar.gz"
+  sha256 "e560b121b1419393695505a4bf61ab82230a34bffc9b1779ca75a33ab3f62916"
   license "MIT"
+  revision 2
   head "https://github.com/ivan-sincek/forbidden.git", branch: "main"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "ead1ae99f5e4ed83ca0ef2aca44b1bf788c70198dfa15530ec5cb81b41364fa7"
-    sha256 cellar: :any,                 arm64_sonoma:  "272b15b904ed2e42f556717c9e23e772d02a0ffeb6b53bcd548da84faf66f98a"
-    sha256 cellar: :any,                 arm64_ventura: "9e1073e7764530dad93dfe18953f8cbf6dc45e235e8b197eeddf228cf2718650"
-    sha256 cellar: :any,                 sonoma:        "d96f75eb99b2fd7361a174547a9e3867c9b59493cbc7f4c9073e15411cba3299"
-    sha256 cellar: :any,                 ventura:       "1bcb540499b1059abb4b2e1b962f13b2c9047a1f897550895cc6ff88c1e3b820"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5f1c0ac8cd94daec578dec11c971a8f45bbdc409428cb94622f70302c7a76365"
+    sha256 cellar: :any,                 arm64_sequoia: "338fc74fc80d702b0ecd8998de75a0fc5b55aec7e6543ba2bbf832e5d029efda"
+    sha256 cellar: :any,                 arm64_sonoma:  "414cad61bcaf7c10d4879dce53bca4aa8345239b8ed20a521b6779f95e82b841"
+    sha256 cellar: :any,                 arm64_ventura: "7c56a0e989db7403ea6ded63c49eae50f6f9c7a3a5e9e5ba2699871164fb6eb4"
+    sha256 cellar: :any,                 sonoma:        "f00eb8d16fc870eda75f6da3f5c6b8016742ee8cea02731a8acfd6962459bfa2"
+    sha256 cellar: :any,                 ventura:       "483dc0bb41d07e62b72cf6c4b37f4d0d83fc253ee95e25d624314c2e15312bdc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3e09e5f7971346a8927a3f4b09642c0118a21e0decd01ccf6c926dde55a125ac"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "411a66506f536bd7b531ad495249d77f9a5161a5f6b235acd07b2938972afd35"
   end
 
   depends_on "certifi"
+  depends_on "cffi"
+  depends_on "cryptography"
   depends_on "curl"
   depends_on "openssl@3"
+  depends_on "pycparser"
   depends_on "python@3.13"
 
   resource "about-time" do
@@ -29,13 +33,18 @@ class Forbidden < Formula
   end
 
   resource "alive-progress" do
-    url "https://files.pythonhosted.org/packages/6a/cf/de25c4f6123c3b3eb5acc87144d3e017df25b32c16806b14572a259939ac/alive-progress-3.1.5.tar.gz"
-    sha256 "42e399a66c8150dc507602dff7b7953f105ef11faf97ddaa6d27b1cbf45c4c98"
+    url "https://files.pythonhosted.org/packages/28/66/c2c1e6674b3b7202ce529cf7d9971c93031e843b8e0c86a85f693e6185b8/alive-progress-3.2.0.tar.gz"
+    sha256 "ede29d046ff454fe56b941f686f89dd9389430c4a5b7658e445cb0b80e0e4deb"
+  end
+
+  resource "bot-safe-agents" do
+    url "https://files.pythonhosted.org/packages/6a/06/a557cece31bdf2992db8099f3e0e3296e955cf681f0cab4a5dc89779c984/bot_safe_agents-1.0.tar.gz"
+    sha256 "8b2d9e435ec10a89563b10a6ca977bbf8fb43cf4eca7d8e412e2e69c8aff400c"
   end
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
-    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
+    url "https://files.pythonhosted.org/packages/e4/33/89c2ced2b67d1c2a61c19c6751aa8902d46ce3dacb23600a283619f5a12d/charset_normalizer-3.4.2.tar.gz"
+    sha256 "5baececa9ecba31eff645232d59845c07aa030f0c81ee70184a90d35099a0e63"
   end
 
   resource "colorama" do
@@ -54,32 +63,23 @@ class Forbidden < Formula
   end
 
   resource "pycurl" do
-    url "https://files.pythonhosted.org/packages/c9/5a/e68b8abbc1102113b7839e708ba04ef4c4b8b8a6da392832bb166d09ea72/pycurl-7.45.3.tar.gz"
-    sha256 "8c2471af9079ad798e1645ec0b0d3d4223db687379d17dd36a70637449f81d6b"
-
-    # Remove -flat_namespace
-    # PR ref: https://github.com/pycurl/pycurl/pull/855
-    on_sequoia :or_newer do
-      patch do
-        url "https://github.com/pycurl/pycurl/commit/7deb85e24981e23258ea411dcc79ca9b527a297d.patch?full_index=1"
-        sha256 "a49fa9143287398856274f019a04cf07b0c345560e1320526415e9280ce2efbc"
-      end
-    end
+    url "https://files.pythonhosted.org/packages/71/35/fe5088d914905391ef2995102cf5e1892cf32cab1fa6ef8130631c89ec01/pycurl-7.45.6.tar.gz"
+    sha256 "2b73e66b22719ea48ac08a93fc88e57ef36d46d03cb09d972063c9aa86bb74e6"
   end
 
   resource "pyjwt" do
-    url "https://files.pythonhosted.org/packages/fb/68/ce067f09fca4abeca8771fe667d89cc347d1e99da3e093112ac329c6020e/pyjwt-2.9.0.tar.gz"
-    sha256 "7e1e5b56cc735432a7369cbfa0efe50fa113ebecdc04ae6922deba8b84582d0c"
+    url "https://files.pythonhosted.org/packages/e7/46/bd74733ff231675599650d3e47f361794b22ef3e3770998dda30d3b63726/pyjwt-2.10.1.tar.gz"
+    sha256 "3cc5772eb20009233caf06e9d8a0577824723b44e6648ee0a2aedb6cf9381953"
   end
 
   resource "regex" do
-    url "https://files.pythonhosted.org/packages/f9/38/148df33b4dbca3bd069b963acab5e0fa1a9dbd6820f8c322d0dd6faeff96/regex-2024.9.11.tar.gz"
-    sha256 "6c188c307e8433bcb63dc1915022deb553b4203a70722fc542c363bf120a01fd"
+    url "https://files.pythonhosted.org/packages/8e/5f/bd69653fbfb76cf8604468d3b4ec4c403197144c7bfe0e6a5fc9e02a07cb/regex-2024.11.6.tar.gz"
+    sha256 "7ab159b063c52a0333c884e4679f8d7a85112ee3078fe3d9004b2dd875585519"
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
-    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
+    url "https://files.pythonhosted.org/packages/e1/0a/929373653770d8a0d7ea76c37de6e41f11eb07559b103b1c02cafb3f7cf8/requests-2.32.4.tar.gz"
+    sha256 "27d0316682c8a29834d3264820024b62a36942083d52caf2f14c0591336d3422"
   end
 
   resource "tabulate" do
@@ -88,13 +88,13 @@ class Forbidden < Formula
   end
 
   resource "termcolor" do
-    url "https://files.pythonhosted.org/packages/37/72/88311445fd44c455c7d553e61f95412cf89054308a1aa2434ab835075fc5/termcolor-2.5.0.tar.gz"
-    sha256 "998d8d27da6d48442e8e1f016119076b690d962507531df4890fcd2db2ef8a6f"
+    url "https://files.pythonhosted.org/packages/ca/6c/3d75c196ac07ac8749600b60b03f4f6094d54e132c4d94ebac6ee0e0add0/termcolor-3.1.0.tar.gz"
+    sha256 "6a6dd7fbee581909eeec6a756cff1d7f7c376063b14e4a298dc4980309e55970"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
-    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
+    url "https://files.pythonhosted.org/packages/15/22/9ee70a2574a4f4599c47dd506532914ce044817c7752a79b6a51286319bc/urllib3-2.5.0.tar.gz"
+    sha256 "3fc47733c7e419d4bc3f6b3dc2b4f890bb743906a30d56ba4a5bfa4bbff92760"
   end
 
   def install
@@ -103,6 +103,6 @@ class Forbidden < Formula
 
   test do
     output = shell_output("#{bin}/forbidden -u https://brew.sh -t methods -f GET")
-    assert_match '"code": 200', output
+    assert_match "\"status\": 200", output
   end
 end

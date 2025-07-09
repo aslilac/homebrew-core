@@ -23,10 +23,12 @@ class ImapUw < Formula
     sha256 cellar: :any,                 monterey:       "b103e67bafbc727288fe497dc634d65489b9c9272ed23971a35348988e0fd21d"
     sha256 cellar: :any,                 big_sur:        "03c5fc6a4e888a756809749d359b45141b95fbb8b3cfa662ebd9687e55ba958a"
     sha256 cellar: :any,                 catalina:       "f98ac44c956015b954474247210e3b19dbcf629280b69ab2c33386ad6f298c31"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b472a137b28ddcf33d31429f2a6deb39ba923ba6b61853572fe432866758a570"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5b87416d2dcf7b2384df72ef50f309556b3e4e267eedf11f05ae54b53f67c8a1"
   end
 
   deprecate! date: "2024-07-03", because: :unmaintained
+  disable! date: "2025-07-07", because: :unmaintained
 
   depends_on "openssl@3"
 

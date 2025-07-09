@@ -12,6 +12,8 @@ class Liboil < Formula
     regex(/href=.*?liboil[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "884af7577129d0a2cf1418f838a9d8057e4f158911797fc6e7ba4e2217ce0182"
@@ -28,6 +30,7 @@ class Liboil < Formula
     sha256 cellar: :any,                 high_sierra:    "3214b8910deb69c2c0138a5ece603515c089fa2178ead16e4106695dd6b4c4b4"
     sha256 cellar: :any,                 sierra:         "f242435c284690879f84812481843e92c54adc190a8201aa31d550c262e1951d"
     sha256 cellar: :any,                 el_capitan:     "7d76b7a220caeb8dbaef27b879f4f3ac0ad5b236b563961abd9484e8bc9e0160"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "12a6d9bd59ede96b60e33f1e1ffcf61b0c66bcd0f5886e6c3a0d76730d514985"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "64127180a4182632dbde62deafdcba4fa391ff4a675e85a6821cebee298887e1"
   end
 
@@ -35,15 +38,13 @@ class Liboil < Formula
   depends_on "automake" => :build
   depends_on "gtk-doc" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   def install
     ENV.append "CFLAGS", "-fheinous-gnu-extensions" if ENV.compiler == :clang
 
-    system "autoreconf", "-fvi"
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make"
     system "make", "install"
   end

@@ -8,6 +8,8 @@ class Pwncat < Formula
   license "MIT"
   head "https://github.com/cytopia/pwncat.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 3
     sha256 cellar: :any_skip_relocation, arm64_sequoia: "1971f6379de0d9d4d43605e1cfe6635c966343e2afd1f18e5075059233853433"
@@ -15,6 +17,7 @@ class Pwncat < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "1971f6379de0d9d4d43605e1cfe6635c966343e2afd1f18e5075059233853433"
     sha256 cellar: :any_skip_relocation, sonoma:        "a5c8fa660a7d88d2d31622417ba79e4757c41c2dcf27cebc3a36d26de3eda54b"
     sha256 cellar: :any_skip_relocation, ventura:       "a5c8fa660a7d88d2d31622417ba79e4757c41c2dcf27cebc3a36d26de3eda54b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "681af452580198940fda3bc55892865dd6d9b839ed8a1dcd2b583018bfa43e2c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "1971f6379de0d9d4d43605e1cfe6635c966343e2afd1f18e5075059233853433"
   end
 

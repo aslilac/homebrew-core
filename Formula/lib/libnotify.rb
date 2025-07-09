@@ -1,19 +1,18 @@
 class Libnotify < Formula
   desc "Library that sends desktop notifications to a notification daemon"
   homepage "https://gitlab.gnome.org/GNOME/libnotify"
-  url "https://download.gnome.org/sources/libnotify/0.8/libnotify-0.8.3.tar.xz"
-  sha256 "ee8f3ef946156ad3406fdf45feedbdcd932dbd211ab4f16f75eba4f36fb2f6c0"
+  url "https://download.gnome.org/sources/libnotify/0.8/libnotify-0.8.6.tar.xz"
+  sha256 "c5540aaefb60e1d63b1c587c05f2284ebe72ece7d0c0e5e4a778cfd5844b6b58"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia:  "680394cbbed255bcdd9409f9db99b18b5e636086d4097d2508eadce044f66790"
-    sha256 cellar: :any, arm64_sonoma:   "2fff04fdd870fef44affe2aacd76d6bb9cb571ce4fe94f38da720f57f5b7c065"
-    sha256 cellar: :any, arm64_ventura:  "1d8682206a13d9aad42501c9e4f2f4c9629342020daacf33a5e0e29e80e58b62"
-    sha256 cellar: :any, arm64_monterey: "ca2cef7f1cdf9ce2ee7ce8ed88adf6c5926baf6c6361f046ea4e9d790b164242"
-    sha256 cellar: :any, sonoma:         "b70bf3505162b27d87451d6e8bc351f845bcb0b8797d374e7a70da482e51c42c"
-    sha256 cellar: :any, ventura:        "faa936783b93e58be323bfe52f05089f9b4b6e618fe8942792557ca2917d5d85"
-    sha256 cellar: :any, monterey:       "ddbd98054cbf9e082bbd0fe42b78a3cd6d9c589847cebb5cf734307e1a555cac"
-    sha256               x86_64_linux:   "8cd0d54a3afef2d7872337624c7677a5636489801fc3ccdfd3b2044a5667d88e"
+    sha256 cellar: :any, arm64_sequoia: "ea69f7b5455c3a6541cf0860074b7b6e3e68e6bbb48c64cb4cc6221e6ce8dde9"
+    sha256 cellar: :any, arm64_sonoma:  "ebea4c89f379ab596f73e8613cdb45085b91995f8ab225b22abc9143ef3418c6"
+    sha256 cellar: :any, arm64_ventura: "d4c06f68f3f4fd97e56695bb166a806488f78ccd6d677d943d2a49bde302aef7"
+    sha256 cellar: :any, sonoma:        "d6a909e188f2dff4caa76a5c8cdc1204cb8b8e6cf752cefb5dd8e25b19be774f"
+    sha256 cellar: :any, ventura:       "75bab3ee807d8c9f36a039b973279f8e154bd29d9a2cbcf533141b82bced5450"
+    sha256               arm64_linux:   "995dc473382763e33a51546b3ae69ba723c5cb5815e1a5f688f9c17e62ba9b42"
+    sha256               x86_64_linux:  "f040cf5598067f5d9af35c90bd5df9520f5a3d422c78a1b0fd01c01ddcbee021"
   end
 
   depends_on "docbook-xsl" => :build
@@ -21,7 +20,7 @@ class Libnotify < Formula
   depends_on "gtk-doc" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
 
   depends_on "gdk-pixbuf"
   depends_on "glib"
@@ -54,8 +53,8 @@ class Libnotify < Formula
       }
     C
 
-    pkg_config_cflags = shell_output("pkg-config --cflags --libs libnotify").chomp.split
-    system ENV.cc, "test.c", *pkg_config_cflags, "-o", "test"
+    flags = shell_output("pkgconf --cflags --libs libnotify").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
 end

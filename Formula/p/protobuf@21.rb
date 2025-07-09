@@ -12,10 +12,15 @@ class ProtobufAT21 < Formula
     sha256                               arm64_ventura: "f2997129a1170a2e472499cdfc829c03f8e8613826360837498fc42843f7bb94"
     sha256                               sonoma:        "f14d28a66a3801b28475e4913e9d5515074179ec8eec48c8fea5ec0c829e8f19"
     sha256                               ventura:       "2b155b3335e6db2264fbc0bfb5c1d89a3bc7ac2fd4a15d844d653df8b0aa2858"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "db77181834de160a35c791b30f45a43cd01c6206784a1d5ff1e7591a52ded2a7"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "b2557598e344f5da522d3a819c63cd59a46ed043dc4d9aecfa9b721c162b7778"
   end
 
   keg_only :versioned_formula
+
+  # Support for protoc 21.x (protobuf C++ 3.21.x) ended on 2024-03-31
+  # Ref: https://protobuf.dev/support/version-support/#cpp
+  deprecate! date: "2025-01-08", because: :versioned_formula
 
   depends_on "cmake" => :build
   depends_on "python@3.12" => [:build, :test]
@@ -74,7 +79,7 @@ class ProtobufAT21 < Formula
   end
 
   test do
-    testdata = <<~EOS
+    testdata = <<~PROTO
       syntax = "proto3";
       package test;
       message TestCase {
@@ -83,7 +88,7 @@ class ProtobufAT21 < Formula
       message Test {
         repeated TestCase case = 1;
       }
-    EOS
+    PROTO
     (testpath/"test.proto").write testdata
     system bin/"protoc", "test.proto", "--cpp_out=."
 

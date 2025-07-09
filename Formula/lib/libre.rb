@@ -1,17 +1,18 @@
 class Libre < Formula
   desc "Toolkit library for asynchronous network I/O with protocol stacks"
   homepage "https://github.com/baresip/re"
-  url "https://github.com/baresip/re/archive/refs/tags/v3.17.0.tar.gz"
-  sha256 "28ee46b097f7b1ff5a73249aacb5a64b742ba9bd5f3321b5c51f41c43233d495"
+  url "https://github.com/baresip/re/archive/refs/tags/v3.23.0.tar.gz"
+  sha256 "94cdd17b4b177b9c764548ded24c74e7f4f5360ce60507bb1b5186b2a6cd3cbb"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "ef948a7853da77684e15d0678a7a76feeeb4c7f6e3d40a38b53669bee4b93935"
-    sha256 cellar: :any,                 arm64_sonoma:  "109d0c52c1cc7d5d9ab82c8844deeb22e82cb6bd0af537172943b042f5f33b88"
-    sha256 cellar: :any,                 arm64_ventura: "cf3f8ac2175062cb058f945c8656e31a98537f4d7546219f93b6cb6a5479c424"
-    sha256 cellar: :any,                 sonoma:        "a52868b3ba67461793658561a2593f6af5b10bfa316ab80fd4ac18c0809cf3ba"
-    sha256 cellar: :any,                 ventura:       "75dc9177b2140f93690d953e086df8cb5fe46f0633d00ffe7872d3f120d81f86"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "80b5a2513fe55e5504da44eb33eed57f9a94556694599af462316dab24782f72"
+    sha256 cellar: :any,                 arm64_sequoia: "4ebb9e9fdb49e30db7fdedbc6e3fe7ccaa744476bb7a7651784c8d16442d58a3"
+    sha256 cellar: :any,                 arm64_sonoma:  "26672862a7acbed46168e77ac111dcf295307f058e0d5d0934058651ce96d6b3"
+    sha256 cellar: :any,                 arm64_ventura: "d55d661cb188d3ff26182117d7d08ab4c3083469ad4a3504c93c0c086e12a238"
+    sha256 cellar: :any,                 sonoma:        "0841ad4e123316f157e09587e95e682bd8004359c2d08c07d7db18c374046206"
+    sha256 cellar: :any,                 ventura:       "ccf34357842fa6fffabdf572ef1c20c4682b3b51176e233513c417c27786bc45"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6117b85b50f0be17320fd62a4ed2e61495cdba842eac72b5fe7e8275c2053309"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "21f20db1d5c72925bc68e487db20451d2d19dc7ac1fa3556e6a7b74af4408e06"
   end
 
   depends_on "cmake" => :build

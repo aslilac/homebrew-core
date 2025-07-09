@@ -12,6 +12,8 @@ class Unzip < Formula
     regex(%r{url=.*?(?:%20)?v?(\d+(?:\.\d+)+)/unzip\d+\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a5bd1f2a27a5353a3ce249bdd414b0976a91129be2afd8fe3c0a796b316f4ed2"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "09f467768e0ed9226eebc40f40fd5628c7f9cfa5f314b483751bbf0bf4d05bab"
@@ -23,6 +25,7 @@ class Unzip < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "86fbf9a289406fbe3fff052c0818431d757b6123e5776418c3e13370ee2d4af9"
     sha256 cellar: :any_skip_relocation, big_sur:        "94f235026d1d96ebb52961dcfb6880701d11efdc9cd9869987f8e4712714f9a5"
     sha256 cellar: :any_skip_relocation, catalina:       "b6cb709857bee04881acb626d24ddb1dcccf50b4508c16a9599625667b4b7617"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "11112a2c74f3a7faa6561406d9206412d7754b753fe680acee32a1d96df300b3"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "baf15e19852a0f9756e3302fa6f3866eaeccc06730c9907bffc19f32861d64bf"
   end
 
@@ -32,10 +35,10 @@ class Unzip < Formula
   uses_from_macos "bzip2"
 
   # Upstream is unmaintained so we use the Ubuntu patchset:
-  # https://packages.ubuntu.com/kinetic/unzip
+  # https://packages.ubuntu.com/noble/unzip
   patch do
-    url "http://archive.ubuntu.com/ubuntu/pool/main/u/unzip/unzip_6.0-27ubuntu1.debian.tar.xz"
-    sha256 "9249780437220a5dc81518f2e4c5213b502bf56899c03992572cf9bb5caf724e"
+    url "http://archive.ubuntu.com/ubuntu/pool/main/u/unzip/unzip_6.0-28ubuntu4.1.debian.tar.xz"
+    sha256 "d123c8e6972dbdd17ba1a4920fb57ed2ede9237dbae149dcbf55df829c77baf3"
     apply %w[
       patches/01-manpages-in-section-1-not-in-section-1l.patch
       patches/02-this-is-debian-unzip.patch
@@ -104,12 +107,12 @@ class Unzip < Formula
     end
     %w[test1 test2 test3].each do |f|
       rm f
-      refute_predicate testpath/f, :exist?, "Text files should have been removed!"
+      refute_path_exists testpath/f, "Text files should have been removed!"
     end
 
     system bin/"unzip", "test.zip"
     %w[test1 test2 test3].each do |f|
-      assert_predicate testpath/f, :exist?, "Failure unzipping test.zip!"
+      assert_path_exists testpath/f, "Failure unzipping test.zip!"
     end
 
     assert_match "Hello!", File.read(testpath/"test1")

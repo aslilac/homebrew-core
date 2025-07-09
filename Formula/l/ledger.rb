@@ -2,7 +2,7 @@ class Ledger < Formula
   desc "Command-line, double-entry accounting tool"
   homepage "https://ledger-cli.org/"
   license "BSD-3-Clause"
-  revision 6
+  revision 8
   head "https://github.com/ledger/ledger.git", branch: "master"
 
   stable do
@@ -47,14 +47,16 @@ class Ledger < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    rebuild 2
-    sha256 cellar: :any,                 arm64_sequoia: "a23d59fe87c4eb5e668c0636de0286b1a9ff8f5d1e823e066b5c74315a63a68b"
-    sha256 cellar: :any,                 arm64_sonoma:  "218ed68a0e22d7bd204f95da731524bc8aa2655ef6120abd408939bf5d994709"
-    sha256 cellar: :any,                 arm64_ventura: "4ddcb1fccd738eb25f3f34d7d385a6f01f6d33bf6171ad4c04cb273b165bc385"
-    sha256 cellar: :any,                 sonoma:        "c9c7cdde58c09a55707cc4275ae657324aa207dc8eeed4b41edc41cc02f3907b"
-    sha256 cellar: :any,                 ventura:       "2339d91e5735e72342ccb4e0890ad19e24e5018e4e5050a09e57a3d3639b98e3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1ffcf606599116dd135bb202d28aada69e978b017ef2f22735b9b68549919509"
+    sha256 cellar: :any,                 arm64_sequoia: "6fe371a5bcfa9830acbaaebc0ef8610f397f56025b3eec0b4cfac1d05d66f3d0"
+    sha256 cellar: :any,                 arm64_sonoma:  "a13069588287ee7022d4ecbd79b3a3f62454b7bdcb4f8521d81dd5db0745b056"
+    sha256 cellar: :any,                 arm64_ventura: "95ad23162c58e1de9ba100d26d7547a209f8ac0b9ad7f5e56a456aa7b68e46fe"
+    sha256 cellar: :any,                 sonoma:        "75d9f373ddf42a8af5b71354e863caa4a40229cf0bf8e1f9eb189c6554c794e4"
+    sha256 cellar: :any,                 ventura:       "0873ee5b14e44585ca2f8ddb6e4ad6cb3d42a303f3d10890867ce39421c2dd62"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b64fcec6b6d14d1c34bac6d8b4173bc03069a4a2c0ffbb498723aa6a411ece38"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c9502395a997808405f2d380c04d2c73fc57d15323179944092491c5c4ccfd7c"
   end
 
   depends_on "cmake" => :build
@@ -73,6 +75,13 @@ class Ledger < Formula
   end
 
   def install
+    # Workaround until next release as commit doesn't apply
+    # https://github.com/ledger/ledger/commit/956d8ea37247b34a5300c9d55abc7c75324fff33
+    if build.stable?
+      inreplace "CMakeLists.txt", "cmake_minimum_required(VERSION 3.0)",
+                                  "cmake_minimum_required(VERSION 3.5)"
+    end
+
     ENV.cxx11
     ENV.prepend_path "PATH", Formula["python@3.13"].opt_libexec/"bin"
 
@@ -96,7 +105,7 @@ class Ledger < Formula
     (pkgshare/"examples").install Dir["test/input/*.dat"]
     pkgshare.install "contrib"
     elisp.install Dir["lisp/*.el", "lisp/*.elc"]
-    bash_completion.install pkgshare/"contrib/ledger-completion.bash"
+    bash_completion.install pkgshare/"contrib/ledger-completion.bash" => "ledger"
   end
 
   test do

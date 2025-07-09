@@ -6,11 +6,6 @@ class Alure < Formula
   license "MIT"
   revision 1
 
-  livecheck do
-    url "https://kcat.tomasu.net/alure-releases/"
-    regex(/href=.*?alure[._-]v?(\d+(?:\.\d+)+)(?:[._-]src)?\.t/i)
-  end
-
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "5a83dde3ee767c2d722500d07ed8868c671c2d560b932953cfd52fdcf835eef1"
@@ -25,8 +20,11 @@ class Alure < Formula
     sha256 cellar: :any,                 catalina:       "3701d2ac280fd8ef5476343c348fec853397241cb2bdcaeb25e8a53b203d292c"
     sha256 cellar: :any,                 mojave:         "f2ae4fbf2822241975e66574e41070b298523e6321280bc83aff70d559db149c"
     sha256 cellar: :any,                 high_sierra:    "031b2eb61f6206879b76a7276298f1db9875fa996467327b519ccc6d1622a158"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "86327e343698981d268e5efa342f39abe1fa3e213ad423a9df9ae8054c7f65b4"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "27631da30742e75d039fc709f8e437b22371bfc0859466a4bb4856f155d8f4f5"
   end
+
+  disable! date: "2025-04-18", because: :repo_removed
 
   depends_on "cmake" => :build
   depends_on "pkgconf" => :build

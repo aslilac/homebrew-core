@@ -21,12 +21,7 @@ class Aliddns < Formula
   depends_on "go" => :build
 
   def install
-    ldflags = %W[
-      -s -w
-      -X main.version=#{version}
-      -X main.commit=#{Utils.git_head}
-      -X main.builtBy=homebrew
-    ]
+    ldflags = "-s -w -X main.version=#{version} -X main.commit=#{Utils.git_head} -X main.builtBy=#{tap.user}"
     system "go", "build", "-mod=vendor", *std_go_args(ldflags:)
     pkgetc.install "aliddns.yaml"
   end
@@ -41,6 +36,6 @@ class Aliddns < Formula
   test do
     assert_match version.to_s, shell_output("#{bin}/aliddns -v 2>&1")
     assert_match "config created", shell_output("#{bin}/aliddns init --config=aliddns.yml 2>&1")
-    assert_predicate testpath/"aliddns.yml", :exist?
+    assert_path_exists testpath/"aliddns.yml"
   end
 end

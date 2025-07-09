@@ -1,19 +1,20 @@
 class Bear < Formula
   desc "Generate compilation database for clang tooling"
   homepage "https://github.com/rizsotto/Bear"
-  url "https://github.com/rizsotto/Bear/archive/refs/tags/3.1.5.tar.gz"
-  sha256 "4ac7b041222dcfc7231c6570d5bd76c39eaeda7a075ee2385b84256e7d659733"
+  url "https://github.com/rizsotto/Bear/archive/refs/tags/3.1.6.tar.gz"
+  sha256 "99cd891eec6e89b734d7cafe0e623dd8c2f27d8cbf3ee9bc4807e69e5c8fb55c"
   license "GPL-3.0-or-later"
-  revision 5
+  revision 2
   head "https://github.com/rizsotto/Bear.git", branch: "master"
 
   bottle do
-    sha256 arm64_sequoia: "f648b4c8202aee98d0367a7ce3bb371b4113528ffd626b84753f709099386c3b"
-    sha256 arm64_sonoma:  "a44838f0e8a760b1dc45866dab23d815f5c7b9842abf86cb4f8fe113890662b7"
-    sha256 arm64_ventura: "964dc3f462f62a23ca4209e5e1f09f34dd32ca370d43f2471cd5bcb80c826663"
-    sha256 sonoma:        "fd6b815e468c985f7d356f3657e9904bc8c9528157387ae2bfbc661f290d0213"
-    sha256 ventura:       "e859fa298d384c43f674cde683e573bf6b0fec8df8379f2c18fc2d0c00946db6"
-    sha256 x86_64_linux:  "0414f6eed5fee14d856379af50a65f0b1cbd3de6a36673f38ee46e463a3f646b"
+    sha256 arm64_sequoia: "de84f1f8b481d82cbf1a37ddac490ee05e511b4e18fdaa197aeecb3b02af2cf8"
+    sha256 arm64_sonoma:  "0e9c4d2a3133e4cf348c2e87973db013d531d79c43ca9d58941a5565f77a2e8d"
+    sha256 arm64_ventura: "1328da7fed6320ed3357eb3e41ddc47a40bc7533190e38d476f2c509c84e4728"
+    sha256 sonoma:        "9fc488f9ca375ace1aebb3edd01e9c9b6f124435e26efeed7986ef7b65095532"
+    sha256 ventura:       "2cd213b80fed473a2d5e6b9acc6a7755dae150c68984d850f5e88285c7d69610"
+    sha256 arm64_linux:   "27537347ae7d786c556f92cffcb26f9e7c0431e6798e7f1f54387e70a2ae572b"
+    sha256 x86_64_linux:  "979b1b5efa8f8a9ca65008d00ebb9c65f8567e64ae74f9db277867641717d21f"
   end
 
   depends_on "cmake" => :build
@@ -33,7 +34,7 @@ class Bear < Formula
 
   fails_with :clang do
     build 1100
-    cause <<-EOS
+    cause <<~EOS
       Undefined symbols for architecture x86_64:
         "std::__1::__fs::filesystem::__current_path(std::__1::error_code*)"
     EOS

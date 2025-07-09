@@ -5,6 +5,8 @@ class Lm4tools < Formula
   sha256 "e8064ace3c424b429b7e0b50e58b467d8ed92962b6a6dfa7f6a39942416b1627"
   license all_of: ["GPL-2.0-or-later", "BSD-3-Clause"]
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "4a41adde94def1ccf78e3ef033a1e121ab98ec9960db57ba2244a5ba0136d7df"
     sha256 cellar: :any,                 arm64_sonoma:   "13fcc858d9be77a53c1d7a541d3c314c1b98e03b48c2391850912f6dba3d6c85"
@@ -20,10 +22,11 @@ class Lm4tools < Formula
     sha256 cellar: :any,                 high_sierra:    "9c65eb6694f74b513b707c237cf13bb6a54b9e4a188582355f78e94f9ac53407"
     sha256 cellar: :any,                 sierra:         "3238455d6329e9749700b9c12c2e7459b63ea400fb0e7e6818b8c7c9b77b4e6d"
     sha256 cellar: :any,                 el_capitan:     "7c6bd7ec1a220de95089d71f79baa61ce459ffa0d00d32af727435594ac7603a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "8ecfca1688d68be5eebd7cde61d6e6fcd55a2e614e70a5c3a2a0943dc1591da9"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5afa96bcdab63596529b9202a6c985a4a1cd634235b2a3ab099805046384e405"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libusb"
 
   def install

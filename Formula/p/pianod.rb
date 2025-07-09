@@ -1,9 +1,10 @@
 class Pianod < Formula
   desc "Pandora client with multiple control interfaces"
   homepage "https://deviousfish.com/pianod/"
-  url "https://deviousfish.com/Downloads/pianod2/pianod2-405.tar.gz"
-  sha256 "f77c8196123ddb0bbb33a40f9fc29862f1df0997e19e19ecd8cbce05b336bf61"
+  url "https://deviousfish.com/Downloads/pianod2/pianod2-410.tar.gz"
+  sha256 "28c1b28b320acff3fe46c79748c55370ba4333544e0c27e90a3520d42a9914cf"
   license "MIT"
+  revision 1
 
   livecheck do
     url "https://deviousfish.com/Downloads/pianod2/"
@@ -11,22 +12,19 @@ class Pianod < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "77c82ba532faeb21102c31fdfce889654bc128c39ee918e53065d80fa68c2360"
-    sha256 arm64_sonoma:   "54a50ee4b3ccdce33beada794a379f5709e5523f6bdb9fe6317bf8f199e035f2"
-    sha256 arm64_ventura:  "61d74b10d6f05abb5d67d2227458a1203cc9ecc812add4210ad4567aa137b8a7"
-    sha256 arm64_monterey: "0eeff011708a6f207220675fea7182ecc3c3e8da436f6f0c206400ece8136907"
-    sha256 sonoma:         "5f7e7897d21d5b5093853cce2b0cae1ee3680e3f95c6bf3316b7564f40cb038e"
-    sha256 ventura:        "c70427ba76dc3a417fa8e8ff400e01bf740e40d34a12a39934fb953e8a88a1d2"
-    sha256 monterey:       "1fe0b168bd7cdf3651d790bbb1693b3d45c00b14489f3e782978fd8399a0e5da"
-    sha256 x86_64_linux:   "29141d3fcb442321213fa4fbdf575003a67e012036975c8fbfff1299096abc44"
+    sha256 arm64_sequoia: "65b0b7edda8a3ebe8dba97e532141dd9b985ec7ec2cc799b00b1086337a35c85"
+    sha256 arm64_sonoma:  "92a0bf60d6c4f5a5b57cbe70d6cb357373420514b401bd1a463ced3a1fa3fd0e"
+    sha256 arm64_ventura: "8fa61c25c901c6c762ca574b5c398281b579a92e940c2adcdc9cbf452cbf86b3"
+    sha256 sonoma:        "16275adaae7a5388bbda493535d734b6a5a9b84dfa3c566d600adb42751633e5"
+    sha256 ventura:       "327ae74f956db17289622864bb4e272fe0184ee0c54f1b542c9601160a0e3765"
+    sha256 arm64_linux:   "5317f74dd5f53f1e824b2659883704b34bca67fd86256ad573f517de9ab66e19"
+    sha256 x86_64_linux:  "03553138132bc05944d3eaa1e23ebbbae75831148c38eed4b4567fd36d2b4314"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "glib"
+  depends_on "gnutls"
   depends_on "gstreamer"
-  depends_on "json-c"
-  depends_on "libao"
-  depends_on "libgcrypt"
   depends_on "taglib"
 
   uses_from_macos "curl"
@@ -35,19 +33,13 @@ class Pianod < Formula
 
   on_macos do
     depends_on "gettext"
-    depends_on "gnutls"
-    depends_on "ncurses"
   end
 
   on_linux do
-    depends_on "gnutls"
     depends_on "libbsd"
   end
 
-  fails_with gcc: "5"
-
   def install
-    ENV["OBJCXXFLAGS"] = "-std=c++14"
     system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end

@@ -1,10 +1,10 @@
 class Onednn < Formula
   desc "Basic building blocks for deep learning applications"
   homepage "https://www.oneapi.io/open-source/"
-  url "https://github.com/oneapi-src/oneDNN/archive/refs/tags/v3.6.1.tar.gz"
-  sha256 "a370e7f25dbf05c9c151878c53556f27d0cbe7a4f909747db6e4b2d245f533cb"
+  url "https://github.com/uxlfoundation/oneDNN/archive/refs/tags/v3.8.1.tar.gz"
+  sha256 "4b0638061a789a1efbefdcd2e85eb257c7b432b3b6a71ba8909e19d75f50b163"
   license "Apache-2.0"
-  head "https://github.com/oneapi-src/onednn.git", branch: "master"
+  head "https://github.com/uxlfoundation/oneDNN.git", branch: "master"
 
   livecheck do
     url :stable
@@ -12,22 +12,22 @@ class Onednn < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "d71f88776981176f6634276f99369fd30ff814edcc858aa06a4be6fe2221ebf7"
-    sha256 cellar: :any,                 arm64_sonoma:  "ba9cce091b4f962fef833e56bfd1a42a6e74120e7aafbb5e85abadaf84224551"
-    sha256 cellar: :any,                 arm64_ventura: "22bd1bb22e9cede78d35d8a0a9e0131253b86904c6b4028791b6168815f1f96c"
-    sha256 cellar: :any,                 sonoma:        "d39e8769e0a1238a0c6a4aba7d8e9c8f34661edcfbc299877f41896355803955"
-    sha256 cellar: :any,                 ventura:       "24e279a47b585fcede217f15a7dfca2d6211c9066ad8d5eaa016317954b910c8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c7be5e465fa54c9024aab70640b1faf612f716c34cf098c4075fab9790b392be"
+    sha256 cellar: :any,                 arm64_sequoia: "2a3870ad069946d15ecc4a9277abb53f537704f0bff97c513c0555147307ad96"
+    sha256 cellar: :any,                 arm64_sonoma:  "babcfa25adcc7751b653dac1df07392d4366f0dabf7e0a3bd7d0cf4d19d9eaac"
+    sha256 cellar: :any,                 arm64_ventura: "254925ab3e63d3a1e3446d481a1bcb94ea832386dc039b98da8221dbd3000d8e"
+    sha256 cellar: :any,                 sonoma:        "1cda78cd98975d6a09429d16c1ce69ba8d6ae2f55cbdc2a58eeb1f0d17c584d1"
+    sha256 cellar: :any,                 ventura:       "5ae520034af5413e29d35a8e74abc1a11e7e7dac16c078db757266d2d418ae2d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2d79c96332e57b65c385bedd7aa95ca82ecc33616c7b7485ab8a3f0cb24e9e04"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7d298110a7fff028faebc21047f71344eb13b5d5464b076b7853ad32e141086b"
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make"
-    system "make", "doc"
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -39,6 +39,7 @@ class Onednn < Formula
         return !(status == dnnl_success);
       }
     C
+
     system ENV.cc, "test.c", "-L#{lib}", "-ldnnl", "-o", "test"
     system "./test"
   end

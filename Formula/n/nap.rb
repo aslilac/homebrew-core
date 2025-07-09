@@ -6,6 +6,8 @@ class Nap < Formula
   license "MIT"
   head "https://github.com/maaslalani/nap.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4f0de3f0692843a24c7130ca77e99d116432ae35d6c9282fe8fe578558c1fdc5"
@@ -17,6 +19,7 @@ class Nap < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "13824542ffb0caad2b26b347bb375fde1beedd26c8b3af84145917cb92dabe22"
     sha256 cellar: :any_skip_relocation, monterey:       "13824542ffb0caad2b26b347bb375fde1beedd26c8b3af84145917cb92dabe22"
     sha256 cellar: :any_skip_relocation, big_sur:        "13824542ffb0caad2b26b347bb375fde1beedd26c8b3af84145917cb92dabe22"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "cdf8ed4b88c3ce3467132f96b2db5315853e4a01207c9edf25ca25f58c1286ab"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b9a201267139b6f4d72d65a5651b981efba2fd74d0583221b87071ec34ad1051"
   end
 

@@ -1,36 +1,36 @@
 class Libcpuid < Formula
   desc "Small C library for x86 CPU detection and feature extraction"
   homepage "https://github.com/anrieff/libcpuid"
-  url "https://github.com/anrieff/libcpuid/archive/refs/tags/v0.7.0.tar.gz"
-  sha256 "cfd9e6bcda5da3f602273e55f983bdd747cb93dde0b9ec06560e074939314210"
+  url "https://github.com/anrieff/libcpuid/archive/refs/tags/v0.8.0.tar.gz"
+  sha256 "a5fe37d79bda121cbdf385ae3f6fa621da6a3102aa609400a718a4b8b82ed8aa"
   license "BSD-2-Clause"
   head "https://github.com/anrieff/libcpuid.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 sonoma:       "cdf5030cd5af1bb803485b2853ac70667962e9df464a0be7efd10894c9f3ecf1"
-    sha256 cellar: :any,                 ventura:      "84cba38211a65ec58b209c1616efd38e1053f2554dd3b629a9570dfb4a7caf14"
-    sha256 cellar: :any,                 monterey:     "4e5d099b1a7a93f4b7748adfcca7d43369b22ee4bbe6fda5fae001794aa32472"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "12735bcc406da1a4362c7f366bdb098f2b4a63cd63cd0df11116a55692dd9a1d"
+    sha256 cellar: :any,                 sonoma:       "a96631f0f039e5fbdac221e14ee15515a85e07cb0244e8bb975f97661fbf7c95"
+    sha256 cellar: :any,                 ventura:      "aeed3eaa6c57348a2e14f9889c933e08623b446a84090a2c91a9d78f6a700d9c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "cbfd10fe0ec68c63934be68907409b761eeabadfdbc36903e9eb85fcfdaf2b15"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "abd065dd786dcd3f4c4343f418e810502bdebf0674b0f01a05f58c06d98fd4e1"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on arch: :x86_64
+
+  on_macos do
+    depends_on arch: :x86_64
+  end
 
   def install
-    system "autoreconf", "-ivf"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 
   test do
     system bin/"cpuid_tool"
-    assert_predicate testpath/"raw.txt", :exist?
-    assert_predicate testpath/"report.txt", :exist?
+    assert_path_exists testpath/"raw.txt"
+    assert_path_exists testpath/"report.txt"
     assert_match "CPUID is present", File.read(testpath/"report.txt")
   end
 end

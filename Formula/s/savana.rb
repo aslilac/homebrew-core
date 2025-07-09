@@ -5,9 +5,11 @@ class Savana < Formula
   sha256 "608242a0399be44f41ff324d40e82104b3c62908bc35177f433dcfc5b0c9bf55"
   license "LGPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "b6925ea787e1eab59b57ca03a2df00c63e07931a2805ae1f389684ebe8852e5a"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, all: "def842802d985d741c12f61a00788780ada018db5837b585f2c58540109339e2"
   end
 
   depends_on "openjdk"
@@ -23,7 +25,7 @@ class Savana < Formula
     libexec.install %w[lib logging.properties]
     bin.env_script_all_files libexec/"bin", JAVA_HOME: Formula["openjdk"].opt_prefix
 
-    bash_completion.install "etc/bash_completion" => "savana-completion.bash"
+    bash_completion.install "etc/bash_completion" => "sav"
   end
 
   test do

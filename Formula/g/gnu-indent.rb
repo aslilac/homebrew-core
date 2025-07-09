@@ -6,6 +6,8 @@ class GnuIndent < Formula
   sha256 "9e64634fc4ce6797b204bcb8897ce14fdd0ab48ca57696f78767c59cae578095"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 arm64_sequoia:  "bd0bd4400bed0df025ba9e73add09aaa2c2e4ac341dfcc59d69f1cd4c6394f6a"
@@ -15,6 +17,7 @@ class GnuIndent < Formula
     sha256 sonoma:         "08ff0b0519d556b0a9bcb55c6511704c9a0190bb831733c9d0b0342e6cfe42bb"
     sha256 ventura:        "ca896ee13248337aa3cb203b13bfb64a327f7c479aee79977839ab5128183c4a"
     sha256 monterey:       "ecb07ef5d33d1a39f21bf5b8c10fefc41021eaf134979a35173928cc13b6c82f"
+    sha256 arm64_linux:    "75f78490b2047df1500e85d9c33ac481815fea272ab7ea3c91358b1d4a3fe48a"
     sha256 x86_64_linux:   "ca7c98aad69c128e21dc47666737ffc57d55118fe1e5e73b4e63874dfb1f6721"
   end
 
@@ -65,12 +68,12 @@ class GnuIndent < Formula
       "#{bin}/indent"
     end
     system binary, "test.c"
-    assert_equal File.read("test.c"), <<~EOS
+    assert_equal <<~C, File.read("test.c")
       int
       main ()
       {
         return 0;
       }
-    EOS
+    C
   end
 end

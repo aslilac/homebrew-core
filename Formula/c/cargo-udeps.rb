@@ -1,17 +1,18 @@
 class CargoUdeps < Formula
   desc "Find unused dependencies in Cargo.toml"
   homepage "https://github.com/est31/cargo-udeps"
-  url "https://github.com/est31/cargo-udeps/archive/refs/tags/v0.1.52.tar.gz"
-  sha256 "d74e262ed4d53f584447bdc8ffc02d37bbef4484b2b4413186d7f8b255bfe5ed"
+  url "https://github.com/est31/cargo-udeps/archive/refs/tags/v0.1.57.tar.gz"
+  sha256 "369a1387131ca0548d9bd14fe9d344a8ea217d7a6df2343db6fbdf21a8b94dea"
   license any_of: ["Apache-2.0", "MIT"]
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "dd03d0c81354a4825c40bc113c6a36e01fde8586c126574db9b38a61fac33533"
-    sha256 cellar: :any,                 arm64_sonoma:  "7b1ff2f6d5f693f5acd562e0f065e6a25f753162d11b41f139739b12ef28ac92"
-    sha256 cellar: :any,                 arm64_ventura: "0c16fe1dd6b9f9335d833c21bd6a6167fb2a8da4e22506a572a16e69ec6e1ce1"
-    sha256 cellar: :any,                 sonoma:        "1d5de8fa27cd8df34cbf793ae9498a5c2fd6f04044cfd6cbfe80c483a65bd3ad"
-    sha256 cellar: :any,                 ventura:       "334abe9cdd96a3a81e47b17d81737036f801c8d79838c9c955db99b3a7e9b827"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "26f3b56f9d41283f711376765990805865ebbcb89687e7fe9cae281dc49ba888"
+    sha256 cellar: :any,                 arm64_sequoia: "288551b8c1acff4faaf2f8950b60d9de83e2a6f5643b4bb63ef3689c60f7d029"
+    sha256 cellar: :any,                 arm64_sonoma:  "d16e797594750fb8bd1ad1afc2a49901bea1c48587bef487c2155cb8192c4875"
+    sha256 cellar: :any,                 arm64_ventura: "367123823b4ca2e1bef335e576a33e24926ec638991bafca9144ab4917be0017"
+    sha256 cellar: :any,                 sonoma:        "5e3bfe32151d99bf0dc38f92ebba11452e225269faf7ffcc110b1597aaf72d4c"
+    sha256 cellar: :any,                 ventura:       "da6af4ba4cc045091613a44c346e625977ffc18ae16358e58de46c87260d9d40"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ce72a837695ac3d74564b1f7d372f717b65deffa5c69301a4d3d0b74eae59e87"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4708ce7778d28d320595eccb0c1e1c7184522a03fb66f1e16e3a0f6769eccdd0"
   end
 
   depends_on "pkgconf" => :build
@@ -28,23 +29,18 @@ class CargoUdeps < Formula
     ENV["LIBSSH2_SYS_USE_PKG_CONFIG"] = "1"
     ENV["OPENSSL_DIR"] = Formula["openssl@3"].opt_prefix
     ENV["OPENSSL_NO_VENDOR"] = "1"
+
     system "cargo", "install", "--no-default-features", *std_cargo_args
   end
 
-  def check_binary_linkage(binary, library)
-    binary.dynamically_linked_libraries.any? do |dll|
-      next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)
-
-      File.realpath(dll) == File.realpath(library)
-    end
-  end
-
   test do
+    require "utils/linkage"
+
     # Show that we can use a different toolchain than the one provided by the `rust` formula.
     # https://github.com/Homebrew/homebrew-core/pull/134074#pullrequestreview-1484979359
     ENV.prepend_path "PATH", Formula["rustup"].bin
-    system "rustup", "default", "beta"
     system "rustup", "set", "profile", "minimal"
+    system "rustup", "default", "beta"
 
     crate = testpath/"demo-crate"
     mkdir crate do
@@ -69,7 +65,7 @@ class CargoUdeps < Formula
       Formula["openssl@3"].opt_lib/shared_library("libssl"),
       Formula["openssl@3"].opt_lib/shared_library("libcrypto"),
     ].each do |library|
-      assert check_binary_linkage(bin/"cargo-udeps", library),
+      assert Utils.binary_linked_to_library?(bin/"cargo-udeps", library),
              "No linkage with #{library.basename}! Cargo is likely using a vendored version."
     end
   end

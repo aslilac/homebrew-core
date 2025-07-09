@@ -6,6 +6,8 @@ class Cloudpan189Go < Formula
   license "Apache-2.0"
   head "https://github.com/tickstep/cloudpan189-go.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "793542588a08328d55060fc0faeb3808bde9656eee00e8df0b9ca98ad70ed9b0"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c66a3ce0426a356d4b5c05fe95fc6213ed4c867048157ebbc862ca9196af857e"
@@ -19,15 +21,16 @@ class Cloudpan189Go < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "21c193bc56690eef410bdbbce6d6b774fcf658f16b114ea0222afee18591d361"
   end
 
-  # use "go" again when https://github.com/tickstep/cloudpan189-go/issues/101 is resolved and released
-  depends_on "go@1.22" => :build
+  depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-s -w")
+    # TODO: remove `-checklinkname=0` workaround when fixed
+    # https://github.com/tickstep/cloudpan189-go/issues/101
+    system "go", "build", *std_go_args(ldflags: "-s -w -checklinkname=0")
   end
 
   test do
     system bin/"cloudpan189-go", "run", "touch", "output.txt"
-    assert_predicate testpath/"output.txt", :exist?
+    assert_path_exists testpath/"output.txt"
   end
 end

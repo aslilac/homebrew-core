@@ -10,6 +10,8 @@ class Ecasound < Formula
     regex(/href=.*?ecasound[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "44c42355a7959b320035dc42229da1ea6996934e220820a8e51c8c9b45e882ed"
     sha256 arm64_sonoma:   "fdcc51560354d8507e799d8d6e9f61b77cc31daddcc76afb058e78049d10695f"
@@ -23,6 +25,7 @@ class Ecasound < Formula
     sha256 catalina:       "f6fede56fea73bdfd32cebd514448b50dec47542ff7d76342f950a61160a9fff"
     sha256 mojave:         "38869046308b12e2d722f1bcb5e9a7085ffab93448e0490b161a6d18fc2fbd09"
     sha256 high_sierra:    "9dd2864d7b5a66bf3a7fc674b64a11d3cb1abeaf9fc4c65dd8898a2724c1a5a8"
+    sha256 arm64_linux:    "ab701f376ed4da40ce109998841784880580ad6b2cb13c5f97cdcb50dffb10fd"
     sha256 x86_64_linux:   "6c81d3065ae81f06d5c338aa6d892be6916c1215c5cb6c6cfd57f60d2249dd2e"
   end
 
@@ -49,6 +52,6 @@ class Ecasound < Formula
   test do
     fixture = test_fixtures("test.wav")
     system bin/"ecasound", "-i", "resample,auto,#{fixture}", "-o", testpath/"test.cdr"
-    assert_predicate testpath/"test.cdr", :exist?
+    assert_path_exists testpath/"test.cdr"
   end
 end

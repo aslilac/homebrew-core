@@ -7,6 +7,8 @@ class Buildapp < Formula
   revision 3
   head "https://github.com/xach/buildapp.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 arm64_sequoia:  "25eba8ba9388bbf422a7a5f14e2db9f1ea8d9e9add5cd58aecb3ea6a97f7eb83"
@@ -16,6 +18,7 @@ class Buildapp < Formula
     sha256 sonoma:         "d54e9bdbef32deb80e6dcf9ad7089ae433e9594fd3fc8df6e1ae50065a8e2857"
     sha256 ventura:        "e74370d3c6b1367de4d8edcee76878f8a380d7728f43f18cf4e2b28d6acb609e"
     sha256 monterey:       "8c4d8793f2467b30a89079fd58099a79d331794d3667949736b91542279d1b6c"
+    sha256 arm64_linux:    "2c2711b913dccab60c2f0273493426a2e98c007b736711685387a4b33423cf65"
     sha256 x86_64_linux:   "4642b29de810bdc8d7c9d5e1ea678c5f366dee7a3dd6ca48523dd36af4f559ea"
   end
 

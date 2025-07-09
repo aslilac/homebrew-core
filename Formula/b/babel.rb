@@ -1,21 +1,19 @@
-require "json"
-
 class Babel < Formula
   desc "Compiler for writing next generation JavaScript"
   homepage "https://babeljs.io/"
-  url "https://registry.npmjs.org/@babel/cli/-/cli-7.25.9.tgz"
-  sha256 "32f442ac82ff8793dfffd6aac01836688820a05f037018b7b789e990dba68014"
+  url "https://registry.npmjs.org/@babel/cli/-/cli-7.28.0.tgz"
+  sha256 "35902327eac780ffb33f30ce41b68aa8eb5b2314aabe60c3227341d7d3a4cc0b"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "321edc4d3c5fbf80c6cf485221627325e4a5280d87c80ad9daabbf993777c0b6"
+    sha256 cellar: :any_skip_relocation, all: "81184998b87067419e9d3b46f4ac0333803182a40c52c397da1dd603f90a3358"
   end
 
   depends_on "node"
 
   def install
     system "npm", "install", *std_npm_args
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink libexec.glob("bin/*")
   end
 
   test do
@@ -24,6 +22,6 @@ class Babel < Formula
     JS
 
     system bin/"babel", "script.js", "--out-file", "script-compiled.js"
-    assert_predicate testpath/"script-compiled.js", :exist?, "script-compiled.js was not generated"
+    assert_path_exists testpath/"script-compiled.js", "script-compiled.js was not generated"
   end
 end

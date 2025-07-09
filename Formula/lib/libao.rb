@@ -1,10 +1,12 @@
 class Libao < Formula
   desc "Cross-platform Audio Library"
   homepage "https://www.xiph.org/ao/"
-  url "https://github.com/xiph/libao/archive/refs/tags/1.2.2.tar.gz", using: :homebrew_curl
+  url "https://gitlab.xiph.org/xiph/libao/-/archive/1.2.2/libao-1.2.2.tar.gz"
   sha256 "df8a6d0e238feeccb26a783e778716fb41a801536fe7b6fce068e313c0e2bf4d"
   license "GPL-2.0-or-later"
   head "https://gitlab.xiph.org/xiph/libao.git", branch: "master"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 3
@@ -19,25 +21,19 @@ class Libao < Formula
     sha256 big_sur:        "f27a782e33661e2aa75cbfcbe775a2da08f7f781c6e7608e8f1e3a4a354c4cde"
     sha256 catalina:       "b6ccd4915aa272b58f267995ce3c87ad42388926535fedea0243c9b0b9941089"
     sha256 mojave:         "cb57d05c66a19dcfac7e45e6a80f195dfd050ca52a9b316133d131c0c8165cf7"
+    sha256 arm64_linux:    "4afd643a9b5267277711e6d28a42d52f0bf7968d3973d3e325b4681a0b966929"
     sha256 x86_64_linux:   "bdb709d63e9de2e2dc947887fdc3a383b626d24c200cf80ce58eeaffa5ff7eb2"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   def install
     ENV["AUTOMAKE_FLAGS"] = "--include-deps"
     system "./autogen.sh"
-
-    args = %W[
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-      --enable-static
-    ]
-
-    system "./configure", *args
+    system "./configure", "--enable-static", *std_configure_args
     system "make", "install"
   end
 

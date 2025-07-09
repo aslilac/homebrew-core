@@ -11,6 +11,8 @@ class Gnucobol < Formula
     regex(/href=.*?gnucobol[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "bd9d5d2f036d25fd97126fb46f72a33b30b2dca448e2fb6b1b351b6cd9c9de94"
     sha256 arm64_sonoma:   "35b99190f38a4ce4f20096a3fcc9e258eae128303f7651c1b0502376577e1ab0"
@@ -19,6 +21,7 @@ class Gnucobol < Formula
     sha256 sonoma:         "4ed0c37599d25d885b605f78c35d3b17dd0ed698ac63ed7b0cb430d67ff2ab79"
     sha256 ventura:        "1d308479bccc3242c6db39f8e68048a21550b0d911c689de7fe7f6ac648f3cbe"
     sha256 monterey:       "02976793288f851d75f1abd5c802908b68abf7f097722ee1460f2b6b451aa021"
+    sha256 arm64_linux:    "070672657bd9105b4dcf9d30e91ea9cf2ccbd3023cac9a83367f4c491171ac6f"
     sha256 x86_64_linux:   "3d5a97f7c0349499a790b2f312f0b018e30fc1bffa8268fe6d652ccfb3a8f7c8"
   end
 
@@ -42,7 +45,7 @@ class Gnucobol < Formula
     uses_from_macos "flex" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   # MacOSX provided BDB does not work (only _way_ work adjusted CFLAGS)
   # so we use the homebrew one
@@ -80,9 +83,8 @@ class Gnucobol < Formula
       inreplace "configure.ac", "AM_GNU_GETTEXT_VERSION", "AM_GNU_GETTEXT_REQUIRE_VERSION"
       system "build_aux/bootstrap", "install"
     end
-    system "./configure", *std_configure_args,
-                          *args
 
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

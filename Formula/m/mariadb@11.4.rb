@@ -1,9 +1,8 @@
 class MariadbAT114 < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  # TODO: Build with `-DWITH_LIBFMT=system` when fmt >= 11
-  url "https://archive.mariadb.org/mariadb-11.4.4/source/mariadb-11.4.4.tar.gz"
-  sha256 "96fbd2e6e93fb7e8b373eea75d85b6fea57c0e111a02090cbbefed52599dc77b"
+  url "https://archive.mariadb.org/mariadb-11.4.7/source/mariadb-11.4.7.tar.gz"
+  sha256 "bf20687ca12fa7efda8df89cab1f2a661288cea41acf8f53189b69d5294347d0"
   license "GPL-2.0-only"
 
   livecheck do
@@ -19,12 +18,13 @@ class MariadbAT114 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "0252074f4f69cfab24b18ace5488a89c800a60905d3785bded03d8c9ecd2bcf7"
-    sha256 arm64_sonoma:  "48f1db8037b4fdaf161d1c343a312a1f070ebf2462e672111efacb94372a08eb"
-    sha256 arm64_ventura: "846110ce634067cda4c693de058fe102978ba0856550d7852cfc4a6ecd2fb171"
-    sha256 sonoma:        "84275c251574a924980594168c4adc282a3b8d6d55a599653ee1e5b05cedd13e"
-    sha256 ventura:       "a70fb1d7a64bbe108fe866528ed03929ae95653bbe5e2528fd13eaf74bd42279"
-    sha256 x86_64_linux:  "5e1cf3cf07565977a41d31cfbf3de77bc444d6b0176d3b4655c3a1d0f3877e1b"
+    sha256 arm64_sequoia: "900a98058fa384fe2e4614eda935dcb6a14ee3a2c53d742fb44a42549e716669"
+    sha256 arm64_sonoma:  "42a535a01903c36650e78a3dda18b816acbc76a95c95e964e3e46f2002e87d30"
+    sha256 arm64_ventura: "88510fe70d938366a13a4f876061951dbe46a0e3e390208ddb4d5b715e9c7c21"
+    sha256 sonoma:        "37c9456c6b7ecbb529e07f321cf57d0cb2d5193305c18dba22592e8ee2a2be96"
+    sha256 ventura:       "e23b6f8d0509895626a442e0ddbfe7d9136fc4809366febf9a366b3579b5aef7"
+    sha256 arm64_linux:   "1b9cc74ba0de7eced070ac6f2d868991f6aa51f90148f1bd9fc4040e994a38a7"
+    sha256 x86_64_linux:  "8b3962384c5517a36ca618f9c33e2717245f8a47d4561ea78aa1ce8246c2a18c"
   end
 
   keg_only :versioned_formula
@@ -36,7 +36,7 @@ class MariadbAT114 < Formula
   depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "fmt" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "groonga"
   depends_on "lz4"
   depends_on "lzo"
@@ -61,9 +61,9 @@ class MariadbAT114 < Formula
     depends_on "linux-pam"
   end
 
-  fails_with gcc: "5"
-
   def install
+    ENV.runtime_cpu_detection
+
     # Set basedir and ldata so that mysql_install_db can find the server
     # without needing an explicit path to be set. This can still
     # be overridden by calling --basedir= when calling.
@@ -85,6 +85,7 @@ class MariadbAT114 < Formula
       -DINSTALL_DOCDIR=share/doc/#{name}
       -DINSTALL_INFODIR=share/info
       -DINSTALL_MYSQLSHAREDIR=share/mysql
+      -DWITH_LIBFMT=system
       -DWITH_PCRE=system
       -DWITH_SSL=system
       -DWITH_ZLIB=system
@@ -139,12 +140,12 @@ class MariadbAT114 < Formula
     end
 
     # Install my.cnf that binds to 127.0.0.1 by default
-    (buildpath/"my.cnf").write <<~EOS
+    (buildpath/"my.cnf").write <<~INI
       # Default Homebrew MySQL server config
       [mysqld]
       # Only allow connections from localhost
       bind-address = 127.0.0.1
-    EOS
+    INI
     etc.install "my.cnf"
   end
 

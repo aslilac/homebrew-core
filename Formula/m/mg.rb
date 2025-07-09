@@ -6,6 +6,8 @@ class Mg < Formula
   license all_of: [:public_domain, "ISC", "BSD-2-Clause", "BSD-3-Clause", "BSD-4-Clause"]
   version_scheme 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "14c363b5eeea07b8f117cb74b9676ae6a92dc26a9f1f39d9d9169fda5577a242"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "31940ad999d42c596d86df83651fea272faf4da53ec9b69b71b05165ec01d5bb"
@@ -16,10 +18,10 @@ class Mg < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "908aaa04c673ffa9db16ac98987b01b6d822a1285f3ab62a0e4d4f0c2d38b919"
     sha256 cellar: :any_skip_relocation, monterey:       "e3190e17138e2c21d7429ff591be1c3d574a7e13a0e1a10457f2e479cc5bf9e7"
     sha256 cellar: :any_skip_relocation, big_sur:        "12e3599c5fe68404690bae22a653cc00915cdf797041be2d67845e4760d41df7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "9cc7f3ad4ae912fabafe2f0aaf6cb1624a2d786769a7632ea956bd03c72b8c09"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "df7547e37e627c0504896e045d8c8df6adc3ea3dbdade674b1b964fcf333397f"
   end
 
-  uses_from_macos "expect" => :test
   uses_from_macos "ncurses"
 
   def install
@@ -30,14 +32,18 @@ class Mg < Formula
   end
 
   test do
-    (testpath/"command.exp").write <<~EOS
-      set timeout -1
-      spawn #{bin}/mg
-      match_max 100000
-      send -- "\u0018\u0003"
-      expect eof
-    EOS
-
-    system "expect", "-f", "command.exp"
+    require "pty"
+    PTY.spawn({ "TERM" => "xterm" }, bin/"mg", "test") do |r, w, pid|
+      sleep 1
+      w.write "brew\n\u0018\u0003y"
+      r.read
+    rescue Errno::EIO
+      # GNU/Linux raises EIO when read is done on closed pty
+    ensure
+      r.close
+      w.close
+      Process.wait(pid)
+    end
+    assert_equal "brew\n", (testpath/"test").read
   end
 end

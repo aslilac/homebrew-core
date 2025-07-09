@@ -1,19 +1,19 @@
 class Osm2pgsql < Formula
   desc "OpenStreetMap data to PostgreSQL converter"
   homepage "https://osm2pgsql.org"
-  url "https://github.com/openstreetmap/osm2pgsql/archive/refs/tags/2.0.0.tar.gz"
-  sha256 "05c2355b4a59d03a0f9855b4234a3bdc717b078faee625e73357947d1a82fe89"
+  url "https://github.com/osm2pgsql-dev/osm2pgsql/archive/refs/tags/2.1.1.tar.gz"
+  sha256 "b084e4a79317043410ff13ece4350a801384bd34e6c2c5959fa1e1424ce195b0"
   license "GPL-2.0-only"
-  head "https://github.com/openstreetmap/osm2pgsql.git", branch: "master"
+  head "https://github.com/osm2pgsql-dev/osm2pgsql.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia: "ffea3cae27bf62d48968eb9be4ab85440e60fa216231855c97a68ed4e42b8219"
-    sha256 arm64_sonoma:  "b6f235dacd6ba9a51d383689d1b632445108ec701f89793bf40c4e6a55e856b9"
-    sha256 arm64_ventura: "07994b3ea37df9184ad633a9d0a30a571ec4f5e4b07497106a5182797ff455e2"
-    sha256 sonoma:        "1fe7f0b34eeec3f80bf76bb57df61afb08a4018c20234e6b46de2a1bf9e7abc0"
-    sha256 ventura:       "85d2ace7b9134fdfaf2cd64d9ee9c269796524b8aef5e5cd659e1b11401d3a2e"
-    sha256 x86_64_linux:  "574cff38f797341afc455c8d7ee5a996d2ebe376214f38a578f4a79e260d52a7"
+    sha256 arm64_sequoia: "ae6732f4577555118510370adccaeefe194a43638f3edf8c6fa7d74883b70daa"
+    sha256 arm64_sonoma:  "602428b81887e949678e2f9782e11ab3896374620192652e7ddb6f5454ea5151"
+    sha256 arm64_ventura: "fdfaabdf6101e1536d70b8e21b37c5a1cecaf347e191dd957b032a853be0d09e"
+    sha256 sonoma:        "16d621193033944ea29ecfb9e66d73ace20b600f6847cf8ebfc1532cdc6e1904"
+    sha256 ventura:       "7f08026614bfb7a6322d5b35f8f3f143aec648c28de9fd6856db4c7a493bd030"
+    sha256 arm64_linux:   "9733201f7d985df8d12dfb1c16f9b6d36ed9615ac3fa0102ddf9866795514ef7"
+    sha256 x86_64_linux:  "a8ca71c29e64154abd15af163974e84eb4b78f603a0efa3a2c492df80af18274"
   end
 
   depends_on "boost" => :build

@@ -1,17 +1,18 @@
 class Fastp < Formula
   desc "Ultra-fast all-in-one FASTQ preprocessor"
   homepage "https://github.com/OpenGene/fastp"
-  url "https://github.com/OpenGene/fastp/archive/refs/tags/v0.24.0.tar.gz"
-  sha256 "42445973c57be9209c753027e99781261c69381013813c576ad447e413ff3d04"
+  url "https://github.com/OpenGene/fastp/archive/refs/tags/v1.0.1.tar.gz"
+  sha256 "80464cca840f7ecaeec63528cc5c4b138af83da909f91291115e1811e5f8cec6"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "b3ab9145befee1c91f94affcbff56639d42d51d0ca15968a77a03fe8f3470e34"
-    sha256 cellar: :any,                 arm64_sonoma:  "84d99c79412d7d1d4a7d0a28ce5c053539a0ece96d9895743c164231b88fbdd7"
-    sha256 cellar: :any,                 arm64_ventura: "c95133f539e6d2028c1dcfe77636746afc8b5cae83f62149e30645aecec8319e"
-    sha256 cellar: :any,                 sonoma:        "2fb9b68f0f5e6394ef0fc4f2e9f3f727169276d7036a8c5bf46b26a99680a5f4"
-    sha256 cellar: :any,                 ventura:       "7280ac0a603254ac8711bb1de17acd0c22fdc067de3ad806e3e74fd60fba439b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1b9af0aa2d7c574f3522b4ca8dfd39df425f995f0b9a09e7a3fb63adee9a5ff6"
+    sha256 cellar: :any,                 arm64_sequoia: "94add6a086e5190bcf750c6d3df132f4aab9de601a0e281fca1287bd8c4da957"
+    sha256 cellar: :any,                 arm64_sonoma:  "b478125d6abc5b0b1a3099cec1c1c3bef4e8ee77b3ff8023bb55561cd33d57f4"
+    sha256 cellar: :any,                 arm64_ventura: "d93bcc0a58726987c2f85d0343d36522a3fbf527996200b3f32595186516df0c"
+    sha256 cellar: :any,                 sonoma:        "aae3191433f4727df29a3d17e3f398feb0f98b27aa94adc865ae4dd2f5e8c7c7"
+    sha256 cellar: :any,                 ventura:       "b0ac35b79913f6d2d87898190e664d2ff498f70dd88247ca209275c7df229f74"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c4eeec0d04b8f9a1bfd855dbfff1fcbb8368908e80b926b129a9a2885520b3a7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "355ac94844b557208ac0d9d15e6dab80b6c83c6185f1f4eb8231a13e0b5564ec"
   end
 
   depends_on "isa-l"
@@ -26,6 +27,6 @@ class Fastp < Formula
 
   test do
     system bin/"fastp", "-i", pkgshare/"testdata/R1.fq", "-o", "out.fq"
-    assert_predicate testpath/"out.fq", :exist?
+    assert_path_exists testpath/"out.fq"
   end
 end

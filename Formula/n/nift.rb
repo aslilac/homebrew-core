@@ -5,6 +5,8 @@ class Nift < Formula
   sha256 "4900247b92e0ae0d124391ec710a38b322ae83170e2c39191f8ad497090ffd24"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "ec431ecc4b58ffa4a1a11fee47560dacd95b7868b4a49510d760e63c5d509d69"
     sha256 cellar: :any,                 arm64_sonoma:   "d956ac86be1b6ba12faa5fd44203b5528e7449118bf10529ccc92b9e99870cdd"
@@ -13,6 +15,7 @@ class Nift < Formula
     sha256 cellar: :any,                 sonoma:         "be9f28e1d59a40c8f7eb2ef64706389a7e3983ecc884072c925fd4ea5f058d4a"
     sha256 cellar: :any,                 ventura:        "c2261dd8442c08a37c268f6b5192abfed469b4edbde6bf640873a8db0f1c78f4"
     sha256 cellar: :any,                 monterey:       "a72728301c2f93e669868c547353a2bc1cb09d68a8bd0a14ebeab4556877e2fc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "0fe98d910ca3b4ddaf7ba53a135e62cc0fb506aeae507482b0fc85af9f78eaf4"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a4ceda3cb7527a85aac01357fa0e8fe3a1adb2d8dc4be618b7e93cacd97e6754"
   end
 
@@ -35,7 +38,7 @@ class Nift < Formula
   test do
     mkdir "empty" do
       system bin/"nsm", "init", ".html"
-      assert_predicate testpath/"empty/output/index.html", :exist?
+      assert_path_exists testpath/"empty/output/index.html"
     end
   end
 end

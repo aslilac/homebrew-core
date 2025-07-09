@@ -18,7 +18,7 @@ class CargoDeps < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "205f88a20c0bf8fdabc555ecd1ec72a6103f65dcaaf5dc8c23f687e6d78249d3"
   end
 
-  deprecate! date: "2024-01-19", because: :repo_removed
+  disable! date: "2025-01-19", because: :repo_removed
 
   depends_on "rust" => :build
   depends_on "rustup" => :test
@@ -31,8 +31,8 @@ class CargoDeps < Formula
     # Show that we can use a different toolchain than the one provided by the `rust` formula.
     # https://github.com/Homebrew/homebrew-core/pull/134074#pullrequestreview-1484979359
     ENV.prepend_path "PATH", Formula["rustup"].bin
-    system "rustup", "default", "beta"
     system "rustup", "set", "profile", "minimal"
+    system "rustup", "default", "beta"
 
     crate = testpath/"demo-crate"
     mkdir crate do

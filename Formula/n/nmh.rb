@@ -12,6 +12,8 @@ class Nmh < Formula
     regex(/href=.*?nmh[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "60f74fdf361c84ce1aad906bb3e44be7d08c7553c8862646e2790eff719df9c3"
     sha256 arm64_sonoma:   "4b087eeaa03d67b95eab1e96ec6f87f683012adbbbc2d8693d1a99c2003d12a8"
@@ -22,6 +24,7 @@ class Nmh < Formula
     sha256 ventura:        "3d599eb842fd242bc921500512f6dd79273dac4de44fd1e9b5b3e2178c974f99"
     sha256 monterey:       "1baa3243548fd2b34f59d1d5352602ee0a197ef0d91000de5d0aca382eb1cea8"
     sha256 big_sur:        "f2203024b91015dcc3c00fc690fbf253361ea12f443c97f7290985ea4e0f62c5"
+    sha256 arm64_linux:    "4a390dfd9f429b5730138804bd89c2823531ae7f6aebb654637789f7917512d7"
     sha256 x86_64_linux:   "b53a0fb7791c968e762ac99a4ed0bc708ba6f0e3c39a7963cb3b29edb3b77845"
   end
 
@@ -39,9 +42,11 @@ class Nmh < Formula
 
   on_linux do
     depends_on "gdbm"
+    depends_on "readline"
   end
 
   conflicts_with "ali", because: "both install `ali` binaries"
+  conflicts_with "cargo-dist", because: "both install `dist` binaries"
   conflicts_with "pick", because: "both install `pick` binaries"
   conflicts_with "repl", because: "both install `repl` binaries"
 

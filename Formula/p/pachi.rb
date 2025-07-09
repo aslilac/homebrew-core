@@ -6,6 +6,8 @@ class Pachi < Formula
   license "GPL-2.0-only"
   head "https://github.com/pasky/pachi.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "fd4a7a487d1c0d4c7597970a99008f0def56e08ae402d1d63832b0b5d41f2823"
     sha256 arm64_sonoma:   "57b6e6f43f52e5ef856feccee3a1a828872a90fb45a9e72149147ef8aa1e129d"
@@ -14,6 +16,7 @@ class Pachi < Formula
     sha256 sonoma:         "08420848a56934b074a7044ceb0acc38c49c169a0d784b4b5bdf0af3431ba73c"
     sha256 ventura:        "4f2ff8e1819b0982ae09db3be0935c36e38c809795d4b45776076e9a15e0c1d2"
     sha256 monterey:       "8d0c1b96f212172117f2f44d2880d906d043c0601d8a7b1dd4dc796cf8ddc57d"
+    sha256 arm64_linux:    "4b29e4d8ee8bf2f28f3aefbcd40f7c3042c14cb9398df6781006ada3e2e7ed51"
     sha256 x86_64_linux:   "eb13f42af4891d563b870f8840182c9b6f99f76dfd7afcfeaf9c1cbf8bff4790"
   end
 

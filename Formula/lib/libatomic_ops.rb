@@ -1,15 +1,17 @@
 class LibatomicOps < Formula
   desc "Implementations for atomic memory update operations"
-  homepage "https://github.com/ivmai/libatomic_ops/"
-  url "https://github.com/ivmai/libatomic_ops/releases/download/v7.8.2/libatomic_ops-7.8.2.tar.gz"
+  homepage "https://github.com/bdwgc/libatomic_ops/"
+  url "https://github.com/bdwgc/libatomic_ops/releases/download/v7.8.2/libatomic_ops-7.8.2.tar.gz"
   sha256 "d305207fe207f2b3fb5cb4c019da12b44ce3fcbc593dfd5080d867b1a2419b51"
   license all_of: ["GPL-2.0-or-later", "MIT"]
-  head "https://github.com/ivmai/libatomic_ops.git", branch: "master"
+  head "https://github.com/bdwgc/libatomic_ops.git", branch: "master"
 
   livecheck do
     url :stable
     strategy :github_latest
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 1
@@ -20,6 +22,7 @@ class LibatomicOps < Formula
     sha256 cellar: :any,                 sonoma:         "4f402b92483d9647fc328a8b02e2ea1abeb25d3460720f4530d3cc432c5c5550"
     sha256 cellar: :any,                 ventura:        "37d4fa5e739558798fc23471ba5efe49043ec46a8c07242fcc790f28f9940806"
     sha256 cellar: :any,                 monterey:       "e673e4f5126a4c2d43a98209bd9165413fc6d189d22e3481824bca60f74ec4c4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f35abbec6820d8c0597494560dff420dfd416511f4538c81eea5e3ab599c4fb3"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d1eac8d8ea0bd234b72ce311c92d02dc2ca33029b819327b6c2236309d549bca"
   end
 

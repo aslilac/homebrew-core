@@ -10,6 +10,8 @@ class Ntbtls < Formula
     regex(/href=.*?ntbtls[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "0b1672e39923c23daf86bb20ba920ba31144e4a2ab95218cab6c8b45d979a534"
     sha256 cellar: :any,                 arm64_sonoma:   "ab4d5a53bb700d479e6be04b5d749b8c65947be1bf2800120ccb706b2608af1d"
@@ -18,6 +20,7 @@ class Ntbtls < Formula
     sha256 cellar: :any,                 sonoma:         "2e18052aa9a13285b91aee389a8dd972709598a1b493bc16611a9a8c2e4e82ed"
     sha256 cellar: :any,                 ventura:        "0aa20fe8898d11f765b3b06d5ceef09fb95aa25680177d31742c7780fcb3f56e"
     sha256 cellar: :any,                 monterey:       "325ae328b6d7b3979026fab41d9b6e1bf2b1977635a444d5aa46feb4203f3941"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a2c56e174f8142aed89b36666fe8fb3e325b3c3a881c2765b014493eec9ef471"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "535750dc2867eebec1d2e416ae1f586284316f18ae56ca35dcb0edbc5b7e110c"
   end
 

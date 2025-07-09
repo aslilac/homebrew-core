@@ -10,6 +10,8 @@ class Mpfi < Formula
     regex(/href=.*?mpfi[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "826e309c5518bcf7aa755eefe369c2b91704820d2bf0730c0341b16e7a877033"
     sha256 cellar: :any,                 arm64_sonoma:   "2a77c1ce37a69afb7a40355c560e72294c3445b7f97f93f235756ce56e0747c0"
@@ -21,6 +23,7 @@ class Mpfi < Formula
     sha256 cellar: :any,                 monterey:       "a46d41cbd8e5eb649b6f33ec56eeafe79a75ec89ba7652c426e661340249a128"
     sha256 cellar: :any,                 big_sur:        "4c9a07e8889087a34c932c567b4e5f256d7d146f76206d3d62b5e2aa128f8689"
     sha256 cellar: :any,                 catalina:       "4cfd2197c9eed1b74d9518b0054d69556942e5ed7b0d3b8a6d93fffc50e95726"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "9207b79383b311f8d1c89240bc6274793c3fdba17706b08bb018e5c4162138c6"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "43395ab987d381a3f22eb91b2ce74c8a7d39623e0eac8a78f95d2e50b644b1cd"
   end
 

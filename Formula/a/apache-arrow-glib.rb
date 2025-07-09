@@ -1,9 +1,9 @@
 class ApacheArrowGlib < Formula
   desc "GLib bindings for Apache Arrow"
   homepage "https://arrow.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-18.0.0/apache-arrow-18.0.0.tar.gz"
-  mirror "https://archive.apache.org/dist/arrow/arrow-18.0.0/apache-arrow-18.0.0.tar.gz"
-  sha256 "abcf1934cd0cdddd33664e9f2d9a251d6c55239d1122ad0ed223b13a583c82a9"
+  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-20.0.0/apache-arrow-20.0.0.tar.gz"
+  mirror "https://archive.apache.org/dist/arrow/arrow-20.0.0/apache-arrow-20.0.0.tar.gz"
+  sha256 "89efbbf852f5a1f79e9c99ab4c217e2eb7f991837c005cba2d4a2fbd35fad212"
   license "Apache-2.0"
   head "https://github.com/apache/arrow.git", branch: "main"
 
@@ -11,19 +11,22 @@ class ApacheArrowGlib < Formula
     formula "apache-arrow"
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "a0b28fa6491a7c46d5a39700294ba788f3850a6fe9835b6735ddf4a68a07b33f"
-    sha256 cellar: :any, arm64_sonoma:  "c4d708695d8f80825fbff161662207a82a9ec506abc913e3e33c05ce17356fab"
-    sha256 cellar: :any, arm64_ventura: "71aa90768fce1f8fc8edbd7b952ab9e1bf739d7f0e19b24e2f196f62384f64aa"
-    sha256 cellar: :any, sonoma:        "d3f50856edd406643d163472bf910a6c1058fa16871bb46f6ada5508fb3fef34"
-    sha256 cellar: :any, ventura:       "e488887b029117251bb4b7a5885de883d63030684f588885f9226eb408525115"
-    sha256               x86_64_linux:  "264ffff72a0d935ccfe7f9178fa762d9809ca71c329ada7a21e472f1151873cb"
+    sha256 cellar: :any, arm64_sequoia: "8294049b1709df4be53384fdafbec4e87a2a6ddc118a9f3e2867c67efcc9b02a"
+    sha256 cellar: :any, arm64_sonoma:  "ccde01a3671cac00aab2015fed3e35a5b74ebcd270c79e994fa48955dc08eb73"
+    sha256 cellar: :any, arm64_ventura: "df19557f102ca5b5e91b31ee6b5b7a33dbcbd15ced6cd3652864e85fc6359621"
+    sha256 cellar: :any, sonoma:        "a7cb4dc9dfbe8a3246661f1f754d4dc4c84b665ee8e6313683bfbf63ce784492"
+    sha256 cellar: :any, ventura:       "1f6cdbbbad28c17ad4b496568364cd787bcd3c0956ede80435837f370485b946"
+    sha256               arm64_linux:   "b3750439d49985c88717279650068e5b278b8f0e2973f993d176a342d5692d3b"
+    sha256               x86_64_linux:  "23c52e3e3e12a375416a6920e8983856b8a00dd4ff0ab7f4a5c6c8f2899bc068"
   end
 
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkgconf" => :build
+  depends_on "pkgconf" => [:build, :test]
   depends_on "apache-arrow"
   depends_on "glib"
 
@@ -42,23 +45,8 @@ class ApacheArrowGlib < Formula
         return 0;
       }
     C
-    apache_arrow = Formula["apache-arrow"]
-    glib = Formula["glib"]
-    flags = %W[
-      -I#{include}
-      -I#{apache_arrow.opt_include}
-      -I#{glib.opt_include}/glib-2.0
-      -I#{glib.opt_lib}/glib-2.0/include
-      -L#{lib}
-      -L#{apache_arrow.opt_lib}
-      -L#{glib.opt_lib}
-      -DNDEBUG
-      -larrow-glib
-      -larrow
-      -lglib-2.0
-      -lgobject-2.0
-      -lgio-2.0
-    ]
+
+    flags = shell_output("pkgconf --cflags --libs arrow-glib gobject-2.0").chomp.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

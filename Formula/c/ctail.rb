@@ -5,6 +5,8 @@ class Ctail < Formula
   sha256 "864efb235a5d076167277c9f7812ad5678b477ff9a2e927549ffc19ed95fa911"
   license "Apache-2.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "21800dfc7f1557473cc6fe1b4e0716d4fb100c86acbd6bbfe3751b36b02a37f6"
@@ -21,6 +23,7 @@ class Ctail < Formula
     sha256 cellar: :any,                 high_sierra:    "de6e121995f86ec3dbfddf8bee861d9389c548648316f4901cbde691ca26a8d5"
     sha256 cellar: :any,                 sierra:         "829ed2ea1ac94bf32fd1817f714b87301abf2c488cf151675239d5d9bf6f6ef8"
     sha256 cellar: :any,                 el_capitan:     "80a2ae43fba99e6eb5eb4b50b52ee0e32213d521f59e147a109444439b86365d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f4eddd733efe18c74eadb393d0ab41d51a5b4972857c6022a39c955595e2ab2f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "583c009e46c529593648a48442ba5544aa1ac7ebb3cf1309c2e1eb08ed9f9439"
   end
 

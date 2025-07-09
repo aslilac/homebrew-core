@@ -6,6 +6,8 @@ class Pget < Formula
   license "MIT"
   head "https://github.com/Code-Hex/pget.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "d0cbbdf49e2ddf9f6c53982a891dff83b332e5cc760fb2bae4a5c8e2e2d738c8"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "48b2b055afe66da789fc85f5f613bb9ea1af341f799c5ef540e9bfa889fad9ce"
@@ -27,9 +29,9 @@ class Pget < Formula
   end
 
   test do
-    file = "https://raw.githubusercontent.com/Homebrew/homebrew-core/master/README.md"
+    file = "https://raw.githubusercontent.com/Homebrew/homebrew-core/HEAD/README.md"
     system bin/"pget", "-p", "4", file
-    assert_predicate testpath/"README.md", :exist?
+    assert_path_exists testpath/"README.md"
 
     assert_match version.to_s, shell_output("#{bin}/pget --help", 1)
   end

@@ -6,6 +6,8 @@ class BashPreexec < Formula
   license "MIT"
   head "https://github.com/rcaloras/bash-preexec.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, all: "be667c2452738ea09d539b67880bca9655a60c9d6e586e7088420e214b310382"
@@ -24,6 +26,6 @@ class BashPreexec < Formula
 
   test do
     # Just testing that the file is installed
-    assert_predicate testpath/"#{prefix}/etc/profile.d/bash-preexec.sh", :exist?
+    assert_path_exists testpath/"#{prefix}/etc/profile.d/bash-preexec.sh"
   end
 end

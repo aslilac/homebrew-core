@@ -11,6 +11,8 @@ class Svg2pdf < Formula
     regex(/href=.*?svg2pdf[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "47d73aad7aae2d18a27bb902aa155f2f0a716ae9da58468a177c324de3307cc6"
     sha256 cellar: :any,                 arm64_sonoma:   "5d2e70a72f9a8858e35dd8f3103931091f755b8f23de7163b2a684fc5d2d54da"
@@ -25,8 +27,15 @@ class Svg2pdf < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "da8f29a9fa362e43d754a326cf274898b7ee24dda8591b4169cfb8e31b6a51a4"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
+  depends_on "cairo"
   depends_on "libsvg-cairo"
+
+  on_macos do
+    depends_on "jpeg-turbo"
+    depends_on "libpng"
+    depends_on "libsvg"
+  end
 
   resource("svg.svg") do
     url "https://raw.githubusercontent.com/mathiasbynens/small/master/svg.svg"
@@ -41,14 +50,14 @@ class Svg2pdf < Formula
                                    "$(svg2pdf_OBJECTS) $(svg2pdf_LDFLAGS)"
     end
 
-    system "./configure", *std_configure_args, "--mandir=#{man}"
+    system "./configure", "--mandir=#{man}", *std_configure_args
     system "make", "install"
   end
 
   test do
     resource("svg.svg").stage do
       system bin/"svg2pdf", "svg.svg", "test.pdf"
-      assert_predicate Pathname.pwd/"test.pdf", :exist?
+      assert_path_exists Pathname.pwd/"test.pdf"
     end
   end
 end

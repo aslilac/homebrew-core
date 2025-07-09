@@ -6,25 +6,28 @@ class FfmpegAT28 < Formula
   # None of these parts are used by default, you have to explicitly pass `--enable-gpl`
   # to configure to activate them. In this case, FFmpeg's license changes to GPL v2+.
   license "GPL-2.0-or-later"
-  revision 3
+  revision 5
 
   livecheck do
     url "https://ffmpeg.org/download.html"
     regex(/href=.*?ffmpeg[._-]v?(2\.8(?:\.\d+)*)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 arm64_sequoia: "e96b9cf0d22d26bbb5e31a328470ae33968ad11689331bf00194de6c0804a2f7"
-    sha256 arm64_sonoma:  "da1e239986a7e9d4460b6c34248a445116bd77b189e415122e3b4ae7817b11b7"
-    sha256 arm64_ventura: "336e26f38c4a56a4adfa36fe3483c7b98aad5103de3458efdad2cdf8a743252c"
-    sha256 sonoma:        "8e678fd542f42f1ff7df584291fd10d4f78d2b958b41c2fac1d1da2b416b0059"
-    sha256 ventura:       "c1d9eef17eeb35651624ea12ab079b20326e44b0d7afde99bc6d5493e50dcb72"
-    sha256 x86_64_linux:  "45a9e326e3fbe245bd9408f9928967bb9737b3d1d67fbe05607c80f73470f66e"
+    sha256 arm64_sequoia: "6e22fbdd846396385c6c0ff1a2f38ab320c175d45ab384e4bc0509df7f07a053"
+    sha256 arm64_sonoma:  "f20d6994de950893888d0aa9f890c6ab8e180ecdf2c5ccd77cb9f6eb046eb908"
+    sha256 arm64_ventura: "96557e05c9aeffada773a6459850f35ada0d95ec463d47d8bb9947e45604c504"
+    sha256 sonoma:        "25a834ba449bd150ec5126e33a5b7340cc17f3de64a1d0f0b2de45ce7fe89c34"
+    sha256 ventura:       "5b56281f86bc0e0e1fda62f1dec663fb573f2e792f8a4e7a5456770ad996e346"
+    sha256 arm64_linux:   "53d2e877fd2dbeb34441b5c06dbb2ab1fdb9b6e19d17425d3339f1661a510c9e"
+    sha256 x86_64_linux:  "7c6d5a6848c63a8f92f60dcf93a19b7b5aa8d50662bf42d15139a75fc06d273a"
   end
 
   keg_only :versioned_formula
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "texi2html" => :build
   depends_on "yasm" => :build
 
@@ -116,6 +119,6 @@ class FfmpegAT28 < Formula
     # Create an example mp4 file
     mp4out = testpath/"video.mp4"
     system bin/"ffmpeg", "-y", "-filter_complex", "testsrc=rate=1:duration=1", mp4out
-    assert_predicate mp4out, :exist?
+    assert_path_exists mp4out
   end
 end

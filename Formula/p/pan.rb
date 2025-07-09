@@ -1,22 +1,23 @@
 class Pan < Formula
   desc "Usenet newsreader that's good at both text and binaries"
   homepage "https://gitlab.gnome.org/GNOME/pan"
-  url "https://gitlab.gnome.org/GNOME/pan/-/archive/v0.161/pan-v0.161.tar.bz2"
-  sha256 "4c2c34b9e4a13275b73fae4f5dbdb3f857cf6b58c4813a373dd9d67ce37779d9"
+  url "https://gitlab.gnome.org/GNOME/pan/-/archive/v0.163/pan-v0.163.tar.bz2"
+  sha256 "f15b5ad48729424fc5c31d1c3b609563374f1993e4b37ed17cf36f5e4e65589c"
   license "GPL-2.0-only"
 
   bottle do
-    sha256 arm64_sequoia: "35f4b99a7bdcb408b9f6a7ec4ea839df25204a73e07cbd2bcf54d4df7524569c"
-    sha256 arm64_sonoma:  "3f55ddfdcfb08f1b827b2c4edfe64cbed1b9d85fdeb8fd15fe88cf569819195b"
-    sha256 arm64_ventura: "4e9d21bdc040a523f50becffca34332b18b54277f6cdb534628bc5e2c33d7083"
-    sha256 sonoma:        "923377d62ba469d533c4eaa7e7f9ec74c1726e839b451bbc12c59d0cb4789a1d"
-    sha256 ventura:       "f9034fe247a568d255d7fe8b477678224971504679006733a61212440df3965e"
-    sha256 x86_64_linux:  "01192961eb2ea62a502ab3da7c28751a97cee269691f3bb12493ad1b58868c16"
+    sha256 arm64_sequoia: "fe6f4ce88b08fc33e3bbc24966ebaccd7a097d0c0f7f7e74f0393b87c0ddd246"
+    sha256 arm64_sonoma:  "8f8c65db6328a70fde77845c576a3e4d7a56ce81f51d49f3826cb3b12e6aab3c"
+    sha256 arm64_ventura: "92f3339ce3499cd6f4991ea03a011553c4c3304e86cddbedc159b928d6aee08e"
+    sha256 sonoma:        "57237340a6f1a9e19357ca236115a08d4a6a9cf91d2557259d883bb07c449de3"
+    sha256 ventura:       "9349b86b4e76eb15423480985c961d222c70627858ed19cc3bf1e5d2a85a75cb"
+    sha256 arm64_linux:   "eb919df1a737833206151621a14bc24f8666695d46ef5e11cbdae64806076ebb"
+    sha256 x86_64_linux:  "b57e6f564d8e793ea6372443e5be72251d1619e9fa3af7c231ac8b1378312b7b"
   end
 
   depends_on "cmake" => :build
   depends_on "gettext" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "adwaita-icon-theme"
   depends_on "cairo"
@@ -49,7 +50,7 @@ class Pan < Formula
     return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
     minimal = testpath/"minimal.nzb"
-    minimal.write <<~EOS
+    minimal.write <<~XML
       <?xml version="1.0" encoding="iso-8859-1"?>
       <!DOCTYPE nzb PUBLIC "-//newzBin//DTD NZB 0.9//EN" "http://www.newzbin.com/DTD/nzb/nzb-0.9.dtd">
       <nzb xmlns="http://www.newzbin.com/DTD/2003/nzb">
@@ -62,7 +63,7 @@ class Pan < Formula
           </segments>
         </file>
       </nzb>
-    EOS
+    XML
 
     # this test works only if pan has not yet been configured with news servers
     assert_match "Please configure Pan's news servers before using it as an nzb client.",

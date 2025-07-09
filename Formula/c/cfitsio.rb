@@ -1,8 +1,8 @@
 class Cfitsio < Formula
   desc "C access to FITS data files with optional Fortran wrappers"
   homepage "https://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html"
-  url "https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio-4.4.1.tar.gz"
-  sha256 "66a1dc3f21800f9eeabd9eac577b91fcdd9aabba678fbba3b8527319110d1d25"
+  url "https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio-4.6.2.tar.gz"
+  sha256 "66fd078cc0bea896b0d44b120d46d6805421a5361d3a5ad84d9f397b1b5de2cb"
   license "CFITSIO"
 
   livecheck do
@@ -11,31 +11,47 @@ class Cfitsio < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "819ae6b244e5a709f892b9e274fc6802ebc4d028e5c3e9991e2e326ecab8d36c"
-    sha256 cellar: :any,                 arm64_sonoma:   "c163bdde8590001f48dd1b31e6282c2b75122851da72af9aeebb43779bc15a0d"
-    sha256 cellar: :any,                 arm64_ventura:  "f5f1d388397eb146f018874376eedb74ade30214a5cd7e70abfef9784e47e6c3"
-    sha256 cellar: :any,                 arm64_monterey: "5f791cd81d01fb4613d3f2676054e593bcbc0374ac6e70f9b22a7e879069e0b7"
-    sha256 cellar: :any,                 sonoma:         "46d2b20c6465f76fb47462bf8c05784fd85084c06096fc9aa2598f4a4421cb58"
-    sha256 cellar: :any,                 ventura:        "189ff0c8bf05f6b237414d7784795361c142b999bdf27e6a89738ac20f682db5"
-    sha256 cellar: :any,                 monterey:       "4e848192f3a797f9f9494bccccf614e35d493a869dd8a782ff77071fd14572d6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7aa412137e37b4faac67cfe2f30ebc3ad52a97b5658bc64a476131d461d14c8b"
+    sha256 cellar: :any,                 arm64_sequoia: "5211e3ed2c5d20c27a80a1a60392a0a40ba1124795fcb9a8969dbfc536bf75cc"
+    sha256 cellar: :any,                 arm64_sonoma:  "99f6c0c152eed90cfc797714394de1428abc1e5bc056699bc9f227124fe537e1"
+    sha256 cellar: :any,                 arm64_ventura: "8b92cc30cc355bb0522c74bd91481fedb21e31867812475e867fcb704b1336f6"
+    sha256 cellar: :any,                 sonoma:        "95f8da6e88ef0f411fd4f0769e0ac1651a98760d02ea70e8f3e5df97c2f645e9"
+    sha256 cellar: :any,                 ventura:       "65fb50a8957f974a68ced585b4742f42bc7684d80035499362571d425ccc6edd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f9cfb371e8d8f3a17bbed2f50db40636c85bc22012725cd8f9a680474fba16e9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5028bfb3c616cfec720d946007f9fe30f0284ad7b348800acb7d8cb9d516cffb"
   end
 
+  depends_on "cmake" => :build
+  depends_on "pkgconf" => :test
   uses_from_macos "zlib"
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--enable-reentrant"
-    system "make", "shared"
-    system "make", "fpack"
-    system "make", "funpack"
-    system "make", "install"
+    # Incorporates upstream commits:
+    #   https://github.com/HEASARC/cfitsio/commit/8ea4846049ba89e5ace4cc03d7118e8b86490a7e
+    #   https://github.com/HEASARC/cfitsio/commit/6aee9403917f8564d733938a6baa21b9695da442
+    # Review for removal in next release
+    inreplace "cfitsio.pc.cmake" do |f|
+      f.sub!(/exec_prefix=.*/, "exec_prefix=${prefix}")
+      f.sub!(/libdir=.*/, "libdir=${exec_prefix}/@CMAKE_INSTALL_LIBDIR@")
+      f.sub!(/includedir=.*/, "includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@")
+    end
+
+    args = %W[
+      -DCMAKE_INSTALL_RPATH=#{rpath}
+      -DCMAKE_INSTALL_INCLUDEDIR=include
+      -DUSE_PTHREADS=ON
+      -DTESTS=OFF
+    ]
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
+
     (pkgshare/"testprog").install Dir["testprog*", "utilities/testprog.c"]
   end
 
   test do
     cp Dir["#{pkgshare}/testprog/testprog*"], testpath
-    system ENV.cc, "testprog.c", "-o", "testprog", "-I#{include}",
-                   "-L#{lib}", "-lcfitsio"
+    flags = shell_output("pkg-config --cflags --libs #{name}").split
+    system ENV.cc, "testprog.c", "-o", "testprog", *flags
     system "./testprog > testprog.lis"
     cmp "testprog.lis", "testprog.out"
     cmp "testprog.fit", "testprog.std"

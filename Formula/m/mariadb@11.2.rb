@@ -5,18 +5,6 @@ class MariadbAT112 < Formula
   sha256 "1cd0a7cfd5f9e25d8526aa70b1130743f9e551d8d03fe7ccdd2107b4e172d579"
   license "GPL-2.0-only"
 
-  livecheck do
-    url "https://downloads.mariadb.org/rest-api/mariadb/all-releases/?olderReleases=false"
-    strategy :json do |json|
-      json["releases"]&.map do |release|
-        next unless release["release_number"]&.start_with?(version.major_minor)
-        next if release["status"] != "stable"
-
-        release["release_number"]
-      end
-    end
-  end
-
   bottle do
     sha256 arm64_sequoia: "951ac2e9c45f3ff6510824fe7cfdcbb5f33252230b71487859444fb192c6ef87"
     sha256 arm64_sonoma:  "a7bacbd1b817fd5d0a81a7f386e844326b8851c36e766b06dad96d8d0d297bf3"
@@ -36,7 +24,7 @@ class MariadbAT112 < Formula
   depends_on "cmake" => :build
   depends_on "fmt" => :build
   depends_on "openjdk" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "groonga"
   depends_on "lz4"
@@ -58,8 +46,6 @@ class MariadbAT112 < Formula
     depends_on "linux-pam"
     depends_on "readline" # uses libedit on macOS
   end
-
-  fails_with gcc: "5"
 
   def install
     ENV.cxx11
@@ -139,12 +125,12 @@ class MariadbAT112 < Formula
     end
 
     # Install my.cnf that binds to 127.0.0.1 by default
-    (buildpath/"my.cnf").write <<~EOS
+    (buildpath/"my.cnf").write <<~INI
       # Default Homebrew MySQL server config
       [mysqld]
       # Only allow connections from localhost
       bind-address = 127.0.0.1
-    EOS
+    INI
     etc.install "my.cnf"
   end
 

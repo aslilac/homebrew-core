@@ -5,6 +5,8 @@ class Garmintools < Formula
   sha256 "ffd50b7f963fa9b8ded3223c4786b07906c887ed900de64581a24ff201444cee"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "20a6201dcffaf971164afa65223ba7eb6ef53dca3c1a092e303dda0654f109d8"
     sha256 cellar: :any,                 arm64_sonoma:   "da0e5ffaf6e1b8477d92247072fcf400f9b16368bd93db8a05e9c3106efdb2c7"
@@ -20,6 +22,7 @@ class Garmintools < Formula
     sha256 cellar: :any,                 high_sierra:    "9ecdb8294089c84a229db39a395bf3f4817f185f30135a6f92711b95705ab869"
     sha256 cellar: :any,                 sierra:         "c747a668400406f6625a3832e351a4f27fd1308d8ef840120eba086d3d6adcb4"
     sha256 cellar: :any,                 el_capitan:     "dd86a8e306d3c4ebb9b94ddd4aaf60fdb79aa06fc7eb56ca95942248db33924e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "651d681008bab2dbe3a05031813af4ed84eca0b086c98dc3ccbdff327b4944dd"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "230b31dd83d9514c35abdb2477e4f1e4941eb1c94bf394814acd46676ced1318"
   end
 
@@ -29,9 +32,11 @@ class Garmintools < Formula
     # Fix flat namespace usage
     inreplace "configure", "${wl}-flat_namespace ${wl}-undefined ${wl}suppress", "${wl}-undefined ${wl}dynamic_lookup"
 
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = []
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

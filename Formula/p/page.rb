@@ -6,6 +6,8 @@ class Page < Formula
   license "MIT"
   head "https://github.com/I60R/page.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "85f3c4b72af05b300edd783803e965114ee38bb7d8b6702812a9632d1386ec3a"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bf6833b56b397b904b8f9a30f219a768d399d178268c7bd90a5cdc30409719c0"
@@ -16,6 +18,7 @@ class Page < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "9711f49884c59be816fa97363993b08b6f1655b1a4ec8de8a89c6e95355976b9"
     sha256 cellar: :any_skip_relocation, monterey:       "ad312adf9e277f5dede93292f1cfb5001c4ad3a26ac55f877e25690d3c386f15"
     sha256 cellar: :any_skip_relocation, big_sur:        "d9598c8b80efa0b238478f877b19be504a1b07d3b41c8932e227a6ea4505cda8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "83b220ed10b10826229798222e1ffe69d65fafd026c46dc36599ed8fff4b8c6f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e9cac68f8653a7f517a1cbe7429e98743e94379bf96564c11e6b81c964cb279d"
   end
 

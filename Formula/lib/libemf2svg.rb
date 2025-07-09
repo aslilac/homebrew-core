@@ -5,6 +5,8 @@ class Libemf2svg < Formula
   sha256 "ad48d2de9d1f4172aca475d9220bbd152b7280f98642db561ee6688faf50cd1e"
   license "GPL-2.0-only"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "c769ed043dc565d050ee360ed38753a5f09db7fb39987c295c3d08b3eba16834"
     sha256 cellar: :any,                 arm64_sonoma:   "46974d67b425299521f648acc2561051646afbb51e47d45ff954277df5b32334"
@@ -16,6 +18,7 @@ class Libemf2svg < Formula
     sha256 cellar: :any,                 monterey:       "282508d66b3fd198648a798040205d7f3e42720cc9fc64572ac397767b369851"
     sha256 cellar: :any,                 big_sur:        "2da6c337708d8666ddfd4295b77f81b72c099f31c564f4efd79bed5f620a0d7a"
     sha256 cellar: :any,                 catalina:       "22a0d2002ff89d8583fa86c103d465b23fe7809a527aae4c6dad29b39db020f5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "06d60d5e8329cb81fa95b4ffc2253df5e29c98106b08e07248adaf811df48605"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "271caea2750597c1a8f0b30b80f4cdd901c439db73ca0d179420a0e3cb12c4bc"
   end
 
@@ -43,6 +46,6 @@ class Libemf2svg < Formula
     resource("homebrew-testdata").stage do
       system bin/"emf2svg-conv", "-i", "test-037.emf", "-o", testpath/"test.svg"
     end
-    assert_predicate testpath/"test.svg", :exist?
+    assert_path_exists testpath/"test.svg"
   end
 end

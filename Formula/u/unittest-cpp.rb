@@ -14,6 +14,8 @@ class UnittestCpp < Formula
     end
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "8477bf1fd9cd1f227c003d267c92492e60b169896c2e9e04b23ba7473b89201a"
     sha256 cellar: :any,                 arm64_sonoma:   "618082a8d57ee7c5a285bd1f2e8fffc2edc76ba703e0764baf13f34236d44813"
@@ -29,6 +31,7 @@ class UnittestCpp < Formula
     sha256 cellar: :any,                 high_sierra:    "206f44c35a82fac519b64b8c4ae6bc397e360d8404e8279a24b906d7729efed2"
     sha256 cellar: :any,                 sierra:         "91d028b464f32fcf6edda6b791be2b70d9b770934edd7af7d2b8ff24e9c5eb06"
     sha256 cellar: :any,                 el_capitan:     "6136d8cdc420681130c59d9f77327ddad6b46a35d29da5be760b522c7456e2a2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "7d3f6916cc0b8b7006d3a5c5480ad23154ed7ab4ca58d187d1412b4655c12800"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b00aa2974e4ab2714fb6d98ada6b1dc127a20641f05170196ecf58beea63d6a7"
   end
 
@@ -40,8 +43,8 @@ class UnittestCpp < Formula
   end
 
   def install
-    system "autoreconf", "-fvi" if build.head?
-    system "./configure", "--prefix=#{prefix}", "--disable-silent-rules"
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 

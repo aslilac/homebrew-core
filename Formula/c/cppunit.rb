@@ -10,6 +10,8 @@ class Cppunit < Formula
     regex(/href=["']?cppunit[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "081175312ba1bb288369cb84ff8a8e3bf11cf9c451b80dac6cedc211590d020a"
     sha256 cellar: :any,                 arm64_sonoma:   "192272d9c0a8a984f6efd69def9b47c5f3eda974f27daebb448362501b8e81d2"
@@ -23,6 +25,7 @@ class Cppunit < Formula
     sha256 cellar: :any,                 catalina:       "3e194b84577c733e5641f305a1cb5cc76355f13037898afc56c3096f98bb78fe"
     sha256 cellar: :any,                 mojave:         "1c107efb84d656dd5327aa8cf13e6cbce8db7542aacba98ae98a2b05940b16ff"
     sha256 cellar: :any,                 high_sierra:    "08a339bc38db169bce2f5eb0fc0b940bc82562c37274aa770668f681aeca4386"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "d0a96b2919d44c81f063814b1e9272618b0144729a1c09f4f2878c63cbc7ee97"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1024a59b0bca4572448d7ed2e1152688d1b9be616d3b0644c15de8cd982c32a5"
   end
 

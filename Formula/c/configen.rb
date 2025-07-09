@@ -6,6 +6,8 @@ class Configen < Formula
   license "MIT"
   head "https://github.com/theappbusiness/ConfigGenerator.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f4afca8fd4567771c799d14425f4085ddc23a1ca5f89e32890dba233919e3ae9"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f5af8473413de2042d5216b397e93a126cb21577eafbcab7bbe3657047c676de"
@@ -29,7 +31,7 @@ class Configen < Formula
   end
 
   test do
-    (testpath/"test.plist").write <<~EOS
+    (testpath/"test.plist").write <<~XML
       <?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
       <plist version="1.0">
@@ -40,13 +42,14 @@ class Configen < Formula
         <integer>2</integer>
       </dict>
       </plist>
-    EOS
+    XML
+
     (testpath/"test.map").write <<~EOS
       testURL : URL
       retryCount : Int
     EOS
     system bin/"configen", "-p", "test.plist", "-h", "test.map", "-n", "AppConfig", "-o", testpath
-    assert_predicate testpath/"AppConfig.swift", :exist?, "Failed to create config class!"
+    assert_path_exists testpath/"AppConfig.swift", "Failed to create config class!"
     assert_match "static let testURL: URL = URL(string: \"https://example.com/api\")", File.read("AppConfig.swift")
     assert_match "static let retryCount: Int = 2", File.read("AppConfig.swift")
   end

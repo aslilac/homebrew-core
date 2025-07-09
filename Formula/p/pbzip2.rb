@@ -5,6 +5,8 @@ class Pbzip2 < Formula
   sha256 "8fd13eaaa266f7ee91f85c1ea97c86d9c9cc985969db9059cdebcb1e1b7bdbe6"
   license "bzip2-1.0.6"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "09d47c48c9c64a8c026c28f30e3e0074f1f0a195d5886d37e1a15f6925ab91bc"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "96fd12c7e49a4710a7d718412bc0d1cbda865873486489bb068ff49bd5c23dd9"
@@ -20,6 +22,7 @@ class Pbzip2 < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "d72e618d7301937ab6a392e1ef3d9ed1f8d5380cd6516ea17b4e4bde11eea9a7"
     sha256 cellar: :any_skip_relocation, sierra:         "c15b9c38b5302286033e54ff4be006c3b31ccb179f96641e44f1126958527d7e"
     sha256 cellar: :any_skip_relocation, el_capitan:     "be653d724b6f061cb9939dbdbf457aebc275e16dbf599f598b9ff3999fdd5db3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "c63518fb5d60d394bcc30e58d8af968509e373d1b658fdcc0a42b48368fd4b1d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "33c30ab657b712607e295bb648c8d7ce7c5590ec916aef948e2f38dc25c51551"
   end
 

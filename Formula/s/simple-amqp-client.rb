@@ -4,18 +4,19 @@ class SimpleAmqpClient < Formula
   url "https://github.com/alanxz/SimpleAmqpClient/archive/refs/tags/v2.5.1.tar.gz"
   sha256 "057c56b29390ec7659de1527f9ccbadb602e3e73048de79594521b3141ab586d"
   license "MIT"
-  revision 9
+  revision 11
   head "https://github.com/alanxz/SimpleAmqpClient.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "cd6d4094aacae310f0c808a8192bafbb2ca569bca87e95bb4f2f53e6f21733f8"
-    sha256 cellar: :any,                 arm64_sonoma:   "7eb2dfc39d39dc1d154e86e8de9eda347187128e5a79d3b5118ecdb7e51f8e5f"
-    sha256 cellar: :any,                 arm64_ventura:  "d0f9c687e9acc3b0f837117973ce49d4496fa9028ef889fc31e7750c2a7b6405"
-    sha256 cellar: :any,                 arm64_monterey: "eb540cf125e6d28a226b43a051f2459210aa3b13ea991618b004f2582c53b869"
-    sha256 cellar: :any,                 sonoma:         "d2bb07617ff3af4cd6e7d5ef12f960e7370a6582e482abea1676a1de4b0bf2be"
-    sha256 cellar: :any,                 ventura:        "680c8b48533c107811207e2d6cfdcf4a15747f4b17ec46d3f19dd6dd792bc71a"
-    sha256 cellar: :any,                 monterey:       "c4c72635a60f7e5ba392384e3e100f64084d7c9ec73dbdea437d9badac5ecb4c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b632ee61e266aab62c8a1418dff3e705ac8a5c01b78f26a76070307307d009b0"
+    sha256 cellar: :any,                 arm64_sequoia: "87ae8527d44ded5a0dd914f42d21527a951a01b9e99861413d73bc5113dbe74f"
+    sha256 cellar: :any,                 arm64_sonoma:  "842d4ae9462815803fc55eb6ab9bd046edd63814df21bdd450e570e61fa14dcd"
+    sha256 cellar: :any,                 arm64_ventura: "766942e45c1c85f8d93727b399a7caced4796226d67ee085b6bcf0c37a9a86b0"
+    sha256 cellar: :any,                 sonoma:        "3692e9563b2f7eb144aa01de033003dacdfaefd9ae88a0bd5719c5519c430093"
+    sha256 cellar: :any,                 ventura:       "386c44669e5e91bf2e33b954fe7d5abaf05e65c4f9329a36e1e5445f3d2bf106"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "724aaaf2f46fb7bbcf4d949fc115328e0e9108ee895048b1baef8f8453f4877a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d7f97c240551cdd21573e0a00f66fd23b6275b21247e718a93c05ff4185e56ad"
   end
 
   depends_on "cmake" => :build
@@ -28,14 +29,12 @@ class SimpleAmqpClient < Formula
     # Else setting DCMAKE_CXX_STANDARD does not work
     inreplace "CMakeLists.txt", "set(CMAKE_CXX_STANDARD 98)", ""
 
-    mkdir "build" do
-      system "cmake",
-             "..",
-             "-DCMAKE_INSTALL_LIBDIR=lib",
-             "-DCMAKE_CXX_STANDARD=14",
-             *std_cmake_args
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build",
+           "-DCMAKE_INSTALL_LIBDIR=lib",
+           "-DCMAKE_CXX_STANDARD=14",
+           *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

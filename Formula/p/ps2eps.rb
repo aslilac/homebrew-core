@@ -5,6 +5,8 @@ class Ps2eps < Formula
   sha256 "cd7064e3787ddb79246d78dc8f76104007a21c2f97280b1bed3e7d273af97945"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "0cd7a84b33465e03768eb2c76ec181b730c775f18e57eeb282df636ee1a8e10f"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "09d6e7f0fbbec5bd6e494715028e9730c32ddb1284261d5593734d1bd35c79da"
@@ -17,6 +19,7 @@ class Ps2eps < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "91e08e8ced4f5394ad3f4990a092fa61a547cce4264127350f97912c50dda5f3"
     sha256 cellar: :any_skip_relocation, catalina:       "b2d84470b90f037632206b6318f87bf1024e0d0ed83fb8344e44642dc8751187"
     sha256 cellar: :any_skip_relocation, mojave:         "170231b1c48914442e5c4eac304652b1aab7603c46d407f26b1383b932e3c2d9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "2cc5adea6dcc3ef017b112ef05708e0fef1ee7a8205bc26542ee9ba023bc8732"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e392648b006b21de93a33d1fbb1b5505c1de5353d0168368a71f15efd9a39df6"
   end
 
@@ -37,6 +40,6 @@ class Ps2eps < Formula
   test do
     cp test_fixtures("test.ps"), testpath/"test.ps"
     system bin/"ps2eps", testpath/"test.ps"
-    assert_predicate testpath/"test.eps", :exist?
+    assert_path_exists testpath/"test.eps"
   end
 end

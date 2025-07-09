@@ -1,9 +1,10 @@
 class Cppcheck < Formula
   desc "Static analysis of C and C++ code"
   homepage "https://sourceforge.net/projects/cppcheck/"
-  url "https://github.com/danmar/cppcheck/archive/refs/tags/2.16.0.tar.gz"
-  sha256 "f1a97c8cef5ee9d0abb57e9244549d4fe18d4ecac80cf82e250d1fc5f38b1501"
+  url "https://github.com/danmar/cppcheck/archive/refs/tags/2.17.1.tar.gz"
+  sha256 "bfd681868248ec03855ca7c2aea7bcb1f39b8b18860d76aec805a92a967b966c"
   license "GPL-3.0-or-later"
+  revision 2
   head "https://github.com/danmar/cppcheck.git", branch: "main"
 
   # There can be a notable gap between when a version is tagged and a
@@ -15,12 +16,13 @@ class Cppcheck < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "fb5842051cde656928d4b808ed159e4b25d04496b75f2a792372fa2b3adb0b4b"
-    sha256 arm64_sonoma:  "bb3feb14aae1f7954396b8026c91253ed01809f70ddeba6e5e375e2d577932b0"
-    sha256 arm64_ventura: "7e9c35a1c2d1998d89747a67ee77046fab42688508e5e05e0b5b87b8935ec566"
-    sha256 sonoma:        "efaa934a8536deaac326094c5aad9f401b59983f1b9a7a270986959f3700dea3"
-    sha256 ventura:       "c380212e8b3bedc5d2f1aecbc0c4730042897fb6ca0b2e46c000cbf88ea0b272"
-    sha256 x86_64_linux:  "ffda2b7b66275fecd5f9caf7b4004b9f764c5ad478eed47497d3e4172303f179"
+    sha256 arm64_sequoia: "3102544868411c345f7bb673595f0226163fe9e6d220ff4715c7af038751a9b7"
+    sha256 arm64_sonoma:  "77ac696a0ef87246ca35816c0dfb0c094bdee504bb987d1ba1658414743a6fa6"
+    sha256 arm64_ventura: "023da7be5d3eb3d13f4609eeb23601bd95b7a261dcb2cd545c7aa7a0d25494e3"
+    sha256 sonoma:        "8d5db1a37f58fa1313ff48bd119d3bd7fbf9b1604f6a2d51c0e167581b548f81"
+    sha256 ventura:       "28b99b71be9372234be2e688217a65675bb7270f9c851c48e6dd825ec4d9b29a"
+    sha256 arm64_linux:   "40e4409e2397ae1d69d2c4643cb57887ee81bb96cea754f04439dcc8d8975390"
+    sha256 x86_64_linux:  "3ce75b931157c6e05a6d3e016fefd6d5c3357e2c3975440dac2b916b118c8c90"
   end
 
   depends_on "cmake" => :build
@@ -51,7 +53,7 @@ class Cppcheck < Formula
   test do
     # Execution test with an input .cpp file
     test_cpp_file = testpath/"test.cpp"
-    test_cpp_file.write <<~EOS
+    test_cpp_file.write <<~CPP
       #include <iostream>
       using namespace std;
 
@@ -74,19 +76,19 @@ class Cppcheck < Formula
       {
         number = initialNumber;
       }
-    EOS
+    CPP
     system bin/"cppcheck", test_cpp_file
 
     # Test the "out of bounds" check
     test_cpp_file_check = testpath/"testcheck.cpp"
-    test_cpp_file_check.write <<~EOS
+    test_cpp_file_check.write <<~CPP
       int main()
       {
         char a[10];
         a[10] = 0;
         return 0;
       }
-    EOS
+    CPP
     output = shell_output("#{bin}/cppcheck #{test_cpp_file_check} 2>&1")
     assert_match "out of bounds", output
 
@@ -100,7 +102,7 @@ class Cppcheck < Formula
     assert_parse_message = "Error: sampleaddon.py: failed: can't parse the #{name} dump."
 
     sample_addon_file = testpath/"sampleaddon.py"
-    sample_addon_file.write <<~EOS
+    sample_addon_file.write <<~PYTHON
       #!/usr/bin/env #{python3}
       """A simple test addon for #{name}, prints function names and token count"""
       import sys
@@ -121,11 +123,11 @@ class Cppcheck < Formula
           detected_token_count = len(fConfig.tokenlist)
           # Print the function names on the first line and the token count on the second
           print("%s\\n%s" %(detected_functions, detected_token_count))
-    EOS
+    PYTHON
 
     system bin/"cppcheck", "--dump", test_cpp_file
     test_cpp_file_dump = "#{test_cpp_file}.dump"
-    assert_predicate testpath/test_cpp_file_dump, :exist?
+    assert_path_exists testpath/test_cpp_file_dump
     output = shell_output("#{python3} #{sample_addon_file} #{test_cpp_file_dump}")
     assert_match "#{expect_function_names}\n#{expect_token_count}", output
   end

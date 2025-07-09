@@ -6,6 +6,8 @@ class Fibjs < Formula
   license "GPL-3.0-only"
   head "https://github.com/fibjs/fibjs.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f940f6107a3dd1035e68d8be72bd46d99d90a23cf254084572c5d005323babfe"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4bf3d1703cf3e662ebf874d2cf05ccc2deb41ef2502d30344d20f80744441cb4"
@@ -14,6 +16,7 @@ class Fibjs < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "db4327b9a6f16d42e8e568e635a84b4acc2726b3740a928221f1876707574a9e"
     sha256 cellar: :any_skip_relocation, ventura:        "1cbe5e6746b9d0d30283d6fc587da0c9bb5d91b31b717e7563ab48e959c8e4cc"
     sha256 cellar: :any_skip_relocation, monterey:       "bfd772e6c231fbc20044c6c72ded9e8ebab219e6e166778ee1c6341747415aef"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "3dfbb08919d6b3152be45d24e5267d0026db256b1936c08e49bb562ff9e76296"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "623b81dd27d99e33d98b905cd33a756b9b1f70a1ec3d2399370f1e48ba108f0d"
   end
 

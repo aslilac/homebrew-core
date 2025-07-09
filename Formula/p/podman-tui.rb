@@ -1,17 +1,20 @@
 class PodmanTui < Formula
   desc "Podman Terminal User Interface"
   homepage "https://github.com/containers/podman-tui"
-  url "https://github.com/containers/podman-tui/archive/refs/tags/v1.2.3.tar.gz"
-  sha256 "d513362b270672c688407673326a8b9d850f4351e07cd3841ca321a84d9f5622"
+  url "https://github.com/containers/podman-tui/archive/refs/tags/v1.6.1.tar.gz"
+  sha256 "a241119e1099711f889bae6fa7061130869317b711a96e3e9df2fed45e6fc979"
   license "Apache-2.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "14360354324f7baef0247cfbbbfbde040e8859d6853c5e0d79bea260a07fd2d0"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2dc293c28f7da0625c7579afdf82801ffa7498d4d92e20643f84652c25f0d707"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "9d14030cdf0fe5229f9e714742a020154b0d207755c4ba93cce5a8a386792568"
-    sha256 cellar: :any_skip_relocation, sonoma:        "e49815e9898dbb711747aa49fac73932d5e996687b5ed9e23e8a978b5084e02c"
-    sha256 cellar: :any_skip_relocation, ventura:       "55d6ababff783c021347964c877cb95734dbbceb4312904d65c419e348b6898c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "923190a7da8f97f94a8fd065d3cae1c513b2a423d3b97cbeef56dc53c54e217c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "210be70775f4d78334aa2798764dd2d47a59ec886406ce737d4892f4258993d2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a38c44d5b83478e0f36d795843c922f21d33390d973405fe82f04302fb3de570"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b6204a1ab8aa41506b560d4de20abd793d25cc642a7b77d5747cd24598ad2174"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3e0f2ae0fd182edad757b4922abc4f732cc56086e3d9a079150fd34d9142bcc3"
+    sha256 cellar: :any_skip_relocation, ventura:       "38f29eabae4be7105afb7c7abdaa63b94373e0458e5e785562876fc686cc6670"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ab17a059a2c9818545a7167234bfe652194ba456be8b5213c8344cfe63959eef"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4d09c93ca1436cb15afb4eb687ae2fe99c25b5db821bf21ba697a44bdf015c1f"
   end
 
   depends_on "go" => :build

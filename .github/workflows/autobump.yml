@@ -3,6 +3,7 @@ name: Bump formulae on schedule or request
 on:
   push:
     branches:
+      - main
       - master
     paths:
       - .github/workflows/autobump.yml
@@ -25,29 +26,29 @@ defaults:
 jobs:
   autobump:
     if: github.repository_owner == 'Homebrew'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container:
-      image: ghcr.io/homebrew/ubuntu22.04:master
+      image: ghcr.io/homebrew/ubuntu22.04:main
     env:
       GNUPGHOME: /tmp/gnupghome
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@main
         with:
           core: true
           cask: false
           test-bot: false
 
       - name: Configure Git user
-        uses: Homebrew/actions/git-user-config@master
+        uses: Homebrew/actions/git-user-config@main
         with:
           username: ${{ (github.event_name == 'workflow_dispatch' && github.actor) || 'BrewTestBot' }}
 
       - name: Set up commit signing
-        uses: Homebrew/actions/setup-commit-signing@master
+        uses: Homebrew/actions/setup-commit-signing@main
         with:
-          signing_key: ${{ secrets.BREWTESTBOT_GPG_SIGNING_SUBKEY }}
+          signing_key: ${{ secrets.BREWTESTBOT_SSH_SIGNING_KEY }}
 
       - name: Bump formulae
         env:
@@ -55,10 +56,9 @@ jobs:
           HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.HOMEBREW_CORE_REPO_WORKFLOW_TOKEN }}
           HOMEBREW_GIT_COMMITTER_NAME: BrewTestBot
           HOMEBREW_GIT_COMMITTER_EMAIL: 1589480+BrewTestBot@users.noreply.github.com
-          HOMEBREW_GPG_PASSPHRASE: ${{ secrets.BREWTESTBOT_GPG_SIGNING_SUBKEY_PASSPHRASE }}
           FORMULAE: ${{ inputs.formulae }}
         run: |
-          BREW_BUMP=(brew bump --no-fork --open-pr --formulae)
+          BREW_BUMP=(brew bump --no-fork --open-pr --formulae --bump-synced)
           if [[ -n "${FORMULAE-}" ]]; then
             xargs "${BREW_BUMP[@]}" <<<"${FORMULAE}"
           else

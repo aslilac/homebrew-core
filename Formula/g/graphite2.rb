@@ -6,6 +6,8 @@ class Graphite2 < Formula
   license any_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later", "MPL-1.1+"]
   head "https://github.com/silnrsi/graphite.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "150b286ab4cfc8696fcd3fa4e7fa24c9825f024ef991899850b850e6f334100f"
     sha256 cellar: :any,                 arm64_sonoma:   "4cdee055db9958e12662c53661fab627057d3553974d15b289e2955b439f4a9d"
@@ -19,6 +21,7 @@ class Graphite2 < Formula
     sha256 cellar: :any,                 catalina:       "0831f474c920b66bbeab3f93a91fa019b82bfffcdd40e369fdab76372700e980"
     sha256 cellar: :any,                 mojave:         "2f3abb971be03141e9eea54b87c6861d72865bd76fde73ae3161d64c40d51cd9"
     sha256 cellar: :any,                 high_sierra:    "62e39dce0ae0440ac164edaab6e1351520bc5414ad509fc0b8d5c890500785bd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "06da87293745fa5229be472b70052a947e0ab3323c47782662a6fbbf2cd920c6"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "0e811b079268bc99d1b6253fc0c979e76325e91e294fd0596349dd0285e847b9"
   end
 
@@ -28,17 +31,18 @@ class Graphite2 < Formula
     depends_on "freetype" => :build
   end
 
-  resource "testfont" do
-    url "https://scripts.sil.org/pub/woff/fonts/Simple-Graphite-Font.ttf"
-    sha256 "7e573896bbb40088b3a8490f83d6828fb0fd0920ac4ccdfdd7edb804e852186a"
-  end
-
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
+    resource "testfont" do
+      url "https://scripts.sil.org/pub/woff/fonts/Simple-Graphite-Font.ttf"
+      sha256 "7e573896bbb40088b3a8490f83d6828fb0fd0920ac4ccdfdd7edb804e852186a"
+    end
+
     resource("testfont").stage do
       shape = shell_output("#{bin}/gr2fonttest Simple-Graphite-Font.ttf 'abcde'")
       assert_match(/67.*36.*37.*38.*71/m, shape)

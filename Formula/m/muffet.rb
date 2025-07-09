@@ -1,18 +1,18 @@
 class Muffet < Formula
   desc "Fast website link checker in Go"
   homepage "https://github.com/raviqqe/muffet"
-  url "https://github.com/raviqqe/muffet/archive/refs/tags/v2.10.6.tar.gz"
-  sha256 "8da1668efd6c53e0a0eff584fdc49c591fa9684cd07c5c4154114549157f72d1"
+  url "https://github.com/raviqqe/muffet/archive/refs/tags/v2.10.9.tar.gz"
+  sha256 "ef87bde42c6539c79d8b15a5e2389fedaf3cc35857b6684bbaf070a7807575a0"
   license "MIT"
   head "https://github.com/raviqqe/muffet.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ed2f4492e254d460defef6238fb4323f4de77dca59405d1308ceb808d0a29fd5"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ed2f4492e254d460defef6238fb4323f4de77dca59405d1308ceb808d0a29fd5"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "ed2f4492e254d460defef6238fb4323f4de77dca59405d1308ceb808d0a29fd5"
-    sha256 cellar: :any_skip_relocation, sonoma:        "3aed3e5c717e5aa52ece626e0887410a13c358a709b5efd1d9e4b93a63724648"
-    sha256 cellar: :any_skip_relocation, ventura:       "3aed3e5c717e5aa52ece626e0887410a13c358a709b5efd1d9e4b93a63724648"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8e93e735b6070dd39bcd3bf21298d0932dab0936545a6b29d4e7e7662eb55415"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "44df4d1456f7aa3fdae7fd9694a8e1174a79bcb29de7116739e856e1e05b5f7c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "44df4d1456f7aa3fdae7fd9694a8e1174a79bcb29de7116739e856e1e05b5f7c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "44df4d1456f7aa3fdae7fd9694a8e1174a79bcb29de7116739e856e1e05b5f7c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4236f6ad7f7533df8e4d3aa833bb2e992160b63d5834211b9806263a55e4250f"
+    sha256 cellar: :any_skip_relocation, ventura:       "4236f6ad7f7533df8e4d3aa833bb2e992160b63d5834211b9806263a55e4250f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a188c71114cf40e552dd8ba765852326d950f1ae762f7ef4955fbfecde20623e"
   end
 
   depends_on "go" => :build

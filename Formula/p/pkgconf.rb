@@ -1,11 +1,10 @@
 class Pkgconf < Formula
   desc "Package compiler and linker metadata toolkit"
   homepage "https://github.com/pkgconf/pkgconf"
-  url "https://distfiles.ariadne.space/pkgconf/pkgconf-2.3.0.tar.xz"
-  mirror "http://distfiles.ariadne.space/pkgconf/pkgconf-2.3.0.tar.xz"
-  sha256 "3a9080ac51d03615e7c1910a0a2a8df08424892b5f13b0628a204d3fcce0ea8b"
+  url "https://distfiles.ariadne.space/pkgconf/pkgconf-2.5.1.tar.xz"
+  mirror "http://distfiles.ariadne.space/pkgconf/pkgconf-2.5.1.tar.xz"
+  sha256 "cd05c9589b9f86ecf044c10a2269822bc9eb001eced2582cfffd658b0a50c243"
   license "ISC"
-  revision 1
 
   livecheck do
     url "https://distfiles.ariadne.space/pkgconf/"
@@ -13,12 +12,14 @@ class Pkgconf < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "e20314280a6fccd1153b13f137f9e7a15fc4450c877d548360a259c22266efa0"
-    sha256 arm64_sonoma:  "5f83615f295e78e593c767d84f3eddf61bfb0b849a1e6a5ea343506b30b2c620"
-    sha256 arm64_ventura: "715c2c815d44a6c06da7e249c6b7d6f10c51784866c1ca43c22e5d56c45d5ebd"
-    sha256 sonoma:        "b180115e5725a12657fa74d80f0c8f15e852d6c84b7f982b72b5be4f5cd0e97a"
-    sha256 ventura:       "7077e63921d21433ef33d38a2a4cd14f2b08bccf6647bcc25b3f285135e9038c"
-    sha256 x86_64_linux:  "4fe98600d631d8d816217b96f905beb7ee40f2b736a3b74621973f908b6d295a"
+    sha256 arm64_sequoia: "6fabdc3d0a656e2d505aec4e39b2f8e354601ee141469554fa71eabc3386e18f"
+    sha256 arm64_sonoma:  "bc7f9963756598248220da128a5f06ea0e6685aa7cd965a5ce357fcfaad2cdec"
+    sha256 arm64_ventura: "8d53ac0deb003f8866315c4c27a1aa4767467c9fa13c912f52cb29e37fbe7916"
+    sha256 sequoia:       "a074f871aa476dec1101c13b4fcfbb9354a8b35bcb6e056f8411463913632071"
+    sha256 sonoma:        "439e8e638986c4423f430719f28cd7c62e8d9a1b87ac658c069fd5da939784f8"
+    sha256 ventura:       "e38acbfd930c9588f4d1eabe061b956948aaff32cccb30c457430779c1e4f7f5"
+    sha256 arm64_linux:   "abdf9fbefab1d7b7219a619fb5bd44b58c00a71146a43cb24b71700c2ead369e"
+    sha256 x86_64_linux:  "9df0ce4d9ebae822b763a9c18565d1596a40b2a2e5849c743e768a99f554f24b"
   end
 
   head do
@@ -49,9 +50,14 @@ class Pkgconf < Formula
       ["#{HOMEBREW_LIBRARY}/Homebrew/os/linux/pkgconfig"]
     end
 
-    system "./configure", "--disable-silent-rules",
-                          "--with-pkg-config-dir=#{pc_path.uniq.join(File::PATH_SEPARATOR)}",
-                          *std_configure_args
+    args = %W[
+      --disable-silent-rules
+      --with-pkg-config-dir=#{pc_path.uniq.join(File::PATH_SEPARATOR)}
+      --with-system-includedir=#{MacOS.sdk_path_if_needed if OS.mac?}/usr/include
+      --with-system-libdir=/usr/lib
+    ]
+
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
 
@@ -96,5 +102,11 @@ class Pkgconf < Formula
 
     system ENV.cc, "test.c", "-I#{include}/pkgconf", "-L#{lib}", "-lpkgconf"
     system "./a.out"
+
+    # Make sure system-libdir is removed as it can cause problems in superenv
+    if OS.mac?
+      ENV.delete "PKG_CONFIG_LIBDIR"
+      refute_match "-L/usr/lib", shell_output("#{bin}/pkgconf --libs libcurl")
+    end
   end
 end

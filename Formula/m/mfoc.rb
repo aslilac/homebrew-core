@@ -7,6 +7,8 @@ class Mfoc < Formula
   revision 2
   head "https://github.com/nfc-tools/mfoc.git"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "3b89cfda6f79a47fad9df8891458eaf4923c2c6fdea0e17a75bd5f9c1fe7fdc3"
     sha256 cellar: :any,                 arm64_sonoma:   "1d07e71a99eb298fee125dca589933a08e3c4559932a30f4fa7cd162b4852ff9"
@@ -17,17 +19,18 @@ class Mfoc < Formula
     sha256 cellar: :any,                 ventura:        "fe4940b2a72f324ba2c68b9d9cd454b1aeedaae44634a24fbaf6b64fab2a737d"
     sha256 cellar: :any,                 monterey:       "105fa3c4775e833eeae572bf9390702e56111eace14cae4f9391fc9f91d6b263"
     sha256 cellar: :any,                 big_sur:        "8c753373dea6cbd38da65e10340974fbeb654d1ced7c68a75d4a414360b73a39"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b488915855d2b7999488a17cfa7c4a8025043b225d606baff0662e33a0b0124f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a3582c2f917cc657ba2c249b26fb0b064f5f93dcbee7e5fd310dec652c123450"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libnfc"
   depends_on "libusb"
 
   def install
-    system "autoreconf", "-is"
+    system "autoreconf", "--force", "--install", "--verbose"
     system "./configure", *std_configure_args
     system "make"
     system "make", "install"

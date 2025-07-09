@@ -5,6 +5,8 @@ class Fcgiwrap < Formula
   sha256 "4c7de0db2634c38297d5fcef61ab4a3e21856dd7247d49c33d9b19542bd1c61f"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "c5bbbd4868035ccb9d9f03b894456f3d2e61a167a55f3d934f8c093d26a27e84"
     sha256 cellar: :any,                 arm64_sonoma:   "8978a76429865262b1d5acef3279849a91f46a49adfdee6555a9e0985d355c77"
@@ -20,17 +22,18 @@ class Fcgiwrap < Formula
     sha256 cellar: :any,                 high_sierra:    "92140b4ed813b4a718ec9ed035b664fe744a6ae860a4b533ed7425b014e25f22"
     sha256 cellar: :any,                 sierra:         "ed81f5b0cec39f7138a877cea2a0e397007d3271393805af53739b837537bd0f"
     sha256 cellar: :any,                 el_capitan:     "c0a70c3cc726788dfac52d8b23c79c1a4ef31a8c7e1418ac335cfe182b94f05d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "71efd18bedccd162ba1df3ac939325de41e748e0dcad7a2fe2af6a0e8b6c4408"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "59c76ede41a8876d1c9f2a737e79e314851b757a647d50cebea91247c185afc1"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "fcgi"
 
   def install
-    system "autoreconf", "-i"
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--mandir=#{man}", *std_configure_args
     system "make", "install"
   end
 end

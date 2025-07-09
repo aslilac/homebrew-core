@@ -14,6 +14,8 @@ class MecabUnidicExtended < Formula
     formula "mecab-unidic"
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c22fe677d5ab8e9fea7fdae111d0cb7af0e3971ccd5717c54e5e770cf46d5d4a"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "243fbb81ef84212672b3b793c96460ae56d66b61b2bad5ca965df3effcd959e7"
@@ -29,6 +31,7 @@ class MecabUnidicExtended < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "8890b4d95d0c3ee114ec48ea95d66c1d8b8a273949a912140fa477ad9265be0b"
     sha256 cellar: :any_skip_relocation, sierra:         "8890b4d95d0c3ee114ec48ea95d66c1d8b8a273949a912140fa477ad9265be0b"
     sha256 cellar: :any_skip_relocation, el_capitan:     "8890b4d95d0c3ee114ec48ea95d66c1d8b8a273949a912140fa477ad9265be0b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "6ea4b9b91cb3e1b611eb27a4b1602cf6488dc719d887e5c8ab0aec5ea4184622"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4445b4f69062be6b5142324088eef2a83e958a584665e9ac36806a2c1102bef5"
   end
 

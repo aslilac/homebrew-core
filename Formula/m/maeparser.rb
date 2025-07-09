@@ -1,17 +1,19 @@
 class Maeparser < Formula
   desc "Maestro file parser"
   homepage "https://github.com/schrodinger/maeparser"
-  url "https://github.com/schrodinger/maeparser/archive/refs/tags/v1.3.1.tar.gz"
-  sha256 "a8d80f67d1b9be6e23b9651cb747f4a3200132e7d878a285119c86bf44568e36"
+  url "https://github.com/schrodinger/maeparser/archive/refs/tags/v1.3.3.tar.gz"
+  sha256 "78e7571a779ea4952e752ecef57c62fb26463947e29ef7f4b31b11988d88ca07"
   license "MIT"
+  head "https://github.com/schrodinger/maeparser.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "3a7ea0e057badfd3c4152ee82c7a168756fdf69a7ba860c52e76b54ee14db3b0"
-    sha256 cellar: :any,                 arm64_sonoma:  "ca02271a309d8c6d442671b396fedc2be05915a787097c5a797313c3afbb2fea"
-    sha256 cellar: :any,                 arm64_ventura: "442e30300805148e962404029bddd1e5f3e2ced2b7da2629ca5db952336bc6ad"
-    sha256 cellar: :any,                 sonoma:        "c64fc931d98a6ae27cb9dc243ac3a52d4cd2f4ad74d6c6a7a9ff60674db90479"
-    sha256 cellar: :any,                 ventura:       "6174e8874ad30e0bbb991dc2dd52e9e9caca66f54680a0f8a3088294c7ba1c9c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f31191fad40b78f8639deab22940717e01af49c477b0429b6f52c77e5575d5ef"
+    sha256 cellar: :any,                 arm64_sequoia: "fbcc6b87403bf3ee4ceae13512659743cc3393caececa0f7837a6848e60237b3"
+    sha256 cellar: :any,                 arm64_sonoma:  "65bea7147115cac9532e7a76903519dbe14cf0b3e2059ebb1de6f37932d5c54a"
+    sha256 cellar: :any,                 arm64_ventura: "8d9cbbfa90e1802ae8c9960a71c1e5b14e1023f3918bf6865db384492ed7bb37"
+    sha256 cellar: :any,                 sonoma:        "10abbb0c4240afefd27f6e2d5951252f0e94ca71b02a3dc9725717516c92000c"
+    sha256 cellar: :any,                 ventura:       "bb78ef2275ad44ab797f93ffc31433123cbd81e3e546c3c506978e51172b687f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "4d7fd3d7331c9db8b8efa85714704ac4990c137c651626c54cbc1a6aca1ebda3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "04b61f362ce5bc019f4a75567236c2446dcc9ff33bf1945f3f90e3064244722b"
   end
 
   depends_on "cmake" => :build

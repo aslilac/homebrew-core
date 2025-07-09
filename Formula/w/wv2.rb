@@ -14,6 +14,8 @@ class Wv2 < Formula
     regex(%r{url=.*?/wv2[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "0b9e9d8d06ee14ba09ec9f467e24aba00ecc63966bb877fc88a3868a2fb2041c"
     sha256 cellar: :any,                 arm64_sonoma:   "ab4eca06cc176e58df0a6d57de60929427e68ce2d8dc1fc9f71b2a15a88c59d3"
@@ -29,6 +31,7 @@ class Wv2 < Formula
     sha256 cellar: :any,                 high_sierra:    "35120de253c5dcfd6da711f7529bd8e4a0ffd45eed540057ef57d1a9d2ab0091"
     sha256 cellar: :any,                 sierra:         "cd0856f53f0a143f5b0ea7dd61a0d23613db6de84538fa222e2819217a3ed3af"
     sha256 cellar: :any,                 el_capitan:     "b3a07e873f69b90ed83d47ccedb6bc5fefcb5dc5c9ffd1ecfd38c03dd094afea"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "518a054d34f8325f987b1ff4fbc61ad9d2966c61f880f9ead78d461927dec15d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3bd22b4bd66ddf417a1ee0882ca0dfc3b4bcb218d50e890a28a1752d5e4c546b"
   end
 

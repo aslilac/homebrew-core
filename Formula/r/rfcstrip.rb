@@ -6,6 +6,8 @@ class Rfcstrip < Formula
   # License is similar to TCL license but omits the government use clause
   license :cannot_represent
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any_skip_relocation, all: "19d81dc32428b71ea0c78047c6036eba4381ab7e6305051f3790d2dfc34ce2be"
@@ -21,10 +23,9 @@ class Rfcstrip < Formula
   end
 
   test do
-    resource("rfc1149").stage do
-      stripped = shell_output("#{bin}/rfcstrip rfc1149.txt")
-      assert !stripped.match(/\[Page \d+\]/) # RFC page numbering
-      assert stripped.exclude?("\f") # form feed a.k.a. Control-L
-    end
+    resource("rfc1149").stage testpath
+    stripped = shell_output("#{bin}/rfcstrip rfc1149.txt")
+    refute_match(/\[Page \d+\]/, stripped) # RFC page numbering
+    refute_match "\f", stripped # form feed a.k.a. Control-L
   end
 end

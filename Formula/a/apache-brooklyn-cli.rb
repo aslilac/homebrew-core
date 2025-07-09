@@ -4,11 +4,14 @@ class ApacheBrooklynCli < Formula
   url "https://github.com/apache/brooklyn-client/archive/refs/tags/rel/apache-brooklyn-1.1.0.tar.gz"
   sha256 "0c9ec77413e88d4ca23d0821c4d053b7cc69818962d4ccb9e7082c9d1dea7146"
   license "Apache-2.0"
+  head "https://github.com/apache/brooklyn-client.git", branch: "master"
 
   livecheck do
     url :stable
     regex(%r{^(?:rel/)?apache-brooklyn[._-]v?(\d+(?:\.\d+)+)$}i)
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "503ba57fecdd845c589d3d989e55389df542bf408d74c6b6bdaaaaa3b9fa9d7a"

@@ -6,6 +6,8 @@ class Mjpegtools < Formula
   license "GPL-2.0-or-later"
   revision 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "ceffd1cacfbd70df4bc8763a63379aef688299d0d454243034964ae4d990fc87"
     sha256 cellar: :any,                 arm64_sonoma:   "819ed433976e0822f4357ab0b24f2de38f32500e169add9671ebd0fda5d1a818"
@@ -17,10 +19,11 @@ class Mjpegtools < Formula
     sha256 cellar: :any,                 monterey:       "9afd34745954ea736c8e894c42b4552aa414df0d44942a09d7c47a6113c3ed2b"
     sha256 cellar: :any,                 big_sur:        "49857ba4da574bcbdf2795f9bed39ab9b9ca4c4b3d6ff39196b707f0981e8523"
     sha256 cellar: :any,                 catalina:       "c2beea84698794fc12896fa9e7b2c1655a3f4be189b90b6963799419ee3b34bf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "eb5ddfcb456ade203f5d6a0d7bd721dab23b7a6ddb365125b358183323b75078"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7efdf0c986f0afd7094a355256ee6743f2ce7720d23f680005e53a8ae5213244"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "jpeg-turbo"
 
   # Fix -flat_namespace being used on Big Sur and later.
@@ -30,7 +33,7 @@ class Mjpegtools < Formula
   end
 
   def install
-    system "./configure", *std_configure_args, "--enable-simd-accel"
+    system "./configure", "--enable-simd-accel", *std_configure_args
     system "make", "install"
   end
 end

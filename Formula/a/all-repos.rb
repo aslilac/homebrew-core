@@ -3,25 +3,24 @@ class AllRepos < Formula
 
   desc "Clone all your repositories and apply sweeping changes"
   homepage "https://github.com/asottile/all-repos"
-  url "https://files.pythonhosted.org/packages/a6/56/29006be2546b897a5c62a3d4a7e613abf5a3533554d948b0e0af27546f1b/all_repos-1.27.0.tar.gz"
-  sha256 "96fea3e34caa004b0770501e6efb93dc49cbca05fb56c2b8b2a85d06fb3a4573"
+  url "https://files.pythonhosted.org/packages/e6/16/9c4a52a5274d6b0e0526aeab9e6a562583f46feb941093842849b44717c4/all_repos-1.29.0.tar.gz"
+  sha256 "5b85bd259819f5e7d1dd6a06f0f4730d1ea822b95f496edcdbafd328110547f0"
   license "MIT"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, all: "01ac796e20537a0c9eae3a55935cba36e2048b80fe3d93ced82759b3ac4aae34"
+    sha256 cellar: :any_skip_relocation, all: "670a510cc3937a676372a13afaf9764a568152cad4f6466f308261c7f89dc508"
   end
 
   depends_on "python@3.13"
 
   resource "identify" do
-    url "https://files.pythonhosted.org/packages/29/bb/25024dbcc93516c492b75919e76f389bac754a3e4248682fba32b250c880/identify-2.6.1.tar.gz"
-    sha256 "91478c5fb7c3aac5ff7bf9b4344f803843dc586832d5f110d672b19aa1984c98"
+    url "https://files.pythonhosted.org/packages/82/bf/c68c46601bacd4c6fb4dd751a42b6e7087240eaabc6487f2ef7a48e0e8fc/identify-2.6.6.tar.gz"
+    sha256 "7bec12768ed44ea4761efb47806f0a41f86e7c0a5fdf5950d4648c90eca7e251"
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
-    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
+    url "https://files.pythonhosted.org/packages/d0/63/68dbb6eb2de9cb10ee4c9c14a0148804425e13c4fb20d61cce69f53106da/packaging-24.2.tar.gz"
+    sha256 "c228a6dc5e932d346bc5739379109d49e8853dd8223571c7c5b55260edc0b97f"
   end
 
   def install
@@ -44,7 +43,7 @@ class AllRepos < Formula
     JSON
 
     system bin/"all-repos-clone"
-    assert_predicate testpath/"out/discussions", :exist?
+    assert_path_exists testpath/"out/discussions"
     output = shell_output("#{bin}/all-repos-grep discussions")
     assert_match "out/discussions:README.md", output
   end

@@ -8,6 +8,8 @@ class Enscript < Formula
   revision 1
   head "https://git.savannah.gnu.org/git/enscript.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "2236c54447fc2e015995a2fa047dd406dbfefa9db547a10b305e5817482d8446"
     sha256 arm64_sonoma:   "3ef28a752ae04d37d64b0b42c1fb615fcb4c374ee67722f7d0884d8567f66734"
@@ -22,6 +24,7 @@ class Enscript < Formula
     sha256 mojave:         "a8bbba8f7d64eed40dd59a9db980b049ec786e148d31a0aeb92556959b4ad0b0"
     sha256 high_sierra:    "00045dff3bdf7ac98a19236838d7af7101cc1fc002e55550312042bb2e4d7426"
     sha256 sierra:         "c14fad6cfd67fa782beb7a425eb03c3ed0b8090ed751c37f5f5ec426808df25c"
+    sha256 arm64_linux:    "9fc267a42a3689f1a8049af501c924fc2c7c767026018b699cca551db9e339fb"
     sha256 x86_64_linux:   "d968c97391029600c54ace8362e7293202ca6227421d626dced22f21b2ccfa26"
   end
 

@@ -23,6 +23,7 @@ class OdoDev < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "70206faecd21320ed843d7dcd0b21db2f94961b2a38c32828d6061bf993c2c4c"
     sha256 cellar: :any_skip_relocation, ventura:        "295deb9fa449f8987e06ea32e480e6c2a253e617db227ea1db03563d515edf66"
     sha256 cellar: :any_skip_relocation, monterey:       "3002c28c9f11304b7e42efd58e26e72b972c94c7fadfd55f0bf7d776fd929a42"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a0ad1eacca24048e6260470cc6d1addc370681d26cb2b82137c84e02f932e226"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b9480c0fa8376a3f2b839965f2d7095fd712dd306a975032479e45419f482679"
   end
 
@@ -42,7 +43,7 @@ class OdoDev < Formula
     ENV["GLOBALODOCONFIG"] = "#{testpath}/preference.yaml"
     system bin/"odo", "preference", "set", "ConsentTelemetry", "false"
     system bin/"odo", "preference", "add", "registry", "StagingRegistry", "https://registry.stage.devfile.io"
-    assert_predicate testpath/"preference.yaml", :exist?
+    assert_path_exists testpath/"preference.yaml"
 
     # test version
     version_output = shell_output("#{bin}/odo version --client 2>&1").strip
@@ -50,7 +51,7 @@ class OdoDev < Formula
 
     # try to create a new component
     system bin/"odo", "init", "--devfile", "nodejs", "--name", "test", "--devfile-registry", "StagingRegistry"
-    assert_predicate testpath/"devfile.yaml", :exist?
+    assert_path_exists testpath/"devfile.yaml"
 
     dev_output = shell_output("#{bin}/odo dev 2>&1", 1).strip
     assert_match "✗  unable to access the cluster", dev_output

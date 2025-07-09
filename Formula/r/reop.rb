@@ -11,6 +11,8 @@ class Reop < Formula
     skip "No longer developed"
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "b1329c9bb7f9a9adb0ccf90c4c045cfa032215406f48c4fbe5d5f010019091a9"
     sha256 cellar: :any,                 arm64_sonoma:   "0a34d7d7270cd31264c8064b44f2fd1475a6edec8d159f2455ba6d5f6a5dce80"
@@ -19,6 +21,7 @@ class Reop < Formula
     sha256 cellar: :any,                 sonoma:         "743de0a38cb6ec3d1f7988376bccd80f9a5b8501b72d4bd0812118e17b63644b"
     sha256 cellar: :any,                 ventura:        "c89f4b388723c96fc8152e3d95d5817ca8dc66f1b23fe62c37bf0d26b33ceb8d"
     sha256 cellar: :any,                 monterey:       "04fa8b5abe8bf9c8064a70c32393933339a60f66e3306d95e44b5748b1a960b8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "566db99533e99f809e5fe5dac5f9f671c2612139c0e51099c0b328cbdb7f2f9b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "39a6b6aaa92dc34131e9ecf9c22a8ef890b8d662960a5dba258bb58f87d71516"
   end
 

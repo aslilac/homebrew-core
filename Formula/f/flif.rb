@@ -6,6 +6,8 @@ class Flif < Formula
   license "LGPL-3.0-or-later"
   head "https://github.com/FLIF-hub/FLIF.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "7ab5f6dea4a3bf05a201e221b47042ea4ff6d4372f64c1be2a306604d5710b38"
     sha256 cellar: :any,                 arm64_sonoma:   "6e2f70fa17688130a568e64fd6a4abdfe8e61681c1948cf2ecca01dfb04ee535"
@@ -17,18 +19,14 @@ class Flif < Formula
     sha256 cellar: :any,                 monterey:       "dfb3655e7c80bec23170595b2188ad897fd2e0e69af28711e6734f25b3c0db4e"
     sha256 cellar: :any,                 big_sur:        "41d2cd255724005a767991ab0bf3b7ae5f8ad9767a1413c9efa92bf6ba47af9f"
     sha256 cellar: :any,                 catalina:       "e757a4df0939f225afceae1b632542b9689f3fc9fcee7cf0364e463c1be778bc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "91c1e75b1235e546b7c90460c70a89789155e4393bbfd6c1b4bc1759102e0262"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4c76e5794a775d5d5d8b0dc8c92960ffdf5641b302132279a1a57a67e3e41550"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libpng"
   depends_on "sdl2"
-
-  resource "homebrew-test_c" do
-    url "https://raw.githubusercontent.com/FLIF-hub/FLIF/dcc2011/tools/test.c"
-    sha256 "a20b625ba0efdb09ad21a8c1c9844f686f636656f0e9bd6c24ad441375223afe"
-  end
 
   def install
     system "cmake", "-S", "src", "-B", "build", *std_cmake_args
@@ -38,12 +36,17 @@ class Flif < Formula
   end
 
   test do
+    resource "homebrew-test_c" do
+      url "https://raw.githubusercontent.com/FLIF-hub/FLIF/dcc2011/tools/test.c"
+      sha256 "a20b625ba0efdb09ad21a8c1c9844f686f636656f0e9bd6c24ad441375223afe"
+    end
+
     testpath.install resource("homebrew-test_c")
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lflif", "-o", "test"
     system "./test", "dummy.flif"
     system bin/"flif", "-i", "dummy.flif"
     system bin/"flif", "-I", test_fixtures("test.png"), "test.flif"
     system bin/"flif", "-d", "test.flif", "test.png"
-    assert_predicate testpath/"test.png", :exist?, "Failed to decode test.flif"
+    assert_path_exists testpath/"test.png", "Failed to decode test.flif"
   end
 end

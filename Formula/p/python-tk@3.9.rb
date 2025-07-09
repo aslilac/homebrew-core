@@ -1,22 +1,24 @@
 class PythonTkAT39 < Formula
   desc "Python interface to Tcl/Tk"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.9.20/Python-3.9.20.tar.xz"
-  sha256 "6b281279efd85294d2d6993e173983a57464c0133956fbbb5536ec9646beaf0c"
+  url "https://www.python.org/ftp/python/3.9.23/Python-3.9.23.tar.xz"
+  sha256 "61a42919e13d539f7673cf11d1c404380e28e540510860b9d242196e165709c9"
   license "Python-2.0"
-  revision 1
 
   livecheck do
     formula "python@3.9"
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "713fa447f7c22e845ea7f233ee4c9e3688c17942c3ebca2cd86b0892f5a4cbbe"
-    sha256 cellar: :any,                 arm64_sonoma:  "8fae9d8fa88dfc67f9cbf446988a5fdbe94ce9c4f6c8cbe0991052fad146f1dc"
-    sha256 cellar: :any,                 arm64_ventura: "49cb8b6b5d122cac8762ef7ff7524862331749fc2772c4541ab0c32756a67dce"
-    sha256 cellar: :any,                 sonoma:        "49b41bd79d0561af95339e8a75cc1316925ff2ca4ad4db9296502b80e3ac0b4a"
-    sha256 cellar: :any,                 ventura:       "d3550da832fb9d53e35a5cb807f02cd16e64dc185cda24c4fd4fed54b1aacac9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1cff57de7bffd395bbef20d24cb6a04cd41817e8e087eee1af0d241c73f05dcd"
+    sha256 cellar: :any,                 arm64_sequoia: "b227160ed5aef9c4f7e28e09ea937af589e06bc2d6552fe1c165e81c8d1ccd45"
+    sha256 cellar: :any,                 arm64_sonoma:  "8a0e764addd46852b5839650f37eef097d24e19c99934650cdff771293449336"
+    sha256 cellar: :any,                 arm64_ventura: "cd59125fba711a0c87f544a4620d3d7b96a8ed7b0ebce5806648505f3f83d6bf"
+    sha256 cellar: :any,                 sonoma:        "4b03a3f5cee283613c72237191a9c031d1748513f9be078ae34b130a277f2d38"
+    sha256 cellar: :any,                 ventura:       "970a215b6c26de770d34e4d84a92f9601f1a4bf02a54f90cda603a28344fe0c1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8c8fe4f4651455838a5c2c670c38c48c43e215510286716bd422e97809e305da"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f4bf36de1aafbde00eed0e09f75c6d0ad0be7d34e7712638a6fead91baec3aad"
   end
 
   depends_on "python@3.9"

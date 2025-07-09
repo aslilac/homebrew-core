@@ -10,6 +10,8 @@ class Imake < Formula
     regex(/href=.*?imake[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "7ec67382a8dbee7134f20cacb6f701e780ce5e0da7902341047bfcff4492c9e2"
     sha256 arm64_sonoma:   "2e5e51212893abfdefa9fe94309a52728693418424af70ad64424974816d1624"
@@ -18,6 +20,7 @@ class Imake < Formula
     sha256 sonoma:         "f2362816e0e06c863938298689c9cc9b9ee34ffe2aace4369fd42774ab5a66a4"
     sha256 ventura:        "d62ef9dabad43d8c1bf7ee4d40762bf36dab9475ddcbfaf205f67303e3b197b5"
     sha256 monterey:       "b288cbb7cb8faf0e38bd79cae80e0a9b47eebd3e760caaae129aaa001d880fc1"
+    sha256 arm64_linux:    "4ba1ca704e4e9383f470dba78fefde5e6eacf51384aecc964221055e36ced4b1"
     sha256 x86_64_linux:   "296155e61983cc533d3f5ab094d796d2ab3d992606be73da1f7a51f3920ea41e"
   end
 
@@ -35,10 +38,10 @@ class Imake < Formula
 
     # imake runtime is broken when used with clang's cpp
     cpp_program = Formula["tradcpp"].opt_bin/"tradcpp"
-    (buildpath/"imakemdep.h").append_lines <<~EOS
+    (buildpath/"imakemdep.h").append_lines <<~C
       #define DEFAULT_CPP "#{cpp_program}"
       #undef USE_CC_E"
-    EOS
+    C
 
     inreplace "imake.man", /__cpp__/, cpp_program
 

@@ -6,6 +6,8 @@ class Lr < Formula
   license "MIT"
   head "https://github.com/leahneukirchen/lr.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "bcb50db8cfcc644da655e8b676a18d7bc7345a98e0ed1fb6fea7ab59079ff6f5"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4f6e26a4e87af89c61b15d5b15dd275393b411153c40a35cd3e5e79bf9ccc10a"
@@ -16,6 +18,7 @@ class Lr < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "b6497f9afd4b1f50b47399ea5d6f82e8bacb4e890b861d07f6c57a113cf7db16"
     sha256 cellar: :any_skip_relocation, monterey:       "829cf70a931246edf6f238bc929ee9381eafb41aece7d3017ca402115fa0e6d7"
     sha256 cellar: :any_skip_relocation, big_sur:        "8bce6806f73a80466046ae85376607765322c51e7e3b9296581834c2135b743e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "c00d1e405cf7d67b30d1e7d4140b3a1bb93844885970cb3d868fa39bae550fbe"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f26c65c91cd102e17c2efdc919d67ba4a65c44dda54c47faffb2f3ca23187e69"
   end
 

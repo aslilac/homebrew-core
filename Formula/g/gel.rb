@@ -7,15 +7,13 @@ class Gel < Formula
   revision 1
   head "https://github.com/gel-rb/gel.git", branch: "main"
 
-  livecheck do
-    url :stable
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
-  end
-
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, all: "898572d813d48ead8bc112c19eab9964c5ba560062fe57e40f138840a35ee5da"
   end
+
+  # https://github.com/gel-rb/gel/issues/134
+  deprecate! date: "2024-12-25", because: :unmaintained
 
   depends_on "ronn" => :build
 

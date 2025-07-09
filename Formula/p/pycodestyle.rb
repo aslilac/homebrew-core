@@ -3,14 +3,13 @@ class Pycodestyle < Formula
 
   desc "Simple Python style checker in one Python file"
   homepage "https://pycodestyle.pycqa.org/"
-  url "https://github.com/PyCQA/pycodestyle/archive/refs/tags/2.12.1.tar.gz"
-  sha256 "231f65fbf5558e342cbad275245accb8a988d637cbeaf66508dd890f3d2d60fa"
+  url "https://github.com/PyCQA/pycodestyle/archive/refs/tags/2.14.0.tar.gz"
+  sha256 "ffcf4dc55f1e5fbdc6dd6acf5db0fd07ded534ae376eee23a742e1410b48d9ae"
   license "MIT"
   head "https://github.com/PyCQA/pycodestyle.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "711ddb1897f67e34b9e67d3e1710b229f19fe40e78993119e9ccb0006a7e8c1d"
+    sha256 cellar: :any_skip_relocation, all: "d8094f80d276313acebc67894ee71ba6eba7c8325c96d18b8637edf00b843384"
   end
 
   depends_on "python@3.13"
@@ -25,8 +24,7 @@ class Pycodestyle < Formula
     (testpath/"ok.py").write <<~PYTHON
       print(1)
     PYTHON
-    assert_equal "",
-      shell_output("#{bin}/pycodestyle ok.py")
+    assert_empty shell_output("#{bin}/pycodestyle ok.py")
 
     # test invocation on a file with a whitespace style issue
     (testpath/"ws.py").write <<~PYTHON

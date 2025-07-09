@@ -5,6 +5,8 @@ class Mtm < Formula
   sha256 "2ae05466ef44efa7ddb4bce58efc425617583d9196b72e80ec1090bd77df598c"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "7568a6130dc642b184063d2b470d2855e0cbc040e80c0f9409aeee9361c80b1b"
     sha256 cellar: :any,                 arm64_sonoma:   "5f63cd8a1cfeab4ed5e0b5b88f63482f88508ea4ee6d3c2c9c16b6fc1cbd8fab"
@@ -13,6 +15,7 @@ class Mtm < Formula
     sha256 cellar: :any,                 sonoma:         "00e0549fd3b8636a05a906e52e2595d48812790841149e285786242aa9d43a4e"
     sha256 cellar: :any,                 ventura:        "68947fd5c5d573b896c3887edb92f007cd480a5f469a97400712f8b01796b336"
     sha256 cellar: :any,                 monterey:       "0fc17abd9d9e35b278aa4a17cdb8e711c281bf124e46ba47ce88405b0c00533c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "6e6863413f8614f33cdc88ecb9d61ede577b74c671096e152a17763b9ba80d38"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ed3e74e7ae581d38be226b8ce71d50168246e349c3b4bd862c79e952560e7eab"
   end
 

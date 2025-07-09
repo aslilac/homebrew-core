@@ -1,9 +1,9 @@
 class Openvpn < Formula
   desc "SSL/TLS VPN implementing OSI layer 2 or 3 secure network extension"
   homepage "https://openvpn.net/community/"
-  url "https://swupdate.openvpn.org/community/releases/openvpn-2.6.12.tar.gz"
-  mirror "https://build.openvpn.net/downloads/releases/openvpn-2.6.12.tar.gz"
-  sha256 "1c610fddeb686e34f1367c347e027e418e07523a10f4d8ce4a2c2af2f61a1929"
+  url "https://swupdate.openvpn.org/community/releases/openvpn-2.6.14.tar.gz"
+  mirror "https://build.openvpn.net/downloads/releases/openvpn-2.6.14.tar.gz"
+  sha256 "9eb6a6618352f9e7b771a9d38ae1631b5edfeed6d40233e243e602ddf2195e7a"
   license "GPL-2.0-only" => { with: "openvpn-openssl-exception" }
 
   livecheck do
@@ -12,17 +12,16 @@ class Openvpn < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "8282b3a36803bef68a01a98cfa1c9f7b823ffe34ee3b95d6e34b0e029a6005ed"
-    sha256 arm64_sonoma:   "ec2cc2ff01475426a9d140a04f480750dea45ddb77ff60803c027cc69d356109"
-    sha256 arm64_ventura:  "a9972bf495e2ab0540046e2d08cd38d03c0f05dd56cc6506aabccbe8d0ed696e"
-    sha256 arm64_monterey: "804b5bea4a96975bbe81828bb95a4163d848549360a795d12360784b2a745ca2"
-    sha256 sonoma:         "dd0244cc7150e8c75ce1077fa8c02abee0aac9cf6f6da4007971dffa189470a7"
-    sha256 ventura:        "a76b76a20e5fd17a75b65610643158287b2c663df626878cb305c7881713a865"
-    sha256 monterey:       "3eeb589dcfdc1d9d14b9b6f2ad1a49285a66454f7b87f376b283e4f950254e4c"
-    sha256 x86_64_linux:   "eb42fbd2153609daa6953f0772fef04980198877eb4af8699ca7381a3f8e2bd0"
+    sha256 arm64_sequoia: "d304c987b52e8ceab1217df11dc29d146cb7365691c204a198083b6ddac212a6"
+    sha256 arm64_sonoma:  "02b8aa3654cc4b7a849edf562c2d38f5d99117351eff12cd3bb3aed0518d394c"
+    sha256 arm64_ventura: "b842dee9d24123a0926ea9ea4a050b85b5e440597dfbf07e2e1b078f468ecf50"
+    sha256 sonoma:        "c87079ceb7eff3e98c9918243698dd4d3f1f499a52a9250fc235b5f7615d666e"
+    sha256 ventura:       "61e23b893b99b322dcbe38e006a6d2016c654099970add6357c99dac6be5e692"
+    sha256 arm64_linux:   "0c18f74edca2b997ef8b663487f796f715a7bce351a08c2c97992614c3f05102"
+    sha256 x86_64_linux:  "27fde18eb1f1bc5105c2a94812af5e270ef7eead8acec56446a620718613a00e"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "lz4"
   depends_on "lzo"
   depends_on "openssl@3"
@@ -36,15 +35,13 @@ class Openvpn < Formula
   end
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
+    system "./configure", "--disable-silent-rules",
                           "--with-crypto-library=openssl",
                           "--enable-pkcs11",
-                          "--prefix=#{prefix}"
+                          *std_configure_args
     inreplace "sample/sample-plugins/Makefile" do |s|
       if OS.mac?
-        s.gsub! Superenv.shims_path/"pkg-config", Formula["pkg-config"].opt_bin/"pkg-config"
+        s.gsub! Superenv.shims_path/"pkg-config", Formula["pkgconf"].opt_bin/"pkg-config"
       else
         s.gsub! Superenv.shims_path/"ld", "ld"
       end

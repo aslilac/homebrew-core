@@ -1,20 +1,19 @@
 class Bao < Formula
   desc "Implementation of BLAKE3 verified streaming"
   homepage "https://github.com/oconnor663/bao"
-  url "https://github.com/oconnor663/bao/archive/refs/tags/0.12.1.tar.gz"
-  sha256 "1565b3a8d043b485983ffa14cb2fbd939cca0511f7df711227fc695847c67c01"
+  url "https://github.com/oconnor663/bao/archive/refs/tags/0.13.1.tar.gz"
+  sha256 "34cdbc1bc30ce41394ffd52e8a29ab4e5956ecabd7c4db26ffd992d306a59d96"
   license any_of: ["Apache-2.0", "CC0-1.0"]
   head "https://github.com/oconnor663/bao.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "902001da5a2e8f41cf6beae64bafbeb09afda852f859c9360121a9710d74da54"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5fb0a3ddbaf20c24c8050e582d3e1994a54156e1a9b47e266f072b57a5b6ed67"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5af8c440b9b04b038f2329932066c1c7b6e7abcba706a9e6c4b53cf698cd9b67"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "401fc0c9cc95094e12d5b2f89b0262822370b6c64f5702d5cf5d2df60a17304e"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ca178d36e970e90a16f25b384e7961ca7c63be597efb02af444046647d8caf70"
-    sha256 cellar: :any_skip_relocation, ventura:        "ff7108f42658acee8c4b1d9a28e36d0f3c184e35a40a9f54fba7306e375d75ed"
-    sha256 cellar: :any_skip_relocation, monterey:       "88fb4b48954de3c0dcd8ad73355a180b3b692c6dd25db11685b02325ffbbbfe8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "17e3feefc227d9089314ac7d2ea25ab2a67ea68aab9703e0003e551626b01e99"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e72ccd2883d2cca743e0436eae25cee929d330d0238df74a7bfa1a48d48cf9ce"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7ee092a0750ef69e210081b7bb3d1143365755d330711ce42bfa9ce2c4774b98"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "2b7ca0bd24b20763777ef735beabb064f068174b3f4ac3c76b86d33834cc37ed"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3f56a2a03eb3c7c5087b44266136a6f90f868f1f312731811fcb2866d421113e"
+    sha256 cellar: :any_skip_relocation, ventura:       "c1be9491ec695e53a1e9d94391081618451b25f6da26bea453faf7791cc34e48"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e61983b766ac21aadef6a9afa6d4bea203c87dea271b180be9a2fe9554e81bd2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "02ccf54ad8acabb8b7504b3b9e6ba699a50f96cd487f89a2859ba565b6476de2"
   end
 
   depends_on "rust" => :build

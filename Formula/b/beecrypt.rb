@@ -6,6 +6,8 @@ class Beecrypt < Formula
   license "LGPL-2.1-or-later"
   revision 7
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "9d436aea574fc90b56ebdd14da2f08d7484209ddc553ad9a9928bb1b0e2ec28e"
     sha256 cellar: :any,                 arm64_sonoma:   "d90ef1d3a2df7b9ea6981ebf5d3635bbc8a7bf39c1412becdabbf810a499a98f"
@@ -21,6 +23,7 @@ class Beecrypt < Formula
     sha256 cellar: :any,                 high_sierra:    "75381fee700b8a6659dad5de0ea92df8d2e0bed0e1cd34755c8b3bfc39f99b89"
     sha256 cellar: :any,                 sierra:         "9bb192a3b891680eedbacb38cd9a2daa694cbef4d1db7b844d1809fb5504d660"
     sha256 cellar: :any,                 el_capitan:     "aafed63c6eb816d71151cf20830d76375ef872d2502babfe20f94683b3fcbf33"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "63bbd01ef2d5b95098af62252230803004d064aea3a4ab23bc9dd37a3915b7af"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e5940b480e169cfe86dc568bd7a6a527c569797fc7a99155931b0d75798118c7"
   end
 

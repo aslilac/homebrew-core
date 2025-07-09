@@ -1,10 +1,9 @@
 class Metaproxy < Formula
   desc "Z39.50 proxy and router utilizing Yaz toolkit"
   homepage "https://www.indexdata.com/resources/software/metaproxy/"
-  url "https://ftp.indexdata.com/pub/metaproxy/metaproxy-1.21.0.tar.gz"
-  sha256 "874223a820b15ee2626240c378eee71e31a4e6d3498a433c94409c949e654fae"
+  url "https://ftp.indexdata.com/pub/metaproxy/metaproxy-1.22.1.tar.gz"
+  sha256 "d67a9f7fc9d36ccea8c4770c96c4ae2bc4250f484f941cbeec2a11695ec8d7b8"
   license "GPL-2.0-or-later"
-  revision 5
 
   # The homepage doesn't link to the latest source file, so we have to check
   # the directory listing page directly.
@@ -14,17 +13,16 @@ class Metaproxy < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "1d4baa3427aecbd1822d325dd5772d0e5631a766ca818b4622194d4e8043d78e"
-    sha256 cellar: :any,                 arm64_sonoma:   "ffb90c9755736aad5b6550da41cd76092c911bde384b2a861137bb75fe825931"
-    sha256 cellar: :any,                 arm64_ventura:  "c7f1d531b20ce456abfc44a9e9bd3264e92886aa4c22078f8a40ad176d6eeb6a"
-    sha256 cellar: :any,                 arm64_monterey: "324592b63eeaa2b09519704902931acd77873e4b3ffaac9eb8dcd464df6254bb"
-    sha256 cellar: :any,                 sonoma:         "288a4377a1da730b21bb30abb69aa538f4e7e196c0c355a06b70dc9d8838083a"
-    sha256 cellar: :any,                 ventura:        "3f39818e46442d8f649354b76a0c2cf332214b3437bd1881181330be0622c1cb"
-    sha256 cellar: :any,                 monterey:       "50429ace6ef86b4ddf96da9ab950bdc40cf237662434fc61ff6f6a8f08d8c2b8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a6b0f7dfee1364a2b5fa6bed0444dfc973f393ba576c06840643967a5da1f64f"
+    sha256 cellar: :any,                 arm64_sequoia: "cc491840e22486538a41b371ddf6f4ccb8a5d979319fb5b80d8b135b20cef13d"
+    sha256 cellar: :any,                 arm64_sonoma:  "b6d34b512fbfde767f33c8f0481db3d9bce926b3fa8e243ddf33ddae776e1db2"
+    sha256 cellar: :any,                 arm64_ventura: "c4f1b360f83e40c4bddda2a33765cfa9a889fb15e604d02924edc4b1a6b0da28"
+    sha256 cellar: :any,                 sonoma:        "678f0f79e1f5c7b0dda4140c2e769b5ba31a7b409ef98ff042125794aee119ff"
+    sha256 cellar: :any,                 ventura:       "d419856bdf031a9d82300b4e1d07711a2716ad6cc4bf7cca8dba4f5c3381f347"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "84c0c0ccfd26ca56b7a4b07a2a593509ec3f3340e2d75e54e758df8c1d8af4a8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f942530680f0423e8faa116c235631349055ba5afa9b021352b582caf593bf0e"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "boost"
   depends_on "yaz"
@@ -32,8 +30,6 @@ class Metaproxy < Formula
 
   uses_from_macos "libxml2"
   uses_from_macos "libxslt"
-
-  fails_with gcc: "5"
 
   def install
     # Match C++ standard in boost to avoid undefined symbols at runtime

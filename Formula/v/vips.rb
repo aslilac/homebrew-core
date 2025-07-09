@@ -1,8 +1,8 @@
 class Vips < Formula
   desc "Image processing library"
   homepage "https://github.com/libvips/libvips"
-  url "https://github.com/libvips/libvips/releases/download/v8.16.0/vips-8.16.0.tar.xz"
-  sha256 "6eca46c6ba5fac86224fd69007741012b0ea1f9aa1fcb9256b0cbc2faf768563"
+  url "https://github.com/libvips/libvips/releases/download/v8.17.1/vips-8.17.1.tar.xz"
+  sha256 "4d8c3325922c5300253d7594507a8f1d3caf8eed70dfb66cc7eb2cbed65bb5ca"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -11,12 +11,13 @@ class Vips < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "3b90ba29d5d55d92ba0edd25b8090b8ee32bb3445c4ba80ef18a1639d1d68d1e"
-    sha256 arm64_sonoma:  "e532c9d87946242e7f5aa2478232521020a64887187a070d8da7ad5d9a7f1852"
-    sha256 arm64_ventura: "8b3455bdcd2487585a1af0e4aec46f1aab504fbffffc5a7c381666bbb1e17b11"
-    sha256 sonoma:        "210f56748403e9ae47a8972322272c8718c0a4baabfc38ce1e021b5d29187bf9"
-    sha256 ventura:       "9e8f38efa15c093fb2b861ec7696d0b8a244b30ce1a1a327fedff5bffe707034"
-    sha256 x86_64_linux:  "faa60367d98711a92e578569cb34323946fe6a40cdb258a6aaa41b39fe8314dd"
+    sha256 arm64_sequoia: "b45e4ac96fc01945e5570c648508e72d26c25abacfca3867158cde0f14f825b8"
+    sha256 arm64_sonoma:  "153d1f687006f41c0a9097aa3021e5563ce8489f73ca01657b40470faef1fe1f"
+    sha256 arm64_ventura: "22617e20b931d0bda7e791b3a0cdbb8c4151805cb73dc02ae3bb443cab712001"
+    sha256 sonoma:        "5b70f353444043a85021b456056c90dfe2361054cd736a249bbe253e4b09fbcf"
+    sha256 ventura:       "6bd473d95219cc769753e0231d0a97604d0c49fc75e54df2fe3155f72bf2e721"
+    sha256 arm64_linux:   "bdc6c5410735a6fb222b1a3691856bf8ad7ab1cc589de04f0bafab423920f005"
+    sha256 x86_64_linux:  "eb80a6614fea8ce61fe6a9f5f382a4a2f3e5eabde2c57b62887993dfa5f15f66"
   end
 
   depends_on "gobject-introspection" => :build
@@ -81,14 +82,14 @@ class Vips < Formula
 
     # --trellis-quant requires mozjpeg, vips warns if it's not present
     cmd = "#{bin}/vips jpegsave #{test_fixtures("test.png")} #{testpath}/test.jpg --trellis-quant 2>&1"
-    assert_equal "", shell_output(cmd)
+    assert_empty shell_output(cmd)
 
     # [palette] requires libimagequant, vips warns if it's not present
     cmd = "#{bin}/vips copy #{test_fixtures("test.png")} #{testpath}/test.png[palette] 2>&1"
-    assert_equal "", shell_output(cmd)
+    assert_empty shell_output(cmd)
 
     # Make sure `pkg-config` can parse `vips.pc` and `vips-cpp.pc` after the `inreplace`.
-    system "pkg-config", "vips"
-    system "pkg-config", "vips-cpp"
+    system "pkgconf", "--print-errors", "vips"
+    system "pkgconf", "--print-errors", "vips-cpp"
   end
 end

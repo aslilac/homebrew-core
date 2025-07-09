@@ -5,6 +5,8 @@ class Pkcs11Tools < Formula
   sha256 "5fcda842ed009dacef5d935f5d46bda81bdc26795737af525aa904655a640ba0"
   license "Apache-2.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "22183ecdec16099e7c38d97f5499deb1fbcb9236a9d4deb2c08fa22fd7007358"
     sha256 cellar: :any,                 arm64_sonoma:   "41dd63eb44f9015459c816515202120069605a31875d536a920ec87ede6c1990"
@@ -15,10 +17,11 @@ class Pkcs11Tools < Formula
     sha256 cellar: :any,                 ventura:        "f98f64e004a340203e91c268d37751fec2426b8a1b6a3a4d910f7834176b8b3f"
     sha256 cellar: :any,                 monterey:       "d54d48ba1f3f92918c56441059b1da04a2231779e9f3a6ed67c036303d68499a"
     sha256 cellar: :any,                 big_sur:        "27d568c817878042985a01e7cdb1ee74da2904c8bd42c87f9eaf72496c0e7c68"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "4de234bc0e7f615fe95f3ab3604d8d5915d2bfa2948f778fb10921b92c83dc2c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "204de485eee7fdc9c63d60924bf2a2559bcddb2b13badbd60f97c8fcbd6ab4c3"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "softhsm" => :test
   depends_on "openssl@3"
 
@@ -36,7 +39,7 @@ class Pkcs11Tools < Formula
   end
 
   def install
-    system "./configure", *std_configure_args, "--disable-silent-rules"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 

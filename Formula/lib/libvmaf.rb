@@ -5,6 +5,8 @@ class Libvmaf < Formula
   sha256 "7178c4833639e6b989ecae73131d02f70735fdb3fc2c7d84bc36c9c3461d93b1"
   license "BSD-2-Clause-Patent"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "0809635a529d0e53e927cb9834225210096c625b10ab7eb1211cadf63a1016c5"
@@ -14,6 +16,7 @@ class Libvmaf < Formula
     sha256 cellar: :any,                 sonoma:         "64600bc64ae6dc61c6b9f31c7c4ee35a045b72966ba85d6de1e8f7b0fb575c6f"
     sha256 cellar: :any,                 ventura:        "a021ade94bade88689b21bcf06e6055a9d700ababafe51200620eda29a1e0951"
     sha256 cellar: :any,                 monterey:       "448eaea166d8f6f1c48d72c13fe8d1a46635b54556a6904d1fb351d2fc0d0a80"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "91a91750ff43b3268c96f1a8e678e2fa43ab8773369a1f0b405ac95641a3fbec"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d48ccc0729c4d04a062bc060518ea1370101fd52e718bc54fad10a9fb996d3cb"
   end
 

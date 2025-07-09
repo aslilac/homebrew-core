@@ -1,19 +1,18 @@
 class Liblc3 < Formula
   desc "Low Complexity Communication Codec library and tools"
   homepage "https://github.com/google/liblc3"
-  url "https://github.com/google/liblc3/archive/refs/tags/v1.1.1.tar.gz"
-  sha256 "b65e38943708529efd04a87dd1a9f16a9856ed6199d082b18e7d42fb5c59486e"
+  url "https://github.com/google/liblc3/archive/refs/tags/v1.1.3.tar.gz"
+  sha256 "276752ff54ce6a77d54ec133397b9d7e71f90caf3d9afa32d8b0e891b8ecb8af"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "e9a021e1b2ff09d3d5d0c9e654d16a5e49ba9fa88a19d294782942b291be54bb"
-    sha256 cellar: :any,                 arm64_sonoma:   "31cc6967823fa5b4165ce896967f32ac5bbc02472d3ed7e72ee86abe33753aea"
-    sha256 cellar: :any,                 arm64_ventura:  "5b63ef2dd2e95e3427998c35795e0ca23b017642f7e8a3d62959e385fff7bcfe"
-    sha256 cellar: :any,                 arm64_monterey: "01744ca56d9e0598e2d9a63dbfb5f962d74160e33cd801c8fde4d2ade0d9262d"
-    sha256 cellar: :any,                 sonoma:         "ddf86429985f1d4c8babba0e04842feb024c8685e7fa310efc29f3d145ddbc75"
-    sha256 cellar: :any,                 ventura:        "f8c16dc68ccc1bdbd34ca7d7102c4e8b16c87c94561b3bb976bd3cc8c49d8078"
-    sha256 cellar: :any,                 monterey:       "2867ca66ecc693c85fd192db53e4954fd4251a93acb844f8d4dbe5784ac4273d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f7fb12461311309877014ab7c777c513917051b340c57accce47f4ef830aeedb"
+    sha256 cellar: :any,                 arm64_sequoia: "997b5d2fdfceb35010b61b89004b9ce8e2a5630aa9c90d1f322e62db53641dae"
+    sha256 cellar: :any,                 arm64_sonoma:  "3fc0c2cb6555286a50609efa75f46c88d9addde79781a17165b1bd90e17e14ae"
+    sha256 cellar: :any,                 arm64_ventura: "00fa4c793aaa4ccea249c31fab37842e72d5564d581a2b022bde1727ef2c4830"
+    sha256 cellar: :any,                 sonoma:        "e0e1764a4d3c5d39c850c2289748cb18789a0f06e4264d88b119f5aebb83bba2"
+    sha256 cellar: :any,                 ventura:       "b8c8cb040fcc528c0224dff4e3e8e6a9e016639187ee365d66679afed1dd3458"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6377a03378ccbac1bc3dfebd170453ef1e1a1cc6a00d403e226bca898a0d29b7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9f6f3cff68a823732f72eca5847e4774b34c9d545b1eae5838f4b5cb0b73fc53"
   end
 
   depends_on "meson" => :build

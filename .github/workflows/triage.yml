@@ -24,7 +24,7 @@ jobs:
     if: always() && github.repository_owner == 'Homebrew'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: event_payload
           path: ${{ github.event_path }}
@@ -65,33 +65,8 @@ jobs:
           PR: ${{ github.event.number }}
         run: gh pr edit --add-label workflows "$PR" --repo "$GITHUB_REPOSITORY"
 
-  limit-pull-requests:
-    if: >
-      always() && github.repository_owner == 'Homebrew' &&
-      (github.event_name == 'pull_request_target' &&
-       github.event.action == 'opened')
-    permissions:
-      contents: read
-      issues: read
-      pull-requests: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: Homebrew/actions/limit-pull-requests@master
-        with:
-          except-users: |
-            BrewTestBot
-          comment-limit: 15
-          comment: |
-            Hi, thanks for your contribution to Homebrew! :heart:
-
-            You already have >=15 open pull requests, so please get them ready to be merged or close them before you open more. If CI fails on any of them, please fix it or ask for help doing so.
-
-            If you are performing simple version bumps, @BrewTestBot automatically bumps [a list of formulae](https://github.com/${{ github.repository }}/blob/HEAD/.github/autobump.txt) so you don't need to. Please take a look at issues and pull requests labelled https://github.com/${{ github.repository }}/labels/help%20wanted and see if you can help to fix any of them. Thanks!
-          close-limit: 30
-          close: true
-
   triage:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       issues: write
@@ -102,12 +77,12 @@ jobs:
         if: >
           github.actor != 'BrewTestBot' &&
           !contains(github.event.pull_request.labels.*.name, 'CI-published-bottle-commits')
-        uses: Homebrew/actions/check-commit-format@master
+        uses: Homebrew/actions/check-commit-format@main
         with:
           token: ${{secrets.GITHUB_TOKEN}}
 
       - name: Label pull request
-        uses: Homebrew/actions/label-pull-requests@master
+        uses: Homebrew/actions/label-pull-requests@main
         if: always()
         with:
           token: ${{secrets.GITHUB_TOKEN}}
@@ -130,7 +105,7 @@ jobs:
               path: Formula/.+
               content: \n  bottle do\n
               missing_content:
-                - '\n    sha256.* x86_64_linux: +"[a-fA-F0-9]+"\n'
+                - '\n    sha256.* (x86_64|arm64)_linux: +"[a-fA-F0-9]+"\n'
                 - '\n    sha256.* all: +"[a-fA-F0-9]+"\n'
                 - depends_on :macos
 
@@ -146,7 +121,7 @@ jobs:
               path: Formula/.+@.+
               except:
                 - Formula/b/bash-completion@2.rb
-                - Formula/i/icu4c@76.rb
+                - Formula/i/icu4c@77.rb
                 - Formula/lib/libxml++@5.rb
                 - Formula/o/openssl@3.rb
                 - Formula/p/postgresql@17.rb
@@ -169,6 +144,10 @@ jobs:
             - label: ffmpeg
               path: Formula/.+
               content: depends_on "ffmpeg(@[0-9.]+)?"
+
+            - label: erlang
+              path: Formula/.+
+              content: depends_on "erlang(@[0-9.]+)?"
 
             - label: go
               path: Formula/.+
@@ -193,6 +172,10 @@ jobs:
             - label: macos-only
               path: Formula/.+
               content: depends_on :macos
+
+            - label: meson
+              path: Formula/.+
+              content: depends_on "meson"
 
             - label: lua
               path: Formula/.+
@@ -252,11 +235,14 @@ jobs:
                 emscripten|\
                 envoy|\
                 gcc|\
+                gdb|\
                 ghc|\
                 graph-tool|\
                 gstreamer|\
                 haskell-language-server|\
                 libtensorflow|\
+                llvm@19|\
+                llvm|\
                 mame|\
                 metashell|\
                 mlkit|\
@@ -264,7 +250,10 @@ jobs:
                 node|\
                 octave|\
                 opencascade|\
+                openfast|\
+                openvino|\
                 pcl|\
+                percona-server|\
                 ponyc|\
                 pytorch|\
                 qt|\
@@ -287,9 +276,13 @@ jobs:
                 boost|\
                 brotli|\
                 c-ares|\
+                cabal-install|\
+                cmake|\
+                cryptography|\
                 dav1d|\
                 freetype|\
                 gcc|\
+                gettext|\
                 ghc|\
                 glib|\
                 gsettings-desktop-schemas|\
@@ -301,6 +294,7 @@ jobs:
                 imath|\
                 jasper|\
                 jpeg-turbo|\
+                jpeg-xl|\
                 libcap|\
                 libgcrypt|\
                 libgpg-error|\
@@ -321,9 +315,12 @@ jobs:
                 p11-kit|\
                 pango|\
                 pcre2|\
+                python@3.13|\
                 rav1e|\
                 rust|\
+                sdl2|\
                 shared-mime-info|\
+                sqlite|\
                 suite-sparse|\
                 qt|\
                 readline|\
@@ -343,11 +340,29 @@ jobs:
               allow_any_match: true
 
             - label: CI-skip-recursive-dependents
-              path: Formula/.+/(ca-certificates|curl|gettext|openssl@3|sqlite).rb
+              path: "Formula/.+/(\
+                ca-certificates|\
+                certifi|\
+                cmake|\
+                curl|\
+                gettext|\
+                glib|\
+                openssl@3|\
+                wayland-protocols|\
+                sqlite|\
+                systemd\
+                ).rb"
               keep_if_no_match: true
+              allow_any_match: true
 
             - label: CI-linux-self-hosted
-              path: Formula/.+/(dart-sdk|envoy|qt(@5)?|texlive).rb
+              path: "Formula/.+/(\
+                dart-sdk|\
+                envoy|\
+                qt(@5)?|\
+                teleport|\
+                texlive\
+                ).rb"
               keep_if_no_match: true
               allow_any_match: true
 
@@ -355,10 +370,10 @@ jobs:
               path: "Formula/.+/(\
                 alsa-lib|\
                 glib|\
+                libcap|\
                 libva|\
                 libxml2|\
-                python@3.12|\
-                systemd|\
+                python@3.13|\
                 wayland-protocols|\
                 zlib|\
                 ).rb"
@@ -373,4 +388,8 @@ jobs:
 
             - label: autobump
               path: \.github/autobump\.txt
+              allow_any_match: true
+
+            - label: alias
+              path: Aliases/.+
               allow_any_match: true

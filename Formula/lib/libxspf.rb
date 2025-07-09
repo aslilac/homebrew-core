@@ -5,6 +5,8 @@ class Libxspf < Formula
   sha256 "ce78a7f7df73b7420b6a54b5766f9b74e396d5e0b37661c9a448f2f589754a49"
   license "BSD-3-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "f89d8d32a4bfb4ceb5254b1bd40d8bbb6ad1363143c1897a4ad945664b39b70d"
     sha256 cellar: :any,                 arm64_sonoma:   "ebe5a694ae5d6433a1d632e780572da1e4addcbcf871370c85ed928e2e6feed1"
@@ -16,11 +18,12 @@ class Libxspf < Formula
     sha256 cellar: :any,                 monterey:       "fbeb2b06f536534acd8e85c7cd86b0603f85e059dfb0277cf093c4aeb5875dca"
     sha256 cellar: :any,                 big_sur:        "3bdd88ce60539e5c451fbfbb39d85719b9551965550b5b2937f409f152b08330"
     sha256 cellar: :any,                 catalina:       "e0047524231105d369ade5acf8110d3e64f5d98f39848df201cfcdc9ded7ec39"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "2e7ee0f7026c5cfe6bbf84efc5474a94274645bdd0e7a498c20e5b6a37e21a2f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e901fd286da4e617543de36efef5f7e0a115d936eeb3ec01326ae92a02df29d8"
   end
 
   depends_on "cpptest" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "uriparser"
 
   uses_from_macos "expat"

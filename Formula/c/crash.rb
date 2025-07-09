@@ -6,8 +6,11 @@ class Crash < Formula
   license "LGPL-2.1-or-later"
 
   livecheck do
-    url "https://github.com/crashub/crash"
+    url "https://search.maven.org/remotecontent?filepath=org/crashub/crash.distrib/maven-metadata.xml"
+    regex(%r{<version>v?(\d+(?:\.\d+)+)</version>}i)
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 1

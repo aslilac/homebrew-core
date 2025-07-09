@@ -10,6 +10,8 @@ class Mpgtx < Formula
     regex(%r{url=.*?/mpgtx[._-]v?(\d+(?:\.\d+)+(?:-\d+)?)(?:-src)?\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "2ad9aa8dd08b96ea82867c569333e92438e2e7131c287a1f4a2f9ab8be6a3755"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "82dd83969a60031ab766c86fa4859dad5fe9469f457f93ca034418daf00b8ff8"
@@ -25,6 +27,7 @@ class Mpgtx < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "6a003e12c03f1cc24bd520e1cf153da02729b4d30e7bdffcba5cecf832c19238"
     sha256 cellar: :any_skip_relocation, sierra:         "70e1dfed0338fb8b8cda36ca05e05b8cd3fd456782db58408b18bbf2361f09aa"
     sha256 cellar: :any_skip_relocation, el_capitan:     "566ce06d938b4e3b7886a729d456bd3034325985acbdb5e21355b076d7acccf5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "c9c4e3ed17bf4c1669dfd9d61a3064ebe5e956325678c9820a7b840f6a093473"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "133e123b7b8f9956959847378b68fc0c68f1e591209bb060ab7c7d024426f343"
   end
 

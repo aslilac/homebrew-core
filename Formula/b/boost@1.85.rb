@@ -4,20 +4,23 @@ class BoostAT185 < Formula
   url "https://github.com/boostorg/boost/releases/download/boost-1.85.0/boost-1.85.0-b2-nodocs.tar.xz"
   sha256 "09f0628bded81d20b0145b30925d7d7492fd99583671586525d5d66d4c28266a"
   license "BSL-1.0"
-  revision 2
+  revision 3
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "663d20076d5f0eca3aeaaad6e8b3dfb7face08b889e7aaf534205bb06c599d84"
-    sha256 cellar: :any,                 arm64_sonoma:  "349ee1eab75de938bf98b797b56062aedff7f007817dd13e6196176454e24c4f"
-    sha256 cellar: :any,                 arm64_ventura: "32994c90a2429d6ffbdeb5f504d266bf044e6e3c0048d8b4056bc77de0ed5b8c"
-    sha256 cellar: :any,                 sonoma:        "6d6e43ab14638792e56d3e5b1ebce85ac3e6fce5910a4067e0aeef6be095c492"
-    sha256 cellar: :any,                 ventura:       "9a408e7ff44e78626c2408df18fa9a006ee9095d8ad8b7f5faebb61173a6ab0a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "78218534456473132b31b8e7918bdcc65c094452096a3be240c06c83e0c9724b"
+    sha256                               arm64_sequoia: "0d57280eb03360e23f3693d33604711f5912a47c6400fbcf7a78ce4829d35db6"
+    sha256                               arm64_sonoma:  "a4d8d3af279e68a17a5d177dfbb716757d59b91448ba82dc8c015bc8749b6e0c"
+    sha256                               arm64_ventura: "c60cdfef891f2f447509c8a460db5fd1b16e07111c7169457044eaa46674c9f3"
+    sha256 cellar: :any,                 sonoma:        "21d45293e2b2ded9f5ac1c8bfa04867fd0e5d02f15911aa24e73a69665968d69"
+    sha256 cellar: :any,                 ventura:       "834cb3ac5b69ae8a4768e2e1773798d7a1ae01aadb761a9e737ff84b8d07a837"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c7fd2dc979f3b442f80669bfbb081f05eae3bfa4dd12fa46d21594154104600f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1afa1ddd0506aa3991d3e6b86941fb066fae250feecc9adeaad82780efac55da"
   end
 
   keg_only :versioned_formula
 
-  depends_on "icu4c@76"
+  deprecate! date: "2025-04-05", because: :versioned_formula
+
+  depends_on "icu4c@77"
   depends_on "xz"
   depends_on "zstd"
 
@@ -70,6 +73,12 @@ class BoostAT185 < Formula
     # C++17 is due to `icu4c`.
     args << "cxxflags=-std=c++17"
     args << "cxxflags=-stdlib=libc++" << "linkflags=-stdlib=libc++" if ENV.compiler == :clang
+
+    # Workaround mentioned in build error:
+    # > Define `BOOST_STACKTRACE_LIBCXX_RUNTIME_MAY_CAUSE_MEMORY_LEAK` to
+    # > suppress this error if the library would not be used with libc++ runtime
+    # > (for example, it would be only used with GCC runtime)
+    args << "define=BOOST_STACKTRACE_LIBCXX_RUNTIME_MAY_CAUSE_MEMORY_LEAK" if OS.linux? && Hardware::CPU.arm?
 
     system "./bootstrap.sh", *bootstrap_args
     system "./b2", "headers"

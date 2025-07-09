@@ -1,24 +1,24 @@
 class Proxsuite < Formula
   desc "Advanced Proximal Optimization Toolbox"
   homepage "https://github.com/Simple-Robotics/proxsuite"
-  url "https://github.com/Simple-Robotics/proxsuite/releases/download/v0.6.7/proxsuite-0.6.7.tar.gz"
-  sha256 "3a397ba96ddcfe5ade150951f70f867a3741206a694e50588f954a94c4cf3f27"
+  url "https://github.com/Simple-Robotics/proxsuite/releases/download/v0.7.2/proxsuite-0.7.2.tar.gz"
+  sha256 "dedda8e06b2880f99562622368abb0c0130cc2ab3bff0dc0b26477f88458a136"
   license "BSD-2-Clause"
   head "https://github.com/Simple-Robotics/proxsuite.git", branch: "main"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "17c4c49ce286bf188e68bf8733da74140789b5cc51da3096ceeb5f70b2dbd0f9"
-    sha256 cellar: :any,                 arm64_sonoma:  "4c934f75594487b26c8927880d1196ffdf12afbe728305d676520491843923ee"
-    sha256 cellar: :any,                 arm64_ventura: "36c0c84817b158b2ac9ceb2ca30544d39295b61d8d229da7e5305f44fc83d30e"
-    sha256 cellar: :any,                 sonoma:        "d099504148402fcfa3060f59b5b65e2459bceed8fa4636bebd0effcc3f8636b3"
-    sha256 cellar: :any,                 ventura:       "0e3685e0638e44eda4de48da0530bf20f53d322efa891dc1483dc34353e6c988"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "97379c1bf25c81521de0438d5b9afe7bbea1bb82526f3fafb4426be161dea449"
+    sha256 cellar: :any,                 arm64_sequoia: "55eeaba27c0759020f1af4fee87c57cd7f06250654985fcb314aafd65bd94bc2"
+    sha256 cellar: :any,                 arm64_sonoma:  "039089b526b129afda357462b2c41773e3a711ba40cfd5570cdfa97265e3bd8e"
+    sha256 cellar: :any,                 arm64_ventura: "bd8a4c2c6c377eddc448910028a0afde9db6185a77c4bcf600191384c6529eb6"
+    sha256 cellar: :any,                 sonoma:        "03ca17384128ebc8d2b88b241ccb12947e808186bc52fe15b84499953172bfe7"
+    sha256 cellar: :any,                 ventura:       "a09b9bbd5e73a56ca6b74b63e278a434adcd3d93d3fd3502dfdbb55e72526212"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e9125d101cc2a36b0d25ace483151f343264097ad3e30612e0262ec3e7016e3a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "57b4ac4f02b44ae31592270e00b6119b22be2e99d685b2d7981cb9b02820eb06"
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "eigen"
   depends_on "numpy"
   depends_on "python@3.13"
@@ -42,10 +42,10 @@ class Proxsuite < Formula
   end
 
   test do
-    system python3, "-c", <<~EOS
+    system python3, "-c", <<~PYTHON
       import proxsuite
       qp = proxsuite.proxqp.dense.QP(10,0,0)
       assert qp.model.H.shape[0] == 10 and qp.model.H.shape[1] == 10
-    EOS
+    PYTHON
   end
 end

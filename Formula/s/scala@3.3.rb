@@ -1,8 +1,8 @@
 class ScalaAT33 < Formula
   desc "JVM-based programming language"
   homepage "https://www.scala-lang.org/"
-  url "https://github.com/lampepfl/dotty/releases/download/3.3.4/scala3-3.3.4.tar.gz"
-  sha256 "fd0eca29ef1f6c41874b6711e7b6514f1dc7c387c087742fb873f6e720963770"
+  url "https://github.com/scala/scala3/releases/download/3.3.6/scala3-3.3.6.tar.gz"
+  sha256 "7267524240ee289976fed1b8bc08c0045d5d290d3faee07c6b7137a4252b5b97"
   license "Apache-2.0"
 
   livecheck do
@@ -11,7 +11,7 @@ class ScalaAT33 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "40166c22ccdaae0310165bb729cc34b4d38ec4c07497812a0f94f6ef74aaaa88"
+    sha256 cellar: :any_skip_relocation, all: "c6ef17066454d96317b625b45b1dd2c61423f9a9f598469e157261f77e3f6c26"
   end
 
   keg_only :versioned_formula
@@ -38,13 +38,13 @@ class ScalaAT33 < Formula
 
   test do
     file = testpath/"Test.scala"
-    file.write <<~EOS
+    file.write <<~SCALA
       object Test {
         def main(args: Array[String]): Unit = {
           println(s"${2 + 2}")
         }
       }
-    EOS
+    SCALA
 
     out = shell_output("#{bin}/scala #{file}").strip
 

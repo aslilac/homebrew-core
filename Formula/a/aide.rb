@@ -1,19 +1,18 @@
 class Aide < Formula
   desc "File and directory integrity checker"
   homepage "https://aide.github.io/"
-  url "https://github.com/aide/aide/releases/download/v0.18.8/aide-0.18.8.tar.gz"
-  sha256 "16662dc632d17e2c5630b801752f97912a8e22697c065ebde175f1cc37b83a60"
+  url "https://github.com/aide/aide/releases/download/v0.19.1/aide-0.19.1.tar.gz"
+  sha256 "6df8bf5f0403d74af7dbdb91eb3c8f61fe07e964669db8cfa1ee7e4ee3e90b52"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "366f1aadcab6aaea9eabda7c97ed85cd57c88c14ef22f83f7de5ffb0d4d937a7"
-    sha256 cellar: :any,                 arm64_sonoma:   "67de729676b7cef9aaaed2c7b206a7786f6ef9ea9c4afc01b618aff46dcc2b18"
-    sha256 cellar: :any,                 arm64_ventura:  "28b109731344ff7448929640721cf9b57b75147dc48552952090adb11e086ab5"
-    sha256 cellar: :any,                 arm64_monterey: "50ac76fbb9fdb0ed794ca4def350631b9c297c20635c8609c8efd19b5dd5159c"
-    sha256 cellar: :any,                 sonoma:         "a7a43ce551b4cc61a6b23e011a6114fadbb2c86f7c1266623f327d4e4ae738f1"
-    sha256 cellar: :any,                 ventura:        "d9693e7f65cd11f1195eedecc860b385f556b57e3d700b9cc5758c819aa062dd"
-    sha256 cellar: :any,                 monterey:       "68c94e713f48b7633df19a440444043e8e64c6f93a125d062d4ba33c12737c1a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aa5f708845d27bd45bdaf4780d901964e206f9202da0be92f66e3a85e9d849c7"
+    sha256 cellar: :any,                 arm64_sequoia: "1db9339d12955b3ee47cdabb14e9ab9618793c1f00989b92112d632400dea4b8"
+    sha256 cellar: :any,                 arm64_sonoma:  "90faecbf9e722f1b526ffd770e144c50d7c2a627b2d34e2ac351b6bf97356a56"
+    sha256 cellar: :any,                 arm64_ventura: "9c726e4acc2fbf41293be8761304e5a92321a182a3ecd4d6c4792179dc6284e1"
+    sha256 cellar: :any,                 sonoma:        "256693094f624cde2defe05edfb2adecdedde9d64a35136dd67baacab36e515a"
+    sha256 cellar: :any,                 ventura:       "8da099fd2d74b0283a7f1ba7afbc3da8c60b5a7fcd3918f852c66a74d72e54a7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ff9042ed674c80d241ee8cd8db10b0a95bd8b60d92ea98993472f3a36eb555cd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "50c31d78bffbbbf5af4d9b88028534d9cec1c2e46d4f9c4f89ed6e592c6bc883"
   end
 
   head do
@@ -34,6 +33,8 @@ class Aide < Formula
   uses_from_macos "flex" => :build
   uses_from_macos "curl"
   uses_from_macos "zlib"
+
+  conflicts_with cask: "aide-app"
 
   def install
     # use sdk's strnstr instead

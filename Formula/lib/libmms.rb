@@ -5,6 +5,8 @@ class Libmms < Formula
   sha256 "3c05e05aebcbfcc044d9e8c2d4646cd8359be39a3f0ba8ce4e72a9094bee704f"
   license "LGPL-2.1-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any,                 arm64_sequoia:  "3bb78466780c6a9b24cf16bb0c333e5e62e8aca7b7f27a1175dcce96d369dd92"
@@ -21,16 +23,16 @@ class Libmms < Formula
     sha256 cellar: :any,                 high_sierra:    "adc24aaa1656c02f41b20b4453f6a2deda8f3597c919eed1ae8befb732fc920f"
     sha256 cellar: :any,                 sierra:         "5319927f799dd20effbfc9f8bb90ebc844b39852c433bf434ab6b36c11c36417"
     sha256 cellar: :any,                 el_capitan:     "61c4dd24598198386342dd9c700e218b6b83c82627efc781daa89acfaca96066"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "ed7a66b304d548c1426e5b0fa507a7cd3f06923aa13d8d14876b9e94e81146ff"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5bf0654cdf09b4ca5c749e75d8920ff2eddee195e31a468c64bee07f74571b29"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "glib"
 
   def install
     ENV.append "LDFLAGS", "-liconv" if OS.mac?
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 end

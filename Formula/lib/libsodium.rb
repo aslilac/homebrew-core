@@ -10,6 +10,8 @@ class Libsodium < Formula
     regex(/href=.*?libsodium[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "e8ba0aafe8fe7266d68630ff7ab11d7357af35dbf5113bb648a1e02bed397970"
     sha256 cellar: :any,                 arm64_sonoma:   "66835fcd7e4dd8dde5be4e8d34c5314481c1d724e8dd82d4e97059d9fdaf1a45"
@@ -18,6 +20,7 @@ class Libsodium < Formula
     sha256 cellar: :any,                 sonoma:         "ebc452002391195287aef3819c1285ba597bbfe55cb926f18dae5990202afa12"
     sha256 cellar: :any,                 ventura:        "5de3b5180b73678d93c4c69a77d662afd6aac0bfd71246be6e78cfacf97cc3d7"
     sha256 cellar: :any,                 monterey:       "0556f27feb8d4b5f31edf42e392eb4901daa5b9dbb8510499aa196c9e77134c6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "5a31f0fb4b4c1d89161e49a5f94bef970b0f23068475ef3dc46589d869f52a38"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "94394d217dc5a833492a702a8a9e914573a945da13f3b4f42b59f2513835f439"
   end
 

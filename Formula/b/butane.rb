@@ -1,8 +1,8 @@
 class Butane < Formula
   desc "Translates human-readable Butane Configs into machine-readable Ignition Configs"
   homepage "https://github.com/coreos/butane"
-  url "https://github.com/coreos/butane/archive/refs/tags/v0.22.0.tar.gz"
-  sha256 "1a91ea42a7d952fd91078c7492e8f813e0e69d312225ee1903c157024da7e643"
+  url "https://github.com/coreos/butane/archive/refs/tags/v0.24.0.tar.gz"
+  sha256 "57724f027b76074801ca988b6859738085643c50bec44c2672e64a7047f6fb95"
   license "Apache-2.0"
   head "https://github.com/coreos/butane.git", branch: "main"
 
@@ -12,12 +12,12 @@ class Butane < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7761c658646399a2c13e657ba181a8002dd083ceb49be5be6c109b67fd3cddf3"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7761c658646399a2c13e657ba181a8002dd083ceb49be5be6c109b67fd3cddf3"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "7761c658646399a2c13e657ba181a8002dd083ceb49be5be6c109b67fd3cddf3"
-    sha256 cellar: :any_skip_relocation, sonoma:        "f86a1faf586ac1e7252e06b70d875e5174419ca74b88926b903c28d1f48ede9b"
-    sha256 cellar: :any_skip_relocation, ventura:       "f86a1faf586ac1e7252e06b70d875e5174419ca74b88926b903c28d1f48ede9b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c3aa4a8ee4f2d41e27334ee2ece8853a321dad4c52d8189e1120c093559df52c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1cce41cb8d792fca5cb8fbb287ca3db628ecbed2656a432daf61bda6b7aa4b26"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1cce41cb8d792fca5cb8fbb287ca3db628ecbed2656a432daf61bda6b7aa4b26"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "1cce41cb8d792fca5cb8fbb287ca3db628ecbed2656a432daf61bda6b7aa4b26"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7e4edb2877ff7ce99f709ac4451fc4d756d421bb37d31c3e2df9460d5028e418"
+    sha256 cellar: :any_skip_relocation, ventura:       "7e4edb2877ff7ce99f709ac4451fc4d756d421bb37d31c3e2df9460d5028e418"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "933138ba8a1713f572e1e11c90f8d0f0a209f8d2b5aebe6408fca11df204371d"
   end
 
   depends_on "go" => :build
@@ -49,14 +49,14 @@ class Butane < Formula
     EOS
 
     system bin/"butane", "--strict", "--output=#{testpath}/example.ign", "#{testpath}/example.bu"
-    assert_predicate testpath/"example.ign", :exist?
+    assert_path_exists testpath/"example.ign"
     assert_match(/.*"sshAuthorizedKeys":\["ssh-rsa mykey"\].*/m, File.read(testpath/"example.ign").strip)
 
     output = shell_output("#{bin}/butane --strict #{testpath}/example.bu")
     assert_match(/.*"sshAuthorizedKeys":\["ssh-rsa mykey"\].*/m, output.strip)
 
     shell_output("#{bin}/butane --strict --output=#{testpath}/broken.ign #{testpath}/broken.bu", 1)
-    refute_predicate testpath/"broken.ign", :exist?
+    refute_path_exists testpath/"broken.ign"
 
     assert_match version.to_s, shell_output("#{bin}/butane --version 2>&1")
   end

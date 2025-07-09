@@ -6,6 +6,7 @@ class Libobjc2 < Formula
   license "MIT"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "da763aa6b18675491c47b76136bab512f98cfbfa570e416f56ca803af99bad53"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "7b71a49e26e6f376aea15f25c584ba70da3ea0c4cfbb7eaa0e66a52eb300ccb9"
   end
 
@@ -13,7 +14,7 @@ class Libobjc2 < Formula
   # While libobjc2 is built with clang, it does not use any LLVM runtime libraries.
   depends_on "llvm" => [:build, :test]
   depends_on "robin-map" => :build
-  depends_on "pkg-config" => :test
+  depends_on "pkgconf" => :test
   # Clang explicitly forbids building Mach-O binaries of libobjc2.
   # https://reviews.llvm.org/D46052
   # macOS provides an equivalent Objective-C runtime.
@@ -42,13 +43,13 @@ class Libobjc2 < Formula
     cp pkgshare/"Test/RuntimeTest.m", testpath
 
     # First build test shared library and then link it to RuntimeTest.
-    pkg_config_flags = Utils.safe_popen_read("pkg-config", "--cflags", "--libs", "libobjc").chomp.split
-    system ENV.cc, "Test.m", "-fobjc-runtime=gnustep-2.0", *pkg_config_flags,
+    flags = shell_output("pkgconf --cflags --libs libobjc").chomp.split
+    system ENV.cc, "Test.m", "-fobjc-runtime=gnustep-2.0", *flags,
                    "-fPIC", "-shared", "-o", "libTest.so"
-    system ENV.cc, "RuntimeTest.m", "-fobjc-runtime=gnustep-2.0", *pkg_config_flags, "-Wl,-rpath,#{lib}",
+    system ENV.cc, "RuntimeTest.m", "-fobjc-runtime=gnustep-2.0", *flags, "-Wl,-rpath,#{lib}",
                    "-L#{testpath}", "-Wl,-rpath,#{testpath}", "-lTest", "-o", "RuntimeTest"
 
     # RuntimeTest deliberately throws a test exception and outputs this to stderr.
-    assert_match "testExceptions() ran", shell_output("#{testpath}/RuntimeTest 2>&1")
+    assert_match "testExceptions() ran", shell_output("./RuntimeTest 2>&1")
   end
 end

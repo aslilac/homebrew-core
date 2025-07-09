@@ -1,6 +1,7 @@
 class Cgrep < Formula
   desc "Context-aware grep for source code"
   homepage "https://github.com/awgn/cgrep"
+  # TODO: Check if `rawfilepath` workaround can be removed
   url "https://github.com/awgn/cgrep/archive/refs/tags/v8.1.2.tar.gz"
   sha256 "1b705013a432e6ea90247f03e4cfeceb5a37f795d879178e4bf0085ce6191316"
   license "GPL-2.0-or-later"
@@ -14,13 +15,17 @@ class Cgrep < Formula
     sha256 cellar: :any,                 sonoma:         "1a60833abff334e0d92f43dfe74a5a4b3d745bf755d4335feb56d40305c1242e"
     sha256 cellar: :any,                 ventura:        "354598dcb310983dda7c625c91f2f9b532cd31a1f92b82071572abbae078dd59"
     sha256 cellar: :any,                 monterey:       "fcc050e01c4883a5c11197faf5ca543ed7af19be66ffb0dbfa0130d10467508f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "1a2bf84dfda4c56160e518799f9697229c85b0c89bf7eeec50fbd9976b07d8cf"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "329810d6cd7634ba9d6ceb65dc15bcb8b6771f52862a6dd574b901cc963b6368"
   end
 
   depends_on "cabal-install" => :build
   depends_on "ghc" => :build
   depends_on "pkgconf" => :build
+  depends_on "gmp"
   depends_on "pcre"
+
+  uses_from_macos "libffi"
 
   conflicts_with "aerleon", because: "both install `cgrep` binaries"
 

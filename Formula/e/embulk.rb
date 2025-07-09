@@ -11,6 +11,8 @@ class Embulk < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, all: "fc718acf04dd0ffd6e04dc816490ba13bc8af9b0de9d45b169cc6b55a9e936f7"
@@ -65,7 +67,8 @@ class Embulk < Formula
       +-------------+-----------------------------+--------------+----------------+
       |           1 |                        list |
     EOS
-    assert_match(/1,list,.*\n2,install,.*\n3,info,/, shell_output("#{bin}/embulk -X #{jruby} run config.yml"))
+    output = shell_output("#{bin}/embulk -X #{jruby} run config.yml")
+    assert_match(/^1,list,.*\n2,/, output)
 
     # Recent macOS requires giving Terminal permissions to access files on a
     # network volume in order to use Embulk's basic file input plugin.

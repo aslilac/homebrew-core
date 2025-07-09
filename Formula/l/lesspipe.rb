@@ -1,8 +1,8 @@
 class Lesspipe < Formula
   desc "Input filter for the pager less"
   homepage "https://www-zeuthen.desy.de/~friebel/unix/lesspipe.html"
-  url "https://github.com/wofr06/lesspipe/archive/refs/tags/v2.16.tar.gz"
-  sha256 "18687fb0f416e2ec91a387b3159f84deba97d21d41ec89e72e7d5a1bf8ff9c01"
+  url "https://github.com/wofr06/lesspipe/archive/refs/tags/v2.18.tar.gz"
+  sha256 "a78c5c2841771adb5cdc7eb918ca8e4865be88cb9f7a53622ca3fa064d5ec5bc"
   license all_of: [
     "GPL-2.0-only",
     "GPL-2.0-or-later", # sxw2txt
@@ -11,8 +11,7 @@ class Lesspipe < Formula
   ]
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "3cfa53b74ec317d0d749a0abaefea7d2a4be91adfc734016ae530de281c1c6cd"
+    sha256 cellar: :any_skip_relocation, all: "7f22b2da49eb3d1351d4ed294dc21a75b794d4db4b10e91f0f4c28903ab32056"
   end
 
   uses_from_macos "perl"
@@ -39,7 +38,7 @@ class Lesspipe < Formula
     touch "file2.txt"
     system "tar", "-cvzf", "homebrew.tar.gz", "file1.txt", "file2.txt"
 
-    assert_predicate testpath/"homebrew.tar.gz", :exist?
+    assert_path_exists testpath/"homebrew.tar.gz"
     assert_match "file2.txt", pipe_output(bin/"archive_color", shell_output("tar -tvzf homebrew.tar.gz"))
   end
 end

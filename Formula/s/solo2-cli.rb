@@ -6,6 +6,8 @@ class Solo2Cli < Formula
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/solokeys/solo2-cli.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "0eeda3ebb79864789018e56cdd4bf347b798478c754f9f3be29e26ce788cc604"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ac06ba094da706b68c527fa6904187aa9c2d21fd26246bf9a343a4a14a4d8dd9"
@@ -14,13 +16,14 @@ class Solo2Cli < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "4b0ce4ae4cc661cb11b6746b536e736256c6a3b978af3508ea36997bd667d0c9"
     sha256 cellar: :any_skip_relocation, ventura:        "9529d0379455886612d51ade076b55ff1bffe3395b09fe80edba6ebb571d119c"
     sha256 cellar: :any_skip_relocation, monterey:       "ffb93967fd1171798157e502212337d93d644f6e31f8e1457f17c0c62f088a01"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "9a38668bcd74a109b726bc666553352c1688ee7c9b51061e2f0767cd3bb7d06a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "00c7bd01f05ac244c1b50fbfc559a9dcc641c23d71a2f9664e8d88d22a522316"
   end
 
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
 
   on_linux do
-    depends_on "pkg-config" => :build
     depends_on "pcsc-lite"
     depends_on "systemd"
   end

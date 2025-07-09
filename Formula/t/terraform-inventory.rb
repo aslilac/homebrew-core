@@ -18,6 +18,7 @@ class TerraformInventory < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "ab56b7c132afc5508e5e10cfa21b784aa2f84fa8a23d9985b7b45eb04c8bdae1"
     sha256 cellar: :any_skip_relocation, catalina:       "ab56b7c132afc5508e5e10cfa21b784aa2f84fa8a23d9985b7b45eb04c8bdae1"
     sha256 cellar: :any_skip_relocation, mojave:         "ab56b7c132afc5508e5e10cfa21b784aa2f84fa8a23d9985b7b45eb04c8bdae1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "81cac3290ff42bd1c1759d9596b08e9647533f202dfabf5b9ad91e44a6f696bc"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "853cf36916d4bb9834f0f6b491e347a109a2930d350a1a31b8e7b8233720c20b"
   end
 
@@ -28,7 +29,7 @@ class TerraformInventory < Formula
   end
 
   test do
-    example = <<~EOS
+    example = <<~JSON
       {
           "version": 1,
           "serial": 1,
@@ -55,7 +56,7 @@ class TerraformInventory < Formula
               }
           ]
       }
-    EOS
+    JSON
     (testpath/"example.tfstate").write(example)
     assert_match(/example_instance/, shell_output("#{bin}/terraform-inventory --list example.tfstate"))
   end

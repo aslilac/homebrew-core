@@ -10,8 +10,11 @@ class LadspaSdk < Formula
     regex(/href=.*?ladspa[._-]sdk[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
+    sha256 arm64_linux:  "c040c53ca46e36809ad0b9729b4fc3381d9ffb665bf9deb81726d27bb847170c"
     sha256 x86_64_linux: "f05cf54a06c2c0e50295cd52f63f5fc096a5812470e0a3248c790c228cd5db8f"
   end
 

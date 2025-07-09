@@ -5,6 +5,8 @@ class SiscScheme < Formula
   sha256 "7a2f1ee46915ef885282f6df65f481b734db12cfd97c22d17b6c00df3117eea8"
   license any_of: ["MPL-1.1", "GPL-2.0-or-later"]
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "7e9295240559052f8c4e4b075ed560b0809c92c8d6d48c4b020707c5dcb20b01"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e01048572a3944b67dd73804391d0cad34e81ecdb5ec39455f5eddad3175c3c8"
@@ -17,6 +19,7 @@ class SiscScheme < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "e76fa3836cfb1020d76de3ccda011d84223260860c78372930dbe99eeef6f46b"
     sha256 cellar: :any_skip_relocation, catalina:       "e76fa3836cfb1020d76de3ccda011d84223260860c78372930dbe99eeef6f46b"
     sha256 cellar: :any_skip_relocation, mojave:         "e76fa3836cfb1020d76de3ccda011d84223260860c78372930dbe99eeef6f46b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "db23a0b7783336e1e6b22340648072737987d8b08562be5ef6acd8afcff22184"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f65d81b8af3efb3351510362fdde92e8b9fc5a32eaba361a438abed4fb265991"
   end
 

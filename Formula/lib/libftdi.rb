@@ -11,6 +11,8 @@ class Libftdi < Formula
     regex(/href=.*?libftdi1[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "c53870c2c84cf0918cbf27dfa0f62b3dc331072846980ef86243f506e1752f7a"
     sha256 cellar: :any,                 arm64_sonoma:   "63ffb0285cabb32fb40e7f609ba8e63da9c0452e30400bd9261218bd3e393b9f"
@@ -23,11 +25,12 @@ class Libftdi < Formula
     sha256 cellar: :any,                 big_sur:        "26dfaad8173c39d9aa57354256ae4885ea4154a5c3f539c0cb8929e627cafd72"
     sha256 cellar: :any,                 catalina:       "8f20fb63150135151bac6d385c5c8fac07ccdc97c5d4a17d1d9aaf62737a606c"
     sha256 cellar: :any,                 mojave:         "52fd8c98d57a09972db3db70a405c32c17dc7ea60663c058b8cfa17d51fc1951"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f46b81927052090bf7c2c756414545f1af98e48ec10e0bd8a697abb7253a72ab"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9cd40f6f49dc081c4cc7e3ea4b159b428d1e611dbc708c1d06bcb3c10f1f3fea"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "swig" => :build
   depends_on "boost"
   depends_on "confuse"

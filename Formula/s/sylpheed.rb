@@ -11,6 +11,8 @@ class Sylpheed < Formula
     regex(%r{stable.*?href=.*?/sylpheed[._-]v?(\d+(?:\.\d+)+)\.t}im)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sonoma:   "b495ed0f57f6d69fb00f2295e90114d2f84383bea9265b7745a5879d93c8b28f"
     sha256 arm64_ventura:  "ae1224cc9e932e455ce0beabf837e2e461ebc3c94e12dfe0049a27b2ab5fbbaf"
@@ -18,10 +20,11 @@ class Sylpheed < Formula
     sha256 sonoma:         "318cdef672289eef299f997f611bdb0b04289a2df140f11f486750d1e9caee2f"
     sha256 ventura:        "90d177673ba7c5cbcc5379ff58d6fe0dfc53bfaf5d56dd83b9c5b63e897793df"
     sha256 monterey:       "5fc319eacb46d715a6d65afd9415037d51201bdd9990e8551ea2565acfec591d"
+    sha256 arm64_linux:    "445fac115ea59195e3d6f635295b6f872d6eb48d62bfd82e93fab79d912b9291"
     sha256 x86_64_linux:   "2acbda751260830e9e9388a9745bc6df4668b2c3799b200335d0c19d2018882c"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "cairo"
   depends_on "gdk-pixbuf"
@@ -46,7 +49,7 @@ class Sylpheed < Formula
   end
 
   def install
-    system "./configure", "--disable-updatecheck", *std_configure_args.reject { |s| s["--disable-debug"] }
+    system "./configure", "--disable-updatecheck", *std_configure_args
     system "make", "install"
   end
 

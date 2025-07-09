@@ -1,9 +1,10 @@
 class Morpheus < Formula
   desc "Modeling environment for multi-cellular systems biology"
   homepage "https://morpheus.gitlab.io/"
-  url "https://gitlab.com/morpheus.lab/morpheus/-/archive/v2.3.8/morpheus-v2.3.8.tar.gz"
-  sha256 "d4f4d3434fadbb149a52da2840d248176fe216a515f50a7ef904e22623f2e85c"
+  url "https://gitlab.com/morpheus.lab/morpheus/-/archive/v2.3.9/morpheus-v2.3.9.tar.gz"
+  sha256 "d27b7c2b5ecf503fd11777b3a75d4658a6926bfd9ae78ef97abf5e9540a6fb29"
   license "BSD-3-Clause"
+  revision 1
 
   livecheck do
     url :stable
@@ -11,14 +12,12 @@ class Morpheus < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "fed9b4e1881854ccb426eb5d08509765e3c449f3bfbe6aacece88157ff754686"
-    sha256 cellar: :any,                 arm64_sonoma:   "62411dd8e6cd7ad86d4e20468224c0b2c07d4156b0985d868ef29549f916447c"
-    sha256 cellar: :any,                 arm64_ventura:  "7a9e5a6470fb2c847cf7ea02ea7684a02b0bb1a964696f8dc7d9fd8423805a05"
-    sha256 cellar: :any,                 arm64_monterey: "9a4bee42a65cb59f1706e24174927a7fca699eaa4fe6d766fbdd5e924c5218da"
-    sha256 cellar: :any,                 sonoma:         "35891458eaa826d5a06d5be21756cb552e829ce16a53c7c292a022a05fdb5dbd"
-    sha256 cellar: :any,                 ventura:        "ac28538de739b8825d66e3042aa27d3a8d740708b2ab9502b1f5d717e1d45ede"
-    sha256 cellar: :any,                 monterey:       "65b7e005a0575c0e1729d658bef5767ec721b2b8cf9bb7dac4627dc574d11a66"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "03b034c07167ea28a82d43f8893f5f82c7213d91d68db687409480cf274b94d2"
+    sha256                               arm64_sequoia: "11e3811c5e5932f71678bea042c542a8a9ca5e0e24be85d4ce37f04b2096af1f"
+    sha256                               arm64_sonoma:  "5875ccd833c4e41e3c0d6a92a6e345bebf5b79cb6fddde17e25383dc20a7330c"
+    sha256                               arm64_ventura: "e7e28d8b1bd4020ca3e99ddcceeb9c3af6abc63bb4bdc60bfd6302f04f50d849"
+    sha256 cellar: :any,                 sonoma:        "31b3c036148a0c2ffbd42abc324e85fd5709323ef52977340b128ff92cac7c86"
+    sha256 cellar: :any,                 ventura:       "29d8f5b2730cbda1d887ea580c643d26f80bcd224de09f27245595361f820862"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ac0786ead33d0beb6c8fd5ba6554e2de1df213ba821576fa849a1a8dff1fb4a0"
   end
 
   depends_on "boost" => :build
@@ -27,7 +26,6 @@ class Morpheus < Formula
   depends_on "ninja" => :build
   depends_on "ffmpeg"
   depends_on "graphviz"
-  depends_on "libomp"
   depends_on "libtiff"
   depends_on "qt@5"
 
@@ -35,9 +33,13 @@ class Morpheus < Formula
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
 
+  on_macos do
+    depends_on "libomp"
+  end
+
   def install
     # has to build with Ninja until: https://gitlab.kitware.com/cmake/cmake/-/issues/25142
-    args = ["-G Ninja"]
+    args = ["-G", "Ninja"]
 
     if OS.mac?
       args << "-DMORPHEUS_RELEASE_BUNDLE=ON"
@@ -58,8 +60,13 @@ class Morpheus < Formula
     inreplace "#{prefix}/Morpheus.app/Contents/Info.plist", "HOMEBREW_BIN_PATH", "#{HOMEBREW_PREFIX}/bin"
   end
 
+  def post_install
+    # Sign to ensure proper execution of the app bundle
+    system "/usr/bin/codesign", "-f", "-s", "-", "#{prefix}/Morpheus.app" if OS.mac? && Hardware::CPU.arm?
+  end
+
   test do
-    (testpath/"test.xml").write <<~EOF
+    (testpath/"test.xml").write <<~XML
       <?xml version='1.0' encoding='UTF-8'?>
       <MorpheusModel version="4">
           <Description>
@@ -69,9 +76,9 @@ class Morpheus < Formula
           <Space>
               <Lattice class="linear">
                   <Neighborhood>
-                      <Order>1</Order>
+                      <Order>optimal</Order>
                   </Neighborhood>
-                  <Size value="100,  0.0,  0.0" symbol="size"/>
+                  <Size symbol="size" value="1.0, 1.0, 0.0"/>
               </Lattice>
               <SpaceSymbol symbol="space"/>
           </Space>
@@ -81,10 +88,10 @@ class Morpheus < Formula
               <TimeSymbol symbol="time"/>
           </Time>
           <Analysis>
-              <ModelGraph include-tags="#untagged" format="dot" reduced="false"/>
+              <ModelGraph format="dot" reduced="false" include-tags="#untagged"/>
           </Analysis>
       </MorpheusModel>
-    EOF
+    XML
 
     assert_match "Simulation finished", shell_output("#{bin}/morpheus --file test.xml")
   end

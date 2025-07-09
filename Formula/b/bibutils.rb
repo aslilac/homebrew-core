@@ -10,6 +10,8 @@ class Bibutils < Formula
     regex(%r{url=.*?/bibutils[._-]v?(\d+(?:\.\d+)+)[._-]src\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9cd55399d769cbc1cab21cfad48bb843a8c8a7c0a966445c6530c88ba8361b7d"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "69d0da0d5cb6ef8cd905c782149b4212aa6e45beb171386672f0aa0fbe5a8f69"
@@ -21,6 +23,7 @@ class Bibutils < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "96d70048b4981355409b6620109d0acca787a9ae6a45a4c381a28bf8010b73f0"
     sha256 cellar: :any_skip_relocation, big_sur:        "42fd33d5b6c68a038ea4f13be19e3ac741fcffab459a12501da19d939231d94e"
     sha256 cellar: :any_skip_relocation, catalina:       "6c5c8d31e9991599261ea6ec046d87f011ae2c3a42afe5d4e3fea07e38a69637"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "df6b2c5da9590ef4ec1d5d4a89ee04e95542d84fe02c9f1e0eaf28af505e52ec"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "95a5448e5df2d441e8e47dfb5115a9e16f8f239acce666093b85ec9ce7038c67"
   end
 
@@ -31,7 +34,7 @@ class Bibutils < Formula
   end
 
   test do
-    (testpath/"test.bib").write <<~EOS
+    (testpath/"test.bib").write <<~BIBTEX
       @article{Homebrew,
           title   = {Something},
           author  = {Someone},
@@ -40,7 +43,7 @@ class Bibutils < Formula
           number  = {2},
           pages   = {3--4}
       }
-    EOS
+    BIBTEX
 
     system bin/"bib2xml", "test.bib"
   end

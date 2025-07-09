@@ -11,8 +11,11 @@ class AmdatuBootstrap < Formula
     regex(/href=.*?bootstrap[._-]v?(?:bin-)?r(\d+(?:\.\d+)*)(?:-bin)?\./i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "f59cda35ffdacba6fb9c7f4d29fe641164995b42cf6f3bfeb169882c501559cc"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "0094a50b87c8bf6f25f9fc0e68bcb95a2c46923a240eb83210748a280ee8cd27"
   end
 
   depends_on "openjdk@8"

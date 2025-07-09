@@ -7,6 +7,8 @@ class Thrulay < Formula
   # contribution licensing clause) but different phrasing from the SPDX license
   license :cannot_represent
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "8980e64ea2ecc17ba2e111d4798a39c7789fc1b0009c2f0ae5664b0fcff8603f"
     sha256 cellar: :any,                 arm64_sonoma:   "d26583fd1ddd768813b4b89c02d46862821e356bf6c009cd1ecf985363ab4317"
@@ -22,6 +24,7 @@ class Thrulay < Formula
     sha256 cellar: :any,                 high_sierra:    "e0d81a536ac3dce349b093394af8d7b89f531deb1854aa44a5b46068c1e02162"
     sha256 cellar: :any,                 sierra:         "00938642d65ba687a0ef83e85f682d6bdb1df02a7807fc3d337e3ca473af1cf9"
     sha256 cellar: :any,                 el_capitan:     "74f52b9eaa39092931b68630eef408db6b53e1b0c538ec52950b89d0a4ea5563"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "cbfc443848749b0d2cee05c74f2c27a8d734cad7c274c86b0d97b3081ddf8a61"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "66cdfd861122990076cd447dea49124c4cf5a1629c3ca1a3540b98a12c19fb87"
   end
 
@@ -29,9 +32,17 @@ class Thrulay < Formula
     # Fix flat namespace usage
     inreplace "configure", "${wl}-flat_namespace ${wl}-undefined ${wl}suppress", "${wl}-undefined ${wl}dynamic_lookup"
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = []
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", *args, *std_configure_args
     ENV.deparallelize
     system "make", "install"
+  end
+
+  test do
+    # prints "thrulay/2 (client part) release 0.9rc1"
+    system bin/"thrulay", "-V"
   end
 end

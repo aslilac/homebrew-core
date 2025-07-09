@@ -1,21 +1,19 @@
 class Rustup < Formula
   desc "Rust toolchain installer"
-  homepage "https://github.com/rust-lang/rustup"
-  url "https://github.com/rust-lang/rustup/archive/refs/tags/1.27.1.tar.gz"
-  sha256 "f5ba37f2ba68efec101198dca1585e6e7dd7640ca9c526441b729a79062d3b77"
+  homepage "https://rust-lang.github.io/rustup/"
+  url "https://github.com/rust-lang/rustup/archive/refs/tags/1.28.2.tar.gz"
+  sha256 "5987dcb828068a4a5e29ba99ab26f2983ac0c6e2e4dc3e5b3a3c0fafb69abbc0"
   license any_of: ["Apache-2.0", "MIT"]
-  revision 1
   head "https://github.com/rust-lang/rustup.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "7f6d0e82dc678fd5d76d654e8568063ae6d844bf647a19c1ef5c427776151bd0"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "26582463ad820eaa27d0da47d107800898f2a10908a73be36227e72529697a8a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3d52d818014950191f497a00f0a0dffabde39c9e7a188d6e1476d9173f98bc63"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c9f17a7aaca93101e2d8dd1e6fa98ba4ee6dd987fdfeffa396b8a8b0bf755996"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ef57ece836e59426b665c4c95ef8f59db8190635f7f825ba22e299f39e14c5c7"
-    sha256 cellar: :any_skip_relocation, ventura:        "8592640754f7de0bb6def3179d27cd4a007e8578b5f76370cb2beec4b0458f68"
-    sha256 cellar: :any_skip_relocation, monterey:       "6153529df50ce2932ccfcabbeb9a3ab3a032f2ad1868e01e5d4506ba47a4328c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d2a2680e7e8697fa93b216bce8be1633148a9daaadbce3487625e5765992e41f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a0dc5a8b36e61ac52cd3c1f2cd8d47fbd31a53ff398b7c1db7b74aa964328e10"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "71920ea5fdebe6673e965ec021c7dc11c5f60f55cb21a308972ea9d339b23109"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "bbd23bbce4c67a64fa453e13e033c282b38e2cc3c6d69de9bebc09463ce31617"
+    sha256 cellar: :any_skip_relocation, sonoma:        "03a586bc26e67104067448d73c503074699639aa04eed6504651cfede0efeeef"
+    sha256 cellar: :any_skip_relocation, ventura:       "8ebebf2b6d8d8968456fc43b0bab11861d676bdb936efd907791e9f48de9b3bf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "02949aabdf891fe17a36471e9758775efff183255719d33496b89b48a171542e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "36d2915f62a55bffc816e6ffdb7032d6488b8672d1bb556836082eed53943cae"
   end
 
   keg_only "it conflicts with rust"
@@ -37,7 +35,7 @@ class Rustup < Formula
        rust-gdb rust-gdbgui rust-lldb rustc rustdoc rustfmt rustup].each do |name|
       bin.install_symlink bin/"rustup-init" => name
     end
-    generate_completions_from_executable(bin/"rustup", "completions", base_name: "rustup")
+    generate_completions_from_executable(bin/"rustup", "completions")
   end
 
   def post_install
@@ -48,6 +46,10 @@ class Rustup < Formula
     <<~EOS
       To initialize `rustup`, set a default toolchain:
         rustup default stable
+
+      If you have `rust` installed, ensure you have "$(brew --prefix rustup)/bin"
+      before "$(brew --prefix)/bin" in your $PATH:
+        #{Formatter.url("https://rust-lang.github.io/rustup/installation/already-installed-rust.html")}
     EOS
   end
 

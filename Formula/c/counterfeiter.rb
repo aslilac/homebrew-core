@@ -1,8 +1,8 @@
 class Counterfeiter < Formula
   desc "Tool for generating self-contained, type-safe test doubles in go"
   homepage "https://github.com/maxbrunsfeld/counterfeiter"
-  url "https://github.com/maxbrunsfeld/counterfeiter/archive/refs/tags/v6.10.0.tar.gz"
-  sha256 "ad966cd565108ce4c0d5283199e79e2792a68b28a82227a10823343634e88e53"
+  url "https://github.com/maxbrunsfeld/counterfeiter/archive/refs/tags/v6.11.2.tar.gz"
+  sha256 "8a8cc2c51d3118ba8fdac1bc93bb1c25fd6fcc135415f34ce3b02fc057be2f2b"
   license "MIT"
   head "https://github.com/maxbrunsfeld/counterfeiter.git", branch: "master"
 
@@ -12,12 +12,13 @@ class Counterfeiter < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c328ef7ed297c5c6328333b27b793119ee40adcbd9be010f0effd7bc94310d06"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c328ef7ed297c5c6328333b27b793119ee40adcbd9be010f0effd7bc94310d06"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c328ef7ed297c5c6328333b27b793119ee40adcbd9be010f0effd7bc94310d06"
-    sha256 cellar: :any_skip_relocation, sonoma:        "ddaf67b243801ea59a47079a02da8858b98e5391c2574a14d1f57bbf88050311"
-    sha256 cellar: :any_skip_relocation, ventura:       "ddaf67b243801ea59a47079a02da8858b98e5391c2574a14d1f57bbf88050311"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2e080a73cf9249171a3cb8f4363f6fcd1e5fa6135b59180ea3495046823e4cf0"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f5b1ce50092552ea9b705730a0a111a80e0e3cfa6ab38155f20a4bb2159080d5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f5b1ce50092552ea9b705730a0a111a80e0e3cfa6ab38155f20a4bb2159080d5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f5b1ce50092552ea9b705730a0a111a80e0e3cfa6ab38155f20a4bb2159080d5"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1bb3461edc31c61bcdd5cf69d3e4973ea98e6d51e3d82d26c22963e1d0128e16"
+    sha256 cellar: :any_skip_relocation, ventura:       "1bb3461edc31c61bcdd5cf69d3e4973ea98e6d51e3d82d26c22963e1d0128e16"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "5452b37a98cacbe9ce1a2dd08fa7872f18eee49cfdc26d692650317c6e05c969"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d2459c5b2c06488e4387b4fa51f438e22210fe5c6a4ca8a33a45a015ae0e4ed3"
   end
 
   depends_on "go"
@@ -30,7 +31,7 @@ class Counterfeiter < Formula
     ENV["GOROOT"] = Formula["go"].opt_libexec
 
     output = shell_output("#{bin}/counterfeiter -p os 2>&1")
-    assert_predicate testpath/"osshim", :exist?
+    assert_path_exists testpath/"osshim"
     assert_match "Writing `Os` to `osshim/os.go`...", output
 
     output = shell_output("#{bin}/counterfeiter -generate 2>&1", 1)

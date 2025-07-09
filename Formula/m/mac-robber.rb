@@ -5,6 +5,8 @@ class MacRobber < Formula
   sha256 "5895d332ec8d87e15f21441c61545b7f68830a2ee2c967d381773bd08504806d"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "872680f432b3c3542cf35f30795d0bb9cf0e03c12aacd2522644d0c2f56f2e4a"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "857246f4d354a3df452fd928e59e15667f3e713928c1da2fd207e3163892ffdb"
@@ -20,6 +22,7 @@ class MacRobber < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "20c99447899b82d2da937aa81a0b3afd2c865f67a97d2ca1183e01151fef9de0"
     sha256 cellar: :any_skip_relocation, sierra:         "160983c4988cb22bd68a0beeb48de91a8af3461722a42e65e523c4a6af08f444"
     sha256 cellar: :any_skip_relocation, el_capitan:     "0647670a38eb3ae5d8085ad1126f8d70b6e9ac99b086c0ec2f3301ac51ecdb3f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f1de023a55e034e053a0b9def5895de322fb65c50bbed184391cb1d7e98f877b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ac53384d4cfcdf2b78d8abc6e8882ce7e6efd95304a9f09895a9e8a6108a4a9a"
   end
 

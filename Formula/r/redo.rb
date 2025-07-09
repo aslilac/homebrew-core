@@ -8,6 +8,8 @@ class Redo < Formula
   license "Apache-2.0"
   revision 2
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 6
     sha256 cellar: :any_skip_relocation, all: "1efbd77be03b0fe6a112cad4db0910ddb6eeb101f5999322589e8f9ed6ff9870"
@@ -56,7 +58,7 @@ class Redo < Formula
   test do
     assert_equal version.to_s, shell_output("#{bin}/redo --version").strip
     # Make sure man pages were generated and installed
-    assert_predicate man1/"redo.1", :exist?
+    assert_path_exists man1/"redo.1"
 
     # Test is based on https://redo.readthedocs.io/en/latest/cookbook/hello/
     (testpath/"hello.c").write <<~C
@@ -72,7 +74,7 @@ class Redo < Formula
       cc -o $3 hello.c -Wall
     EOS
     assert_match "redo  hello", shell_output("#{bin}/redo hello 2>&1").strip
-    assert_predicate testpath/"hello", :exist?
+    assert_path_exists testpath/"hello"
     assert_equal "Hello, world!\n", shell_output("./hello")
     assert_match "redo  hello", shell_output("#{bin}/redo hello 2>&1").strip
     refute_match "redo", shell_output("#{bin}/redo-ifchange hello 2>&1").strip

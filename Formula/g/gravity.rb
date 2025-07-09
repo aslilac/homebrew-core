@@ -1,9 +1,11 @@
 class Gravity < Formula
   desc "Embeddable programming language"
-  homepage "https://marcobambini.github.io/gravity/"
+  homepage "https://www.gravity-lang.org/"
   url "https://github.com/marcobambini/gravity/archive/refs/tags/0.8.5.tar.gz"
   sha256 "5ef70c940cd1f3fec5ca908fb10af60731750d62ba39bee08cb4711b72917e1d"
   license "MIT"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "3b9deeeaa076effc41b7d65f16d152e75895327bb4692061afc8b86acc5c25fa"
@@ -17,6 +19,7 @@ class Gravity < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "b3ac70acf8c191279d44ca6ee217677922dbbebd47ce4aeafb08279e25a54c58"
     sha256 cellar: :any_skip_relocation, catalina:       "e8babf831217e11680298ae3fc6eb6881b01b99abe01c37c6cd98ad57a63747f"
     sha256 cellar: :any_skip_relocation, mojave:         "f3bf9cf96f56a2c11ce36ffe28e68ff1695b4b04432fbfe8a2ddcbc4df17ff43"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "9cc9fc83af4291367585c6525a894449010981db51f9bcd7162635e1b0cd21f2"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "86f00ccfa0552e839135dc94c541c791c3562d70b306dab42eee8e3e0762df9b"
   end
 

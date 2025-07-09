@@ -1,8 +1,8 @@
 class OpenjdkAT21 < Formula
   desc "Development kit for the Java programming language"
   homepage "https://openjdk.java.net/"
-  url "https://github.com/openjdk/jdk21u/archive/refs/tags/jdk-21.0.5-ga.tar.gz"
-  sha256 "1dcf54fe0d4263a0fb95290a77dac9e4ff81761ed234daadfbab781f1779bf0b"
+  url "https://github.com/openjdk/jdk21u/archive/refs/tags/jdk-21.0.7-ga.tar.gz"
+  sha256 "d8637e7d6fece0757b7fada49d32d0b3334a15a110445acef8cfea64b4672ca2"
   license "GPL-2.0-only" => { with: "Classpath-exception-2.0" }
 
   livecheck do
@@ -11,18 +11,19 @@ class OpenjdkAT21 < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "39d28c673b18915e808e38559a9bcfc272c947c475a2f9b36d3064d1b00833b3"
-    sha256 cellar: :any, arm64_sonoma:  "0d39ee370b9230c65078039b9541c230aa86b0edc0f8c1bb564bc1fdf322ec11"
-    sha256 cellar: :any, arm64_ventura: "48154af73a12195490174518372f7782d37634d7a16959d74f5802655372473b"
-    sha256 cellar: :any, sonoma:        "1f6b28a4ce616c847f4b6360ccc4632a3862ca8e6bca32032a5daa7b50708a7e"
-    sha256 cellar: :any, ventura:       "9631253796a0f5660e9685c96081b60ac7bcf6865df52dd6a3bd8596e7cb6359"
-    sha256               x86_64_linux:  "63897ad3699f4111e6706068268e3088b38b14c574bd604d1d3176d7878adf9b"
+    sha256 cellar: :any, arm64_sequoia: "2277d1c2928cda2ae3374c9645645cc238cb376887cf091b6681c03a3d12984d"
+    sha256 cellar: :any, arm64_sonoma:  "7e35222a56e6605bd8cadd8751a13f619bb1944449b783f65063b64f46873274"
+    sha256 cellar: :any, arm64_ventura: "6811ad429eaf03ffc51e426b41eb66a1e04a39d70bb4b410ba017da21c031d3a"
+    sha256 cellar: :any, sonoma:        "e8071b04932df52f030b2608bc123f68b58567d100f3fb68fc8587eb71801c04"
+    sha256 cellar: :any, ventura:       "84a43a2c301ddb9723f9160e19fa9cbcf34dca5189254bdbe46b80356da7acb0"
+    sha256               arm64_linux:   "e9b684cf1117aa18f29d92179b5fab21a07f965d82022de76089acd423491840"
+    sha256               x86_64_linux:  "e83a003d88721a27a35db5459470dce43cb5cfb28f5bcdef3feb98cffa4580bc"
   end
 
   keg_only :versioned_formula
 
   depends_on "autoconf" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on xcode: :build # for metal
   depends_on "freetype"
   depends_on "giflib"
@@ -48,8 +49,6 @@ class OpenjdkAT21 < Formula
     depends_on "libxt"
     depends_on "libxtst"
   end
-
-  fails_with gcc: "5"
 
   # From https://jdk.java.net/archive/
   resource "boot-jdk" do

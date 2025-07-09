@@ -1,6 +1,6 @@
 class Libagg < Formula
   desc "High fidelity 2D graphics library for C++"
-  homepage "https://antigrain.com/"
+  homepage "https://agg.sourceforge.net/antigrain.com/"
   # Canonical URL inaccessible: https://antigrain.com/agg-2.5.tar.gz
   url "https://ftp.osuosl.org/pub/blfs/8.0/a/agg-2.5.tar.gz"
   sha256 "ab1edc54cc32ba51a62ff120d501eecd55fceeedf869b9354e7e13812289911f"
@@ -16,6 +16,8 @@ class Libagg < Formula
     skip "No longer developed/maintained"
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "057104fa9a817af5b41e424b9faa49446cc8c40b4d61c41186afd3a71e7e2e2c"
     sha256 cellar: :any,                 arm64_sonoma:   "eabb00483a8c5c955cc4f4b6351692d4c97709c7a1a14cf465767c7d52c132a7"
@@ -27,13 +29,14 @@ class Libagg < Formula
     sha256 cellar: :any,                 monterey:       "af427a27e940353797d88a3b3224a43ad15ad51681494902dad975d5c5270d27"
     sha256 cellar: :any,                 big_sur:        "12d797bfc9b2a1414787aa3028c1704a5b6f1f000b80ed5e4cd200029f10f160"
     sha256 cellar: :any,                 catalina:       "d6770fea6a2589b7641fbeda183ff58835ae463cbbab3178096654b36a99b232"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b3fbb4b5c878b6566d343983213d2f21df250d77193d207637942d457bb8e049"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "cee5823d550698b94dc7e494af8b5f8a83acebec701264a4c20dec2d828c2240"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "sdl12-compat"
 
   # Fix build with clang; last release was in 2006
@@ -46,12 +49,11 @@ class Libagg < Formula
     inreplace "autogen.sh", "libtoolize", "glibtoolize"
 
     system "sh", "autogen.sh",
-                 "--disable-dependency-tracking",
-                 "--prefix=#{prefix}",
                  "--disable-platform", # Causes undefined symbols
                  "--disable-ctrl",     # No need to run these during configuration
                  "--disable-examples",
-                 "--disable-sdltest"
+                 "--disable-sdltest",
+                 *std_configure_args
     system "make", "install"
   end
 end

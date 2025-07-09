@@ -5,11 +5,6 @@ class Swfmill < Formula
   sha256 "db24f63963957faec02bb14b8b61cdaf7096774f8cfdeb9d3573e2e19231548e"
   license "GPL-2.0-only"
 
-  livecheck do
-    url :homepage
-    regex(/href=.*?swfmill[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
-
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "627251dcb91c98bea4455fb35da262880aae7f2f5897162616f62135f1fe9234"
     sha256 cellar: :any,                 arm64_sonoma:   "a9e8c77577b790f0e88eec48aa1e8091c7df0708731aab2d5b61f5379c4ee0ee"
@@ -25,10 +20,14 @@ class Swfmill < Formula
     sha256 cellar: :any,                 high_sierra:    "2516e0ca300458f626e1311673643e1cad03131fb77717fb4f6d10e5f7c6e522"
     sha256 cellar: :any,                 sierra:         "f8f7530eb3697993d145bd67fcb44122319f3dadbd5a15535ae23ce33c1991fc"
     sha256 cellar: :any,                 el_capitan:     "10165ef551225423c4d0b98b734aa112854bb836b6dcca675a0d2dd2adcee75a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "2bebc009e2e758532b33a040716f1771d0accb522465e2fa1b7275bf82d17532"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2e86fcc5ea5d803ac5f8f4bfe33090c4ceec8369bd8c026db34fdfd1b6aa997b"
   end
 
-  depends_on "pkg-config" => :build
+  # adobe flash player EOL 12/31/2020, https://www.adobe.com/products/flashplayer/end-of-life-alternative.html
+  deprecate! date: "2025-01-12", because: :unmaintained
+
+  depends_on "pkgconf" => :build
   depends_on "freetype"
   depends_on "libpng"
 

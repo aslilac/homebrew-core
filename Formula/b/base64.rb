@@ -10,6 +10,8 @@ class Base64 < Formula
     regex(/href=.*?base64[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "17aef54e36b9c3ce2cd832c59d4cacbac0584a1a9db7af45e1728d6fceeb760e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a8d7991eaf3b922668f4da81929e574d1ce879acf372ffc8a24679da63e83967"
@@ -25,6 +27,7 @@ class Base64 < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "c3a8113c031b07426e6eda7da7604db9308999f456eeca5f3f2d5c8d85ba3a0d"
     sha256 cellar: :any_skip_relocation, sierra:         "3cd13d14c225413a5bc3b24f8f5dab48c2a942b64bf9162ad3a8ea8320a74bd1"
     sha256 cellar: :any_skip_relocation, el_capitan:     "0ab522634adf5c9eefb08c11d51d2b6e0477d8ea607afdb8eefe204de764f180"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "37aa1f30a578bdc6344258b905cf1e714d2dbc6323cbace378c07760d18e9817"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9f8f96bcf972f99b8ca838f542a44c9b1f7bf8da7e66eb3333d941093ecbc199"
   end
 

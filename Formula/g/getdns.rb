@@ -24,6 +24,8 @@ class Getdns < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "4de6139ffb48649141f2de34aa4525625427e92f6c663a228457e0d66c0bb4d2"
     sha256 cellar: :any,                 arm64_sonoma:   "f8db532094127a5756d5ee9aa4ac55efe191eda4f5407a95aef2c59ec2e8f32e"
@@ -34,6 +36,7 @@ class Getdns < Formula
     sha256 cellar: :any,                 ventura:        "118a3e9288aa2b65bb29d034d97c25813ec762d3edd9ccaed34d38df05e8356b"
     sha256 cellar: :any,                 monterey:       "9a2d1783c4dfe96711732586d68105f9e4d4eca95baefe335bf63f17e04740f9"
     sha256 cellar: :any,                 big_sur:        "1e8c18958a4bcf70bbcaa0a9014c28176fbb02b7ca477033f2315e8535c39b6d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "8ce171170b02aee21a4b64f701eafaef27aede8cd2c9b73ded162231e826d29d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "bd16047c9d5d64db4bc99b8390c6fc80bffe45ca2a1f8c1b7d244d8262babbb0"
   end
 

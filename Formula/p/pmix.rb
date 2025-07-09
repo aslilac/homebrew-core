@@ -4,8 +4,8 @@ class Pmix < Formula
   license "BSD-3-Clause"
 
   stable do
-    url "https://github.com/openpmix/openpmix/releases/download/v5.0.4/pmix-5.0.4.tar.bz2"
-    sha256 "f72d50a5ae9315751684ade8a8e9ac141ae5dd64a8652d594b9bee3531a91376"
+    url "https://github.com/openpmix/openpmix/releases/download/v5.0.8/pmix-5.0.8.tar.bz2"
+    sha256 "bf5f0a341d0ec7f465627a7570f4dcda3b931bc859256428a35f6c72f13462d0"
 
     # Fix -flat_namespace being used on Big Sur and later.
     patch do
@@ -20,12 +20,13 @@ class Pmix < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "33a8383ee6db511465db7a341d2faf6bbe8d7cff73dc5e0697068b3692ee84df"
-    sha256 arm64_sonoma:  "8f2a87771982fc2c5dfe6857ccafd0841185bf2f2d46479d10e02c376edd7498"
-    sha256 arm64_ventura: "5174b666629a26e3e658a8401ff2bd4dc784bcec4b76efb67234064fcac7a7a5"
-    sha256 sonoma:        "e2fd27c1640f81c466c4f1fd99ebf71d1f428cc36820ee7c3db412bc8d734470"
-    sha256 ventura:       "8702bec70abdbc6af2c94b86cfe19ea0c4ad9add399adc4cccbcf90a099a6ec6"
-    sha256 x86_64_linux:  "cb73e8a90edd9604c85130a04e8e150d0ddbac290bb75c7151940a83b594e320"
+    sha256 arm64_sequoia: "a7d99c8e194b5a0191094bf5c301466aecf2cdddc4a30f82f49fe72eb8b61373"
+    sha256 arm64_sonoma:  "d52b37238c114a79dc57612d0fb2217bdd6f37ac81a3c3836121377c341677b0"
+    sha256 arm64_ventura: "6151bd4898bad61e4f9a58ba50f8b10f3c211c71c1907bfd70c6721ce7e6bba7"
+    sha256 sonoma:        "8eb6695bd7001e3d7dc6cc0a404e14592d5bb69ec9e29cebfa21d95972199896"
+    sha256 ventura:       "fdeaf1f3920bb26ac0d4242ca443f5b07af478b6e7fb8b2de33b4d972401387e"
+    sha256 arm64_linux:   "be81426a4e1b74b7c6cfd8b62eb05407731580fe470ffd0c7a10cda31491d091"
+    sha256 x86_64_linux:  "3a4abb4032f58acdc7b067183ed6a8a8199e4482d72a9e5c536a079722c98f58"
   end
 
   head do

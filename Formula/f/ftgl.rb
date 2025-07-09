@@ -10,6 +10,8 @@ class Ftgl < Formula
     regex(%r{url=.*?/ftgl[._-]v?(\d+(?:\.\d+)+(?:-rc\d*)?)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "a14fb054d0fbc1e6e11904e32c02be573d3db1c72981a6badbfc61f2f214d5cb"
     sha256 cellar: :any,                 arm64_sonoma:   "4dbee18442898c2c431d5ea8de6c67170906763eb4e4eb6775735809c34bee86"
@@ -25,10 +27,11 @@ class Ftgl < Formula
     sha256 cellar: :any,                 high_sierra:    "f6da52f5e9f06f984aad457058876e88b5b7053288f40c87a17d7d5749936cd6"
     sha256 cellar: :any,                 sierra:         "946a9530f7eae5c8f2bc71dfc91b3a8138ae2228cd441fd7cf39f047b957ce47"
     sha256 cellar: :any,                 el_capitan:     "6462eb0b97ab120639f1a191f6e3a39419bbb813abd71f5c741303dbf0aed7fb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "4b6add1f77c741b0d4cf01aba4fc3a7613b66d38d0f74ce06fcc571629270b11"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a53d8292298b4c6974e04fd8ab744860aec65b58149a704d9e2dad61aba0c4f6"
   end
 
-  depends_on "pkg-config" => :test
+  depends_on "pkgconf" => :test
   depends_on "freetype"
 
   on_linux do
@@ -53,6 +56,8 @@ class Ftgl < Formula
     ]
 
     args << "--with-gl-inc=#{Formula["mesa-glu"].opt_include}" if OS.linux?
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
 
     system "./configure", *args, *std_configure_args
 
@@ -76,8 +81,8 @@ class Ftgl < Formula
       }
     C
 
-    pkg_config_flags = shell_output("pkg-config --cflags --libs ftgl").chomp.split
-    system ENV.cc, "test.c", "-o", "test", *pkg_config_flags
+    pkgconf_flags = shell_output("pkgconf --cflags --libs ftgl").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *pkgconf_flags
     system "./test"
   end
 end

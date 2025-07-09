@@ -10,6 +10,8 @@ class Mp3wrap < Formula
     regex(%r{url=.*?/mp3wrap[._-]v?(\d+(?:\.\d+)+)(?:-src)?\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "881da7c1c1c1d3b667f6524d66c01de8d73e8a113b84763ea0d57395518c3523"
@@ -26,20 +28,21 @@ class Mp3wrap < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "3c85e837e2dbcfcbbccb0b074ebfa9283c13d2453b206c246bc4d77600328dfb"
     sha256 cellar: :any_skip_relocation, sierra:         "0471701ab4f6b59423503b7c250376ba597a9f28d9962f6f9b35a107d58411ab"
     sha256 cellar: :any_skip_relocation, el_capitan:     "c65886799c1397eec33f48ef73774ad6a509fec44a18dec4a50c8755736f040a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "962b508b014f584bcb0ea88a84e150e6c0ebdb80573252a7ffca2c6bc25bb567"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e666ba56f6a93702e3a37b4dd6f8d908b6a16246ba9ad5467518c970f4ac30ab"
   end
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    # Workaround for arm64 linux. Upstream isn't actively maintained
+    ENV.append_to_cflags "-fsigned-char" if OS.linux? && Hardware::CPU.arm?
+
+    system "./configure", "--mandir=#{man}", *std_configure_args
     system "make", "install"
   end
 
   test do
     source = test_fixtures("test.mp3")
     system bin/"mp3wrap", "#{testpath}/t.mp3", source, source
-    assert_predicate testpath/"t_MP3WRAP.mp3", :exist?
+    assert_path_exists testpath/"t_MP3WRAP.mp3"
   end
 end

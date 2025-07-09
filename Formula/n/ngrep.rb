@@ -5,6 +5,8 @@ class Ngrep < Formula
   sha256 "dc4dbe20991cc36bac5e97e99475e2a1522fd88c59ee2e08f813432c04c5fff3"
   license :cannot_represent # Described as 'BSD with advertising' here: https://src.fedoraproject.org/rpms/ngrep/blob/rawhide/f/ngrep.spec#_8
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a2f5ada3b9c16b15c122b7a749d12ec3f52e65b710e6cc8f4ea03f81a4eb0a3e"
@@ -21,6 +23,7 @@ class Ngrep < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "390424274552105e21b3f3e926b933322a09333cee02274d2f84a5e23f4ea74d"
     sha256 cellar: :any_skip_relocation, sierra:         "0e915d1e3b7e7da8e58a48457de4e40359cb0f870eb45a77302d36c1b767d044"
     sha256 cellar: :any_skip_relocation, el_capitan:     "d057c167d3b695ff915c13fd39e3cd7b3e6e2a5b3f82bce6bb8ea4c030e8f6e7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "c5118b8b54a6577bbf48d50a9fe39309a39461336dacb5aee639f89ceb978ec1"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b54a418af69d95d16a04604e385faa40791e6ae6bc488a7f146b0f22a2845a5b"
   end
 

@@ -6,6 +6,8 @@ class Vaulted < Formula
   license "MIT"
   head "https://github.com/miquella/vaulted.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a7d20c4d22958ce6a36c53ae40821c077a31bfcce9df74593bc83a7bcf318332"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7fde70166c645a842baec036f638bc3e0435f22bcc2c16fd2e81186ff200c882"
@@ -19,13 +21,14 @@ class Vaulted < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "6e28a27d6d1c24b2cd7d3ca0ff147a8309425dcd1d405861378bd40c191af5d2"
     sha256 cellar: :any_skip_relocation, mojave:         "246a6e46d12ceb79f4406802a72860a4d4e381bf34b8228c10773898b33dbb3e"
     sha256 cellar: :any_skip_relocation, high_sierra:    "24f80eafb9d738391a99724915f07a546ebc822d5e3ab725fc90bfa690cc4ee7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "811cae4f0e603c7c8e604481168308176c1120bf57e45ea80a1145e76558a2b0"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3acf911a97ce6aa9aacff3d0e39c70d497e2b2b808a5ebe620301259035988c3"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-o", bin/"vaulted", "."
+    system "go", "build", *std_go_args(ldflags: "-s -w")
     man1.install Dir["doc/man/vaulted*.1"]
   end
 

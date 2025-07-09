@@ -6,6 +6,8 @@ class Duc < Formula
   license "LGPL-3.0-only"
   head "https://github.com/zevv/duc.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "36a33e4afc9997df0f15d7c8a9090054d213c243abd19ec2bb25cc7ddc157615"
     sha256 cellar: :any,                 arm64_sonoma:   "df0c4ee04b4b588ebd6c627e769773354c8c990bd62dcb1d5a2cd4d7d8f7eaa8"
@@ -17,6 +19,7 @@ class Duc < Formula
     sha256 cellar: :any,                 monterey:       "36c158318b3407f306c82914ba1d63d9492c39644ae0ef1ad627ea20ef38351b"
     sha256 cellar: :any,                 big_sur:        "4c95e3a0b2a6222344c157b9a12a26cb9ee78a447788f124a8eb8d9968368779"
     sha256 cellar: :any,                 catalina:       "cc7f8ef4f7d6b1f310786032f0fab27aab42e17d57ee9393098f09e8b019cf50"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a55a00e1179e4fb37bfff2495752b3c1e4aa13914ae932fd246f20bb1487270b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "8068dbd6bfa637aa4718113cff03ce8f8b641e65a379f489827b8acd3411f0e8"
   end
 
@@ -49,6 +52,6 @@ class Duc < Formula
     system "dd", "if=/dev/zero", "of=test", "count=1"
     system bin/"duc", "index", "-d", db_file, "."
     system bin/"duc", "graph", "-d", db_file, "-o", "duc.png"
-    assert_predicate testpath/"duc.png", :exist?, "Failed to create duc.png!"
+    assert_path_exists testpath/"duc.png", "Failed to create duc.png!"
   end
 end

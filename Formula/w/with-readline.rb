@@ -11,6 +11,8 @@ class WithReadline < Formula
     regex(/href=.*?with-readline[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "64699e89e796bf016bb6754677c5a76f881111becdbbea0ae532de8e9f398932"
     sha256 cellar: :any,                 arm64_sonoma:   "5aeb8225f4f4897af246a0e1b4042375539336d0b80721968d50f4760157b5e2"
@@ -25,12 +27,13 @@ class WithReadline < Formula
     sha256 cellar: :any,                 mojave:         "3a6e8e8e2d6f35ecd215b969c3794e586b1209820a9b0e5d935ddc5363f58678"
     sha256 cellar: :any,                 high_sierra:    "72ea8c0cce2f94fae5c963a1113c9b2504f1d728234c3c511ad7e3d5dca0d74b"
     sha256 cellar: :any,                 sierra:         "808a3a96b1d247f16c0a3e21eb18ed287f7df474b36c4685725768a05c3c1c61"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "13a2d06bb7d6b22f037485e8e59d402cd10c20ade9be3919a1ca8d98511ce796"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "fa9469fdae3e63ea2e6bba4850d405878c6a782b703f978ee04e28a49285e39b"
   end
 
   depends_on "readline"
 
-  uses_from_macos "expect" => :test
+  uses_from_macos "tcl-tk" => :test
 
   def install
     system "./configure", *std_configure_args
@@ -38,7 +41,7 @@ class WithReadline < Formula
   end
 
   test do
-    expect = OS.mac? ? "/usr/bin/expect" : Formula["expect"].bin/"expect"
-    pipe_output("#{bin}/with-readline #{expect}", "exit", 0)
+    tclsh = OS.mac? ? "/usr/bin/tclsh" : Formula["tcl-tk"].bin/"tclsh"
+    pipe_output("#{bin}/with-readline #{tclsh}", "exit", 0)
   end
 end

@@ -18,21 +18,21 @@ class Libdnet < Formula
     sha256 cellar: :any,                 sonoma:         "92dfd382f45ba91995439a36df8289d9e16e7c27b1557be332c5eaf7b1626fbe"
     sha256 cellar: :any,                 ventura:        "110beea72752872b45e6533cb1ecb27cadf330f1912de6e42fd65d8a45afb584"
     sha256 cellar: :any,                 monterey:       "339dc34fbcb96bfcad077e02d7ee58b3c3ace1281688338d1b728705b4523bb9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a3388d28e073fe0bf7484176c63fb93b845b0afc4966ac2e63844fe9fc2dc6dd"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "cde1b26c6ac0ae9caf126bc85ece887d50cfd7e9aa32c6a734b56da7dafa720b"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   def install
     # autoreconf to get '.dylib' extension on shared lib
     ENV.append_path "ACLOCAL_PATH", "config"
-    system "autoreconf", "-ivf"
+    system "autoreconf", "--force", "--install", "--verbose"
 
-    args = std_configure_args - ["--disable-debug"]
-    system "./configure", *args, "--mandir=#{man}", "--disable-check"
+    system "./configure", "--mandir=#{man}", "--disable-check", *std_configure_args
     system "make", "install"
   end
 

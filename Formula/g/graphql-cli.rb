@@ -13,6 +13,8 @@ class GraphqlCli < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5b3b93d8d2e8b80bd3ebc5918dcde22171f00e81042c287c722ca10abda75034"
@@ -22,12 +24,11 @@ class GraphqlCli < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "0f017f0dd3476f251ad911d86b10eb1c886b1dc4cce5e3e90fe9086c0afae841"
     sha256 cellar: :any_skip_relocation, ventura:        "0f017f0dd3476f251ad911d86b10eb1c886b1dc4cce5e3e90fe9086c0afae841"
     sha256 cellar: :any_skip_relocation, monterey:       "0f017f0dd3476f251ad911d86b10eb1c886b1dc4cce5e3e90fe9086c0afae841"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "ef378decd53372e8c7289e30886872ad528efc7640524c8dd925463817fd5553"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4616cf8f3ee26c6edf63ddd6573e1ef1b59a5d03c5a068d8e19f6a0f69ce4299"
   end
 
   depends_on "node"
-
-  uses_from_macos "expect" => :test
 
   def install
     system "npm", "install", *std_npm_args
@@ -35,27 +36,20 @@ class GraphqlCli < Formula
   end
 
   test do
-    (testpath/"test.exp").write <<~EOS
-      #!/usr/bin/env expect -f
-      set timeout -1
-      spawn #{bin}/graphql init
+    require "expect"
+    require "open3"
 
-      expect -exact "Select the best option for you"
-      send -- "1\r"
+    Open3.popen2(bin/"graphql", "init") do |stdin, stdout, wait_thread|
+      stdout.expect "Select the best option for you"
+      stdin.write "1\n"
+      stdout.expect "? What is the name of the project?"
+      stdin.write "brew\n"
+      stdout.expect "? Choose a template to bootstrap"
+      stdin.write "1\n"
+      wait_thread.join
+    end
 
-      expect -exact "? What is the name of the project?"
-      send -- "brew\r"
-
-      expect -exact "? Choose a template to bootstrap"
-      send -- "1\r"
-
-      expect eof
-    EOS
-
-    system "expect", "-f", "test.exp"
-
-    assert_predicate testpath/"brew", :exist?
-    assert_match "Graphback runtime template with Apollo Server and PostgreSQL",
-                 File.read(testpath/"brew/package.json")
+    assert_path_exists testpath/"brew"
+    assert_match "Graphback runtime template with Apollo Server and PostgreSQL", (testpath/"brew/package.json").read
   end
 end

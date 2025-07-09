@@ -2,8 +2,8 @@ class Kubekey < Formula
   desc "Installer for Kubernetes and / or KubeSphere, and related cloud-native add-ons"
   homepage "https://kubesphere.io"
   url "https://github.com/kubesphere/kubekey.git",
-      tag:      "v3.1.7",
-      revision: "da475c670813fc8a4dd3b1312aaa36e96ff01a1f"
+      tag:      "v3.1.10",
+      revision: "cdc54e0986ed98997703b527a49f8bab2c0ee950"
   license "Apache-2.0"
   head "https://github.com/kubesphere/kubekey.git", branch: "master"
 
@@ -16,19 +16,20 @@ class Kubekey < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6938a693f600662a5c4b61d33baaf3109a838e32412effc527074f667d0f105c"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7e9ba7ec72f6a6efa195179b1647710c4dd108c1ca08e6ec4db6bb8defc9a14d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "193d5416a7f8fe32e5d5a46b8d24aca7c483fdf65ecc137375564717baf538f0"
-    sha256 cellar: :any_skip_relocation, sonoma:        "b157156497c851d22b2c22336cfa985517c20cdb0b2b0b495c06f55e3d66c894"
-    sha256 cellar: :any_skip_relocation, ventura:       "c63ef067be391e3f56943343f416832207f81fcacd49d29ede45dd225587a599"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1bd0be711c47b38c605db45c25f6e3cbfe03c1d7d53efadb706eddeb252a2d7d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8eb07536020c35c08b9c3c8e2e479a98860d19818f84ee0d4ec83aba64719486"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5dad9250063d8f04935e649383714f46644ee5e87f729120174add2277275af1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c341287bdc7285f60693d50d01ae45071920ebf615478a4de70ac5670aba472a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7e8c0998ad6da1eb3e8be84c1daadbc8ca6a117f8c7d8ca88426903e56596fc2"
+    sha256 cellar: :any_skip_relocation, ventura:       "a7ce5d7d44e57ef773180018038a072c21a27e6bd9476a65ecbb8be9984ed273"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "1dd737394f7d4cf1284ff1ab707503e73d875cfe0863877f4d14a46a480da7c2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7e68af1256d23f755f6d7409e05288c1ac654ceef987c4afa13ec5bb6b53eebf"
   end
 
   depends_on "go" => :build
+  depends_on "pkgconf" => :build
   depends_on "gpgme"
 
   on_linux do
-    depends_on "pkgconf" => :build
     depends_on "btrfs-progs"
     depends_on "device-mapper"
   end
@@ -45,9 +46,9 @@ class Kubekey < Formula
       -X #{project}/version.gitTreeState=clean
       -X #{project}/version.buildDate=#{time.iso8601}
     ]
-    system "go", "build", *std_go_args(ldflags:, output: bin/"kk"), "-tags", tags, "./cmd/kk"
+    system "go", "build", *std_go_args(ldflags:, tags:, output: bin/"kk"), "./cmd/kk"
 
-    generate_completions_from_executable(bin/"kk", "completion", "--type", shells: [:bash, :zsh], base_name: "kk")
+    generate_completions_from_executable(bin/"kk", "completion", "--type", shells: [:bash, :zsh])
   end
 
   test do

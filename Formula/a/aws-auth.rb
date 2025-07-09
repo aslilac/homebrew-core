@@ -16,6 +16,8 @@ class AwsAuth < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a60b04e342a6f7740665def07e9a7851d7214d47e1da66641e4b6692c7b67067"
   end
 
+  deprecate! date: "2025-03-14", because: :does_not_build # and :repo_removed
+
   depends_on "node"
 
   def install
@@ -24,7 +26,7 @@ class AwsAuth < Formula
   end
 
   test do
-    output = pipe_output("#{bin}/aws-auth login 2>&1", "fake123")
+    output = pipe_output("#{bin}/aws-auth login 2>&1", "fake123", 0)
     assert_match "Enter new passphrase", output
 
     assert_match version.to_s, shell_output("#{bin}/aws-auth version")

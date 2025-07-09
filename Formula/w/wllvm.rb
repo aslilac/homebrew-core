@@ -8,6 +8,8 @@ class Wllvm < Formula
   license "MIT"
   revision 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 5
     sha256 cellar: :any_skip_relocation, all: "1f51172a70e011c1666255f2ace6d910d573681b83d50c31b551616dce265e6b"
@@ -27,10 +29,10 @@ class Wllvm < Formula
     with_env(LLVM_COMPILER: "clang") do
       system bin/"wllvm", testpath/"test.c", "-o", testpath/"test"
     end
-    assert_predicate testpath/".test.o", :exist?
-    assert_predicate testpath/".test.o.bc", :exist?
+    assert_path_exists testpath/".test.o"
+    assert_path_exists testpath/".test.o.bc"
 
     system bin/"extract-bc", testpath/"test"
-    assert_predicate testpath/"test.bc", :exist?
+    assert_path_exists testpath/"test.bc"
   end
 end

@@ -5,6 +5,8 @@ class ChinadnsC < Formula
   sha256 "abfd433e98ac0f31b8a4bd725d369795181b0b6e8d1b29142f1bb3b73bbc7230"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "d7f5135d04a85b3d2eb3db7d807d091f45b6c7047613d73538fe8e3fd92d2fcd"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b959cce820a04d88db10395e6823303d9dba2a789215626b8eea0777f88dada1"
@@ -20,6 +22,7 @@ class ChinadnsC < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "5b0b51abe8a40dee4b1296e81da179aff05ba42befc869e06e081d7e6fc4e726"
     sha256 cellar: :any_skip_relocation, sierra:         "fa51351f3cdfb63fa672d2011c08ac8a1f9a260bcfaacb13e4657f39e721b96f"
     sha256 cellar: :any_skip_relocation, el_capitan:     "a620bce8421a9773233c51886c6845995569a1fda80e252efa86f6271c1d274c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "8b321cf1fe2ef28e58d94d640c4e5fe6fd31b0974efec84541ccf7c431b9a48a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e7158e876b817917183a78e96e891dcd9ff9cefe333d1b139c73f9209fd585b0"
   end
 

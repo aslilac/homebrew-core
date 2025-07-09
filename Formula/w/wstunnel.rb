@@ -1,8 +1,8 @@
 class Wstunnel < Formula
   desc "Tunnel all your traffic over Websocket or HTTP2"
   homepage "https://github.com/erebe/wstunnel"
-  url "https://github.com/erebe/wstunnel/archive/refs/tags/v10.1.6.tar.gz"
-  sha256 "c89b0fe2d7848233304e622c7ad744954ed4b287edbec48d8e2d65a2569dbd3e"
+  url "https://github.com/erebe/wstunnel/archive/refs/tags/v10.4.4.tar.gz"
+  sha256 "69a12b8bbc2888dcefc84a90fbdf9925c7292e3b2839108a8aa1caf4a6758ffb"
   license "BSD-3-Clause"
   head "https://github.com/erebe/wstunnel.git", branch: "main"
 
@@ -15,18 +15,19 @@ class Wstunnel < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "676a83ec2468c0850038ab2caeceb9e6ca7a2a1756432219f250f4b5273a434b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "616288b4a14ffb2204a8104ebfc319e8862b3f098a19c80a21b06035475bb618"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "0d17418db2d5102d0831f630b4f5d73660a6cfb1e41d140308c7b535c286ccaf"
-    sha256 cellar: :any_skip_relocation, sonoma:        "8f0ae0fb94d66e1a9c517d66175208e9df100f8af0227c918ea94c33cd9ed285"
-    sha256 cellar: :any_skip_relocation, ventura:       "92f5b818409be3c62f1d6cbec770e373b6abd89ea1e2f7ad8ee64f08fece9b11"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "df36664a9ac4721df27bdf1a2ce1363a6c15952ba9dfb4d5530c393d75151365"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "17b8c9207c050bb95f2ac59bd4da3f66c4a45e7349c95a095036e4849dfdad49"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e02f2dc9c9ad065763abe9d88edb73011f5c69dc226207500a59f0543b19a704"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0f81b8f904e262150dc08ea3f7a70a429469137b3e05408580b564ce51258a07"
+    sha256 cellar: :any_skip_relocation, sonoma:        "8a525d20666f0c554451493bb56485f7180dea7d699de9b3e9e92711905f3ed5"
+    sha256 cellar: :any_skip_relocation, ventura:       "e7cc97543f71a3629bb9a925f9ea35cbbed08f38401afb90dfaee3ceab3652ab"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e703956c9cb7e510f0f217a6f0cea26f63ee5393e9b739627bb3c4c1d29ba611"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2be586f0b41896c0b23e0691e0a0adb586a5dc3e0c99d46285715a56dfa0a291"
   end
 
   depends_on "rust" => :build
 
   def install
-    system "cargo", "install", *std_cargo_args
+    system "cargo", "install", *std_cargo_args(path: "wstunnel-cli")
   end
 
   test do

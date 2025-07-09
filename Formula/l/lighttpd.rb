@@ -1,8 +1,8 @@
 class Lighttpd < Formula
   desc "Small memory footprint, flexible web-server"
   homepage "https://www.lighttpd.net/"
-  url "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.76.tar.xz"
-  sha256 "8cbf4296e373cfd0cedfe9d978760b5b05c58fdc4048b4e2bcaf0a61ac8f5011"
+  url "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.79.tar.xz"
+  sha256 "3b29a625b3ad88702d1fea4f5f42bb7d87488f2e4efc977d7f185329ca6084bd"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,34 +11,33 @@ class Lighttpd < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "19af568eb1e5ab74d431fdc07f2148d520c815742e1f0ecf9828d391e297ddd6"
-    sha256 arm64_sonoma:   "091059b0ac1e2356912caf2fe85f5bb0d88ebde56c43579d28c9a68b5eac1075"
-    sha256 arm64_ventura:  "00fb719b4328a1b7593452f8f6bae234a595ca089492f192bc309bdab055502f"
-    sha256 arm64_monterey: "aa6d7a5fe4662bdbbae1389091aec850c99d47f851dca621a55f9fcf7e5e7844"
-    sha256 sonoma:         "f5604bd4748f47f72e87a7e1192efc40748e1f1d7d271eb555e1bd6444776c75"
-    sha256 ventura:        "685d709d0d522aace4a102e2b28c3c04f2e6a6079de349d6148f999796571a8e"
-    sha256 monterey:       "596921b5fcabab2c21e6b75b54589016755e990cd86728810839b233cb4a830e"
-    sha256 x86_64_linux:   "8aa1c17b796dfc07c3e4d7543abc43af33469b5236aada5531baf3f98f8a66e2"
+    sha256 arm64_sequoia: "50c419b3361e407c1956497d53960b05a72a448093882a1e53dc3805346d021b"
+    sha256 arm64_sonoma:  "07e2f69e04f336b621075b886a5a288b67b3ca6858c0ad5fc7346f3f4666b925"
+    sha256 arm64_ventura: "d11b6b1f78f2859fe5f9b02430270ca7f2d20ac163c351559d14a9db928015c3"
+    sha256 sonoma:        "5aa2eee0ea627f8cacbdec4fee3a2e0817d0e8b685d4e5962369b9111b280b69"
+    sha256 ventura:       "6ebfd055d75b29c1bc064b8ac17af12b3b5b2a8f1a72805ec0e0a8792298fbc4"
+    sha256 arm64_linux:   "5107665d7c99118c795ab233c6c2d61d4a64ec47614f855d1160d066f0ee8ef4"
+    sha256 x86_64_linux:  "733e3515ee988266ce1c34b49350c844b9bd0a7f810a8d266b7f6bff3290e2d4"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "openldap"
   depends_on "openssl@3"
   depends_on "pcre2"
 
+  uses_from_macos "bzip2"
   uses_from_macos "libxcrypt"
+  uses_from_macos "zlib"
 
   # default max. file descriptors; this option will be ignored if the server is not started as root
   MAX_FDS = 512
 
   def install
     args = %W[
-      --disable-dependency-tracking
       --disable-silent-rules
-      --prefix=#{prefix}
       --sbindir=#{bin}
       --with-bzip2
       --with-ldap
@@ -51,19 +50,20 @@ class Lighttpd < Formula
     # autogen must be run, otherwise prebuilt configure may complain
     # about a version mismatch between included automake and Homebrew's
     system "./autogen.sh"
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
 
     unless File.exist? etc/"lighttpd"
-      (etc/"lighttpd").install "doc/config/lighttpd.conf", "doc/config/modules.conf"
+      (etc/"lighttpd").install "doc/config/lighttpd.conf", "doc/config/lighttpd.annotated.conf",
+        "doc/config/modules.conf"
       (etc/"lighttpd/conf.d/").install Dir["doc/config/conf.d/*.conf"]
-      inreplace etc + "lighttpd/lighttpd.conf" do |s|
+      inreplace etc + "lighttpd/lighttpd.annotated.conf" do |s|
         s.sub!(/^var\.log_root\s*=\s*".+"$/, "var.log_root    = \"#{var}/log/lighttpd\"")
         s.sub!(/^var\.server_root\s*=\s*".+"$/, "var.server_root = \"#{var}/www\"")
         s.sub!(/^var\.state_dir\s*=\s*".+"$/, "var.state_dir   = \"#{var}/lighttpd\"")
         s.sub!(/^var\.home_dir\s*=\s*".+"$/, "var.home_dir    = \"#{var}/lighttpd\"")
         s.sub!(/^var\.conf_dir\s*=\s*".+"$/, "var.conf_dir    = \"#{etc}/lighttpd\"")
-        s.sub!(/^server\.port\s*=\s*80$/, "server.port = 8080")
+        s.sub!(/^#server\.port\s*=\s*80$/, "server.port = 8080")
         s.sub!(%r{^server\.document-root\s*=\s*server_root \+ "/htdocs"$}, "server.document-root = server_root")
 
         s.sub!(/^server\.username\s*=\s*".+"$/, 'server.username  = "_www"')

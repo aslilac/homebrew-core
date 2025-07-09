@@ -10,6 +10,8 @@ class Bibtex2html < Formula
     regex(/href=.*?bibtex2html[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ec23acda42eaa89ba7dba681bdf117a0abd5b083e57f718ab35c5402d31e1470"
@@ -24,6 +26,7 @@ class Bibtex2html < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "e9c4f95aaae6ddb40473a8c4349dbd9455c58e71ea4f580c8aa268292578464d"
     sha256 cellar: :any_skip_relocation, mojave:         "1a56c6ff9929a75570f231a4fd8b1a4e367d82a8a632c4a45f126b1845ff8ff3"
     sha256 cellar: :any_skip_relocation, high_sierra:    "e2b32aea9dcfb51cff11b8014425975198b73b3a74f48c2f7103e01ef2ec7a9b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "de9b81d5eaae752f37d96d2015cad99401acf76322e440eb7e56cc46db59d9f6"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ad67db6800da40bac05bfa7e9158ca392d135241e82e300e58cded0533349a11"
   end
 
@@ -47,7 +50,7 @@ class Bibtex2html < Formula
   end
 
   test do
-    (testpath/"test.bib").write <<~EOS
+    (testpath/"test.bib").write <<~BIBTEX
       @article{Homebrew,
           title   = {Something},
           author  = {Someone},
@@ -56,7 +59,7 @@ class Bibtex2html < Formula
           number  = {2},
           pages   = {3--4}
       }
-    EOS
+    BIBTEX
 
     system bin/"bib2bib", "test.bib", "--remove", "pages", "-ob", "out.bib"
     assert(/pages\s*=\s*\{3--4\}/ !~ File.read("out.bib"))

@@ -1,11 +1,11 @@
 class Octave < Formula
   desc "High-level interpreted language for numerical computing"
   homepage "https://octave.org/index.html"
-  url "https://ftp.gnu.org/gnu/octave/octave-9.2.0.tar.xz"
-  mirror "https://ftpmirror.gnu.org/octave/octave-9.2.0.tar.xz"
-  sha256 "21417afb579105b035cac0bea09201522e384893ae90a781b8727efa32765807"
+  url "https://ftp.gnu.org/gnu/octave/octave-9.4.0.tar.xz"
+  mirror "https://ftpmirror.gnu.org/octave/octave-9.4.0.tar.xz"
+  sha256 "fff911909ef79f95ba244dab5b8c1cb8c693a6c447d31deabb53994f17cb7b3d"
   license "GPL-3.0-or-later"
-  revision 3
+  revision 1
 
   # New tarballs appear on https://ftp.gnu.org/gnu/octave/ before a release is
   # announced, so we check the octave.org download page instead.
@@ -15,15 +15,15 @@ class Octave < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:  "6b054b347149fdb9f895d0826a3ddfe19b9073ec69a593495c6eab6604c89b04"
-    sha256 arm64_ventura: "942cffcc4cf845683ecfa339d9a363bb7566c02cf0eed1706c3eac2071817028"
-    sha256 sonoma:        "e78c8cf8381ebec4148d7ef861b88f55d4080454538724096f245c4c80a38444"
-    sha256 ventura:       "9f5e718dd008b07f296158d0e34beeafa43396116bb74d9e6f10e9936b774128"
-    sha256 x86_64_linux:  "bf6732da770cd8e4a8b5ef6ae7e38d7e49d3d005eef2fa691c5ff4a1c68a849f"
+    sha256 arm64_sonoma:  "c31cf64c9ad5ceff127bf091ad83fa1dfde97862bf5a7bea232bad62ee5165c0"
+    sha256 arm64_ventura: "4484002e46653b1fed737d440fed9073419fde9d5c1a49f9a545d2bd62f0a62d"
+    sha256 sonoma:        "6df6e55cbee8648794e4356fda7da6682bd6a28cfcb3d542997f6494737993ca"
+    sha256 ventura:       "b2617d657cc068e9372a2bb7ca5c93724e0d366962fae0353e530daec3d94f8b"
+    sha256 x86_64_linux:  "7db574b909f0db5b5cf47b38b44105a97f75fc132041832e7610e4a7660772b4"
   end
 
   head do
-    url "https://hg.savannah.gnu.org/hgweb/octave", branch: "default", using: :hg
+    url "https://hg.octave.org/octave", using: :hg
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -147,22 +147,22 @@ class Octave < Formula
     # This is supposed to crash octave if there is a problem with BLAS
     system bin/"octave", "--eval", "single ([1+i 2+i 3+i]) * single ([ 4+i ; 5+i ; 6+i])"
     # Test basic compilation
-    (testpath/"oct_demo.cc").write <<~EOS
+    (testpath/"oct_demo.cc").write <<~CPP
       #include <octave/oct.h>
       DEFUN_DLD (oct_demo, args, /*nargout*/, "doc str")
       { return ovl (42); }
-    EOS
-    system bin/"octave", "--eval", <<~EOS
+    CPP
+    system bin/"octave", "--eval", <<~MATLAB
       mkoctfile ('-v', '-std=c++11', '-L#{lib}/octave/#{version}', 'oct_demo.cc');
       assert(oct_demo, 42)
-    EOS
+    MATLAB
     # Test FLIBS environment variable
-    system bin/"octave", "--eval", <<~EOS
+    system bin/"octave", "--eval", <<~MATLAB
       args = strsplit (mkoctfile ('-p', 'FLIBS'));
       args = args(~cellfun('isempty', args));
       mkoctfile ('-v', '-std=c++11', '-L#{lib}/octave/#{version}', args{:}, 'oct_demo.cc');
       assert(oct_demo, 42)
-    EOS
+    MATLAB
     ENV["QT_QPA_PLATFORM"] = "minimal"
     system bin/"octave", "--gui"
   end

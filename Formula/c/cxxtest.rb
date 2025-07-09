@@ -9,6 +9,8 @@ class Cxxtest < Formula
   license "LGPL-3.0-only"
   revision 3
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 5
     sha256 cellar: :any_skip_relocation, all: "643d46c6ac246d2b736860fd8e318a1a25fb4c2b659a18fead5db9fbe6dc9298"
@@ -25,8 +27,8 @@ class Cxxtest < Formula
   end
 
   test do
-    testfile = testpath/"MyTestSuite1.h"
-    testfile.write <<~EOS
+    testfile = testpath/"MyTestSuite1.hpp"
+    testfile.write <<~CPP
       #include <cxxtest/TestSuite.h>
 
       class MyTestSuite1 : public CxxTest::TestSuite {
@@ -36,7 +38,7 @@ class Cxxtest < Formula
               TS_ASSERT_EQUALS(1 + 1, 2);
           }
       };
-    EOS
+    CPP
 
     system bin/"cxxtestgen", "--error-printer", "-o", testpath/"runner.cpp", testfile
     system ENV.cxx, "-o", testpath/"runner", testpath/"runner.cpp"

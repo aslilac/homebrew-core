@@ -1,13 +1,16 @@
 class Avahi < Formula
   desc "Service Discovery for Linux using mDNS/DNS-SD"
   homepage "https://avahi.org"
-  url "https://github.com/lathiat/avahi/archive/refs/tags/v0.8.tar.gz"
+  url "https://github.com/avahi/avahi/archive/refs/tags/v0.8.tar.gz"
   sha256 "c15e750ef7c6df595fb5f2ce10cac0fee2353649600e6919ad08ae8871e4945f"
   license "LGPL-2.1-or-later"
   revision 2
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
+    sha256 arm64_linux:  "4167489c0fe787b170d0646faab665700577fcc05ab10e3a0a556112df77d6fc"
     sha256 x86_64_linux: "c2a968c40c0683c2a1cb9e45bbe693434581f0b209e0215f9c610b17069001e8"
   end
 

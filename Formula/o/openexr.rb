@@ -1,21 +1,22 @@
 class Openexr < Formula
   desc "High dynamic-range image file format"
   homepage "https://www.openexr.com/"
-  url "https://github.com/AcademySoftwareFoundation/openexr/archive/refs/tags/v3.3.2.tar.gz"
-  sha256 "5013e964de7399bff1dd328cbf65d239a989a7be53255092fa10b85a8715744d"
+  url "https://github.com/AcademySoftwareFoundation/openexr/archive/refs/tags/v3.3.4.tar.gz"
+  sha256 "63abac7c52f280e3e16fc868ac40e06449733bb19179008248ae7e34e4f19824"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "15c440ea45fe300c8756c9013538b86d946ed456f425c01afafb33ff1a8da7d5"
-    sha256 cellar: :any,                 arm64_sonoma:  "0fe7eadd18353953998350145a571f9345785dd13d4f7a6b68d4ac76b5981732"
-    sha256 cellar: :any,                 arm64_ventura: "af8d8617924061ea03870e15c819d6517d7af6560eb4636b99bdd30c34eb96e2"
-    sha256 cellar: :any,                 sonoma:        "94a0453a5ec9b940438dd111a56e762275915851d61ea5d5eb43e510172b1e08"
-    sha256 cellar: :any,                 ventura:       "575cdfa90c04906376aa9083f75f0405c38ffb5b033164f140244a3e572d854d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "544108614f9156fde192de0bb340669a48a175b1d1c8e4a549b7ea14011f59c7"
+    sha256 cellar: :any,                 arm64_sequoia: "35e994d7b07e1f974f262692dd2e9c17c081d6bc3beb9dc62391ec6ed726c08e"
+    sha256 cellar: :any,                 arm64_sonoma:  "6a4745c14f5b3fa0b950427c974c535c6c101ebfe4b78a3b259031b714d5f4ab"
+    sha256 cellar: :any,                 arm64_ventura: "d5e969d9d4e1cbfb293d3ef06dac589ffa1c3bc5a4dc4039d94fb3dee16a340a"
+    sha256 cellar: :any,                 sonoma:        "981b5bd76b31301fed78add438c4987ae6c56f119608d213125b16d7788f9f9e"
+    sha256 cellar: :any,                 ventura:       "a14f6e9a69ac9a9a184bc2262d36c6307e1a8fd31aa1e1f177fb8cb5bbd8741a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "bc5050dd3533df0a28a6cb5351bd46efe8d0347b2522aa65139b25e4be018479"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3e34797a30de05b55b2b2fff6dc0bf1b12b1248e4fe6f251d5da63e8f63f89c6"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "imath"
   depends_on "libdeflate"

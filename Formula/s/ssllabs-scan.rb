@@ -1,9 +1,11 @@
 class SsllabsScan < Formula
   desc "This tool is a command-line client for the SSL Labs APIs"
-  homepage "https://github.com/ssllabs/ssllabs-scan/"
+  homepage "https://www.ssllabs.com/projects/ssllabs-apis/"
   url "https://github.com/ssllabs/ssllabs-scan/archive/refs/tags/v1.5.0.tar.gz"
   sha256 "51c52e958d5da739910e9271a3abf4902892b91acb840ea74f5c052a71e3a008"
   license "Apache-2.0"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 1

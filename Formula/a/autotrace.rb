@@ -1,6 +1,6 @@
 class Autotrace < Formula
   desc "Convert bitmap to vector graphics"
-  homepage "https://autotrace.sourceforge.io"
+  homepage "https://autotrace.sourceforge.net/"
   url "https://github.com/autotrace/autotrace/archive/refs/tags/0.31.10.tar.gz"
   sha256 "14627f93bb02fe14eeda0163434a7cb9b1f316c0f1727f0bdf6323a831ffe80d"
   license all_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later"]
@@ -19,6 +19,7 @@ class Autotrace < Formula
     sha256 sonoma:         "309ada11b08e9bb6477127ba861acf1ea44e2a9c4e4ef366a614d418d7c8ef55"
     sha256 ventura:        "1da418dcb2e3c56b24a46541728782d9e2853f9d9988f3146c151016dd7c86c6"
     sha256 monterey:       "21cbef75c9802414f576566503a5d570e878fbaf0d2587d40ce5773371866ab0"
+    sha256 arm64_linux:    "2b49716451cbac5e13837244a3413197cc69e0d5358e519697d104e667f5ac4a"
     sha256 x86_64_linux:   "4aab08802d48a33cc4d89c858fbc7ecc61dddb7a8d1e6ec250cf8b2dda4b9f8f"
   end
 

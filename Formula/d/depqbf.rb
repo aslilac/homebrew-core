@@ -6,6 +6,8 @@ class Depqbf < Formula
   license "GPL-3.0-or-later"
   head "https://github.com/lonsing/depqbf.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "77fb774ec31c1de16c6136751d66b3cb04d9a7bf0e2fb8c4e51a56db412310c4"
     sha256 cellar: :any,                 arm64_sonoma:   "dce4afe9355597c29c7656a5fcdda35983fe58b95ae72e966a6967a0360dd9d1"
@@ -21,6 +23,7 @@ class Depqbf < Formula
     sha256 cellar: :any,                 high_sierra:    "7c956f3b4e86d6f60e90dde3e25f6b5ce75f2ba75e756c9e4dd6debe46d2ddea"
     sha256 cellar: :any,                 sierra:         "fea1eb8ca62fccc5ce43b0a645fb67feffbf97c5a343d0ea6c9a015c37e24ccc"
     sha256 cellar: :any,                 el_capitan:     "3229005d870984af6beee544d5178094fc859525bd96552ac42301860c175f5b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "27916b378549105a9812407772165660f12c3ac27be9af6995fd09f5bee27827"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2e13e19078a40264180e470c713e834493e8189f3b45a263318f17d1b4830f73"
   end
 

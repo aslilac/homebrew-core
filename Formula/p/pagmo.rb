@@ -4,17 +4,16 @@ class Pagmo < Formula
   url "https://github.com/esa/pagmo2/archive/refs/tags/v2.19.1.tar.gz"
   sha256 "ecc180e669fa6bbece959429ac7d92439e89e1fd1c523aa72b11b6c82e414a1d"
   license any_of: ["LGPL-3.0-or-later", "GPL-3.0-or-later"]
-  revision 1
+  revision 4
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "cf7927509223529577b157990ee0ddbfc63919bbd92fc1d307d8f4f8a2707fd0"
-    sha256 cellar: :any,                 arm64_sonoma:   "8a0afc6cc97987dbf0d331490c278b4a739306e21d8cdd6abee1595056991cf6"
-    sha256 cellar: :any,                 arm64_ventura:  "8d8ac532e972fc741ef96a550adc2fbbcec5576e750cdf4f28c9edd585b54a98"
-    sha256 cellar: :any,                 arm64_monterey: "553b6d9439f07679e0f7f5819e459d9f8bcd8869328c506755be103b40c59e17"
-    sha256 cellar: :any,                 sonoma:         "deda63403b6b445b4418160f30b8eb48e1e8bf1763b95ece54f0a44e9c559a52"
-    sha256 cellar: :any,                 ventura:        "0ff2034f5a451de4f483e3916842fc559d6665ea3fdaf5ccc01d3f2725370b63"
-    sha256 cellar: :any,                 monterey:       "787a36f0baf71e9c858e114da69902b446447c6d74383292da02b097dc1d54bf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "033a66f14e5276aa4b64bddc1114539bc2cc99eae1ce4ffd1e84a01413aaff88"
+    sha256 cellar: :any,                 arm64_sequoia: "de89536a11df055792e5438ec658c6cd16c55315b84c6c424b49e3982a9dbd44"
+    sha256 cellar: :any,                 arm64_sonoma:  "b3ebceb0271d0a389f1ae4078941e8269c9efbec372e5305a172102de4b74f8f"
+    sha256 cellar: :any,                 arm64_ventura: "1154611438e8b1316c7f3f8ce0951deab54322bf5537b59494eec4106f8a7e48"
+    sha256 cellar: :any,                 sonoma:        "5f3bef1e0ed24dfbbde890a7b5b2474b585a1cdbd412c559d6a54043ed378c76"
+    sha256 cellar: :any,                 ventura:       "d4f0b7cbda497ce7f766efd08984bd52534a2ceddb7e070c91213bfba60a0567"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c3a36065e0fc45e3705fac89c77412947deb37532f777538d8aa98bb71d8abd9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1c3b4f42b1a460e73058cf7e82ce44fccd069ba476755ba37c0c07ff78787d34"
   end
 
   depends_on "cmake" => :build
@@ -23,13 +22,15 @@ class Pagmo < Formula
   depends_on "nlopt"
   depends_on "tbb"
 
-  fails_with gcc: "5"
-
   def install
-    system "cmake", ".", "-DPAGMO_WITH_EIGEN3=ON", "-DPAGMO_WITH_NLOPT=ON",
-                         *std_cmake_args,
-                         "-DCMAKE_CXX_STANDARD=17"
-    system "make", "install"
+    args = %w[
+      -DPAGMO_WITH_EIGEN3=ON
+      -DPAGMO_WITH_NLOPT=ON
+    ]
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

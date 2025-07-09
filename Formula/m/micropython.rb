@@ -1,20 +1,21 @@
 class Micropython < Formula
   desc "Python implementation for microcontrollers and constrained systems"
   homepage "https://www.micropython.org/"
-  url "https://github.com/micropython/micropython/releases/download/v1.24.0/micropython-1.24.0.tar.xz"
-  sha256 "cde2a6795280945100089c053ba85f842d85f3038229d743da35a3673bc1786b"
+  url "https://github.com/micropython/micropython/releases/download/v1.25.0/micropython-1.25.0.tar.xz"
+  sha256 "9fe99ad5808e66bb40d374f5cad187c32c7d1c49cf47f72b38fd453c28c2aebe"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "41ee316369a7cb78751f94e01e7998763b2331af864a28070f34fec0e89a2ad9"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e39f5db5d86d837a19161c93070911e9aee5bdee970f92cd7a4ed1a6a64d3fbe"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "0b67ffae89e9c8f5007e21b4694fa1feb587997112c72a6dad729640cab2c82e"
-    sha256 cellar: :any_skip_relocation, sonoma:        "613962ca2e0f6074dc76ddcfa09c8c28f89539d74b2fc8089ce5c03c7fc60daf"
-    sha256 cellar: :any_skip_relocation, ventura:       "3ee8a08bac9b3226d63495447463586ad6da48da132b3912a4c467de7d79e96b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5ae330d48509fb62a44b8a51c5e1f2d42d45cedd897b45fdaefd251bf1041167"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "470bfae6fc4f82301df5ae1f265b00d7b981a5db70120b4242b67890c5190a98"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "545f7cf7279b407e843e349024e2fcd264032be5312c1bd7fc9a59f440aae5fb"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "295730364d3c8f548e2fa71c71d9ddbb5acd3dd7b1e37ee3cc2af7862f4f92c3"
+    sha256 cellar: :any_skip_relocation, sonoma:        "936cc289f796f38be76d8e61d895498007aac8a3d686d3a7f10260d77cb77657"
+    sha256 cellar: :any_skip_relocation, ventura:       "2d473ef1dbda05c2759730d8c592599ce8a5712ea2607154db81c0244258241e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7a9e34b94bc6d146b7c7db61c02fba86eedf56812dc389fbe0b8d712d54c43a2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3e6f131cc475b96a98e22d54c82905c055d46072a4b15d6fdb027fe25100d25d"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   uses_from_macos "libffi", since: :catalina
   uses_from_macos "python" # Requires libffi v3 closure API
 

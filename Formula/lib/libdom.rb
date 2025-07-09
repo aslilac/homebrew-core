@@ -16,13 +16,16 @@ class Libdom < Formula
     sha256 cellar: :any,                 arm64_ventura: "67205b439af8580d452d27c87f291f8345d3deb3c194505527fdd426bd75d0db"
     sha256 cellar: :any,                 sonoma:        "d71ecaff24c596ef7f918e9f025e95f969d4f4368823106bdb7ab99d7f31ce64"
     sha256 cellar: :any,                 ventura:       "e55aa034a7edd4f1d7aab94e7e1e4eb21bad5c9816aea969c6ddc561fbc1b60f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "677af5b19154760fd5048c6acecffdfe1596c60ea79520f9e3e9412f1870af55"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "65f04a61a7747e494540603b837878cb887eda1c01e2d744caa9a19a30213204"
   end
 
   depends_on "netsurf-buildsystem" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "libhubbub"
+  depends_on "libparserutils"
   depends_on "libwapcaplet"
+
   uses_from_macos "expat"
 
   def install
@@ -47,8 +50,8 @@ class Libdom < Formula
       }
     C
 
-    pkg_config_flags = shell_output("pkg-config --cflags --libs libdom").chomp.split
-    system ENV.cc, "test.c", "-o", "test", *pkg_config_flags
+    flags = shell_output("pkgconf --cflags --libs libdom").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
 end

@@ -10,21 +10,21 @@ class LibnetfilterQueue < Formula
     regex(/href=.*?libnetfilter_queue[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "0d88b35944420ead47b296ddc1e8a374591138b640c4aeede86e02b0104de7c4"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "92a395a74268dd17a019cf43ca0a5bbe38ad52e045697e403657abc3250e3f6e"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libmnl"
   depends_on "libnfnetlink"
   depends_on :linux
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 

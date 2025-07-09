@@ -11,6 +11,8 @@ class Gcviewer < Formula
     regex(%r{url=.*?/gcviewer[._-]v?(\d+(?:\.\d+)+)\.jar}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, all: "a328eede0efee60ae573264f46a858ad1719edd56e787e0ce9aadeac6ed017c9"
@@ -24,6 +26,6 @@ class Gcviewer < Formula
   end
 
   test do
-    assert_predicate libexec/"gcviewer-#{version}.jar", :exist?
+    assert_path_exists libexec/"gcviewer-#{version}.jar"
   end
 end

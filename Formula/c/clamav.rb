@@ -1,9 +1,9 @@
 class Clamav < Formula
   desc "Anti-virus software"
   homepage "https://www.clamav.net/"
-  url "https://github.com/Cisco-Talos/clamav/releases/download/clamav-1.4.1/clamav-1.4.1.tar.gz"
-  mirror "https://www.clamav.net/downloads/production/clamav-1.4.1.tar.gz"
-  sha256 "a318e780ac39a6b3d6c46971382f96edde97ce48b8e361eb80e63415ed416ad8"
+  url "https://github.com/Cisco-Talos/clamav/releases/download/clamav-1.4.3/clamav-1.4.3.tar.gz"
+  mirror "https://www.clamav.net/downloads/production/clamav-1.4.3.tar.gz"
+  sha256 "d874cabf3d4765b35b518ef535658a1e6ec74802006a1d613f9f124aa1343210"
   license "GPL-2.0-or-later"
   head "https://github.com/Cisco-Talos/clamav.git", branch: "main"
 
@@ -13,14 +13,13 @@ class Clamav < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "735ca3297cb540df3fd811546931268748426b980ad1dbfb181ae2bc6619c743"
-    sha256 arm64_sonoma:   "082646090205a5dde7f4acc9aabddf96d0bab2e2fa267558f7a03950066c5db0"
-    sha256 arm64_ventura:  "4d06f08932594ea40a9cfeaa549882788bf58ddb1166fbf3216e94945ad68c54"
-    sha256 arm64_monterey: "9aca3a2b0fe35c774976dc10c7e3ec6fce449781cd2f7ac5bc77db08c5f8bbd0"
-    sha256 sonoma:         "0b841adeea58f249fbc4ba37abadd832551f63e9f2a8d40f3edc92555ed61af3"
-    sha256 ventura:        "ae68a990d66f6d4bb85f8e2e7b78b8f6f1505e2f083448dd4779d7e1c8e899a4"
-    sha256 monterey:       "60f5814cb36fe8c75eae0e5a56af261ab16652609bbb3dd142cc468252ed428d"
-    sha256 x86_64_linux:   "7159d15800cd958ef4f474a4bc2309b79e32d186da765cb7f9a9d3d0be642ba2"
+    sha256 arm64_sequoia: "251bf418c7dc47d360294ce30fdc3ff488999350856fd7d2b5389fb763563c3d"
+    sha256 arm64_sonoma:  "527382622ca74f0c7e5510b14d76ba2f62dcf8eab59e557d4239d73c612520f8"
+    sha256 arm64_ventura: "f67aac9831164aa14f229686286fb5e539b3d6628bd0b19531f93fcb933a04e1"
+    sha256 sonoma:        "f87e21de03dd8e9f6d3d0f42f549c335096a990d716f6168a44f7d7f32095366"
+    sha256 ventura:       "8a708db9eb56b97e584fe54d252eff885c26d1055cc82fc882351845e213def4"
+    sha256 arm64_linux:   "e5a7e558c3d1120eb35c232371dfd79f3b63a2550ae17ef8ee875db8a64f43a0"
+    sha256 x86_64_linux:  "87e9d72cfd741c30f3098924b2c1f27ff56205449fbac34847e72af11e181447"
   end
 
   depends_on "cmake" => :build

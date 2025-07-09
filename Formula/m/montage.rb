@@ -7,6 +7,13 @@ class Montage < Formula
   revision 1
   head "https://github.com/Caltech-IPAC/Montage.git", branch: "main"
 
+  livecheck do
+    url "http://montage.ipac.caltech.edu/docs/download2.html"
+    regex(/href=.*?Montage[._-]v?(\d+(?:\.\d+)+)\.t.*?/i)
+  end
+
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "b1d5f7c20f35e617f62197124a7c5c7e43bd4fc6272cf642346f6311d1da41b3"
@@ -18,6 +25,7 @@ class Montage < Formula
     sha256 cellar: :any,                 ventura:        "f6bc30d29752622bd772486c04d6feedf51a28bcf599571cf4b9336a21249900"
     sha256 cellar: :any,                 monterey:       "98c1ea6725fe61b926cb5ae148b6fec4dac9c3f2a05d2573395bfbe1ca3f3ef6"
     sha256 cellar: :any,                 big_sur:        "c0dae6deab1f09e34a1ba4dcebf923f697662a0b4a0f12b778cbc4eda7191d00"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f658ee7ea45df4f4fa1e9732f2bec751263cdee25cca0da5414a35faef16f543"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "896bd4dc1695ea76be99acadcf5216ceafbbc70636738bdf349e8b14b6aea7d0"
   end
 

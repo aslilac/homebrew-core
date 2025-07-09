@@ -1,58 +1,50 @@
 class Bc < Formula
   desc "Arbitrary precision numeric processing language"
   homepage "https://www.gnu.org/software/bc/"
-  url "https://ftp.gnu.org/gnu/bc/bc-1.07.1.tar.gz"
-  mirror "https://ftpmirror.gnu.org/bc/bc-1.07.1.tar.gz"
-  sha256 "62adfca89b0a1c0164c2cdca59ca210c1d44c3ffc46daf9931cf4942664cb02a"
+  url "https://ftp.gnu.org/gnu/bc/bc-1.08.2.tar.gz"
+  mirror "https://ftpmirror.gnu.org/bc/bc-1.08.2.tar.gz"
+  sha256 "ae470fec429775653e042015edc928d07c8c3b2fc59765172a330d3d87785f86"
   license "GPL-3.0-or-later"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "7259afd8cd95916dc9408b624167b311b24abb1b46a7a011e921f8eb5ce2b586"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1fce187d114bc87c96d85817d7b01985b2b32c0d39688a14330bcd942ecec694"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6d574576a87bf891aa1356c04abd75d736ae07dee9cfc23d9db1c1af31d5c02f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d93813bc695587363540bce018bd2216b2e32073170a61c1685bb6cd8326a124"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3e0fa32e2d65a4c0e0eca3d555e4c5dfa80b0a620610deae294c80a50131f514"
-    sha256 cellar: :any_skip_relocation, sonoma:         "33ee1dd3880229b323795968b80d8c81fa81cee1cc5dc2413668fdca89e9d4c8"
-    sha256 cellar: :any_skip_relocation, ventura:        "6abd8e03874595d0b24b8daa694995209050bb902a6743d5fe9638cf1191c3df"
-    sha256 cellar: :any_skip_relocation, monterey:       "2fc0ecea74ea0352ecf94eb4b98a364b726ac33051a3d8bf497f56c69f5b34ac"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f58adf16d7319035728503b47da1a9fddf3fce78e7f2efa69e6650cc0a8346a8"
-    sha256 cellar: :any_skip_relocation, catalina:       "9fdbf6f45737082f911073b3c291399487bc3a3cfd1285e0da389436064c438f"
-    sha256 cellar: :any_skip_relocation, mojave:         "78372f9830096b6d63fa7278e141924869a9aaee250b2ac1135594e67ba76c09"
-    sha256 cellar: :any_skip_relocation, high_sierra:    "0baf2e31191d80258636186bf9adcdf6b3f554f213d36cb3054213f736e52bf1"
-    sha256 cellar: :any_skip_relocation, sierra:         "1d8f0459c0b67aae275c43e01e5312146be72163acadd3d6c8f2bc440181508c"
-    sha256 cellar: :any_skip_relocation, el_capitan:     "e5c4b3fa712d705c3cc9bfae12242c9b4dc429e329c61d12aa01b65c1623a11f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1a362b8441afe9204305f4ae8909a67ff7e9ea702d4c4e8394911af1c914dbac"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1817f18a3e007d00b9128d225cc1aa8c18ea8673d954bea60e5a4d95fc8b4ff9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "08dc983bea3e325521a62c8f3eae7e9e414512c740cb99f7f0ea44e11fb1d213"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "205744876113e5f7ecd60bba584731c339386d3defc852d74a82cd01a64dea97"
+    sha256 cellar: :any_skip_relocation, sonoma:        "eee028e2110a7e11ed6e7031617377654d2e3260a8b753d9965d165488b39afb"
+    sha256 cellar: :any_skip_relocation, ventura:       "e2417d6a027f54331bbf1d5290dfaed83c3811c7e88ebb163e8bbbcf46e98f11"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "aaa02a5b2ea9e4fa53a6266398cf51f3deabc3d0ce6a655b9abedcacc300d786"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e08ff27c11d109f803062119b73e680335a27a2229b7c1283c123559aa073f49"
   end
 
-  keg_only :provided_by_macos
+  keg_only :provided_by_macos # before Ventura
 
   uses_from_macos "bison" => :build
   uses_from_macos "ed" => :build
   uses_from_macos "flex"
+  uses_from_macos "libedit"
 
   on_system :linux, macos: :ventura_or_newer do
     depends_on "texinfo" => :build
   end
+
+  conflicts_with "bc-gh", because: "both install `bc` and `dc` binaries"
 
   def install
     # prevent user BC_ENV_ARGS from interfering with or influencing the
     # bootstrap phase of the build, particularly
     # BC_ENV_ARGS="--mathlib=./my_custom_stuff.b"
     ENV.delete("BC_ENV_ARGS")
-    system "./configure",
-      "--disable-debug",
-      "--disable-dependency-tracking",
-      "--disable-silent-rules",
-      "--prefix=#{prefix}",
-      "--infodir=#{info}",
-      "--mandir=#{man}",
-      "--with-libedit"
+
+    system "./configure", "--disable-silent-rules",
+                          "--infodir=#{info}",
+                          "--mandir=#{man}",
+                          "--with-libedit",
+                          *std_configure_args
     system "make", "install"
   end
 
   test do
     system bin/"bc", "--version"
-    assert_match "2", pipe_output(bin/"bc", "1+1\n")
+    assert_match "2", pipe_output(bin/"bc", "1+1\n", 0)
   end
 end

@@ -19,6 +19,8 @@ class Libdvdnav < Formula
     regex(%r{href=["']?v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "b29b26c47215e0956115db5aa20172efaa92d178877f7f2e526efa661282f481"
     sha256 cellar: :any,                 arm64_sonoma:   "77516e8cb99cad1e25fd119a6c573e0fb9c96b5ed7685f1222b9f76a5d1d1013"
@@ -31,6 +33,7 @@ class Libdvdnav < Formula
     sha256 cellar: :any,                 big_sur:        "cabd25ecc0df8a3729e7196737e56041d8d6b9f369972d66de1ade19b4bfbafb"
     sha256 cellar: :any,                 catalina:       "ded7214f830c32676e5a64c2836b5498e44aeaa4967c5753a89c48af66edeaf7"
     sha256 cellar: :any,                 mojave:         "4fe58e754e7174ef7013a89a0620e05b8131bd50ed1de2c54e8b837db81fc4de"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "1a7a8631234c11e7d11e3ef82761671345883d42f2294382280bce8ddc7601a5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a0aadfc77f6807e5067f04391b0da4b6a0173c0219552f90ee300e17bd5679d9"
   end
 
@@ -41,13 +44,12 @@ class Libdvdnav < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libdvdread"
 
   def install
-    system "autoreconf", "-if" if build.head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 end

@@ -1,29 +1,28 @@
 class Sniffnet < Formula
   desc "Cross-platform application to monitor your network traffic"
-  homepage "https://github.com/GyulyVGC/sniffnet"
-  url "https://github.com/GyulyVGC/sniffnet/archive/refs/tags/v1.3.1.tar.gz"
-  sha256 "535a7002cc0f394332a4f6b2338e55c00b802a59bba11978442f5fdc714edede"
+  homepage "https://sniffnet.net/"
+  url "https://github.com/GyulyVGC/sniffnet/archive/refs/tags/v1.4.0.tar.gz"
+  sha256 "7f0789836b81ca0ce249d1ebb15493aab3941a5c4438ac1a70784470c0401550"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/GyulyVGC/sniffnet.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4702ec269621cdfc8eedc0dbacec93782ccabe7fa4f57e80b0e8692a33c2f6ed"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a1f464910eb959f955c48730113013fa41b5d723d071aaca24a5542171a25813"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "842c709a2aa21fc5f4a461d30b5cf7b2a5a4e02e8a8cf96194b8fd41f7e69a87"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e40a1bd7e0329cb9f825728903425583c7e7d1f0843621c7bbff42bee2cece01"
-    sha256 cellar: :any_skip_relocation, sonoma:         "496dc80cd9b3f558ed951e70ef981af72856ec3e1ce054d641b2661ad46d0493"
-    sha256 cellar: :any_skip_relocation, ventura:        "438b477c5021fade1d9b8d3f7621ec236ec5b267406ce137621f822c810665fd"
-    sha256 cellar: :any_skip_relocation, monterey:       "724c8c13c31ea6958e0660aefbd6769c865c615f48c762a50aa775d9e3a4d3e7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5c0755e0b4d6b472940da5d15b977b86fa283a9035804fb13e45a66353cf0c6d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "46fed06d4e0d8dd7262299c6b5b65d0021a5e49bcebb29730c015b483b376dfe"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "27fd97922331f22c22eccb26fc5efe52e0a642773d00a3b7ab16a669d07f431f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "ccb4f3539b8ccdefac958dfd9e3146816c54edf424318c7f4cb727ab3a559812"
+    sha256 cellar: :any_skip_relocation, sonoma:        "89f6c7e918b397d45735839f5c5f54bcfc7aedf2735fd2648459e2025fd7b90e"
+    sha256 cellar: :any_skip_relocation, ventura:       "9203d8da06985da7ad3c0772c125c19c53133d670e36e936a0b0d3b2d54ea7fa"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "be6be965d74bf52ae73509bd308036f547031f0354b81241d64d4981157761a5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "955f8fc814e582661667493534b51907957f6146223e567dacaec90fad7ad856"
   end
 
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "openssl@3"
 
   uses_from_macos "libpcap"
 
   on_linux do
-    depends_on "pkg-config" => :build
     depends_on "alsa-lib"
     depends_on "fontconfig"
   end
@@ -33,10 +32,8 @@ class Sniffnet < Formula
   end
 
   test do
-    pid = fork do
-      # sniffet is a GUI application
-      exec bin/"sniffnet"
-    end
+    # sniffet is a GUI application
+    pid = spawn bin/"sniffnet"
     sleep 1
   ensure
     Process.kill("TERM", pid)

@@ -6,6 +6,8 @@ class Pngnq < Formula
   license "BSD-3-Clause"
   revision 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "06007a7ead893b75a74fa9f5cc7c466219fe2be5149a245e0ae560dd52503aae"
@@ -22,10 +24,11 @@ class Pngnq < Formula
     sha256 cellar: :any,                 high_sierra:    "258abdbd2805617e3c36c0926b3168e0632d3eafacba9e9b63c8e35dee6c28f7"
     sha256 cellar: :any,                 sierra:         "0914104edfd7c6089ae4b053e5a57cf1b5a0d9bb476424ce654a923cafef651c"
     sha256 cellar: :any,                 el_capitan:     "dd6970fb9055fb1a6702c820e75a3d7b826e165e61c23c17b0845cca780c3da9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "1af6b55b0fed98058a42791addbbd0793767c0e7a8de383abdb0476b57bdc1f7"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "18ba477730fc049d9a7b16d94247a14e3ad6fbace2f40f8aa5d180822d12e173"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libpng"
 
   uses_from_macos "zlib"
@@ -50,14 +53,13 @@ class Pngnq < Formula
               "AM_LDFLAGS = `libpng-config --ldflags` -lz\n",
               "LDADD = `libpng-config --ldflags` -lz\n"
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 
   test do
     cp test_fixtures("test.png"), "test.png"
     system bin/"pngnq", "-v", "test.png"
-    assert_predicate testpath/"test-nq8.png", :exist?
+    assert_path_exists testpath/"test-nq8.png"
   end
 end

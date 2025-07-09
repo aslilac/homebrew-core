@@ -1,8 +1,8 @@
 class Spiped < Formula
   desc "Secure pipe daemon"
   homepage "https://www.tarsnap.com/spiped.html"
-  url "https://www.tarsnap.com/spiped/spiped-1.6.2.tgz"
-  sha256 "05d4687d12d11d7f9888d43f3d80c541b7721c987038d085f71c91bb06204567"
+  url "https://www.tarsnap.com/spiped/spiped-1.6.4.tgz"
+  sha256 "424fb4d3769d912b04de43d21cc32748cdfd3121c4f1d26d549992a54678e06a"
   license "BSD-2-Clause"
 
   livecheck do
@@ -11,18 +11,13 @@ class Spiped < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia:  "cc2e11183a6531be2d0f36881f229173ed582f99b2072040c9a1a61364783694"
-    sha256 cellar: :any,                 arm64_sonoma:   "cea06166086034d17454f12982c6ea352fb1d6cd9f3e7216c9727c223e414262"
-    sha256 cellar: :any,                 arm64_ventura:  "fb49b420bd935b728f767276c0bb19133d745d52fe07a8ebad3877ff09996dfc"
-    sha256 cellar: :any,                 arm64_monterey: "293b53d8433d104f8133539224e412209605bc40d2cacaeb253081b95eb65578"
-    sha256 cellar: :any,                 arm64_big_sur:  "f30a91f2902faec487f48d0e580a34cc628c6cf4d80bab749ec32e0f38c575f4"
-    sha256 cellar: :any,                 sonoma:         "8212dcae29b5af5c3f157bae33e8358bd6ceb62dbf892b8fb8a1a73b7621d3f5"
-    sha256 cellar: :any,                 ventura:        "f655204362f17020c0672a494144c32a8351ff5281e49238b0341c26da065e15"
-    sha256 cellar: :any,                 monterey:       "86fc3f6a8ad438e67a726d6e181774aa7af39b664345d6c5d0efbacb1267f86c"
-    sha256 cellar: :any,                 big_sur:        "f22668dad3e0af145761bf04d604c12d05a9ac397449e6bcf3b33cb29bf41849"
-    sha256 cellar: :any,                 catalina:       "a5a8967be00fba49a628f6d18cfe2ec69f40ffdb3d860eed91bd3026225d5c99"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ce1ab53824d6e9ccd9752ab5038630ab179f73053ef8fa941c894e38ecab171f"
+    sha256 cellar: :any,                 arm64_sequoia: "469c7104799be35f718cab24e9370e0acd2b77a15141d75efd2e7e552bf74fa5"
+    sha256 cellar: :any,                 arm64_sonoma:  "87c3d7eda651e267a339e0655d05cac5678f71a4658e8d9bd985e32f0555e0bc"
+    sha256 cellar: :any,                 arm64_ventura: "f547c50d187df541feb087d3e1534e5537e39dcb73fbbfeea606c3659626b7c3"
+    sha256 cellar: :any,                 sonoma:        "3e77a24d828c58a06b59df85b986b43ebcc14c762920f2999c9cbed7fc729761"
+    sha256 cellar: :any,                 ventura:       "8d286f9e2a3568683b839d0e64aa80ec588d547dbb83ee2ad21a41c7a28c4f4a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "06712747809b962a2faedfc00759e579b9212514dcf17d11afbf08e73aff0626"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "667cc6e283e75c64c91638c8b2c667b4239ae12bcb1957cdb0e14c4dd45a1ed9"
   end
 
   depends_on "openssl@3"

@@ -1,17 +1,18 @@
 class Mongoose < Formula
   desc "Web server build on top of Libmongoose embedded library"
   homepage "https://mongoose.ws/"
-  url "https://github.com/cesanta/mongoose/archive/refs/tags/7.16.tar.gz"
-  sha256 "f2c42135f7bc34b3d10b6401e9326a20ba5dd42d4721b6a526826ba31c1679fd"
+  url "https://github.com/cesanta/mongoose/archive/refs/tags/7.18.tar.gz"
+  sha256 "8b661e8aceb00528fc21993afe218b1da0f0154575a61b63ce0791ad8b66b112"
   license "GPL-2.0-only"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "b99dd5a11b1cc2722a01cdf6ea227382ba43f85f1866c759194b11f4aa3e0170"
-    sha256 cellar: :any,                 arm64_sonoma:  "0585d930d3e7e844a196ae762088d5c3dbab3cca1dd9dc5a7c804372d15470de"
-    sha256 cellar: :any,                 arm64_ventura: "cf1660db27a14f9cc25a98627028768fedab551a1cdefbd7edfa852366aa568d"
-    sha256 cellar: :any,                 sonoma:        "d50c85f28f86bc70b8f6735f211ade27c08ffd957cbb7ab307eddf842ff5383c"
-    sha256 cellar: :any,                 ventura:       "4595a19b70fa94727881c59e93971218aa479d771a5fd5d8dd52259473f327d9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "654c508a99bb309ccd1511cae66fa356b3431a93d52c632cd49257a5ad4893c6"
+    sha256 cellar: :any,                 arm64_sequoia: "c9b6257a6f94c7de3aacf1d0910fb64040e936276e857a3e39f07719877f9f00"
+    sha256 cellar: :any,                 arm64_sonoma:  "404c20eea42f1a4f82a71b24fbd6f86dc852f165c3b05888c61157c65c641fec"
+    sha256 cellar: :any,                 arm64_ventura: "a8ba96bd0932872b97b66f17f3b2b5adcdf5c37cce8f38547207707df910181c"
+    sha256 cellar: :any,                 sonoma:        "aab6085231ab726182a67b541750d8004cfe7907bed8cd645284e417be7f143d"
+    sha256 cellar: :any,                 ventura:       "5e340bb65e242915f274093e833ebfabf4db89c678ea2eff3d663f677ce7dcea"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "bb1f43f42d51a855ec0b3de2893f72dac92f3bc1a9985907bf2353f7f8cfe3a5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3b7e641817714cb791b70ed13d943e33a17247a975ea054949b66266c55fd463"
   end
 
   depends_on "openssl@3"
@@ -31,12 +32,12 @@ class Mongoose < Formula
     end
     lib.install shared_library("libmongoose")
     include.install "mongoose.h"
-    pkgshare.install "examples"
+    pkgshare.install "tutorials"
     doc.install Dir["docs/*"]
   end
 
   test do
-    (testpath/"hello.html").write <<~EOS
+    (testpath/"hello.html").write <<~HTML
       <!DOCTYPE html>
       <html>
         <head>
@@ -46,7 +47,7 @@ class Mongoose < Formula
           <p>Hi!</p>
         </body>
       </html>
-    EOS
+    HTML
 
     begin
       pid = fork { exec bin/"mongoose" }

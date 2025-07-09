@@ -7,6 +7,8 @@ class Libicns < Formula
   license any_of: ["LGPL-2.0-or-later", "LGPL-2.1-or-later"]
   revision 5
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "4f513b025e1f28cadb969f9546d4b9c0b77021310a3b634c0f6edf2ddcbb8c93"
     sha256 cellar: :any,                 arm64_sonoma:   "2da2b5cfc0aa4e79abe85f5794115e41709297c1d6d813c04ebfc5776e974b39"
@@ -17,6 +19,7 @@ class Libicns < Formula
     sha256 cellar: :any,                 ventura:        "0b9b72d44a2d0737fe8f9c0fcca4250436b618cb437a6fb9715b2817220c180a"
     sha256 cellar: :any,                 monterey:       "53d553054ef00243c22ae45d5b4937b11c2427064b083420b95090f96855ec94"
     sha256 cellar: :any,                 big_sur:        "43f30bf4451dbc02f68bb4befc43ed730dc2d5757306111b62d37005ab45bb74"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "86cdaaef4ee42294bb74455c92d6581d84189df3231686354316a9286a651742"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6738c70d5d8f9025be9ba3cd49b1e2b2510b6c05b6a27b7605e39d60e27566df"
   end
 

@@ -4,11 +4,14 @@ class Texi2mdoc < Formula
   url "https://mandoc.bsd.lv/texi2mdoc/snapshots/texi2mdoc-0.1.2.tgz"
   sha256 "7a45fd87c27cc8970a18db9ddddb2f09f18b8dd5152bf0ca377c3a5e7d304bfe"
   license "ISC"
+  head "anoncvs@mandoc.bsd.lv:/cvs", using: :cvs
 
   livecheck do
     url "https://mandoc.bsd.lv/texi2mdoc/snapshots/"
     regex(/href=.*?texi2mdoc[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9a769b9b0c164d2f296ef48c04dfa683a0605dbf55e93f12c34c273b9ca6f90c"
@@ -18,6 +21,7 @@ class Texi2mdoc < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "a991a1ed6f69eeaec46e684c2d66c257d04ae6da8664aea9d0db3c8c24f1f97b"
     sha256 cellar: :any_skip_relocation, ventura:        "086e55b2a674e03d5ac3d53a5553823ad4b72c7062d43d9ae64e138bb2f96b4f"
     sha256 cellar: :any_skip_relocation, monterey:       "9b2c1306839db292791ad1e6e89a0c723a9baaeeb5ca4dfcf8132d2b19646b33"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "59a3fc35cc4cf7c00742287367c32d3aeb3945b95d10ec83581276efb86e3fe2"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f155dfc278556137351b12849d598130decfbf64e824f99de7dda813a731051f"
   end
 

@@ -6,6 +6,8 @@ class Onioncat < Formula
   license "GPL-3.0-only"
   head "https://github.com/rahra/onioncat.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "29b153e2b454faccfb935cf8524b3b37fafb5b17a86ba38377d887ca0bbd86a0"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "58d3c104e6597baefa21599dead5423ea1a7be37f40ca84d398c1f39458db474"
@@ -16,6 +18,7 @@ class Onioncat < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "03dbf70b4079c360e0fe10e7909068bf277be34b9780402faf525697b7b7cfb0"
     sha256 cellar: :any_skip_relocation, monterey:       "3bf2a843df22a579b0965685c779df4165d0db2be9ffeeef32e2769136fd0cb7"
     sha256 cellar: :any_skip_relocation, big_sur:        "d3be4e31eed45930e85c8043abf03fc34ebc668bc5f9e2d8b09c4dfec8ae6090"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "33f731f9fc0cb8ede749dd65d70b62581f80f59305a9bef7613ff69e8a2807c4"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b7909dd65c46856bf1ba00a9253d6b51cd4c1b23b2595a57d0018607ca02bd94"
   end
 
@@ -24,7 +27,7 @@ class Onioncat < Formula
   depends_on "tor"
 
   def install
-    system "autoreconf", "-ifv"
+    system "autoreconf", "--force", "--install", "--verbose"
     system "./configure", *std_configure_args
     system "make", "install"
   end

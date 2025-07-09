@@ -6,17 +6,19 @@ class Uhdm < Formula
   url "https://github.com/chipsalliance/UHDM/archive/refs/tags/v1.84.tar.gz"
   sha256 "bb2acbdd294dd05660c78ba34704440032935b8bc77cae352c853533b5a7c583"
   license "Apache-2.0"
+  revision 2
   head "https://github.com/chipsalliance/UHDM.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "0cc479f9f9c9d2b4e6fb196ab0baf48dbbccea8ea125ff7796507746b4387973"
-    sha256 cellar: :any,                 arm64_sonoma:   "b5658a0a15d3f14adcd0d110c7cbe6525428882c69d696704f1fa9aad1aca607"
-    sha256 cellar: :any,                 arm64_ventura:  "b4f50710bff48e2cac91711af294791839eaf95c754e99e7caf4f780f1eafbab"
-    sha256 cellar: :any,                 arm64_monterey: "251b2278f62ad38d87f27f61a673e7dff0424fd648fbad2906bf6135db5f42a6"
-    sha256 cellar: :any,                 sonoma:         "9be120ce9adcfa44e75420b6d0bdf5a7400279579463c5ef5f007ad5792c4699"
-    sha256 cellar: :any,                 ventura:        "480c5e193ddd04d5ffa9e6c26f62cfdc85ec1e467028af964651691717ad1e57"
-    sha256 cellar: :any,                 monterey:       "f3c38678bb2e4b58e80c25602f1f9d0b23dacd4315c5c83fadef545b73198303"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9d9ee21ce3cfd7826139998d9b89f5530bf2673b9c9bc54bf2b4562336e8674e"
+    sha256 cellar: :any,                 arm64_sequoia: "19fcc355f0c97b73f365f5f8dc5ce72eefa83d08b780553058da783ddacb917d"
+    sha256 cellar: :any,                 arm64_sonoma:  "812e9c2b03de83b4def63dc9c34412106a3ba5ab01bfb9da42b8a9756458cb2c"
+    sha256 cellar: :any,                 arm64_ventura: "dcfd52eac15acef073c1959bf116f6bfe5974a571a67748377ae8ec61f02c369"
+    sha256 cellar: :any,                 sonoma:        "09774eae01e08f62741390bcc1bbbcbb1d96896c7caccfaeb1ac36cad38695c9"
+    sha256 cellar: :any,                 ventura:       "5100d3f029ce0a76ef2c1c98b0436fa96a448032cc233565f24f1d641c13967b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b2fe27ffa31d6ce11379a222b847493950059f02d02b493618b549a8ef27a81d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5d68f2dc934db9fd61b5048294bff8299b638c36bde5b56b4111e2c84c828fb2"
   end
 
   depends_on "cmake" => :build

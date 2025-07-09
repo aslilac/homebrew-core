@@ -14,13 +14,14 @@ class Libwbxml < Formula
     sha256 cellar: :any,                 sonoma:         "f1254abc997a20ba1365b0338224547b22d0fa70e96be10533d1f73ecb1434cb"
     sha256 cellar: :any,                 ventura:        "574ee31b76288b7d5d76eeeafeca1463b022e1d6764b2c7b9998703db1537468"
     sha256 cellar: :any,                 monterey:       "21c569684b6cf9018b4128fa8bf110d2b693a4eaabcf7edbfe478fccbef0ebf7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "af31f53d8ca7525e40d6c8a76cf803a66fd75a54b0a5e4c1a32d3e3ce581efd8"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6730a5a4348d5bddee6e064cd3728d5753986631dec4299cc93270da7d84645c"
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
   depends_on "graphviz" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "wget"
 
   uses_from_macos "expat"
@@ -43,6 +44,6 @@ class Libwbxml < Formula
     XML
 
     system bin/"xml2wbxml", "-o", "output.wbxml", "input.xml"
-    assert_predicate testpath/"output.wbxml", :exist?
+    assert_path_exists testpath/"output.wbxml"
   end
 end

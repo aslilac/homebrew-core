@@ -5,6 +5,8 @@ class Libdill < Formula
   sha256 "ebba0e5b433ec123b74a57d49b89dfa673aa258e03e6a452959e556b4c4529b9"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "cfe256a0ada19b9c8405be0b3b95885137548fe38e0f3938f28bb50b8245b561"
     sha256 cellar: :any,                 arm64_sonoma:   "e7e3f7443e7a91dc15164f1ddfba535a2d61992c9ea0e8ee6097e42f47742c5e"
@@ -19,6 +21,7 @@ class Libdill < Formula
     sha256 cellar: :any,                 mojave:         "7ebbbe85ab5989b48664688c9fdc833b4bbc7846ea94f3f73c34ef620026b878"
     sha256 cellar: :any,                 high_sierra:    "062d2f9f6fdeb5588036d3e06752ecfd95b5f4e7b6008b727208fc0a2e7f50a6"
     sha256 cellar: :any,                 sierra:         "6f75a82c15eafe6818b0d79e9c55df0654c6665f37841ee21cf7fb90ac578a92"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "78f6fb6cd777dc91a61a369bb50c7a6879c50b209391429c7f160a7dea9569f3"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6a7a4c9cd3cfe580d823fe85732058bbce181f915f348e1d9629bd93e86880f7"
   end
 

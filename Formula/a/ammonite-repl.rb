@@ -1,9 +1,9 @@
 class AmmoniteRepl < Formula
   desc "Ammonite is a cleanroom re-implementation of the Scala REPL"
   homepage "https://ammonite.io/"
-  url "https://github.com/com-lihaoyi/Ammonite/releases/download/3.0.0-M2/3.3-3.0.0-M2"
-  version "3.0.0-M2"
-  sha256 "57b4e3812123861e2acf339c9999f6c23fe2fc4dbfd2c87dc5c52c31bdc37d73"
+  url "https://github.com/com-lihaoyi/Ammonite/releases/download/3.0.2/3.3-3.0.2"
+  version "3.0.2"
+  sha256 "3353e0f87b164a493ad0d5333505f13a28e77c5c57e628daa3be8f85acfbca44"
   license "MIT"
 
   # There can be a gap between when a GitHub release is created and when the
@@ -16,8 +16,7 @@ class AmmoniteRepl < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "6b8e2cf8e1bf5d08e9161c5b67bc205d8b8d93d955e1fc32ba60171df8395863"
+    sha256 cellar: :any_skip_relocation, all: "a78817794763be017ec9dc58b4fa4956658265675094f317219b57594e50c7be"
   end
 
   depends_on "openjdk"
@@ -31,11 +30,11 @@ class AmmoniteRepl < Formula
   end
 
   test do
-    (testpath/"testscript.sc").write <<~EOS
+    (testpath/"testscript.sc").write <<~SCALA
       #!/usr/bin/env amm
       @main
       def fn(): Unit = println("hello world!")
-    EOS
+    SCALA
     output = shell_output("#{bin}/amm #{testpath}/testscript.sc")
     assert_equal "hello world!", output.lines.last.chomp
   end

@@ -1,20 +1,19 @@
 class Rbw < Formula
   desc "Unofficial Bitwarden CLI client"
   homepage "https://github.com/doy/rbw"
-  url "https://github.com/doy/rbw/archive/refs/tags/1.12.1.tar.gz"
-  sha256 "c564484f1054a85014b6b2a1fbade24d56b1b221dbac681c682ffaeba158b697"
+  url "https://github.com/doy/rbw/archive/refs/tags/1.13.2.tar.gz"
+  sha256 "afe8887b64c4da6e5f33535d02ad4e1fe75c536a55d63291622b4b339522d138"
   license "MIT"
   head "https://github.com/doy/rbw.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "bf58edcb974c14024158cd6717c2de3e9b4c7faff3c9a753524da0a577cdba3d"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2930df93c82e9803324ac4af1ebf8327eddbac674d3d4606321d27d9b006b0c4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3286046b7802ae7b9104fde56bd5f37c5c57cc96b22075baedc7bcfc2c312b67"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0f218ed659ec9155aa9d614917786365a5f052a3f8a68a902bb57c468ba300f1"
-    sha256 cellar: :any_skip_relocation, sonoma:         "08977594fcba3088250ece14efd9b348ad2731f0337c5ad531cecf47b99e71ab"
-    sha256 cellar: :any_skip_relocation, ventura:        "888778c497c7823faf7ee952eff994d263ebb5c45bf96f0209037cd5d69911a0"
-    sha256 cellar: :any_skip_relocation, monterey:       "5b30aedb03ad04e5d792adcf3151fd9e7c3f2f779da6e66fcb16c3592d546776"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4463edf9cdf55b007acef78cb394d01d49dfa592216c7885cf7a27e06b19ae48"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4530789e51dc8c8dd49ebcc833156206f221b7f2f8128ccbbbf45ad1e04bb88b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "096ca704f5351ff2bcf266995070c381f65042f4348b08b6ec1cbd4fa4211488"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "866f22cdc9c573ecb5a7d394e5b728ca660bc34e1129f3b970eec946015916e3"
+    sha256 cellar: :any_skip_relocation, sonoma:        "0f03798d05ce72ccce6b6ae4591c6bcbcd48afe4a1c9296998666de69b8ab037"
+    sha256 cellar: :any_skip_relocation, ventura:       "e0c9f8f7d9ec109da08fff90c25e4cd5329384bd130c1c7c2222e5153b7e321a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "bb4b8c43695aefa2e3261570b6e96754d3d2c435d9d0fcad89a148f09b1a6198"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d13b82f0928bc39fefe5e9a4ec5445bf4d8035c5a43853739e0353903609d74d"
   end
 
   depends_on "rust" => :build

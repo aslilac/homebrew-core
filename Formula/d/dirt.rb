@@ -7,6 +7,8 @@ class Dirt < Formula
   revision 1
   head "https://github.com/tidalcycles/Dirt.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "dc07b263a5ea080c3ae14aaaabe185d07c84189e6708cc2206ac74d62e67ec3f"
@@ -18,6 +20,7 @@ class Dirt < Formula
     sha256 cellar: :any,                 ventura:        "5ff0f05492f68f79315dd99ce136a09cfb3455b030bf1a12d9164f4dee70b43c"
     sha256 cellar: :any,                 monterey:       "f4c8eaef7bd081e9c346af24400410671665836820077afdcc13e68c676903bd"
     sha256 cellar: :any,                 big_sur:        "bb32869ee985043d05056f89254e369dcc8be8cfaaedaa1427787fc5e04fa62c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "1ed29d734b4fb03efa5e07a439a7f12b61df0904f8cf4073354ecb2a879eec7b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "8ea04b1e39b56f30179c50763b52314bb909285924d3229a68c35905e6b9b0f6"
   end
 

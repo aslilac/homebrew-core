@@ -1,12 +1,12 @@
 class FfmpegAT4 < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-4.4.5.tar.xz"
-  sha256 "f9514e0d3515aee5a271283df71636e1d1ff7274b15853bcd84e144be416ab07"
+  url "https://ffmpeg.org/releases/ffmpeg-4.4.6.tar.xz"
+  sha256 "2290461f467c08ab801731ed412d8e724a5511d6c33173654bd9c1d2e25d0617"
   # None of these parts are used by default, you have to explicitly pass `--enable-gpl`
   # to configure to activate them. In this case, FFmpeg's license changes to GPL v2+.
   license "GPL-2.0-or-later"
-  revision 3
+  revision 1
 
   livecheck do
     url "https://ffmpeg.org/download.html"
@@ -14,18 +14,19 @@ class FfmpegAT4 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "7ba55aabaf7f392fd82a0237a3af26b269109da24637cbe7993a033c663dd832"
-    sha256 arm64_sonoma:  "6740ca2e4930657d8a988837f99e47c4af85c9c9c744ab2afefa2a8c8c572c57"
-    sha256 arm64_ventura: "24c0e63bbd4c28ac9f8b633e2a874af3dac3d25c30bfec4a9b8406ee2de44c69"
-    sha256 sonoma:        "ebab393886ca4290430648aa1819126171765184e63198512daba0031e701b58"
-    sha256 ventura:       "12fcd8ca5ed3698a30a9c3ad86c35ef6d9318e35c6258d9c922603167a40c489"
-    sha256 x86_64_linux:  "a7bdce89cfd26e96b357a7b3cd0faad87f552897f9d14b6aa5b232446c04c421"
+    sha256 arm64_sequoia: "a4296862a66e08202decb85c2e426163c838407283521c768e8ad5306aa0bdbb"
+    sha256 arm64_sonoma:  "71172ba10cfe7a20915cb5c473bf5e550c3e49a232c87a0adf0dda0b51bbe961"
+    sha256 arm64_ventura: "59e67106e7879163577611992de4c77754a32930852b506af5df0da8b600add3"
+    sha256 sonoma:        "b2b65123d994bd3fc8ef8278d299e3994788c2193ad2763ba8c05709a890527b"
+    sha256 ventura:       "2df77db20fe2e315d4f45e2bde713cacbb461966c31795aa760cf67083b567f8"
+    sha256 arm64_linux:   "95b2761828fe103ec08b9d775082894d94ae2af89fa0639718f66c1cdd48ffc3"
+    sha256 x86_64_linux:  "bb3e70583a64d3b34beb3174cb03844be08080eba19c4185715ca95294e0eda8"
   end
 
   keg_only :versioned_formula
 
   depends_on "nasm" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "aom"
   depends_on "dav1d"
@@ -78,8 +79,6 @@ class FfmpegAT4 < Formula
     depends_on "libxext"
     depends_on "libxv"
   end
-
-  fails_with gcc: "5"
 
   def install
     args = %W[
@@ -151,6 +150,6 @@ class FfmpegAT4 < Formula
     # Create an example mp4 file
     mp4out = testpath/"video.mp4"
     system bin/"ffmpeg", "-filter_complex", "testsrc=rate=1:duration=1", mp4out
-    assert_predicate mp4out, :exist?
+    assert_path_exists mp4out
   end
 end

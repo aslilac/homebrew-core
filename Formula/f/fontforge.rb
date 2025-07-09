@@ -14,13 +14,14 @@ class Fontforge < Formula
     sha256 arm64_ventura: "a6c3b3307443666523cc29b8bec912c6b1f933fe96580f061478b257ad0a992f"
     sha256 sonoma:        "174995c9c06977e05958d535f7065c443ecbd9b1a64f97c232f83296852866b9"
     sha256 ventura:       "ca33c447dc43b3f8d73bd42eb933b1fe1882794898cf387e4f22714d20ee6420"
+    sha256 arm64_linux:   "4963da0c5611725c86b213cffd04f992fb778fa376ed5e0f58cd9144f7a55310"
     sha256 x86_64_linux:  "91cc737d5d5ff50542c7737cfe8f8f693d64a103b07839d7047a21cb9149e1ee"
   end
 
   depends_on "cmake" => :build
   depends_on "gettext" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "cairo"
   depends_on "fontconfig"
@@ -98,7 +99,7 @@ class Fontforge < Formula
       ffscript = "fontforge.open('Ambrosia.sfd').generate('#{testpath}/Ambrosia.woff2')"
       system bin/"fontforge", "-c", ffscript
     end
-    assert_predicate testpath/"Ambrosia.woff2", :exist?
+    assert_path_exists testpath/"Ambrosia.woff2"
 
     fileres = shell_output("/usr/bin/file #{testpath}/Ambrosia.woff2")
     assert_match "Web Open Font Format (Version 2)", fileres

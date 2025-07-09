@@ -15,12 +15,20 @@ class Fastfec < Formula
     sha256 cellar: :any,                 sonoma:         "89c081d16fcb8be8b1c39ddef7dfeac4ce7b226db72579ab59bc87f11326839c"
     sha256 cellar: :any,                 ventura:        "3ccdf0685ecc6553e6c1c01356b82e9713b4dd0dc6634e7862afddd088a840c4"
     sha256 cellar: :any,                 monterey:       "ab1b085557839ed4b19cc49d839b025ce2bb4fd9a474140121b153b0ca63aff1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "cc006a58982fc06a8ceb17f6bbc083eb0c7e35591ca12bd1bb9b643adb83e7dd"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "bf228d820220f1c3499eced326d33d6492bcb86745db6aaaef29e41e8405f01f"
   end
 
+  # Disable date set to 1 year after upstream issue report[^1] for Zig 0.13 failure.
+  # Zig 0.12.0 was released on 2024-04-20 so date is roughly 1 year 5 months after release.
+  # Also requires EOL `pcre`, which is being vendored on Linux.
+  #
+  # [^1]: https://github.com/washingtonpost/FastFEC/issues/66
+  disable! date: "2025-09-13", because: "does not build with zig >= 0.12 and uses EOL pcre"
+
   depends_on "cmake" => :build # for zig resource
   depends_on "llvm@16" => :build # for zig resource
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   # TODO: depends_on "zig" => :build
   depends_on "zstd" => :build # for zig resource
   depends_on macos: :big_sur # for zig resource - https://github.com/ziglang/zig/issues/13313

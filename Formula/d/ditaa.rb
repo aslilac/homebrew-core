@@ -6,6 +6,8 @@ class Ditaa < Formula
   license "LGPL-3.0-or-later"
   revision 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, all: "4e03eed43d92f5622e98144174fcd5f40dfb2b0bbdcb819aa5b59ec61d5fb632"
@@ -15,10 +17,7 @@ class Ditaa < Formula
 
   def install
     libexec.install "ditaa-#{version}-standalone.jar"
-    (bin/"ditaa").write <<~EOS
-      #!/bin/bash
-      exec "#{Formula["openjdk"].opt_bin}/java" -jar "#{libexec}/ditaa-#{version}-standalone.jar" "$@"
-    EOS
+    bin.write_jar_script libexec/"ditaa-#{version}-standalone.jar", "ditaa"
   end
 
   test do

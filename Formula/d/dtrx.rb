@@ -7,6 +7,8 @@ class Dtrx < Formula
   sha256 "eec67869b85068fac8406f5018d781aee5b55422f3b7698bfea43468b2cec67c"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, all: "a1c04af670ced811950bb65e3ad904f2fe306b495e9ce1ebc1f0c816d016c088"
@@ -42,13 +44,13 @@ class Dtrx < Formula
     system "zip", "test.zip", "test1", "test2", "test3"
     %w[test1 test2 test3].each do |f|
       rm f
-      refute_predicate testpath/f, :exist?, "Text files should have been removed!"
+      refute_path_exists testpath/f, "Text files should have been removed!"
     end
 
     system bin/"dtrx", "--flat", "test.zip"
 
     %w[test1 test2 test3].each do |f|
-      assert_predicate testpath/f, :exist?, "Failure unzipping test.zip!"
+      assert_path_exists testpath/f, "Failure unzipping test.zip!"
     end
 
     assert_equal "Hello!", (testpath/"test1").read

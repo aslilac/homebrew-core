@@ -1,25 +1,26 @@
 class Hpack < Formula
   desc "Modern format for Haskell packages"
   homepage "https://github.com/sol/hpack"
-  url "https://github.com/sol/hpack/archive/refs/tags/0.37.0.tar.gz"
-  sha256 "5d292d70744435d67586f9a8a759debbf160cb70a069a8d65403f123fac84091"
+  url "https://github.com/sol/hpack/archive/refs/tags/0.38.1.tar.gz"
+  sha256 "ccd01b0c737e27bb7c10758fe68fc79c89f0ecf7bfa9c3616938871f0a026ebb"
   license "MIT"
   head "https://github.com/sol/hpack.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e23ea1c56e7a987105a80b4c54d14ac248ac89731b13af28c49f8dbba17a51a2"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5c9a4675bb72bc2fe3e8335fc830c16a6c56e879d1979acfff71ec995de5eca0"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e5d0c25fba0d13f0c209bd62a4645c6a9d580a7f80f75d0d795a6eb51d52f814"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "57e145e9a7bf924201a002e423ae6a137d1e018b8eb3daa18ad42ba43712ac7c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "77832296bb8708c4aac8643bd20e5fe2fd0516e543799e1d1ca01b7586a9c1ab"
-    sha256 cellar: :any_skip_relocation, ventura:        "b7d2d5abf43bb2f0a489d5b106317fb456a8e88bfee0dbfdebd5378f3bae8ccd"
-    sha256 cellar: :any_skip_relocation, monterey:       "7f556437b6cc2b49f48e11d3dc2ba23af7352ca79218b3cfb98cc919c545f861"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "87c5256ee39899b3842e8faf9d9bdbfbdacfbd0cf10e45ec8bea4c6592e248f5"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "506faf7c344fc1997660ffda25024706c2b54b1e214dbea969aebad5cf0dc111"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7acb9d1da41078cc9c8cbbc99d6d207a70dc84be8969b36289ba959dfceff13b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d0773c8ef24951ae47c9f8857787ddcb1cfe167e3a26f0947cce5fffa25b88ba"
+    sha256 cellar: :any_skip_relocation, sonoma:        "fd8894d5c462ad64921917b06d6fb5218498c3449be09efc863f7ef403efb27e"
+    sha256 cellar: :any_skip_relocation, ventura:       "e523a9d85f322584f051fe7714f9c83ab58ff17a56deb9ae73526a22f47e7a52"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8ecf79f06c6d22e1e71b63d44c89fec1ba2abff56b1e14d51af04e7ae734a6f6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c8c54054592cd045802666c94874a5637edc6745fa94cda90fc3af1b1d97770c"
   end
 
   depends_on "cabal-install" => :build
   depends_on "ghc" => :build
+  depends_on "gmp"
 
+  uses_from_macos "libffi"
   uses_from_macos "zlib"
 
   def install

@@ -10,6 +10,8 @@ class Tinc < Formula
     regex(/href=.*?tinc[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "d452247fec1d29690250c77dafdeb7cac2c945ddef7f11e19fa728563cf4f720"
@@ -22,6 +24,7 @@ class Tinc < Formula
     sha256 cellar: :any,                 monterey:       "58d69be546dceda9a4d413770531633c132cf46a5901553f3d0367cd0bae282f"
     sha256 cellar: :any,                 big_sur:        "094208fa2043d75696fa60b47a4d26f32e67fbffcce78cc37429a6eac641ddb8"
     sha256 cellar: :any,                 catalina:       "878a5d0ded29f6b9ad6a18e040508e7597551d4b359c39f9ecaaa7fc6cb91b12"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "66115eb9b72b5609f201efb79752275a5d166d530e538689d3770ad51e8a33e3"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f1cf23e958fe70fd7662d67e87ab9adfd4d838550b104216ec70363391ec7595"
   end
 

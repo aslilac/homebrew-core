@@ -5,6 +5,8 @@ class Pgdbf < Formula
   sha256 "e46f75e9ac5f500bd12c4542b215ea09f4ebee638d41dcfd642be8e9769aa324"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a1747cf572e94ce2d46311dc5f7d13f736e22f0b1be93a3abd0fb8e1c3d781ac"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "35cd208c6ab173a31b1732a64b19ae4a9f34d127ec6dbfed163452e5227c6e50"
@@ -20,12 +22,16 @@ class Pgdbf < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "caf544eee09339bb34ab68a35880bc863bb13aa7943de98ef25680cb0182f901"
     sha256 cellar: :any_skip_relocation, sierra:         "7d0eabf3051e9cf450d985987f89cf0d70476b37202b3b5bdc84ec48e8cb670d"
     sha256 cellar: :any_skip_relocation, el_capitan:     "72ad6b801d25db2008d0ab4badd2bb280f55eb6f6956925ee5620d62d8f06bbb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "6ae4511e609fa6ac9a2b0566969f0e511756b9e6b6c55f17655333aa7ddd01a0"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7f2e231fc1b78b7837dfe257a04e2495128237e5800609675573dd2734185ea5"
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = []
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 end

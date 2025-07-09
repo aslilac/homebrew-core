@@ -5,6 +5,8 @@ class Gptfdisk < Formula
   sha256 "2abed61bc6d2b9ec498973c0440b8b804b7a72d7144069b5a9209b2ad693a282"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "ba4643273f140cbd13365868699724cf632eb57dd3e5557d416437f84462b0c1"
     sha256 cellar: :any,                 arm64_sonoma:   "09a2999c7d63ed2b2b1d1653b8b0eefc58e6a34f44deea18621b8c0137fc3382"
@@ -13,6 +15,7 @@ class Gptfdisk < Formula
     sha256 cellar: :any,                 sonoma:         "0f866a7fa08045f6cb0ccec6da7daa2f97f6160f3d1cbbfda57e3f5efa3f1547"
     sha256 cellar: :any,                 ventura:        "a991ae67bc6d77886ba9fdcac791531c8557d093e385c74d34c5252e8ac62039"
     sha256 cellar: :any,                 monterey:       "8b3365f6c8abda6ce8a8a4ee7b0fc0d7760cb69002b8710cef9c35413dfbdee7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "4fa3e95ed08561ff4010db7de68898854716dfacfd248bf1a4263aec35dc484e"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "28c7afa4c318fb486bcaa3dec28ca8a349fd98135d68435f69ec56917fb9d2ff"
   end
 

@@ -19,6 +19,7 @@ class Kvazaar < Formula
     sha256 cellar: :any,                 sonoma:         "c881324ae98a472927554e4bf70a17a58a1b3379d25001f3a568b2ab1fcb6cab"
     sha256 cellar: :any,                 ventura:        "3ece2ea661d18cb5918f69e7195bd81099410e791cd0dedbcc45804228359262"
     sha256 cellar: :any,                 monterey:       "d76eeeebbdb79194bb39d0d0fe3936b2cef84defc4291a2ce7b39c2605d5ed8d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "394c7735ec112aa22c3963fd37f0a106671da91184545c7b3eb6f279f7cf17d4"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "0146faec0f382d38334e44d177ce0c75c5de2b1eb042e00040c4e1cc3a401575"
   end
 
@@ -27,11 +28,6 @@ class Kvazaar < Formula
   depends_on "libtool" => :build
   depends_on "yasm" => :build
 
-  resource "homebrew-videosample" do
-    url "https://samples.mplayerhq.hu/V-codecs/lm20.avi"
-    sha256 "a0ab512c66d276fd3932aacdd6073f9734c7e246c8747c48bf5d9dd34ac8b392"
-  end
-
   def install
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}"
@@ -39,10 +35,15 @@ class Kvazaar < Formula
   end
 
   test do
+    resource "homebrew-videosample" do
+      url "https://samples.mplayerhq.hu/V-codecs/lm20.avi"
+      sha256 "a0ab512c66d276fd3932aacdd6073f9734c7e246c8747c48bf5d9dd34ac8b392"
+    end
+
     # download small sample and try to encode it
     resource("homebrew-videosample").stage do
       system bin/"kvazaar", "-i", "lm20.avi", "--input-res", "16x16", "-o", "lm20.hevc"
-      assert_predicate Pathname.pwd/"lm20.hevc", :exist?
+      assert_path_exists Pathname.pwd/"lm20.hevc"
     end
   end
 end

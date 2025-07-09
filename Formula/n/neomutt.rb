@@ -1,18 +1,19 @@
 class Neomutt < Formula
   desc "E-mail reader with support for Notmuch, NNTP and much more"
   homepage "https://neomutt.org/"
-  url "https://github.com/neomutt/neomutt/archive/refs/tags/20241114.tar.gz"
-  sha256 "044bb5a37d5095016569a1b505f7c2f7d8b93e90ff95c2edb82830313319ce9a"
+  url "https://github.com/neomutt/neomutt/archive/refs/tags/20250510.tar.gz"
+  sha256 "12d225e270d8e16cda41d855880b9d938750a4f1d647f55c6353337d32ffd653"
   license "GPL-2.0-or-later"
   head "https://github.com/neomutt/neomutt.git", branch: "main"
 
   bottle do
-    sha256 arm64_sequoia: "0d836ad684cb2021c7d15c4a56ea534bf1019878136a4aae255c116ad0e64e12"
-    sha256 arm64_sonoma:  "a3613569f907c7ce51570b35053fdc4121f0d9055454f7255676e39e5e073dfd"
-    sha256 arm64_ventura: "8457226154aadeca7bcb129911b43ba7113181160ca953db12d0f17eb80478f5"
-    sha256 sonoma:        "3529a0f181a8548a2abd89a69c146b0b348e25073be559cf4a6b0508dd29ccb0"
-    sha256 ventura:       "70d87820a0ac9f34978230a9b84fc38d5b7b0dce6ac9c5f3dd88bd1347d72d59"
-    sha256 x86_64_linux:  "0415adbbf45dfa3318210777f99736331956b9f847c96114e90538db1c5c8c20"
+    sha256 arm64_sequoia: "aeeccca4cdcc5bcfdd187ff32ec295746bd0ff57a92b108a67609917ca6ca96e"
+    sha256 arm64_sonoma:  "e7494884f1e9a9289e3993fd0fca9ae0f310d1d30b3886cc95abe0a58bbf18cd"
+    sha256 arm64_ventura: "2b2fd04f1c68cb95cca733c59c6892b7e9a91e33583844bcd36327c23ae08ddf"
+    sha256 sonoma:        "fe987a4cb6230c846a72b1eb4a7112bbe6699400f349ca3152811a5d7b941999"
+    sha256 ventura:       "695b0073f3d0b12d395f8b4c82606d941879ef26c091ce3c29f358a26c1da1bf"
+    sha256 arm64_linux:   "6b80fca262c7f3614cb79765ca84c2dc49b0b00ac42262f387939bb5cfad4736"
+    sha256 x86_64_linux:  "a04f64ef9d7de760165d6816de3256163f3473d26e4b25967e09a1d1e6f7320f"
   end
 
   depends_on "docbook-xsl" => :build
@@ -74,7 +75,7 @@ class Neomutt < Formula
   end
 
   test do
-    output = shell_output("#{bin}/neomutt -F /dev/null -Q debug_level")
+    output = shell_output("#{bin}/neomutt -F /dev/null -Q debug_level", 1)
     assert_equal "set debug_level = 0", output.chomp
   end
 end

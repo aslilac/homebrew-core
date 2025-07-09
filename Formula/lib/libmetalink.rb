@@ -10,6 +10,8 @@ class Libmetalink < Formula
     regex(%r{<div class="version">\s*Latest version is libmetalink[._-]v?(\d+(?:\.\d+)+)\s*</div>}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "4ef91819c19bd453ad990a0cea47a38c4b11f527c6a04e91fbca1743bbe09e78"
     sha256 cellar: :any,                 arm64_sonoma:   "2d96d68b47cb11ebd54431713f613b092ef59e60cbb0ebde4752128035e8a3f5"
@@ -25,16 +27,16 @@ class Libmetalink < Formula
     sha256 cellar: :any,                 high_sierra:    "037c9d82da0a2c77031515cc8618b28552c526e559b3d9cebb0f054cd66204e3"
     sha256 cellar: :any,                 sierra:         "87711da9c52d75d2d6fed5829a70b0f6561f55fdcf1129266001b6e96bc69b1b"
     sha256 cellar: :any,                 el_capitan:     "4ca3f82ac2e2520c677def661168c6ba14ee2b8f0139fbe33cf5be66745244d3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "3fdd87e5927d64ecdf222d1bb8527d43de66446ba24e07f54dfb4c37ebd93183"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "583e662593473f7310e1c3e3bed77a89a4dc43aed5fd1ce6a12a7260ec69c5f5"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   uses_from_macos "expat"
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 end

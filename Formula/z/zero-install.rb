@@ -1,9 +1,8 @@
 class ZeroInstall < Formula
   desc "Decentralised cross-platform software installation system"
   homepage "https://0install.net/"
-  url "https://github.com/0install/0install.git",
-      tag:      "v2.18",
-      revision: "b58af5db6afd496cfd4a5f85fb23f30ba8dfbc87"
+  url "https://github.com/0install/0install/releases/download/v2.18/0install-2.18.tbz"
+  sha256 "648c4b318c1a26dfcb44065c226ab8ca723795924ad80a3bf39ae1ce0e9920c3"
   license "LGPL-2.1-or-later"
   head "https://github.com/0install/0install.git", branch: "master"
 
@@ -11,6 +10,8 @@ class ZeroInstall < Formula
     url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c693f4d80b111a0a5358f8b473320134c026a20d87febc6f827bab257876baff"
@@ -23,11 +24,11 @@ class ZeroInstall < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "f293e6e5c07b33cebf63f868e2582e3dc390c0e2305fcefb7e7b17c5eb6d57fb"
     sha256 cellar: :any_skip_relocation, big_sur:        "0f4761b5bf5adce56f3a0084b110aa51026cdbd85a152112481484a30878a13b"
     sha256 cellar: :any_skip_relocation, catalina:       "66a2d596f829de3bab7abf5558b0c4e9e922983ee146930b3755c38f4a593e02"
+    sha256                               arm64_linux:    "eaa97baccdef4813578e7a9bd8ad445a65358b1ebd48598ceddf53b0a156859e"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "dcc1fe5759e42d2757f7ab28cdd33eecc9339ef83bf8aebb60cba6d8b5dd94d6"
   end
 
   depends_on "ocaml" => :build
-  depends_on "ocamlbuild" => :build
   depends_on "opam" => :build
   depends_on "pkgconf" => :build
   depends_on "gnupg"
@@ -36,41 +37,16 @@ class ZeroInstall < Formula
   uses_from_macos "unzip" => :build
   uses_from_macos "curl"
 
-  on_linux do
-    depends_on "pkgconf"
-  end
-
   def install
-    ENV.append_path "PATH", Formula["gnupg"].opt_bin
+    ENV["OPAMROOT"] = buildpath/".opam"
+    ENV["OPAMYES"] = "1"
+    ENV["OPAMVERBOSE"] = "1"
+    packages = ["./0install.opam", "./0install-solver.opam"]
 
-    Dir.mktmpdir("opamroot") do |opamroot|
-      ENV["OPAMROOT"] = opamroot
-      ENV["OPAMYES"] = "1"
-      ENV["OPAMVERBOSE"] = "1"
-      system "opam", "init", "--no-setup", "--disable-sandboxing"
-      # Tell opam not to try to install external dependencies
-      system "opam", "option", "depext=false"
-      modules = %w[
-        yojson
-        xmlm
-        ounit
-        lwt_react
-        ocurl
-        sha
-        dune
-      ]
-      system "opam", "config", "exec", "opam", "install", *modules
-
-      # mkdir: <buildpath>/build: File exists.
-      # https://github.com/0install/0install/issues/87
-      ENV.deparallelize { system "opam", "config", "exec", "make" }
-
-      inreplace "dist/install.sh" do |s|
-        s.gsub! '"/usr/local"', prefix
-        s.gsub! '"${PREFIX}/man"', man
-      end
-      system "make", "install"
-    end
+    system "opam", "init", "--no-setup", "--disable-sandboxing"
+    system "opam", "exec", "--", "opam", "install", *packages, "--deps-only", "-y", "--no-depexts"
+    system "opam", "exec", "--", "make", "all"
+    system "opam", "exec", "--", "dist/install.sh", prefix
   end
 
   test do

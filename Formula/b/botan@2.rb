@@ -6,11 +6,6 @@ class BotanAT2 < Formula
   license "BSD-2-Clause"
   head "https://github.com/randombit/botan.git", branch: "release-2"
 
-  livecheck do
-    url :homepage
-    regex(/href=.*?Botan[._-]v?(2(?:\.\d+)+)\.t/i)
-  end
-
   bottle do
     rebuild 1
     sha256 arm64_sequoia: "1104641a2c34fa2c1212ad9002fc1a2089a75be4c9fb66ad655a1680c8428ad0"
@@ -18,6 +13,7 @@ class BotanAT2 < Formula
     sha256 arm64_ventura: "31a49478cd103522bee1b3e216145c3ba149f93e586a824b9d1b4ed4a2a196ae"
     sha256 sonoma:        "2bb57c57173cd293cc738dda60c02bcd2d7ddffad9f6e5d0b170245c03feaeff"
     sha256 ventura:       "51ecbd410373905c81df9ab8cf43b39076c77d255bd00e797a09c0a8243422bd"
+    sha256 arm64_linux:   "7a3bb2490765aa9f96884caf3d476001baa5d2ad8cf2fb400db87e6e6e8d413a"
     sha256 x86_64_linux:  "9fd91b5d569739ca97a8130d374d0d289a1d5f6a4b7e9cea90014ec714b52181"
   end
 
@@ -33,8 +29,6 @@ class BotanAT2 < Formula
 
   uses_from_macos "bzip2"
   uses_from_macos "zlib"
-
-  fails_with gcc: "5"
 
   def python3
     which("python3.13")

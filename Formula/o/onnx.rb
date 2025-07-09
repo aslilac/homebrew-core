@@ -4,28 +4,36 @@ class Onnx < Formula
   url "https://github.com/onnx/onnx/archive/refs/tags/v1.17.0.tar.gz"
   sha256 "8d5e983c36037003615e5a02d36b18fc286541bf52de1a78f6cf9f32005a820e"
   license "Apache-2.0"
+  revision 2
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "d2144e03e0a2c5414c3be8990425d71d5734d53edadcb74a6c587e5167bd123e"
-    sha256 cellar: :any,                 arm64_sonoma:  "de643758f6f3dadc80300b4a842aaeed3837092d26422921eb32cbba2d591ecd"
-    sha256 cellar: :any,                 arm64_ventura: "681bff0d190bb8df52d7e84f54d2fa2a1ce819976c1f7403d3f983a46245e20e"
-    sha256 cellar: :any,                 sonoma:        "f34da28859b67f6450d39ac2efdc2952203d8887756a07a0e126ff166002735a"
-    sha256 cellar: :any,                 ventura:       "cd411a76e28823c7d5e4e32db067a58414c9da18fe33fa0591d0a9c895316ba5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bdb60989003bffd5716dc752d9a62fba40dd21a5a4a77089d750c06fbeb7e06f"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "87e803d38d384328e30a6104d461aa429168f34f90166034effa1f2393e68cc2"
+    sha256 cellar: :any,                 arm64_sonoma:  "24042b9d2631f8eaa656651f4d8ae2c0bcf21c9494ad83af0d4157171df0a1dd"
+    sha256 cellar: :any,                 arm64_ventura: "4ea1894f1dbcf250d0a5a8fc6189dae1223c4c8f0540c6e2ce6ddb275d8e578a"
+    sha256 cellar: :any,                 sonoma:        "d3d1459cffc0e2547efc589427b32bf67cf6d5e6daedf30c62747d7bc1bedb61"
+    sha256 cellar: :any,                 ventura:       "657fa2a17084889403dc19a6385df4979c6bade3eea063e559668f387d5017c2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3f8ade75bd41095e4e6104c6fa4f3a296c52c626a5fc58ff63c13d8d859e53a3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9527543ac126f35a52e537eb66386e7a73abc22c197cfc6e5e199dd3eeb949ad"
   end
 
   depends_on "cmake" => [:build, :test]
-  depends_on "protobuf@21"
+  depends_on "abseil"
+  depends_on "protobuf"
 
   uses_from_macos "python" => :build
 
   def install
-    system "cmake", "-S", ".", "-B", "build",
-                    "-DBUILD_SHARED_LIBS=ON",
-                    "-DCMAKE_INSTALL_RPATH=#{rpath}",
-                    "-DONNX_USE_PROTOBUF_SHARED_LIBS=ON",
-                    "-DPYTHON_EXECUTABLE=#{which("python3")}",
-                    *std_cmake_args
+    args = %W[
+      -DBUILD_SHARED_LIBS=ON
+      -DCMAKE_INSTALL_RPATH=#{rpath}
+      -DONNX_USE_PROTOBUF_SHARED_LIBS=ON
+      -DPYTHON_EXECUTABLE=#{which("python3")}
+    ]
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
@@ -86,16 +94,18 @@ class Onnx < Formula
     CPP
 
     (testpath/"CMakeLists.txt").write <<~CMAKE
-      cmake_minimum_required(VERSION 3.5)
+      cmake_minimum_required(VERSION 3.10)
       project(test LANGUAGES CXX)
       find_package(ONNX CONFIG REQUIRED)
       add_executable(test test.cpp)
       target_link_libraries(test ONNX::onnx)
     CMAKE
 
-    args = OS.mac? ? [] : ["-DCMAKE_BUILD_RPATH=#{lib}"]
-    system "cmake", ".", *args
-    system "cmake", "--build", "."
-    system "./test"
+    ENV.delete "CPATH"
+    args = ["-DCMAKE_FIND_PACKAGE_PREFER_CONFIG=ON"]
+    args << "-DCMAKE_BUILD_RPATH=#{lib};#{HOMEBREW_PREFIX}/lib" if OS.linux?
+    system "cmake", "-S", ".", "-B", "build", *args
+    system "cmake", "--build", "build"
+    system "./build/test"
   end
 end

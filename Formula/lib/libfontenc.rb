@@ -13,11 +13,12 @@ class Libfontenc < Formula
     sha256 cellar: :any,                 sonoma:         "bddef82fa135b48fa58485df06f80aeda327ac2e77a4fdb05d3543135c123692"
     sha256 cellar: :any,                 ventura:        "ce1f99b92616293e816e6d04918e1570ff18ed052ba6cdcb66115ceee37d9240"
     sha256 cellar: :any,                 monterey:       "4f2d62d14136a1c6ca9e4f01d1b1bf454c9e90bc6eb3f50e6bff76a631ac0621"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "484aac796b8b64a4cf00668a052c6734851f54de232c684a48255245bf7898f9"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "8f29d93ac7c98c61ac6e50b6d057bac244b13eb52046af1634ee623f452b1c5e"
   end
 
   depends_on "font-util" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "util-macros" => :build
   depends_on "xorgproto" => :build
 
@@ -25,14 +26,12 @@ class Libfontenc < Formula
 
   def install
     args = %W[
-      --prefix=#{prefix}
       --sysconfdir=#{etc}
       --localstatedir=#{var}
-      --disable-dependency-tracking
       --disable-silent-rules
     ]
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
   end

@@ -11,6 +11,8 @@ class Uvw < Formula
     regex(/^v?(\d+(?:\.\d+)+)(?:[._-]libuv[._-]v?\d+(?:\.\d+)*)?$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9ffd8957741528fa17ff2883d204d9a86f58bf13f1d2d12e11b9e23436412c1e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bd6b702c8f2b647f207611e843ec0d36731982a20b61759e9aae7465f5e8cb8f"
@@ -19,6 +21,7 @@ class Uvw < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "6e9929a431e28be34456a3c4eeffa04c4b045a98e416acc4727423d54a2c6815"
     sha256 cellar: :any_skip_relocation, ventura:        "d4a069f5c1bbb5d81410483e2a1989498acd3788827abb2ee38d30f590f5b65e"
     sha256 cellar: :any_skip_relocation, monterey:       "8bc362bc8cb3cf30ea27a8d4f4f9b5cd44b8290b45b440f6b6da97a6b22a7284"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "612431aeef05fad9b635b106bdd5fde18f7d03b30de86ff5e64f0655696aed45"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1df5b81661883a5eb47d2156a1def7b605a78d8270c255e8c367b347d8b06ceb"
   end
 
@@ -29,7 +32,6 @@ class Uvw < Formula
   def install
     args = %w[
       -DBUILD_UVW_LIBS=ON
-      -DBUILD_TESTING=OFF
       -DBUILD_DOCS=OFF
     ]
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
@@ -39,7 +41,7 @@ class Uvw < Formula
 
   test do
     (testpath/"CMakeLists.txt").write <<~CMAKE
-      cmake_minimum_required(VERSION 3.0)
+      cmake_minimum_required(VERSION 4.0)
       project(test_uvw)
 
       set(CMAKE_CXX_STANDARD 17)

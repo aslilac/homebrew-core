@@ -5,6 +5,8 @@ class Confuse < Formula
   sha256 "1dd50a0320e135a55025b23fcdbb3f0a81913b6d0b0a9df8cc2fdf3b3dc67010"
   license "ISC"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any, arm64_sequoia:  "4a559294bf3ec51132b479ee9b90c5e90dea6183c11707471b89a4d06b0ab371"
     sha256 cellar: :any, arm64_sonoma:   "6d46500c283c20fcf41348fc34293d30a85e0fac9955ea849369deeaf84b3a2b"
@@ -18,6 +20,7 @@ class Confuse < Formula
     sha256 cellar: :any, catalina:       "13ad01ca606e746ab7f6bcd42b0da08abdcc29ccaaa9e8106f9d28bfe96bffd7"
     sha256 cellar: :any, mojave:         "d6038fe2a7fcfea4ba6e3c29174cb6201ce7d05e22ef4c76b881b9f12dabcff6"
     sha256 cellar: :any, high_sierra:    "371f699488d7e4459251c55e4ef4d9087b08e07b4fedfc553476bc30070ca9c1"
+    sha256               arm64_linux:    "0be4562183f1ec990e0a9f2e082e82528048a0261b292013a8fc5b3f06e4b7db"
     sha256               x86_64_linux:   "a5fbe815c75f10344684dab03501ecab39cec4b157e46d955f6e2c70062d120b"
   end
 

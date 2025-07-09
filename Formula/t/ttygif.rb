@@ -5,6 +5,8 @@ class Ttygif < Formula
   sha256 "050b9e86f98fb790a2925cea6148f82f95808d707735b2650f3856cb6f53e0ae"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b6e237ea0e9b4a23fd56ec73b8946859eebcc2b4fb732c6268a9ce942db6ad8e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "440b8d0af646eb7601a60d54d5af8813aa268593ebc3edd5dd1961f19915aee0"
@@ -16,6 +18,7 @@ class Ttygif < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "4c955eb6cda1e45e9668ad7eb8cd2f4c8d03754a4fb877a08fc4ffeb6c8602cb"
     sha256 cellar: :any_skip_relocation, big_sur:        "fd4346a5d4ff4e7fdbb5fefad4ab5943f927e43d7fb4fe5a45a496d6f8bf62f3"
     sha256 cellar: :any_skip_relocation, catalina:       "c9fcc9f4e6331acefe39cd12ed8c8ae353d028040526c84f98d6f656cd34af03"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "6f640f1292cd1506f8c97f9f177cb9dbeffa113ca28c36c65da9609c1770551b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6db4dfad8975d11c05ab0ffad2da2ca5864872948ba4e872323e9dee07c26289"
   end
 

@@ -6,6 +6,8 @@ class Fzy < Formula
   license "MIT"
   head "https://github.com/jhawthorn/fzy.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8cbf2b486b0abed29cf5fb45fc5580fc74881ceacae68cd11e53bdbeabae52ea"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "250fc5952135704c7a93c1066a13fbb27322358dedc115d7792da91cd56d12ed"
@@ -20,6 +22,7 @@ class Fzy < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "2f7d67a61ad3cf284ec15d95e2f5eedaf1cf0ecb63ea2a8994df9733160b3a2b"
     sha256 cellar: :any_skip_relocation, high_sierra:    "fb173da3b703940c9dd8c942ced0db3c068f544be59fb01ccfe835f566d13cef"
     sha256 cellar: :any_skip_relocation, sierra:         "b478e2604e81faf0a2e7278afe2f811ff1739528f246fcf2556e05a81f1d3435"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "723aa3f59805ede46ae9a76f3fb043e6c1f5f1d9555cdac61da51f0a0897437c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "696df3c3d3296b1b03bcf0e75eb7d7bc73f004fd15fe7f7899aa10dca7d3e6f6"
   end
 

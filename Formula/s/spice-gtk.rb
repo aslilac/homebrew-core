@@ -13,6 +13,8 @@ class SpiceGtk < Formula
     regex(/href=.*?spice-gtk[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 arm64_sequoia:  "9b710c6b06c09f3b4c64937c7499df490e00294ab41e330657dd7025f0040abf"
@@ -22,6 +24,7 @@ class SpiceGtk < Formula
     sha256 sonoma:         "5899efc0635b8e80ed5d8500bbfb654aaaf241a457d7a817d51c066f991d73ed"
     sha256 ventura:        "25c6fdcf7449f65c449d4ef7379d80b607c6d6aabc2a5823b4bd0241394e73cf"
     sha256 monterey:       "a553e9a2c8c13b84545376374a8a1418c35bb9aa10baeeb6c536c09c106b7a5b"
+    sha256 arm64_linux:    "0c23d1d447cdcb8881dcccdd7e5ebdd2d2fd58b8bf8aa486568dfa2c1e835ef3"
     sha256 x86_64_linux:   "7ffdfb8565e07edaa4aaaed8ec4926679bfbe5242b32343e9c97dfe6ff02f69a"
   end
 
@@ -30,8 +33,8 @@ class SpiceGtk < Formula
   depends_on "libtool" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
-  depends_on "python@3.12" => :build
+  depends_on "pkgconf" => [:build, :test]
+  depends_on "python@3.13" => :build
   depends_on "vala" => :build
 
   depends_on "at-spi2-core"
@@ -88,7 +91,7 @@ class SpiceGtk < Formula
   patch :DATA
 
   def install
-    venv = virtualenv_create(buildpath/"venv", "python3.12")
+    venv = virtualenv_create(buildpath/"venv", "python3.13")
     venv.pip_install resources
     ENV.prepend_path "PATH", venv.root/"bin"
 
@@ -107,11 +110,12 @@ class SpiceGtk < Formula
     CPP
     ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["icu4c"].lib}/pkgconfig"
     system ENV.cc, "test.cpp",
-                   *shell_output("pkg-config --cflags --libs spice-client-gtk-3.0 ").chomp.split,
+                   *shell_output("pkgconf --cflags --libs spice-client-gtk-3.0 ").chomp.split,
                    "-o", "test"
     system "./test"
   end
 end
+
 __END__
 diff --git a/subprojects/keycodemapdb/tools/keymap-gen b/subprojects/keycodemapdb/tools/keymap-gen
 index b6cc95b..d05e945 100755

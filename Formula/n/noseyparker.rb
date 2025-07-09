@@ -1,18 +1,19 @@
 class Noseyparker < Formula
   desc "Finds secrets and sensitive information in textual data and Git history"
   homepage "https://github.com/praetorian-inc/noseyparker"
-  url "https://github.com/praetorian-inc/noseyparker/archive/refs/tags/v0.21.0.tar.gz"
-  sha256 "51d2be098d41a7dc4165b35151a448d27e32300559ebd7e524f34a76202c0a9d"
+  url "https://github.com/praetorian-inc/noseyparker/archive/refs/tags/v0.24.0.tar.gz"
+  sha256 "df31128ec64c0bdb7e8c6917ad68a0c69fe4fe1bd4355332b94938ed08edc2ce"
   license "Apache-2.0"
   head "https://github.com/praetorian-inc/noseyparker.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0c7ba3526341d6d2b78fbdea3c3bba351e1e3c68885f70f5f775cd43e8ed323c"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ac1fb7ee64da882895cf4bd677b7cd17c3a1a53afb3613bbe5ce824f9f08ca0b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "18157c8f522d378f5d01a7d764032d1fd2946dc307ece517e1bc943e77f57e5c"
-    sha256 cellar: :any_skip_relocation, sonoma:        "cff5ae252072fe8a78f44466764e6b580ee90a3f8e116d9a99e2bd4504b7bd37"
-    sha256 cellar: :any_skip_relocation, ventura:       "1377acab1ab02222a09f74bccac116623cc35d24800e5d64d43f505abd1080da"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ac3db148e145859ffecc26d8618e62317fa9fb3ea63500378cd42d3ca21a7150"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b3d50cf968e60eff8c5e51bf937bfd8528a7d7cb89d5df6ad8467b50b6cc7893"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "17369ef3f870c5a18489e7baed30d33fb571fadcade62ec1091f6d54f00abe86"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "6ab5f7973f25bc569e1a79c7d978739a9428ce3954b4775efa76e20718e8e0d4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "2aa6a8b34c8484d0fc36febad3e465ac48f53b71ff4f596490dfee97688ee008"
+    sha256 cellar: :any_skip_relocation, ventura:       "7be747e4d857c18ec1b1f4345d5f4745c65c54c782b2efc50bda45f1aa268d6d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "d86b9a2d4377d12ec9783e9855bc8bbd8ba06270860ff85521c0adf507fd0448"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "99c219b6991576f9ee16f57cb2f08f5d2081dacb1f5ce8c61136ae8c7ffbf470"
   end
 
   depends_on "boost" => :build

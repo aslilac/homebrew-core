@@ -11,6 +11,8 @@ class Ucon64 < Formula
     regex(%r{url=.*?/ucon64[._-]v?(\d+(?:\.\d+)+)-src\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "f55e08ec43d072e3a5e53d38a3244adae7dcaceca71045c2bd525f05a1588609"
     sha256 arm64_sonoma:   "301ce960dee0312e69f72b00da7d4e297091039cfe5e3d10364fe48fb0b49122"
@@ -22,16 +24,12 @@ class Ucon64 < Formula
     sha256 monterey:       "1ffac20e4aafeabe33ab750f2f40589bb894caf7ee372380a065abeb7e06655c"
     sha256 big_sur:        "1638a10fb2622983abc00934ba023cb03a1d7b332e45d9024b717f74a0d3fee7"
     sha256 catalina:       "3672dbe3c97e6d71f22a6666adec1cca709ffc3dea9c76baf16fbeb8f63a4782"
+    sha256 arm64_linux:    "15cef90fe66dfeaa08768ef3a8c3640ae30454fbd7e682b05357b7bc95be9fb3"
     sha256 x86_64_linux:   "f2b2e0353e5bfa4e226a5182b6d36786874ced3c0ae4426866d2a2436aa0c739"
   end
 
   uses_from_macos "unzip" => [:build, :test]
   uses_from_macos "zlib"
-
-  resource "homebrew-super_bat_puncher_demo" do
-    url "http://morphcat.de/superbatpuncher/Super%20Bat%20Puncher%20Demo.zip"
-    sha256 "d74cb3ba11a4ef5d0f8d224325958ca1203b0d8bb4a7a79867e412d987f0b846"
-  end
 
   def install
     # ucon64's normal install process installs the discmage library in
@@ -43,11 +41,9 @@ class Ucon64 < Formula
                                    "\"#{opt_prefix}/libexec/#{shared_library("libdiscmage")}\""
 
     cd "src" do
-      system "./configure", "--disable-debug",
-                            "--disable-dependency-tracking",
-                            "--disable-silent-rules",
-                            "--prefix=#{prefix}",
-                            "--with-libdiscmage"
+      args = ["--disable-silent-rules", "--with-libdiscmage"]
+      args << "--disable-parallel" if OS.linux? && Hardware::CPU.arm? # no sys/io.h
+      system "./configure", *args, *std_configure_args
       system "make"
       bin.install "ucon64"
       libexec.install "libdiscmage/#{shared_library("discmage")}" => shared_library("libdiscmage")
@@ -63,6 +59,11 @@ class Ucon64 < Formula
   end
 
   test do
+    resource "homebrew-super_bat_puncher_demo" do
+      url "http://morphcat.de/superbatpuncher/Super%20Bat%20Puncher%20Demo.zip"
+      sha256 "d74cb3ba11a4ef5d0f8d224325958ca1203b0d8bb4a7a79867e412d987f0b846"
+    end
+
     resource("homebrew-super_bat_puncher_demo").stage testpath
 
     assert_match "00000000  4e 45 53 1a  08 00 11 00  00 00 00 00  00 00 00 00",

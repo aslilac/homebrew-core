@@ -5,6 +5,8 @@ class Orcania < Formula
   sha256 "e26947f7622acf3660b71fb8018ee791c97376530ab6c4a00e4aa2775e052626"
   license "LGPL-2.1-only"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "4c6bcdc1d22075f81c8d4660d2e7f26bf495a7d3b71ba07dc73cec9cb60df3ac"
     sha256 cellar: :any,                 arm64_sonoma:   "d40e5c622f0f94b0ace12b30ee6401d198f4a988e8e2874fbc8816529c7c72d0"
@@ -15,6 +17,7 @@ class Orcania < Formula
     sha256 cellar: :any,                 ventura:        "04e91894340f16e77b29b974885922c8812a8c4d94fc3098ff21ca948747d1df"
     sha256 cellar: :any,                 monterey:       "49b66d5ad6ad86a71a736c8e171843d4d6d0e83a23d94f4acd78cd90269e761a"
     sha256 cellar: :any,                 big_sur:        "18f44c9ca72121336f4333774fcc6cd09c8abcebd36a2e0a4877dfcc91a7cd86"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "ddad2cd0a1bba267263af61519f18409bc73024cc7bac3eb2134bf6ce92c25f9"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "fd436eb031d76eb857b159813bee79f30712400f420072ef8b57476b3ff26851"
   end
 

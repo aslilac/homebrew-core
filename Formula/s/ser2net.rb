@@ -1,10 +1,9 @@
 class Ser2net < Formula
   desc "Allow network connections to serial ports"
   homepage "https://ser2net.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/ser2net/ser2net/ser2net-4.6.2.tar.gz"
-  sha256 "63bafcd65bb9270a93b7d5cdde58ccf4d279603ff6d044ac4b484a257cda82ce"
+  url "https://downloads.sourceforge.net/project/ser2net/ser2net/ser2net-4.6.5.tar.gz"
+  sha256 "96dfc3fd06b1bf4d7c1f46d7e8cc1eff555de64f419d76f57bd0346e000f9781"
   license "GPL-2.0-only"
-  revision 1
 
   livecheck do
     url :stable
@@ -12,14 +11,13 @@ class Ser2net < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "f3a48bb90a74bc4a7523165733ec373bde6dca179f82072484590b7626e41d9a"
-    sha256 arm64_sonoma:   "8b7b88a0bbbf4325b6f47ece8462d1750a624430d22cf86dd1ce04dc3c403fed"
-    sha256 arm64_ventura:  "6cb048373bba9403792c7516530d82f16f55546f4ffd28834552f3cc3863a8e8"
-    sha256 arm64_monterey: "84daf687cbd1d5a3868eacb728e89c836ed61c53317d72e66d87ed5f41926e40"
-    sha256 sonoma:         "9c80d4349d5cf1cf5468868dd002368e9e056e62e09c29e1554dd152ef561704"
-    sha256 ventura:        "d263b99458dc09221aa815d54ad59ce0515f73ff509814e858994f126a99930f"
-    sha256 monterey:       "37ebafecddf088adca232725b8ee53f43b42ce7a44599b25b8e7d921f1bcb397"
-    sha256 x86_64_linux:   "63c7c475b026aa201173d79bafbe0b50522e902da600c22466fa7f97aed52394"
+    sha256 arm64_sequoia: "cbe1f1387efd453876ec550e71be6b964141e4787f4b0e9bc19a34f8477feaf5"
+    sha256 arm64_sonoma:  "58304b63df73f5fbd2e02cf18ab406de8ba1611ddabfcd0620a748856534e5e5"
+    sha256 arm64_ventura: "0b1642f10197da573c236e60918ea46d0152c8dc00d4fdaf13eabd11e8e80dfd"
+    sha256 sonoma:        "72b6d445847b1d581db343df599bb582d4565507e31ef27d0a75b9bc7f68a279"
+    sha256 ventura:       "09673ca2ff144cb80eed872d133e04358b534f5de6354dd87c7744ed0ab0592e"
+    sha256 arm64_linux:   "00d13a3c5d6b7512d27fbec2f4bf6e94f0f0efd58ab2cc8aff1e0720ba8ecdcf"
+    sha256 x86_64_linux:  "0000d869c4a1bdafbfe8b8b65d4c3f05c0e77629e33cb295d31e303774dce347"
   end
 
   depends_on "gensio"

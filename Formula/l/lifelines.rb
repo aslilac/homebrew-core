@@ -5,6 +5,8 @@ class Lifelines < Formula
   sha256 "2f00441ac0ed64aab8f76834c055e2b95600ed4c6f5845b9f6e5284ac58a9a52"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "1f6bdc9020d5710b880583b1282be16a381ccc06e507fa708bba260fd5a256a0"
     sha256 arm64_sonoma:   "c7d6412aa87b5b3926d5bd6b04db7ca8005b31420b23120f76e5322b5b314fcf"
@@ -20,6 +22,7 @@ class Lifelines < Formula
     sha256 high_sierra:    "95457e5f439d945c32e65a32a43a5396b8c7f33466f0c83a0671936f095d649a"
     sha256 sierra:         "1a974d23d51da7a7d2aedaec195291195a9eb442839a9bb9e5574ed6d8c01199"
     sha256 el_capitan:     "20b13125e3312866baed38e6f6ffd706a6f4a0436617e8a6055f1f776a76b9a2"
+    sha256 arm64_linux:    "532a5dbb1bc790b73bff79343958cc3ee07ece8171406a059a86af2db1fd8edc"
     sha256 x86_64_linux:   "4372b0ed3cfd9ca0d9a89696a502f7ba9e989698dd7064761296dabcc47003f3"
   end
 
@@ -27,8 +30,15 @@ class Lifelines < Formula
   uses_from_macos "ncurses"
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = []
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", *args, *std_configure_args
     system "make", "install"
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/llines --version")
   end
 end

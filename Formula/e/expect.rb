@@ -11,12 +11,15 @@ class Expect < Formula
     regex(%r{url=.*?/expect-?v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia: "bc49887735929062d3e347a111a7b53a0de95813652d626f00d9b5663ecb0c1d"
     sha256 arm64_sonoma:  "67bbdee9a025af2b9a8be9a9f6a1692078f5ce4d2b6528b2bad75ff41154dee9"
     sha256 arm64_ventura: "095903e79761e107ffdca6ebf7833be3d83437977a1e7fd5e962f7d4a46014ba"
     sha256 sonoma:        "8e07086c078379a4c6cdbde7b14b70376228b8a15798fc32059c9336287ce18b"
     sha256 ventura:       "3e841e410fdcbb63b135eda50a712df978fa54e6288347718a63fcc77d5cb8e7"
+    sha256 arm64_linux:   "d58c5bfe8071a22c8d2a868ea97b122feca090b9641d58f5f80dd4f7de7385ba"
     sha256 x86_64_linux:  "500bbf556dea3b9536753959c9a2a7c6c8b8d79ac929ce3008529812b62f6209"
   end
 
@@ -81,7 +84,7 @@ class Expect < Formula
 
   test do
     assert_match "works", shell_output("echo works | #{bin}/timed-read 1")
-    assert_equal "", shell_output("{ sleep 3; echo fails; } | #{bin}/timed-read 1 2>&1")
+    assert_empty shell_output("{ sleep 3; echo fails; } | #{bin}/timed-read 1 2>&1")
     assert_match "Done", pipe_output(bin/"expect", "exec true; puts Done")
   end
 end

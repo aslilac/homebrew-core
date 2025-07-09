@@ -14,6 +14,8 @@ class Distcc < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 3
     sha256 arm64_sequoia: "49f0073a59339ec44150cdafd79c3d4ca807780e5e55df49a7030c179025c636"
@@ -21,6 +23,7 @@ class Distcc < Formula
     sha256 arm64_ventura: "f37c9ba4f2a613091c706b096d14cb4a44ccd38f6254fea5a50614ba55eb228f"
     sha256 sonoma:        "2eb1710b55e4cc45819f6a3bdd47f67e287e3ff6bd823015130c35a06b84da3f"
     sha256 ventura:       "72982228dea2fe8ccbcdd364ecc672c90c6c67ecab38732c7350032cb376c4c6"
+    sha256 arm64_linux:   "86215de5512754860d1ae2124359bdf3bb31c022ef5fa4352f08440aac373477"
     sha256 x86_64_linux:  "b9b24030b5cdd52aa1abdf03c3d85ce35a327a4c3bffd928e466d05e6b118f8b"
   end
 
@@ -83,10 +86,10 @@ class Distcc < Formula
   test do
     system bin/"distcc", "--version"
 
-    (testpath/"Makefile").write <<~EOS
+    (testpath/"Makefile").write <<~MAKE
       default:
-      \t@echo Homebrew
-    EOS
+      	@echo Homebrew
+    MAKE
     assert_match "distcc hosts list does not contain any hosts", shell_output("#{bin}/pump make 2>&1", 1)
 
     # `pump make` timeout on linux runner and is not reproducible, so only run this test for macOS runners

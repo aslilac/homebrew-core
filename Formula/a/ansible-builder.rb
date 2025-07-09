@@ -7,12 +7,15 @@ class AnsibleBuilder < Formula
   sha256 "d2dc573e26a7bd5095e98aeb37ee9b00bc9f5005abea7147d74229c0f3426fcb"
   license "Apache-2.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia: "579c9ad083782a2e50605b47820f573e1f7ae3d74f78ae7ef6fdfdb752581e22"
     sha256 cellar: :any,                 arm64_sonoma:  "c92bc3474f4736687413164573d5c0ac47ddaf1824634ec1e7877caab3877dea"
     sha256 cellar: :any,                 arm64_ventura: "c6db94ad4366fdd83e81ea63d924905b1e2e3c3cccdd6fb00d1eebe69fe70480"
     sha256 cellar: :any,                 sonoma:        "5f40359c7bf70ef62925b8632fa7272a48f9943ff1766ac853a05002a8c137ee"
     sha256 cellar: :any,                 ventura:       "ccff1f1d43e692707c0c447f0b7ec919e219d4e00a1717831bdbf0f79f7d92fd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e8d6873f39fbf5ed2a27bb80b9ed107909793a1f975f56346ef1f55338b92c5a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "512ffc543e0e70b2aa4312be8d2704f36ec2cf436c025a3d56b3e5d830d89345"
   end
 
@@ -94,7 +97,7 @@ class AnsibleBuilder < Formula
     system bin/"ansible-builder", "create", "-c", test_tmp,
       "--output-filename", "Containerfile",
       "--file", testpath/"execution-environment.yml"
-    assert_predicate test_tmp/"Containerfile", :exist?
+    assert_path_exists test_tmp/"Containerfile"
 
     assert_match version.to_s, shell_output("#{bin}/ansible-builder --version")
   end

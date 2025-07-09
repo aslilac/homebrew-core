@@ -5,6 +5,8 @@ class DatetimeFortran < Formula
   sha256 "cff4c1f53af87a9f8f31256a3e04176f887cc3e947a4540481ade4139baf0d6f"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "3f396ad5136d8087e6de3dfdbf70616503a1b929fae3bf4cca376bc88d3eea23"
@@ -16,6 +18,7 @@ class DatetimeFortran < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "f12bb3de09be467e5be1c6934110f5c5f9952bd9822c754995bae144610968d9"
     sha256 cellar: :any_skip_relocation, monterey:       "0307d4a29c988223ddd6fcfa2049fa86774bf68da91d6925492a19fe47aaec54"
     sha256 cellar: :any_skip_relocation, big_sur:        "a90fa3af5145c4f7f2a922071ea5edf3c8f2abeef78da13b85bcda8523239693"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "c69feef25cb84ecf1e957bab83ebab3d802320c59b890a90a1b60778603c57a0"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f5d30fcf0a1ad22b28261d2f0e848e02c4ac9705cb559c5a19ffa9e2db8c3356"
   end
 

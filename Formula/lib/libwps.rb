@@ -10,6 +10,8 @@ class Libwps < Formula
     regex(%r{url=.*?/libwps(?:/|[._-])v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "1fcecd4b70835db56d8ee1e19e7fb07ab34cd1f43d64dce1900baa57a59b2949"
     sha256 cellar: :any,                 arm64_sonoma:   "53e4b189ac3f6a5707904498385226b759f0c8a222378682cad4303c0169b83e"
@@ -20,18 +22,18 @@ class Libwps < Formula
     sha256 cellar: :any,                 ventura:        "05d18e5787514170da6f2b7e2bb58f449bb4c282c9e35ff32ddf4b13747ee458"
     sha256 cellar: :any,                 monterey:       "6609484542bfcf5046702cf470e20da2dd99ef1597b6e60ca08858e5975afbe6"
     sha256 cellar: :any,                 big_sur:        "bf9c54ae1889bf3dcc90034d9b5a11bd14c452b69463343c3bd8f221031109d6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "66e66c4fe9ca468d38f275f3fafeb4c5fcdabffc65f7f09c4256f10454421a14"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1947ed7197be31c9abf52b092a535de6d3d1416c9fef915661ba81da4cee37b6"
   end
 
   depends_on "boost" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "librevenge"
   depends_on "libwpd"
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          # Installing Doxygen docs trips up make install
-                          "--prefix=#{prefix}", "--without-docs"
+    # Installing Doxygen docs trips up make install
+    system "./configure", "--without-docs", *std_configure_args
     system "make", "install"
   end
 

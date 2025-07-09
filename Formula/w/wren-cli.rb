@@ -5,6 +5,8 @@ class WrenCli < Formula
   sha256 "fafdc5d6615114d40de3956cd3a255e8737dadf8bd758b48bac00db61563cb4c"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "09debbe79f6af18ccbb0f2a4aabf117cfa7b3a33fb455fdd7b943ab8c8e399ce"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "228ccca95d81d073708b4b53278b5fa8a2d4a070c4a0c613cf3eb7181d26ba64"
@@ -16,7 +18,14 @@ class WrenCli < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "c4abf9f5a795361333ee735c25c0c72754b69c974f1a910af64414ff7912f398"
     sha256 cellar: :any_skip_relocation, big_sur:        "1eb3fa798b1204360be58481e36921299678ac6da63ab4f30009b2f452fc6baa"
     sha256 cellar: :any_skip_relocation, catalina:       "726fa674e71292e1474d7f7d68b7b477f797112a1348cdb4a2240e5d48776a95"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "c0103413af78077f54ef210d0bb3ef707bfcc9301868252685ec6fb133087d36"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2014cc9da16b381e355b12f19a020eaba1cc182c41f07fcb4a17dab5597f6a61"
+  end
+
+  # Backport fix for glibc >= 2.34
+  patch do
+    url "https://github.com/wren-lang/wren-cli/commit/18553636618a4d33f10af9b5ab92da6431784a8c.patch?full_index=1"
+    sha256 "ee10f762901cecd897702aa5397868e880d64cfaded95ac76653ee1e01892eec"
   end
 
   def install

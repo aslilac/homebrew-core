@@ -1,22 +1,18 @@
 class Faac < Formula
   desc "ISO AAC audio encoder"
   homepage "https://sourceforge.net/projects/faac/"
-  url "https://github.com/knik0/faac/archive/refs/tags/1_30.tar.gz"
-  sha256 "adc387ce588cca16d98c03b6ec1e58f0ffd9fc6eadb00e254157d6b16203b2d2"
+  url "https://github.com/knik0/faac/archive/refs/tags/faac-1.31.1.tar.gz"
+  sha256 "3191bf1b131f1213221ed86f65c2dfabf22d41f6b3771e7e65b6d29478433527"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "18a110273bcd3cd08517ef6a86ded5a6ca8179b5444c593a5b6dfcf2d662febe"
-    sha256 cellar: :any,                 arm64_sonoma:   "3701a45eecedf782012467d4b37393790d69bac55c08b8df5619dd57213ad7c7"
-    sha256 cellar: :any,                 arm64_ventura:  "1af7b3a977137c5e1a3a3e8466fcbeddfb77f7656b07e790530ed90c3f85b819"
-    sha256 cellar: :any,                 arm64_monterey: "413a14d54cc48a4fd7ae0363438f8ef75c0f0e076a889d3484cb93afa4b464aa"
-    sha256 cellar: :any,                 arm64_big_sur:  "0e3e4e7ac9a55ca918a495b7ae577fb89e7d575e8ae52d8a8f2fd989b56f38f1"
-    sha256 cellar: :any,                 sonoma:         "2ce8ca0cad392e932041cbd6bcf81eb0e9a31a82cbd4dba12857fec59fea505a"
-    sha256 cellar: :any,                 ventura:        "0cc0b9e690f4d687b4c531359f036e6f7bdd63fb20c19aab22ffb972917f8958"
-    sha256 cellar: :any,                 monterey:       "5a59cfb676ba67e6386cc9d0a5726ef1546de461364f88a96d6eaa4ca664bf18"
-    sha256 cellar: :any,                 big_sur:        "6b5f296f4cbf136daaf34236ad07b76f79aa4452eb2914efbd641a97aee2b5c9"
-    sha256 cellar: :any,                 catalina:       "36620606b1b45f273e61ebaf4527b226a8fc586808c9570d69940da680af14a6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fb2acbc5251d69a81adf1481f2e2cf631fbc13b588b53c206f6c6e07819c6e00"
+    sha256 cellar: :any,                 arm64_sequoia: "8daa11b4e9cf3a79ee7cd68c63e5f5902a127fe7546d2ce93d7ca2fb345ef2ab"
+    sha256 cellar: :any,                 arm64_sonoma:  "2cdb819aadff92bd69b07f182b9fa709d30694fec7df650f211a341e1fc3128c"
+    sha256 cellar: :any,                 arm64_ventura: "1a0d7a2fc58b61e1d5b01e72377c884975322848de30125eae644c0fb75517f7"
+    sha256 cellar: :any,                 sonoma:        "89a3968e3fcff90660fc6de8c59173f4b0b36769141875971edf0100956a428d"
+    sha256 cellar: :any,                 ventura:       "b4f7efe2d732e7df635323384fd884a319d3bd9852d8f1afc7e2e7b65ced184d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e99c3b48cc15f3987c5d70cae13c4a8b4b3fd9d47543fc7fa77552c2be2c1cd5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "30940df984b4f44d7c7b4bb0f55de660262490bf0e0288edfe5f5e673c26cea9"
   end
 
   depends_on "autoconf" => :build
@@ -31,6 +27,6 @@ class Faac < Formula
 
   test do
     system bin/"faac", test_fixtures("test.mp3"), "-P", "-o", "test.m4a"
-    assert_predicate testpath/"test.m4a", :exist?
+    assert_path_exists testpath/"test.m4a"
   end
 end

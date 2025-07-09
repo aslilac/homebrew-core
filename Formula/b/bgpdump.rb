@@ -10,6 +10,8 @@ class Bgpdump < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "58a05ac326e701a6417482c33a5660c4cac2ad9a3995e64dd064bc088e9e8a8f"
     sha256 cellar: :any,                 arm64_sonoma:   "9845446b9c11faac51f1180ad9493fcc523ce44bc5f8179fd2ab4a985323e360"
@@ -23,6 +25,7 @@ class Bgpdump < Formula
     sha256 cellar: :any,                 catalina:       "f7c93574ccb3a6eaa05910009e26068f99f14082df78d3b2b0b84166488657e5"
     sha256 cellar: :any,                 mojave:         "271ccd88799103255a673c6eafba9ec39320a8eb1a5a80bc8eef25ec508c31a6"
     sha256 cellar: :any,                 high_sierra:    "441599b105e925cf6875f3e1d1a380cf94ec1069b214872173cd08736cd8671c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b47b8e9e6bf6cf650441e4ccf7127b058ce743716a6b83e06803e18f37d9c6ea"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ab69320eab97e440488a15664f3defe5f2dd921bedfd30c23b80deefc5c954e0"
   end
 

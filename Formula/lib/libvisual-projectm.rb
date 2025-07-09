@@ -5,6 +5,8 @@ class LibvisualProjectm < Formula
   sha256 "eb8269c2a923546600d3f40ff90c011f03a215847215ee8bef44bfae305b4dd7"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256                               arm64_sequoia:  "e1413357ae5900e2662f197184b631759a12af9015317566a99db4d70bdc6ffe"
     sha256                               arm64_sonoma:   "b14e174621f4a80eaab94df8972bc26ec2a834a8d84bf66485deceb4b77e0a85"
@@ -15,11 +17,12 @@ class LibvisualProjectm < Formula
     sha256                               ventura:        "d1990c6f162f68c59d59443f0e97de4ca3150bc097d3e964354f74812fb7d76f"
     sha256                               monterey:       "5f4a2bfcb6a2984b30ed79ba3234f11caa02423d0843a748c4b0400daed2dc0e"
     sha256                               big_sur:        "f7a682871eb5ab4e001262bbeda434afe1f8520aa80254146e03963b4ddfd9e8"
+    sha256                               arm64_linux:    "5a716abc4e3a5db0cc94acc29e10ca98abdefc878c3ab5f1c27c6869ff5a84ff"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3c3a37a24bcd329cb8da341dab08f396654c1ccf7f8e0c7e63adba1626997458"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libvisual-plugins" => :test
   depends_on "xorg-server" => :test
 

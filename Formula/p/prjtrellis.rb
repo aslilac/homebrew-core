@@ -4,23 +4,24 @@ class Prjtrellis < Formula
   url "https://github.com/YosysHQ/prjtrellis/archive/refs/tags/1.4.tar.gz"
   sha256 "46fe9d98676953e0cccf1d6332755d217a0861e420f1a12dabfda74d81ccc147"
   license all_of: ["ISC", "MIT"]
-  revision 2
+  revision 5
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "d82061f57b9b550b7cc95d934e10dfdf0746b1fb16203ae210a95cb026827115"
-    sha256 cellar: :any,                 arm64_sonoma:   "ec5fe0a2aa4a9bb58d5b205281ac438f6da35278c37d576e2228c1c373f0d63a"
-    sha256 cellar: :any,                 arm64_ventura:  "e165698d107b10d8af68aedadf5d9e4be06c41164be52fb8b7c815f8ae3f0b77"
-    sha256 cellar: :any,                 arm64_monterey: "1118ded93339bb313e97d7fd94bd837a04ce042795ce884bbc10749cbefb6ca4"
-    sha256 cellar: :any,                 sonoma:         "038ef345fcf1239f9794e8ee4ae178bc9c4a2c397dcaeb6cdd7b32b59b5a945c"
-    sha256 cellar: :any,                 ventura:        "380d3b7d65f3bdb3596f4a2e2f0efb3a1e4636f6bbfd6b29dcf63e540a018522"
-    sha256 cellar: :any,                 monterey:       "b84610f825a7cddde9031c9af5c85541d257ce8aee5cd61d6c65013462016c23"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3b2a0a1f0fc8e65b51ba4b07c3e1cfe5d4d6f13730b0cdf7c5d770d5e7d4bdab"
+    sha256 cellar: :any,                 arm64_sequoia: "9b1dba8073f95e4e62578867fa4413c96546ed01af8a9368dd71f226e242f824"
+    sha256 cellar: :any,                 arm64_sonoma:  "c88a90c50cf9b1118812077911e320ada13ad47ca5e26bb9b71cea451cc83935"
+    sha256 cellar: :any,                 arm64_ventura: "528c6c2f526e1a8a9a6374a27740ec190b09e2cd8d55166d7adb8954e5f481e5"
+    sha256 cellar: :any,                 sonoma:        "17166123d4960d5612ddd664fb46a4728162fae98327f379b2940ea05dd5cf61"
+    sha256 cellar: :any,                 ventura:       "66fe4759bb1294f951a36d578ed68cba116539ddbd4bb71cf73c0f5bc2eca105"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c2244c986587aae3a6d6feb0b89d8e2650999ebad9cd3b6f77fe138b1f0b326e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4a091d4126aff828ab290e08cf68316f68a7952fb192482a993ab4484dc21a5b"
   end
 
   depends_on "cmake" => :build
   depends_on "boost"
   depends_on "boost-python3"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "prjtrellis-db" do
     url "https://github.com/YosysHQ/prjtrellis/releases/download/1.4/prjtrellis-db-1.4.zip"
@@ -45,15 +46,15 @@ class Prjtrellis < Formula
     testpath.install resource("homeebrew-ecp-config")
 
     system bin/"ecppack", testpath/"blink.config", testpath/"blink.bit"
-    assert_predicate testpath/"blink.bit", :exist?
+    assert_path_exists testpath/"blink.bit"
 
     system bin/"ecpunpack", testpath/"blink.bit", testpath/"foo.config"
-    assert_predicate testpath/"foo.config", :exist?
+    assert_path_exists testpath/"foo.config"
 
     system bin/"ecppll", "-i", "12", "-o", "24", "-f", "pll.v"
-    assert_predicate testpath/"pll.v", :exist?
+    assert_path_exists testpath/"pll.v"
 
     system bin/"ecpbram", "-g", "ram.hex", "-w", "16", "-d", "512"
-    assert_predicate testpath/"ram.hex", :exist?
+    assert_path_exists testpath/"ram.hex"
   end
 end

@@ -5,6 +5,8 @@ class Dura < Formula
   sha256 "6486afa167cc2c9b6b6646b9a3cb36e76c1a55e986f280607c8933a045d58cca"
   license "Apache-2.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "0b2c2b2aa810e3f4a183d0ebed078c330c830d0512c5e4c38ea44fee654b1d15"
@@ -17,17 +19,15 @@ class Dura < Formula
     sha256 cellar: :any,                 monterey:       "189cbc09ab1621aa501666194c27b9616a9b0674ace36ac981896a02816bbc25"
     sha256 cellar: :any,                 big_sur:        "c01130844f54014c8ad174037da08ac04ec826811c89e917c388662d61f92bd2"
     sha256 cellar: :any,                 catalina:       "b0279f3f31e75da9843e5a0ad3bbcae62a29277153c8e8992d4de490397aca70"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "1863734bc30dd7f8ea317fe0b498279bc71a9b2e6d41b9931fb8f81a6b604e51"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b01d4685f6aa2d5fe11722b7c7379695600d6827fa48bd72addebc9cfbd16968"
   end
 
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "openssl@3"
 
   uses_from_macos "zlib"
-
-  on_linux do
-    depends_on "pkg-config" => :build
-  end
 
   def install
     system "cargo", "install", *std_cargo_args

@@ -1,17 +1,18 @@
 class DartSdk < Formula
   desc "Dart Language SDK, including the VM, dart2js, core libraries, and more"
   homepage "https://dart.dev"
-  url "https://github.com/dart-lang/sdk/archive/refs/tags/3.5.4.tar.gz"
-  sha256 "c6bdf7591d3ba8d353dfaa0b10af58918610e65a1de9f3c9a644e7f3aecab16c"
+  url "https://github.com/dart-lang/sdk/archive/refs/tags/3.8.1.tar.gz"
+  sha256 "61e2bbaaca96938af68f18ef6eb4c238cb258d2dc531cb0d3737f5a4eda87e03"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0f2a56ec4b2d5b27bcd00d78d0340022d2858a5038aec37b306deb7876a07c70"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9fc2373a8cbeb791c5f222b93f92ffc468f398d600393d12ad270f242396183b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "e0e7fb133d077e1b18c0fb2f15b4979ee88003b828e357ea93895ccc1abfc73d"
-    sha256 cellar: :any_skip_relocation, sonoma:        "3ddbb564a8c47661d3b2417380b728a7c44c8a28e6d45076265b7d49f7636a1f"
-    sha256 cellar: :any_skip_relocation, ventura:       "283de9b8ed745c6fc4d4fc81ef2d9464a23112af17ddc0f8975ca08bae25d76b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "35604178437c7d8a51e4ae3b3bfc1705625c5916e17893bc1f780d76d020e669"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6c35d06f8ec90b54c82bf94aff0024bf791f3b0ab1fe8148f20f9d28ddd36112"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e9f9f1a704bfc7e1756fe54eef63309e52042342cf2adfd5570804fd0e6c5f06"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "5be8d23742798ca7ea1f114fe9741f8e51e3d7401119bf6c0851dfbb6d27bcef"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f51d6e3d84ad417d733d45b263b6849f9d2a0c2816fdd325ba68fe396877e7d1"
+    sha256 cellar: :any_skip_relocation, ventura:       "3c76ec6b44cc0a7074788381a51941c5d00638cacb7b85c59954da1e5547bfb9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0ef8d6a55952ef4adea57e7e89268c8db9a2dbe286769c2092b5410c0c7ec9d6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ca0468e41eafe812369c47a6dca36fd087f63edbd18b0d7b706eeff54d9c12a9"
   end
 
   depends_on "ninja" => :build
@@ -24,7 +25,7 @@ class DartSdk < Formula
   # always pull the latest commit from https://chromium.googlesource.com/chromium/tools/depot_tools.git/+/refs/heads/main
   resource "depot-tools" do
     url "https://chromium.googlesource.com/chromium/tools/depot_tools.git",
-        revision: "c4d75a151973a872ec74e33afb90acde64c48644"
+        revision: "0b1d80ab9e9f1413234641d193639e5daa92dd5b"
   end
 
   def install
@@ -40,7 +41,7 @@ class DartSdk < Formula
       arch = Hardware::CPU.arm? ? "arm64" : "x64"
       system "./tools/build.py", "--mode=release", "--arch=#{arch}", "create_sdk"
       out = OS.linux? ? "out" : "xcodebuild"
-      libexec.install Dir["#{out}/Release#{arch.capitalize}/dart-sdk/*"]
+      libexec.install Dir["#{out}/Release#{arch.upcase}/dart-sdk/*"]
     end
     bin.install_symlink libexec/"bin/dart"
   end

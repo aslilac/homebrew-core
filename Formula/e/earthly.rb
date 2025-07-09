@@ -15,8 +15,12 @@ class Earthly < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "24570e41843f45493539397ef7a9cb9533d581418b1dc44908690fb032c716f4"
     sha256 cellar: :any_skip_relocation, ventura:        "24570e41843f45493539397ef7a9cb9533d581418b1dc44908690fb032c716f4"
     sha256 cellar: :any_skip_relocation, monterey:       "24570e41843f45493539397ef7a9cb9533d581418b1dc44908690fb032c716f4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "234552a47eb585f95d90ddc17fe5e4954028429f6667c47cef6929d4f0dc9d20"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d3c89999c25f245dcd4e4e2b946ac4902c7cfe4b3c60a31edf19fe6f30453911"
   end
+
+  # https://github.com/earthly/earthly/commit/9e553bc2905da5fa4f39ad327b80fefed178f70a
+  deprecate! date: "2025-06-29", because: :unmaintained
 
   depends_on "go" => :build
 
@@ -27,10 +31,10 @@ class Earthly < Formula
       -X main.DefaultBuildkitdImage=earthly/buildkitd:v#{version}
       -X main.Version=v#{version}
       -X main.GitSha=#{Utils.git_head}
-      -X main.BuiltBy=homebrew
+      -X main.BuiltBy=#{tap.user}
     ]
     tags = "dfrunmount dfrunsecurity dfsecrets dfssh dfrunnetwork dfheredoc forceposix"
-    system "go", "build", "-tags", tags, *std_go_args(ldflags:), "./cmd/earthly"
+    system "go", "build", *std_go_args(ldflags:, tags:), "./cmd/earthly"
 
     generate_completions_from_executable(bin/"earthly", "bootstrap", "--source", shells: [:bash, :zsh])
   end

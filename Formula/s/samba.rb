@@ -4,10 +4,9 @@ class Samba < Formula
   # option. The shared folder appears in the guest as "\\10.0.2.4\qemu".
   desc "SMB/CIFS file, print, and login server for UNIX"
   homepage "https://www.samba.org/"
-  url "https://download.samba.org/pub/samba/stable/samba-4.21.1.tar.gz"
-  sha256 "bd02f55da538358c929505b21fdd8aeba53027eab14c849432a53ed0bae1c7c2"
+  url "https://download.samba.org/pub/samba/stable/samba-4.22.3.tar.gz"
+  sha256 "8fd7092629a3596d935cd7567d934979f94272918ec3affd0cc807934ecf22ba"
   license "GPL-3.0-or-later"
-  revision 1
 
   livecheck do
     url "https://www.samba.org/samba/download/"
@@ -15,12 +14,13 @@ class Samba < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "1021749f660ecbc998b2b06cb0ad640028154b283c97e1fa3a013f11b8f638f8"
-    sha256 arm64_sonoma:  "4b4d7e94785fa300fe6dbd3b3e204c5b7983e33287e1a10bb647cb97fbea011d"
-    sha256 arm64_ventura: "f12753e6e2f29e358a1fe948548c8df5ee9d80d9a587d10301f1d5e2f33a465a"
-    sha256 sonoma:        "e9a36a1dac8c28277187f24335c41f4f21cbdb36507696c7a84b33c7aedd195a"
-    sha256 ventura:       "e634c9346a0a8dadf34054cdf8d49493a6c80f9fe3b135c99f328e3a48da57b5"
-    sha256 x86_64_linux:  "20441a7172a0268c230a62c927c50b20e3b677ccc8c83fb4dcf39dfb54362ed6"
+    sha256 arm64_sequoia: "852df986a060ebd4ab477d57d2880c009226fafd73260e899801094f9942c44d"
+    sha256 arm64_sonoma:  "30720543a039008832d5cbc2f3c29adef48ad29d685ee78ee939720c1da79385"
+    sha256 arm64_ventura: "9637edd957672002525c7f348337c9bac11cb2a5b89e5c0a1c4618d783118ca3"
+    sha256 sonoma:        "a5ab1aa78d9ab9902a7372b7f71e448624f111364b0ab86fcf2b09355fc5765a"
+    sha256 ventura:       "e549dff13cea82f170e29b34cb4a9835dfceabf7f90a2ede1266ca52320ab601"
+    sha256 arm64_linux:   "c3ea3b07a4cbf26d14e23259b273ec5a505ce99c485ad54c5c5fc31c334cf95e"
+    sha256 x86_64_linux:  "468e1e186c168132edd142451589649e88a170c39a77b97310022e61776b6ee3"
   end
 
   depends_on "bison" => :build
@@ -29,9 +29,10 @@ class Samba < Formula
   depends_on "gnutls"
   # icu4c can get linked if detected by pkg-config and there isn't a way to force disable
   # without disabling spotlight support. So we just enable the feature for all systems.
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "krb5"
   depends_on "libtasn1"
+  depends_on "libxcrypt"
   depends_on "lmdb"
   depends_on "popt"
   depends_on "readline"
@@ -60,6 +61,15 @@ class Samba < Formula
   resource "Parse::Yapp" do
     url "https://cpan.metacpan.org/authors/id/W/WB/WBRASWELL/Parse-Yapp-1.21.tar.gz"
     sha256 "3810e998308fba2e0f4f26043035032b027ce51ce5c8a52a8b8e340ca65f13e5"
+  end
+
+  # upstream bug report, https://bugzilla.samba.org/show_bug.cgi?id=10791
+  # https://bugzilla.samba.org/show_bug.cgi?id=10626
+  # https://bugzilla.samba.org/show_bug.cgi?id=9665
+  # upstream pr ref, https://gitlab.com/samba-team/samba/-/merge_requests/3902
+  patch do
+    url "https://gitlab.com/samba-team/samba/-/commit/a2736fe78a4e75e71b9bc53dc24c36d71b911d2a.diff"
+    sha256 "7d1bf9eb26211e2ab9e3e67ae32308a3704ff9904ab2369e5d863e079ea8a03f"
   end
 
   def install

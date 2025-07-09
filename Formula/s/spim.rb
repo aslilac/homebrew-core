@@ -7,6 +7,8 @@ class Spim < Formula
   license "BSD-3-Clause"
   head "https://svn.code.sf.net/p/spimsimulator/code/"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 arm64_sequoia:  "0bbfdf9f722ade3b41dba3007110f92b87f5cdae144349b030399253fc7cf29c"
@@ -16,6 +18,7 @@ class Spim < Formula
     sha256 sonoma:         "df97a10541f2bb5940ae426aaeaac7e973a5ce5c02f00f57cc9ac057f5853f27"
     sha256 ventura:        "a362f8d46914498632a89be198c999311152adcc5a785529f1e73b666a681100"
     sha256 monterey:       "b58327df67b8e42369981b471a6e2e1e0be51546bcd9ad30469bc1e88f862f57"
+    sha256 arm64_linux:    "c4ad7c44cf7df0e7624ff25309bf64cd966d352db59cbdeb8598c6a7ea1caf37"
     sha256 x86_64_linux:   "3152719ea751f8e21e5febb3053cc7e8d9c171644b519ebd61e18a753b00225c"
   end
 

@@ -1,18 +1,20 @@
 class Evtx < Formula
   desc "Windows XML Event Log parser"
   homepage "https://github.com/omerbenamram/evtx"
-  url "https://github.com/omerbenamram/evtx/archive/refs/tags/v0.8.4.tar.gz"
-  sha256 "4273643dbcc5ec25484e393c14fd03e4749868703fc1d3d966e95016637ebd1c"
+  url "https://github.com/omerbenamram/evtx/archive/refs/tags/v0.9.0.tar.gz"
+  sha256 "e5f5221879a68b455a086653ab457f815544d1580e591f52d3b0ed5b4b24f328"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/omerbenamram/evtx.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0e4bb4eca93771641aa5af5d562a2f88883313b203cf6ff69e18d3610c7ba89a"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "802e931a6228902f349387995daec38d6b37fb8a60b880a4114ee1f6a58cf22e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c93e36fb9b79d4d6fcd30dc57ebd0c5a01510bc2175a4c571ca7d960821e2377"
-    sha256 cellar: :any_skip_relocation, sonoma:        "d3d926b3f31458734e2641c59768fe04ba5861e69a3b2ac250eab546a1c0db15"
-    sha256 cellar: :any_skip_relocation, ventura:       "e1b8aa67e57770ea8e9f6deff9e2007c2e4ea7439829d41bec415f2a4e3737b4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "817acec694ab6288bfe5b56d89ea7a13dff84d3cfa35aef0c764f10bdb4f0a9a"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3bbf48bed0be78aaee845e20b9ffca25cca24994a0bba85a1b26c9e7c295e3fe"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "aa8ccb06035b4b5e5876ead4f44adeb3eb301663ad97268a552320a679879216"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "50ad5fc49b1cc7eb1a6f1d55e3a4b0ae9a2635eb8bdbd78d68016a69c531c15d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "cd9762d528f9b57d15b07c0711ae454b0586f0f43b4f359b9d9ac7d07bf55eda"
+    sha256 cellar: :any_skip_relocation, ventura:       "4fecfa0eed949e0c12a4b067814231f3594c9f0750c762fe11caeb4e52f512ef"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "78f6aa38281dc73df685038ae3e156ff24bedf40fd8dd65c582d84a58d8d2ce4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6c0ee6a7a20a5136cae808acfa75f22b8013aa294819344a870ad76d83d8b3c9"
   end
 
   depends_on "rust" => :build

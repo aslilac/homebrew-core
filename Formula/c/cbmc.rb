@@ -2,17 +2,20 @@ class Cbmc < Formula
   desc "C Bounded Model Checker"
   homepage "https://www.cprover.org/cbmc/"
   url "https://github.com/diffblue/cbmc.git",
-      tag:      "cbmc-6.4.0",
-      revision: "4f56b6a911911fe89c73e2b6b58c96852e8b233d"
+      tag:      "cbmc-6.7.0",
+      revision: "5d1438a883201a8983b1449eb2485df0821c819d"
   license "BSD-4-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f35caffd7f789cc052591dcdc96929018e1de188ddc36f706e00f0884db4ea4e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8898d785e82f2a5a2e88b6973f1036a28235907c2fc4fca4418d661b43d2de7e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a22afc1680d62d4bfc6815e7f2de5f61dd5fb452babdc5129b8df41b048fc979"
-    sha256 cellar: :any_skip_relocation, sonoma:        "9f3f9004d77e6eca5f10d05ee23d96e31dba2086b299810b52b5d1813e099aa9"
-    sha256 cellar: :any_skip_relocation, ventura:       "00ac7f3f6c95c6e974d3a93b29efc6b664f9430ebab4c0d2dfa50ffdd5a700e8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c010f61202ddf3d679d7570ba04eb75ba0480de6c7c436793328f60064c7c68d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a7becbc8bbb8bf19e4117619a38bdd327382327e7ae5e9ea8d4a67eeae90b838"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "fbb4023fd3a987c09ad476a4b23bf4a4169c2f679ffeb7ff9fe7ff54fce64ab5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "57bcd93ceecdd9c6a6b502793f4430f5904350f8cfb0b70ba8a934e5c5fee7be"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f32ac34db6255e3beeabbd817411ae696032bddc68442c8a6ddcdf3de0147b0d"
+    sha256 cellar: :any_skip_relocation, ventura:       "3a206657edd5de624267a31015ccda82fa1351d38b1b6289d8a14f7f80c947bb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f1ecddb0d843183648927b936b16ed1307b968f9f7140187907f61f34f2436ea"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f2952e3ae721388b49a2ec58eb1b55c291e904246009af1f699334aace3b70ac"
   end
 
   depends_on "cmake" => :build
@@ -22,8 +25,6 @@ class Cbmc < Formula
 
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
-
-  fails_with gcc: "5"
 
   def install
     # Fixes: *** No rule to make target 'bin/goto-gcc',

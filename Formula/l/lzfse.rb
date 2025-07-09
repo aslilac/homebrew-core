@@ -5,6 +5,8 @@ class Lzfse < Formula
   sha256 "cf85f373f09e9177c0b21dbfbb427efaedc02d035d2aade65eb58a3cbf9ad267"
   license "BSD-3-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "4ece33c62d9b2e19ea17089e85b380c3e124413d45fab40e307231c6defec609"
     sha256 cellar: :any,                 arm64_sonoma:   "a10f2fce7192b49ddf9b0c34370dfd50d2a12264104342f36c731a9d6a69941b"
@@ -20,6 +22,7 @@ class Lzfse < Formula
     sha256 cellar: :any,                 high_sierra:    "e2a28bc48a8d90dd26cf2fe92d9186cbe0f19c8a58a5d15c8591826cd047b43b"
     sha256 cellar: :any,                 sierra:         "2da23959f27fe8a141b2967a591052c6ec081224b7b3c9c65c4a854faba77456"
     sha256 cellar: :any,                 el_capitan:     "4fcadd0779483cf14e95f7566002af22e9b488585c37fba1b5e75f715b930c01"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "5ed34f88c34b8be3427102200be747817b78462cc251f02bd29b5cc3df6180d0"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "13f5733f570ee2f8d436c66beed32cbece59522b57653fba497c9dda82bd0aed"
   end
 

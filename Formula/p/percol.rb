@@ -9,6 +9,8 @@ class Percol < Formula
   revision 4
   head "https://github.com/mooz/percol.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 4
     sha256 cellar: :any_skip_relocation, arm64_sequoia: "f21f389ba2e22503900f31d63739513f239347fa1a798a24a1d57812c0b0bcd9"
@@ -16,12 +18,11 @@ class Percol < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "f21f389ba2e22503900f31d63739513f239347fa1a798a24a1d57812c0b0bcd9"
     sha256 cellar: :any_skip_relocation, sonoma:        "bb22665ca96a92b9319f8fdb694b809feaf104a1cfa6ea71369e13685af6fe01"
     sha256 cellar: :any_skip_relocation, ventura:       "bb22665ca96a92b9319f8fdb694b809feaf104a1cfa6ea71369e13685af6fe01"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "bbbfae25a44da386c2c12756a0a6300adebdebf7b3e56793d32a916a0d856428"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "f21f389ba2e22503900f31d63739513f239347fa1a798a24a1d57812c0b0bcd9"
   end
 
   depends_on "python@3.13"
-
-  uses_from_macos "expect" => :test
 
   resource "cmigemo" do
     url "https://files.pythonhosted.org/packages/2f/e4/374df50b655e36139334046f898469bf5e2d7600e1e638f29baf05b14b72/cmigemo-0.1.6.tar.gz"
@@ -38,13 +39,24 @@ class Percol < Formula
   end
 
   test do
-    (testpath/"textfile").write <<~EOS
-      Homebrew, the missing package manager for macOS.
-    EOS
-    (testpath/"expect-script").write <<~EOS
-      spawn #{bin}/percol --query=Homebrew textfile
-      expect "QUERY> Homebrew"
-    EOS
-    assert_match "Homebrew", shell_output("expect -f expect-script")
+    expected = "Homebrew, the missing package manager for macOS."
+    (testpath/"textfile").write <<~TEXT
+      Unrelated line
+      #{expected}
+      Another unrelated line
+    TEXT
+
+    require "pty"
+    PTY.spawn("#{bin}/percol --query=Homebrew textfile > result") do |r, w, pid|
+      w.write "\n"
+      r.read
+    rescue Errno::EIO
+      # GNU/Linux raises EIO when read is done on closed pty
+    ensure
+      r.close
+      w.close
+      Process.wait(pid)
+    end
+    assert_equal expected, (testpath/"result").read.chomp
   end
 end

@@ -10,6 +10,8 @@ class GnuGo < Formula
   revision 1
   head "https://git.savannah.gnu.org/git/gnugo.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b638af6216ed0bd736823bab2fe42ca902dd9768a69fee4009726808aeeea448"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c4a8369ddd4c22df9f43cbc88b769da13639aacdde5876bf22f4e20f54789143"
@@ -25,13 +27,16 @@ class GnuGo < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "5e6ee72c1ccd877c08591680117bf73d809f6422ea9855596b286970d165c14a"
     sha256 cellar: :any_skip_relocation, sierra:         "25fa92bd5c129cb655ec06c441523ada5cbc90a560111c32f5b1246c8f7d124c"
     sha256 cellar: :any_skip_relocation, el_capitan:     "f845be5a48a89cf0e46322b4d3a64a86b9fd4793f6b98fee0c45de5e8e5eda69"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "66bcee409ac058dc82af44e5ef563cee1dedaab9f2d1e0b2e527a8b5aacc8336"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "99e7447f557b3af1f8c1e56d9a30cbe4315bd9f05ec734fb2fadac5887ab0474"
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-readline"
+    # Work around failure from GCC 10+ using default of `-fno-common`
+    # multiple definition of `DRAW'; globals.o:(.bss+0x0): first defined here
+    ENV.append_to_cflags "-fcommon" if OS.linux?
+
+    system "./configure", "--with-readline", *std_configure_args
     system "make", "install"
   end
 

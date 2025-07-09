@@ -1,13 +1,23 @@
 class Ffmpeg < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz"
-  sha256 "40973d44970dbc83ef302b0609f2e74982be2d85916dd2ee7472d30678a7abe6"
   # None of these parts are used by default, you have to explicitly pass `--enable-gpl`
   # to configure to activate them. In this case, FFmpeg's license changes to GPL v2+.
   license "GPL-2.0-or-later"
   revision 3
+
   head "https://github.com/FFmpeg/FFmpeg.git", branch: "master"
+
+  stable do
+    url "https://ffmpeg.org/releases/ffmpeg-7.1.1.tar.xz"
+    sha256 "733984395e0dbbe5c046abda2dc49a5544e7e0e1e2366bba849222ae9e3a03b1"
+
+    # Backport support for recent svt-av1 (3.0.0)
+    patch do
+      url "https://github.com/FFmpeg/FFmpeg/commit/d1ed5c06e3edc5f2b5f3664c80121fa55b0baa95.patch?full_index=1"
+      sha256 "0eb23ab90c0e5904590731dd3b81c86a4127785bc2b367267d77723990fb94a2"
+    end
+  end
 
   livecheck do
     url "https://ffmpeg.org/download.html"
@@ -15,15 +25,16 @@ class Ffmpeg < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "c96ab5cd19aa5b31eef4b8ffeeaca8d73fa22056fa69d15b81174561c8c2e316"
-    sha256 arm64_sonoma:  "83c29276528929abf4eb48d5d14248a1a9cf773675261732df12933a472ac89b"
-    sha256 arm64_ventura: "5006a6b45280faaa8107faa266fe70381507d1ab17b5b9ddb723d7fe4f265df5"
-    sha256 sonoma:        "157f5eebd4da29f998197c8319b76777a044c4a762bb6a65d852977355cc14bb"
-    sha256 ventura:       "66d7b586260df1b33f54221ac5223525d95701c3f9c8dcd7a51ea315e9bfe14f"
-    sha256 x86_64_linux:  "d3a29d2c867df86335af5f7d3643c830782d8323bbe45cc2c9a067caef651136"
+    sha256 arm64_sequoia: "b485f9ce15d42b861a8d5506524b57e1b190b3bc4122844ccf544210dad873fe"
+    sha256 arm64_sonoma:  "1cdd3c6f2621b3c4038bdf7b2508852fd2748e209fa0a6d95261f1c22a8a4b83"
+    sha256 arm64_ventura: "2c66c6ac49dff3c749c925dd4266a7a86ec31a57f3ab1c4065b9001ee5c26894"
+    sha256 sonoma:        "d8414d6c8415dc9971346ef49a766e7414a6ffdc8224763e45c9267a02634e94"
+    sha256 ventura:       "e2fb047561d92c6d9292a1b6b5f749e504235c6b181381a9a37fafc5743be427"
+    sha256 arm64_linux:   "a9b886129c5170f9a825d7eefcb4ad4bca1a6150119af52616d01b67f21f6a5b"
+    sha256 x86_64_linux:  "2179e27a841eaa46537426fb8aec531b5aa6dbcad6727e6247b1c98065102e6e"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "aom"
   depends_on "aribb24"
   depends_on "dav1d"
@@ -84,8 +95,6 @@ class Ffmpeg < Formula
   on_intel do
     depends_on "nasm" => :build
   end
-
-  fails_with gcc: "5"
 
   # Fix for QtWebEngine, do not remove
   # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=270209
@@ -168,6 +177,6 @@ class Ffmpeg < Formula
     # Create an example mp4 file
     mp4out = testpath/"video.mp4"
     system bin/"ffmpeg", "-filter_complex", "testsrc=rate=1:duration=1", mp4out
-    assert_predicate mp4out, :exist?
+    assert_path_exists mp4out
   end
 end

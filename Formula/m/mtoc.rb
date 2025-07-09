@@ -1,18 +1,16 @@
 class Mtoc < Formula
   desc "Mach-O to PE/COFF binary converter"
   homepage "https://opensource.apple.com/"
-  url "https://github.com/apple-oss-distributions/cctools/archive/refs/tags/cctools-1010.6.tar.gz"
-  sha256 "19dadff2a4d23db17a50605a1fe7ad2d4b308fdf142d4dec0c94316e7678dc3f"
+  url "https://github.com/apple-oss-distributions/cctools/archive/refs/tags/cctools-1024.3.tar.gz"
+  sha256 "ffe47144929605307826d9cc5697369e18c83f681860e3c397b6c11279e03318"
   license "APSL-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "324c3cfd0929d2e9b08d320206080109caa7dc89682359d179e68d20f9f40e26"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9a2e0cff36af9f659bcbb7165d1f180ef4408a0423af23b85c2f4312db8806f6"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "eb9f6732da0297987d62d37c6f662a9679527fa7a3c80f45f7edf6c0ebda7b6b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "18bf5ccdeeea52a6e5c0172e623b62142c8e52fca847720bbb88fa441c4f31c5"
-    sha256 cellar: :any_skip_relocation, sonoma:         "02c5fb90c5c4195d212cec400aaf85e629f367d42f5924624bc01b20d4850b0a"
-    sha256 cellar: :any_skip_relocation, ventura:        "9d99cef4e8e1bca0c12e33b574f18700f6492929ec302bbbcfc357ed0da27f67"
-    sha256 cellar: :any_skip_relocation, monterey:       "8a66535f89e326120675f1e809ca4c6e53bcc5b26c6616c169d598b1affeda8c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ee82cf8117b696fd2cbbf0994706e9efa73aa2403adc15a5fbc50fa0be9b8e03"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d3c766c433b8ae315ef4a2386327c5ae674b5a360faaa29f0449677ae32f74e5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "9605d52ea43f7661e05cf626ebfe6a68e57a5aa2985d05ac0c64f54c07ed55b7"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b41ec3a03f405eb6d60abec7c08f3e97e6c19de4f291050281f2ac9df680b53d"
+    sha256 cellar: :any_skip_relocation, ventura:       "5e882dbfadd1b1c6a167e4930f6c5aeda8b8f25c110dd7c679167ba0abc0e971"
   end
 
   depends_on "llvm" => :build

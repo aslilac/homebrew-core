@@ -1,8 +1,8 @@
 class Teleport < Formula
   desc "Modern SSH server for teams managing distributed infrastructure"
   homepage "https://goteleport.com/"
-  url "https://github.com/gravitational/teleport/archive/refs/tags/v17.0.1.tar.gz"
-  sha256 "d2022e497edf5f42f110d4c8d2d8e9dbbcd87d45810fe7cb58e8dcc666f0b0fb"
+  url "https://github.com/gravitational/teleport/archive/refs/tags/v18.0.0.tar.gz"
+  sha256 "1d88debdf5ed0387bf8a3793001d81165fe999c00e60b74d7dac439b5717574a"
   license all_of: ["AGPL-3.0-or-later", "Apache-2.0"]
   head "https://github.com/gravitational/teleport.git", branch: "master"
 
@@ -18,12 +18,13 @@ class Teleport < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "318a7d816285010fca6f4442450e0703249134a6860151c5d26b288683a551d3"
-    sha256 cellar: :any,                 arm64_sonoma:  "079fc1e7ee5ecbbffcbeb200b3578a7c9487dc11c071865e91a922b6a06f84c4"
-    sha256 cellar: :any,                 arm64_ventura: "5978eced41a5bb7de57597b6e5c0c44b2930dc708e1bc0367bed8b23ec84ac7d"
-    sha256 cellar: :any,                 sonoma:        "ea516dd6d686938aeea65c860e3f3147ac8ee77faad97dee96e6ec84af39e2cf"
-    sha256 cellar: :any,                 ventura:       "c5488e1e7897e9ee361a6ddb42c7eea083017dfa772653cf42b1758cc9c81d1a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a0919bd611327c12655352871e3508577c08e952401d7b74470c0fa55b234eb2"
+    sha256 cellar: :any,                 arm64_sequoia: "e8b565f88dc632dbd27a85d1c92743790fda393743974c09480f12e11f0ba5da"
+    sha256 cellar: :any,                 arm64_sonoma:  "a40958c86ddee3842926a244a0ee8268cbd60cc48ac209de6e653fdbea5c9918"
+    sha256 cellar: :any,                 arm64_ventura: "98c347d3b8bc84a4f13daa1905b398af82b650f81bfcea5da2f239ff119a0fe0"
+    sha256 cellar: :any,                 sonoma:        "2651ac508a3315efea962e38436031b590da0f4a01d48cc83f2272ab334fc219"
+    sha256 cellar: :any,                 ventura:       "91d2d399d3a273da60d7b65a8ed7b298c96d1e1072d354f60fb9112cab48804c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ea44f23c9183b878a55c9820928d1dcb2a23283a4b4064229503e2d7af51aed3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c1ef31f7f43c3c178b1187fcb4b67a8c5ae3a06cf68a4b9d77c62e1889a84613"
   end
 
   depends_on "go" => :build
@@ -37,17 +38,26 @@ class Teleport < Formula
   depends_on "node"
   depends_on "openssl@3"
 
-  uses_from_macos "curl" => :test
-  uses_from_macos "netcat" => :test
   uses_from_macos "zip"
 
   conflicts_with "etsh", because: "both install `tsh` binaries"
   conflicts_with "tctl", because: "both install `tctl` binaries"
+  conflicts_with cask: "teleport"
+  conflicts_with cask: "tsh", because: "both install `tsh` binaries"
+  conflicts_with cask: "tsh@13", because: "both install `tsh` binaries"
+
+  # disable `wasm-opt` for ironrdp pkg release build, upstream pr ref, https://github.com/gravitational/teleport/pull/50178
+  patch :DATA
 
   def install
+    # Prevent pnpm from downloading another copy due to `packageManager` feature
+    (buildpath/"pnpm-workspace.yaml").append_lines <<~YAML
+      managePackageManagerVersions: false
+    YAML
+
     ENV.prepend_path "PATH", Formula["rustup"].bin
-    system "rustup", "default", "stable"
     system "rustup", "set", "profile", "minimal"
+    system "rustup", "default", "stable"
 
     ENV.deparallelize { system "make", "full", "FIDO2=dynamic" }
     bin.install Dir["build/*"]
@@ -69,10 +79,7 @@ class Teleport < Formula
           severity: WARN
     YAML
 
-    fork do
-      exec "#{bin}/teleport start --roles=proxy,node,auth --config=#{testpath}/config.yml"
-    end
-
+    spawn bin/"teleport", "start", "--roles=proxy,node,auth", "--config=#{testpath}/config.yml"
     sleep 10
     system "curl", "--insecure", "https://localhost:3080"
 
@@ -81,3 +88,18 @@ class Teleport < Formula
     assert_match(/Version:\s*#{version}/, status)
   end
 end
+
+__END__
+diff --git a/web/packages/shared/libs/ironrdp/Cargo.toml b/web/packages/shared/libs/ironrdp/Cargo.toml
+index ddcc4db..913691f 100644
+--- a/web/packages/shared/libs/ironrdp/Cargo.toml
++++ b/web/packages/shared/libs/ironrdp/Cargo.toml
+@@ -7,6 +7,9 @@ publish.workspace = true
+ 
+ # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+ 
++[package.metadata.wasm-pack.profile.release]
++wasm-opt = false
++
+ [lib]
+ crate-type = ["cdylib"]

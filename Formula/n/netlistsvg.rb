@@ -5,6 +5,8 @@ class Netlistsvg < Formula
   sha256 "b7f218f9d8f2b826d28bff6ebe1f5b1a4fb5b7c9465a034ae0a8fcd2b9d53a67"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any_skip_relocation, all: "13485ed6f7d18a5733d709b8806159803cbfcfa7bf1afaa6b0e3acd9a12fc200"
@@ -19,7 +21,7 @@ class Netlistsvg < Formula
   end
 
   test do
-    (testpath/"dff.v").write <<~EOS
+    (testpath/"dff.v").write <<~VERILOG
       module DFF (output reg Q, input C, D, R);
       always @(posedge C)
         if (~R) begin
@@ -28,9 +30,9 @@ class Netlistsvg < Formula
             Q <= D;
         end
       endmodule
-    EOS
+    VERILOG
     system "yosys -q -p \"prep -top DFF; write_json dff.json\" dff.v"
     system bin/"netlistsvg", "dff.json", "-o", "dff.svg"
-    assert_predicate testpath/"dff.svg", :exist?
+    assert_path_exists testpath/"dff.svg"
   end
 end

@@ -5,8 +5,16 @@ class Archivemount < Formula
   sha256 "c529b981cacb19541b48ddafdafb2ede47a40fcaf16c677c1e2cd198b159c5b3"
   license "LGPL-2.0-or-later"
 
+  livecheck do
+    url "https://raw.githubusercontent.com/cybernoid/archivemount/refs/heads/master/CHANGELOG"
+    regex(/\*\s+v?(\d+(?:\.\d+)+)\s+/i)
+  end
+
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "955c633971c03c810ea51de75c517e68fc10b1dc69b129039ab3fd4a8419cffe"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "238d9539e81cdafd6d74dee82438d06c4348b5570260102811a2a1362088527c"
   end
 

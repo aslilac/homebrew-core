@@ -10,6 +10,8 @@ class Libyaml < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "0ec9bf8082245c008803b42dcae3e6a0c8cd7a67aed589d9b6482b115c0a543b"
     sha256 cellar: :any,                 arm64_sonoma:   "98c0cf81bcdf7577d5fdc8cc18732970b9ae7e0e7423a733f88f0f566ba483ad"
@@ -23,6 +25,7 @@ class Libyaml < Formula
     sha256 cellar: :any,                 catalina:       "56d3549b342cffb181e3eb05356697bbb362b9733c73e0eeff9b637ecf92cd23"
     sha256 cellar: :any,                 mojave:         "a04988b3868cfadf7bcaff6b753b59388cbea70b38f2fa41a25229150d073696"
     sha256 cellar: :any,                 high_sierra:    "d3e22ad09c3d6872c5f7ee7c7f1146c9f14c178ff4c3a3488a20bf584bc854d5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "c725eb08fc7ab6aad7f744a30b230f9b9efa33f8d694849a2d4aadfabb203df3"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "354677a745b6c62109e792ddbd0cbdaf9e6a471d84fdbde3a7d9bae36d832da8"
   end
 

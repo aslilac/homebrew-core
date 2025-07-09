@@ -8,6 +8,8 @@ class Mimic < Formula
   # * BSD license with 2 clauses but not matching BSD-2-Clause (e.g. src/speech/rateconv.c)
   license all_of: ["MIT-Festival", "BSD-2-Clause", "BSD-3-Clause", "Spencer-86", "Apache-2.0", :cannot_represent]
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "809c72a67bc515dc1ae83a7c03bf27c9a8bf9d38422aff57d65a58ae27a0bb1e"
     sha256 arm64_sonoma:   "27c12540e94a1f80ccfca3bd15f93a305f84e4c2233253df530dd3d7b1211140"
@@ -21,13 +23,14 @@ class Mimic < Formula
     sha256 catalina:       "72b346f8eefbbc70abc0a67bc72265b3bec7f99e53b18418ad6835df52518f1e"
     sha256 mojave:         "a185641e0d84aae004df33923ca0612b9ba0d59c9a1d4a5fd80ebd6d1de69f58"
     sha256 high_sierra:    "98a927ebfffb3a965506102d758fe4a5e76d0c6bd732972e6b113505d28241c8"
+    sha256 arm64_linux:    "26e6f55397cb24207058e26f48ce78d837269e3063f295987eb12bf7a778159d"
     sha256 x86_64_linux:   "027d95ecca63daf3f9c20419da6630b9a6a2d00e92dbdccbbc5d1747e0aca4d4"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "pcre2"
 
   on_macos do
@@ -48,6 +51,6 @@ class Mimic < Formula
 
   test do
     system bin/"mimic", "-t", "Hello, Homebrew!", "test.wav"
-    assert_predicate testpath/"test.wav", :exist?
+    assert_path_exists testpath/"test.wav"
   end
 end

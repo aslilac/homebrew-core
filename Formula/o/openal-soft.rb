@@ -1,8 +1,8 @@
 class OpenalSoft < Formula
   desc "Implementation of the OpenAL 3D audio API"
   homepage "https://openal-soft.org/"
-  url "https://openal-soft.org/openal-releases/openal-soft-1.24.0.tar.bz2"
-  sha256 "46cedbf46213d5f5ea255b7489a8b1a234c07c5d77bfb8e70f1c64ce09c8b765"
+  url "https://openal-soft.org/openal-releases/openal-soft-1.24.3.tar.bz2"
+  sha256 "cb5e6197a1c0da0edcf2a81024953cc8fa8545c3b9474e48c852af709d587892"
   license "LGPL-2.0-or-later"
   head "https://github.com/kcat/openal-soft.git", branch: "master"
 
@@ -12,29 +12,30 @@ class OpenalSoft < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "886d796a0322bb7047d1197159552d0a71eb397d366f7e22726d87b02346c05a"
-    sha256 cellar: :any,                 arm64_sonoma:  "0f58eeeca3a0cb4c1e91bfde22413242cb4728d2326efc0faa6c9a4bb5735a0e"
-    sha256 cellar: :any,                 arm64_ventura: "4ddb71dda2bd8aec513ecf2bd4b822ff8fc45e385fce1f1f475bd3a9ecb5bb01"
-    sha256 cellar: :any,                 sonoma:        "3db01360b2e0d0f31243527ecde405aceceaee7963d8aa444ed4972eae11f3f0"
-    sha256 cellar: :any,                 ventura:       "1059c5a7a772d65b1edbc706ccd04b00205e7c8cb8b655828628b1b0433420ba"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6bc1601f3c6b79ff73d33bd6de9aa9f75da5f9201dfd029e6910ea94813ca5f0"
+    sha256 cellar: :any,                 arm64_sequoia: "dd26fef51c1884b65ea8fcbed3185d29e3ed93df6f61f1551b8c07c956d293d2"
+    sha256 cellar: :any,                 arm64_sonoma:  "c669777ed1c01c23d12f3f9d63baa8a17c6bd64f9041d0f3a9f4423e9e1777b7"
+    sha256 cellar: :any,                 arm64_ventura: "adda1372155c4d3108305387fdcbb01fbff2d579fdb77e41f941e6ed74bf27f1"
+    sha256 cellar: :any,                 sonoma:        "8a47616d6f215a0199e0d986833cf2e3e2bbb1481a5c29db50cbd543a7cbbe2e"
+    sha256 cellar: :any,                 ventura:       "608b94ed45a93779809ae82bda26347504a78a0dfc16383472cbff6d22a9251a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "32f3b41687a7a0f2c45a9d5969279798c77abd097a180749075c7db06739fad0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5e51027b581006b7ebcbe897a77d471506cf32d85f887546754ee3cb1edb17cc"
   end
 
   keg_only :shadowed_by_macos, "macOS provides OpenAL.framework"
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   def install
     # Please don't re-enable example building. See:
     # https://github.com/Homebrew/homebrew/issues/38274
-    args = %w[
+    args = %W[
       -DALSOFT_BACKEND_PORTAUDIO=OFF
       -DALSOFT_BACKEND_PULSEAUDIO=OFF
       -DALSOFT_EXAMPLES=OFF
       -DALSOFT_MIDI_FLUIDSYNTH=OFF
+      -DCMAKE_INSTALL_RPATH=#{rpath}
     ]
-    args << "-DCMAKE_INSTALL_RPATH=#{rpath}"
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"

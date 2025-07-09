@@ -1,41 +1,37 @@
 class PinboardNotesBackup < Formula
   desc "Efficiently back up the notes you've saved to Pinboard"
   homepage "https://github.com/bdesham/pinboard-notes-backup"
+  url "https://github.com/bdesham/pinboard-notes-backup/archive/refs/tags/v1.0.7.tar.gz"
+  sha256 "bd26a1cd7ec4e0a83cd06c1234420ac9262d39c926a42820958502967005f63c"
   license "GPL-3.0-or-later"
   head "https://github.com/bdesham/pinboard-notes-backup.git", branch: "main"
 
-  stable do
-    url "https://github.com/bdesham/pinboard-notes-backup/archive/refs/tags/v1.0.5.7.tar.gz"
-    sha256 "12940372b976bbc9491e20810992396426f3ee482416a42e6379bdad9999a07c"
-
-    # Backport some higher upper bounds for dependencies
-    patch do
-      url "https://github.com/bdesham/pinboard-notes-backup/commit/8be2ac9107b312657f0ae68633164ac2ea85ee9e.patch?full_index=1"
-      sha256 "c9f9fb43b3166035cf2c8cc11a5172f6a12444fd96d93827d6fff7cb4dca51b8"
-    end
-  end
-
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ddbd59d56db5d3ef01d4a6dc4d14ee4f9b033960cc895b1b94707a6a11f92eab"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "63e685a5471c77c535f67b05195429f4d71c3e9f655b0d3faf591025c7a1f36f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d375d8d2a1c76e2ac6dc0f93656182cad288b58c3c3457922955df7ff3fbb87b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b570d147f98d42f9fc47429fdd14bba0f59f7038d9922429b3ef911fd5b38f7b"
-    sha256 cellar: :any_skip_relocation, sonoma:         "1bb2a015045e1d6d0870f523473379af184034a878754a55b27452896db4893e"
-    sha256 cellar: :any_skip_relocation, ventura:        "e793489b6fd7c1658683dd16ebc56d2e266be7cdffcfb997f49ba76ac4012dad"
-    sha256 cellar: :any_skip_relocation, monterey:       "20dcaeaadae53a452675a64a3f435537d54d813108da2e3d216e79fb7be42908"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "19365a6c0ca7c4d6a56c8bbfd591346ab77c23b89c7e4a2aec77ddc9eba57fe7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "db4446ba2acc253e4311931498466fcbb817a7d4f0a40586c57a398199e28272"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "269d2c336cc103226d08d1347b641d2ed03a98b41468e14b97c619b1ec0182b4"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0bbaa3f7e02e6359afb9b42066fc2e975c31f2ed2cfc3cfb4e5cfdf3649da43c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "878786cea9c65cb998b04c9986bd0ef267203e57bac2c0c413b914a79c2b3215"
+    sha256 cellar: :any_skip_relocation, ventura:       "1e1d6084bee6d414a922988d46a79f8f8d34d20fb983d151049889ded6a47154"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2ea494e407702d438d26039b44082e145d14fbc04d38fe5fe66062b08fdcb06d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c73c136aeeb04488e72260d28b820e81791f13cdcf7da540f0e80352a4a3365d"
   end
 
   depends_on "cabal-install" => :build
   depends_on "ghc" => :build
+  depends_on "gmp"
 
+  uses_from_macos "libffi"
   uses_from_macos "zlib"
 
   def install
+    # Workaround to build with GHC 9.12
+    args = [
+      "--allow-newer=http-api-data:base", # https://github.com/fizruk/http-api-data/pull/146
+      "--allow-newer=req:template-haskell", # https://github.com/mrkkrp/req/pull/182
+    ]
+
     system "cabal", "v2-update"
-    # Upper bound `tls` to work around "peer does not support Extended Main Secret" HandshakeFailure
-    # Ref: https://github.com/bdesham/pinboard-notes-backup/issues/1
-    system "cabal", "v2-install", *std_cabal_v2_args, "--constraint=tls<2"
+    system "cabal", "v2-install", *args, *std_cabal_v2_args
     man1.install "man/pnbackup.1"
   end
 

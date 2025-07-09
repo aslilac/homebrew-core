@@ -1,17 +1,19 @@
 class Kubecfg < Formula
   desc "Manage complex enterprise Kubernetes environments as code"
   homepage "https://github.com/kubecfg/kubecfg"
-  url "https://github.com/kubecfg/kubecfg/archive/refs/tags/v0.35.1.tar.gz"
-  sha256 "b155823bdfb5d48d0ee93c395fa6f1c777fa1e91cf9f87c5d518c432debafa73"
+  url "https://github.com/kubecfg/kubecfg/archive/refs/tags/v0.36.0.tar.gz"
+  sha256 "0f135465c512f8d5017f30f595669bed6a1c65b39b10178ede6989e15cbc84a9"
   license "Apache-2.0"
+  head "https://github.com/kubecfg/kubecfg.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "988de00eb91dede0a3fc2f92e8c7f730ecb6d3082d53f83bab530319d33a73d8"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "631492ce440899bca234188252babb2b8cd810075f24baf09378d2380a9a66fc"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "281d9f50dcdfe23192fcbaa1d2dac49fc7b7a7e5afacb5ebba2cae5149efecf9"
-    sha256 cellar: :any_skip_relocation, sonoma:        "da919317db2dfd838c28518d223a815c32f6b1b2c7043b2d0f4c9b74d2a31802"
-    sha256 cellar: :any_skip_relocation, ventura:       "2ae1628aa64f9a19e6768b87e09c89ae1804b4a4c2913111de764d1d71890d5f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b9267205d670d6b283418680015fbcd3886dab38b6d2804b67a17ac0aaf5a954"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5d7373d5b92e6d7fa40d26f346278f9946d7ddf773c8312ca49b1e13d06a85df"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "895b4c9f01632ae07409dee040f42fb73ee784a6726cdfbcf22bced5beeb3718"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0910ce4d7d1fe0cedfa2c3947b21e1b53a88a863ccbb97e42dafb05abccc12f2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "afcc53d1d2bdae49341594f9eaf3741194d1ba7b918a4a65aa21ef4ba39e5110"
+    sha256 cellar: :any_skip_relocation, ventura:       "f693e55e6ca8a34c770b67807e92969817a2a4ee015c84d07057285779d57249"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "03813301e8958ac9dfb657e548d38d919609aef21593df3bcc9917adccfa27bf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b82e88d3134489324a448c33bed9315a57878b9aab5b2508ce678a6e2be31a5a"
   end
 
   depends_on "go" => :build

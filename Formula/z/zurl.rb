@@ -12,6 +12,8 @@ class Zurl < Formula
     "MIT", # src/qzmq/
   ]
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any,                 arm64_sonoma:  "caac867d6cd84464d1432597b7f87521ad5d971e12aded4455068d0e227c7d6b"
@@ -80,15 +82,15 @@ class Zurl < Formula
     venv.pip_install resources.reject { |r| r.name == "pyzmq" }
     venv.pip_install(resource("pyzmq"), build_isolation: false)
 
-    conffile.write <<~EOS
+    conffile.write <<~INI
       [General]
       in_req_spec=ipc://#{ipcfile}
       defpolicy=allow
       timeout=10
-    EOS
+    INI
 
     port = free_port
-    runfile.write <<~EOS
+    runfile.write <<~PYTHON
       import json
       import threading
       from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -126,14 +128,11 @@ class Zurl < Formula
       resp = json.loads(sock.recv()[1:])
       assert('type' not in resp)
       assert(resp['body'] == 'test response\\n')
-    EOS
+    PYTHON
 
-    pid = fork do
-      exec bin/"zurl", "--config=#{conffile}"
-    end
-
+    pid = spawn bin/"zurl", "--config=#{conffile}"
     begin
-      system testpath/"vendor/bin/#{python3}", runfile
+      system testpath/"vendor/bin"/python3, runfile
     ensure
       Process.kill("TERM", pid)
       Process.wait(pid)

@@ -1,8 +1,8 @@
 class Minuit2 < Formula
   desc "Physics analysis tool for function minimization"
   homepage "https://root.cern.ch/doc/master/Minuit2Page.html"
-  url "https://root.cern.ch/download/root_v6.32.08.source.tar.gz"
-  sha256 "29ad4945a72dff1a009c326a65b6fa5ee2478498823251d3cef86a2cbeb77b27"
+  url "https://root.cern.ch/download/root_v6.36.00.source.tar.gz"
+  sha256 "94afc8def92842679a130a27521be66e2abdaa37620888e61d828a43fc4b01a2"
   license "LGPL-2.1-or-later"
   head "https://github.com/root-project/root.git", branch: "master"
 
@@ -11,12 +11,13 @@ class Minuit2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "6cc9e9cf66dd7ba5aa6c19108fe6c62c6c2b1d70d631d0d78805572f42181556"
-    sha256 cellar: :any,                 arm64_sonoma:  "004c5ca7aadbeac120cd905b049c19afdd6dd180837b99056a032fd0cca6bfe5"
-    sha256 cellar: :any,                 arm64_ventura: "292d02b1a45862254681282f5b83d92693f443cf7d518bf1e00bb1fcd627ef74"
-    sha256 cellar: :any,                 sonoma:        "b0ab26a59b3da2dc229f3810727e8ba2c80ba9cff1bbaf0d5a2c7854ef6044a6"
-    sha256 cellar: :any,                 ventura:       "8f2aeeae81a2a473dbfe183f516ee62f78efaf78b00b72bd6ee1f9bfb485fbdd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b11f869da8acef9fd626102548b04052e98f66b19ddd1f385d30cced50f978da"
+    sha256 cellar: :any,                 arm64_sequoia: "3939bf78dbe26a47859003be209972a2a61fd60233f5098191e9b373f17bf35e"
+    sha256 cellar: :any,                 arm64_sonoma:  "5f8cbeb5418fd74de128cb842c27d90556e227d3ede48abf9b7927271d0262ba"
+    sha256 cellar: :any,                 arm64_ventura: "842924cac1d8382ab920397e43182019170666a6ea2c64227d12d768f1651d4a"
+    sha256 cellar: :any,                 sonoma:        "222595e6eb0bf2a8509dc9e1ee4d394eecaebf85769ae9fba5531264b3de83f9"
+    sha256 cellar: :any,                 ventura:       "7b306a0065575cbdb1e596a72c975b113eeb6033a8568c64134b0f832b955d0c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "1e25ed8a8b20567579be4d88c4ff07769a36c3716012b749250b5e383d9922f6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6edf08934a7aeaa519e1048df43d90e40b0a3bdf592a8d25e0e4a6cd0ef9dc5e"
   end
 
   depends_on "cmake" => :build

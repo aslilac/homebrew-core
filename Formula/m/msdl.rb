@@ -11,6 +11,8 @@ class Msdl < Formula
     regex(%r{url=.*?/msdl[._-]v?(\d+(?:\.\d+)+(?:-r\d+)?)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9ab0083cb6623f31de8bd191354b00f627c0b7826646eae177337a2adc823dae"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "081c8df653ff58f6f08ae5758481e4fa94f4786f2465def703e93009f6ae91bd"
@@ -26,6 +28,7 @@ class Msdl < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "5f2922fa4f3b69f3f00cb7e29854c5a43c163e209c87d961253da9c4a7c3ec73"
     sha256 cellar: :any_skip_relocation, sierra:         "69b04b6f10ea552b6c862110434cc63dfa6bfccdc8034edd70fed5db0f79e68b"
     sha256 cellar: :any_skip_relocation, el_capitan:     "34ba320e82d1ce97fb0a106abd2c5ec848ba16857730ba51cadd0a030bee62ab"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e60c658707ae055375b4402d09b83e121bd25f28ed5167cdd810d50ef02342c9"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5664cc49f99975d426fab1e8518356d8842512ab773aa4c2a3abe0fb957d1881"
   end
 
@@ -34,9 +37,19 @@ class Msdl < Formula
   patch :DATA
 
   def install
+    # Work around failure from GCC 10+ using default of `-fno-common`
+    # multiple definition of `display_flags'; asf.o:(.bss+0x0): first defined here
+    # multiple definition of `colors_available'; asf.o:(.bss+0x4): first defined here
+    ENV.append_to_cflags "-fcommon" if OS.linux?
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    system bin/"msdl", "http://example.org/index.html"
+    assert_path_exists "index.html"
   end
 end
 

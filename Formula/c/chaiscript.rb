@@ -6,6 +6,8 @@ class Chaiscript < Formula
   license "BSD-3-Clause"
   head "https://github.com/ChaiScript/ChaiScript.git", branch: "develop"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "23f3944333ce9fa19f2664e512b9e6c98ba1e3dad79a9d409788ad2c70832494"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4cb81d66432b2941bf247d97c156f7764a7c4e76446691925b25cea785cd9f0d"
@@ -21,14 +23,16 @@ class Chaiscript < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "905850906c705182fe0c3011314d52b852585121f91c91a03ad20cc1b4a1a830"
     sha256 cellar: :any_skip_relocation, sierra:         "ce45ec71bbf6917d01c5d3ac872b31637189b90216848166ec91df5c65a82d07"
     sha256 cellar: :any_skip_relocation, el_capitan:     "18a4b79b3b413b01d2801e0a49b054137c3307bc0fc930353b63e0746e43c16d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "48c885b02e7e02084d00622d66b9348f78a108ac315106752a19d5a0a58e65c8"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "34af5a03731cb336dad74d83505e8c9485092a275b632da30ca2d34a73d31461"
   end
 
   depends_on "cmake" => :build
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -36,6 +40,7 @@ class Chaiscript < Formula
       #include <chaiscript/chaiscript.hpp>
       #include <chaiscript/chaiscript_stdlib.hpp>
       #include <cassert>
+
       int main() {
         chaiscript::ChaiScript chai;
         assert(chai.eval<int>("123") == 123);

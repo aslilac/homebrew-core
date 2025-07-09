@@ -8,6 +8,8 @@ class IconNamingUtils < Formula
   sha256 "044ab2199ed8c6a55ce36fd4fcd8b8021a5e21f5bab028c0a7cdcf52a5902e1c"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "3caca3e4bf1e45408fdd966f46f860a0fd9002f471a1fa258e9c3c66ab28b204"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4875c2788c7c77a35e9af5ecda0d4ba48ec06668ed12acd5b95b77860a8e25ca"
@@ -23,6 +25,7 @@ class IconNamingUtils < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "1ab22bc216fc60fe05436993a1d451542a5f57a12ecf835c85f5c850574e54f3"
     sha256 cellar: :any_skip_relocation, sierra:         "d824a2df63a9615bb242c197af07ce18f6a6a046df9c785fe31d5f39d986f4ed"
     sha256 cellar: :any_skip_relocation, el_capitan:     "f8a29d74289a555ba7969b8d8f6984de7251393d7d0270e61abf69d36f270fc0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "089bbe93b74c60c6520d3269999e652427cf02a30e8825a7e70261af6ba7beaf"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2808ba5e1f6d084d4f424e084ead17462349b6b2c5d60e5162ecd633c7e3be2f"
   end
 

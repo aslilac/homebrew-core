@@ -1,6 +1,6 @@
 class Never < Formula
   desc "Statically typed, embedded functional programming language"
-  homepage "https://never-lang.readthedocs.io/"
+  homepage "https://never-lang.readthedocs.io/en/latest/"
   url "https://github.com/never-lang/never/archive/refs/tags/v2.3.9.tar.gz"
   sha256 "9ca3ea42738570f128708404e2f7aad35ef2b8b4b178d64508430c675713e41f"
   license "MIT"
@@ -10,6 +10,8 @@ class Never < Formula
     url :stable
     strategy :github_latest
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "1ec72ae68f2d53ebd8a8e21e712726b4b0ed35f083e95a7752db9ef4df9d2814"
@@ -21,6 +23,7 @@ class Never < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "9fbcc22654686fcfebff4d485b2e763bf2555672854796a9338b821bf2a998fc"
     sha256 cellar: :any_skip_relocation, monterey:       "704cf0ced4f7c9526b337dc2dfdcab520956603fbc5edb3859f042d93460b2dc"
     sha256 cellar: :any_skip_relocation, big_sur:        "df908438891a84cc6833cf1f7d4a5e8515a9c24a787cf15a39175202c01b86f0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "06ace732c395dcd140b9098c6842004a527d62dde2e6ea49974827f803847a30"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3732a0e925be723674dea91079efea95b0df1863dade024d110b32214707d651"
   end
 

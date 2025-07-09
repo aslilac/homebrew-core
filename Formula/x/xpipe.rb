@@ -10,6 +10,8 @@ class Xpipe < Formula
     regex(/href=.*?xpipe[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "d889986ca2f5379e8f1d22e5add2ce9a3295b5625a93e4416bc737625ded5ea4"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "98fdb15f477e02081958ff3a24be3d78c9d4387fce7ccba7107fbf5aa9debdac"
@@ -21,6 +23,7 @@ class Xpipe < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "f7b7d07da19d055e33168745cc88dc681bf8122bfc42a69baed6af85182b3f8e"
     sha256 cellar: :any_skip_relocation, big_sur:        "be1f56555c5846777c0a963cbf01f71f2b7fe5c6ca7fb17240fbcaf7937ccfdd"
     sha256 cellar: :any_skip_relocation, catalina:       "06e9e1e3cb21acd053c218d5c0e34eb591bb54f7031b98b27116b302512cfc3a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "fb963f6a0f7bd758bc4ade850635c64cad0c8955455d4aa8f3ad600fff8c1895"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "85269e2a82a5296f82eaba5e4fc1004ac1176cb1d2f672a7865480fcde33a452"
   end
 
@@ -35,8 +38,8 @@ class Xpipe < Formula
 
   test do
     system "echo foo | xpipe -b 1 -J % /bin/sh -c 'cat >%'"
-    assert_predicate testpath/"1", :exist?
-    assert_predicate testpath/"2", :exist?
-    assert_predicate testpath/"3", :exist?
+    assert_path_exists testpath/"1"
+    assert_path_exists testpath/"2"
+    assert_path_exists testpath/"3"
   end
 end

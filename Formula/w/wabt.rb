@@ -2,8 +2,8 @@ class Wabt < Formula
   desc "Web Assembly Binary Toolkit"
   homepage "https://github.com/WebAssembly/wabt"
   url "https://github.com/WebAssembly/wabt.git",
-      tag:      "1.0.36",
-      revision: "3e826ecde1adfba5f88d10d361131405637e65a3"
+      tag:      "1.0.37",
+      revision: "5e81f6aeddf94fd7743c8c2049f5084c74ff6ab1"
   license "Apache-2.0"
 
   livecheck do
@@ -12,14 +12,13 @@ class Wabt < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "6d9c47a7d54935eb10ec2dcf66c0c265e27f348cdf3e62b674debdbe2e3b6f71"
-    sha256 cellar: :any,                 arm64_sonoma:   "6237a1e991c6fd3ef13205d461352614079623eff66d4d3b789653b2f6ad62d0"
-    sha256 cellar: :any,                 arm64_ventura:  "e803c52ce80a02bb1f25f7ff14a84efc6aba0873e6d0349fbb3ceb525fdbebf2"
-    sha256 cellar: :any,                 arm64_monterey: "c7c06f7d146ed9921827c24b163619793d5ed37fae1ccd7119c04edaf4fc119c"
-    sha256 cellar: :any,                 sonoma:         "8e21afdc77664ee9790f575dc5e1e1b37432a04e78b60c99bd7964b35101e762"
-    sha256 cellar: :any,                 ventura:        "df218de107e9a4961f32db86ad0e3cb28120d02ef551f6e298e39549ca14e230"
-    sha256 cellar: :any,                 monterey:       "a3f76262eae5db4e8592817b256b27176a8fcf59f05d4a69b71cb617ed4d2c49"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "183381abe48031239a58680b7991463788a018a456403f5061b783fe01b307db"
+    sha256 cellar: :any,                 arm64_sequoia: "6ffe898ee2dc9eb43b14e61f74eaf8510d899d47c9ee5e8ce76ee52cc298bfa8"
+    sha256 cellar: :any,                 arm64_sonoma:  "1fc9959612c3241b4a801f890b3b6be565da13c49b3982f7cbb28ccf407ef7ea"
+    sha256 cellar: :any,                 arm64_ventura: "e1e1cba32b34354946cd8c9e7e2253e2a4307b025ace9e1f8c50c2ee3eb1e16a"
+    sha256 cellar: :any,                 sonoma:        "ff46dc276f1f820803a8a57e4d17ce7ac8823b9b30458b2d3f0becfe24f4c17b"
+    sha256 cellar: :any,                 ventura:       "09d6ad8f29884e7a4d4851cee0785a966d522b97ce781f74d37b4ae54c0ad8e6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2d0bbcaa4302807b8ea7497e153268045f02814266954f008d6248564f4de58b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a9362ed0da8bc2db2e3b2d5febbd66fc61fb81f017568fb2b13b5d305aeea689"
   end
 
   depends_on "cmake" => :build
@@ -27,14 +26,19 @@ class Wabt < Formula
 
   uses_from_macos "python" => :build
 
-  fails_with gcc: "5" # C++17
-
   def install
-    system "cmake", "-S", ".", "-B", "build",
-                    "-DBUILD_TESTS=OFF",
-                    "-WITH_WASI=ON",
-                    *std_cmake_args,
-                    "-DFETCHCONTENT_FULLY_DISCONNECTED=OFF" # FIXME: Find a way to build without this.
+    ENV.append_to_cflags "-fPIC" if OS.linux?
+
+    args = %w[
+      -DBUILD_TESTS=OFF
+      -DWITH_WASI=ON
+      -DFETCHCONTENT_FULLY_DISCONNECTED=OFF
+      -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+    ]
+
+    system "cmake", *args, *std_cmake_args
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

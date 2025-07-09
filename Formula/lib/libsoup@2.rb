@@ -1,21 +1,20 @@
 class LibsoupAT2 < Formula
   desc "HTTP client/server library for GNOME"
   homepage "https://wiki.gnome.org/Projects/libsoup"
-  url "https://download.gnome.org/sources/libsoup/2.74/libsoup-2.74.2.tar.xz"
-  sha256 "f0a427656e5fe19e1df71c107e88dfa1b2e673c25c547b7823b6018b40d01159"
+  url "https://download.gnome.org/sources/libsoup/2.74/libsoup-2.74.3.tar.xz"
+  sha256 "e4b77c41cfc4c8c5a035fcdc320c7bc6cfb75ef7c5a034153df1413fa1d92f13"
   license "LGPL-2.0-or-later"
-  revision 1
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia:  "70298df345576271d6db06032e4497bf1fd769af3e33cc67687196469c61b8ef"
-    sha256 arm64_sonoma:   "9d50f2ce85396610a34a8b73c2f90f065a61958f5b5aa5f31df1a5e6d1c6b901"
-    sha256 arm64_ventura:  "b6b1f722faecc11f7f0f7d59da96b6582815179e2998e06c9d7d9a9b6221b8bc"
-    sha256 arm64_monterey: "c9a5a1b8cdbad59ea9bb297e382dd1165a3ada3d8145f4da3cec8183c34be647"
-    sha256 sonoma:         "df99ce0eca58f54c20982f095d6b0d51904dbfe21451e92637ba8b506c81cc4a"
-    sha256 ventura:        "9ff691ca203a1692efc87a66bb3f162eb88680a931085accbb65e223209e4704"
-    sha256 monterey:       "83efcf8f54f047a9ba3dd3acf032ef4cdbabce4574feac8105e6ae3822878021"
-    sha256 x86_64_linux:   "416f1242c8f4e786d4e3fb673a40926b9c5543bf50420bf9dbf24cae569743f2"
+    sha256 arm64_sequoia: "93cc36e0aca55d8d3ad613e40d4c4f870792d544472236eaa4e2007e8bdccdd7"
+    sha256 arm64_sonoma:  "30cc853c0df1b294a5bb54f4224c01892dd8a227eef2b2f9db4525ee5660dda3"
+    sha256 arm64_ventura: "2a309b1eccf23b179e5812c98df8d8fcb377cf5af35dd1e3cd4c88e23d1fa852"
+    sha256 sonoma:        "10bcbb15d4a0c105a32894d3211d54a57a69e16296ccd59e6374002c33be6bb2"
+    sha256 ventura:       "848cd63411742567dad48774cd56f9f3d2091a115e2a9cc803021af250e91c6f"
+    sha256 arm64_linux:   "f894a1f3fae10a780ec0a489cc4c84636f792c6013337c3d07f50e6af02303a2"
+    sha256 x86_64_linux:  "128d3fa437db9352c8c33b6937083fbb708ddd23566b957b243e9cee2debab16"
   end
 
   keg_only :versioned_formula
@@ -23,8 +22,8 @@ class LibsoupAT2 < Formula
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
-  depends_on "python@3.12" => :build
+  depends_on "pkgconf" => [:build, :test]
+  depends_on "python@3.13" => :build
   depends_on "vala" => :build
 
   depends_on "glib"
@@ -68,8 +67,8 @@ class LibsoupAT2 < Formula
     C
 
     ENV.prepend_path "PKG_CONFIG_PATH", lib/"pkgconfig"
-    pkg_config_flags = shell_output("pkg-config --cflags --libs libsoup-2.4").chomp.split
-    system ENV.cc, "test.c", "-o", "test", *pkg_config_flags
+    flags = shell_output("pkgconf --cflags --libs libsoup-2.4").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
 end

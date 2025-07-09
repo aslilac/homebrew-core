@@ -5,6 +5,8 @@ class Cmatrix < Formula
   sha256 "ad93ba39acd383696ab6a9ebbed1259ecf2d3cf9f49d6b97038c66f80749e99a"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4dc801fdcf6bbf449a1b6a73a68c1ab8cfe990de6d9fbcf686c40998cd5c9f31"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "094d50d50af7e5365fffbd5b1f1ac6b9879d4250cd39477f45c40b136c0a6404"
@@ -18,6 +20,7 @@ class Cmatrix < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "fcc9c366c560e89ee2b4f61d1bdece14379a2c598719fd2eef784564bf9ed677"
     sha256 cellar: :any_skip_relocation, mojave:         "1b3d3155c87c8f2b788fe18c3e72f04af4e79c609030e3447c3e17f9d3870c7b"
     sha256 cellar: :any_skip_relocation, high_sierra:    "2c3b0ce73a2f89ece3783885e44aba5f584268768283e650d8b6552bc00f058d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f3001650675f0947543d0556e8b3338984368e8fb81eb6ffa4555523b34d2644"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "15aea39b9be08c26c94c9e2f8c82e977aaa7bf0884fbc4543114a52321e6cbc2"
   end
 

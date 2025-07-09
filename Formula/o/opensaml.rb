@@ -1,9 +1,10 @@
 class Opensaml < Formula
   desc "Library for Security Assertion Markup Language"
   homepage "https://wiki.shibboleth.net/confluence/display/OpenSAML/Home"
-  url "https://shibboleth.net/downloads/c++-opensaml/3.3.0/opensaml-3.3.0.tar.bz2"
-  sha256 "99ee5091a20783c85aca9c6827a2ea4eb8da8b47c4985f99366a989815d89ce8"
+  url "https://shibboleth.net/downloads/c++-opensaml/3.3.1/opensaml-3.3.1.tar.bz2"
+  sha256 "d8e24e070fc6bb80682632ca32c8569a9f3ef170ba57e3b82818322e75b6a37e"
   license "Apache-2.0"
+  revision 1
 
   livecheck do
     url "https://shibboleth.net/downloads/c++-opensaml/latest/"
@@ -11,15 +12,16 @@ class Opensaml < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "ef3bcbf1661bd845ddaaf679bc4ac1c97be7322e540dcac03eea07c6e4f0870e"
-    sha256 cellar: :any,                 arm64_sonoma:  "e271048b419d93cdce4c3b93c1e0e275fb089e9751d29145670f8b4bd757c1cf"
-    sha256 cellar: :any,                 arm64_ventura: "0124f112da5200068af7735cf823f0b49c2c7cf4f71de7a1424f63096a5a0f4e"
-    sha256 cellar: :any,                 sonoma:        "c9dd4f9976072123348f5523c303b195fd1e2d846312b341db00bc2585c14c03"
-    sha256 cellar: :any,                 ventura:       "1642d4e0c2ee412a24f2003c883bdf62e03d142dd7882474f6025d85a91a21d8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "252f721596bf59190b2acb8b37ac0aa8b77aa47c8c9fa7de236bdd35a5217a13"
+    sha256 cellar: :any,                 arm64_sequoia: "07a24e559fba8ef6206aa142b47c40d15dd68ec6ecebfcf6ef4e249461a1ebfc"
+    sha256 cellar: :any,                 arm64_sonoma:  "2433e81f6f75b41ace4f4b39a8bc336aad0d07324efe4f5758966ba8db3270be"
+    sha256 cellar: :any,                 arm64_ventura: "30a5d4e496a4053fc99686974cca11d4b8be3d331fe55c0cec552d8171060730"
+    sha256 cellar: :any,                 sonoma:        "11823d44fd8032eb8e3f61827de120b93656107a2e31fbeedc95a78c52e34017"
+    sha256 cellar: :any,                 ventura:       "8045e1d48ada4b5fa6c2a524cda2dd2b31e33014e49d2894b9fdd134597703cc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ccf298955ba2cf7cc5c54feaab9baedd5faa1b351ea02525ceeda3d35d76e805"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7113cf3ec71403d5a0c60bb4f6e9c358c60f57cf80e203d9cd34cb19f5d1898e"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "log4shib"
   depends_on "openssl@3"
   depends_on "xerces-c"

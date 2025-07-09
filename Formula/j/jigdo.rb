@@ -11,6 +11,8 @@ class Jigdo < Formula
     regex(/href=.*?jigdo[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "e4c58215aeb8305e4d249afd5ec3319dd15e947d312080883d3dcc97cdd77bc0"
     sha256 arm64_sonoma:   "73202ee80753c8807409b9db634f4d2c7cddf7035557fc1c0473c29e80b8afce"
@@ -21,6 +23,7 @@ class Jigdo < Formula
     sha256 ventura:        "5a247d726d179602b3249137efa25d13c025d3a9bc2bbb24d923b57f022cc6f4"
     sha256 monterey:       "037de4d08cf85ffb4dd2a698a01f16ea31e1eada585544d8f803e6f266a757ae"
     sha256 big_sur:        "be8f640734494f2a4daf4bac0407b80ddf8b56e8136456732d4c5693355b2ccf"
+    sha256 arm64_linux:    "6670ac99a8894d24976bea482ef00cd7f7be95aa8b151406b9cb097285f72a82"
     sha256 x86_64_linux:   "244d944cf955deef5bfb200e61e3fae6cfc49038883f2c542e534b0c498dc4c6"
   end
 

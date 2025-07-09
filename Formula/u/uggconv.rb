@@ -5,12 +5,6 @@ class Uggconv < Formula
   sha256 "9a215429bc692b38d88d11f38ec40f43713576193558cd8ca6c239541b1dd7b8"
   license "BSD-3-Clause"
 
-  # The homepage gives the status as "Final (will not be updated)" and it was
-  # last modified on 2001-12-12.
-  livecheck do
-    skip "No longer developed"
-  end
-
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "3802603d8a8f1cadf23ebd88778fdeff1a797cd6241cb0f7460e6784bba01971"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8b7da823890abb6aa5b02742c2b75d104883781b2c58bc3ae45469e936fadb1f"
@@ -26,6 +20,7 @@ class Uggconv < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "ed41635e3235d763c9dcad68db2e390821af5a62ec6709fca8b9c5e9b5d0b995"
     sha256 cellar: :any_skip_relocation, sierra:         "a22594f94bf7baa1908bd1225f52f1db3dd01daa17f99038ecfbd60e22d12b5d"
     sha256 cellar: :any_skip_relocation, el_capitan:     "5ab8b271f2ccc17e5229921f01b92ff7b0c297908902c83d24612bb47592af3c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "288f3d97f53ba57c9fbe6901a0e4739ff76c2f1965728dd10e383112365ab7c5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "70d91fd685adcb8943530056934bc1e8f0ed0c5502a9205c6b1c8fa982fdec53"
   end
 

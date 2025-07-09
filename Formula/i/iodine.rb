@@ -6,6 +6,8 @@ class Iodine < Formula
   license "ISC"
   head "https://github.com/yarrick/iodine.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "78df44a424d8357cd348a96c8a3f87502229b37e8871687bf39e246ea02327fc"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "6137123041fc9cc12bfb1ab7b5c89db1df5a8a53c46005894ed3a2928cfd0ed2"
@@ -16,6 +18,7 @@ class Iodine < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "e1162e6eb9ee5c0579216e80af32079d36adde37fe4653fb6da34a58d54e7c3c"
     sha256 cellar: :any_skip_relocation, monterey:       "297d884daa963973050eb436c9727c850ffce5627a33310bd159e7e13c6c8483"
     sha256 cellar: :any_skip_relocation, big_sur:        "fe1f5e48bcc20c66d29ce945f72d7879ba59eec5af18b3fd46ac3c21c40c6319"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "7878240547b0427b4bb82fdb7062c995362a540e48c87fb97c5b5b81022514b4"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "eef2dd9635b68cd36d2d7e3d1225d0644205250b5600874ad381d8b94a7a5b06"
   end
 

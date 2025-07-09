@@ -5,6 +5,8 @@ class Mlogger < Formula
   sha256 "141bb9af13a8f0e865c8509ac810c10be4e21f14db5256ef5c7a6731b490bf32"
   license "BSD-4-Clause-UC"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "3b373a36ead8caee769bdfd4632f783e948aa3f93605899ba5b08812250f9c69"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a33b7e72d83775458e4cdde286cde80c32e30d03d4580f12d74f07db43ded13c"
@@ -20,6 +22,7 @@ class Mlogger < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "9eec751c684f9043f667bf5e9d793379ca3a9824a05b359ed91af2d7e41d52b7"
     sha256 cellar: :any_skip_relocation, sierra:         "1f7392a3d16a2bf595487a4b35bf5c866fa00c0967629eef46f07cbf6e696ff4"
     sha256 cellar: :any_skip_relocation, el_capitan:     "e1f78a9ef569085efcac8c41bd2a70feda85e7fcba5eb7b46a9ee5341cf8cb2d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "4a8e20b3e717630d8811f612f1808671a08b0e231048d2c014e4b3bc1e4bd424"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "893dd3f909fe05978eef82de9222ba24cb05e208d73d63f5ef591098df8ceb56"
   end
 

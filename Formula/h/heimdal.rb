@@ -12,6 +12,8 @@ class Heimdal < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 arm64_sequoia:  "fb6f2aaa1bd42cc3a1f66b2734eb142b5d7720d7ee3f4fc4988cdbcacb94b572"
@@ -21,12 +23,15 @@ class Heimdal < Formula
     sha256 sonoma:         "fa1f05f6585b701568b83b2b8fd17dcae9202cad5d1bafde3ead076c9a9b0544"
     sha256 ventura:        "aef11fca0e5edd30a40482958ad3ef0ed6cba88cb450403d6c7ec7a20b88593f"
     sha256 monterey:       "225d96d3d691885770a75f327457b0a6480cdbebba506e96deb669bbbbf26bf6"
+    sha256 arm64_linux:    "8339834c3ba9f2d87764050b7ad5b5f0acc75a994f4a2cf3fe2762324f6970fb"
     sha256 x86_64_linux:   "50b84d04c9adf4ea658519cdc158a68aa264300bdaf290675010529d6d72e6ac"
   end
 
   keg_only "conflicts with Kerberos"
 
   depends_on "bison" => :build
+  depends_on "pkgconf" => :build
+
   depends_on "berkeley-db@5" # keep berkeley-db < 6 to avoid AGPL incompatibility
   depends_on "flex"
   depends_on "lmdb"
@@ -36,10 +41,6 @@ class Heimdal < Formula
   uses_from_macos "perl" => :build
   uses_from_macos "python" => :build
   uses_from_macos "libxcrypt"
-
-  on_linux do
-    depends_on "pkgconf" => :build
-  end
 
   resource "JSON" do
     url "https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/JSON-4.10.tar.gz"

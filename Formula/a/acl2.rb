@@ -1,18 +1,23 @@
 class Acl2 < Formula
   desc "Logic and programming language in which you can model computer systems"
-  homepage "https://www.cs.utexas.edu/users/moore/acl2/index.html"
+  homepage "https://www.cs.utexas.edu/~moore/acl2/"
   url "https://github.com/acl2/acl2/archive/refs/tags/8.6.tar.gz"
   sha256 "c2d73e66422901b3cc2a6f5a9ab50f5f3b1b4060cf9dc9148d076f3a8b957cf9"
   license "BSD-3-Clause"
-  revision 1
+  revision 9
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
-    sha256 arm64_sequoia: "ccb95a431adc877dd21d030bc86d487c8f874abdeecfbc30bf06a214ab823b68"
-    sha256 arm64_sonoma:  "38776189c5231e7c8e01be170bfc54c599aa84705871f892a17b0a2640e5d270"
-    sha256 arm64_ventura: "d4ca7c648675236242e5c77ca226a50a2b58dd7d0a89afd8508d124d14595905"
-    sha256 sonoma:        "f8e0b1c7e668802bb045d83de42dd72b908fdbc6fee53c8281f4f913a7776305"
-    sha256 ventura:       "f546c59b3f7d510abd2243f7829b53175f16d7ac263edefc35f70732282d5a5d"
-    sha256 x86_64_linux:  "4caaba70131197f6d2eb408622360e02684fc8b0ae5c302c565d43d79ed9de2f"
+    sha256 arm64_sequoia: "073848707280862ea6989156892024ef36608531ae91a5a8da6c43606ce1a82b"
+    sha256 arm64_sonoma:  "e993d60fad118b3ef9c0f342ee62de84932fbe363bc03257a9abcdc7030eceb6"
+    sha256 arm64_ventura: "5d5ca4120f7fba9d2b2db0de804fd569cc3664b848b3376b80c2e2b253a8b46d"
+    sha256 sonoma:        "bfbfb6a517dc5f8b2d4d140fce15f03e539bc05737ec25828516c7335407fcd3"
+    sha256 ventura:       "20116e3235de511e5ebda62810ac77c1c330ce1f267c107253cc194169d3d61a"
+    sha256 x86_64_linux:  "a4b5cb3f381a7ba995e85d0ac4b763b17aa21cc7a4dee9e57b017fe59e5577c7"
   end
 
   depends_on "sbcl"

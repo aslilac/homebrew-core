@@ -6,6 +6,8 @@ class ProofGeneral < Formula
   license "GPL-3.0-or-later"
   head "https://github.com/ProofGeneral/PG.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f0afc78703aed0f2cdd4ec47dc841b5bf2ecc69b52d7f4a1b3ef7c2189a127b4"
@@ -17,6 +19,7 @@ class ProofGeneral < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "e0f721f16c2c5e2ffa6b7ef00595ab6bdbdeda815f00a04ca30d2df2cc474e8b"
     sha256 cellar: :any_skip_relocation, monterey:       "e0f721f16c2c5e2ffa6b7ef00595ab6bdbdeda815f00a04ca30d2df2cc474e8b"
     sha256 cellar: :any_skip_relocation, big_sur:        "e0f721f16c2c5e2ffa6b7ef00595ab6bdbdeda815f00a04ca30d2df2cc474e8b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "68fae82f1c9768c66e94b3a413a4b8c17ab7207629e1faf8645593a8bda8cfb5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b87a94e0c06c19d5d57aedd9a628b69a22d559cfd331f563dcb93c02b5f0a402"
   end
 

@@ -4,14 +4,16 @@ class Dartsim < Formula
   url "https://github.com/dartsim/dart/archive/refs/tags/v6.15.0.tar.gz"
   sha256 "bbf954e283f464f6d0a8a5ab43ce92fd49ced357ccdd986c7cb4c29152df8692"
   license "BSD-2-Clause"
+  revision 4
 
   bottle do
-    sha256                               arm64_sequoia: "e535ad930fe32671752d6857924a7027a23b05c226d095adb2d3d090ebd6c40a"
-    sha256                               arm64_sonoma:  "2cfcce63b8f5efa854cf20e196a686b7d87efca67e17b436c2fac235b38a0ba9"
-    sha256                               arm64_ventura: "3c65ad8471fb493c412874b423fbd039ceda631dd6ab823b49c4e002e7ed20a6"
-    sha256                               sonoma:        "b62650e04e8d7938d63435472dc998ee188f5c0bd9e42d9cb0e77a1fe02e2c46"
-    sha256                               ventura:       "082d4233b947f2f43ef6232a62b531eea36c1e5484aca42d145ef5a74ac9373b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7f8f7901d2a25186e278030991f26c028aa3b62fe8cdefee42398b2480319774"
+    sha256                               arm64_sequoia: "d7bb03b21df47b7c82dc110473010e3592b794311c6b27c895a46336df6767b9"
+    sha256                               arm64_sonoma:  "1ff1a87676c0e646c7055f2256b1f47a357edbff277bd203332802d16e483102"
+    sha256                               arm64_ventura: "e40b43ea43bf4059fd20c83e4ef0eb36cf8e34b96cc567dfa8ad83e3ee4e935b"
+    sha256                               sonoma:        "e63fca29193eb227342f574bd8d74bcee5c1571de4b4424c6bb99f071a0f9560"
+    sha256                               ventura:       "439816ee6c2523471b8028f3a141937469be4b97da2944f02df498e81be4266b"
+    sha256                               arm64_linux:   "415d26ebb6c18b207ed9679eb5dd505f5730dcda3e679f549114b2558bd363db"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "054d6527d4c3ae7fd52faa33a3360edff331a66d21fdc5a4404bcadb747c6184"
   end
 
   depends_on "cmake" => :build
@@ -39,10 +41,12 @@ class Dartsim < Formula
     depends_on "mesa"
   end
 
-  fails_with gcc: "5"
-
   def install
-    args = std_cmake_args
+    args = %W[
+      -DCMAKE_INSTALL_RPATH=#{rpath}
+      -DDART_BUILD_DARTPY=OFF
+      -DDART_ENABLE_SIMD=OFF
+    ]
 
     if OS.mac?
       # Force to link to system GLUT (see: https://cmake.org/Bug/view.php?id=16045)
@@ -50,11 +54,7 @@ class Dartsim < Formula
       args << "-DGLUT_glut_LIBRARY=#{glut_lib}"
     end
 
-    args << "-DBUILD_TESTING=OFF"
-    args << "-DDART_BUILD_DARTPY=OFF"
-    args << "-DDART_ENABLE_SIMD=OFF"
-
-    system "cmake", "-S", ".", "-B", "build", "-DCMAKE_INSTALL_RPATH=#{rpath}", *args
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 

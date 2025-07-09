@@ -1,17 +1,18 @@
 class Hawkeye < Formula
   desc "Simple license header checker and formatter, in multiple distribution forms"
   homepage "https://github.com/korandoru/hawkeye"
-  url "https://github.com/korandoru/hawkeye/archive/refs/tags/v5.8.1.tar.gz"
-  sha256 "bf8c002a3c5cd79d1e88bfa4ca326fb95f6d28be4d98cd4e0df098c35c0e2c72"
+  url "https://github.com/korandoru/hawkeye/archive/refs/tags/v6.1.1.tar.gz"
+  sha256 "9a3f4b4d44bbbc887c3aeaeb4da9a43ae3eeee96699c6afc79e21d2636833739"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e0e79b8da88e71f5fb819f25425c25f4752568fb2f3543928a400da0b3a9196a"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e910e5e86e3a99633cac780524913a184fc5b4977759033efb48b5627442b716"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "3da5fc6db177af7e01d9ed2a735310995e3d0c868da212a42b67accdd3311628"
-    sha256 cellar: :any_skip_relocation, sonoma:        "54a86a6ff3ab3c23b0b8fd544c7a8c5a8980f50d346d82569c4468d7d6a0f572"
-    sha256 cellar: :any_skip_relocation, ventura:       "2dd637dd89ee5c5ab64f42f9688c0445437d32553360dc71b1dcdf4cb9eb6125"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "be02712aa1188ca95911b8db17e3ab20903a2d29ec4c7b345056ebdf56cc27fa"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "757c352657231d51e0177489d4d618704fe6b9eaf85724b1feaf6dddf0ec5168"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "59fb0e24b4f2a9eaacbc4ebf7dcdfa1fdf336e5edc1e688ceb9b89ae80809fff"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0d55af7c0bead3da1886a5755e7b7508fa891babfc198e2ea3a8e45936ef9aa6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a7ad583590a14120331136eac157efc9401c3ed2a1d72c880b8b0165fcae6b68"
+    sha256 cellar: :any_skip_relocation, ventura:       "a65c7d355e270ca3aad85ca8f1d23d949eb3e1d5f74777dbab1e26ef3881022f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "fb66158c804fcab5cfe42d939358abf66fa2fdcc8a9252456e75f1cb95065413"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bcbbbc3ff7c07e3a85a22c0176c468dbd3795272de6f5173303446573e225794"
   end
 
   depends_on "rust" => :build

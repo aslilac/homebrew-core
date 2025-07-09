@@ -1,22 +1,23 @@
 class Oha < Formula
   desc "HTTP load generator, inspired by rakyll/hey with tui animation"
   homepage "https://github.com/hatoo/oha/"
-  url "https://github.com/hatoo/oha/archive/refs/tags/v1.4.7.tar.gz"
-  sha256 "a0fa13d33a5607f3ba4321522d0b2626a0eb52c94471e26e05350cd25d15d2ec"
+  url "https://github.com/hatoo/oha/archive/refs/tags/v1.9.0.tar.gz"
+  sha256 "e40a3898df0229ebea413f24527558a83d75df5cba2b970ece5aa9fad8fb12dc"
   license "MIT"
   head "https://github.com/hatoo/oha.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "43380667267790b276fe627528eca97d65be2d932240f55f935f608b006e0c60"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8896d0ef753755d0353dad8c5556794d19e5182705f229666290176f834bca00"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "f1765667154ed80d52ef0d56a2cc563d36bfebbfdd4418683ec318f5fb89a788"
-    sha256 cellar: :any_skip_relocation, sonoma:        "8243aecd2e6523793241ebb533484944be33a6e13e8f8d8dd11f4b442f3e4e34"
-    sha256 cellar: :any_skip_relocation, ventura:       "f6825127a9b9b3f5780cc39da3f626b38f719571761cd35c305a014a45c957c8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1374ac88a0ccfd989e5ca5f8c53d9f039d812a5ece625ba350710f10df6e0e3c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0f2a59ce7ff583d75795933ae29d8b91efc42f8f7debbb21db0e581ce99247ce"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ea9528547af37cc252144138176c8e88b5a9e24a7cafa38d2fbfea02a77380cb"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "5f3a82b44db49a69c624bc9449f07645dbace03c6adf28878ec3c0efcaf322ab"
+    sha256 cellar: :any_skip_relocation, sonoma:        "cfef79baad15279bb9702e142de789f7ea2f241ba359524fff585ad335556ce9"
+    sha256 cellar: :any_skip_relocation, ventura:       "568539d5cc451dd9055d244451b82b4e5b6baf7af5117c1c2b5836a9da355282"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "d8cb8e85be4d0762850e093f0c3e742e93bb33afc4381621f91ebd635ea6a7b3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2f8ccb80eef4bf079caff2c02669e6efaa64164eb86c60e570531e3ae8651d1c"
   end
 
   depends_on "cmake" => :build # for aws-lc-sys
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
 
   on_linux do

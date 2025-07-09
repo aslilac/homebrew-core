@@ -10,6 +10,8 @@ class Tta < Formula
     regex(%r{url=.*?/libtta[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "eaf4b5e6bf2e815f028c54bb2df0d3470f984495c16526ee8d51ea6a08c3a7fa"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f45089fcc147fe7133617e39ce52b106f4334b4509db14ce28ec68f8fe35cd32"
@@ -26,6 +28,11 @@ class Tta < Formula
     sha256 cellar: :any_skip_relocation, sierra:         "7a3c44b675bbaf81041c7eeacef622fab8fe3abbc83329a927a1ed0034231b1f"
     sha256 cellar: :any_skip_relocation, el_capitan:     "0543d1561fe44fc6137f90076d247f16e6ac28e72413a7ba3bac08d422bb4e9c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "30808b3d8bf5450eb396ecbf102837b9943355ea54cb6b27c052b6e2fd902adc"
+  end
+
+  # CPU aarch64 is not supported
+  on_linux do
+    depends_on arch: :x86_64
   end
 
   def install

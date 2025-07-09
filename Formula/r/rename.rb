@@ -6,20 +6,11 @@ class Rename < Formula
   license any_of: ["Artistic-1.0-Perl", "GPL-1.0-or-later"]
   head "https://github.com/ap/rename.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "1232d9ed2233957356a6ae1cbc8760d231d74c4177c24a64ca2e37255d08fff0"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "49eb3fbea363a6fbeac6f9d237c88432fdd6260c35ef0dfd18cda4f637778e5b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1d7f81a8f319841108fb8082ea6cd5cf591224964e6f34bb0135cf851b7f951f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1d7f81a8f319841108fb8082ea6cd5cf591224964e6f34bb0135cf851b7f951f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "308b9f76cf8386eb9c5835204233f0869cc566d9995b383a5215649e8b1c7a48"
-    sha256 cellar: :any_skip_relocation, sonoma:         "49eb3fbea363a6fbeac6f9d237c88432fdd6260c35ef0dfd18cda4f637778e5b"
-    sha256 cellar: :any_skip_relocation, ventura:        "1d7f81a8f319841108fb8082ea6cd5cf591224964e6f34bb0135cf851b7f951f"
-    sha256 cellar: :any_skip_relocation, monterey:       "1d7f81a8f319841108fb8082ea6cd5cf591224964e6f34bb0135cf851b7f951f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "308b9f76cf8386eb9c5835204233f0869cc566d9995b383a5215649e8b1c7a48"
-    sha256 cellar: :any_skip_relocation, catalina:       "2f1c70cacb289e2286bc6ec1e47319d197c2f0d74f8474b303aa2cb9aad8bb0e"
-    sha256 cellar: :any_skip_relocation, mojave:         "2f1c70cacb289e2286bc6ec1e47319d197c2f0d74f8474b303aa2cb9aad8bb0e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a88a0c2cd57632633f5ab3e9078f22903b3c12f0520276c3e408570ff10dee14"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, all: "ef28d01adefde7f83ad97aeb21b4af98f66b5594ac7d69bb76f01b3f2ac80145"
   end
 
   depends_on "pod2man" => :build
@@ -39,7 +30,7 @@ class Rename < Formula
   test do
     touch "foo.doc"
     system bin/"rename -s .doc .txt *.d*"
-    refute_predicate testpath/"foo.doc", :exist?
-    assert_predicate testpath/"foo.txt", :exist?
+    refute_path_exists testpath/"foo.doc"
+    assert_path_exists testpath/"foo.txt"
   end
 end

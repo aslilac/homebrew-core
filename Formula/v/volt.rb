@@ -1,11 +1,12 @@
 class Volt < Formula
   desc "Meta-level vim package manager"
   homepage "https://github.com/vim-volt/volt"
-  url "https://github.com/vim-volt/volt.git",
-      tag:      "v0.3.7",
-      revision: "e604467d8b440c89793b2e113cd241915e431bf9"
+  url "https://github.com/vim-volt/volt/archive/refs/tags/v0.3.7.tar.gz"
+  sha256 "db64e9a04426d2b1c0873e1ffd7a4c2d0f1ffe61688bee670bb16089b9c98639"
   license "MIT"
   head "https://github.com/vim-volt/volt.git", branch: "master"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "6a7d8d94a9503960278ce6a43f2cf5ce58658d04d06b72be99804a9e0d52f901"
@@ -39,13 +40,12 @@ class Volt < Formula
 
     bash_completion.install "_contrib/completion/bash" => "volt"
     zsh_completion.install "_contrib/completion/zsh" => "_volt"
-    cp "#{bash_completion}/volt", "#{zsh_completion}/volt-completion.bash"
+    cp bash_completion/"volt", zsh_completion/"volt-completion.bash"
   end
 
   test do
-    mkdir_p testpath/"volt/repos/localhost/foo/bar/plugin"
-    File.write(testpath/"volt/repos/localhost/foo/bar/plugin/baz.vim", "qux")
+    (testpath/"volt/repos/localhost/foo/bar/plugin/baz.vim").write "qux"
     system bin/"volt", "get", "localhost/foo/bar"
-    assert_equal File.read(testpath/".vim/pack/volt/opt/localhost_foo_bar/plugin/baz.vim"), "qux"
+    assert_equal "qux", (testpath/".vim/pack/volt/opt/localhost_foo_bar/plugin/baz.vim").read
   end
 end

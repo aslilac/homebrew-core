@@ -5,6 +5,8 @@ class Gaul < Formula
   sha256 "7aabb5c1c218911054164c3fca4f5c5f0b9c8d9bab8b2273f48a3ff573da6570"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "f6ef6f6e6711082dd49cae45e516aa9f8fdf0f2942ff4224f6c30d9e75976dcc"
     sha256 cellar: :any,                 arm64_sonoma:   "619d02cf0a65573901c3b83a642203dae07540475bb5e1ea054b67e9ae1ed086"
@@ -20,23 +22,21 @@ class Gaul < Formula
     sha256 cellar: :any,                 high_sierra:    "f1b6b4fedb8820b14b6384d612b16a1acca71efa26a0d81881c1730720518765"
     sha256 cellar: :any,                 sierra:         "5dcd424881f8395070bf534b8bd480279a17cbf8a5784ba2be7dffdbfbc85f51"
     sha256 cellar: :any,                 el_capitan:     "0a6fb9c8ae17bb0785cc9c9da0fa0b3bf5fd6ca69b1ef8516b800d0d28d77360"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "53fc9d9d00e8829b40586ca4786c0848b543d5f42b191bde994139d284371a4c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "86d80af0c4bdef2186dccac01b0046ca2ca2c81c484b7c5f279553b2e190b53c"
   end
 
-  on_macos do
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
-    # Run autoreconf on macOS to rebuild configure script so that it doesn't try
-    # to build with a flat namespace.
-    system "autoreconf", "--force", "--verbose", "--install" if OS.mac?
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-debug",
-                          "--disable-g",
-                          "--prefix=#{prefix}"
+    # Run autoreconf to regenerate the configure script and update outdated macros.
+    # This ensures that the build system is properly configured on both macOS
+    # (avoiding issues like flat namespace conflicts) and Linux (where outdated
+    # config scripts may fail to detect the correct build type).
+    system "autoreconf", "--force", "--verbose", "--install"
+    system "./configure", "--disable-g", *std_configure_args
     system "make", "install"
   end
 end

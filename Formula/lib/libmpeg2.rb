@@ -11,6 +11,8 @@ class Libmpeg2 < Formula
     regex(/href=.*?libmpeg2[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "2db4b583e04a71b456045c2bf9f7d08f1ee332e8305c0944d4b101c83ab71990"
     sha256 cellar: :any,                 arm64_sonoma:   "0174a78b3200ac177017167c6dd73a31202da4a819c4a282b424e36a346b2496"
@@ -22,6 +24,7 @@ class Libmpeg2 < Formula
     sha256 cellar: :any,                 monterey:       "fb3ad194c995a22c85768c3032a0d04b195a2e3b4684b1256f6498581d87bc5a"
     sha256 cellar: :any,                 big_sur:        "81fede3e5bf51daaed591f1eab2ecb777b092f5c99386b2a751618b059c7d2f1"
     sha256 cellar: :any,                 catalina:       "c25d746458652a4e7f87e67478b1451924da48a82d98a8eae83e36cceb336428"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "2fabce057d7c15bb18b7320230edb8a748206664185c4c0a00e174615ec0094f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "04a7bbf5129d11b695a6a57eff6091f6519e3b4554dc77f84bca351a4f17acaa"
   end
 
@@ -34,9 +37,8 @@ class Libmpeg2 < Formula
     # Otherwise compilation fails in clang with `duplicate symbol ___sputc`
     ENV.append_to_cflags "-std=gnu89"
 
-    system "autoreconf", "-fiv"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", *std_configure_args
     system "make", "install"
     pkgshare.install "doc/sample1.c"
   end

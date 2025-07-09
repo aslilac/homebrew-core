@@ -1,13 +1,15 @@
 class ZeldaRothSe < Formula
   desc "Zelda Return of the Hylian SE"
-  homepage "https://www.solarus-games.org/en/games/the-legend-of-zelda-return-of-the-hylian-se"
-  url "https://gitlab.com/solarus-games/zelda-roth-se/-/archive/v1.2.1/zelda-roth-se-v1.2.1.tar.bz2"
+  homepage "https://www.solarus-games.org/games/the-legend-of-zelda-return-of-the-hylian-se/"
+  url "https://gitlab.com/solarus-games/games/zelda-roth-se/-/archive/v1.2.1/zelda-roth-se-v1.2.1.tar.bz2"
   sha256 "1cff44fe97eab1327a0c0d11107ca10ea983a652c4780487f00f2660a6ab23c0"
   license all_of: [
     "GPL-3.0-only", # lua scripts
     "CC-BY-SA-4.0", # data files
   ]
-  head "https://gitlab.com/solarus-games/zelda-roth-se.git", branch: "dev"
+  head "https://gitlab.com/solarus-games/games/zelda-roth-se.git", branch: "dev"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 1
@@ -23,6 +25,7 @@ class ZeldaRothSe < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "1531cd6fc89cca4cc08287e569cdd8b86e41a52bb8c66fb10f6a74bb5006bc24"
     sha256 cellar: :any_skip_relocation, mojave:         "b0451d1eb512280f9dcb2c6057188cbe02e9b2c71fbf337ac463a4e284ba1987"
     sha256 cellar: :any_skip_relocation, high_sierra:    "dcf7800dd6c2e8798abb867733a79acda20e3ce7745b7d489eeac3050a7bf829"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "77a60187f3e237fcdb9b1bfa6346d90cb2db5a4a07a3a74488432c94c84389c6"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f752b830f0e4e894b560e50ee2418fb889c938ddcdfc85fe9011a528647173e8"
   end
 
@@ -33,8 +36,12 @@ class ZeldaRothSe < Formula
   uses_from_macos "unzip" => :test
 
   def install
-    system "cmake", ".", *std_cmake_args, "-DSOLARUS_INSTALL_DATADIR=#{share}"
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+                    "-DSOLARUS_INSTALL_DATADIR=#{share}",
+                    *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

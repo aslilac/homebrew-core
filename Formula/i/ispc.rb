@@ -1,8 +1,8 @@
 class Ispc < Formula
   desc "Compiler for SIMD programming on the CPU"
   homepage "https://ispc.github.io"
-  url "https://github.com/ispc/ispc/archive/refs/tags/v1.25.3.tar.gz"
-  sha256 "6f00038e0e86e90474f3117c3b393f6695a8fbe1b3d8fe3b1a0baf197dfb7557"
+  url "https://github.com/ispc/ispc/archive/refs/tags/v1.27.0.tar.gz"
+  sha256 "c41ae29e4f6b1d37154610e68e9b7a0eb225cd7c080242ab56fa0119e49dbd7a"
   license "BSD-3-Clause"
 
   # Upstream sometimes creates releases that use a stable tag (e.g., `v1.2.3`)
@@ -14,11 +14,13 @@ class Ispc < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "7fdb124a8e5dcd9ebd6318f96ef0115eb31baa4bb0c37db04925a5d579d1e462"
-    sha256 cellar: :any, arm64_sonoma:  "416917fa154a69629e2c31dcc50cbd9bd7857351a12773f2c40d5c7a002ded3a"
-    sha256 cellar: :any, arm64_ventura: "d5ad759c26824c571ad97281925d7f5539a82682f2e303255433c2423005e2e0"
-    sha256 cellar: :any, sonoma:        "1441055791b7e00135fc9bb578199328b8dc911f66feb2b3988275f83626ca2b"
-    sha256 cellar: :any, ventura:       "36287742709f4ebef6b3f6f58fdb331c1f6b6cfad40f46997c41113821932d7e"
+    sha256 cellar: :any,                 arm64_sequoia: "be75e6c28f90c2d54f288e0268803e52421c130764bf72df3dde613b7e7c81fc"
+    sha256 cellar: :any,                 arm64_sonoma:  "9b71c4bd3699d3f5d095ba599530ef86581be0c8abf543dca123a3201fdf8849"
+    sha256 cellar: :any,                 arm64_ventura: "12f513bde46acf3e834f611ba80a32693ab39c443cb6826a7a844dc4133f0d95"
+    sha256 cellar: :any,                 sonoma:        "ff78c5988bbaa1d87c3e117dfdcef16c68aea0f430ea113a44b6491345d0eb75"
+    sha256 cellar: :any,                 ventura:       "3bd271b4ea0f43414226cf6fb3a2951b944da88fcc7416c0065e74424271f5c6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f11552068773867fad6194a4b352088c21da18f4c607a79b40878640c1780c9f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ff95b06a16ccb8e759c1957ee2f6abf630b468e63acccf204b78eaae7ccf7ae8"
   end
 
   depends_on "bison" => :build
@@ -31,8 +33,6 @@ class Ispc < Formula
   on_linux do
     depends_on "tbb"
   end
-
-  fails_with gcc: "5"
 
   def llvm
     deps.map(&:to_formula).find { |f| f.name.match? "^llvm" }

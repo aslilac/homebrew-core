@@ -11,12 +11,15 @@ class Tmux < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia: "5e371680cf27c72d30e70f57087bef3fadb408e1881a58839137625c10919f64"
     sha256 cellar: :any,                 arm64_sonoma:  "58e253aca23e3deb4b6e171419047cba7283a51cba51962351f5e51661d53437"
     sha256 cellar: :any,                 arm64_ventura: "7cfc60d84d3ec0ba61580633d7add6ffc0eeaa07ec27ceb2380fe434530c90bb"
     sha256 cellar: :any,                 sonoma:        "2e10a69a7d9828300ef1ec19f139c6d7eef7522d451e8812073460c4ba61ac28"
     sha256 cellar: :any,                 ventura:       "7d823e8b277d302563902e25b9e75594ad46f1996f9e53e5bb70d89c910bf092"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6f1e10dbf08da58ff7e32cab75871cef72777a6d3f82e27a315ac0e292169db4"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "f8f77441d2c3db824f04268e62e1db8f240cbff682b12b40a77f5f3ae12f5a94"
   end
 
@@ -82,10 +85,10 @@ class Tmux < Formula
     require "pty"
 
     socket = testpath/tap.user
-    PTY.spawn bin/"tmux", "-S", socket, "-f", "/dev/null"
+    PTY.spawn bin/"tmux", "-S", socket, "-f", File::NULL
     sleep 10
 
-    assert_predicate socket, :exist?
+    assert_path_exists socket
     assert_predicate socket, :socket?
     assert_equal "no server running on #{socket}", shell_output("#{bin}/tmux -S#{socket} list-sessions 2>&1", 1).chomp
   end

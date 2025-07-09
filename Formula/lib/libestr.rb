@@ -10,6 +10,8 @@ class Libestr < Formula
     regex(/href=.*?libestr[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "c4ee35e1e3e47e5009e3fdb7be52737edebddcdd812e8c1811fcf73648a656cb"
     sha256 cellar: :any,                 arm64_sonoma:   "3fba48207a9ab79341e43e937560dfeae150dada3f5cb560a7a209fb45e726ef"
@@ -24,10 +26,11 @@ class Libestr < Formula
     sha256 cellar: :any,                 mojave:         "543dcd541a69d52d5d1d21d51d0cf57c1617cc177f743c2dfea8ea3d548b93e8"
     sha256 cellar: :any,                 high_sierra:    "7f17c5dbb6534afe6b37ae1d1f994d3387cd8527d6aaa768604837ac681eee59"
     sha256 cellar: :any,                 sierra:         "5ff130cf6aa42842636dd90b7a8e7e60adbb289682bd915c98937b032c38fc54"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "9f88fde30fe9005f5eafd6a718b233317c838f741535b789ac39a1a027daf0b2"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6f131de3ed214869ab11a430e48f7e006d8b4ae1c181413f0d60aa9da85f4599"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   # Fix -flat_namespace being used on Big Sur and later.
   patch do
@@ -36,7 +39,7 @@ class Libestr < Formula
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make"
     system "make", "install"
   end

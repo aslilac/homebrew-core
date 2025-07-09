@@ -12,13 +12,14 @@ class TfProfile < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "f3d27c04d0f690020ab293d51b7c1bcba6cec6570b0c5e9505c55710a001746a"
     sha256 cellar: :any_skip_relocation, sonoma:        "55fc5b3eff827ab558666e9c4b398da3b813185347583fc9b7f86fc9a8fc8f63"
     sha256 cellar: :any_skip_relocation, ventura:       "55fc5b3eff827ab558666e9c4b398da3b813185347583fc9b7f86fc9a8fc8f63"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3fc725da2027e30719d536c6d3eb6c774512abc7264e35dafa00e7a79e34c274"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "6fa07426feb28fb5add75bf78c5c11884f62ba74783161b861d70783149eccab"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-tags", "netgo", *std_go_args(ldflags: "-s -w")
+    system "go", "build", *std_go_args(ldflags: "-s -w", tags: "netgo")
     pkgshare.install "test"
 
     generate_completions_from_executable(bin/"tf-profile", "completion")

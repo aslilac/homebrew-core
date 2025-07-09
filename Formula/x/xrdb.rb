@@ -5,6 +5,8 @@ class Xrdb < Formula
   sha256 "31f5fcab231b38f255b00b066cf7ea3b496df712c9eb2d0d50c670b63e5033f4"
   license "MIT-open-group"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "c623fd441390eaf1e39523477efd40c69f906eecc0e298db015fad002828a707"
     sha256 cellar: :any,                 arm64_sonoma:   "dd6633e16b4d7304c613cc88b59930d98bfc8bddf4e575e161c06fd74200d89a"
@@ -15,6 +17,7 @@ class Xrdb < Formula
     sha256 cellar: :any,                 ventura:        "7ef65e0a0e3951b600d7587ef5015ca44606cd5f225ca2c33735979633176fc3"
     sha256 cellar: :any,                 monterey:       "0681e2deb75be4bcf436002d036f7dafbdabc2401f571255c0c8f225e2cf7728"
     sha256 cellar: :any,                 big_sur:        "ea5920dfb84ff9ff1d35090dfcd39aa4995163a0bbb515f0396be1137c2d20be"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "428c35b84b33e5a752e8804297b8d6be1db36ca40068018d9db68d8bb18aad8a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b387dbe59b86aad4b9e297ed43cb2bfc07b7a5c893fa22cf36e8e8712cb722fa"
   end
 

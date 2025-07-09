@@ -6,6 +6,8 @@ class Hexgui < Formula
   license "GPL-3.0-or-later"
   head "https://github.com/apetresc/hexgui.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ccdb3e80a0eb41a92445f2eb7338c220303da8c6bd8e536e825d69b7fa2908a1"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "37ccb0805ccbcc1a8a9af8ecb5c6b687ea896afeebb892029dfa07da395d5ad2"
@@ -16,6 +18,7 @@ class Hexgui < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "d8e8fd7679f0f5a55f8c2221049542ac4241c1c0ac3bbd2a05401bdf4b702401"
     sha256 cellar: :any_skip_relocation, monterey:       "d81898239d18db373e084173879a20bb068b5addb64e197cb89eea039aacd487"
     sha256 cellar: :any_skip_relocation, big_sur:        "604a0d381b523b54292f65b3e9ab20b3085e5a8f0c84065516c74bd38ce1245b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a23602aeb64e79dc0f28b3c7bf13a05144d2501d38804c5d000e0c7d8081acee"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7f3482e21058facf382c8920f29980679e4b168d2a5380ca9f995bb8e6383f4b"
   end
 

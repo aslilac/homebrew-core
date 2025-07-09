@@ -11,6 +11,8 @@ class Pwsafe < Formula
     regex(/href=.*?pwsafe[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "fcd7dd6ac6b4755c4f6e165e8fad94838cb260a07b47a890f1f1e54ab6d04e3d"
@@ -23,6 +25,7 @@ class Pwsafe < Formula
     sha256 cellar: :any,                 monterey:       "1c773e828b7a92a8d8da681549a8cc20a9fb2dded715cc82331eb74037a98e26"
     sha256 cellar: :any,                 big_sur:        "e7c3595ff796b678efd8aedd74dcc59e057b3a4b96908c820fae3b643d9d8e45"
     sha256 cellar: :any,                 catalina:       "ceda65b7835ed7e72491565952827cc23c8a56f70dd2f875b269eaa8bcaf4f9c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "400819e0247e3fd2cafc708b7e53f89760fd7f10ff016ab1bc370002de59899e"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "8dcacc8d3f09ec672a4130e55695240788145e0159f6a606c67912d8411c2c0d"
   end
 
@@ -42,10 +45,15 @@ class Pwsafe < Formula
   end
 
   def install
-    system "autoreconf", "--force", "--install", "--verbose" if build.head?
-    system "./configure", *std_configure_args,
-                          "--mandir=#{man}",
-                          "--without-x"
+    args = ["--mandir=#{man}", "--without-x"]
+    if build.head?
+      system "autoreconf", "--force", "--install", "--verbose"
+    elsif OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+      # Help old config scripts identify arm64 linux
+      args << "--build=aarch64-unknown-linux-gnu"
+    end
+
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

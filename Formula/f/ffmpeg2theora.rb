@@ -7,6 +7,8 @@ class Ffmpeg2theora < Formula
   revision 11
   head "https://gitlab.xiph.org/xiph/ffmpeg2theora.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "386bcf4220cfa4e2aa06f1a9fa920cbd028d321bf622f3b7c1010d63502ce584"
     sha256 cellar: :any,                 arm64_sonoma:   "db8c87aecac7f8ee1585140a11fba27cbc9f570662c646403b3a1363c3ae65d4"
@@ -15,10 +17,11 @@ class Ffmpeg2theora < Formula
     sha256 cellar: :any,                 sonoma:         "2033b5b0ee57ebcca4884fbe0bb3b18e91a13d0714f4854e3ebe0535345c6ce7"
     sha256 cellar: :any,                 ventura:        "ce42df594f3605668d80f8bf4f9f8d40c2f2c9ce8bb295f213cbf9d313f54227"
     sha256 cellar: :any,                 monterey:       "7d9478e2bb76d731a905685b690d4663975959ad8a07c45e60fe19acce323aab"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "fc03ea311b635730af0df690293b9833526118b1565e35b08805e6338bb32b1c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3965a87c59f7e76f5440130868ad518c5e770a786e5074bb3803cc88c627c024"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "scons" => :build
   depends_on "ffmpeg@4"
   depends_on "libkate"

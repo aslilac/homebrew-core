@@ -6,6 +6,8 @@ class Pms < Formula
   license "MIT"
   revision 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "24de40d237ca53721190a990da548b37b777fa60e7599c9c0c0dcf289333bbeb"
     sha256 cellar: :any,                 arm64_sonoma:   "2992d520cbc631a4764f7387d6f37efbb9dc5d75a387993217fb83204fa17a50"
@@ -20,10 +22,11 @@ class Pms < Formula
     sha256 cellar: :any,                 mojave:         "0c43ee20313b6616c6ececb9c906da12720b035862a894a3f9dd11984c640b30"
     sha256 cellar: :any,                 high_sierra:    "f01d2f4db91f6b6bcf35f86c7a0d2b0fbed17941d9556fe0ba71e855c7667638"
     sha256 cellar: :any,                 sierra:         "fa90afc92fc9d1e57a9a0a74dc63d3ec5ba92f1430caf5cad8fa54362b0da298"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "49c08001404ac52846502ef4173d8df4907aa2f3ce45bd55c48faf3c672100da"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6c3d1cf4ac839cd2c6ae549d4c303dfeed70951bf0473b4919bcbe62a2530961"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "gettext"
   depends_on "glib"

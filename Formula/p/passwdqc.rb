@@ -10,6 +10,8 @@ class Passwdqc < Formula
     regex(/href=["']?passwdqc[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "ff2e3463c33e26713d8d994134dbcf4cc3b90f2eae60135ef52821ec82af6dc9"
     sha256 cellar: :any,                 arm64_sonoma:   "8c8d9e924950156472e0040224cf7f30a6e6c256eccc027746be8a9211b245f4"
@@ -20,6 +22,7 @@ class Passwdqc < Formula
     sha256 cellar: :any,                 ventura:        "40dd6c923246ef225bf9e129e5ae142ed77fe7d111f92654fab0e3edd921f612"
     sha256 cellar: :any,                 monterey:       "72f01dbc795a98ac1ec65db7c31f62e13182d47c422b116c57f72d34a8fc7c6f"
     sha256 cellar: :any,                 big_sur:        "7fb7c879feb5562187e03d4d2a1bbc5be855330c1382cac43ef3378818eacb02"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "4bf9371aae5b2908b63aba467004476df6255d29a3f84e0c4a06872084857398"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1ef0b2b3f545ca92181f77b7fff78992ffe1a6a84d31dd26103ecc3696cb9a3f"
   end
 

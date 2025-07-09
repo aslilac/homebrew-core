@@ -5,6 +5,8 @@ class Sourcedocs < Formula
   sha256 "07547c929071124264ec9cc601331f21dc67a104ffc76fbc1801c1ecb4c35bbf"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4914567b0171f3dfcab46315e33232e5c925077268af59ce0ff5955c948dcb6e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5461899a0c97729c247703f45eb98a0cf26fc9939ce50eb6fa9543e9f70c6c62"
@@ -16,6 +18,7 @@ class Sourcedocs < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "974904c0b5b4d0d54fe8392c84fe06b3aa23e47fb76f95579f09e5fc94704d2d"
     sha256 cellar: :any_skip_relocation, big_sur:        "292dbf6713d17716e685ac74c0e9fdbe07038b95bca36f234a94bfe2fffe5aab"
     sha256 cellar: :any_skip_relocation, catalina:       "56cad5d1e01271614fd93c5ec93b4b7fc7cabb64bef767581bc5ad179ee20a63"
+    sha256                               arm64_linux:    "a5ede432a4cc147f30658c33f26b704e039b102f0c10d6e522296818dbb2bfdd"
     sha256                               x86_64_linux:   "ebd23518f4371e70e885900d73fdf0ea71a4d30a0695a1dff8fa4d762abfa5e1"
   end
 
@@ -69,7 +72,7 @@ class Sourcedocs < Formula
         system bin/"sourcedocs", "generate",
                "--spm-module", "foo",
                "--output-folder", testpath/"Documentation/Reference"
-        assert_predicate testpath/"Documentation/Reference/README.md", :exist?
+        assert_path_exists testpath/"Documentation/Reference/README.md"
       end
     end
   end

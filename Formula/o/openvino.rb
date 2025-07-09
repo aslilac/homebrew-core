@@ -3,33 +3,37 @@ class Openvino < Formula
 
   desc "Open Visual Inference And Optimization toolkit for AI inference"
   homepage "https://docs.openvino.ai"
-  url "https://github.com/openvinotoolkit/openvino/archive/refs/tags/2024.4.1.tar.gz"
-  sha256 "b8045c9d24be1f7247ed5e1055f5a2df745fb00d4820af2686b5c04eca113163"
+  url "https://github.com/openvinotoolkit/openvino/archive/refs/tags/2025.0.0.tar.gz"
+  sha256 "d2cbff5a0ac1bc738c33ba103569f8daf20d3a17d3db94da11ae207ffb9e4395"
   license "Apache-2.0"
   head "https://github.com/openvinotoolkit/openvino.git", branch: "master"
 
   livecheck do
     url :stable
-    regex(/^(\d+(?:\.\d+)+)$/i)
+    strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "08db97ef594be91f9e5ac60f0e7762f86821ca2606a67f4f90fa854f99017df1"
-    sha256 cellar: :any,                 arm64_sonoma:  "325852c31c34d989df1a36a794ba3cb6a0250be477c1d07079db05e4c40305e0"
-    sha256 cellar: :any,                 arm64_ventura: "f1344c24759b04c975ee35669b5fd808120446fb7374aa41a1799733d9f3cbc0"
-    sha256 cellar: :any,                 sonoma:        "907d1976dabef9dbd228a5ed44aa762d691c69a1971de7b3c1517e2ea5fecb6e"
-    sha256 cellar: :any,                 ventura:       "34d41a49064520427bd9402cd8e3962d53b138eaeb1161f3f1c45da8ec98d751"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c34f60bcb27eee29db774d2249a6b649e5b28e4ddf34ff7ca6fc482d28387b93"
+    sha256 cellar: :any,                 arm64_sequoia: "95709208344d92723a834f0ebee93d7070547e49eb677a46d66f5289039891fd"
+    sha256 cellar: :any,                 arm64_sonoma:  "2c6c71ee8441e3f45f14cda2ed0b9e95c582aa9dce3f80a90bd2cc4e2ada3526"
+    sha256 cellar: :any,                 arm64_ventura: "dbb9da7ce2c386c0d28b3349d01524b3298afdf46a0c1be8f7c7ef9bf0c65e60"
+    sha256 cellar: :any,                 sonoma:        "6443b56a2b56b273f04a716e87dc25d96e486f3955733631c2ac5c92dab80f94"
+    sha256 cellar: :any,                 ventura:       "ec5ed79b6a10cf6dab861e3eafe3fdc925ce9fdaafb8a89e7cca6e379fe8e10a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "db2178c8c3450d514c0ec118be1e84710cde5c516ea0c3c32c6ae8b458287394"
   end
 
   depends_on "cmake" => [:build, :test]
   depends_on "flatbuffers" => :build
-  depends_on "pkg-config" => [:build, :test]
-  depends_on "protobuf@21" => :build
+  depends_on "pkgconf" => [:build, :test]
   depends_on "pybind11" => :build
   depends_on "python-setuptools" => :build
-  depends_on "python@3.12" => [:build, :test]
+  depends_on "python@3.13" => [:build, :test]
+  depends_on "abseil"
   depends_on "numpy"
+  depends_on "onnx"
+  depends_on "protobuf"
   depends_on "pugixml"
   depends_on "snappy"
   depends_on "tbb"
@@ -41,8 +45,8 @@ class Openvino < Formula
     depends_on "opencl-icd-loader"
 
     resource "onednn_gpu" do
-      url "https://github.com/oneapi-src/oneDNN/archive/refs/tags/v3.6-pc.tar.gz"
-      sha256 "d0eeff1425e318887c429a709d58010a580c8173eba8fbee74bca41b7f621f59"
+      url "https://github.com/oneapi-src/oneDNN/archive/706a3ce3b391cf1d8a904a8efa981c70078719eb.tar.gz"
+      sha256 "1a656eb32f383cef82b703c355d762b2162f5aaa7b6f54b2c1e47995a9cee1f2"
     end
   end
 
@@ -65,13 +69,8 @@ class Openvino < Formula
   end
 
   resource "onednn_cpu" do
-    url "https://github.com/openvinotoolkit/oneDNN/archive/c8ae8d96e963bd04214858319fa334968e5e73c9.tar.gz"
-    sha256 "b9c2a53061b4528231ff5fbcee85900d698c329c7977b1f39c5d3d65f29c2caa"
-  end
-
-  resource "onnx" do
-    url "https://github.com/onnx/onnx/archive/refs/tags/v1.16.0.tar.gz"
-    sha256 "0ce153e26ce2c00afca01c331a447d86fbf21b166b640551fe04258b4acfc6a4"
+    url "https://github.com/openvinotoolkit/oneDNN/archive/1789b1e0ae441de15d793123003a900a35d1dc71.tar.gz"
+    sha256 "551070032ce5d2ed6adc2216e9b061782da097b1ce28c403eaa16b230b09f6a7"
   end
 
   resource "openvino-telemetry" do
@@ -85,7 +84,7 @@ class Openvino < Formula
   end
 
   def python3
-    "python3.12"
+    "python3.13"
   end
 
   def install
@@ -102,7 +101,6 @@ class Openvino < Formula
                       src/plugins/intel_cpu/thirdparty/ComputeLibrary]
     dependencies.each { |d| rm_r(buildpath/d) }
 
-    resource("onnx").stage buildpath/"thirdparty/onnx/onnx"
     resource("mlas").stage buildpath/"src/plugins/intel_cpu/thirdparty/mlas"
     resource("onednn_cpu").stage buildpath/"src/plugins/intel_cpu/thirdparty/onednn"
 
@@ -112,11 +110,12 @@ class Openvino < Formula
       resource("onednn_gpu").stage buildpath/"src/plugins/intel_gpu/thirdparty/onednn_gpu"
     end
 
-    cmake_args = std_cmake_args + %w[
+    cmake_args = %w[
       -DCMAKE_OSX_DEPLOYMENT_TARGET=
       -DENABLE_CPPLINT=OFF
       -DENABLE_CLANG_FORMAT=OFF
       -DENABLE_NCC_STYLE=OFF
+      -DENABLE_OV_JAX_FRONTEND=OFF
       -DENABLE_JS=OFF
       -DENABLE_TEMPLATE=OFF
       -DENABLE_INTEL_NPU=OFF
@@ -128,10 +127,11 @@ class Openvino < Formula
       -DENABLE_SYSTEM_PROTOBUF=ON
       -DENABLE_SYSTEM_FLATBUFFERS=ON
       -DENABLE_SYSTEM_SNAPPY=ON
+      -DProtobuf_USE_STATIC_LIBS=OFF
     ]
 
     openvino_binary_dir = "#{buildpath}/build"
-    system "cmake", "-S", ".", "-B", openvino_binary_dir, *cmake_args
+    system "cmake", "-S", ".", "-B", openvino_binary_dir, *cmake_args, *std_cmake_args
     system "cmake", "--build", openvino_binary_dir
     system "cmake", "--install", openvino_binary_dir
 
@@ -150,7 +150,7 @@ class Openvino < Formula
   end
 
   test do
-    pkg_config_flags = shell_output("pkg-config --cflags --libs openvino").chomp.split
+    pkg_config_flags = shell_output("pkgconf --cflags --libs openvino tbb pugixml").chomp.split
 
     (testpath/"openvino_available_devices.c").write <<~C
       #include <openvino/c/openvino.h>
@@ -201,9 +201,9 @@ class Openvino < Formula
     system "cmake", "--build", testpath.to_s
     assert_equal "6", shell_output("#{testpath}/openvino_frontends_test").strip
 
-    system python3, "-c", <<~EOS
+    system python3, "-c", <<~PYTHON
       import openvino.runtime as ov
       assert '#{version}' in ov.__version__
-    EOS
+    PYTHON
   end
 end

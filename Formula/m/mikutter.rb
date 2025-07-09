@@ -1,8 +1,8 @@
 class Mikutter < Formula
   desc "Extensible Twitter client"
   homepage "https://mikutter.hachune.net/"
-  url "https://mikutter.hachune.net/bin/mikutter-5.0.7.tar.gz", using: :homebrew_curl
-  sha256 "34dcabb98572c5c3b5707ebdee41019bf277fa3e20f7e061088b5b1d1aaea39a"
+  url "https://mikutter.hachune.net/bin/mikutter-5.1.1.tar.gz"
+  sha256 "ddff538aae249bd636604128bac1ccb526a4ed5c32f00b45d3c3c1dbcdb655de"
   license "MIT"
   head "git://mikutter.hachune.net/mikutter.git", branch: "develop"
 
@@ -11,15 +11,16 @@ class Mikutter < Formula
     regex(/href=.*?mikutter.?v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "5dfe5d2f6dd4fd03d99c9ef6fe3802bac9eead82654de2ecd75b568e860844e2"
-    sha256 cellar: :any,                 arm64_sonoma:   "874e909394bbcd628880b9ecb1c24bbdcd742f4e9bf70b0124ffc9406a03a530"
-    sha256 cellar: :any,                 arm64_ventura:  "3fc62fdf24d802bed6844898757ea6c3ad41199bce35d7695cfcfc18dff2129f"
-    sha256 cellar: :any,                 arm64_monterey: "4699f159d4c7e93dd620bbf19cbd3a24d3a98be7aeffa1931463c3ec61cbd980"
-    sha256 cellar: :any,                 sonoma:         "175463dd78b4438c99e02707a6ffc2b51cd99133975057274c00a8db3d73a7cf"
-    sha256 cellar: :any,                 ventura:        "1ad8bc7f0a40476f9818fc27546d17fa6ce1238b29b8450c7755e653af7d48aa"
-    sha256 cellar: :any,                 monterey:       "9b996455b9139e9a05a5e192a6bc3afd60163657f8dad6547b8d26ea678e2965"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2fb63d053caabda978ef73ca377addc05ae0d51b8eccb4c9b8ac1daef02d8e8a"
+    sha256 cellar: :any,                 arm64_sequoia: "ee481445aa3a12c60060f4f31d43d8d0378c8189e55c81c7400090b668f48abb"
+    sha256 cellar: :any,                 arm64_sonoma:  "b66c8480c121a81c26ec2b37e653fbb324c68c362c18e398ddc40129c3f9c9a4"
+    sha256 cellar: :any,                 arm64_ventura: "a4fc84de589aa90a7a78dc4c1d143bf4731f9ae7e251ac360bafffbdaa485db4"
+    sha256 cellar: :any,                 sonoma:        "ab93541b1f60859a5d8e524db4e29d532aff212bd97b5e039884bafb3c174861"
+    sha256 cellar: :any,                 ventura:       "b778e25fda7cb17ec806e6fb66166de3832d00af03f72f4b19bafb6319d246db"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ef6f1ad4d02a73c31297fbf70f6c5a4c62f670f4ca3301ccbb1d3f14705d2deb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f6009cbdabcfa5a3d06991b1b73bcf84412423289174569e276e3beddd419e3a"
   end
 
   depends_on "at-spi2-core"
@@ -43,6 +44,8 @@ class Mikutter < Formula
     depends_on "gettext"
     depends_on "terminal-notifier"
   end
+
+  # check `plugin/gtk3/Gemfile` for `gtk3` gem version
 
   resource "addressable" do
     url "https://rubygems.org/downloads/addressable-2.8.6.gem"
@@ -80,8 +83,8 @@ class Mikutter < Formula
   end
 
   resource "fiddle" do
-    url "https://rubygems.org/downloads/fiddle-1.1.2.gem"
-    sha256 "59bd18c38e65cdc36863ab68e3ffd78658b8f025d1d080b218de94370420a074"
+    url "https://rubygems.org/downloads/fiddle-1.1.6.gem"
+    sha256 "79e8d909e602d979434cf9fccfa6e729cb16432bb00e39c7596abe6bee1249ab"
   end
 
   resource "forwardable" do
@@ -135,8 +138,8 @@ class Mikutter < Formula
   end
 
   resource "json" do
-    url "https://rubygems.org/gems/json-2.7.1.gem"
-    sha256 "187ea312fb58420ff0c40f40af1862651d4295c8675267c6a1c353f1a0ac3265"
+    url "https://rubygems.org/gems/json-2.9.1.gem"
+    sha256 "d2bdef4644052fad91c1785d48263756fe32fcac08b96a20bb15840e96550d11"
   end
 
   resource "locale" do
@@ -147,6 +150,11 @@ class Mikutter < Formula
   resource "matrix" do
     url "https://rubygems.org/downloads/matrix-0.4.2.gem"
     sha256 "71083ccbd67a14a43bfa78d3e4dc0f4b503b9cc18e5b4b1d686dc0f9ef7c4cc0"
+  end
+
+  resource "observer" do
+    url "https://rubygems.org/downloads/observer-0.1.2.gem"
+    sha256 "d8a3107131ba661138d748e7be3dbafc0d82e732fffba9fccb3d7829880950ac"
   end
 
   resource "memoist" do
@@ -217,8 +225,8 @@ class Mikutter < Formula
   end
 
   resource "singleton" do
-    url "https://rubygems.org/downloads/singleton-0.2.0.gem"
-    sha256 "a6cb7304421684d80093859aed38b26035f6e54a38c3e4fe6456cfb56b240563"
+    url "https://rubygems.org/downloads/singleton-0.3.0.gem"
+    sha256 "83ea1bca5f4aa34d00305ab842a7862ea5a8a11c73d362cb52379d94e9615778"
   end
 
   resource "text" do
@@ -275,10 +283,9 @@ class Mikutter < Formula
     end
 
     gemfile_remove_test!
-    system "bundle", "config",
-           "build.nokogiri", "--use-system-libraries"
-    system "bundle", "install",
-           "--local", "--path=#{lib}/mikutter/vendor"
+    system "bundle", "config", "build.nokogiri", "--use-system-libraries"
+    system "bundle", "config", "set", "--local", "path", "#{lib}/mikutter/vendor"
+    system "bundle", "install"
 
     rm_r("vendor")
     (lib/"mikutter").install "plugin"

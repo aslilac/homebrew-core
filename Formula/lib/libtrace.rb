@@ -1,9 +1,9 @@
 class Libtrace < Formula
   desc "Library for trace processing supporting multiple inputs"
   homepage "https://github.com/LibtraceTeam/libtrace"
-  url "https://github.com/LibtraceTeam/libtrace/archive/refs/tags/4.0.26-1.tar.gz"
-  version "4.0.26"
-  sha256 "8174322a0ca44398addf7dfabea926876ef0b88ea453023c8bd6749ac0333cab"
+  url "https://github.com/LibtraceTeam/libtrace/archive/refs/tags/4.0.28-1.tar.gz"
+  version "4.0.28"
+  sha256 "94406738d590a4a65172dcb1a1957f00781b793398f212e35e8119598ff95bcc"
   license all_of: ["GPL-2.0-or-later", "LGPL-3.0-or-later"]
 
   livecheck do
@@ -15,31 +15,26 @@ class Libtrace < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "f040acaba777d80b9cbe3562d2e07e9d72a44f3d7c7ebcfc4dcc729619a2da0c"
-    sha256 cellar: :any,                 arm64_sonoma:   "c49542e5eed197e539d27582727740ff8b3257e097b909af754b509e3d334692"
-    sha256 cellar: :any,                 arm64_ventura:  "cd56a08655316acaf06509af286f4d6a67b435ba148dff0b409decb76375fbef"
-    sha256 cellar: :any,                 arm64_monterey: "ad45eff84fa6e27d71c6dfa658e2925a4cacd13d5c671d9f8dd7f0ccaa812dfa"
-    sha256 cellar: :any,                 sonoma:         "b4337388980492dc3ceaa10afad268294a9798f380ce072ac82d052820ee426e"
-    sha256 cellar: :any,                 ventura:        "495861941cdc96b9dae525686f3f5b0a9814550d3ff4eb8f8f0823cdece8e3b9"
-    sha256 cellar: :any,                 monterey:       "56c217a1ff186488cec8757d6db571f12ad45cc025b157a8a9f62a7675355625"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9516685d9c526bca267db4d74a007e40363ff0ee955a126be75b9ef666ca7b81"
+    sha256 cellar: :any,                 arm64_sequoia: "33385a076780758c33ac37e59d3667304c9733792265ceaf9c7a9c5453a628e6"
+    sha256 cellar: :any,                 arm64_sonoma:  "5fa670f301736144c77b8bb1c88aae1aff35c1dd5fe0bcb260a086946c14b646"
+    sha256 cellar: :any,                 arm64_ventura: "f924814b1274c1d3d21471eb9c49ab2efb61f75e22a61557b7dbbb14d0f7d088"
+    sha256 cellar: :any,                 sonoma:        "21c92f7c30fdf1fa0ed6aabd48b1777c0fe252dbc73106cb7be465de8ef840e6"
+    sha256 cellar: :any,                 ventura:       "a5980413f55fefc4f1754526e060520257aae1f70f322d5da291d4ab0501526f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ce2d4b9fa25d3ef6a8e627ee21653eff269cb204dc42b7665b9c70c922e1bb13"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fb7b948eb96dd83e18188176de55f4964f1d2e27e8f8a3bfab6a6275f99a9cdc"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "openssl@3"
   depends_on "wandio"
 
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
   uses_from_macos "libpcap"
-
-  resource "homebrew-8021x.pcap" do
-    url "https://github.com/LibtraceTeam/libtrace/raw/9e82eabc39bc491c74cc4215d7eda5f07b85a8f5/test/traces/8021x.pcap"
-    sha256 "aa036e997d7bec2fa3d387e3ad669eba461036b9a89b79dcf63017a2c4dac725"
-  end
+  uses_from_macos "ncurses"
 
   def install
     system "./bootstrap.sh"
@@ -49,6 +44,11 @@ class Libtrace < Formula
   end
 
   test do
+    resource "homebrew-8021x.pcap" do
+      url "https://github.com/LibtraceTeam/libtrace/raw/9e82eabc39bc491c74cc4215d7eda5f07b85a8f5/test/traces/8021x.pcap"
+      sha256 "aa036e997d7bec2fa3d387e3ad669eba461036b9a89b79dcf63017a2c4dac725"
+    end
+
     (testpath/"test.c").write <<~C
       #include <libtrace.h>
       #include <inttypes.h>

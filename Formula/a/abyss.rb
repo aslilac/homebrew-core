@@ -15,6 +15,7 @@ class Abyss < Formula
     sha256 cellar: :any,                 arm64_ventura: "22819d8dfedb879c1f0742ec3f07e9090d99385b533bfc54158beddbe1eefadc"
     sha256 cellar: :any,                 sonoma:        "6bd97e0afea52bf21f3c0f01d10b2643c22c4aed6bf3e36cece3545d6ad6e9d1"
     sha256 cellar: :any,                 ventura:       "d81fe789736077b682ba6cbc7c62d89333ee560a7c2c02a0b3e936810e3cac1a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "fbd181f4720f2c4e8f15d120f49bb2016a72e1eb7017dd8e046be245c424384a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "7cb253b94acc90a0619ef05ba23a178f9a28e8ee0395ffea66abbeb13500726f"
   end
 
@@ -31,13 +32,12 @@ class Abyss < Formula
   depends_on "google-sparsehash" => :build
   depends_on "meson" => :build # For btllib
   depends_on "ninja" => :build # For btllib
-  depends_on "python@3.12" => :build # For btllib
+  depends_on "python@3.13" => :build # For btllib
   depends_on "gcc"
   depends_on "open-mpi"
 
   uses_from_macos "sqlite"
 
-  fails_with gcc: "5"
   fails_with :clang # no OpenMP support
 
   resource "btllib" do
@@ -46,7 +46,7 @@ class Abyss < Formula
   end
 
   def install
-    python3 = "python3.12"
+    python3 = "python3.13"
 
     (buildpath/"btllib").install resource("btllib")
     cd "btllib" do
@@ -55,13 +55,13 @@ class Abyss < Formula
     end
 
     system "./autogen.sh" if build.head?
-    system "./configure", *std_configure_args,
+    system "./configure", "--disable-silent-rules",
                           "--enable-maxk=128",
                           "--with-boost=#{Formula["boost"].include}",
                           "--with-btllib=#{buildpath}/btllib/install",
                           "--with-mpi=#{Formula["open-mpi"].prefix}",
                           "--with-sparsehash=#{Formula["google-sparsehash"].prefix}",
-                          "--disable-silent-rules"
+                          *std_configure_args
     system "make", "install"
   end
 

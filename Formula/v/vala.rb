@@ -1,18 +1,19 @@
 class Vala < Formula
   desc "Compiler for the GObject type system"
   homepage "https://wiki.gnome.org/Projects/Vala"
-  url "https://download.gnome.org/sources/vala/0.56/vala-0.56.17.tar.xz"
-  sha256 "26100c4e4ef0049c619275f140d97cf565883d00c7543c82bcce5a426934ed6a"
+  url "https://download.gnome.org/sources/vala/0.56/vala-0.56.18.tar.xz"
+  sha256 "f2affe7d40ab63db8e7b9ecc3f6bdc9c2fc7e3134c84ff2d795f482fe926a382"
   license "LGPL-2.1-or-later"
+  revision 1
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia: "d7b95eef607afc1c5d6e142d258a3ffcc532e5b50e982083a9e971bbea2cd615"
-    sha256 arm64_sonoma:  "97567ffe29dacc84af84a2abc1d67a83a04ec3c7b37dee093ab0a34b454fc55c"
-    sha256 arm64_ventura: "643a79f04dce15f6a65deeebc7137965d842befcdb716fbefa2f528a0046e6be"
-    sha256 sonoma:        "b4aed882d3810fa13006a72460796c14b970b6802c8783c9e49af34bbf43ba92"
-    sha256 ventura:       "9c3bfb8a007ebcdd431eaee96807b3730b3a621ea5842c522621c24547272f20"
-    sha256 x86_64_linux:  "39bd5991d99ae03c4f00e6b1c1f5e7216d5ac7543c34f620c39151a00d931c49"
+    sha256 arm64_sequoia: "ff65a2101edaaaf53257e189d4ec20038b9de0680d20e5ac69a5d4b3b8276eda"
+    sha256 arm64_sonoma:  "6b8f451a970480a28b7f0a1262ce351d12fee05b78db1a31cf7bcc0abc018850"
+    sha256 arm64_ventura: "1df01b6ebb0b6ac03027c8621412b8b1f9c8c8e5722d73a9fd9a7ee4233bb41f"
+    sha256 sonoma:        "f79cf8415710b5da9d73c837f0660aa3554d9f21c5cfb3af3e7adc2f7a295f61"
+    sha256 ventura:       "051ca637d14e377b0d3ad5f7ab497d2f612f5c9c59d96ef89099ad1627977c39"
+    sha256 arm64_linux:   "a54dd08666de4550ba75a90050ad1ebaf67cac7bc0990512881b33858cf55ebf"
+    sha256 x86_64_linux:  "284b26bcb2fa09af8f5cb85093f1db9145319950b384797d7c64ba1d6f184ad0"
   end
 
   depends_on "gobject-introspection" => :build
@@ -56,7 +57,7 @@ class Vala < Formula
     ]
 
     system bin/"valac", *valac_args
-    assert_predicate testpath/"hello.c", :exist?
+    assert_path_exists testpath/"hello.c"
 
     assert_equal test_string, shell_output("#{testpath}/hello")
   end

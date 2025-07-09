@@ -17,6 +17,7 @@ class Frugal < Formula
 
   # Also repository was removed and no mirrors available of tarball
   deprecate! date: "2024-07-02", because: :does_not_build
+  disable! date: "2025-07-02", because: :does_not_build
 
   depends_on "go" => :build
 

@@ -6,6 +6,8 @@ class Saldl < Formula
   license "AGPL-3.0-or-later"
   head "https://github.com/saldl/saldl.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "f6ca14c2df72bbec447ff0fbcbfe0b1b76070808210ec18c6822fc0579bb9053"
@@ -17,12 +19,13 @@ class Saldl < Formula
     sha256 cellar: :any,                 ventura:        "4f0e1d940e661c286b891acf10e3ee073f43fc513431e238169a3d8363e384f3"
     sha256 cellar: :any,                 monterey:       "ac5cd4b2cf2c98914450f59547ee2e2ef995be33e0a23e81d0fe90c73d6e8353"
     sha256 cellar: :any,                 big_sur:        "a65269f2669815cf1590d9aeacff4639593edaf4f34be5964c793d01ad104eac"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "bd1865579a7047c885722dcc0ab7a6352e4c038665ec309dc5fcd4fbb7228076"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "34ed09e4b4f2663075c8d514390cad8aade4b66b8cf2a40e4c46ee1bd23b199e"
   end
 
   depends_on "asciidoc" => :build
   depends_on "docbook-xsl" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "curl" # curl >= 7.55 is required
   depends_on "libevent"
 
@@ -56,6 +59,6 @@ class Saldl < Formula
 
   test do
     system bin/"saldl", "https://brew.sh/index.html"
-    assert_predicate testpath/"index.html", :exist?
+    assert_path_exists testpath/"index.html"
   end
 end

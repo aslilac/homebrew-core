@@ -1,28 +1,25 @@
 class Tfel < Formula
   desc "Code generation tool dedicated to material knowledge for numerical mechanics"
   homepage "https://thelfer.github.io/tfel/web/index.html"
-  url "https://github.com/thelfer/tfel/archive/refs/tags/TFEL-4.2.1.tar.gz"
-  sha256 "14f27257014a992a4e511f35390e4b9a086f6a5ed74087f891f8c00306f1758f"
+  url "https://github.com/thelfer/tfel/archive/refs/tags/TFEL-5.0.1.tar.gz"
+  sha256 "820b2f9d54e237b2c2d9d6f06aaf7d4a1d3f34fb373e6549bee4fd8b55ecfad1"
   license "GPL-1.0-or-later"
-  revision 1
-  head "https://github.com/thelfer/tfel.git", using: :git, branch: "master"
+  head "https://github.com/thelfer/tfel.git", branch: "master"
 
   bottle do
-    sha256 arm64_sequoia:  "a1dbd6aedfae723113d626035fc3c0dd826006b409f4a0e02bbe844fc377ec43"
-    sha256 arm64_sonoma:   "2c83f17aafe4803c5dcb76e75a1f0e065ddeb0c2a98cdde5284307c762850b73"
-    sha256 arm64_ventura:  "e151a64d0af704275ff311cfef7d56d653d9ede613dc8f66b5ab44cf471d9afa"
-    sha256 arm64_monterey: "349346beb4bc75a8275d72fc334d5788cf722d28675018259b61edebc9bd40e1"
-    sha256 sonoma:         "8622ce53d1eba3091833e9d490ef783d28ff79a880cd7b067d3de70e3f6fcd00"
-    sha256 ventura:        "f67f8d672f2eed887c9fb27db78f61bb5dfa6ae5275b9de38543e77c5d01e92c"
-    sha256 monterey:       "b372fb99af0111007958b9bd88687e5cb9b67efb131888bd8b3ff55964974cb1"
-    sha256 x86_64_linux:   "2d188e271109fa6cac8ef90708b3f3d4a83f20ec2d56b5d0fd99d14f7bad14c9"
+    sha256 arm64_sequoia: "5a32fde49de7f2ecb7019ceb8893ae34ecca6347c71b1598bc056199594d2014"
+    sha256 arm64_sonoma:  "36ec43fdca67231f63225ca920b6f62e0e5489510de6c2b8796bc7238e6b42a4"
+    sha256 arm64_ventura: "67632853027c9909241d22a4745db0c68ec235339713a51d0b626a443808578e"
+    sha256 sonoma:        "ace78851845633b3f55a10cc49f7e365962b4acf5cee5c5a0e19ac35b5131226"
+    sha256 ventura:       "b0a0492cfb359a04d65d9e7b0a4b41db3817ae492e002a5d58e712b682dce87c"
+    sha256 arm64_linux:   "27e25c31a2fd4b106d35c072a359ccd78c478f42b52298d960d06a82ee877fc2"
+    sha256 x86_64_linux:  "51420bbf165e34f3abdf34af61c445eadba23e9ca0ce8d1c092b0e0247a9cd16"
   end
 
   depends_on "cmake" => :build
-  depends_on "gcc" => :build
+  depends_on "gcc" => :build # for gfortran
   depends_on "boost-python3"
-  depends_on "python@3.12"
-  fails_with gcc: "5"
+  depends_on "python@3.13"
 
   def install
     args = [
@@ -43,16 +40,21 @@ class Tfel < Formula
       "-Denable-diana-fea=ON",
       "-Denable-ansys=ON",
       "-Denable-europlexus=ON",
+      "-Denable-testing=OFF",
       "-Dpython-static-interpreter-workaround=ON",
-
     ]
+
+    # Avoid linkage to boost container and graph modules
+    # Issue ref: https://github.com/boostorg/boost/issues/985
+    args << "-DCMAKE_MODULE_LINKER_FLAGS=-Wl,-dead_strip_dylibs" if OS.mac?
+
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.mfront").write <<~EOS
+    (testpath/"test.mfront").write <<~MFRONT
       @Parser Implicit;
       @Behaviour Norton;
       @Algorithm NewtonRaphson_NumericalJacobian ;
@@ -72,8 +74,8 @@ class Tfel < Formula
         feel += dp*n-deto ;
         fp -= dt*A*pow(seq,m) ;
       }
-    EOS
+    MFRONT
     system bin/"mfront", "--obuild", "--interface=generic", "test.mfront"
-    assert_predicate testpath/"src"/shared_library("libBehaviour"), :exist?
+    assert_path_exists testpath/"src"/shared_library("libBehaviour")
   end
 end

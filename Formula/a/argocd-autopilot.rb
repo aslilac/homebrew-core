@@ -2,19 +2,19 @@ class ArgocdAutopilot < Formula
   desc "Opinionated way of installing Argo CD and managing GitOps repositories"
   homepage "https://argoproj.io"
   url "https://github.com/argoproj-labs/argocd-autopilot.git",
-      tag:      "v0.4.17",
-      revision: "17ffa4b689c320672c0a5c88627d922cc9df7f7e"
+      tag:      "v0.4.19",
+      revision: "5219caa2c688061b88ea5eee0aef9f97e3f62f25"
   license "Apache-2.0"
+  head "https://github.com/argoproj-labs/argocd-autopilot.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9d7122eb815229400b4a303209cc2e11f67a3f1bd3181baaa7cacce6a8cdeeff"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b424c0fdaf38d1fd946854932f8dbda270ca802968e0a47762995c42e6957169"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ec4c1fdc85da245f040cae71900df16a889bd18d64afbd497fd1012f9a0dfd56"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4580d5f993ea837766802f8391abdd883cb12149e9d092b2624c48869d6c1eb1"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a8ec329087021b889547ce633df751a1722a1388ab7c46c07db2fd7947db2bdc"
-    sha256 cellar: :any_skip_relocation, ventura:        "58df8ae7c89f3ba093c8ecc9ac35720e4eec122aa5a871979189a46e7c8f1339"
-    sha256 cellar: :any_skip_relocation, monterey:       "306cbcded6cf64ffe94ed43f1e2bf402fea9a045f2a456914ebc47f6b19b6fae"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0728147d47d23fea5e23d16ec5b1f15e7f0e0120a1280bbf192d67bbb38a4675"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b8f1cb49d25c8f73c078698833d5462a9162ce5233ce3795cf951b1e800976e9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c18e73d1d74fc4408d3a1f22889710c4c470cab2f46435db86713d25dfea79a2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "86ecca72b084f402b6d72f5f659ae0bf100f1a8506dae55363f09ff809e2b65d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "58b12c996a20911d6174f8fc99fe919554a134f85e43d76f93c8791233dba4c3"
+    sha256 cellar: :any_skip_relocation, ventura:       "5772f0f301054b0b0c204ead7da928d6788f7578e4c10e093899ba08489d9352"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "edddade7e4b925030eec21764ec57a5728ea3af1ffa51bc973e4e10ccb2ae71b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9c5886967e8b28bff08bf56c4d7d251ff2c7a7ac7dac38fa74561db77777ae93"
   end
 
   depends_on "go" => :build

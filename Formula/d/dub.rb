@@ -1,8 +1,8 @@
 class Dub < Formula
   desc "Build tool for D projects"
   homepage "https://code.dlang.org/getting_started"
-  url "https://github.com/dlang/dub/archive/refs/tags/v1.38.1.tar.gz"
-  sha256 "a7c9a2f819fdea7359f298cba76e81a24ca1536d756c3b4b98c2480463c37907"
+  url "https://github.com/dlang/dub/archive/refs/tags/v1.40.0.tar.gz"
+  sha256 "52b963137e8a671e48ce3b64eb1e424f6a3c137b8001cf74fb98932def61c171"
   license "MIT"
   version_scheme 1
   head "https://github.com/dlang/dub.git", branch: "master"
@@ -18,14 +18,13 @@ class Dub < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "6eedaee85ac081a73d1c1a01e57a2965486aaa985a800511343b1300b7216574"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f744a26e8206a1f16fa722c1bd3e7c18419372f396a19270d9e53883a0b3af17"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1819bc676849f4caa460cf225218e7e79e253d02aee9ccb5931142e509c87f94"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e15b323b92be9d66f1f7f8ee81d578f287e1ab794f541a0968ec9db8c316fb13"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a44630a4b1e1e6a8b517fc642078244393c1e430981f5ecd7d9224a885e3c275"
-    sha256 cellar: :any_skip_relocation, ventura:        "5deb452827fb0a42082117da2fddb2deae0d5d4bb805bb42170375c7d1bca3ab"
-    sha256 cellar: :any_skip_relocation, monterey:       "a83dc23f27613cc5f5b9a87a6a5be610c2db72213dd50202f828fa212246a18a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "78bc68a073aa671f67b179de7520e563c7a936a7cdafd9b70e8b28ddb645e3fa"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fdc35c943741ff4daa5204c4787fad70b3ed94dc31abab026c195df73fcf13ff"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "bca28b6b780e086f88bad5ffb32abb71d8b9d8f256d17547cfd6aa4d4a5fc346"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "abf4f33add519521441ebc0af2ceb04cb2261496e3962dec491a0a0c16770f42"
+    sha256 cellar: :any_skip_relocation, sonoma:        "2cdc341f90c51af8a19fc8ce5dbfdbfa7054ccde65363da365066609f4b8cd62"
+    sha256 cellar: :any_skip_relocation, ventura:       "52f26e201118800cf552bf0a7f57df4afaf90300b132035fbd52325224d7b861"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9a4f71c32ebc9395d31b401219449820ddcaad85415a1deff1ff770322faa1b0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d68877d9ac67d2e682a19cdef3d6867f700b1aa52afa5125f8851de3cd01a695"
   end
 
   depends_on "ldc" => [:build, :test]
@@ -54,10 +53,10 @@ class Dub < Formula
         "description": "A simple D application"
       }
     JSON
-    (testpath/"source/app.d").write <<~EOS
+    (testpath/"source/app.d").write <<~D
       import std.stdio;
       void main() { writeln("Hello, world!"); }
-    EOS
+    D
     system bin/"dub", "build", "--compiler=#{Formula["ldc"].opt_bin}/ldc2"
     assert_equal "Hello, world!", shell_output("#{testpath}/brewtest").chomp
   end

@@ -1,28 +1,11 @@
 class Kapacitor < Formula
   desc "Open source time series data processor"
   homepage "https://github.com/influxdata/kapacitor"
+  url "https://github.com/influxdata/kapacitor.git",
+      tag:      "v1.8.0",
+      revision: "c5848b64d04a1dc4039611491891dd06872ef348"
   license "MIT"
   head "https://github.com/influxdata/kapacitor.git", branch: "master"
-
-  stable do
-    url "https://github.com/influxdata/kapacitor.git",
-        tag:      "v1.7.4",
-        revision: "3470f6ae7f53acaca90459cc1128298548fdc740"
-
-    # TODO: Remove when release uses flux >= 0.195.0 to get following fix for rust >= 1.78
-    # Ref: https://github.com/influxdata/flux/commit/68c831c40b396f0274f6a9f97d77707c39970b02
-    resource "flux" do
-      url "https://github.com/influxdata/flux/archive/refs/tags/v0.194.5.tar.gz"
-      sha256 "85229c86d307fdecccc7d940902fb83bfbd7cff7a308ace831e2487d36a6a8ca"
-    end
-
-    # build patch to upgrade flux so that it can be built with rust 1.72.0+
-    # upstream PR ref, https://github.com/influxdata/kapacitor/pull/2811
-    patch do
-      url "https://github.com/influxdata/kapacitor/commit/1bc086f38b5164813c0f5b0989045bd21d543377.patch?full_index=1"
-      sha256 "38ab4f97dfed87cde492c0f1de372dc6563bcdda10741cace7a99f8d3ab777b6"
-    end
-  end
 
   livecheck do
     url :stable
@@ -30,52 +13,32 @@ class Kapacitor < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "1a33c443bf07f988db3116c35ab0753ae92b017d117d82d522bac20ecd94e35f"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "18df0fe28a2f236b9e83280d13fb1628da163b43010b1ab2e278d596be334154"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7fc56e944c7205bf82e6f09e0fd6acb2671813abff062cb5358c3e10aa34240b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "077bb8e7923a28559b7fca1bf0e5da9a5bed8cbc2ec066292145e0ea0b61edb3"
-    sha256 cellar: :any_skip_relocation, sonoma:         "7320249f7bfd73fc7e9d1bfde2a14aa6e6800981c72b67cfeaf97023b7f8b7dc"
-    sha256 cellar: :any_skip_relocation, ventura:        "fc0aea1281480c4dc679d6edf1b2ac03918db4ad774adcd8160f07f05370abdd"
-    sha256 cellar: :any_skip_relocation, monterey:       "46a38f00666300e465230a0f8330c9d6e44758dd2bc4b9475c8bc8e0770f3cd3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6007b9e8d7e2b33e36510923d1989d83ef86e36e724c118686cdd61ef32d38a1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fcab6295946bf8ca5a3720a0d10a716d1c172f505937ea0d4095761e64a72935"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "65651185654c048f980f0ace67d17f20ef82f5dc5c7163dfa6c6202d8f3a6f7c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "8a70d464a6f438d7a3bd967ab2ce99b3282591a316b5cfc811a182981966a42b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ae0c340d0dbce7427ceb65f36032716351381551c2edc2914a9ab0d1aea53252"
+    sha256 cellar: :any_skip_relocation, ventura:       "11d5e85e066bca4b92426684ad541dfb60c3e856fac754a8de29a8bf43248756"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f4dd89f5b91e7ab20d33b4b7879ea561e1ea20c06d6ed1061bdd0a2f10a77c4b"
   end
 
-  # Go 1.23 results in panic: failed to parse CA certificate.
-  # TODO: Switch to `go` when `kapacitor` updates gosnowflake
-  depends_on "go@1.22" => :build
+  depends_on "go" => :build
+  depends_on "pkgconf" => :build # for `pkg-config-wrapper`
   depends_on "rust" => :build
-
-  on_linux do
-    depends_on "pkgconf" => :build # for `pkg-config-wrapper`
-  end
 
   # NOTE: The version here is specified in the go.mod of kapacitor.
   # If you're upgrading to a newer kapacitor version, check to see if this needs upgraded too.
   resource "pkg-config-wrapper" do
-    url "https://github.com/influxdata/pkg-config/archive/refs/tags/v0.2.12.tar.gz"
-    sha256 "23b2ed6a2f04d42906f5a8c28c8d681d03d47a1c32435b5df008adac5b935f1a"
+    url "https://github.com/influxdata/pkg-config/archive/refs/tags/v0.3.0.tar.gz"
+    sha256 "769deabe12733224eaebbfff3b5a9d69491b0158bdf58bbbbc7089326d33a9c8"
+  end
+
+  # build patch for 1.8.0 release
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/2ce7d3fffb94533cc1940dfc0391806007b1644f/kapacitor/1.8.0.patch"
+    sha256 "1be60924e908504afb52bdefbddbcba65fb2812b63f430918406f68ad0d5e941"
   end
 
   def install
-    if build.stable?
-      # Check if newer `go` can be used
-      go_mod = (buildpath/"go.mod").read
-      gosnowflake_version = go_mod[%r{/influxdata/gosnowflake v(\d+(?:\.\d+)+)}, 1]
-      odie "Check if `go` can be used!" if gosnowflake_version.blank? || Version.new(gosnowflake_version) > "1.6.9"
-
-      # Workaround to skip dead_code lint. RUSTFLAGS workarounds didn't work.
-      flux_module = "github.com/influxdata/flux"
-      flux_version = go_mod[/#{flux_module} v(\d+(?:\.\d+)+)/, 1]
-      odie "Check if `flux` resource can be removed!" if flux_version.blank? || Version.new(flux_version) >= "0.195"
-      (buildpath/"vendored_flux").install resource("flux")
-      inreplace "vendored_flux/libflux/flux-core/src/lib.rs", "#![allow(\n", "\\0    dead_code,\n"
-      (buildpath/"go.work").write <<~EOS
-        go 1.22
-        use .
-        replace #{flux_module} => ./vendored_flux
-      EOS
-    end
-
     resource("pkg-config-wrapper").stage do
       system "go", "build", *std_go_args, "-o", buildpath/"bootstrap/pkg-config"
     end
@@ -87,15 +50,15 @@ class Kapacitor < Formula
       -X main.commit=#{Utils.git_head}
     ]
 
-    system "go", "build", *std_go_args(ldflags: ldflags.join(" ")), "./cmd/kapacitor"
-    system "go", "build", *std_go_args(ldflags: ldflags.join(" ")), "-o", bin/"kapacitord", "./cmd/kapacitord"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/kapacitor"
+    system "go", "build", *std_go_args(ldflags:, output: bin/"kapacitord"), "./cmd/kapacitord"
 
     inreplace "etc/kapacitor/kapacitor.conf" do |s|
       s.gsub! "/var/lib/kapacitor", "#{var}/kapacitor"
       s.gsub! "/var/log/kapacitor", "#{var}/log"
     end
 
-    etc.install "etc/kapacitor/kapacitor.conf" => "kapacitor.conf"
+    etc.install "etc/kapacitor/kapacitor.conf"
   end
 
   def post_install
@@ -129,9 +92,7 @@ class Kapacitor < Formula
     ENV["KAPACITOR_REPORTING_ENABLED"] = "false"
 
     begin
-      pid = fork do
-        exec "#{bin}/kapacitord -config #{testpath}/config.toml"
-      end
+      pid = spawn "#{bin}/kapacitord -config #{testpath}/config.toml"
       sleep 20
       shell_output("#{bin}/kapacitor list tasks")
     ensure

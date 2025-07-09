@@ -11,6 +11,8 @@ class Ykpers < Formula
     regex(/href=.*?ykpers[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "b1a84b25eb98c3a81bb369743de29418fc21af87cc28e6596ee38a4595c793df"
     sha256 cellar: :any,                 arm64_sonoma:   "e62f960d0e8851938c674e31e768bcc4bee8ed0e87a13430a9d59c5fba4d95da"
@@ -24,6 +26,7 @@ class Ykpers < Formula
     sha256 cellar: :any,                 catalina:       "8c5ed1924d1059265589a221b8e2bb26a2bcd59f91ede210e3a1267412867f47"
     sha256 cellar: :any,                 mojave:         "c2e6089348f9cc4f9c887eeb5975378749c42ea386ef12d7f84a3285b718dc45"
     sha256 cellar: :any,                 high_sierra:    "79c240a018183c2f62eae6e7c22f631598b167d321a715f0983ff4653c1c2eee"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "975467c8f02063b77d1d990642731133866564da4bb1d3537ecde9bec8387959"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "eee945e8cc748d69622f20b470e327fee279b356b78be2df9a75dc10ab945f1d"
   end
 

@@ -1,8 +1,8 @@
 class Cppad < Formula
   desc "Differentiation of C++ Algorithms"
   homepage "https://www.coin-or.org/CppAD"
-  url "https://github.com/coin-or/CppAD/archive/refs/tags/20240000.7.tar.gz"
-  sha256 "b3cdc7e18fe3cb2bd427be4abb264c3c58bbb3bd5f88a4244a92c34f893dbab7"
+  url "https://github.com/coin-or/CppAD/archive/refs/tags/20250000.2.tar.gz"
+  sha256 "d6688c7530913dfd286f7db71b007fd96df10a9e8b43ad74539e4450c9917ebf"
   license "EPL-2.0"
   version_scheme 1
   head "https://github.com/coin-or/CppAD.git", branch: "master"
@@ -13,17 +13,17 @@ class Cppad < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "064ecb73b9e964dc90975ddeee044abc6332a504db0a5d0c6c91ceb820093430"
-    sha256 cellar: :any,                 arm64_sonoma:   "2171e4a246f635764d9c2cc6ad8b9e824663936e5d386a7192d10053b5369fcd"
-    sha256 cellar: :any,                 arm64_ventura:  "0c2874c5f894132c3649a063c79353ee24e8315b0eaebe7ac7d20b84b118b539"
-    sha256 cellar: :any,                 arm64_monterey: "470f08381f65088d4f6fda2a43ce88e2ad23c4bc9f2758fb544e3c21238de0c8"
-    sha256 cellar: :any,                 sonoma:         "9b8f7074ced7fcf5c9f614ed10cb2494c9c685b159d84731def99206faac702b"
-    sha256 cellar: :any,                 ventura:        "ac19314d1517c4f64a467f8480c3c6027759b603d52134efdc068d3d65900fba"
-    sha256 cellar: :any,                 monterey:       "b71b28b4282d79c0ebbef0be6006d8d492fdb6275e2d2ee0f3a2f14e4edbbd6b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "eb2745b5dff3a622335c8f55a45326c9e791d59c512b1a38a99ad474ee7d7289"
+    sha256 cellar: :any,                 arm64_sequoia: "6f65c18d0662a88d692f107f438a055b1f2668d5ec7416e563b88b482db789f8"
+    sha256 cellar: :any,                 arm64_sonoma:  "617a8aad764f2c8c33d8e3a252cffaed40eeda79e2248bd7590b254c3053f242"
+    sha256 cellar: :any,                 arm64_ventura: "4b210a927c2c5f55f16ebf358b83ad441d7931b616ee3c72525513db2aff1ba1"
+    sha256 cellar: :any,                 sonoma:        "be977a43d7368711e1cdba74d19b0a9d14babf25c9cccafb98cc28c2ed83725a"
+    sha256 cellar: :any,                 ventura:       "cf71330f98f3ec66673d6475e72b5521656149487d9181f4b11c54703b4e94d4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e490b1de9def38d581e819d73a01f770be148c6ae6541a987a7ab92e9a2b2b1a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b72d08633d4877ffe165ccdc0569d2c5ba34607534b93d395b52ab1a4aefe882"
   end
 
   depends_on "cmake" => :build
+  depends_on "pkgconf" => :build
 
   def install
     ENV.cxx11

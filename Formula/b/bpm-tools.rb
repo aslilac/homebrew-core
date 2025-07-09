@@ -11,6 +11,8 @@ class BpmTools < Formula
     regex(/href=.*?bpm-tools[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8b1d300cf51e9fa05e8eb82ca8b2bfec3203c2c8cc12f0bf9813545a668a11fc"
@@ -26,6 +28,7 @@ class BpmTools < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "56e3a889338b82d5b477c1564506e23549d9651b08260d9c9a38b5e6bd1555ab"
     sha256 cellar: :any_skip_relocation, high_sierra:    "422342ce8dd8a50853e8289ccc936747f4a77a20803850e6481498cf8c4a12c5"
     sha256 cellar: :any_skip_relocation, sierra:         "f1219d522f61e89606f3e607a636e406faf5f954846b48965e37cc25dbb29b87"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "46138982bb7ffca2a4f763f1fde359ac3b0cddadb65e8f2e7dbadeede5274143"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e78a1d3a9c96635e57bf0ce8c329a88b8b3406a0e0ba4a19cb97e4b42727f6a0"
   end
 

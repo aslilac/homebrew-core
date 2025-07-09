@@ -10,6 +10,8 @@ class Ucl < Formula
     regex(/href=.*?ucl[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c2bf62c73925dcc1099836d528dd46f4f6f3fdae979f58584a930dbe92e89055"
@@ -23,12 +25,16 @@ class Ucl < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "91ce0597dc8e648e4ee0d0caaa30bceb5f569acc90634d88fa5e7859f2ae682a"
     sha256 cellar: :any_skip_relocation, catalina:       "116db1f8157bf88831fece730fb3e6fa82420d53c29b032afd63b979df42b386"
     sha256 cellar: :any_skip_relocation, mojave:         "89c37d38b41d5107f85c0880eb1599c885dafc2a7150a378c645b3fbe1f0e5ef"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b6a1eb60e36db3e3b262b7953d6523e61dc6cf519c06eb6487bdd2f7efda29bc"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f1733761c7ce4452219f15055b4d72ca6e287c9c18691d9aa66c4aae0349d28c"
   end
 
   depends_on "automake" => :build
 
   def install
+    # Workaround to build with newer GCC
+    ENV.append "CFLAGS", "-std=c90" if OS.linux?
+
     # Workaround for ancient ./configure file
     # Normally it would be cleaner to run "autoremake" to get a more modern one,
     # but the tarball doesn't seem to include all of the local m4 files that were used
@@ -40,9 +46,7 @@ class Ucl < Formula
          "acconfig/#{fn}"
     end
 
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 

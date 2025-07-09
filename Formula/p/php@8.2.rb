@@ -2,9 +2,9 @@ class PhpAT82 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.2.26.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.2.26.tar.xz"
-  sha256 "54747400cb4874288ad41a785e6147e2ff546cceeeb55c23c00c771ac125c6ef"
+  url "https://www.php.net/distributions/php-8.2.29.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.2.29.tar.xz"
+  sha256 "475f991afd2d5b901fb410be407d929bc00c46285d3f439a02c59e8b6fe3589c"
   license "PHP-3.01"
 
   livecheck do
@@ -13,12 +13,13 @@ class PhpAT82 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "8fedb3512013d468f65bdf6016c92eeeb3214a1033a41c05a2252b01be7d709e"
-    sha256 arm64_sonoma:  "4d75851f04e7082fb7ccbe26590a0224ad3fee9abc5bf987fd4ab28e98b55892"
-    sha256 arm64_ventura: "fcbcc34c8b092d32a42c21317939b87e02aa063424b33b5f23d4626b3f1a4c69"
-    sha256 sonoma:        "08a458e6199c152a6b01f8faed44af4fd6a703e6a6039929926d5694b9241532"
-    sha256 ventura:       "20b4fb87769fbe4ca162808d8cf23cad8aeed2c4f01b5ed4524a67b6435ed23c"
-    sha256 x86_64_linux:  "c447bdd7172fe25fa1face958c1361c77adef4c7b38b3886a41f71ca1ddde698"
+    sha256 arm64_sequoia: "157dfd752bb28cd56bd124d5dc7ce4bbf363fd2b1a83c4de88d81cd6f3c2f04a"
+    sha256 arm64_sonoma:  "40237406991bf7003fa3b21c965d30b474d45e091db0a42eb2abe5c5e4951878"
+    sha256 arm64_ventura: "8afe5d9ac53f9798cb00a577e2cfe12610b382b4bcc76e278506eb064d14caee"
+    sha256 sonoma:        "71aa90f88f74b5a65f70fd80cd70707f348cbe907feb9dcfae21bf8026c042c7"
+    sha256 ventura:       "740c9112b677c45c93f740fd37e2f16e0b6408e5760b4827d3001d8fddd00377"
+    sha256 arm64_linux:   "bf5182524ccc9383c1f8a0e765a9db3856bc316778167437b1197da11cbe4933"
+    sha256 x86_64_linux:  "62391884104e9c5808953aac80efcf100cbce79388db571a402d346dedc8830c"
   end
 
   keg_only :versioned_formula
@@ -28,7 +29,7 @@ class PhpAT82 < Formula
   deprecate! date: "2026-12-31", because: :unsupported
 
   depends_on "httpd" => [:build, :test]
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "apr"
   depends_on "apr-util"
   depends_on "argon2"
@@ -39,7 +40,7 @@ class PhpAT82 < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "krb5"
   depends_on "libpq"
   depends_on "libsodium"
@@ -102,6 +103,9 @@ class PhpAT82 < Formula
 
     # Prevent homebrew from hardcoding path to sed shim in phpize script
     ENV["lt_cv_path_SED"] = "sed"
+
+    # Identify build provider in phpinfo()
+    ENV["PHP_BUILD_PROVIDER"] = tap.user
 
     # system pkg-config missing
     ENV["KERBEROS_CFLAGS"] = " "

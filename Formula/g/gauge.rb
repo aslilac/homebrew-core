@@ -1,18 +1,18 @@
 class Gauge < Formula
   desc "Test automation tool that supports executable documentation"
   homepage "https://gauge.org"
-  url "https://github.com/getgauge/gauge/archive/refs/tags/v1.6.10.tar.gz"
-  sha256 "f5cbd626799a8c59cd09be9e3385f709e86f405d5c80c17165a502583171fc59"
+  url "https://github.com/getgauge/gauge/archive/refs/tags/v1.6.18.tar.gz"
+  sha256 "103d4a567e9e9bbd2cfc9569603f6069dc3c8787d76eeb7ae93787aeea7db68f"
   license "Apache-2.0"
   head "https://github.com/getgauge/gauge.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "04a17c26b6c73da83c534c80c1af7b2f9c491f6544ed334e20850b0a52581bcb"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6df927e2a33f88101b6583e921969c86c7673c374750e278b1e651eaf356c696"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "bae88a454d2c342078199b7c4d9ab9e347820e23e48a522cf60feab9532d8f29"
-    sha256 cellar: :any_skip_relocation, sonoma:        "ac9a72842959743872e7dc399e85d554982288534818252bd4050dce44d8c568"
-    sha256 cellar: :any_skip_relocation, ventura:       "621b4b98947a5f392ca86669ffad410f27483d4304f811f5a05b906132c23d82"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b1012bb0475af6eacf530eddd27725d9360842575ef694c2b82cc4c8c02861e6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "642b5b0bc143826cbd923c54356e06832124b95aef8f865d46fe9131c4781e45"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d9b7b4a0b5629a4ffd5c86f301e7f2589442924b0788ac3f4ca1b4ee69fdc2ca"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "77b7b849fb1960ffa259912282aae83223edc022da7e348e12602b3c8bf73f9c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "60e9f9762bbbc6c64246f7581b11bd410cb240c38f146380cdf54fd281d05921"
+    sha256 cellar: :any_skip_relocation, ventura:       "f95fc4467de072fb53e558b793ad40ff72490611beb1f364189e5a867bd48880"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fa8613b526748a8b7e90efdb021c46f7103eacd146538e65a520ecb795df02e3"
   end
 
   depends_on "go" => :build
@@ -32,7 +32,7 @@ class Gauge < Formula
     JSON
 
     system(bin/"gauge", "install")
-    assert_predicate testpath/".gauge/plugins", :exist?
+    assert_path_exists testpath/".gauge/plugins"
 
     system(bin/"gauge", "config", "check_updates", "false")
     assert_match "false", shell_output("#{bin}/gauge config check_updates")

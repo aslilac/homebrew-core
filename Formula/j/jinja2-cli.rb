@@ -6,29 +6,31 @@ class Jinja2Cli < Formula
   url "https://files.pythonhosted.org/packages/a4/22/c922839761b311b72ccc95c2ca2239311a3e80916458878962626f96922a/jinja2-cli-0.8.2.tar.gz"
   sha256 "a16bb1454111128e206f568c95938cdef5b5a139929378f72bb8cf6179e18e50"
   license "BSD-2-Clause"
-  revision 1
+  revision 3
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "81b65bd7b8c12f70c77101e3b873aad25ac78b8cb41a6c4fbf1961a0264e7efe"
-    sha256 cellar: :any,                 arm64_sonoma:  "992f1b453c9483dd8e7953e56444c628c59694f280e1c421cbc6bc7630c178f7"
-    sha256 cellar: :any,                 arm64_ventura: "7f5f7605e5af82791c3ac2c5ec8783db4a6cb310898ce5d33a414d9518bb6e26"
-    sha256 cellar: :any,                 sonoma:        "01da851dd3c361c4bf5620a2534575bc63ccf10bdfb976a6ce85ed080540fef7"
-    sha256 cellar: :any,                 ventura:       "610f85c4d0947dc2f9e91cc8efd8920dfb31c4d55d81531330a8283cdac106de"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "72f14013e43edb770d14a88df8c001c88a775f241ee5f8c1d91fd80c098c3011"
+    sha256 cellar: :any,                 arm64_sequoia: "69847d8dd63445895938e9a787d879a81c933764fea8b3df683ae18a3c0465e9"
+    sha256 cellar: :any,                 arm64_sonoma:  "883bb7f1ecae9adf6e224cec532dac1738f95c82e3a414d2d29be0d6555eed31"
+    sha256 cellar: :any,                 arm64_ventura: "81a8d22c74237ad6b2117cd41b7d21ee621d6c6cfad796408300b09c298f6e0f"
+    sha256 cellar: :any,                 sonoma:        "fab5b3eb00bbcd5be43140b924899df658422035a7480014310701456637fa67"
+    sha256 cellar: :any,                 ventura:       "8d5a194592d04897522819d11b4983d8ed5580726ab8133318c73c4c47eea334"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f0c9dfceb1281a4939a5ce38733836fdc431e8ed9cfcee1141b02cffa59a245f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3614f38dc9f33988fbdb1e3a5bce147e5e315f6a1aafa54bbf8252723e7d79a0"
   end
 
   depends_on "libyaml"
   depends_on "python@3.13"
 
   resource "jinja2" do
-    url "https://files.pythonhosted.org/packages/ed/55/39036716d19cab0747a5020fc7e907f362fbf48c984b14e62127f7e68e5d/jinja2-3.1.4.tar.gz"
-    sha256 "4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"
+    url "https://files.pythonhosted.org/packages/df/bf/f7da0350254c0ed7c72f3e33cef02e048281fec7ecec5f032d4aac52226b/jinja2-3.1.6.tar.gz"
+    sha256 "0137fb05990d35f1275a587e9aee6d56da821fc83491a0fb838183be43f66d6d"
   end
 
   resource "markupsafe" do
-    url "https://files.pythonhosted.org/packages/b4/d2/38ff920762f2247c3af5cbbbbc40756f575d9692d381d7c520f45deb9b8f/markupsafe-3.0.1.tar.gz"
-    sha256 "3e683ee4f5d0fa2dde4db77ed8dd8a876686e3fc417655c2ece9a90576905344"
+    url "https://files.pythonhosted.org/packages/b2/97/5d42485e71dfc078108a86d6de8fa46db44a1a9295e89c5d6d4a06e23a62/markupsafe-3.0.2.tar.gz"
+    sha256 "ee55d3edf80167e48ea11a923c7386f4669df67d7994554387f84e7d8b0a2bf0"
   end
 
   resource "pyyaml" do
@@ -42,8 +44,8 @@ class Jinja2Cli < Formula
   end
 
   resource "xmltodict" do
-    url "https://files.pythonhosted.org/packages/98/f7/d29b8cdc9d8d075673be0f800013c1161e2fd4234546a140855a1bcc9eb4/xmltodict-0.14.1.tar.gz"
-    sha256 "338c8431e4fc554517651972d62f06958718f6262b04316917008e8fd677a6b0"
+    url "https://files.pythonhosted.org/packages/50/05/51dcca9a9bf5e1bce52582683ce50980bcadbc4fa5143b9f2b19ab99958f/xmltodict-0.14.2.tar.gz"
+    sha256 "201e7c28bb210e374999d1dde6382923ab0ed1a8a5faeece48ab525b7810a553"
   end
 
   def install
@@ -51,12 +53,8 @@ class Jinja2Cli < Formula
   end
 
   test do
-    output = if OS.mac?
-      shell_output("script -q /dev/null #{bin}/jinja2 --version")
-    else
-      shell_output("script -q /dev/null -e -c \"#{bin}/jinja2 --version\"")
-    end
-    assert_match version.to_s, output
+    assert_match version.to_s, shell_output("#{bin}/jinja2 --version")
+
     expected_result = <<~EOS
       The Beatles:
       - Ringo Starr
@@ -72,7 +70,7 @@ class Jinja2Cli < Formula
       {% endfor -%}
     EOS
     template_variables_file = testpath/"my-template-variables.json"
-    template_variables_file.write <<~EOS
+    template_variables_file.write <<~JSON
       {
         "band": {
           "name": "The Beatles",
@@ -84,8 +82,8 @@ class Jinja2Cli < Formula
           ]
         }
       }
-    EOS
+    JSON
     output = shell_output("#{bin}/jinja2 #{template_file} #{template_variables_file}")
-    assert_equal output, expected_result
+    assert_equal expected_result, output
   end
 end

@@ -1,16 +1,18 @@
 class Xcodes < Formula
   desc "Best command-line tool to install and switch between multiple versions of Xcode"
   homepage "https://github.com/XcodesOrg/xcodes"
-  url "https://github.com/XcodesOrg/xcodes/archive/refs/tags/1.6.0.tar.gz"
-  sha256 "415c104c1aca42e68b4c6ede64e543d79a60d5a6fa99095f2aad179a74045047"
+  url "https://github.com/XcodesOrg/xcodes/archive/refs/tags/1.6.2.tar.gz"
+  sha256 "0c38a39ecd527d15c3343da9b9bc57c9f0d5217f4c9d36fc3879c3ae423b1295"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "26be4fc0a95c2af65e8f67daba501fb22196c76190a279a1df38edd891aa758b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5a6ae2f20d6eb6667c2e382beafd24afa6bfc99784c794e88e0a6005f4e5a398"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "2f52a88c7e9317257adeb33761ce725a8dee29da1fec73514e458edd445fa4e6"
-    sha256 cellar: :any_skip_relocation, sonoma:        "73e847c58f124ee2e6dadc821b7021edf0ab6cae564ef216b38c1e158faeeb7f"
-    sha256 cellar: :any_skip_relocation, ventura:       "a48eb3978e5dbff7dd4f34245bb380bf56ef297c416b817140e54b53e31d10bb"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6f0d1d4136c44d6bce3a29a6161d91282397175b811d8346486ff281267106f6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2cb68620e49151d770433566d23d52a2605a0b9783d0f957c9fa3deda6825cdf"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "79aea527da63cec15cc7e775b1a380f446ac096b425915e281f8dee6ba60ac74"
+    sha256 cellar: :any_skip_relocation, sonoma:        "147e32b89cab5d9e267170902e4a858b00fd45f0cb8b2f2b43ae98a5c3e3a1ae"
+    sha256 cellar: :any_skip_relocation, ventura:       "c374aa5034bb5d66ec537b6096318472a9f49f584e4a727647c44962fb504183"
   end
 
   depends_on xcode: ["13.3", :build]
@@ -20,6 +22,7 @@ class Xcodes < Formula
   def install
     system "swift", "build", "--disable-sandbox", "--configuration", "release"
     bin.install ".build/release/xcodes"
+    generate_completions_from_executable(bin/"xcodes", "--generate-completion-script")
   end
 
   test do

@@ -8,11 +8,6 @@ class Rethinkdb < Formula
   license "Apache-2.0"
   head "https://github.com/rethinkdb/rethinkdb.git", branch: "next"
 
-  livecheck do
-    url "https://download.rethinkdb.com/service/rest/repository/browse/raw/dist/"
-    regex(/href=.*?rethinkdb[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
-
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "08cd5f3a221e9ade6d2e9ccad0cb73f10094855e2f362dbebb274c7dba1fbc3c"
     sha256 cellar: :any,                 arm64_sonoma:   "12c05ba1583bb06660d8630fab1a5d3335bc43fddd5827c2b34ff01660dfbbd2"
@@ -21,6 +16,7 @@ class Rethinkdb < Formula
     sha256 cellar: :any,                 sonoma:         "6762f17cd6a78747bf7c944fe6ccd37957c34f783ac1dae8ce7b1381776de3b9"
     sha256 cellar: :any,                 ventura:        "4eb3cb16e0f103c3aaf761c948d7743ad142c6f08071b3663c7bb6336cd41708"
     sha256 cellar: :any,                 monterey:       "931ed3a24d911f5548561327055106ef6a65434632d7b0c57bbb6a25c27ef975"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f6ec7609f0a0332ddde0b3242f116f60e76358fcd5eb80925a24da187be71766"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "728c63d067ecd2ef2f0df719c1334e74a5f97486526af5ad947ea552b0e9492a"
   end
 

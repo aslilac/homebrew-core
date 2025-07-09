@@ -16,10 +16,11 @@ class Log4cplus < Formula
     sha256 cellar: :any,                 arm64_ventura: "b60bac8e9aaf34f6b81055d7ebc3578462e1e144855e1e3d416e54fa87346fab"
     sha256 cellar: :any,                 sonoma:        "b3cbcf75711ecb77bbf59942f30e8e6767105753b5363cc8cd8ca5d13201314b"
     sha256 cellar: :any,                 ventura:       "7c62fc3ea51cc81fae1f97f5649898fdb567667b67d99fd419347e237b636fcf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "d789ed4a5d65789a09539bb155c14708acd9f7037318c43233933690d10cf474"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "038cc5359e99cc5e80a899304e02f22c54156539c5b3db4e03516982ebdb3c12"
   end
 
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
 
   def install
     ENV.cxx11
@@ -48,8 +49,8 @@ class Log4cplus < Formula
       }
     CPP
 
-    pkg_config_flags = shell_output("pkg-config --cflags --libs log4cplus").chomp.split
-    system ENV.cxx, "-std=c++11", "-o", "test", "test.cpp", *pkg_config_flags
+    pkgconf_flags = shell_output("pkgconf --cflags --libs log4cplus").chomp.split
+    system ENV.cxx, "-std=c++11", "-o", "test", "test.cpp", *pkgconf_flags
     assert_match "Hello, World!", shell_output("./test")
   end
 end

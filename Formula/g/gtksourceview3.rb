@@ -11,6 +11,8 @@ class Gtksourceview3 < Formula
     regex(/gtksourceview[._-]v?(3\.([0-8]\d*?)?[02468](?:\.\d+)*?)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "224ac2e0b389c7042f62b4402665368612132e6c25715017700ad776bfff7524"
     sha256 arm64_sonoma:   "52fd0b688066b7ae0c5d9a87ddb185136dbeebd11b336ae776eeed43f4ce6399"
@@ -19,11 +21,12 @@ class Gtksourceview3 < Formula
     sha256 sonoma:         "79296a156876f62aed3b1025d8dd869403562d03ed112d118d1076496e3cd8ef"
     sha256 ventura:        "fb3887ecc8c0938f012b851eaba6c3025ed6836f54aad8cd07e5d367c63084bd"
     sha256 monterey:       "e72638ee3511326f622b20975c568d0b0f054c318ae944b15505d1816af10c2d"
+    sha256 arm64_linux:    "57b4a62f57cac2da14e784b1fd9f5e33b359ceb0e78cec0fb07cbbba7834cca2"
     sha256 x86_64_linux:   "a29fc106c186da13c48399358ec0152907ca4bc3be2545632400409aaffcce2e"
   end
 
   depends_on "gobject-introspection" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "vala" => :build
 
   depends_on "at-spi2-core"
@@ -45,7 +48,7 @@ class Gtksourceview3 < Formula
   end
 
   def install
-    system "autoreconf", "--verbose", "--install", "--force" if OS.mac?
+    system "autoreconf", "--force", "--install", "--verbose" if OS.mac?
 
     system "./configure", "--disable-silent-rules",
                           "--enable-vala=yes",
@@ -64,7 +67,7 @@ class Gtksourceview3 < Formula
       }
     C
 
-    flags = shell_output("pkg-config --cflags --libs gtksourceview-3.0").strip.split
+    flags = shell_output("pkgconf --cflags --libs gtksourceview-3.0").strip.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

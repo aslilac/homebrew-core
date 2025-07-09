@@ -7,28 +7,41 @@ class Agda < Formula
   revision 2
 
   stable do
-    url "https://github.com/agda/agda/archive/refs/tags/v2.6.4.3-r1.tar.gz"
-    sha256 "15a0ebf08b71ebda0510c8cad04b053beeec653ed26e2c537614a80de8b2e132"
-    version "2.6.4.3"
+    url "https://github.com/agda/agda/archive/refs/tags/v2.7.0.1.tar.gz"
+    sha256 "4a2c0a76c55368e1b70b157b3d35a82e073a0df8f587efa1e9aa8be3f89235be"
 
     resource "stdlib" do
-      url "https://github.com/agda/agda-stdlib/archive/refs/tags/v2.1.tar.gz"
-      sha256 "72ca3ea25094efa0439e106f0d949330414232ec4cc5c3c3316e7e70dd06d431"
+      url "https://github.com/agda/agda-stdlib/archive/refs/tags/v2.2.tar.gz"
+      sha256 "588f94af7fedd5aa1a6a1f0afdfb602d3e4615c7a17e6a0ae9dff326583b7a12"
+
+      # Backport support for building with GHC 9.12
+      patch do
+        url "https://github.com/agda/agda-stdlib/commit/a78700653de116b1043ce5d80bbe99482a705ecc.patch?full_index=1"
+        sha256 "547af4793368a7b37d7b707cc25d0b87bab674233ed69d38d4d685c28e574a58"
+      end
     end
 
     resource "cubical" do
-      url "https://github.com/agda/cubical/archive/refs/tags/v0.7.tar.gz"
-      sha256 "25a0d1a0a01ba81888a74dfe864883547dbc1b06fa89ac842db13796b7389641"
+      url "https://github.com/agda/cubical/archive/refs/tags/v0.8.tar.gz"
+      sha256 "27b22f2ed981d608f3cbf5d132e9016510c859435b5ce46adc3b76078c136275"
     end
 
     resource "categories" do
-      url "https://github.com/agda/agda-categories/archive/refs/tags/v0.2.0.tar.gz"
-      sha256 "a4bf97bf0966ba81553a2dad32f6c9a38cd74b4c86f23f23f701b424549f9015"
+      # Use git checkout due to `git ls-tree` usage in Makefile
+      url "https://github.com/agda/agda-categories.git",
+          tag:      "v0.2.0",
+          revision: "aee4189dd86889ee14338875ff7f6a81f35379c2"
+
+      # Backport support for stdlib 2.1
+      patch do
+        url "https://github.com/agda/agda-categories/commit/ac0d9d27a402305f6774a6343f7a21a229822168.patch?full_index=1"
+        sha256 "50dc97c97898c825dd4c85fffc8452dc3e61a7871aa907d65b1711e5642c05fc"
+      end
     end
 
     resource "agda2hs" do
-      url "https://github.com/agda/agda2hs/archive/refs/tags/v1.2.tar.gz"
-      sha256 "e80ffc90ff2ccb3933bf89a39ab16d920a6c7a7461a6d182faa0fb6c0446dbb8"
+      url "https://github.com/agda/agda2hs/archive/refs/tags/v1.3.tar.gz"
+      sha256 "0e2c11eae0af459d4c78c24efadb9a4725d12c951f9d94da4adda5a0bcb1b6f6"
     end
   end
 
@@ -40,14 +53,13 @@ class Agda < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "efcb6bc585745b2967257a989c96dc870b7e42e8605c36594e0ee204e4b71302"
-    sha256 arm64_sonoma:   "37754c8fe159f96685467a321a30c35c7088c2fa7a5bf9912ba67c972d79399b"
-    sha256 arm64_ventura:  "34042e188e7e31f2c6dbc1596499524f25418d6336484820851f023245133e8d"
-    sha256 arm64_monterey: "d8b64716f20cd7037b6c3bc099b4260cd76d15404a6ace0ffa71313f8cf8a332"
-    sha256 sonoma:         "6aff1192bdc412c72806011171db6e07a3f8f5bcc389f8bb23924810fef15bfd"
-    sha256 ventura:        "341696bc1ea2218202bed2823be2ab56d75410570b25b83274958f63ca463939"
-    sha256 monterey:       "2a81118ecccc5e080caf92f85426a81eda64df40378fc6a1eca0e27e9fac6ddc"
-    sha256 x86_64_linux:   "921f03e6fc741c7be27df3982e9254214688fc9e9e51722950d327ae8d427f5d"
+    sha256 arm64_sequoia: "6ccb91547fa1089a51f5509ae6adfcf32a9221dfcc6bc0a7c280c1b251311f2a"
+    sha256 arm64_sonoma:  "427d2fb8a22bc5929eadb1e855e02b24658b3cda05645dc03fc02ee10f1ecee4"
+    sha256 arm64_ventura: "9ab79232aae4d1781b046d4a620faade6047ab1a1512d55fe3fc01ee201951e4"
+    sha256 sonoma:        "7249da70860667e11c32532966eb455be22832e87efb318f753b2282f74fee50"
+    sha256 ventura:       "9ecfc864ab875692abf9f83092938261c5596f456fa86efafa296025c752f11c"
+    sha256 arm64_linux:   "d172a07287def95bfc0245f351a1ef52bc9b7f16b36dfcada31fddc77673c414"
+    sha256 x86_64_linux:  "0383a41e66f1487ea96b3d616d54e1fd9c6890be1aa4965be3365429b9d49ba0"
   end
 
   head do
@@ -70,101 +82,98 @@ class Agda < Formula
     end
   end
 
-  depends_on "cabal-install"
-  depends_on "emacs"
+  depends_on "cabal-install" => :build
+  depends_on "emacs" => :build
   depends_on "ghc"
 
   uses_from_macos "ncurses"
   uses_from_macos "zlib"
 
   def install
-    cabal_args = std_cabal_v2_args.reject { |s| s["installdir"] }
+    agda2hs = buildpath/"agda2hs"
+    agdalib = pkgshare # for write permissions needed to re-generate .agdai when using different options
+    cubicallib = agdalib/"cubical"
+    categorieslib = agdalib/"categories"
+
+    # Add a backwards compatibility symlink. Can consider removing in a future release
+    lib.install_symlink pkgshare
+
+    resource("agda2hs").stage agda2hs
+    resource("stdlib").stage agdalib
+    resource("cubical").stage cubicallib
+    resource("categories").stage categorieslib
+
+    # Remove strict stdlib version check in categories
+    inreplace categorieslib/"agda-categories.agda-lib", /(standard-library)-2\.1$/, "\\1", audit_result: build.stable?
+
+    (buildpath/"cabal.project.local").write <<~HASKELL
+      packages: . #{agda2hs}
+      package Agda
+        flags: +optimise-heavily
+      -- Workaround for GHC 9.12 until official supported, https://github.com/agda/agda/issues/7574
+      allow-newer: Agda:base, agda2hs:base, agda2hs:filepath
+    HASKELL
+
+    cabal_args = std_cabal_v2_args.map { |s| s.sub "=copy", "=symlink" }
+    # Reduce install size by dynamically linking to shared libraries in store-dir
+    # TODO: Linux support, related issue https://github.com/haskell/cabal/issues/9784
+    cabal_args += %w[--enable-executable-dynamic --enable-shared] if OS.mac?
+
+    # Expose certain packages for building and testing
+    exposed_packages = %w[base ieee754 text directory]
 
     system "cabal", "v2-update"
-    # expose certain packages for building and testing
-    system "cabal", "--store-dir=#{libexec}", "v2-install",
-           "base", "ieee754", "text", "directory", "--lib",
-           *cabal_args
-    agdalib = lib/"agda"
+    system "cabal", "--store-dir=#{libexec}", "v2-install", *exposed_packages, "--lib", *cabal_args
+    system "cabal", "--store-dir=#{libexec}", "v2-install", ".", agda2hs, *cabal_args
 
-    # install main Agda library and binaries
-    system "cabal", "--store-dir=#{libexec}", "v2-install",
-    "-foptimise-heavily", *std_cabal_v2_args
+    # Allow build scripts to find stdlib and just built agda binary
+    Pathname("#{Dir.home}/.config/agda/libraries").write "#{agdalib}/standard-library.agda-lib"
+    ENV.prepend_path "PATH", bin
 
-    # install agda2hs helper binary and library,
-    # relying on the Agda library just installed
-    resource("agda2hs").stage "agda2hs-build"
-    cd "agda2hs-build" do
-      # Use previously built Agda binary to work around build error with Cabal 3.12
-      # Issue ref: https://github.com/agda/agda/issues/7401
-      # TODO: Try removing workaround when Agda 2.7.0 is released
-      if build.stable?
-        odie "Try to remove Setup.hs workaround!" if version > "2.6.4.3"
-        Pathname("cabal.project.local").write "packages: ./agda2hs.cabal ../Agda.cabal"
-        inreplace buildpath/"Setup.hs", ' agda = bdir </> "agda" </> "agda" <.> agdaExeExtension',
-                                        " agda = \"#{bin}/agda\" <.> agdaExeExtension"
-      end
+    # Generate documentation and interface files. We build without extra options
+    # so generated interface files work on basic use case. Options like -Werror
+    # will need re-generation: https://github.com/agda/agda/issues/5151
+    system "make", "-C", agdalib, "listings", "AGDA_OPTIONS="
+    # We need to force order between these next two lines, so they can't be combined.
+    system "make", "-C", cubicallib, "gen-everythings", "AGDA_FLAGS="
+    system "make", "-C", cubicallib, "listings", "AGDA_FLAGS="
+    system "make", "-C", categorieslib, "html", "OTHEROPTS="
 
-      # Work around to build agda2hs with GHC 9.10
-      # Issue ref: https://github.com/agda/agda2hs/issues/347
-      inreplace "agda2hs.cabal", /( base .*&&) < 4\.20,/, "\\1 < 4.21,", build.stable?
+    # Clean up references to Homebrew shims and temporary generated files
+    rm_r("#{agdalib}/dist-newstyle")
 
-      system "cabal", "--store-dir=#{libexec}", "v2-install", *std_cabal_v2_args
+    # Move the agda2hs support library into place
+    (agdalib/"agda2hs").install agda2hs/"lib", agda2hs/"agda2hs.agda-lib"
+
+    # Workaround to generate interface files for agda2hs based on
+    # https://github.com/agda/agda2hs/blob/master/nix/default.nix#L12-L16
+    agda2hs_imports = Dir.glob("**/*.agda", base: agdalib/"agda2hs/lib").map do |path|
+      "import #{path.delete_suffix(".agda").tr("/", ".")}"
     end
-
-    # generate the standard library's documentation and vim highlighting files
-    resource("stdlib").stage agdalib
-    cd agdalib do
-      system "cabal", "--store-dir=#{libexec}", "v2-install", *cabal_args, "--installdir=#{lib}/agda"
-      system "./GenerateEverything"
-      cd "doc" do
-        system bin/"agda", "-i", "..", "--html", "--vim", "README.agda"
-      end
+    (agdalib/"agda2hs/Everything.agda").write <<~AGDA
+      {-# OPTIONS --sized-types #-}
+      module Everything where
+      #{agda2hs_imports.join("\n")}
+    AGDA
+    cd agdalib/"agda2hs" do
+      system bin/"agda", "--include-path=.", "Everything.agda"
     end
-
-    # Clean up references to Homebrew shims in the standard library
-    rm_r("#{agdalib}/dist-newstyle/cache")
-
-    # generate the cubical library's documentation files
-    cubicallib = agdalib/"cubical"
-    resource("cubical").stage cubicallib
-    cd cubicallib do
-      system "make", "gen-everythings", "listings",
-             "AGDA_BIN=#{bin/"agda"}",
-             "RUNHASKELL=#{Formula["ghc"].bin/"runhaskell"}"
-    end
-
-    # generate the categories library's documentation files
-    categorieslib = agdalib/"categories"
-    resource("categories").stage categorieslib
-    cd categorieslib do
-      # fix the Makefile to use the Agda binary and
-      # the standard library that we just installed
-      inreplace "Makefile",
-                "agda ${RTSARGS}",
-                "#{bin}/agda --no-libraries -i #{agdalib}/src ${RTSARGS}"
-      system "make", "html"
-    end
-
-    # move the agda2hs support library into place
-    (agdalib/"agda2hs").install "agda2hs-build/lib",
-                                "agda2hs-build/agda2hs.agda-lib"
 
     # write out the example libraries and defaults files for users to copy
-    (agdalib/"example-libraries").write <<~EOS
-      #{opt_lib}/agda/standard-library.agda-lib
-      #{opt_lib}/agda/doc/standard-library-doc.agda-lib
-      #{opt_lib}/agda/tests/standard-library-tests.agda-lib
-      #{opt_lib}/agda/cubical/cubical.agda-lib
-      #{opt_lib}/agda/categories/agda-categories.agda-lib
-      #{opt_lib}/agda/agda2hs/agda2hs.agda-lib
-    EOS
-    (agdalib/"example-defaults").write <<~EOS
+    (agdalib/"example-libraries").write <<~TEXT
+      #{opt_pkgshare}/standard-library.agda-lib
+      #{opt_pkgshare}/doc/standard-library-doc.agda-lib
+      #{opt_pkgshare}/tests/standard-library-tests.agda-lib
+      #{opt_pkgshare}/cubical/cubical.agda-lib
+      #{opt_pkgshare}/categories/agda-categories.agda-lib
+      #{opt_pkgshare}/agda2hs/agda2hs.agda-lib
+    TEXT
+    (agdalib/"example-defaults").write <<~TEXT
       standard-library
       cubical
       agda-categories
       agda2hs
-    EOS
+    TEXT
   end
 
   def caveats
@@ -172,17 +181,20 @@ class Agda < Formula
       To use the installed Agda libraries, execute the following commands:
 
           mkdir -p $HOME/.config/agda
-          cp #{opt_lib}/agda/example-libraries $HOME/.config/agda/libraries
-          cp #{opt_lib}/agda/example-defaults $HOME/.config/agda/defaults
+          cp #{opt_pkgshare}/example-libraries $HOME/.config/agda/libraries
+          cp #{opt_pkgshare}/example-defaults $HOME/.config/agda/defaults
 
       You can then inspect the copied files and customize them as needed.
     EOS
   end
 
   test do
+    Pathname("#{Dir.home}/.config/agda").install_symlink opt_pkgshare/"example-libraries" => "libraries"
+    Pathname("#{Dir.home}/.config/agda").install_symlink opt_pkgshare/"example-defaults" => "defaults"
+
     simpletest = testpath/"SimpleTest.agda"
-    simpletest.write <<~EOS
-      {-# OPTIONS --safe --without-K #-}
+    simpletest.write <<~AGDA
+      {-# OPTIONS --safe --cubical-compatible #-}
       module SimpleTest where
 
       infix 4 _≡_
@@ -191,10 +203,10 @@ class Agda < Formula
 
       cong : ∀ {A B : Set} (f : A → B) {x y} → x ≡ y → f x ≡ f y
       cong f refl = refl
-    EOS
+    AGDA
 
     stdlibtest = testpath/"StdlibTest.agda"
-    stdlibtest.write <<~EOS
+    stdlibtest.write <<~AGDA
       module StdlibTest where
 
       open import Data.Nat
@@ -203,10 +215,10 @@ class Agda < Formula
       +-assoc : ∀ m n o → (m + n) + o ≡ m + (n + o)
       +-assoc zero    _ _ = refl
       +-assoc (suc m) n o = cong suc (+-assoc m n o)
-    EOS
+    AGDA
 
     cubicaltest = testpath/"CubicalTest.agda"
-    cubicaltest.write <<~EOS
+    cubicaltest.write <<~AGDA
       {-# OPTIONS --cubical #-}
       module CubicalTest where
 
@@ -217,10 +229,10 @@ class Agda < Formula
 
       suc-equiv : ℤ ≡ ℤ
       suc-equiv = ua (isoToEquiv (iso sucℤ predℤ sucPred predSuc))
-    EOS
+    AGDA
 
     categoriestest = testpath/"CategoriesTest.agda"
-    categoriestest.write <<~EOS
+    categoriestest.write <<~AGDA
       module CategoriesTest where
 
       open import Level using (zero)
@@ -233,10 +245,10 @@ class Agda < Formula
       _⇒_ empty-quiver ()
       _≈_ empty-quiver {()}
       equiv empty-quiver {()}
-    EOS
+    AGDA
 
     iotest = testpath/"IOTest.agda"
-    iotest.write <<~EOS
+    iotest.write <<~AGDA
       module IOTest where
 
       open import Agda.Builtin.IO
@@ -249,11 +261,12 @@ class Agda < Formula
 
       main : _
       main = return tt
-    EOS
+    AGDA
 
     agda2hstest = testpath/"Agda2HsTest.agda"
-    agda2hstest.write <<~EOS
+    agda2hstest.write <<~AGDA
       {-# OPTIONS --erasure #-}
+      module Agda2HsTest where
       open import Haskell.Prelude
 
       _≤_ : {{Ord a}} → a → a → Set
@@ -264,57 +277,38 @@ class Agda < Formula
         Node : (x : a) (l : BST a lower x) (r : BST a x upper) → BST a lower upper
 
       {-# COMPILE AGDA2HS BST #-}
-    EOS
+    AGDA
 
     agda2hsout = testpath/"Agda2HsTest.hs"
-    agda2hsexpect = <<~EOS
+    agda2hsexpect = <<~HASKELL
       module Agda2HsTest where
 
       data BST a = Leaf
                  | Node a (BST a) (BST a)
 
-    EOS
-
-    # we need a test-local copy of the stdlib as the test writes to
-    # the stdlib directory; the same applies to the cubical,
-    # categories, and agda2hs libraries
-    resource("stdlib").stage testpath/"lib/agda"
-    resource("cubical").stage testpath/"lib/agda/cubical"
-    resource("categories").stage testpath/"lib/agda/categories"
-    resource("agda2hs").stage testpath/"lib/agda/agda2hs"
+    HASKELL
 
     # typecheck a simple module
     system bin/"agda", simpletest
 
     # typecheck a module that uses the standard library
-    system bin/"agda",
-           "-i", testpath/"lib/agda/src",
-           stdlibtest
+    system bin/"agda", stdlibtest
 
     # typecheck a module that uses the cubical library
-    system bin/"agda",
-           "-i", testpath/"lib/agda/cubical",
-           cubicaltest
+    system bin/"agda", cubicaltest
 
     # typecheck a module that uses the categories library
-    system bin/"agda",
-           "-i", testpath/"lib/agda/categories/src",
-           "-i", testpath/"lib/agda/src",
-           categoriestest
+    system bin/"agda", categoriestest
 
     # compile a simple module using the JS backend
     system bin/"agda", "--js", simpletest
 
-    # test the GHC backend;
-    # compile and run a simple program
-    system bin/"agda", "--ghc-flag=-fno-warn-star-is-type", "-c", iotest
-    assert_equal "", shell_output(testpath/"IOTest")
+    # test the GHC backend; compile and run a simple program
+    system bin/"agda", "--compile", iotest
+    assert_empty shell_output(testpath/"IOTest")
 
     # translate a simple file via agda2hs
-    system bin/"agda2hs", agda2hstest,
-           "-i", testpath/"lib/agda/agda2hs/lib",
-           "-o", testpath
-    agda2hsactual = File.read(agda2hsout)
-    assert_equal agda2hsexpect, agda2hsactual
+    system bin/"agda2hs", "--out-dir=#{testpath}", agda2hstest
+    assert_equal agda2hsexpect, agda2hsout.read
   end
 end

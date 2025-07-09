@@ -6,6 +6,8 @@ class ThePlatinumSearcher < Formula
   license "MIT"
   head "https://github.com/monochromegane/the_platinum_searcher.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "2ba93995429038b3bc692cf512396e683d766b131a307e63afbbe913218b54c1"
@@ -34,14 +36,14 @@ class ThePlatinumSearcher < Formula
   end
 
   def install
-    system "go", "build", *std_go_args, "-o", bin/"pt", "./cmd/pt"
+    system "go", "build", *std_go_args(ldflags: "-s -w", output: bin/"pt"), "./cmd/pt"
   end
 
   test do
     path = testpath/"hello_world.txt"
     path.write "Hello World!"
 
-    lines = `#{bin}/pt 'Hello World!' #{path}`.strip.split(":")
+    lines = shell_output("#{bin}/pt 'Hello World!' #{path}").strip.split(":")
     assert_equal "Hello World!", lines[2]
   end
 end

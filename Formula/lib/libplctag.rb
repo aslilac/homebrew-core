@@ -1,8 +1,8 @@
 class Libplctag < Formula
   desc "Portable and simple API for accessing AB PLC data over Ethernet"
   homepage "https://github.com/libplctag/libplctag"
-  url "https://github.com/libplctag/libplctag/archive/refs/tags/v2.6.3.tar.gz"
-  sha256 "ebbcd659d5137d1299780e49b139d1e991b5a731df6dca0d7130b58555673a6d"
+  url "https://github.com/libplctag/libplctag/archive/refs/tags/v2.6.7.tar.gz"
+  sha256 "a3a9b2611676028e0e8d9b01e5b7d5d6c692ed40aa29ee4870e79c93387cf326"
   license any_of: ["LGPL-2.0-or-later", "MPL-2.0"]
 
   livecheck do
@@ -11,21 +11,21 @@ class Libplctag < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "531813b0902a9c6cee6547b724bd790dcc25bdd56ed8c4d83aa77b0ece77df95"
-    sha256 cellar: :any,                 arm64_sonoma:   "dc6b380ddabd0deb6356e5c4858539d5d93c467521127541c1178c60fdce213c"
-    sha256 cellar: :any,                 arm64_ventura:  "f05b40f9a1a1e7ce4836a9aafefccb0f0637293457b50af1011138df5115b72b"
-    sha256 cellar: :any,                 arm64_monterey: "8ee7a04c8066496aa7519a12acfca94b4e49d18fddfeb4b39722277146516ab0"
-    sha256 cellar: :any,                 sonoma:         "56c790736952cfeec473004b11a6e802a64632fbe0b6310137e24fd6ea27e034"
-    sha256 cellar: :any,                 ventura:        "c2f745ee79bbf95b4c48a80942954618c77a429ffeb9fb8525165f3ab8682d30"
-    sha256 cellar: :any,                 monterey:       "b6a35d8303c4198bc22f38a4f60ad6aba6cf4ec5593cd77eaa207dbb2779a13d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fceb54a005681b6071a970c62cf2e0ce0e2f1719bca67aaf34d648f22349a510"
+    sha256 cellar: :any,                 arm64_sequoia: "8a9b0472ddad7d24c370af3f426693296a1b008edb275216ccbe46709b7bb190"
+    sha256 cellar: :any,                 arm64_sonoma:  "e1508990e17a953d8fc568e875facb0b61d23a540f6df8de2e739754cbb2b5ea"
+    sha256 cellar: :any,                 arm64_ventura: "be7ade8533a2f0f0160875091c24e78aa8e052157622951a804985b0bf95c2e4"
+    sha256 cellar: :any,                 sonoma:        "8040b9ac1da1dcbc5d97096f74ea8046abe48b2b2c94a033311f27b26d4df502"
+    sha256 cellar: :any,                 ventura:       "7f9b32fa2e33193fe1dc459bc5677d22871c4ff993cff6029f0b97cae40e590d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c8b254939aa4a60ee14f6365bdd4e0de514f22e860fb67661cc2c30fb6b3b8c8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "acece6ddc38768cc8b3e8dcd8431fb6167e9eaf613bc667a5d47f6613ae47969"
   end
 
   depends_on "cmake" => :build
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -40,6 +40,7 @@ class Libplctag < Formula
         return 0;
       }
     C
+
     system ENV.cc, "test.c", "-L#{lib}", "-lplctag", "-o", "test"
     system "./test"
   end

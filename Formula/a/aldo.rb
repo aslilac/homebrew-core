@@ -10,6 +10,8 @@ class Aldo < Formula
     regex(/href=.*?aldo[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "85ae21042606044840664aafe2df3fdcdbc6b00274ef715522d1e14964e51643"
@@ -26,6 +28,7 @@ class Aldo < Formula
     sha256 cellar: :any,                 high_sierra:    "d30e5e60defc2e2d2110cf52a60898d94ae3331a679f1c228e0d598421a594d9"
     sha256 cellar: :any,                 sierra:         "ad5216c04fce4d1f4da63af2fa4d298a3414073db186991ec4389a942799ddd1"
     sha256 cellar: :any,                 el_capitan:     "0691c4b9b7ae5b6f104c5b5205f731d4348563b8a9a8c3631395f619ce00aabf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "41aaf9303c8e8cac32a159590dc0e3f1c905d591cebf215a0e699c893feced08"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "660548eb8c93e2c78a50b925143a9b24400ee578790b62e7acde1d1aed360a98"
   end
 
@@ -44,6 +47,6 @@ class Aldo < Formula
   end
 
   test do
-    assert_match "Aldo #{version} Main Menu", pipe_output(bin/"aldo", "6")
+    assert_match "Aldo #{version} Main Menu", pipe_output(bin/"aldo", "6", 0)
   end
 end

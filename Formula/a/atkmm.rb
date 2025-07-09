@@ -5,6 +5,8 @@ class Atkmm < Formula
   sha256 "6ec264eaa0c4de0adb7202c600170bde9a7fbe4d466bfbe940eaf7faaa6c5974"
   license "LGPL-2.1-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any, arm64_sequoia:  "7b9d9f8002ad938aeefbdad02a83210e5e0b9e76cfba58cf5754d6d72bf48c45"
     sha256 cellar: :any, arm64_sonoma:   "62dd226fac2e76888483763ecc6ef017a652bde7bb98c914565c8002efe03db3"
@@ -13,6 +15,7 @@ class Atkmm < Formula
     sha256 cellar: :any, sonoma:         "6454c0225d51922b4ad717b04dade8bf93b92aa26c836d77b41a55fbc41a0a14"
     sha256 cellar: :any, ventura:        "8327309298dd1743517ed04c4d8b0c7803c9619ea9139dfcbe5531f51730a639"
     sha256 cellar: :any, monterey:       "d16d833f1b2cd3ff76fd00054da59dba3413e2ce655068f62ef2c47dabe8e08b"
+    sha256               arm64_linux:    "05e534d8d4d01ae147b7e2102e041262aea114c33ed580fb4000037a7ca41694"
     sha256               x86_64_linux:   "cec181c4ae3a4be7b814e82d909f1128e5279592ff3a4ea6e7e85baebe27dbb0"
   end
 

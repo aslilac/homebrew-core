@@ -24,6 +24,8 @@ class Tcptraceroute < Formula
     regex(/^(?:tcptraceroute[._-])?v?(\d+(?:\.\d+)+.*)/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "07b6c54371373c5e7e23fba003ca0177fc103f0b9c84c22a4fc1d718fd96bf00"
@@ -37,6 +39,7 @@ class Tcptraceroute < Formula
     sha256 cellar: :any,                 big_sur:        "f0e063340080998a098d428af420778bf27b0d5b772943b482152ad9e2793db2"
     sha256 cellar: :any,                 catalina:       "32a7e7e680f6e481353c0ab25fbfebb1f79f48bce4d2215d4765211e3494d450"
     sha256 cellar: :any,                 mojave:         "99c51ddf23c5a4c9ac6d853c39a03513b340e60aa2d57211a46ea58bbad7290d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "93f9bdf4d9051c31897edf8d96ea5b78e55ec2d1b8abb4b5f05f06ada2d7256a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "97750459321657901904cd492047c4d011d7e7b705d01ce37d82fe5622dec168"
   end
 
@@ -48,12 +51,8 @@ class Tcptraceroute < Formula
 
   def install
     # Regenerate configure script for arm64/Apple Silicon support.
-    system "autoreconf", "--verbose", "--install", "--force"
-
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-libnet=#{HOMEBREW_PREFIX}",
-                          "--mandir=#{man}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--with-libnet=#{HOMEBREW_PREFIX}", "--mandir=#{man}", *std_configure_args
     system "make", "install"
   end
 

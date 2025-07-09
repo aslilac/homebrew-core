@@ -14,6 +14,8 @@ class Cwb3 < Formula
     regex(%r{url=.*?/cwb[._-]v?(\d+(?:\.\d+)+)-src\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "c5b9638ab57fd314a6ca3d6af0fe467535a2d3a2d10f567c5c479bda9f3ac36b"
     sha256 cellar: :any,                 arm64_sonoma:   "6e7f9c944d5b1222ea9b1001a4ed77c80ee60fd97418b1326e201def09c26ce9"
@@ -25,6 +27,7 @@ class Cwb3 < Formula
     sha256 cellar: :any,                 monterey:       "9271d4472d3ce7e71c65755e33ba8d303edcc603ce7e493c12d6c870a7f84f0f"
     sha256 cellar: :any,                 big_sur:        "af3c7316e0a0678d7cf11d151c109cbbd0f36b9df36c9b1d2c210ce6654e6030"
     sha256 cellar: :any,                 catalina:       "a15fdf57dceb390674290d8a1aaabdf93385b60a675de29a0af5219d85116d95"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "721f450a9de637e6d42681135441d0d7228867ac58b1087d186c67d82321857f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "36c736d9eee76fc6c3db520901f42677e8dfc1ea390b319264c4e0d75b612ccc"
   end
 
@@ -94,14 +97,12 @@ class Cwb3 < Formula
       system(bin/"cwb-encode", "-c", "ascii",
         "-d", "data", "-R", "registry/ex", "-f", "example.vrt",
         "-P", "pos", "-P", "lemma", "-S", "s:0")
-      assert_predicate(Pathname("registry")/"ex", :exist?,
-        "registry file has been created")
-      assert_predicate(Pathname("data")/"lemma.lexicon", :exist?,
-        "lexicon file for p-attribute lemma has been created")
+      assert_path_exists Pathname("registry")/"ex", "registry file has been created"
+      assert_path_exists Pathname("data")/"lemma.lexicon", "lexicon file for p-attribute lemma has been created"
 
       system(bin/"cwb-makeall", "-r", "registry", "EX")
-      assert_predicate(Pathname("data")/"lemma.corpus.rev", :exist?,
-        "reverse index file for p-attribute lemma has been created")
+      assert_path_exists Pathname("data")/"lemma.corpus.rev",
+"reverse index file for p-attribute lemma has been created"
 
       assert_equal("Tokens:\t5\nTypes:\t5\n",
         shell_output("#{bin}/cwb-lexdecode -r registry -S EX"),
@@ -114,7 +115,7 @@ class Cwb3 < Formula
         shell_output("#{bin}/cqpcl -r registry -D EX 'A=[pos = \"\\w{2}\"]; size A;'"),
         "CQP query works correctly")
 
-      Pathname("test.c").write <<~STOP
+      Pathname("test.c").write <<~C
         #include <stdlib.h>
         #include <cwb/cl.h>
 
@@ -130,7 +131,7 @@ class Cwb3 < Formula
           printf("%d\\n", n_token);
           return 0;
         }
-      STOP
+      C
       cppflags = Utils.safe_popen_read("#{bin}/cwb-config", "-I").strip.split
       ldflags = Utils.safe_popen_read("#{bin}/cwb-config", "-L").strip.split
       system ENV.cc, "-o", "test", *cppflags, "test.c", *ldflags

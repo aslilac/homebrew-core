@@ -5,6 +5,8 @@ class Sqtop < Formula
   sha256 "eae4c8bc16dbfe70c776d990ecf14328acab0ed736f0bf3bd1647a3ac2f5e8bf"
   license "GPL-2.0-only"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "86fa975d403a9957261b33b293324908d327eff19831b705463866a7a4ccad2a"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "beff07169db5be764d18cb3bee9a18371d130c6cb3d2e8890e41b460c6e0f55e"
@@ -20,6 +22,7 @@ class Sqtop < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "fe9a704fdf7f24dadba6b4f7cc20f8f07d93c19450701e01b408ea2f7574ec63"
     sha256 cellar: :any_skip_relocation, sierra:         "30f51d2886adf914eef22af21dfac92f544c59c88b6e7961972eb6702e48d0c0"
     sha256 cellar: :any_skip_relocation, el_capitan:     "6d838378cae0971561da60dff1e887bf03b60d1a0ff198a5d468654ef790d9e9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "02d8d356631939d3201e72c24a96353e5032ddd6abfe1613cd7ac07de0720dd7"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4f7bd15bf5407710e19ab7c3bd414c18b163b251274d14e058208a526353a7e0"
   end
 

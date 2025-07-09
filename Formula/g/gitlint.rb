@@ -7,6 +7,8 @@ class Gitlint < Formula
   sha256 "7bf977b03ff581624a9e03f65ebb8502cc12dfaa3e92d23e8b2b54bbdaa29992"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 5
     sha256 cellar: :any_skip_relocation, all: "7b347048bcc8bd14d3d1e1cb1ab96d19753c4ccf52c9b37f4fd1f353db79bfc0"
@@ -56,7 +58,7 @@ class Gitlint < Formula
     # Install gitlint as a git commit-msg hook
     system "git", "init"
     system bin/"gitlint", "install-hook"
-    assert_predicate testpath/".git/hooks/commit-msg", :exist?
+    assert_path_exists testpath/".git/hooks/commit-msg"
 
     # Verifies that the second line of the hook is the title
     output = File.open(testpath/".git/hooks/commit-msg").each_line.take(2).last

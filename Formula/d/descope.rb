@@ -1,17 +1,18 @@
 class Descope < Formula
   desc "Command-line utility for performing common tasks on Descope projects"
   homepage "https://www.descope.com"
-  url "https://github.com/descope/descopecli/archive/refs/tags/v0.8.11.tar.gz"
-  sha256 "fa5460f3c96ca0596b2bfe72bd20cd689bd5adad3b6603c23533565de9210f18"
+  url "https://github.com/descope/descopecli/archive/refs/tags/v0.8.13.tar.gz"
+  sha256 "0f2aea0e65687db859563206c421567c4a5b664b5975fc621b4c2bada17ac6e5"
   license "MIT"
+  head "https://github.com/descope/descopecli.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0bb4ae8bb4c29c8f185d060ac3750ee3116da5df67cd11a4a9667570ee325349"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0bb4ae8bb4c29c8f185d060ac3750ee3116da5df67cd11a4a9667570ee325349"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "0bb4ae8bb4c29c8f185d060ac3750ee3116da5df67cd11a4a9667570ee325349"
-    sha256 cellar: :any_skip_relocation, sonoma:        "8ac7654197187d0184db64d24514ea7656c4c325e9544f9eae77ba89722a05db"
-    sha256 cellar: :any_skip_relocation, ventura:       "8ac7654197187d0184db64d24514ea7656c4c325e9544f9eae77ba89722a05db"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f61d3bb6de69dac1d3ee6ece1e8251ae41c56cc85688ea2a8bdb9325f7f44e61"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "056ade67fc5866133bd18e5c5a3f618fc89267f07b094e88ee363d5dc36581e4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "056ade67fc5866133bd18e5c5a3f618fc89267f07b094e88ee363d5dc36581e4"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "056ade67fc5866133bd18e5c5a3f618fc89267f07b094e88ee363d5dc36581e4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a88224f03a533ea45d3a160caf9c19a3b49b1e5e1fcdd31877c9a8c6178654c5"
+    sha256 cellar: :any_skip_relocation, ventura:       "a88224f03a533ea45d3a160caf9c19a3b49b1e5e1fcdd31877c9a8c6178654c5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "32af76968ad226b9496568e0bf4c05252aa06a9ac12e4887d114f219d7ba5c97"
   end
 
   depends_on "go" => :build

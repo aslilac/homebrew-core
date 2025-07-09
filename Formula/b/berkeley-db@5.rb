@@ -6,6 +6,8 @@ class BerkeleyDbAT5 < Formula
   license "Sleepycat"
   revision 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "ac64ff01e9897372c22dd2f9c90a2e5ffc5b66876c243d20d1e107b7c3785fba"
     sha256 cellar: :any,                 arm64_sonoma:   "7e1f6f67ce491e8636f9095fa45854e7b5720745b909e3b84cad8400b28418fd"
@@ -17,6 +19,7 @@ class BerkeleyDbAT5 < Formula
     sha256 cellar: :any,                 monterey:       "36aaa79c9fc3eb2b7690c24bdf74be3d0f7e1752983a63a17538945e2bce7452"
     sha256 cellar: :any,                 big_sur:        "5aa0875cdd7bd504abf8f7365e47f5ac4b0e1b9e4ca004d6eb58e2f1564a9621"
     sha256 cellar: :any,                 catalina:       "944b439dd5dcb02c5219b307d6ed739b9808a4eced27f6605a977e550e47c8bd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "356a948ed9ce8a65a5f280c5f68c0bb7d750ab962c06485c7972f557d779acf0"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c0e2906cc6657dc497fec75629560b0a404b81cebadf5e10c1f70616a14fa886"
   end
 
@@ -119,6 +122,6 @@ class BerkeleyDbAT5 < Formula
     ]
     system ENV.cxx, "test.cpp", "-o", "test", *flags
     system "./test"
-    assert_predicate testpath/"test.db", :exist?
+    assert_path_exists testpath/"test.db"
   end
 end

@@ -10,6 +10,8 @@ class Pulp < Formula
     regex(%r{href=.*?/package/pulp/v/(\d+(?:[.-]\d+)+)["']}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any_skip_relocation, all: "0de9300b253bf5fa068c578ff479fc02a5371a7367bfaf9b3563122b8163ae4a"
@@ -28,7 +30,7 @@ class Pulp < Formula
     assert_match version.to_s, shell_output("#{bin}/pulp --version")
 
     system bin/"pulp", "init"
-    assert_predicate testpath/".gitignore", :exist?
-    assert_predicate testpath/"bower.json", :exist?
+    assert_path_exists testpath/".gitignore"
+    assert_path_exists testpath/"bower.json"
   end
 end

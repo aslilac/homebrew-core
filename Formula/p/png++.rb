@@ -10,6 +10,8 @@ class Pngxx < Formula
     regex(/href=.*?png\+\+[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "acf63a60a34fbd3c3491c29b7ea5081736b7ce316d6d27b7732313920f450701"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5eec08e707d28e9849abb32efc3d218abfb2ff953ee1e9ed6fe3790646713090"
@@ -24,6 +26,7 @@ class Pngxx < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "536f9c2dd05cfd2ae8a4f7f5d0c5c38575cf91609498f98bd6c3f97c4de2c520"
     sha256 cellar: :any_skip_relocation, high_sierra:    "536f9c2dd05cfd2ae8a4f7f5d0c5c38575cf91609498f98bd6c3f97c4de2c520"
     sha256 cellar: :any_skip_relocation, sierra:         "cee110f568bae723e8e5172e8bab36c8f4c5adb8bf339a444926a572bfa13f89"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "8ad881818b116ae124ab2f34ded71329044961ce3bcc58ad722fca0fc293d1ae"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7ede8356bf0fad95a8d5e0ff94f9e586bcca7ca67ef24097d50bb69e3bc20173"
   end
 

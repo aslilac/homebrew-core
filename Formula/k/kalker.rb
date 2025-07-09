@@ -11,12 +11,19 @@ class Kalker < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "ec9f56867f6ee6c7e6ad1db5fb877dbbad8c54be4aca84a8a94aa358761eea71"
     sha256 cellar: :any_skip_relocation, sonoma:        "c091228e608726810a31e9e7e338e7d852c4e0a275218e78bcda94c711a81cf2"
     sha256 cellar: :any_skip_relocation, ventura:       "f131822bae272a41dc67c5b38459e6dd839858c75002d5f9971753d177c9044e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "14aee6e73447828a17a0353fadf9d1d76dcda870509ff84119ba33cd62e05a52"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "d4750ee527662c50e8d604af19a2db3d29c35f5ba40323fa8cbc6755abb7ccdc"
   end
 
   depends_on "rust" => :build
 
   uses_from_macos "m4" => :build
+
+  # bump wasm-bindgen to build against rust 1.87, upstream pr ref, https://github.com/PaddiM8/kalker/pull/167
+  patch do
+    url "https://github.com/PaddiM8/kalker/commit/81bf66950a9dfeca4ab5fdd12774c93e40021eb1.patch?full_index=1"
+    sha256 "ea3bb71fc4c0b688d0823518a3d193092fab537abe9d78b887c3f89a39001c60"
+  end
 
   def install
     cd "cli" do

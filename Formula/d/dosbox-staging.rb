@@ -1,8 +1,8 @@
 class DosboxStaging < Formula
   desc "Modernized DOSBox soft-fork"
   homepage "https://dosbox-staging.github.io/"
-  url "https://github.com/dosbox-staging/dosbox-staging/archive/refs/tags/v0.82.0.tar.gz"
-  sha256 "a3f63f86bf203ba28512e189ce6736cdb0273647e77a62ce47ed3d01b3b4a88d"
+  url "https://github.com/dosbox-staging/dosbox-staging/archive/refs/tags/v0.82.2.tar.gz"
+  sha256 "387c97b373c3164ab5abbbc2b210bf94b5567057abe44ee1e8b4d4e725bd422c"
   license "GPL-2.0-or-later"
   head "https://github.com/dosbox-staging/dosbox-staging.git", branch: "main"
 
@@ -14,12 +14,13 @@ class DosboxStaging < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "b4459a8981e6641db94c96e2d32920527d94cfafb287df5506edd8fc2ac328e2"
-    sha256 arm64_sonoma:  "6950d63dad00ad337f09c11dbc5817b7d7260b29afb14f87b71a3052b1fb2726"
-    sha256 arm64_ventura: "64265c0ff0d6211d766f08ce22c72032c888120866ca92834980f2aa56b6a9a0"
-    sha256 sonoma:        "d3573b89df240f1369d2b069012992697affb4cbc0f72666bae7f9f12f5cc023"
-    sha256 ventura:       "fc3e42f4cdea9607d9f99e227e07f9d4a1d4483d36fed9017dae754d8cc6fba4"
-    sha256 x86_64_linux:  "4db81ea132af948b33d6856c3b1c28b0e7c142ee9e443b55d299f46f77326822"
+    sha256 arm64_sequoia: "67bbc49e8ce9292918ec0fe1bd6155ddda3260ef7f840be35a562f2d51fbfdb9"
+    sha256 arm64_sonoma:  "7400c7d85ec825c4aa117fd41a3d0d91f630b4dd6f4eb66df9941a31796f9dd1"
+    sha256 arm64_ventura: "d0907c011b0cb842686fe223cddbb4267279c9b1a6e1d213f29c6ce353c045f4"
+    sha256 sonoma:        "2ad78b97010edb15688741a486ab570cbc21479e745a189aba2647e6e6c25492"
+    sha256 ventura:       "30d04f3c8adc6a210c39ff2d6ee4c6f70b8013f27415c12bac4e76acd0583d39"
+    sha256 arm64_linux:   "f6ef8be8b1eb88195f99f7fc76c24b902f56ea449a6a3aa223675854dde18518"
+    sha256 x86_64_linux:  "5886d49c71e462a00183ed14a7c8aa39b1381c2e199315de86ffae3d137db515"
   end
 
   depends_on "meson" => :build
@@ -44,8 +45,6 @@ class DosboxStaging < Formula
     depends_on "mesa"
     depends_on "mesa-glu"
   end
-
-  fails_with gcc: "5"
 
   def install
     rm_r(buildpath/"subprojects") # Ensure we don't use vendored dependencies

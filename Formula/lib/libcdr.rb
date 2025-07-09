@@ -1,10 +1,10 @@
 class Libcdr < Formula
   desc "C++ library to parse the file format of CorelDRAW documents"
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libcdr"
-  url "https://dev-www.libreoffice.org/src/libcdr/libcdr-0.1.7.tar.xz"
-  sha256 "5666249d613466b9aa1e987ea4109c04365866e9277d80f6cd9663e86b8ecdd4"
+  url "https://dev-www.libreoffice.org/src/libcdr/libcdr-0.1.8.tar.xz"
+  sha256 "ced677c8300b29c91d3004bb1dddf0b99761bf5544991c26c2ee8f427e87193c"
   license "MPL-2.0"
-  revision 8
+  revision 1
 
   livecheck do
     url "https://dev-www.libreoffice.org/src/"
@@ -12,17 +12,18 @@ class Libcdr < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "bbc2a54bb8f6d6a4e466865b14d7b70a6fbc858d388548cf9b953f201de3c990"
-    sha256 cellar: :any,                 arm64_sonoma:  "cc66b1548f086a48f271bf053c229ee390cd2bd1156903d29ff0021f0df9b5a5"
-    sha256 cellar: :any,                 arm64_ventura: "4490629bd88271316e181a59054bdbca640a68fc742ad2e072b7c00d529787ad"
-    sha256 cellar: :any,                 sonoma:        "1229fd37c6e1c8e952b63e78bd58778a92f64da3fda9f7f6ac0f07c6b8b61150"
-    sha256 cellar: :any,                 ventura:       "d36c29ef45a56def001e4401ef3a2efce00352621ff1dd2f23260d6d6dadff5f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "11f1b27844634dbdba55e73959c47a4cf20189936b203790f5f98ac48e7174c7"
+    sha256 cellar: :any,                 arm64_sequoia: "c92d2906e9c17ed5a9e0a12541a9f57f9af90a159a8c415ac93f0849f1cf502b"
+    sha256 cellar: :any,                 arm64_sonoma:  "78d0a8ac7a817bdf7fccecae5b1914bc2c54e6e42049277e3118b5ecb7a8a8a6"
+    sha256 cellar: :any,                 arm64_ventura: "47f696438e82d0a76e5a9e571dc9805fffd5699e99cee039593cbea2797631da"
+    sha256 cellar: :any,                 sonoma:        "d44ec2dbff4e7e9f375100722196a1d2598f494544da3324574fb807ff267cc8"
+    sha256 cellar: :any,                 ventura:       "baebcf4d51a1ec8b9eb06eb5f08ed637604b54c62bfdf0a85d158e97656c824a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "cf43c9de53346d4c5916d81221c17d46af2a5b56688f279b560090c0d71ecf39"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6e3b5db26db8975d499f3838c57e8e62320f90cf4040297eebcf7799948afea7"
   end
 
   depends_on "boost" => :build
-  depends_on "pkg-config" => :build
-  depends_on "icu4c@76"
+  depends_on "pkgconf" => :build
+  depends_on "icu4c@77"
   depends_on "librevenge"
   depends_on "little-cms2"
 

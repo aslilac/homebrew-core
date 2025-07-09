@@ -13,6 +13,8 @@ class Lasso < Formula
     regex(/href=.*?lasso[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "d11f5c5002eea8bf352df2eb6d3e903a25cf985c624d764d908646b7193d7787"
     sha256 cellar: :any,                 arm64_sonoma:   "bae175f8483fcb721716c04489109384cf80f7b1b3e2dfddfe2bbb785e0cbddf"
@@ -21,10 +23,11 @@ class Lasso < Formula
     sha256 cellar: :any,                 sonoma:         "1ae094adf28b557f503e6902eba7782fc3f06851f99af55bb719cd1ef5421acc"
     sha256 cellar: :any,                 ventura:        "c70b29501fec372898d179cc2b90a8778135b1b90679cedbc9d04967c23be6ca"
     sha256 cellar: :any,                 monterey:       "c502d05c3014a4bc43418345944c10ad4f5aa7e65743a83b374b51f8f44d2eff"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "06aec249f21d3077204ca46f10391df23570448ff47650cbeefd69455dad5a78"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9adf24a05cbf953ad5f3d3bca3f388eadb08480aaf9f100663504c2ea83ff025"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "glib"
   depends_on "libxml2"
   depends_on "libxmlsec1"
@@ -89,6 +92,7 @@ class Lasso < Formula
     system "./test"
   end
 end
+
 __END__
 diff --git a/lasso/xml/tools.c b/lasso/xml/tools.c
 index 4d5fa78a..0478f3f4 100644

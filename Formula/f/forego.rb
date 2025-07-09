@@ -6,6 +6,8 @@ class Forego < Formula
   license "Apache-2.0"
   head "https://github.com/ddollar/forego.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ef67ea741e0294b822fc3dfb3cfd124e9621b2c8f24ab6e8c023f95782cd81eb"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f46dbdf37d045a718a27858ca874d1eb69b67bbd04e5778f549e4f632dd4f01a"
@@ -21,6 +23,7 @@ class Forego < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "5a855ce2b4f4bd2349b6814c11ec85f788a9be510aff4f18df582141dbc15295"
     sha256 cellar: :any_skip_relocation, sierra:         "5a4b9261fb91507df08c7c840134a21effb2b407aa5e84474b2900f8d436f3ca"
     sha256 cellar: :any_skip_relocation, el_capitan:     "77720ca90705c26a92248cd822d4a3b0cef329c5b16e2da62a7815cfd61f0ce2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "d354729a8747da5e6c6dfa8ca5860362b62a601db82c0d2c71954cea238ed80a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ab6668d38416f11e79a39db7a65ce6bc60bce14db6962ca7c06c104c2b69d456"
   end
 

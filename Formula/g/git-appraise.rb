@@ -12,6 +12,8 @@ class GitAppraise < Formula
     patch :DATA
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "57018642d15c7cb5e4a6d1b897e3f1c369c1e81e22eb8dbdef0c6f6fdd8909d4"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "47ed51bc965177d94d4d1ef000fa1b62d25e923f1ad569fff3298c42bfebf3da"
@@ -44,7 +46,7 @@ class GitAppraise < Formula
     system "git", "add", "README"
     system "git", "commit", "-m", "Update"
     system "git", "appraise", "request", "--allow-uncommitted"
-    assert_predicate testpath/".git/refs/notes/devtools/reviews", :exist?
+    assert_path_exists testpath/".git/refs/notes/devtools/reviews"
   end
 end
 

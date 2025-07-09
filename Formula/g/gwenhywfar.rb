@@ -1,8 +1,8 @@
 class Gwenhywfar < Formula
   desc "Utility library required by aqbanking and related software"
   homepage "https://www.aquamaniac.de/rdm/projects/gwenhywfar"
-  url "https://www.aquamaniac.de/rdm/attachments/download/501/gwenhywfar-5.10.2.tar.gz"
-  sha256 "60a7da03542865501208f20e18de32b45a75e3f4aa8515ca622b391a2728a9e1"
+  url "https://www.aquamaniac.de/rdm/attachments/download/533/gwenhywfar-5.12.1.tar.gz"
+  sha256 "d188448b9c3a9709721422ee0134b9d0b7790ab7514058d99e04399e39465dda"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -10,17 +10,15 @@ class Gwenhywfar < Formula
     regex(/href=.*?gwenhywfar[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :incompatible_version_format
+
   bottle do
-    sha256 arm64_sequoia:  "62a3746f10e2264779137d156e68697b40f562690434cbb83d3bf9ce1dad6fbb"
-    sha256 arm64_sonoma:   "8fcdcb168c435353e08b7faae158c672ada3b908db6c1a73435226d77203f2c6"
-    sha256 arm64_ventura:  "8dd914e47edf5ed454e4cace3c2aa4cf3fc1a05f20bea019a8c018032cf2b8ab"
-    sha256 arm64_monterey: "040d7ecc2deb34655f6c56912114c515e7243a53e291d3a751290bf725bd8a68"
-    sha256 arm64_big_sur:  "13670a1756bac7a4e8cecc363321d1609103164636ac198b952dfbc26b2a2cdf"
-    sha256 sonoma:         "769755ece1d223465e685f591caf8c53934571eb0e4b29f6aa967fb1820d30c7"
-    sha256 ventura:        "6f4f5f09ad7cc1bba9112c0e1198ee7728985f2d403d40608e51d158dab4cb1a"
-    sha256 monterey:       "72979aefc21e5c22c33401d21d232396b9026c57cab53438c0935b3ff74b1adc"
-    sha256 big_sur:        "8f583511d6309b20d9722259b6e17bb3b49b09646bbce022b496af4f260f4f24"
-    sha256 x86_64_linux:   "771e98641328a98fbf0a789d12c6a0bb59a1f083c7142e2b25807505f58ce7cc"
+    sha256 arm64_sequoia: "9930a4548b9f0e08a4a9a1bc8eccd37631a4fec478579ebc2d161d13fe0f0f4c"
+    sha256 arm64_sonoma:  "ad8ee8d79124db8e321bd4e6437acc680dd60d6895e625326c28b77926e5d876"
+    sha256 arm64_ventura: "bb3a822d4f0ad578f9be222b4c14cb7610355778d9b2371fc735b3e83d9c355d"
+    sha256 sonoma:        "5896e3559848e093b54d532bdb052bf14e28f9cf654ddffeef0177027cdbf4bc"
+    sha256 ventura:       "2ece8422f811274a6b9240f7bb1579547b3259ff45ad1ccc331e9fe6540e6adf"
+    sha256 x86_64_linux:  "3a53be3d8dd0e85624fb761a181ac4de99baee1f9ae8cc7024ba4480cce9cc42"
   end
 
   depends_on "gettext" => :build
@@ -29,7 +27,7 @@ class Gwenhywfar < Formula
   depends_on "libgcrypt"
   depends_on "libgpg-error"
   depends_on "openssl@3"
-  depends_on "pkg-config" # gwenhywfar-config needs pkg-config for execution
+  depends_on "pkgconf" # gwenhywfar-config needs pkg-config for execution
   depends_on "qt@5"
 
   on_macos do
@@ -38,13 +36,8 @@ class Gwenhywfar < Formula
 
   conflicts_with "go-size-analyzer", because: "both install `gsa` binaries"
 
-  fails_with gcc: "5"
-
-  # Fix -flat_namespace being used on Big Sur and later.
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
-    sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
-  end
+  # Fix endianness handling for macos builds, emailed upstream about this patch
+  patch :DATA
 
   def install
     # Fix compile with newer Clang
@@ -103,3 +96,42 @@ class Gwenhywfar < Formula
     system "make"
   end
 end
+
+__END__
+diff --git a/src/base/endianfns.h b/src/base/endianfns.h
+index 2db9731..1d73968 100644
+--- a/src/base/endianfns.h
++++ b/src/base/endianfns.h
+@@ -28,6 +28,7 @@
+ #include <gwenhywfar/gwenhywfarapi.h>
+
+
++
+ #if GWENHYWFAR_SYS_IS_WINDOWS
+ /* assume little endian for now (is there any big endian Windows system??) */
+ #  define GWEN_ENDIAN_LE16TOH(x) (x)
+@@ -39,8 +40,14 @@
+ #  define GWEN_ENDIAN_LE64TOH(x) (x)
+ #  define GWEN_ENDIAN_HTOLE64(x) (x)
+ #else
+-/* for Linux and others use definitions from endian.h */
+-#  include <endian.h>
++/* Include portable_endian.h for cross-platform support */
++#  if __has_include("portable_endian.h")
++#    include "portable_endian.h"
++#  elif __has_include(<endian.h>)
++#    include <endian.h>
++#  else
++#    error "Neither portable_endian.h nor endian.h found. Cannot determine endianness."
++#  endif
+
+ #  define GWEN_ENDIAN_LE16TOH(x) le16toh(x)
+ #  define GWEN_ENDIAN_HTOLE16(x) htole16(x)
+@@ -52,7 +59,4 @@
+ #  define GWEN_ENDIAN_HTOLE64(x) htole64(x)
+ #endif
+
+-
+-
+-
+ #endif

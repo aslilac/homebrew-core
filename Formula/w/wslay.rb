@@ -5,6 +5,8 @@ class Wslay < Formula
   sha256 "166cfa9e3971f868470057ed924ae1b53f428db061b361b9a17c0508719d2cb5"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "695e27c926b9cba4a774c0bead3c924fe34f11e9d151e203ee82f83c3be1ae20"
     sha256 cellar: :any,                 arm64_sonoma:   "a589896e5f7fce349934f90cee721270752c65cfb58dfca69ce9d13f6bfc52e7"
@@ -18,6 +20,7 @@ class Wslay < Formula
     sha256 cellar: :any,                 catalina:       "b0c31393b4065ddad22d079252f4310ccafee1c26d5ea56a58c2bc3bfa728b46"
     sha256 cellar: :any,                 mojave:         "4ea82d98c0fd0cfcc1e842dde6e0fbd15355d538876f24fa0c2ca6f05ed17926"
     sha256 cellar: :any,                 high_sierra:    "6aade683b7db8a32c859e54134568bdb3983d57878783d86c89e5d28c5e8db77"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b4d236a3f3f420ec499cb1ff460838a2e64995c6b8127dfc657582452e9bd232"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "eee1f87dcfd142d6131fdb354f5aacdfc22991d8666e267dc5ff7fcc6df57eff"
   end
 
@@ -34,7 +37,7 @@ class Wslay < Formula
   depends_on "sphinx-doc" => :build
 
   def install
-    system "autoreconf", "--force", "--verbose", "--install" if build.head?
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
     system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "check"
     system "make", "install"

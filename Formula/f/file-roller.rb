@@ -1,25 +1,25 @@
 class FileRoller < Formula
   desc "GNOME archive manager"
   homepage "https://wiki.gnome.org/Apps/FileRoller"
-  url "https://download.gnome.org/sources/file-roller/44/file-roller-44.3.tar.xz"
-  sha256 "04c8a74625fec84267fdec40306afb4104bd332d85061e0d36d4ab0533adfa4a"
+  url "https://download.gnome.org/sources/file-roller/44/file-roller-44.5.tar.xz"
+  sha256 "dfaf4bb989c0b8986be8bdae9fffeab8d0f30669ae3a627e8c3df94f23888339"
   license "GPL-2.0-or-later"
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia: "5fdf0e8f856b2937f7425adf1f76476a1c0c3040ae8cc19202ece4061f9e4003"
-    sha256 arm64_sonoma:  "3e315618dbfccb93103370898a2893f577200c18fb06b78a91de4d63eb7e621f"
-    sha256 arm64_ventura: "60d733ba2a88e1602239d9876d4544551514a2964132261fd3f20162f7cd606c"
-    sha256 sonoma:        "0323ebe54212e9a7ed78feac735f3efd2e8f7288cbd8b9431a280482836a6935"
-    sha256 ventura:       "1fac86edb73d530583e08a3df8a2fc8be8be38694a26cb26a0529483ef1b9b6f"
-    sha256 x86_64_linux:  "8dc9764c957dba2820dafc9d46b6651f12f471b137ff31380782461694cac58f"
+    sha256 arm64_sequoia: "f756166e2f8d8a1ad326aecb762ea4f2723391b71f157933d52d5fc8ae563abc"
+    sha256 arm64_sonoma:  "08c5b181ebd6c9dd5861090faac091abd07f36199a48594c8a33a584f2fef547"
+    sha256 arm64_ventura: "5ec67bc1f0665499393b1420fd5070bc57e0059e5c04d044997655d4a2315c28"
+    sha256 sonoma:        "ce2ab247a858cab6c68b0cd626711702c071f92d1d3b8c5243cf1053f1198e86"
+    sha256 ventura:       "57949c05dd19d84cdf4f282b613f038bdb7014f8f727ce5d1e93a9459158f5f3"
+    sha256 arm64_linux:   "f47f16d1ace2fae5b1413dcbe014539ab63ec30f7d985c616f55d4047fb79103"
+    sha256 x86_64_linux:  "e8676370725168f275649203d897d680f1fb005d74d1590601a47bb59a52c343"
   end
 
   depends_on "gettext" => :build
   depends_on "itstool" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "adwaita-icon-theme"
   depends_on "desktop-file-utils"
   depends_on "glib"
@@ -43,9 +43,9 @@ class FileRoller < Formula
   end
 
   def post_install
-    system "#{Formula["glib"].opt_bin}/glib-compile-schemas", "#{HOMEBREW_PREFIX}/share/glib-2.0/schemas"
-    system "#{Formula["gtk4"].opt_bin}/gtk4-update-icon-cache", "-f", "-t", "#{HOMEBREW_PREFIX}/share/icons/hicolor"
-    system "#{Formula["desktop-file-utils"].opt_bin}/update-desktop-database", "#{HOMEBREW_PREFIX}/share/applications"
+    system Formula["glib"].opt_bin/"glib-compile-schemas", HOMEBREW_PREFIX/"share/glib-2.0/schemas"
+    system Formula["gtk4"].opt_bin/"gtk4-update-icon-cache", "-f", "-t", HOMEBREW_PREFIX/"share/icons/hicolor"
+    system Formula["desktop-file-utils"].opt_bin/"update-desktop-database", HOMEBREW_PREFIX/"share/applications"
   end
 
   test do

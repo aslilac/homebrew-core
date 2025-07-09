@@ -1,13 +1,13 @@
 class EasyRsa < Formula
   desc "CLI utility to build and manage a PKI CA"
   homepage "https://github.com/OpenVPN/easy-rsa"
-  url "https://github.com/OpenVPN/easy-rsa/releases/download/v3.2.1/EasyRSA-3.2.1.tgz"
-  sha256 "ec0fdca46c07afef341e0e0eeb2bf0cfe74a11322b77163e5d764d28cb4eec89"
+  url "https://github.com/OpenVPN/easy-rsa/releases/download/v3.2.3/EasyRSA-3.2.3.tgz"
+  sha256 "577d9a0f5205ee74d818af163c2f3447fff8d3dd11b91523db2fe8d99cd851e3"
   license "GPL-2.0-only"
   head "https://github.com/OpenVPN/easy-rsa.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "3057967081df2d2d15bf9547dc7d7a25019fccd91340ecb5f801c1f6c9c71d5a"
+    sha256 cellar: :any_skip_relocation, all: "5f0c5d95af6704aeee26bcc6f8f039b23a5842f0ac21a6a919a1c80d10ab4da5"
   end
 
   depends_on "openssl@3"

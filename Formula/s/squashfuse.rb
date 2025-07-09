@@ -1,24 +1,27 @@
 class Squashfuse < Formula
   desc "FUSE filesystem to mount squashfs archives"
   homepage "https://github.com/vasi/squashfuse"
-  url "https://github.com/vasi/squashfuse/releases/download/0.5.2/squashfuse-0.5.2.tar.gz"
-  sha256 "54e4baaa20796e86a214a1f62bab07c7c361fb7a598375576d585712691178f5"
+  url "https://github.com/vasi/squashfuse/releases/download/0.6.1/squashfuse-0.6.1.tar.gz"
+  sha256 "7b18a58c40a3161b5c329ae925b72336b5316941f906b446b8ed6c5a90989f8c"
   license "BSD-2-Clause"
+  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "77d92f5849e61b50a32a2b2b8ac570c68f7220f1a31410c17f94e3e11739ae5f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "2ac81c35fe8e2339d2da50ba09484eff8f69552fb3f501f33d8df133d358173a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "a8f4cd10ca2e0d20f7407ba2d8fa8240d3786dd4c65b40f1e24a7878e0f828e4"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libfuse"
   depends_on :linux # on macOS, requires closed-source macFUSE
   depends_on "lz4"
   depends_on "lzo"
   depends_on "squashfs"
   depends_on "xz"
+  depends_on "zlib"
   depends_on "zstd"
 
   def install

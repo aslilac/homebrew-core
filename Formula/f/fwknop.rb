@@ -7,6 +7,13 @@ class Fwknop < Formula
   license "GPL-2.0-or-later"
   head "https://github.com/mrash/fwknop.git", branch: "master"
 
+  livecheck do
+    url "https://www.cipherdyne.org/fwknop/download/"
+    regex(/href=.*?fwknop[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "dd24ee01f0b52367ccb00111e7e3b28586cbe9b355b9461ac38175fcdaaa0b31"
     sha256 arm64_sonoma:   "3729d1321c0430837a4dfd26d0f504a4ef05d9798e37f12bf56149c0a88badc7"
@@ -15,6 +22,7 @@ class Fwknop < Formula
     sha256 sonoma:         "b493935cf740cb8c95680dac3f7e5373a393d2f8127e96c7061b6e0142e1a7b6"
     sha256 ventura:        "7da542df5fadb3288b83899e0411c3fa2d19f55cce185c1721992b1d500f6bee"
     sha256 monterey:       "c8231997765dc550d2e0f61f6f6ba0bcbb85b3c4f985d10579ab058b2e8993d6"
+    sha256 arm64_linux:    "87b387d6bcd6e2caddc67d2fb9945da6d08c1a7c3fda46e0b0702bc415ebf08c"
     sha256 x86_64_linux:   "9e00519d9c3b6cb6c39eb4da55bbed6b0ba8767b7adf5e8f30fba8d3784070e6"
   end
 

@@ -6,6 +6,8 @@ class Libxmi < Formula
   sha256 "9d56af6d6c41468ca658eb6c4ba33ff7967a388b606dc503cd68d024e08ca40d"
   license "GPL-2.0-only"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any,                 arm64_sequoia:  "02dd0c4d25870675c7609b021e7030213aeb55b2799eb0c4d981842637ec29f3"
@@ -22,6 +24,7 @@ class Libxmi < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "b4fae54573368c35c388850617545ab6f3fdd59bdcc8dde766e863b605278a40"
     sha256 cellar: :any_skip_relocation, sierra:         "d14120dd7ec249b6375da84c5dbf49631d8e8aaf7c0ee9e6c8e9c42f341cc91f"
     sha256 cellar: :any_skip_relocation, el_capitan:     "d7be88ce4d945b11adc82fe6bac6aca8a837e0206cd781e4cab82c8c1b684e20"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "ede22f9abf05a18ec44e5009276815c87ce99bbd7c3a2699d58b8ab31ea8d4b0"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a82bdaa8f3c6d1d63dc572bf315c10418d39a0f1e12407dc187f793d8e6e9609"
   end
 

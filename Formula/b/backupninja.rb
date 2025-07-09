@@ -10,6 +10,8 @@ class Backupninja < Formula
     regex(/^backupninja[._-]v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9200901794d73bd35ef083d40452e6c1b740c43634c97d5df84b1771a66d61ca"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "dcf6a2f362c138eeda64773965a94b261c63dc8850cd15bd3063f0ad840614d8"
@@ -20,6 +22,7 @@ class Backupninja < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "36e98005281874b8a396b799357be9631e3a698e433fbe26ff4812711ae487a5"
     sha256 cellar: :any_skip_relocation, monterey:       "36e98005281874b8a396b799357be9631e3a698e433fbe26ff4812711ae487a5"
     sha256 cellar: :any_skip_relocation, big_sur:        "36e98005281874b8a396b799357be9631e3a698e433fbe26ff4812711ae487a5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "3c9a28b99674fac9469b9e253ad405aa02f0a7e3b5a2a6a3060ef9bc03fda6ea"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "00f801dcd347b92d24d6f2dca281b464e6c627d62003dacf6d74a9595c2c4a0d"
   end
 

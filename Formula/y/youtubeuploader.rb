@@ -1,9 +1,10 @@
 class Youtubeuploader < Formula
   desc "Scripted uploads to Youtube"
   homepage "https://github.com/porjo/youtubeuploader"
-  url "https://github.com/porjo/youtubeuploader/archive/refs/tags/24.03.tar.gz"
-  sha256 "aca9c3fc9d7325911b0c5a88dc9e3880d0796ec563ad9ac00f6cf59be6b5b87a"
+  url "https://github.com/porjo/youtubeuploader/archive/refs/tags/v1.25.1.tar.gz"
+  sha256 "729d3cb5a6ff6a09742d9d9371a9c84fc21961d972c24694abed3b048c3d1b83"
   license "Apache-2.0"
+  version_scheme 1
   head "https://github.com/porjo/youtubeuploader.git", branch: "master"
 
   # Upstream creates stable version tags (e.g., `23.03`) before a release but
@@ -16,21 +17,15 @@ class Youtubeuploader < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5a3eaf329e33673f4fe225827bb5ca48d4068204032aadfba402fecd92dac41e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5a3eaf329e33673f4fe225827bb5ca48d4068204032aadfba402fecd92dac41e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "5a3eaf329e33673f4fe225827bb5ca48d4068204032aadfba402fecd92dac41e"
-    sha256 cellar: :any_skip_relocation, sonoma:        "2def42024252812e8f17c4251a2f92686682e10234825a214909ef4f5fb200d8"
-    sha256 cellar: :any_skip_relocation, ventura:       "2def42024252812e8f17c4251a2f92686682e10234825a214909ef4f5fb200d8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ada9633eac9b099ec8d45e1d21536390380e97cde22ba815468c80cf663a8cef"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "634979e6eda2d78597ba78ca2cbf1e0ada4fc0a1a81260ae42391180f789c6a4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "634979e6eda2d78597ba78ca2cbf1e0ada4fc0a1a81260ae42391180f789c6a4"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "634979e6eda2d78597ba78ca2cbf1e0ada4fc0a1a81260ae42391180f789c6a4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "520ebb066a5ec08194412e8e39d4f87a71219819fee9430b55a0b1cd827afe4c"
+    sha256 cellar: :any_skip_relocation, ventura:       "520ebb066a5ec08194412e8e39d4f87a71219819fee9430b55a0b1cd827afe4c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "11ba164d7f1330bb97cb6a0d62709577d9cf213bf05dd9adda1ff4c301477790"
   end
 
   depends_on "go" => :build
-
-  # Fix -version flag. Remove on next release.
-  patch do
-    url "https://github.com/porjo/youtubeuploader/commit/56ec5890518760c873b0dd496f3a8b46af81cb65.patch?full_index=1"
-    sha256 "b17bed81b9a6e7d74d665d7cf515e517f24ae27c4438a98d9b2c109c075b5942"
-  end
 
   def install
     ldflags = "-s -X main.appVersion=#{version}"

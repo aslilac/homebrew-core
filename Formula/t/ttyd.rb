@@ -4,17 +4,17 @@ class Ttyd < Formula
   url "https://github.com/tsl0922/ttyd/archive/refs/tags/1.7.7.tar.gz"
   sha256 "039dd995229377caee919898b7bd54484accec3bba49c118e2d5cd6ec51e3650"
   license "MIT"
+  revision 2
   head "https://github.com/tsl0922/ttyd.git", branch: "main"
 
   bottle do
-    sha256 arm64_sequoia:  "546f6c28e74064f283eeab9770b1779544376272d25e83e9253feb9be9abed6b"
-    sha256 arm64_sonoma:   "e561aa5ac9af88c33e697043bf1480261b50dab24f124986fedae77acc76bcec"
-    sha256 arm64_ventura:  "eb7c74c84404c738198040209c88e13d594d422c647b19c57bfc16fee723f3dc"
-    sha256 arm64_monterey: "74a57b3f5474faea250634bf2b41c975d972f0dad594d94640e345390079b754"
-    sha256 sonoma:         "3d3854352a3efd90d29ba6aea68d0256f89650ea6e0981af782dc67afe7a64aa"
-    sha256 ventura:        "df6408397fbce04ff9835ba2b1d1aa0c55c1099c0c5e48d09945c250a1a7feb0"
-    sha256 monterey:       "4cffef10b8c4893c8d87967dc98221f7f12ff7955eff0970edfeca2ba007d58b"
-    sha256 x86_64_linux:   "da86d1bef2794255251367f1dbb944ff1b877756302540288247db81e79e82da"
+    sha256 arm64_sequoia: "33c65b152fb70d584888f5239b8003090d15c828b034ae4fae6bc36337ad030c"
+    sha256 arm64_sonoma:  "6d3eb5c3f4c049f7bce60349dc0c7b31df9336feea2b88c6cd8fb58f0b1c6057"
+    sha256 arm64_ventura: "36a2735751c4de95d01299f4378f7cf000e560e80b0fc9101e35ff006bfb92e4"
+    sha256 sonoma:        "6905f5957460561162dfd04a039cfa1d7792acc7de68154a432acf93e88d9358"
+    sha256 ventura:       "6cbcd6bdda77c96268ac6e25c194037af3f054fd6a0b8a1b2614e6f6dd3675fa"
+    sha256 arm64_linux:   "50912f458f5dd30ee4c08a9215285e84a736d0a4439cbbfcb590d17fc62561e2"
+    sha256 x86_64_linux:  "7bddc259bdafc9182b5f33d160aca7d9b010782e0c9a69421ac873f1f0a6542c"
   end
 
   depends_on "cmake" => :build
@@ -25,6 +25,7 @@ class Ttyd < Formula
   depends_on "openssl@3"
 
   uses_from_macos "vim" # needed for xxd
+  uses_from_macos "zlib"
 
   def install
     system "cmake", "-S", ".", "-B", "build",

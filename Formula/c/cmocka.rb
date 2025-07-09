@@ -6,6 +6,8 @@ class Cmocka < Formula
   license "Apache-2.0"
   head "https://git.cryptomilk.org/projects/cmocka.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "f59c0f3dcb57570a55bc13e96ac8d5b7710dd61289c9b75d1bf038d0866648ed"
     sha256 cellar: :any,                 arm64_sonoma:   "9fe186aa7c700963f6f86149365ef35b0791545ba2e831149d553f08fb830306"
@@ -16,6 +18,7 @@ class Cmocka < Formula
     sha256 cellar: :any,                 ventura:        "1af6df21cc146d414b8c6b03b995cb99e18ee020efcf34c6be4f2724684797ad"
     sha256 cellar: :any,                 monterey:       "b5120aab3d6d5daf7a4166c0bd95b622d057bdc519ce9d8792ac3174effcec26"
     sha256 cellar: :any,                 big_sur:        "4bdc48b2707b15f13d671f193de414f70a905e4a6e62e7f3ad823c0e01ec9f13"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "de5b9bb0f9c9aa825c52953ca9c36ff81ab88a05b5cd0dcbe1a1ada6cfeadb07"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f3ac6a9be93cbd9ff420c38ff86c3c5559fe2ab584423f8bddd04c77f7235ab3"
   end
 

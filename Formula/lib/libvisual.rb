@@ -5,6 +5,8 @@ class Libvisual < Formula
   sha256 "63085fd9835c42c9399ea6bb13a7ebd4b1547ace75c4595ce8e9759512bd998a"
   license all_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later"]
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any, arm64_sequoia:  "a3cf1f8ac6ed58fce5959717d16802adeb1920abfe6c421145de66eff2e9a51a"
     sha256 cellar: :any, arm64_sonoma:   "c56b6225bce042d7c7984074c9c508e2ab4d4c17491f941d72dbfc0cee0c3caa"
@@ -15,10 +17,11 @@ class Libvisual < Formula
     sha256 cellar: :any, ventura:        "de0973df1bed9f47df99760b65c9e32fc44302b0931e5b41e47768cb3f6ea01e"
     sha256 cellar: :any, monterey:       "8cf0b4866dee89d477602b4de996f10ad8115158c7a1fc0a04bfdf6b55ab7084"
     sha256 cellar: :any, big_sur:        "6912bc1436fd9aa261090f4c0877c3b17b1aa8301defdb17c66f5f3410d060e1"
+    sha256               arm64_linux:    "c1037bb9d22337170f186be7d8ad1ccce9ef18dcf55e92cbd8424b7495204d03"
     sha256               x86_64_linux:   "ceefedcaeb4e18c06c22c2a210e35d3439783f2f457107090d91d2b777e788f2"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "sdl12-compat"
 
   def install

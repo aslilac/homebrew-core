@@ -1,22 +1,23 @@
 class C4core < Formula
   desc "C++ utilities"
   homepage "https://github.com/biojppm/c4core"
-  url "https://github.com/biojppm/c4core/releases/download/v0.2.2/c4core-0.2.2-src.tgz"
-  sha256 "beea43a5bdc64616d897cc0af728f408e35e2d75a8bb6014e6e25e90e0484578"
+  url "https://github.com/biojppm/c4core/releases/download/v0.2.6/c4core-0.2.6-src.tgz"
+  sha256 "203a8dbd156b1b5062959627b7757f8953d03ab05a992ecc471fcefe7274194b"
   license all_of: ["MIT", "BSL-1.0"]
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "fe615637e6e596329673a4f5b2145cef977a7d0439d9b1122c1189692930b85b"
-    sha256 cellar: :any,                 arm64_sonoma:   "2ac1666e0948d9827c198274de5c15df4917c9e696f00ed9a88a8cf64a21a196"
-    sha256 cellar: :any,                 arm64_ventura:  "e78cfd204659c87379cbcb49bb8a68ada74d51a0414b7e0de65c5c7670938762"
-    sha256 cellar: :any,                 arm64_monterey: "5cc4fdc91e5003b26f7d6650c473a6dfb071087062e643464e8fabd3c781a6c7"
-    sha256 cellar: :any,                 sonoma:         "914136585b2600518396a3aa440bc98b08bbf639b048e527d75a4ef04825621a"
-    sha256 cellar: :any,                 ventura:        "58d6d08c5701e896c5b104ca59f7db2a1953645192e048a8750f47dc96e77125"
-    sha256 cellar: :any,                 monterey:       "164ba92cc794ee80c0b711bf2c0adec416064dd8495e86409868a6659dbea65e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "53cc4f146f457587ddd700b590accab3b80b213cc27da7ecdb1da036f4d9288b"
+    sha256 cellar: :any,                 arm64_sequoia: "5f2518dbe8f273c8320bcd8f2a632c747578c0f7638cb733aa884e0ae6827eca"
+    sha256 cellar: :any,                 arm64_sonoma:  "a392aee67ab2432ce106b4631661ac9565407a74f380523d1cc2f3cd4539850d"
+    sha256 cellar: :any,                 arm64_ventura: "4bc536148a179f28a9b4bd28f81821084d0fdce24f3aa5e39c75093d0dc7d8f1"
+    sha256 cellar: :any,                 sonoma:        "7799e77cad48cbc3d89bb3ac6f7e908264df34254d496912b8d739ced5aa0386"
+    sha256 cellar: :any,                 ventura:       "05cf45edbe989806426ac81fb605084e5b832f9dddf5f86953885c8708f6b69a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "94e1da9372dd27bf1c64965212c79ae01acf0b3dbd344209f1042b2ab2fff357"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f6260a2a167adcd57264516af9b9119b06b6d03b6dde21572e8d49e04c23e188"
   end
 
   depends_on "cmake" => [:build, :test]
+
+  conflicts_with "rapidyaml", because: "both install `c4core` files `include/c4`"
 
   def install
     system "cmake", "-S", ".", "-B", "build", "-DBUILD_SHARED_LIBS=ON", *std_cmake_args

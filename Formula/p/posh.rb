@@ -10,6 +10,8 @@ class Posh < Formula
     regex(%r{^debian/v?(\d+(?:\.\d+)+)$}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4521f3540d2fab592dafd00531ecb265fb361568e62a608eb3965258f3de58ea"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bdbfb5bbceaa13a46364fc19af24197741066064ab0a158f0ea3d46e550b9ef7"
@@ -23,6 +25,7 @@ class Posh < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "9a30988f801e9c31ad6fefd48a232a5c95990300eb396a4c32a991176f8350b6"
     sha256 cellar: :any_skip_relocation, mojave:         "20157fe0e9ff5389d07f85079a3137112cd6ad5bff5081d247e8778a082281c8"
     sha256 cellar: :any_skip_relocation, high_sierra:    "bfee90257c267d2bd68ec3501887901179f4464d3e6d5b9afb42580ef1db4677"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "d6f9cc2a8b87c35e6a3cad23a58dc1d6753e489ddb0c69c295174655d5b615cc"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1d97ee0b895a51027075cf2ba1b4644b7a9c0202b4b1ea989252bae13924a41d"
   end
 
@@ -30,10 +33,8 @@ class Posh < Formula
   depends_on "automake" => :build
 
   def install
-    system "autoreconf", "-fiv"
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 

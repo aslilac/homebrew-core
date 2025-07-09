@@ -6,6 +6,8 @@ class Esniper < Formula
   sha256 "a93d4533e31640554f2e430ac76b43e73a50ed6d721511066020712ac8923c12"
   license "BSD-2-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "3ffcb434110b0fb16092defe371f445e592abc9119d56a2204bad258d266c6e3"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8be6a449287ddf6ad663e87c7fc8115dd7912f8311e6ecf5ee5d1c2f4b3d1f7c"
@@ -21,6 +23,7 @@ class Esniper < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "24cb48a074e7e13cdaa2f0c990ea184352cd06f572134640fa99a42d699939ff"
     sha256 cellar: :any_skip_relocation, sierra:         "da1e8988910e0ab959e3750a31796d406b63e4c91ea05cd3f19415adc082f59f"
     sha256 cellar: :any_skip_relocation, el_capitan:     "d269d258369cfb214baa129ade61616121341c0129d820e9c77dec6b841ce0e1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "d51c39d3d114d8ed2a5dfa939ed50bcdf0df86ee908691a9113c92447ecb598f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "676227a142bc96ca566a352c446328a78c7ad02bb80b56e3f3f131e755994a31"
   end
 

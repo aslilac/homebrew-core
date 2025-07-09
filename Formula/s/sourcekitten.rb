@@ -2,24 +2,25 @@ class Sourcekitten < Formula
   desc "Framework and command-line tool for interacting with SourceKit"
   homepage "https://github.com/jpsim/SourceKitten"
   url "https://github.com/jpsim/SourceKitten.git",
-      tag:      "0.36.0",
-      revision: "fbd6bbcddffa97dca4b8a6b5d5a8246a430be9c7"
+      tag:      "0.37.2",
+      revision: "731ffe6a35344a19bab00cdca1c952d5b4fee4d8"
   license "MIT"
   head "https://github.com/jpsim/SourceKitten.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "6d7185725454aa6e7cf946666dd3a66aca84965a07b3c0cb7c6d78caed08d1b1"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "de09af7ebff8f1fefb5daa5656ceb3d768b06ed9c1825783680acdcce96acb86"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b1b65a68b37177be39565b54be6149dba1f3ba42fcabc26ced151c7f7803edc0"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8dffc8ba081641777ef1d0606130582d2eb2a505926c9dd3230d17acf9336850"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a75f960c137193ded31c765fb96ecda9bc1c6f8893f32a5becd02c090a35463f"
-    sha256 cellar: :any_skip_relocation, ventura:        "a3e70dc9ec689ee44363e943f3ef32020bffdb894debab04f52b24a7f993c462"
-    sha256 cellar: :any_skip_relocation, monterey:       "803e0dfba2e8333141c7dd5fd6bda0310f0a917a6c79f16aa929bae56c3adcde"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "34d5a49f50885b3cc0cff8812f6c4770976be709befa058385d404f27487fd06"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6a68272f86ee89c1dbf1fb19349431a209124f7b2413d6a32152d81dec8978ec"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "07ec2e64a18e5ce87c3511be8ba93f17d162d05c737da4dc5a52c477f6e795a1"
+    sha256 cellar: :any_skip_relocation, sonoma:        "9c64b978d11776e2baa8103bdac80636561f69f157d203411dab05a05c87e294"
+    sha256 cellar: :any_skip_relocation, ventura:       "207bcbf2c8ce58e39afa645836e7798085c39803e9ec1ba728ac80f1b7281713"
+    sha256                               arm64_linux:   "53a805bb690bda85db814fb237af34c3999c8ef3685e9878562b9d0b8a38c355"
+    sha256                               x86_64_linux:  "97515204398c1cd3aec85367e15eba66781a08fbb972aecb2c74a5cafb419ea6"
   end
 
   depends_on xcode: ["14.0", :build]
-  depends_on :macos
   depends_on xcode: "6.0"
+
+  uses_from_macos "swift"
 
   def install
     system "make", "prefix_install", "PREFIX=#{prefix}", "TEMPORARY_FOLDER=#{buildpath}/SourceKitten.dst"

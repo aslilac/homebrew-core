@@ -6,17 +6,23 @@ class Libhubbub < Formula
   license "MIT"
   head "https://git.netsurf-browser.org/libhubbub.git", branch: "master"
 
+  livecheck do
+    url :homepage
+    regex(/href=.*?libhubbub[._-]v?(\d+(?:\.\d+)+)[._-]src\.t/i)
+  end
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia: "508f0ebd9f00da4d05a4d477c55c9cae35ecd8b2b80ae83871623ae11c67ef9b"
     sha256 cellar: :any,                 arm64_sonoma:  "e024f9c815850423b7eed9a0cb5c9d3f0a83e980f6a5aced31b006c9f43fd6f8"
     sha256 cellar: :any,                 arm64_ventura: "81e8aa3aae89f339efbf14d216270d1c57729e525b20c7d977dfa539f71012b0"
     sha256 cellar: :any,                 sonoma:        "015c9012d635556347bf3a0e1f5d003b81a5834f2a91c717ebe9929e5fd8a232"
     sha256 cellar: :any,                 ventura:       "0544ada9a05f3db96da5338b41f0251e265fb784b1109ec0e688ffeb942f568b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e72a8faff6cd381e00d0104392fea04a18cdea7254e62620b0738b8cdd4c569b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "1156a785370dd503db4817f034028986f1c6eea21d79c0c59a2a66f6ca07391c"
   end
 
   depends_on "netsurf-buildsystem" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libparserutils"
 
   uses_from_macos "gperf" => :build

@@ -1,27 +1,32 @@
 class Prqlc < Formula
   desc "Simple, powerful, pipelined SQL replacement"
   homepage "https://prql-lang.org"
-  url "https://github.com/PRQL/prql/archive/refs/tags/0.13.2.tar.gz"
-  sha256 "ee6b683a674d64c4a12893a6c926127e98481767ccb385a0f563dcc862bd199a"
+  url "https://github.com/PRQL/prql/archive/refs/tags/0.13.4.tar.gz"
+  sha256 "1d214df7827659e9573afc339078e421e326953f7954ba0cba0b996e0d110531"
   license "Apache-2.0"
   head "https://github.com/prql/prql.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0504c5363097ca60b2387ea9d9fdd3bff87e38042df06e38d02ab98c303132da"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "01af361385a984959e1c993035eb745aaaf2b339c1393ee76422b4e7484514e5"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "dabb929e4199fc379047d6a999d16343cc8fcc61716dc3ce9fe282b8bc9b0fbc"
-    sha256 cellar: :any_skip_relocation, sonoma:        "ec6af8e56f8e59e8d22e413a6c55b8fc2a86b9086ab6f6cced108212bb197d14"
-    sha256 cellar: :any_skip_relocation, ventura:       "ba0f1ff20ac87ee362ec15e860730c03cd410730e038da03ee13f661364e5939"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f3c279867650e9820cf28d8709a5a5f4f79d2bcd3292f38baffedef498bc6e57"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2b7e06cd44eb914925c510a1960a2dc4300256a8110e61a48c9376cc5db73f4d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1c415be246789f5c4f0186faff43375c7426b6a76c99f524ee8e613381ff28a9"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "1bf53c05419ba357804e4e7860f7b890d175b81f6ee5c0ef480ca7a2e7bfdddc"
+    sha256 cellar: :any_skip_relocation, sonoma:        "9678c394ba845c4bac9f02060921cb912b7f273e983a5e29e222988445c75156"
+    sha256 cellar: :any_skip_relocation, ventura:       "ad5b425bcd4bca3cd7150d5f791b40e8101b080aa5ebb052a009be39355bb44d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "389518823c39646ad75a842c27e22bb599b4c6959d530f869cd2feb6e78945c6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5d3c89c64c998f4d9d48a827e8bbb099105aef8201029df041faaf0345fd043a"
   end
 
   depends_on "rust" => :build
 
   def install
     system "cargo", "install", "prqlc", *std_cargo_args(path: "prqlc/prqlc")
+
+    generate_completions_from_executable(bin/"prqlc", "shell-completion")
   end
 
   test do
+    assert_match version.to_s, shell_output("#{bin}/prqlc --version")
+
     stdin = "from employees | filter has_dog | select salary"
     stdout = pipe_output("#{bin}/prqlc compile", stdin)
     assert_match "SELECT", stdout

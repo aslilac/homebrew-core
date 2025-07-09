@@ -11,6 +11,8 @@ class Unyaffs < Formula
     regex(/href=.*?unyaffs[._-]v?(\d+(?:\.\d+)+)\.orig\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ec8fe9164edaf17dc336a0dc203f5955d17692fa22f508cfe04f4cd87921a85c"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "992ddb8ed826d693a43e89852d2a913e79547240910233975d83660b66f88835"
@@ -22,6 +24,7 @@ class Unyaffs < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "1ff1b1841d784d1fccc11d986113a60bad0d61d3faf21ce8f456d8b47d00ae1b"
     sha256 cellar: :any_skip_relocation, big_sur:        "961d0e37689b4e339382d8354c452640a52df505b2466e49e99775a6870f654b"
     sha256 cellar: :any_skip_relocation, catalina:       "936d36f9cbe3df837dff0759f65c46e6083c922c1a8e7e504a6ac3b734fd3805"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "8c792cf1749a245cfabfa082c6ae0fc4ff707f65f258225d3d5d64e20b80b992"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "8ea922f7eba91f9c6d6f3769fc9491e0f1414d9ecf006855414f8a544ef01638"
   end
 

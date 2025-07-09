@@ -1,6 +1,6 @@
 class GnomeThemesExtra < Formula
   desc "Extra themes for the GNOME desktop environment"
-  homepage "https://gitlab.gnome.org/GNOME/gnome-themes-extra"
+  homepage "https://gitlab.gnome.org/Archive/gnome-themes-extra"
   url "https://download.gnome.org/sources/gnome-themes-extra/3.28/gnome-themes-extra-3.28.tar.xz"
   sha256 "7c4ba0bff001f06d8983cfc105adaac42df1d1267a2591798a780bac557a5819"
   license "LGPL-2.1-or-later"
@@ -13,12 +13,15 @@ class GnomeThemesExtra < Formula
     sha256 cellar: :any,                 sonoma:         "764d0ca9feceaf6a174c242d135cbe7d04bed2b98eee1208b9f0258c9545857a"
     sha256 cellar: :any,                 ventura:        "11323caf0f8a1f3745f1f0ae6f0b5558590148a1eb0efd124a32b3ee945b50ab"
     sha256 cellar: :any,                 monterey:       "ce23ae32bafec76ac518498866c1e32d4587909ed9c69f24ba9b5796f30428e0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b5b957c2637a4a8475d36a1effc4e817bb936f34689af0c8c1551433d37cdf86"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4f5c9c176b316179b530c7d28fb245f93881339b1ec7737685c85f3d0857248e"
   end
 
+  deprecate! date: "2024-12-10", because: :repo_archived
+
   depends_on "gettext" => :build
   depends_on "intltool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "cairo"
   depends_on "glib"
@@ -48,7 +51,7 @@ class GnomeThemesExtra < Formula
   end
 
   test do
-    assert_predicate share/"icons/HighContrast/scalable/actions/document-open-recent.svg", :exist?
-    assert_predicate lib/"gtk-2.0/2.10.0/engines/libadwaita.so", :exist?
+    assert_path_exists share/"icons/HighContrast/scalable/actions/document-open-recent.svg"
+    assert_path_exists lib/"gtk-2.0/2.10.0/engines/libadwaita.so"
   end
 end

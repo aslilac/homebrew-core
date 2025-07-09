@@ -6,17 +6,18 @@ class LeelaZero < Formula
       tag:      "v0.17",
       revision: "3f297889563bcbec671982c655996ccff63fa253"
   license "GPL-3.0-or-later"
-  revision 8
+  revision 10
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "5c808d7abd764508dbbeda62b0f4f86cb2d117995422f872a2d6515515b46811"
-    sha256 cellar: :any,                 arm64_sonoma:   "523b2b5c9a450e6a3c50f6090d8f3e82250225db54c4b75bf4c414fedc9b4397"
-    sha256 cellar: :any,                 arm64_ventura:  "6d9a72e5a28e17732d5d2f5841633ee88d02a769a04056ba435e2d7b0f13e871"
-    sha256 cellar: :any,                 arm64_monterey: "dca485dc625d0e8df88066c0b7d2a40342b268635123d24a385dac2c8cd738d5"
-    sha256 cellar: :any,                 sonoma:         "b8bad84bb425a13306edbad05b88f13b0efbfe170f644eca3419f8052912e775"
-    sha256 cellar: :any,                 ventura:        "b92d3a4331520dbb6be08f98d20a2c44d7860c02b9d87307cb971eb8ba3ea5cf"
-    sha256 cellar: :any,                 monterey:       "613ece14bc664dddddd5f099a8cd2714e91b71348b47c40e920d43ea1590c77a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7f264275f3f12d811a7d8be26b6b8e77a7bc9bcdd0fa237e5fa8982e005f8a17"
+    sha256 cellar: :any,                 arm64_sequoia: "89c9cd32fe6c7a9c5239fd79cb4478b59c3fab520ef41b6eac2420c549d485c2"
+    sha256 cellar: :any,                 arm64_sonoma:  "d53fa2be94dea4d05c53dec8fe788b9d0592ba2fe9a1859f469a3561514b0503"
+    sha256 cellar: :any,                 arm64_ventura: "6be25e10e1be034a3b7aef791fba5d45e1b288c818035b997a9d26f0742ef463"
+    sha256 cellar: :any,                 sonoma:        "0a10d9190312af4f6f6469d57163a463cd99f52fc16100f6c145a107001e1a5e"
+    sha256 cellar: :any,                 ventura:       "da90734e4217838d1e9ccb08df23b9d841eea2f5daf3107e17a45a1af8e4db8f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "75cf01a629f8eeecf1e21f43b6ed281aad1ab5bd434fbd25e762c2ee1ff6e47b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2e5ee03297c6c74f7bc78ed0ce6f77a798720c27e099f2949b855db92dac4086"
   end
 
   depends_on "cmake" => :build
@@ -36,7 +37,12 @@ class LeelaZero < Formula
   end
 
   def install
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    # Workaround as upstream targets C++14 for older distros but Boost.Spirit 1.88.0 needs C++17 std::optional
+    # https://github.com/leela-zero/leela-zero/blob/next/CONTRIBUTING.md#upgrading-dependencies
+    inreplace "CMakeLists.txt", "set(CMAKE_CXX_STANDARD 14)", "set(CMAKE_CXX_STANDARD 17)"
+    ENV.append "CXXFLAGS", "-D_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION" if ENV.compiler == :clang
+
+    system "cmake", "-S", ".", "-B", "build", "-DCMAKE_POLICY_VERSION_MINIMUM=3.5", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
     pkgshare.install resource("network")

@@ -6,6 +6,8 @@ class Aha < Formula
   license any_of: ["LGPL-2.0-or-later", "MPL-1.1"]
   head "https://github.com/theZiz/aha.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "16696aeddc832f4f9f7c61ce7d3e6a8327f229bdeb941aded1bce4b2285f8470"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f1df76aba65188e22f99b5229fdfc0435cd0e1e747d8596e64cee739bb679fb6"
@@ -19,6 +21,7 @@ class Aha < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "bcd5f7ea0e30795e05719351823769f9a7ac434e57bf09cb738eeef50c0f0f85"
     sha256 cellar: :any_skip_relocation, mojave:         "b8def8fe2809928ffbf3ae5746f1157bacfef12e720d0eef798b4d77902d8f4f"
     sha256 cellar: :any_skip_relocation, high_sierra:    "9de609b23501a93b6fc39422bc51f4b79c31eba3c39272a06f2710aa7e2d6a3f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "da606271d62f24440590f2b791073d6507f1eeff55f96134023dea46464e0095"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c018344a8a20792dbcc444893c62279ea87a97539e1cf0141ddf7b2cf538a9fb"
   end
 
@@ -27,7 +30,7 @@ class Aha < Formula
   end
 
   test do
-    out = pipe_output(bin/"aha", "[35mrain[34mpill[00m")
+    out = pipe_output(bin/"aha", "[35mrain[34mpill[00m", 0)
     assert_match(/color:purple;">rain.*color:blue;">pill/, out)
   end
 end

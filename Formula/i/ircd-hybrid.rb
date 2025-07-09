@@ -1,8 +1,8 @@
 class IrcdHybrid < Formula
   desc "High-performance secure IRC server"
   homepage "https://www.ircd-hybrid.org/"
-  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.45/ircd-hybrid-8.2.45.tgz"
-  sha256 "951ae032ab04a87b47e602339e07e0d06b6e87bd5a4eb334f3b395be14f75e44"
+  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.47/ircd-hybrid-8.2.47.tgz"
+  sha256 "d5f253f6dd1a93e7183323f410b7e2269ba4392d3d00a0e7dc6248f6f9864ffe"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,16 +11,16 @@ class IrcdHybrid < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "ad947c9098ff51224cf64839f4cb44eac442696d49377a311322b9e5feeca7da"
-    sha256 arm64_sonoma:   "3300892aed735776d3f13175baa889f5d7c9d483d7748418c0909f8415531e97"
-    sha256 arm64_ventura:  "23adcd2ed7ea0ec6f2d1697bd9a3387320056d9675da6c7674fadf91a543e8c7"
-    sha256 arm64_monterey: "88fb3d88a5c22db625840ab9c5e0b56602249c398a66a5ec588b384dab3f8dc9"
-    sha256 sonoma:         "6a7ff02a200163d69f6db115ff5b4ac256d9f0f0d206f209496f209bd34a5a5b"
-    sha256 ventura:        "b671e85eb7f66efdd2b797dc67d026d29330f0b9911e246766f7e96108bc2cd5"
-    sha256 monterey:       "032ceb7c545a5fceda538205a747e231505b899c7a3ba81099a59ad08d69ea38"
-    sha256 x86_64_linux:   "d972f1b694aa724347492b9c39a747d63bd46f202f9e86b7fb086fc5bba3f284"
+    sha256 arm64_sequoia: "c61a232e6b16f0e0df0382399bdaa612ccd755e20611e356b6687745e64da69c"
+    sha256 arm64_sonoma:  "602e3329ab2c61db98749f3e4ad0237db35542c7284034e0dc36ff3606c9544c"
+    sha256 arm64_ventura: "143e5f32b944813a8d5891665000739043e1e537a1d0c6a9b8e28b3c63893f4c"
+    sha256 sonoma:        "bc9a3ce5fe871c70917f827f5a56631e71b4852609e9372f8eedb493752a8de2"
+    sha256 ventura:       "c1a7944fb9568fdec12b8daabad9d75d50844f9e4e535ce8bd8dfe8347e1b28a"
+    sha256 arm64_linux:   "f4b2f1f47eea9e04695a498e5031229a828305107530b8811422d772542b9cd3"
+    sha256 x86_64_linux:  "5026f20ed6cb34c59dddb2e7df8f9388cb9e148c55d8c4d7fba9668ea140bb11"
   end
 
+  depends_on "jansson"
   depends_on "openssl@3"
 
   uses_from_macos "libxcrypt"

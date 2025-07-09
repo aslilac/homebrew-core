@@ -1,13 +1,12 @@
 class InstallPeerdeps < Formula
   desc "CLI to automatically install peerDeps"
   homepage "https://github.com/nathanhleung/install-peerdeps"
-  url "https://registry.npmjs.org/install-peerdeps/-/install-peerdeps-3.0.3.tgz"
-  sha256 "a1f0e865f9db356aa15ccc9cb56e200c442229bef9e1e1ef8c73bcd587dfc506"
+  url "https://registry.npmjs.org/install-peerdeps/-/install-peerdeps-3.0.7.tgz"
+  sha256 "b161e9e3e497cd492e571393784232a9ac9e4518044cda909f7e1d09c4fb5ea7"
   license "MIT"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, all: "8b8235bb0d694175e47f0dd39cb14fdc1cf9474c25516f37b7f01a216db0d022"
+    sha256 cellar: :any_skip_relocation, all: "eec2d65cc63dd3b8af5a9fd355eded183615f9f987cc708d1ac2a22fe16a4b2d"
   end
 
   depends_on "node"
@@ -19,6 +18,6 @@ class InstallPeerdeps < Formula
 
   test do
     system bin/"install-peerdeps", "eslint-config-airbnb@19.0.4"
-    assert_predicate testpath/"node_modules"/"eslint", :exist? # eslint is a peerdep
+    assert_path_exists testpath/"node_modules"/"eslint" # eslint is a peerdep
   end
 end

@@ -1,17 +1,18 @@
 class Geni < Formula
   desc "Standalone database migration tool"
   homepage "https://github.com/emilpriver/geni"
-  url "https://github.com/emilpriver/geni/archive/refs/tags/v1.1.4.tar.gz"
-  sha256 "f1997ef7be666bd6cf40a3bfe631ecd01c3ce9d441120bbc623073e4a61292f6"
+  url "https://github.com/emilpriver/geni/archive/refs/tags/v1.1.6.tar.gz"
+  sha256 "b157ff3c57b4c36e2f48f57da1b6dba60bf2f9770061e068e4302bc555df3b3c"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "37f4005cc0cefbf898f96f8eed023850ccf54298fcba0393a6c0d920620e4ff0"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "39be2d763a87d9a78f62702f9cdb6174e9fc59d04a6104e89e16e159d1848a09"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "3708ee87e5cebb66aa5d1c3b43d3ceb26d8699fabe236fced5228b275af3cdb9"
-    sha256 cellar: :any_skip_relocation, sonoma:        "04ba8b7c186b70d0b1fb8b5d4a3518506e0f0bd20e1f3eda1a9bbd0f1aec3501"
-    sha256 cellar: :any_skip_relocation, ventura:       "f779a384b9c287202b52d90a8598fb2ac2cd8b2c8553f344681b0a338db37603"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7b02203af60c022b420c758019ba1b132e3258e23404d073ed8a805bfb73a03e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6b0c065f87c3ce64671c0f36eedd80e13d56a21c45c61ef755839dc96293531f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "74820471f17b8a327cc05a8ac0c957444813ccf1be99b20d7b79a19e897851b0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "bc895d5c2c04c5a6ba40767556167c4ebbb1a73a5defb296097ba6cd7c855f32"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c277e5900dfdda32af10c5dd0a2b45422edb08bd1c8c1d6c4eb5cfef0f61200b"
+    sha256 cellar: :any_skip_relocation, ventura:       "7cf01e1ac2484893fe9a0db0b384fdddbd264fe3119863aba9a97f441615fb12"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8e1d9d66d8c475c4070f96d8e2dfac2fd2f9876e698464599027f618a65733c3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "902e107b2f2308354e3d97ffe130dcc5489cafee6c538f465bcc20a0677f8a76"
   end
 
   depends_on "rust" => :build
@@ -23,7 +24,7 @@ class Geni < Formula
   test do
     ENV["DATABASE_URL"] = "sqlite3://test.sqlite"
     system bin/"geni", "create"
-    assert_predicate testpath/"test.sqlite", :exist?, "failed to create test.sqlite"
+    assert_path_exists testpath/"test.sqlite", "failed to create test.sqlite"
     assert_match version.to_s, shell_output("#{bin}/geni --version")
   end
 end

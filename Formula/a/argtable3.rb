@@ -1,9 +1,8 @@
 class Argtable3 < Formula
   desc "ANSI C library for parsing GNU-style command-line options"
   homepage "https://www.argtable.org"
-  url "https://github.com/argtable/argtable3/archive/refs/tags/v3.2.2.f25c624.tar.gz"
-  version "3.2.2"
-  sha256 "a5c66d819fa0be0435f37ed2fb3f23e371091722ff74219de97b65f6b9914e51"
+  url "https://github.com/argtable/argtable3/archive/refs/tags/v3.3.1.tar.gz"
+  sha256 "8b28a4fb2cd621d8d16f34e30e1956aa488077f6a6b902e7fc9f07883e1519c1"
   license "BSD-3-Clause"
   head "https://github.com/argtable/argtable3.git", branch: "master"
 
@@ -15,13 +14,16 @@ class Argtable3 < Formula
     regex(/^v?(\d+(?:\.\d+)+)(?:\.\h+)?$/i)
   end
 
+  no_autobump! because: :incompatible_version_format
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "977cc6d2b39d50551e00be1cb664891ba886e3e63779769713815ab5c830d4f7"
-    sha256 cellar: :any,                 arm64_sonoma:  "59140a12791b4cd3733fd383bbd91373d517ed6a22dded4ae9e74b8fd2039844"
-    sha256 cellar: :any,                 arm64_ventura: "baa86eebd002149a8653eb04d365be6b4526551c7ae43cbf9753642093bad9e7"
-    sha256 cellar: :any,                 sonoma:        "ab5266a8ad714236feda7b450da27138538019d765fd7311d613596cd9a82140"
-    sha256 cellar: :any,                 ventura:       "b88c3b8acd8fe222ddadd092036daabe726784c2583e2665da98188af700b669"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1582d82a062451b9b81bd1739f541876e41b2c821b274aba6a51f9d3009ac7a5"
+    sha256 cellar: :any,                 arm64_sequoia: "08c1d4c1b1caf0027f5965d8f4a33a8634de5d1d2db97215c4cae4dd35a21d83"
+    sha256 cellar: :any,                 arm64_sonoma:  "d12329601f98832b51f7d0887754b353116fc91389d7427526f2c7f2d493de64"
+    sha256 cellar: :any,                 arm64_ventura: "f49951ca0b688eadaac7d390a5f4cba099dd801c8e1fa772eae1bbd223ee955a"
+    sha256 cellar: :any,                 sonoma:        "81aa7acce60ed7c0fbb3f7becf7b93065640a23accbace7b0b98758cc4b034b0"
+    sha256 cellar: :any,                 ventura:       "e54312fdc0437c0fac0f877c1f644cea428c82174025607e23e31133a594a51d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8a6bd561754762b0b1c295c6d99882e4c98a11783675260c8a99dd3135789b7f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "569f0abb77d2e4b88ab0e948309bbb78858387ecc9ed8544942020a4bc868ad4"
   end
 
   depends_on "cmake" => :build

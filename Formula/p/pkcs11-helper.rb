@@ -12,6 +12,8 @@ class Pkcs11Helper < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "02b61fe7186023ea090b8fab072d980451ef4edc5e860c247c2ccba6c422de2b"
     sha256 cellar: :any,                 arm64_sonoma:   "d5877e3655d952f137610ab0168b4e996dec23dfc16b1ac4db5ab0cdb46eb525"
@@ -20,24 +22,19 @@ class Pkcs11Helper < Formula
     sha256 cellar: :any,                 sonoma:         "6e3be91e06ad419132aec259d8d7d2700e8672f2011493da0b8635409523fc0e"
     sha256 cellar: :any,                 ventura:        "322d2589c5b33c6ee5ed63b379661701b3bafb3ffb468dc862b33476765448e8"
     sha256 cellar: :any,                 monterey:       "c809e4cf49d88ce528e2469be931667f121cbe243e04bf549da28bbe20c05ac3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "4b3b99c82949368e2f0d2f44ba07e37f59ea6b9dc48596c7cab2259d27234dee"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3ce66c1a7dcf6725cf1b4f480e734cd4b7ff2f74835b4464c2bf182ce9640d1b"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "openssl@3"
 
   def install
-    args = %W[
-      --disable-debug
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-    ]
-
-    system "autoreconf", "--verbose", "--install", "--force"
-    system "./configure", *args
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 
@@ -52,8 +49,7 @@ class Pkcs11Helper < Formula
         return 0;
       }
     C
-    system ENV.cc, testpath/"test.c", "-I#{include}", "-L#{lib}",
-                   "-lpkcs11-helper", "-o", "test"
+    system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lpkcs11-helper", "-o", "test"
     system "./test"
   end
 end

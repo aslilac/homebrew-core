@@ -12,12 +12,11 @@ class Ol < Formula
     sha256 arm64_ventura: "6ccc4d40970b7514955cdb20db58682cb9dd0709ef467b4119f972869719c0f0"
     sha256 sonoma:        "519d8844f56b85f889046669676152e1323917320cca387da378f46238e0c29f"
     sha256 ventura:       "834d6d963775f098ec7ab3ab46e5438bc2bc42a0d70b9d74f2008fe1d457ef0b"
+    sha256 arm64_linux:   "c8e473a5a22ff92d987a9a3648aba10b2f9bee971f80f45c88c81e7389d24714"
     sha256 x86_64_linux:  "0e38d0ccd5f4c27ee8044aa0be305b1bff4c506efc79b9d6a1abf2cebcb7db16"
   end
 
   uses_from_macos "vim" => :build # for xxd
-
-  conflicts_with "radamsa", because: "both install `ol` binaries"
 
   def install
     # Workaround for newer Clang
@@ -28,9 +27,9 @@ class Ol < Formula
   end
 
   test do
-    (testpath/"gcd.ol").write <<~EOS
+    (testpath/"gcd.ol").write <<~LISP
       (print (gcd 1071 1029))
-    EOS
+    LISP
     assert_equal "21", shell_output("#{bin}/ol gcd.ol").strip
   end
 end

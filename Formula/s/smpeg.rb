@@ -16,6 +16,8 @@ class Smpeg < Formula
     end
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "e7a1451326b54dd9107b43762c877fc91a8d9cb7fcae37aad8f4a354c98c56bf"
@@ -27,13 +29,14 @@ class Smpeg < Formula
     sha256 cellar: :any,                 ventura:        "03c1eb05860e58ea080834b7fc760a10dc28aec402fb684c9a263b716693ec8f"
     sha256 cellar: :any,                 monterey:       "27336fb6005e4d498db6eb1f68deee86cad53c86ac10843984f833e2bf5bcb7d"
     sha256 cellar: :any,                 big_sur:        "7c97d1fb7a8df3df8cca2eb794a7898d9dc4c93ae3f201dc582ed8982c74e725"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b4b46134434032d24f664aac17650a6641c70f589fce7dda983fb5b78a2db25b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b98076e9055fbe29549fd5c340deb22c733c24f3ab754a638dd24c425ba076d3"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "sdl12-compat"
 
   # Fix -flat_namespace being used on Big Sur and later.
@@ -44,18 +47,17 @@ class Smpeg < Formula
     ENV.append_to_cflags "-Wno-c++11-narrowing" if DevelopmentTools.clang_build_version >= 1400
 
     args = %W[
-      --prefix=#{prefix}
       --with-sdl-prefix=#{Formula["sdl12-compat"].opt_prefix}
-      --disable-dependency-tracking
-      --disable-debug
       --disable-gtk-player
       --disable-gtktest
       --disable-opengl-player
       --disable-sdltest
     ]
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
 
     system "./autogen.sh"
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make"
     # Install script is not +x by default for some reason
     chmod 0755, "./install-sh"

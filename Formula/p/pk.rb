@@ -5,6 +5,8 @@ class Pk < Formula
   sha256 "0431fe8fcbdfb3ac8ccfdef3d098d6397556f8905b7dec21bc15942a8fc5f110"
   license "Apache-2.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "be0b36f6d80ee6d6191207faa7454eff5a35fac1aaa54cb3df986482bb4129fb"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "df016243a24085cb085bd78cb4e2a0c0a58f0f017a94a09f5b9f7555e6739745"
@@ -20,6 +22,7 @@ class Pk < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "12cc1f5a82f305734355bc527d6dc936039a86f0b8888d226d0b36a9400d234f"
     sha256 cellar: :any_skip_relocation, sierra:         "790f7e9670dcda15b7472264eea54666e7e34e8adb4343b3699ab87a60c9f3b1"
     sha256 cellar: :any_skip_relocation, el_capitan:     "74c7822b2e3a74bc657d5e8490f184af120eddf9230695fe26dbb075391e10e6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "6c8968e6c98f33f8dc985fa43ad59ced699019c620095f1f7569f73bba19d654"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "eebcfa3e63674f0aed1d0e541cfa74edd1efcdb1e1a4a4919ef993c14b4b9b6b"
   end
 

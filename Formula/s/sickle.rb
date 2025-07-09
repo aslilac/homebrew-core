@@ -5,6 +5,8 @@ class Sickle < Formula
   sha256 "eab271d25dc799e2ce67c25626128f8f8ed65e3cd68e799479bba20964624734"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "14f29f9f78cfd733320efeca1a531d5a22db8908185bf5340f1d806c554fe7d9"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9c820fd16930b4e385a72a92abd1f57386b87ac03fee2ec19fb02996e22fc3ae"
@@ -20,6 +22,7 @@ class Sickle < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "3aeaaa4393148876cc55cc9defbe82ae0fe0dabea18e418413b2aa8cff23dd0b"
     sha256 cellar: :any_skip_relocation, sierra:         "844b063d1496d2a7c7f8a12b2239ae32766a538557d44f712c584a30b9775fae"
     sha256 cellar: :any_skip_relocation, el_capitan:     "138b38a20aefc55ec4005ee4c4622ec332cbb13ff4ebc39ff45d91a2c12afde8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "9b5dd6e07778c6547aa63421d2aedbdf40c496ba3a95b89c393fde0d8211dea5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d084fefaf95e4433a64685c9c332964389911bbbdbb038aeeb87c2d16f06f2ab"
   end
 

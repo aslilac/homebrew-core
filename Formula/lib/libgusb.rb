@@ -24,13 +24,14 @@ class Libgusb < Formula
     sha256 arm64_ventura: "9753de67392b95353dd90f9e745d4343bb79fcec324884048fcf283e7034939c"
     sha256 sonoma:        "f4e98d60eed3f9d811415d82027560f3ca55945e17b78fafc961c56ee690915f"
     sha256 ventura:       "45c340c32f582a777d7a24667d7378e0b95d1043e32095cdb9356c8895fca893"
+    sha256 arm64_linux:   "ffc70db16c18b845ad99a159902c8eb20397d38f38ff7d2f2f7842623923fa6f"
     sha256 x86_64_linux:  "ff05a0fdc15a300ceb4218458751283a54f691b12be3a627e98fdce3b218b7bd"
   end
 
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "python-setuptools" => :build
   depends_on "vala" => :build
 
@@ -64,8 +65,8 @@ class Libgusb < Formula
       }
     C
 
-    pkg_config_flags = shell_output("pkg-config --cflags --libs gusb").chomp.split
-    system ENV.cc, "test.c", "-o", "test", *pkg_config_flags
+    flags = shell_output("pkgconf --cflags --libs gusb").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
 end

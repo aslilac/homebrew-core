@@ -15,14 +15,13 @@ class Ijq < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "d1821ef799142750e30c540f77a45b584c376d7806638fb9deddda3aead6c1c6"
     sha256 cellar: :any_skip_relocation, ventura:        "593ef098186825e2813b8d33687f3d7781e48d765a51f3d7e7801441579394b8"
     sha256 cellar: :any_skip_relocation, monterey:       "f9343078267b776e7fe34ab333b29753cfc44aec8ab291507b43cb7a815faa0a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "1be3e5965edb03db7e0f7001c8856757699df59a38013e50d998c3031b2bbd83"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c92b37ce9a8a054ad37bfefe48a1d1b03ed163527545ba10de7b7f0c3c3a9825"
   end
 
   depends_on "go" => :build
   depends_on "scdoc" => :build
   depends_on "jq"
-
-  uses_from_macos "expect" => :test
 
   def install
     system "make", "prefix=#{prefix}", "install"
@@ -33,23 +32,19 @@ class Ijq < Formula
 
     (testpath/"filterfile.jq").write '["foo", "bar", "baz"] | sort | add'
 
-    (testpath/"ijq.exp").write <<~EOS
-      #!/usr/bin/expect -f
-      proc succeed {} {
-        puts success
-        exit 0
-      }
-      proc fail {} {
-        puts failure
-        exit 1
-      }
-      set timeout 5
-      spawn ijq -H '' -M -n -f filterfile.jq
-      expect {
-        barbazfoo   succeed
-        timeout     fail
-      }
-    EOS
-    system "expect", "-f", "ijq.exp"
+    require "expect"
+    require "pty"
+    PTY.spawn("#{bin}/ijq -H '' -M -n -f filterfile.jq > result") do |r, w, pid|
+      refute_nil r.expect("barbazfoo", 5), "Expected barbazfoo"
+      w.write "\r"
+      r.read
+    rescue Errno::EIO
+      # GNU/Linux raises EIO when read is done on closed pty
+    ensure
+      r.close
+      w.close
+      Process.wait(pid)
+    end
+    assert_equal "\"barbazfoo\"\n", (testpath/"result").read
   end
 end

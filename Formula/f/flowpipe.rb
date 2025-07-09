@@ -1,9 +1,10 @@
 class Flowpipe < Formula
   desc "Cloud scripting engine"
   homepage "https://flowpipe.io"
-  url "https://github.com/turbot/flowpipe/archive/refs/tags/v1.0.2.tar.gz"
-  sha256 "5e8a54ae8f26de64c7b0ee906bebe36396364ea3d7f2c9098ecf9585ba916f77"
+  url "https://github.com/turbot/flowpipe/archive/refs/tags/v1.1.1.tar.gz"
+  sha256 "fe981ce95de045618264f01728bf59cd4a6f3463e58f408eaeda2f24900a187e"
   license "AGPL-3.0-only"
+  head "https://github.com/turbot/flowpipe.git", branch: "develop"
 
   # Upstream creates releases that use a stable tag (e.g., `v1.2.3`) but are
   # labeled as "pre-release" on GitHub before the version is released, so it's
@@ -14,12 +15,12 @@ class Flowpipe < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fc55463b2e57142c31f20e3a79a920aca266acf63d0d86ccd1a1ed05b4f2b766"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2326c6d402c0d4190700cb93abca15c4f365a1d0a80708216092d50a8556f6b8"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "446396483feccbfead6753687098a7ef377a258593b3f6c2dbec93ea91c66a9a"
-    sha256 cellar: :any_skip_relocation, sonoma:        "223803a8a3fd787e5b065f308e3e49da0678059321467033ec203ded31cae0e8"
-    sha256 cellar: :any_skip_relocation, ventura:       "c0afd6b380a527805d1122c6957bbe6d707b0d82b86ea3c0d6574f4578d6ea0c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b9cb0359f1eea710d15fee1f34dd57d22b545710ddc06c8d6f42c22d4fd00ba0"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "64ae558b8f13d272f295e7632e847d8b0dc157f309335141e2ba60ece28a0a76"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "69f742edfecdeee9401630cf53d3b92b4247af0eee94e2b0a5fb4ace31bfaac9"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "e730b06a3c720b30a343a67ab22148cb0418f5d36d3ae9bdbbfa5f62f6017ef1"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4da51fea07766e45ef1748767ccbc35a0f75f645cbed1be7ea890d95909e57c2"
+    sha256 cellar: :any_skip_relocation, ventura:       "cd87904b97ce46751c0c7f59214b083a576777809c52308ac297be16d46d3515"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "050f55f3d6d0ebb85647e317fb27e10a7c58a61369b42743e9cbb003dc9de179"
   end
 
   depends_on "go" => :build

@@ -5,6 +5,8 @@ class Heatshrink < Formula
   sha256 "7529a1c8ac501191ad470b166773364e66d9926aad632690c72c63a1dea7e9a6"
   license "ISC"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4135d8d01abb01a3864191897728bddbc0791fa9356aa2537eeab61bdef9e1ff"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ceb0d2e8dff933f32c0aae21c396d5f2ea1bbffa163fced76f09e1b8b4680df8"
@@ -19,6 +21,7 @@ class Heatshrink < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "504b4b64164343217c6852509b59858494ba38ad9b63e7a9b3bb247290833582"
     sha256 cellar: :any_skip_relocation, high_sierra:    "865d11380a3e586a962a5dec0069def43e777f20626bdc5396735d003d90d20b"
     sha256 cellar: :any_skip_relocation, sierra:         "3965350f672040dfec9d2e07ac5f26aa16b324f59d2a762a4faac0930d2de684"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b403c35dc1c684ff7fd3c7bad6e7b3724c458ba77537c7208660a0c0cd2986fe"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ff464d4696b56788cdbde22f9ec08015f65626ee0b8a4707fad973fd0f493495"
   end
 

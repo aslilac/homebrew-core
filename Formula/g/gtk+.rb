@@ -16,6 +16,8 @@ class Gtkx < Formula
     skip "GTK 2 was declared end of life in 2020-12"
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sonoma:   "659b62a2677b7e945221ab78abfab6919d7a4ac7c635de52417ab96eb4970a92"
     sha256 arm64_ventura:  "140729098a62031c80b8e43c29314f84a5d0152b1348612f83d01331251ba02c"
@@ -23,6 +25,7 @@ class Gtkx < Formula
     sha256 sonoma:         "2f73f9eafd45eef1e37f3e795d1cb086988fcba1cc374be9c4bc124744bc561a"
     sha256 ventura:        "e1724dfbff3e12dfc41c91d4ea850c52fbc716d30cae80308f55afaeaa887e42"
     sha256 monterey:       "29944de5a2598f393c086c1b9284dee31f94309826780204065d91de38c0a14d"
+    sha256 arm64_linux:    "2738367a37a58ce253544f191877c5b653c3f6db7cbe3fd5ed3b3288b3bd243f"
     sha256 x86_64_linux:   "a73d8262778cf3541249d2ce04dbe9c2e545cc46401c695a77a893f812f35920"
   end
 
@@ -31,7 +34,7 @@ class Gtkx < Formula
   # NOTE: We could potentially use an older deployment target; however, `gtk+` has been EOL since 2020.
   # So rather than trying to workaround obsolete APIs, the limit is a deadline to deprecate `gtk+` and dependents.
   depends_on maximum_macos: [:sonoma, :build]
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "at-spi2-core"
   depends_on "cairo"
   depends_on "gdk-pixbuf"
@@ -123,7 +126,7 @@ class Gtkx < Formula
         return 0;
       }
     C
-    flags = shell_output("pkg-config --cflags --libs gtk+-2.0").chomp.split
+    flags = shell_output("pkgconf --cflags --libs gtk+-2.0").chomp.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

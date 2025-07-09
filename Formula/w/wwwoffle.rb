@@ -10,6 +10,8 @@ class Wwwoffle < Formula
     regex(/href=.*?wwwoffle[._-]v?(\d+(?:\.\d+)+[a-z]?)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "114a59c443772a746833b3431d2cd275755ae5f8eed92326c7763e2097eca980"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "dba1da001f686548a7ba1ecb2bb6a2fe34a5fb6c821846c3f47c3d6bf461ca1a"
@@ -25,6 +27,7 @@ class Wwwoffle < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "090085b4a39e90929744310494ef3157dfc77f7c2910047dfbdc75c75fe7c8f7"
     sha256 cellar: :any_skip_relocation, sierra:         "9310fffe992916bf09700c8d6fd018943a14c73c27f28e3c61548f56b7f301d2"
     sha256 cellar: :any_skip_relocation, el_capitan:     "0877d44d105e2ec35e38e2d2e760f6c2973f53f98d784ccf16bed6d47e37db38"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "364d7e80791686aea7174f34a719f858612c73c1e9e7d99dccb6a70b13a7f6e4"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ddd784479bb56270b0d643cb2cccbc9e48264423c4190c1a1b251988dd503b68"
   end
 
@@ -32,7 +35,11 @@ class Wwwoffle < Formula
   uses_from_macos "zlib"
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    args = []
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

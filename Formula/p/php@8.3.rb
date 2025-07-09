@@ -2,9 +2,9 @@ class PhpAT83 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.3.14.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.3.14.tar.xz"
-  sha256 "58b4cb9019bf70c0cbcdb814c7df79b9065059d14cf7dbf48d971f8e56ae9be7"
+  url "https://www.php.net/distributions/php-8.3.23.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.3.23.tar.xz"
+  sha256 "08be64700f703bca6ff1284bf1fdaffa37ae1b9734b6559f8350248e8960a6db"
   license "PHP-3.01"
 
   livecheck do
@@ -13,12 +13,13 @@ class PhpAT83 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "0b225f4e8af36781b9c01ee1e5298cd57a10f01cdaea6c6b2706d1b9149d4385"
-    sha256 arm64_sonoma:  "b14e458a8082ccf3dc0260c391cbdd6f2383462dbb7f81a96e0e8a88bd92b36e"
-    sha256 arm64_ventura: "9c95509323222030ce67a68216110d1e3fcad3ad11679cf85b6164722b6f224a"
-    sha256 sonoma:        "921a7465a7d3155692853df27ecf897856ed164e3f85e8380e166cee05f5a05f"
-    sha256 ventura:       "61b7290f486048b1fe8b6e5ec5a93184acf7780b7b92c5c1a7e943a7df6e77ad"
-    sha256 x86_64_linux:  "e7deca61153282f93cd14e539dd468548fd24fe8240833211dd8d1caf9f130d2"
+    sha256 arm64_sequoia: "e2ff41a7aaf7222090f0fe2e753f0bf065544195406bc7143e57f2c67e6c3896"
+    sha256 arm64_sonoma:  "8f3765b2bc343652fc1dc5e677983d445e807441596708e16a5f5663edbc7fa1"
+    sha256 arm64_ventura: "ba9e3166940e1a860326a4846c7e84a608e0256916aebcc3ce2f06fecef16c55"
+    sha256 sonoma:        "b04653d33c0080a359b3ccddcac2db8604b8b4347ce2626b45505ada6f1c5da7"
+    sha256 ventura:       "e4330e1f6ada3e51f75c04c103c062a83cc0521d8ad3e4d4eeb85cf570b93a14"
+    sha256 arm64_linux:   "48912af4324d93c8810cc077ba3dc54d532a0322211eaaa222bb593a5cbee988"
+    sha256 x86_64_linux:  "4a3cc966cc3f9c87516673e1f2bcea3ae600e63542b4606c9948f19c5f56faa7"
   end
 
   keg_only :versioned_formula
@@ -39,7 +40,7 @@ class PhpAT83 < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "krb5"
   depends_on "libpq"
   depends_on "libsodium"
@@ -102,6 +103,9 @@ class PhpAT83 < Formula
 
     # Prevent homebrew from hardcoding path to sed shim in phpize script
     ENV["lt_cv_path_SED"] = "sed"
+
+    # Identify build provider in phpinfo()
+    ENV["PHP_BUILD_PROVIDER"] = tap.user
 
     # system pkg-config missing
     ENV["KERBEROS_CFLAGS"] = " "

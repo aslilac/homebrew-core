@@ -1,18 +1,19 @@
 class Nomino < Formula
   desc "Batch rename utility"
   homepage "https://github.com/yaa110/nomino"
-  url "https://github.com/yaa110/nomino/archive/refs/tags/1.3.6.tar.gz"
-  sha256 "12e14d951b3fa99d17b9a0de97b7f9d9003f67ef83eb6b993623da066bc54dd4"
+  url "https://github.com/yaa110/nomino/archive/refs/tags/1.6.1.tar.gz"
+  sha256 "8d6a664b7b557d7d3e7f057eada63e153a26af68bedbbce45523164641d497c0"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/yaa110/nomino.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "63d5b037e962f888090f398505a403fdf1a330823b5cab10b47438460179a0f4"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8d8b845046c631d50b4a4119dd9a59421338bd1eca5f6c56b344cc8287970e8c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "84440c2ac0220f0e8c971a0e0de6280b47d87791f2b5fb79151de71e4a73b007"
-    sha256 cellar: :any_skip_relocation, sonoma:        "d9570c41100c0b24ddfb08cb703d3015c526cd7b939178d18463b63ecca98992"
-    sha256 cellar: :any_skip_relocation, ventura:       "9ece1146d93c172619b4fb5ba9ec005e1df3cc5dd9635082a9f7c4d33f45ed38"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9bbd2a5ddc584d9090937df634f0aa5cefc6d5bac8b1e8d50988ce8ab82b6912"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b95d0c88287d5238b0a97ab6798ead5edba94048077558a4725efee43b32fb51"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3c6d478132735d240053a7e633e4c95427aecd54a056ac286da8442a40021c55"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b4471731584112265bb13937d2dd8fbb861100d74d9fde989ee81fbc1569504b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "17a299ee5a482716c18c115614d95a176790afe2fe003d1f26b81b3efda2a267"
+    sha256 cellar: :any_skip_relocation, ventura:       "9c6ce75e5565cdcac444af92b510379cf5b7f7723f71eb4ac96a01c74b8fad22"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "31c8aaea80c57609902d641da9f07163cf43f80a70c4c3a3e2b2fd320e7be652"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dbff625abb4d8f07a1e052a6e3149c0f7d58ea5c4d66939fa42e82facffec17c"
   end
 
   depends_on "rust" => :build
@@ -26,11 +27,11 @@ class Nomino < Formula
       (testpath/"Homebrew-#{n}.txt").write n.to_s
     end
 
-    system bin/"nomino", "-e", ".*-(\\d+).*", "{}"
+    system bin/"nomino", ".*-(\\d+).*", "{}"
 
     (1..9).each do |n|
       assert_equal n.to_s, (testpath/"#{n}.txt").read
-      refute_predicate testpath/"Homebrew-#{n}.txt", :exist?
+      refute_path_exists testpath/"Homebrew-#{n}.txt"
     end
   end
 end

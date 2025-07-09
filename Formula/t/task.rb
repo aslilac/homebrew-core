@@ -1,8 +1,8 @@
 class Task < Formula
   desc "Feature-rich console based todo list manager"
   homepage "https://taskwarrior.org/"
-  url "https://github.com/GothenburgBitFactory/taskwarrior/releases/download/v3.1.0/task-3.1.0.tar.gz"
-  sha256 "1ae67c74b84067573a53095cf3cb6718245dd7dd808f19f9b3d85da445838b4f"
+  url "https://github.com/GothenburgBitFactory/taskwarrior/releases/download/v3.4.1/task-3.4.1.tar.gz"
+  sha256 "23eb60f73e42f16111cc3912b44ee12be6768860a2db2a9c6a47f8ac4786bac3"
   license "MIT"
   head "https://github.com/GothenburgBitFactory/taskwarrior.git", branch: "develop"
 
@@ -12,14 +12,13 @@ class Task < Formula
   end
 
   bottle do
-    sha256                               arm64_sequoia:  "02f376c6638867055daefc4e58c8a6c9c47e58f33486b7f5fbf102fc46bb5d2f"
-    sha256                               arm64_sonoma:   "cd7123d91d1f32ff460957a4a3d09e7b0816c407a9d604361899ce5e7bf7ad20"
-    sha256                               arm64_ventura:  "0213581f5102105e16537570650842cdc1ac8a8b2bd046b588083c12842f30ee"
-    sha256                               arm64_monterey: "b1f264092d279911e203a31a8378dadd2d48d1c6d4e3313f554b7c33e075a4d8"
-    sha256                               sonoma:         "d9a1e86dbef78947254cbee9d93be1ca2ab5afb118184093ddb247c6560745bf"
-    sha256                               ventura:        "a412941738429a46105e3265ec6c17887722fc57adb569778a76f83ce4313abc"
-    sha256                               monterey:       "60cc3d6e6ed923b0a049ba6867677a8a9c5f226e804a22ae90b622a2590556d2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "15dc50d9db72f572fb3d02f190d36dabf485d345e8139d971ef6ce5af82f632d"
+    sha256                               arm64_sequoia: "e9f5596f4410829165b5884d30c10c784ba5e096ca118ec9739119b678d6ec10"
+    sha256                               arm64_sonoma:  "0148f717868777b7ebc63d40e8800a38042a12a1717c8cfa22c8e74e47c6a9ef"
+    sha256                               arm64_ventura: "a6c60113d44922bdba309d58bb265ad1cec5109d1b5ab3b4f43e69f952464397"
+    sha256                               sonoma:        "2f4aafa45935096b86b0e83ca5734fd0014583db767868dae81c436ddec82b0c"
+    sha256                               ventura:       "7a9f8b67f6ed92259cd1ba03dc22c1954bf96ec684bebbc76d2fd060392621bc"
+    sha256                               arm64_linux:   "960048db5e01d5af8b047ec4172614a7bbf410b02bca9f96874d540b88fbae90"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "03fbb2a6f7dc6876e237cd114f2fc6cbd854fdd238d194e932a6cc8f50e1c9e3"
   end
 
   depends_on "cmake" => :build
@@ -33,12 +32,6 @@ class Task < Formula
   end
 
   conflicts_with "go-task", because: "both install `task` binaries"
-
-  fails_with gcc: "5"
-
-  # CmdImport.h:41:8: error: no template named 'unordered_map' in namespace 'std'
-  # https://github.com/GothenburgBitFactory/taskwarrior/commit/4ff63a796087c9f04f7d6dccd03cda0afdce1f40
-  patch :DATA
 
   def install
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args
@@ -55,15 +48,3 @@ class Task < Formula
     assert_match "Write a test", shell_output("#{bin}/task list")
   end
 end
-
-__END__
---- a/src/commands/CmdImport.h
-+++ b/src/commands/CmdImport.h
-@@ -31,6 +31,7 @@
- #include <JSON.h>
- 
- #include <string>
-+#include <unordered_map>
- 
- class CmdImport : public Command {
-  public:

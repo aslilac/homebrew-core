@@ -10,6 +10,8 @@ class Libnice < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any, arm64_sequoia: "e1f4f8532d745a6555e861c342f56ec7a0d0b827f13b4e80c4d6218857b3ae2f"
@@ -17,12 +19,13 @@ class Libnice < Formula
     sha256 cellar: :any, arm64_ventura: "14745e9ade6980ce27101f8be9ea209180aabd691628f908acac939e8249a3e2"
     sha256 cellar: :any, sonoma:        "bfa1f6813b1bc1fe0be25937d85b2eeff7288b8f93b1c5e70c3a1e72562febfb"
     sha256 cellar: :any, ventura:       "e50b4f94bf2ec4bf8248bf41a32ea1af1fdc512037b1d6d7919cbbf14048d00b"
+    sha256               arm64_linux:   "b7ea837e5b54eaf09849dd773a4af189817ec6ffda519323f300899151f05a77"
     sha256               x86_64_linux:  "6805ee9bd44ec5f3573d1fc688d2beac5971904de5996c1239d406de74a37965"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
 
   depends_on "glib"
   depends_on "gnutls"
@@ -61,8 +64,8 @@ class Libnice < Formula
       }
     C
 
-    pkg_config_cflags = shell_output("pkg-config --cflags --libs nice").chomp.split
-    system ENV.cc, "test.c", *pkg_config_cflags, "-o", "test"
+    flags = shell_output("pkgconf --cflags --libs nice").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
 end

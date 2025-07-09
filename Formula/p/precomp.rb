@@ -6,6 +6,8 @@ class Precomp < Formula
   license "Apache-2.0"
   head "https://github.com/schnaader/precomp-cpp.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e17e36888fa003ff01ce0af6dd634576f21c2f303cea989f507730c95af6f827"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ac582dec76b87c1affdf3a0065385f587b7fb47a3c7bdecd391a0e067fbcbf1c"
@@ -20,6 +22,7 @@ class Precomp < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "7488435759867b2bb152cdd3ea78d2358659b34ff838e2cb97b54bd3a322147b"
     sha256 cellar: :any_skip_relocation, high_sierra:    "92824cc03c547d276436e1bdf55e905d402f77eeccf61f25a720d4315e5bd4cf"
     sha256 cellar: :any_skip_relocation, sierra:         "5d852d83cf57987a521471b74e450a65473ed20e32bb14e83b5d99e969e37458"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "94d7a49395b7ea41b35d5ba993dc244fa2dd0795f300bc27b2f94821047daba3"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7affc5c732e89618e28cbdc3a5b93adfd8588fe0af291dde9c940b0667ea8c06"
   end
 
@@ -28,11 +31,11 @@ class Precomp < Formula
   def install
     # https://github.com/schnaader/precomp-cpp/pull/146
     inreplace "contrib/liblzma/rangecoder/range_encoder.h", "#include \"price.h\"",
-      "#include \"price.h\"\n#include <assert.h>"
+              "#include \"price.h\"\n#include <assert.h>"
 
-    system "cmake", ".", *std_cmake_args
-    system "make"
-    bin.install "precomp"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    bin.install "build/precomp"
   end
 
   test do

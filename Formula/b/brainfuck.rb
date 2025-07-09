@@ -6,6 +6,8 @@ class Brainfuck < Formula
   license "Apache-2.0"
   head "https://github.com/fabianishere/brainfuck.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4e316f33095c63723b7cc707d1c3c484d2049292606c673e99053a2364ce2a0e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "44592a40d38925f1bd3093e343168d66e20f642883cbf5f00cf705b05aa9dbf2"
@@ -17,6 +19,7 @@ class Brainfuck < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "482ca8d67a9fd57c88e24d5763194e8e70f7e9d7c9dd8a7f3b5827097e2dfb6a"
     sha256 cellar: :any_skip_relocation, big_sur:        "3120d4eda67a0cf102317a5e0a4ecb36ca8ab99b75c2f0c8b76eabdffb31e252"
     sha256 cellar: :any_skip_relocation, catalina:       "3bc5affaa9e6ba7d7dc6c2f94ad1e63f36a6e19553a8f0183077322f4c9e9026"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "acc255cdfcaf886863897df064d5aa0b548f1921a04d821c3df4074a7240e6e0"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3554b9a52daf8e246b2459186a891b82c2aa4ce70d900735288903cbc5150152"
   end
 
@@ -25,9 +28,15 @@ class Brainfuck < Formula
   uses_from_macos "libedit"
 
   def install
-    system "cmake", ".", *std_cmake_args, "-DBUILD_SHARED_LIB=ON",
-                         "-DBUILD_STATIC_LIB=ON", "-DINSTALL_EXAMPLES=ON"
-    system "make", "install"
+    args = %w[
+      -DBUILD_SHARED_LIB=ON
+      -DBUILD_STATIC_LIB=ON
+      -DINSTALL_EXAMPLES=ON
+    ]
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

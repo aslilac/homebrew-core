@@ -9,6 +9,8 @@ class Offlineimap < Formula
   revision 3
   head "https://github.com/OfflineIMAP/offlineimap3.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any_skip_relocation, arm64_sequoia: "2182b73d2eb5f2fc88614f4cd78889da9a8fa1cf7cf78e83884856f5dbc9e2da"
@@ -16,6 +18,7 @@ class Offlineimap < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "8ed6b9597ffe2c607b0098e3bf9b228412dbf51e06ca9046722874d178400131"
     sha256 cellar: :any_skip_relocation, sonoma:        "923fa39061bc987f7b370d44df0bc9af79e2c7fa1682b2cddbe8d102d1b122f4"
     sha256 cellar: :any_skip_relocation, ventura:       "19482c631666b82f1d13bdb2e73dbcc9fd6b97b00c5f0449077ef7b6b24fc1e1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "fb60efdcd9b609890d2aaf97808112b99d4d4f233070f0832cf1c72741d36dd3"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "5be2017abd6712c16b557a9f64631f9ee673c707bc80d48a79fe74181902bd54"
   end
 
@@ -113,8 +116,8 @@ class Offlineimap < Formula
     run_type :interval
     interval 300
     environment_variables PATH: std_service_path_env
-    log_path "/dev/null"
-    error_log_path "/dev/null"
+    log_path File::NULL
+    error_log_path File::NULL
   end
 
   test do

@@ -11,6 +11,8 @@ class Libforensic1394 < Formula
     regex(/href=.*?libforensic1394[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "a3ae5e839007a8f6cfa3ca2e176285a889085333678c2b5edc095d22326e8aa6"
     sha256 cellar: :any,                 arm64_sonoma:   "466e7d42777a5f74b206d6dfec30b026f6d61ad6a2c0c7e382ab21f9f09b4973"
@@ -26,14 +28,16 @@ class Libforensic1394 < Formula
     sha256 cellar: :any,                 high_sierra:    "5e919cf8bce0747630324f0c203bbd1aef4d7e17d278f42bcbece48da2229c8f"
     sha256 cellar: :any,                 sierra:         "e747c5c6797d48070c4a4199fe38021cd0164a052e14b21005b9caf4a47a6e3c"
     sha256 cellar: :any,                 el_capitan:     "d850e7c3a04b206c6219c75ba0a00723e9a25d0c97831de289320ef0cc076aae"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "cd8c375607751d566f21f16c71a8ed78ec3e4b6511d8ff5f439760c35e2ebd64"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c997e0a787bfd5280159d056a014bbf9eda79db06cc1873d9126712a5f6ece2f"
   end
 
   depends_on "cmake" => :build
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -48,6 +52,7 @@ class Libforensic1394 < Formula
         return 0;
       }
     C
+
     system ENV.cc, "test.c", "-L#{lib}", "-lforensic1394", "-o", "test"
     system "./test"
   end

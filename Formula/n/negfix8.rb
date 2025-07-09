@@ -12,6 +12,7 @@ class Negfix8 < Formula
 
   # https://github.com/chrishunt/negfix8/pull/2#issuecomment-1956815369
   deprecate! date: "2024-06-10", because: :unmaintained
+  disable! date: "2025-06-21", because: :unmaintained
 
   depends_on "imagemagick"
 
@@ -23,6 +24,6 @@ class Negfix8 < Formula
     (testpath/".negfix8/frameprofile").write "1 1 1 1 1 1 1"
     system bin/"negfix8", "-u", "frameprofile", test_fixtures("test.tiff"),
         "#{testpath}/output.tiff"
-    assert_predicate testpath/"output.tiff", :exist?
+    assert_path_exists testpath/"output.tiff"
   end
 end

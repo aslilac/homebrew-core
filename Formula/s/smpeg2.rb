@@ -16,6 +16,8 @@ class Smpeg2 < Formula
     end
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "dbbac559473f137fb4f16051e47fdab335581c72076ddab6535a9fba87c21749"
@@ -27,13 +29,14 @@ class Smpeg2 < Formula
     sha256 cellar: :any,                 ventura:        "94333f1da48b4cf080d29f3c87bd51df3c637d657f41d83eec7aa92ff4f503ee"
     sha256 cellar: :any,                 monterey:       "5d90c31b398b3d1bdf2ebcc1a10b4879804733f8335dc4a77998d38f8e976b79"
     sha256 cellar: :any,                 big_sur:        "4bec13f2819af5a5f3472481df37b7c6afdaa884fce40023057484936caad58c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "21fa4f02887307bf5eb069733e06cb3931cad92ffefd27a8d2ebd49d6b9afb23"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "57ef23a33dcadc1871ad7e12fe7dfddaa7e6773704691af46616b03f8c9f83b7"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "sdl2"
 
   # Fix -flat_namespace being used on Big Sur and later.
@@ -41,12 +44,12 @@ class Smpeg2 < Formula
   patch :DATA
 
   def install
+    args = ["--with-sdl-prefix=#{Formula["sdl2"].opt_prefix}", "--disable-sdltest"]
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
     system "./autogen.sh"
-    system "./configure", "--prefix=#{prefix}",
-                          "--with-sdl-prefix=#{Formula["sdl2"].opt_prefix}",
-                          "--disable-dependency-tracking",
-                          "--disable-debug",
-                          "--disable-sdltest"
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
 

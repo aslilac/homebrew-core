@@ -6,6 +6,8 @@ class CargoAllFeatures < Formula
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/frewsxcv/cargo-all-features.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a3230194ce2a1aaf67cf633477a254f8bea2e1661c6849598c31e1e9dee4866a"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b12a3968ae8ee10062526525c6cc07c5d288529204b51696e9f3ea104dffb1f3"
@@ -16,6 +18,7 @@ class CargoAllFeatures < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "39177b01645bfdf19d6d9757c863e96bdd711170d8e87a1f5b2c7d9720f0a33a"
     sha256 cellar: :any_skip_relocation, monterey:       "912aeeaf3ae966f434cacda0b8e5c5c904f8ad83d33ff3334724c3022e151185"
     sha256 cellar: :any_skip_relocation, big_sur:        "680c7a563c12800a68c8e24afbad0b5c8ca8380c7e16e5e2a4f045af3bae7406"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "25a0b7ead12f5cabf7889eb7aa847fe12aa3ee7c0c6110e93e7e35b9d1633035"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b948efbbe607b8dd394c6051416e698544960ece99c29c67909228214e3f1c17"
   end
 
@@ -30,8 +33,8 @@ class CargoAllFeatures < Formula
     # Show that we can use a different toolchain than the one provided by the `rust` formula.
     # https://github.com/Homebrew/homebrew-core/pull/134074#pullrequestreview-1484979359
     ENV.prepend_path "PATH", Formula["rustup"].bin
-    system "rustup", "default", "beta"
     system "rustup", "set", "profile", "minimal"
+    system "rustup", "default", "beta"
 
     crate = testpath/"demo-crate"
     mkdir crate do

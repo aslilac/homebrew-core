@@ -1,16 +1,16 @@
 class Qxmpp < Formula
   desc "Cross-platform C++ XMPP client and server library"
-  homepage "https://github.com/qxmpp-project/qxmpp/"
-  url "https://github.com/qxmpp-project/qxmpp/archive/refs/tags/v1.9.0.tar.gz"
-  sha256 "1b791c53d32e38c7f612b4a1d54f35b9db264501be2b3d07ef927af73e2f7d0e"
+  homepage "https://invent.kde.org/libraries/qxmpp"
+  url "https://invent.kde.org/libraries/qxmpp/-/archive/v1.10.4/qxmpp-v1.10.4.tar.bz2"
+  sha256 "92d7e491be736598b2ef20250b5a5e387df584f4a61e0b5d34a3536fa99b3e72"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:  "d986877c85758a24b078bfb0a5e7b92bfa711b8e8fa1167a6be1a38383062b84"
-    sha256 cellar: :any,                 arm64_ventura: "53a46feb30e65c987ef315f68ad7e3d70bc1ed03fc7a626ad6ddd34849e74758"
-    sha256 cellar: :any,                 sonoma:        "b0a56178bcea8eea542491ea70ca864f75dfec260abd43529a6f0562d22b7777"
-    sha256 cellar: :any,                 ventura:       "19f57652e4a3d4c7f204a8be8ad127c656bb04939aee19870f2d6d87df97d153"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5ec94ff4686db3cc45b68e9e2f48530c5738a0eada1785b149c497f6644ecafb"
+    sha256 cellar: :any,                 arm64_sonoma:  "927f6f32f2f6748c6db4bdcf726f503e4be2626a772babf37d2e8be17fc9fc64"
+    sha256 cellar: :any,                 arm64_ventura: "599abd8cea19f8951f3518bb649fbdd1cf7f35a3c85e414231a85aed0438060e"
+    sha256 cellar: :any,                 sonoma:        "2b4215786c74e012e8e6a22eda45ddb14e22493a260c57da48d2ff88c955ce7d"
+    sha256 cellar: :any,                 ventura:       "da033a9b7a6211fe8b598863765ca3feadf6deb390939e6fcb29f5e19817db4d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "31c2d1dbdec20af0800b293d32e01a8b009961a69d61538e3f6eea021269d187"
   end
 
   depends_on "cmake" => :build
@@ -64,7 +64,7 @@ class Qxmpp < Formula
 
     system "#{Formula["qt"].bin}/qmake", "test.pro"
     system "make"
-    assert_predicate testpath/"test", :exist?, "test output file does not exist!"
+    assert_path_exists testpath/"test", "test output file does not exist!"
     system "./test"
   end
 end

@@ -5,6 +5,8 @@ class Avra < Formula
   sha256 "cc56837be973d1a102dc6936a0b7235a1d716c0f7cd053bf77e0620577cff986"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "761db2506786dee44f9e36284b588b38692bdef86870ebacf6d90472585627cd"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f170628778857bc28a0cb962dc7c44904c2d4400d56e2723c3df711d05acb9d5"
@@ -18,6 +20,7 @@ class Avra < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "752edb7e9140387d4b763229ff05cdf973056a70c5a4799b63cce83c2ff18be5"
     sha256 cellar: :any_skip_relocation, mojave:         "cedf5547712134c47d3659e1cddde7d506643448eca98fb428734165fbb5afc7"
     sha256 cellar: :any_skip_relocation, high_sierra:    "f380ed5ddc18ece7b83f4c32290f56dfcc8a27065cc1a39423debfc482d369d2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "12e71df9eb59795607bf04ad34be2fd45cafe2b73fa1e5eeb94197d31c40b13c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "db5dc219fb53c28e191c9f2a4127efe2de53a27e7526b2b0d6b705c4ff57ee69"
   end
 
@@ -33,7 +36,7 @@ class Avra < Formula
     (testpath/"test.asm").write " .device attiny10\n ldi r16,0x42\n"
     output = shell_output("#{bin}/avra -l test.lst test.asm")
     assert_match "Assembly complete with no errors.", output
-    assert_predicate testpath/"test.hex", :exist?
+    assert_path_exists testpath/"test.hex"
     assert_match "ldi r16,0x42", File.read("test.lst")
   end
 end

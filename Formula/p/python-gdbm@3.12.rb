@@ -1,21 +1,24 @@
 class PythonGdbmAT312 < Formula
   desc "Python interface to gdbm"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.12.7/Python-3.12.7.tgz"
-  sha256 "73ac8fe780227bf371add8373c3079f42a0dc62deff8d612cd15a618082ab623"
+  url "https://www.python.org/ftp/python/3.12.11/Python-3.12.11.tgz"
+  sha256 "7b8d59af8216044d2313de8120bfc2cc00a9bd2e542f15795e1d616c51faf3d6"
   license "Python-2.0"
 
   livecheck do
     formula "python@3.12"
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "63c5604dac90c9f5caeff9048a356974f264c23e19e71a1f00038cff94248dbd"
-    sha256 cellar: :any, arm64_sonoma:  "0850ecb339f79f4b74b200a6707a74ae3c7a973100892b1e2c919dbeccce2664"
-    sha256 cellar: :any, arm64_ventura: "ecd7fec78dc938ec4d58dda6c031e89ab99d4f77e71790d96889f38f2c05a262"
-    sha256 cellar: :any, sonoma:        "55f70d3c5a89b8de7c6452b521ea8645cf1cd3b002e2f6a8ce6cae9326550a48"
-    sha256 cellar: :any, ventura:       "44ab8aefa06d2af77193f2b399e782e0ae8917002d4e9393f316f2e228bf24d0"
-    sha256               x86_64_linux:  "9fb06a5c4094750bef26395bd2131b90f5e9e46d2a74bad6862fb29205fa5801"
+    sha256 cellar: :any, arm64_sequoia: "e9dfb0a8a1c5c3d32e8a0e32f98acd0727a4c595baa9208b4ec248f1861b863a"
+    sha256 cellar: :any, arm64_sonoma:  "6b52029d5aad2e4540c870d36b104464599d645bd7f6517fcca289247a147b3a"
+    sha256 cellar: :any, arm64_ventura: "07c8cd8a2de571b010ce425c75ef0ef597c15a0ed09387aa998f3aba86ec69b8"
+    sha256 cellar: :any, sonoma:        "2f052556d673a0d83e3b4cf2b06c2b45101368a333d68457772392774a014014"
+    sha256 cellar: :any, ventura:       "eb2341ddebf93b1f6f1af614569b6ce7062ca179002dcb9803ebc1ad9f48e890"
+    sha256               arm64_linux:   "927f8385c7a3b75caf36346b846dc92c78ecc12f6d7fab781abb58abdc08d04e"
+    sha256               x86_64_linux:  "4762b9c183e68b62c595de5a62ad300250e7c8f4db069a31f9c543e13261d379"
   end
 
   depends_on "gdbm"
@@ -26,6 +29,13 @@ class PythonGdbmAT312 < Formula
   end
 
   def install
+    xy = Language::Python.major_minor_version python3
+    python_include = if OS.mac?
+      Formula["python@#{xy}"].opt_frameworks/"Python.framework/Versions/#{xy}/include/python#{xy}"
+    else
+      Formula["python@#{xy}"].opt_include/"python#{xy}"
+    end
+
     cd "Modules" do
       (Pathname.pwd/"setup.py").write <<~PYTHON
         from setuptools import setup, Extension
@@ -35,7 +45,7 @@ class PythonGdbmAT312 < Formula
               version="#{version}",
               ext_modules = [
                 Extension("_gdbm", ["_gdbmmodule.c"],
-                          include_dirs=["#{Formula["gdbm"].opt_include}"],
+                          include_dirs=["#{Formula["gdbm"].opt_include}", "#{python_include}/internal"],
                           libraries=["gdbm"],
                           library_dirs=["#{Formula["gdbm"].opt_lib}"])
               ]

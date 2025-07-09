@@ -1,11 +1,10 @@
 class Opencascade < Formula
   desc "3D modeling and numerical simulation software for CAD/CAM/CAE"
   homepage "https://dev.opencascade.org/"
-  url "https://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=refs/tags/V7_8_1;sf=tgz"
-  version "7.8.1"
-  sha256 "33f2bdb67e3f6ae469f3fa816cfba34529a23a9cb736bf98a32b203d8531c523"
+  url "https://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=refs/tags/V7_9_1;sf=tgz"
+  version "7.9.1"
+  sha256 "e70b8c08c74f9693cbc91baa48610f1f5448ad167425fb8b957cf5a8f2cafed5"
   license "LGPL-2.1-only"
-  revision 1
 
   # The first-party download page (https://dev.opencascade.org/release)
   # references version 7.5.0 and hasn't been updated for later maintenance
@@ -20,13 +19,15 @@ class Opencascade < Formula
     end
   end
 
+  no_autobump! because: :incompatible_version_format
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "0b595733f44fc4274d778db8b823a084c8c7db25340e379f9576a459ced632d7"
-    sha256 cellar: :any,                 arm64_sonoma:  "50d193d6a0919f8f5cd3b015a76093c29a18d2400fcfb87ef1452dde71650dae"
-    sha256 cellar: :any,                 arm64_ventura: "0dbe2be098a5fcc4e0a23bd40885510a28a5121361668ebe0c53ccf3aac26ee9"
-    sha256 cellar: :any,                 sonoma:        "5d9d9858f837687cc5500eb05db8792b37cb31711deb7c5ef43bab7c13f876d0"
-    sha256 cellar: :any,                 ventura:       "077de8a6d15b74ace2cceaf344a6b3e2251df03d0e84bbee6b4ccf677d560b4d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6c10e9c2b101c131e968115e39ba3ae20aa35559f8e2adce8ee7b809c4624444"
+    sha256 cellar: :any,                 arm64_sequoia: "f9d87b8dde916c0a051b88b7766f8a0d69d5dd0383fc6dce29a08989f91268bf"
+    sha256 cellar: :any,                 arm64_sonoma:  "778cd31a4361eb9ab61e88d5a34138fbc6d4925d6f4193dc0c8749480e903ffd"
+    sha256 cellar: :any,                 arm64_ventura: "75ce5693d58108d89c9f033ce907429c046af9589c10298821e5179c54d6bec0"
+    sha256 cellar: :any,                 sonoma:        "d1ddb8f31e96a5ef9de9bb4e8a29bbe2d8961b3ea5bf2a312a755f8642621e3b"
+    sha256 cellar: :any,                 ventura:       "bc7eca82a63b2094211ade87f493062d5fb3e9dc84905504a73f66d713aafc4b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "961d89f14088c689138fa3ba6b53ce5b7416576de3628e669dac533c971c5d2a"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -41,12 +42,6 @@ class Opencascade < Formula
   on_linux do
     depends_on "libx11"
     depends_on "mesa" # For OpenGL
-  end
-
-  # Backport fix for incorrect type
-  patch do
-    url "https://github.com/Open-Cascade-SAS/OCCT/commit/7236e83dcc1e7284e66dc61e612154617ef715d6.patch?full_index=1"
-    sha256 "ed8848b3891df4894de56ae8f8c51f6a4b78477c0063d957321c1cace4613c29"
   end
 
   def install

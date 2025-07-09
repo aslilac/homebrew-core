@@ -6,6 +6,8 @@ class Hqx < Formula
       revision: "124c9399fa136fb0f743417ca27dfa2ca2860c2d"
   license "LGPL-2.1-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any,                 arm64_sequoia:  "d0546464bc8981a17a079d2e9264ae9bbca9cbd7db380b0c2d8c76addf18f4e5"
@@ -19,6 +21,7 @@ class Hqx < Formula
     sha256 cellar: :any,                 big_sur:        "8eccb719985ba896880e42efd7266c24ee920c3952441ac90f8fb327c875b1c0"
     sha256 cellar: :any,                 catalina:       "d59524a43357e8590e15fbb039891261b2d3c6c33bf073fece8bfa568c3b9710"
     sha256 cellar: :any,                 mojave:         "3714c62ed8c552ddf8242b87845c5d35d17341d44ffea5cc3feceaa2e4c7e960"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "bb459e2d22d4afeebf2a798b5756a82bdb7658e33fd8c249fa99cac4594fc35f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d10418410cbd8fb6be975c40e233a41031491a307ef05a021f5be55e379063cc"
   end
 

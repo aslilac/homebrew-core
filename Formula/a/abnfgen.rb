@@ -10,6 +10,8 @@ class Abnfgen < Formula
     regex(%r{href=.*?/abnfgen[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e2396295b6a6b0952355321d37830f2a2f42b2b2deda9a7ec9162d7f224f0c98"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ebbd726f391652bf3bd3c84107de75d1302ec42551c7355f9760c416915e2291"
@@ -20,6 +22,7 @@ class Abnfgen < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "575c3555e7ba9555741886bd51dec912ba229d99f00461f0fa8e5bfcb1953e62"
     sha256 cellar: :any_skip_relocation, monterey:       "aabd22f0c8be1bfdb787b8ca17c303350ac9d726df2cb6ee2b760972c8fa6b1d"
     sha256 cellar: :any_skip_relocation, big_sur:        "d26f4e4456ba543aa9b54b8950d26cdd91b7f64e1f40e5b67d4266463f3f9aeb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "3d3524e2008a5cb3a6c5248cdddc948d023a0e1781246862c0035d7a3cbf6bbe"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "76f35d17e3a1bad80de9ef0c2fb654882619b43a70f00cc23293b7d63c3fc513"
   end
 

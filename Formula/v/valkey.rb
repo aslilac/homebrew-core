@@ -1,8 +1,8 @@
 class Valkey < Formula
   desc "High-performance data structure server that primarily serves key/value workloads"
   homepage "https://valkey.io"
-  url "https://github.com/valkey-io/valkey/archive/refs/tags/8.0.1.tar.gz"
-  sha256 "1e1d6dfbed2f932a87afbc7402be050a73974a9b19a9116897e537a6638e5e1d"
+  url "https://github.com/valkey-io/valkey/archive/refs/tags/8.1.3.tar.gz"
+  sha256 "6b167eb7072f5785c0c0af807960889a3d346fc3d0ecb571064b019ee365ee00"
   license all_of: [
     "BSD-3-Clause",
     "BSD-2-Clause", # deps/jemalloc, deps/linenoise, src/lzf*
@@ -13,12 +13,13 @@ class Valkey < Formula
   head "https://github.com/valkey-io/valkey.git", branch: "unstable"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "a305a3fd53b53997a9891b04ec5dfe833bc8e6f8e279003f3bcb9fff1859cb82"
-    sha256 cellar: :any,                 arm64_sonoma:  "1ba0db271faa7a7f0253ac5082397e34735cfe94dd11d1c7441bedb5b7c52491"
-    sha256 cellar: :any,                 arm64_ventura: "663f7e18a04c44a70a236752c0cdcd49c4b7cc28695bca94d76d2702f5172e6a"
-    sha256 cellar: :any,                 sonoma:        "340130c0cade2f030a79d7a035ad213d5ebc4091d2a2a25f96cc97667b641beb"
-    sha256 cellar: :any,                 ventura:       "f99a2b6a8ec68c169c4221e3eb7a3d89ddaaa3d2a2d0190302d5310cdd899ad4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5a03be3c2728970bb5ae209043a9d7c20e05ce144d6c2d725d166d169d268d42"
+    sha256 cellar: :any,                 arm64_sequoia: "3d92b36a7308984c858000b1ed2b7a574940ae4be3969c3dfda5ee99a087d0e8"
+    sha256 cellar: :any,                 arm64_sonoma:  "85f5bf261982e28bbfd8449b72ec1fd8c977de64eb6dd032c20d1e088934f2bd"
+    sha256 cellar: :any,                 arm64_ventura: "47e6b16b999321d4c45b295b309dfd05e993f99e41ef2854a2cbb07f5f2ed06b"
+    sha256 cellar: :any,                 sonoma:        "d85485385b9823a482cedd85f1cb64d6ece353d387d94c9f5f6e970ff347725e"
+    sha256 cellar: :any,                 ventura:       "f295763ef4434de5f9afc8be4be619e1f4d5dd51594758c5a5f2d82a0a14407f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "92afe27dea0ae5176dd17337e4d7ff07a78ca32af73c26edb5b3e814898b4823"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5826effaa339018a131924d08c702cc970910f1131447df69a16bba42fff6d68"
   end
 
   depends_on "openssl@3"
@@ -51,6 +52,6 @@ class Valkey < Formula
 
   test do
     system bin/"valkey-server", "--test-memory", "2"
-    %w[run db/valkey log].each { |p| assert_predicate var/p, :exist?, "#{var/p} doesn't exist!" }
+    %w[run db/valkey log].each { |p| assert_path_exists var/p, "#{var/p} doesn't exist!" }
   end
 end

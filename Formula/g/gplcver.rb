@@ -12,6 +12,8 @@ class Gplcver < Formula
     regex(%r{url=.*?/gplcver[._-]v?(\d+(?:\.\d+)+[a-z]?)\.src\.}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "0add15edb99e15d1f6436b96c3030d44351f54bb81196948a16ee292d5d8b5b6"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "dde704f0707db66fc51b44e80096d941e26737b98ea99f43e78be17a32f9963c"
@@ -27,6 +29,7 @@ class Gplcver < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "2460dcc2da525280cd5b7d2452abe922874291b92f0ba3abd1316da2e5ff40f7"
     sha256 cellar: :any_skip_relocation, sierra:         "a0f14e7d01b7098ed6e770b21df05f03d7506ca0bab3d1f84845ca9ca7d1eb5b"
     sha256 cellar: :any_skip_relocation, el_capitan:     "a094d355a75148ed611e9668841a33810a1a1226bc6651b8d0c5e4868867e7fd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "5bcdf3ad2379563874cbf97905caeab7f49177aba0d392917e17ad68fdbba0ea"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c7781b1d43d27d447386d9563e2c04d7b253b467773d077f29f2171723a66829"
   end
 

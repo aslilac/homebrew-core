@@ -6,6 +6,8 @@ class Gtkglext < Formula
   license "LGPL-2.1-or-later"
   revision 4
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sonoma:   "dbda7d73cfcf8ff56426e761be3d928b47cc25142be9e436f29634f306ceb02d"
     sha256 cellar: :any,                 arm64_ventura:  "97c561405376a0e3f03d661edb63332c449464eca670d94d95276d7a16708ada"
@@ -13,10 +15,11 @@ class Gtkglext < Formula
     sha256 cellar: :any,                 sonoma:         "ea372181dc03023ea581b14ca996646f6da8cdb54d81911f5b999281c70ecdd7"
     sha256 cellar: :any,                 ventura:        "986da9680b6032a4f4ae363e3c18176dce0bd276367e311c36b09494198d79d1"
     sha256 cellar: :any,                 monterey:       "6f045d38e2a584449fa6b5fc275f13b46bce7a4bd892219bb9dbe9bae44a9835"
+    sha256                               arm64_linux:    "8111b6fa90b879f9572ff71ebec5ff279bc5b4532c19f52331286f39783c04ab"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "bea86597c739ebbf55d551970dee174085bfc3d0c4d70f06f0cce969979ef2af"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => [:build, :test]
   depends_on "glib"
   depends_on "gtk+"
   depends_on "pango"
@@ -120,7 +123,7 @@ class Gtkglext < Formula
       system "autoreconf", "--force", "--install", "--verbose"
     end
 
-    args = *std_configure_args
+    args = []
     if OS.mac?
       args << "--without-x"
       # Fix flat_namespace usage
@@ -128,7 +131,7 @@ class Gtkglext < Formula
                 "${wl}-undefined ${wl}dynamic_lookup"
     end
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 
@@ -141,67 +144,9 @@ class Gtkglext < Formula
         return 0;
       }
     C
-    atk = Formula["atk"]
-    cairo = Formula["cairo"]
-    fontconfig = Formula["fontconfig"]
-    freetype = Formula["freetype"]
-    gdk_pixbuf = Formula["gdk-pixbuf"]
-    gettext = Formula["gettext"]
-    glib = Formula["glib"]
-    gtkx = Formula["gtk+"]
-    harfbuzz = Formula["harfbuzz"]
-    libpng = Formula["libpng"]
-    pango = Formula["pango"]
-    pixman = Formula["pixman"]
-    flags = %W[
-      -I#{atk.opt_include}/atk-1.0
-      -I#{cairo.opt_include}/cairo
-      -I#{fontconfig.opt_include}
-      -I#{freetype.opt_include}/freetype2
-      -I#{gdk_pixbuf.opt_include}/gdk-pixbuf-2.0
-      -I#{gettext.opt_include}
-      -I#{glib.opt_include}/glib-2.0
-      -I#{glib.opt_lib}/glib-2.0/include
-      -I#{gtkx.opt_include}/gtk-2.0
-      -I#{gtkx.opt_lib}/gtk-2.0/include
-      -I#{harfbuzz.opt_include}/harfbuzz
-      -I#{include}/gtkglext-1.0
-      -I#{libpng.opt_include}/libpng16
-      -I#{lib}/gtkglext-1.0/include
-      -I#{pango.opt_include}/pango-1.0
-      -I#{pixman.opt_include}/pixman-1
-      -D_REENTRANT
-      -L#{atk.opt_lib}
-      -L#{cairo.opt_lib}
-      -L#{gdk_pixbuf.opt_lib}
-      -L#{gettext.opt_lib}
-      -L#{glib.opt_lib}
-      -L#{gtkx.opt_lib}
-      -L#{lib}
-      -L#{pango.opt_lib}
-      -latk-1.0
-      -lcairo
-      -lgio-2.0
-      -lglib-2.0
-      -lgmodule-2.0
-      -lgobject-2.0
-      -lgdk_pixbuf-2.0
-      -lpango-1.0
-      -lpangocairo-1.0
-    ]
 
-    if OS.mac?
-      flags += %w[
-        -lgdk-quartz-2.0
-        -lgtk-quartz-2.0
-        -lgdkglext-quartz-1.0
-        -lgtkglext-quartz-1.0
-        -lintl
-        -framework AppKit
-        -framework OpenGL
-      ]
-    end
-
+    ENV.append_path "PKG_CONFIG_PATH", libexec/"lib/pkgconfig"
+    flags = shell_output("pkgconf --cflags --libs gtkglext-1.0").chomp.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

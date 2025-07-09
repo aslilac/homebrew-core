@@ -3,8 +3,8 @@ class Getmail6 < Formula
 
   desc "Extensible mail retrieval system with POP3, IMAP4, SSL support"
   homepage "https://getmail6.org/"
-  url "https://github.com/getmail6/getmail6/archive/refs/tags/v6.19.05.tar.gz"
-  sha256 "1b8ae957682f446c4c7103c075605c33c7456a4809788d1b769bd469ee90d38b"
+  url "https://github.com/getmail6/getmail6/archive/refs/tags/v6.19.08.tar.gz"
+  sha256 "f0e00a679b21d274179418f8f931defa92352d92fa3a8ad651d0de6b5e93ae77"
   license "GPL-2.0-only"
 
   # Upstream uses GitHub releases to indicate that a version is released
@@ -16,12 +16,13 @@ class Getmail6 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6d0d3044ddc889dca094c9c74de6b9cebc1990c26ae1cf581472b5846e30e62d"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6d0d3044ddc889dca094c9c74de6b9cebc1990c26ae1cf581472b5846e30e62d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "6d0d3044ddc889dca094c9c74de6b9cebc1990c26ae1cf581472b5846e30e62d"
-    sha256 cellar: :any_skip_relocation, sonoma:        "1ad9fc279bfb480b7f89fcd79da25efa69424986fee612443a57a0442670096d"
-    sha256 cellar: :any_skip_relocation, ventura:       "1ad9fc279bfb480b7f89fcd79da25efa69424986fee612443a57a0442670096d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6d0d3044ddc889dca094c9c74de6b9cebc1990c26ae1cf581472b5846e30e62d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "aeba8c126c3373e1e43aac701ea953b1ab0fdd487693bec81b0aaf069cb408a2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "aeba8c126c3373e1e43aac701ea953b1ab0fdd487693bec81b0aaf069cb408a2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "aeba8c126c3373e1e43aac701ea953b1ab0fdd487693bec81b0aaf069cb408a2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "8193735e7a29f0906ea8bfa88062a69dd29397fab794c7a0aba470028a3be6a2"
+    sha256 cellar: :any_skip_relocation, ventura:       "8193735e7a29f0906ea8bfa88062a69dd29397fab794c7a0aba470028a3be6a2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "aeba8c126c3373e1e43aac701ea953b1ab0fdd487693bec81b0aaf069cb408a2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "aeba8c126c3373e1e43aac701ea953b1ab0fdd487693bec81b0aaf069cb408a2"
   end
 
   uses_from_macos "python", since: :catalina

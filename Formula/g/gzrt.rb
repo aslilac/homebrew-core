@@ -10,6 +10,8 @@ class Gzrt < Formula
     regex(/href=.*?gzrt[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a8383b91ba90e35c7cf4110167a631482dbbf1798faf36ab193ab2072aadfec5"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a0aafbc9d11bc14764a79f044072cf6bb3ae9686fca63c2ccdad9b7001c77c82"
@@ -25,6 +27,7 @@ class Gzrt < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "2e7f8e8743943f1e83c4b1ed6372fa3c4cab00f7a090dbb4f967b7fade1e5e20"
     sha256 cellar: :any_skip_relocation, sierra:         "da5c89596737f514900f32986dd9eb32f010c6c1b9f1643dd03a07eae7e383a7"
     sha256 cellar: :any_skip_relocation, el_capitan:     "01df00fd35c6eaee9d32da4644d694ce33deda79a9c3da0284b52694f94a9515"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "654f7cd9822abb04c3e99f03452260a1ba3adb935d74199dfee2c67530b0eb51"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "befaf922391daf55b95098ef2c66c02fcd04813517cef56c60caf3cd1297d986"
   end
 
@@ -47,7 +50,7 @@ class Gzrt < Formula
 
     # Compress data into archive
     Utils::Gzip.compress path
-    refute_predicate path, :exist?
+    refute_path_exists path
 
     # Corrupt the archive to test the recovery process
     File.open("#{path}.gz", "r+b") do |file|

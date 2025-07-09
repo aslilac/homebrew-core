@@ -4,14 +4,16 @@ class PostgresqlAT12 < Formula
   url "https://ftp.postgresql.org/pub/source/v12.22/postgresql-12.22.tar.bz2"
   sha256 "8df3c0474782589d3c6f374b5133b1bd14d168086edbc13c6e72e67dd4527a3b"
   license "PostgreSQL"
+  revision 1
 
   bottle do
-    sha256 arm64_sequoia: "a5c78e7ce55f654e10a6e085189375874c1d4cbc3f9945a3af7e19649e7d5ce7"
-    sha256 arm64_sonoma:  "6f7188fb76d7f3b3d5b49cbca78710a93fb6db29e13147339f7b96938e31f233"
-    sha256 arm64_ventura: "2c2feaefff5d7ce821e0e1d4ec3f0283a2627a963bfff99b5952e901743ff3a4"
-    sha256 sonoma:        "0c6108e5234284468ee08d5421e12bfbfdd36c6261e85333533d71ad8bf21a6a"
-    sha256 ventura:       "16de899595cb443c6991899310cc159aa1efbe8a6994438ac5d204e217d9adc3"
-    sha256 x86_64_linux:  "f02f9134dbeccca31ce2649d12ac4e4ba5dffbc0f8de30b36c11b443bc51a218"
+    sha256 arm64_sequoia: "770808f2893a90101c6043beb222509fdbaeb27d43231ce86a823c880167a869"
+    sha256 arm64_sonoma:  "5c7563d9142be7b9f6d9a196ac5962f0df9d2b280b89c3d4a854c88d9a4ddbef"
+    sha256 arm64_ventura: "b033000c5e7fbb428492181650dc33b07da3046da0e0f78daa7a26154db5c5ce"
+    sha256 sonoma:        "e0bbf74f24d63185fb22e85127c6ba5f02909a85b50f3df6a26420572f7148e4"
+    sha256 ventura:       "5bdb379616fc91d0bbca3f337a2f15360a3f417f323de32fef2171be4af4652e"
+    sha256 arm64_linux:   "2c9084a2fbc2dc1ce69a132d0d5e05ddfb21bef567e03bddb5ca940cd477cce8"
+    sha256 x86_64_linux:  "a75e2288530172594e6ec77b02a22a0aeda119feaaa21337b8d1922926472fdb"
   end
 
   keg_only :versioned_formula
@@ -19,8 +21,8 @@ class PostgresqlAT12 < Formula
   # https://www.postgresql.org/support/versioning/
   deprecate! date: "2024-11-14", because: :unsupported
 
-  depends_on "pkg-config" => :build
-  depends_on "icu4c@76"
+  depends_on "pkgconf" => :build
+  depends_on "icu4c@77"
 
   # GSSAPI provided by Kerberos.framework crashes when forked.
   # See https://github.com/Homebrew/homebrew-core/issues/47494.
@@ -41,6 +43,7 @@ class PostgresqlAT12 < Formula
   end
 
   def install
+    ENV.runtime_cpu_detection
     ENV.delete "PKG_CONFIG_LIBDIR" if OS.mac? && MacOS.version == :catalina
     ENV.prepend "LDFLAGS", "-L#{Formula["openssl@3"].opt_lib} -L#{Formula["readline"].opt_lib}"
     ENV.prepend "CPPFLAGS", "-I#{Formula["openssl@3"].opt_include} -I#{Formula["readline"].opt_include}"
@@ -115,42 +118,11 @@ class PostgresqlAT12 < Formula
     (postgresql_datadir/"PG_VERSION").exist?
   end
 
-  def old_postgres_data_dir
-    var/"postgres"
-  end
-
-  # Figure out what version of PostgreSQL the old data dir is
-  # using
-  def old_postgresql_datadir_version
-    pg_version = old_postgres_data_dir/"PG_VERSION"
-    pg_version.exist? && pg_version.read.chomp
-  end
-
   def caveats
-    caveats = ""
-
-    # Extract the version from the formula name
-    pg_formula_version = version.major.to_s
-    # ... and check it against the old data dir postgres version number
-    # to see if we need to print a warning re: data dir
-    if old_postgresql_datadir_version == pg_formula_version
-      caveats += <<~EOS
-        Previous versions of postgresql shared the same data directory.
-
-        You can migrate to a versioned data directory by running:
-          mv -v "#{old_postgres_data_dir}" "#{postgresql_datadir}"
-
-        (Make sure PostgreSQL is stopped before executing this command)
-
-      EOS
-    end
-
-    caveats += <<~EOS
+    <<~EOS
       This formula has created a default database cluster with:
         initdb --locale=C -E UTF-8 #{postgresql_datadir}
     EOS
-
-    caveats
   end
 
   service do

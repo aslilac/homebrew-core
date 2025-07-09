@@ -16,7 +16,7 @@ class Zorba < Formula
 
   # https://github.com/28msec/zorba/issues/232
   # no longer build due to `'boost/filesystem/convenience.hpp' file not found`
-  disable! date: "2025-05-01", because: :unmaintained
+  disable! date: "2025-05-01", because: :does_not_build
 
   depends_on "cmake" => :build
   depends_on "openjdk" => :build
@@ -48,7 +48,6 @@ class Zorba < Formula
   end
 
   test do
-    assert_equal shell_output("#{bin}/zorba -q 1+1").strip,
-                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n2"
+    assert_equal "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n2", shell_output("#{bin}/zorba -q 1+1").strip
   end
 end

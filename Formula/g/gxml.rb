@@ -14,13 +14,14 @@ class Gxml < Formula
     sha256 sonoma:         "09e480a1b3fc86510efff4ec18fb6f2566d2f29a1c847289329db6625c4f3c25"
     sha256 ventura:        "bee9013ba03bee81e7224dcf0a4788daa943b53143033534b10f761d6c210630"
     sha256 monterey:       "19b816073438f3440875bfc354c81d5ac877576df616aa633a63c6951887fcd4"
+    sha256 arm64_linux:    "138f902ae62c44ff26d94030f742d6d8bb7e0a2067337b15b4440562823acd9d"
     sha256 x86_64_linux:   "2655af742b291d5b01f09956dd4d7f812cf0351b4285a0a2e04bec744bfdc4bc"
   end
 
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "vala" => :build
 
   depends_on "glib"
@@ -53,8 +54,8 @@ class Gxml < Formula
       }
     C
     ENV.prepend_path "PKG_CONFIG_PATH", Formula["libxml2"].opt_lib/"pkgconfig"
-    pkg_config_flags = shell_output("pkg-config --cflags --libs libxml-2.0 gxml-0.20").chomp.split
-    system ENV.cc, "test.c", "-o", "test", *pkg_config_flags
+    flags = shell_output("pkgconf --cflags --libs libxml-2.0 gxml-0.20").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
 end

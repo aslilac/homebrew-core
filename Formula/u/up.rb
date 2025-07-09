@@ -5,6 +5,8 @@ class Up < Formula
   sha256 "3ea2161ce77e68d7e34873cc80324f372a3b3f63bed9f1ad1aefd7969dd0c1d1"
   license "Apache-2.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c337068ce52d195859c44c0f90e4f1264b2d10a87fd6a3616e7ba2949087c7be"
@@ -24,12 +26,12 @@ class Up < Formula
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args, "-ldflags", "-s -w", "up.go"
+    system "go", "build", *std_go_args(ldflags: "-s -w"), "up.go"
   end
 
   test do
     assert_match "error", shell_output("#{bin}/up --debug 2>&1", 1)
-    assert_predicate testpath/"up.debug", :exist?, "up.debug not found"
+    assert_path_exists testpath/"up.debug", "up.debug not found"
     assert_includes File.read(testpath/"up.debug"), "checking $SHELL"
   end
 end

@@ -10,6 +10,8 @@ class Lame < Formula
     regex(%r{url=.*?/lame[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "0ae0dcb09c908b80ffbdb1bb168674e5190d6b9ae006d5282b7ab4f06eac9f36"
     sha256 cellar: :any,                 arm64_sonoma:   "a5116a219d70f3bb6728a0dfe6801413b9fd70e6c864257691cdb0ea272c2c1e"
@@ -25,6 +27,7 @@ class Lame < Formula
     sha256 cellar: :any,                 high_sierra:    "9e65c67b83efa5a686aea0506dc44935cd2af2d4fe55fe38dc19610a0ccd80dd"
     sha256 cellar: :any,                 sierra:         "c2d7bce53be2efb5d19d99ea00fbe69613885cce46009e8ab6099f8d5925c3ba"
     sha256 cellar: :any,                 el_capitan:     "73c4d677b4e5357dc5baf30c96ac5f33cf7902e9c77869834b7cd9d17f3415bc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "3e9bc793b37a72ce61d28dbbdb8dd160a0785e91b7d9ab6e964ba9e6a8a549d4"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ee8318f10b1b986d57826f0f59800c43f62d58e8d52cf9c94b8924e28739e656"
   end
 

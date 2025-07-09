@@ -1,18 +1,18 @@
 class Zlint < Formula
   desc "X.509 Certificate Linter focused on Web PKI standards and requirements"
-  homepage "https://github.com/zmap/zlint"
-  url "https://github.com/zmap/zlint/archive/refs/tags/v3.6.4.tar.gz"
-  sha256 "548562c1a7470c6d1c602a077c4e0cb5718ccb53a6e16e49e0671ea8337dae45"
+  homepage "https://zmap.io/"
+  url "https://github.com/zmap/zlint/archive/refs/tags/v3.6.6.tar.gz"
+  sha256 "ca1155915d68772566d8be4c4061129b15eb7055ea9aaa939cc92d3966ba10f6"
   license "Apache-2.0"
   head "https://github.com/zmap/zlint.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c86370f3ad070d0f3c848347100a48bd31ee400aa0225e31029fa51b73e93055"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c86370f3ad070d0f3c848347100a48bd31ee400aa0225e31029fa51b73e93055"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c86370f3ad070d0f3c848347100a48bd31ee400aa0225e31029fa51b73e93055"
-    sha256 cellar: :any_skip_relocation, sonoma:        "0febef86ad445d8aeb0c89144a357e94134971bf0d61d8d0ca6394a4a0b831d8"
-    sha256 cellar: :any_skip_relocation, ventura:       "0febef86ad445d8aeb0c89144a357e94134971bf0d61d8d0ca6394a4a0b831d8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fbf6bd14ba1a065b0c51325fef84fb1a7d382cbccb6bca6913e83860a650680e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3edaff6afb2185ddc9e3a25da2ae19e88e386f010a57ea13c8cbdd4976cb4ac8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3edaff6afb2185ddc9e3a25da2ae19e88e386f010a57ea13c8cbdd4976cb4ac8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "3edaff6afb2185ddc9e3a25da2ae19e88e386f010a57ea13c8cbdd4976cb4ac8"
+    sha256 cellar: :any_skip_relocation, sonoma:        "812f893df4a2cce77a54df0cf2d536c7193bb88399379d3d5354415760bb6394"
+    sha256 cellar: :any_skip_relocation, ventura:       "812f893df4a2cce77a54df0cf2d536c7193bb88399379d3d5354415760bb6394"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "558268e135da92e62fc493c7a2a46a7fb93f1c7d499d310c96939d2cd18d8d24"
   end
 
   depends_on "go" => :build
@@ -27,7 +27,7 @@ class Zlint < Formula
   test do
     assert_match "ZLint version #{version}", shell_output("#{bin}/zlint -version")
 
-    (testpath/"cert.pem").write <<~EOS
+    (testpath/"cert.pem").write <<~PEM
       -----BEGIN CERTIFICATE-----
       MIIB3jCCAWSgAwIBAgIUU3hxzxSDV5V1DeRyZjgzdPKatBEwCgYIKoZIzj0EAwMw
       HjEcMBoGA1UEAwwTaG9tZWJyZXctemxpbnQtdGVzdDAeFw0yMjAxMDEwMDAwMDBa
@@ -41,7 +41,7 @@ class Zlint < Formula
       MQDEMciPyBdrKwnJilT2kVwIMdMmxAjcmV048Ai0CImT5iRERKdBa7QeydMcJo3Z
       7zs=
       -----END CERTIFICATE-----
-    EOS
+    PEM
 
     output = shell_output("#{bin}/zlint -longSummary cert.pem")
     %w[

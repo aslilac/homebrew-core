@@ -1,8 +1,8 @@
 class Exim < Formula
   desc "Complete replacement for sendmail"
   homepage "https://exim.org"
-  url "https://ftp.exim.org/pub/exim/exim4/exim-4.98.tar.xz"
-  sha256 "0ebc108a779f9293ba4b423c20818f9a3db79b60286d96abc6ba6b85a15852f7"
+  url "https://ftp.exim.org/pub/exim/exim4/exim-4.98.2.tar.xz"
+  sha256 "88b8e8a67c1db6cc0b1d148161aa36e662f4ca2fef25d5b6f3694d490e42dcae"
   license "GPL-2.0-or-later"
 
   # Maintenance releases are kept in a `fixes` subdirectory, so it's necessary
@@ -29,14 +29,13 @@ class Exim < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "71fa5f9d4baf4fd62b1d2dd50ab065e7e93c2aa514cf350c03de7b83ff3b767a"
-    sha256 arm64_sonoma:   "9d191df8db39460aa8840f0aa7cafcdbb010f73758a840e19e0907f4558eac38"
-    sha256 arm64_ventura:  "6b5c612e24799fb00727fe69b64988445a86d20cbcf83d71e3f5e8c84d28325b"
-    sha256 arm64_monterey: "5c5cd9bc15e186692a59ebd311bf8706c29438f2c98b92b7554a614246f08be6"
-    sha256 sonoma:         "70f63c3d07217f4acb1a357523e66f7973c8500b4ae26a8b1e86892d89aba87a"
-    sha256 ventura:        "ab8281ba1aff765df525f58297a8156fab046234a5dde1d971fa9598bcb496ad"
-    sha256 monterey:       "94128f45652f109b1297758b1b308a1890e862756029d9e7acc240cc4e33c93b"
-    sha256 x86_64_linux:   "5673d387c1b534b03a54ddf53ca0d93e1b7daa97e35ba1b34ef8049c7d44e896"
+    sha256 arm64_sequoia: "64f71d136823add038862c50b98c2bc1c17e12f00a3d54ea86c47c046ef53d8e"
+    sha256 arm64_sonoma:  "44dabdfd6b14930dc1ff7490f9253fdd2d5ffffe1e741076c5fd0761c2c1c3dd"
+    sha256 arm64_ventura: "b77da9e5603f5d155604192ed601cf04e8e8c0cb3ac54998a14060cde43eb73d"
+    sha256 sonoma:        "d044ee511e3a5f8865c1c88c3af0c01516b9477b92efb80277454da8bb53b056"
+    sha256 ventura:       "8823680f76dfe198757796186c31b26121c354e5c0a6bf2655c68674fd568e75"
+    sha256 arm64_linux:   "06fe09aaaae7881135c244776f88190e9f380c29fee91a79544c29d904dc1ba4"
+    sha256 x86_64_linux:  "26a35deb884aca543f56faa1b7a55573a4671f2e9e9775fb8d404a6754f56d08"
   end
 
   depends_on "berkeley-db@5"

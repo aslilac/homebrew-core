@@ -11,6 +11,8 @@ class Jack < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "e3cd7f8ab3b70baa1766b3a131b16ffe7a62a398f20a3ce7b6d6935c222b5925"
     sha256 arm64_sonoma:   "39affd1f135d3745a22bf4907e46509cdb4b1b3a8e654e23179e1a1ad92193bc"
@@ -19,6 +21,7 @@ class Jack < Formula
     sha256 sonoma:         "15b133b0d5b27e9a1e054fec07cd8c0c3e4972ace51ca2d6ec9b57b8ee4c5c85"
     sha256 ventura:        "6d6e8934386e7609ad4ab4af7ba321ffc0bf8673f93b2d2deca7fb3bc3207688"
     sha256 monterey:       "5079ca572c21ee6acc9574a0db44938e2c6099242d38a3cbd39bc4e4bc643c08"
+    sha256 arm64_linux:    "13cdb9547db6f443c750059b2f230085bac7465964ff22d88aeb4b2eb5e08873"
     sha256 x86_64_linux:   "1632a4f4ebdf3e82dd5186dd71dd498a83bf47f4ef610b319d22bb201727e463"
   end
 

@@ -1,9 +1,8 @@
 class AwsSdkCpp < Formula
   desc "AWS SDK for C++"
   homepage "https://github.com/aws/aws-sdk-cpp"
-  url "https://github.com/aws/aws-sdk-cpp.git",
-      tag:      "1.11.450",
-      revision: "c808a26c2141f0e5be2f830b4a74ad73ec86fb2d"
+  url "https://github.com/aws/aws-sdk-cpp/archive/refs/tags/1.11.600.tar.gz"
+  sha256 "bae5745e8d65551001fb9703cf8a8fe8b7bdffd6c552492f6f088b2eead21bad"
   license "Apache-2.0"
   head "https://github.com/aws/aws-sdk-cpp.git", branch: "main"
 
@@ -12,37 +11,45 @@ class AwsSdkCpp < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "692c0415ce1f4b6042e7eda6df561e84bb0846c16d6f327bd4dda24a9bdc132d"
-    sha256 cellar: :any,                 arm64_sonoma:  "412470660fb2aded240a852204d85f3f89f1f222a1af50bb997fef8903b09575"
-    sha256 cellar: :any,                 arm64_ventura: "d5ae47fbadcd6c5ee1dd051aad05a6768ecbc2639b1c8e920308f304129ce169"
-    sha256 cellar: :any,                 sonoma:        "a517b0c2c3c48f5dd1258f96d822d969cc264eff4f77011a83becdd5bde0f00d"
-    sha256 cellar: :any,                 ventura:       "b37f8655d3d60b0798c85bef74198ac295b8e6cb983f5b43e14014b7f47987bc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "34f568507b2fe726173cc2b87e84d535da4ac2b7d9678f99d1815295027b481e"
+    sha256                               arm64_sequoia: "b2725225c0fa55a971729f195782b425c3d005b772b962034324323db48e50ce"
+    sha256                               arm64_sonoma:  "13969582853439b238da643c2c43ba3cc2495fa5fa6692d9aad604282e2b3231"
+    sha256                               arm64_ventura: "9f156de3e369f50ebd482b41db08925353a9b89a0baabf6e6eda1baf2bd8bcc8"
+    sha256 cellar: :any,                 sonoma:        "f9b430c81c7604d5e0be942865d7b48323f51fd239c120f429f8ce979af79976"
+    sha256 cellar: :any,                 ventura:       "edd965db94db9d701a1487b750a93bb7c6758aee811240ac3466df1ff73664c0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b7bac82be6da72c44248a235a007e3ab1b239313bc7c74a81e5b659f3c008feb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ba3dc934b9cf7940489cf8d621ae625efab3d5f76b0df6aea45662b50ac89d6c"
   end
 
   depends_on "cmake" => :build
+  depends_on "aws-c-auth"
+  depends_on "aws-c-common"
+  depends_on "aws-c-event-stream"
+  depends_on "aws-c-http"
+  depends_on "aws-c-io"
+  depends_on "aws-c-s3"
+  depends_on "aws-crt-cpp"
 
   uses_from_macos "curl"
   uses_from_macos "zlib"
 
-  on_linux do
-    depends_on "openssl@3"
-  end
-
-  conflicts_with "s2n", because: "both install s2n/unstable/crl.h"
-
-  fails_with gcc: "5"
-
   def install
-    ENV.append "LDFLAGS", "-Wl,-rpath,#{rpath}"
     # Avoid OOM failure on Github runner
     ENV.deparallelize if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"].present?
 
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, "-DENABLE_TESTING=OFF"
+    linker_flags = ["-Wl,-rpath,#{rpath}"]
+    # Avoid overlinking to aws-c-* indirect dependencies
+    linker_flags << "-Wl,-dead_strip_dylibs" if OS.mac?
+
+    args = %W[
+      -DBUILD_DEPS=OFF
+      -DCMAKE_MODULE_PATH=#{Formula["aws-c-common"].opt_lib}/cmake/aws-c-common/modules
+      -DCMAKE_SHARED_LINKER_FLAGS=#{linker_flags.join(" ")}
+      -DENABLE_TESTING=OFF
+    ]
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
-
-    lib.install Dir[lib/"mac/Release/*"].select { |f| File.file? f }
   end
 
   test do

@@ -1,18 +1,20 @@
 class Helmfile < Formula
   desc "Deploy Kubernetes Helm Charts"
   homepage "https://github.com/helmfile/helmfile"
-  url "https://github.com/helmfile/helmfile/archive/refs/tags/v0.169.1.tar.gz"
-  sha256 "4f418481f1e8e7ced52d92160be2291b912514064ec696d92c358b5ead5bc232"
+  url "https://github.com/helmfile/helmfile/archive/refs/tags/v1.1.2.tar.gz"
+  sha256 "990e30ec57cc1701a6c1265d3e6b7d820ddf93444aea5daf568fe0c220cd46da"
   license "MIT"
   version_scheme 1
+  head "https://github.com/helmfile/helmfile.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fc29d3d375c9c5f349b4ae1545bbed22ebca533f456e452856d784646e8ad88e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5730d4949e918ac5ea7d22fb192b803c494fa9ce8fe9e39c5cfe087ff9f50dd9"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c22ab5981b677dcb5c0c8a86e2794decb07add235f8fba143bb8129bd80f73c9"
-    sha256 cellar: :any_skip_relocation, sonoma:        "50915d0ebd48a78479b243884a4e20c0f0f3fec911886529461f56576acb7b13"
-    sha256 cellar: :any_skip_relocation, ventura:       "02e433e0ca6292b77b4bc1cd68b38fe3b139e77c7560c3fe4fc09c28aa0e995a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e839cf21e37c910c17819c13b6f0c6867741531b1c418d231875e6b7950685e7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cc2c679cd9a97a6a31c17e511092823d422f2d7ca0a881c2a8cd7fae3a07857b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d8b50267f397ea866003f739c0245e7ecb57ec4d19dc24ef9ceeb6beaa66ca2a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "3b453a9f7a963816462cae45e27220749e76fcb4639d76d6267e2d7043c04f68"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c6e65b4d484634e9afb365dfdfd0bc114f349c61925104cbf887309d36c632f3"
+    sha256 cellar: :any_skip_relocation, ventura:       "07e81393006eb16cd80da2054d0623cc88e712615d0a4320dad1e484c1edfb10"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e25e4de9c7520ab19547468395dd8bb7b7c66f81b1bfe0237094e75d24d2d2db"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9c5c44415fb3392ae4cf9b4b93273ef7782c42de0eb585e2750b69051e0df3be"
   end
 
   depends_on "go" => :build

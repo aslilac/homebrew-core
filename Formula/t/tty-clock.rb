@@ -6,6 +6,8 @@ class TtyClock < Formula
   license "BSD-3-Clause"
   head "https://github.com/xorg62/tty-clock.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "7068bc510258482b8643c72d3cd98e5aeb11ec1c870a4f843b4dab323adc5437"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d9d3a157ca3d9c96d55c96e377ce0adf1033d388971438793fce2646976d5ab2"
@@ -21,6 +23,7 @@ class TtyClock < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "b3d2a19cdb38e0e156be552d6f9ca8926097300f17bbe6628b7443934d3e1cb1"
     sha256 cellar: :any_skip_relocation, sierra:         "9b0e056ec6d86d9ba9cbd2abc02236607a6ad5601e7a656d10cad20182564315"
     sha256 cellar: :any_skip_relocation, el_capitan:     "c0d981769811bf1c265e11702ea0d26bcf87102ac92896c04c14a91fbed1cc8c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "fe5ad63f95c7fcbe74f39fff2206c1e8d20145d023e29ad783109632f8868308"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2b676f9ca583791e909a241667741a84289d4f75c5673fdd31176c48450ab701"
   end
 

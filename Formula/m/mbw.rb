@@ -5,6 +5,8 @@ class Mbw < Formula
   sha256 "557f670e13ff663086fe239e4184d8ca6154b004bd5fde2b0a748e5aa543c87f"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5d07a9cad29f80e14aa0abab7e8b5519729e401d876e84b59b400f5413a85a3a"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "43bba75f10ec5e1d0dead83ec5b9549e9c5afaec052c3b5684fe8dbebd485819"
@@ -15,6 +17,7 @@ class Mbw < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "0e7ba7c958e2386d613322712c44a50c3f3aaf22ec663fb550c84b3d2537ce09"
     sha256 cellar: :any_skip_relocation, monterey:       "356d3527bf46cd56f25f2f8ed5e6150115fb3ec175100493c98ffbbafefa1344"
     sha256 cellar: :any_skip_relocation, big_sur:        "63a8ba9a5eb2ffaf44f1535b8c3bcac2bd3ebc912a6daceae2ee01df6c89b13b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "59fb54c3415e043a4eb29261d56613411126d676837894f159f6cb54d438ee0d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "07ba5ff41d1031bc549c646c8d7bfc9082ce02b0572d437cb0c840855814ebf0"
   end
 

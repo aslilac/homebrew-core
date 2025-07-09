@@ -6,6 +6,8 @@ class Mpfrcx < Formula
   license "GPL-3.0-or-later"
   head "https://gitlab.inria.fr/enge/mpfrcx.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "e9d9fcb8796dc03e08d4f3b1d1e6e1cd054befac43f75f20f6592891e01c366f"
     sha256 cellar: :any,                 arm64_sonoma:   "3943e6b49295761e2d5ca64145d1f0ca80255d0d6c608c1dc2df5c8d964a9c55"
@@ -16,6 +18,7 @@ class Mpfrcx < Formula
     sha256 cellar: :any,                 ventura:        "d9f53f55c7a8931e03c5a8adbd8f4d15396b3ac4b90fef67df9646fb127fb86a"
     sha256 cellar: :any,                 monterey:       "2a8d8afb5038289d4bb3b6641dd4362369d09c3c370c2a682aa09d726854d8f9"
     sha256 cellar: :any,                 big_sur:        "6cbcd65b4fe55b4be169457f4a915bd60a52a4ded61af56b0d0e67bcf8863685"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "3e9fb25f1f4406a9aa90110ef908ccfb58c4fa3c08bfc37bbdc8aeb59994c7ce"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "cf4bc73f687ec7bb72c060eb35acc89a2eefd1aa46d706a177a13bee6245cde0"
   end
 

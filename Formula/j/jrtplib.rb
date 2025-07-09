@@ -9,6 +9,8 @@ class Jrtplib < Formula
     skip "No longer developed"
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "ef88fc08dc41b679c8ccdcaebabab8303f7eb30ccc8cddb2776e4952f335d2f0"
     sha256 cellar: :any,                 arm64_sonoma:   "c21691446176fd07d6163eece3a708d9088739e61fa29671cdeacdb3737fabc5"
@@ -22,6 +24,7 @@ class Jrtplib < Formula
     sha256 cellar: :any,                 catalina:       "05fc5e0747f7d5f725f9dda22cf39d414e8ee751829d14e9c32fa12279834cfc"
     sha256 cellar: :any,                 mojave:         "1b48b36e9011b4aa675f1d581e900c64bcad93ba15fc86d1e27db09ed2c75ce9"
     sha256 cellar: :any,                 high_sierra:    "420016bd3f9981189dc8bf69dc7520da8d9cbde848147dde495792c1a5a984fa"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "5b43949d28bbbce5b86915445eafbd3bf25b40f38e8439487ccb3f7b54da00b4"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2c3a63a9f2e44c207522cb93a0bd93e429ed65937d74ea2b5d7a4110e46d9284"
   end
 
@@ -30,8 +33,9 @@ class Jrtplib < Formula
   depends_on "jthread"
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

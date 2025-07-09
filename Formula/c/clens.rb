@@ -5,6 +5,8 @@ class Clens < Formula
   sha256 "0cc18155c2c98077cb90f07f6ad8334314606c4be0b6ffc13d6996171c7dc09d"
   license "ISC"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "27badceb51069c0b5dcc5673744b149caa21eaf48719005480dbc0b6dcd8a153"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2c2082a66bc51ab50ef09640e4a4526111455a6545a21e9907c62469ea686d82"
@@ -20,6 +22,7 @@ class Clens < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "e9dfe6e9228a928f9cb1a4048d92ec576be5f89f48408401b7f3020c1482a7c6"
     sha256 cellar: :any_skip_relocation, sierra:         "f034c79bf5a16265db249c673b2d2a3e6850676dba739adeb6e90394d8f77475"
     sha256 cellar: :any_skip_relocation, el_capitan:     "f6c68d7dce9d824274e16e3867926528cc79d161418fac0a0052e37dc6604668"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "30170cc04b93089a889764fdb8ffffe69b24b762fcfdf51dc2419e6ff51f5d27"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4b5d5f5cba941676c726e09e2b14c9069dfebf9db9d6cb2b75fc321a2481aedf"
   end
 

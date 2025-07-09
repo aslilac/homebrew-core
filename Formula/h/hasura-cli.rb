@@ -1,26 +1,18 @@
 class HasuraCli < Formula
   desc "Command-Line Interface for Hasura GraphQL Engine"
   homepage "https://hasura.io"
-  url "https://github.com/hasura/graphql-engine/archive/refs/tags/v2.44.0.tar.gz"
-  sha256 "3cd6b1937da62d8508c42b1e28f446a0c695fc10c8de43c7520e2e9c716eabb0"
+  url "https://github.com/hasura/graphql-engine/archive/refs/tags/v2.48.1.tar.gz"
+  sha256 "688e1e4af3e5c0d2c21de7ca705b1cacf5012db76f531052f68b7ab2967b8bf9"
   license "Apache-2.0"
   head "https://github.com/hasura/graphql-engine.git", branch: "master"
 
-  # There can be a notable gap between when a version is tagged and a
-  # corresponding release is created, so we check the "latest" release instead
-  # of the Git tags.
-  livecheck do
-    url :stable
-    strategy :github_latest
-  end
-
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1b832aecbc4490a78ec5bf29a85c5a3b39e051d9021f763c02116f3371c7855b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1b832aecbc4490a78ec5bf29a85c5a3b39e051d9021f763c02116f3371c7855b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "1b832aecbc4490a78ec5bf29a85c5a3b39e051d9021f763c02116f3371c7855b"
-    sha256 cellar: :any_skip_relocation, sonoma:        "c9d37d37777448e0dff756e080834e4ad5d99d02064e22aa22dc6e4da16cd0b0"
-    sha256 cellar: :any_skip_relocation, ventura:       "c9d37d37777448e0dff756e080834e4ad5d99d02064e22aa22dc6e4da16cd0b0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b28dab837f5e89e4f3d2e21351274f68d2447049e7138a76c55e230f552968e3"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3c168fb8c60738f168484fce057b62ab295aebe7274a031f0008d8d5dc4e91c4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3c168fb8c60738f168484fce057b62ab295aebe7274a031f0008d8d5dc4e91c4"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "3c168fb8c60738f168484fce057b62ab295aebe7274a031f0008d8d5dc4e91c4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "26749938f27c8883846ca3a6a80ab79f8820d32920ad209c6e5be5dcd7ca5300"
+    sha256 cellar: :any_skip_relocation, ventura:       "26749938f27c8883846ca3a6a80ab79f8820d32920ad209c6e5be5dcd7ca5300"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9f966901ebca05ee6f398ce905d3a5fa0886effbc927eae0ca5d5655c86d5508"
   end
 
   deprecate! date: "2024-10-29", because: "uses `node@18`, which is deprecated"
@@ -51,11 +43,11 @@ class HasuraCli < Formula
       system "go", "build", *std_go_args(output: bin/"hasura", ldflags:), "./cmd/hasura/"
     end
 
-    generate_completions_from_executable(bin/"hasura", "completion", base_name: "hasura", shells: [:bash, :zsh])
+    generate_completions_from_executable(bin/"hasura", "completion", shells: [:bash, :zsh])
   end
 
   test do
     system bin/"hasura", "init", "testdir"
-    assert_predicate testpath/"testdir/config.yaml", :exist?
+    assert_path_exists testpath/"testdir/config.yaml"
   end
 end

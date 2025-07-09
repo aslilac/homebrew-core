@@ -1,10 +1,11 @@
 class Mpfr < Formula
   desc "C library for multiple-precision floating-point computations"
   homepage "https://www.mpfr.org/"
-  url "https://ftp.gnu.org/gnu/mpfr/mpfr-4.2.1.tar.xz"
-  mirror "https://ftpmirror.gnu.org/mpfr/mpfr-4.2.1.tar.xz"
-  sha256 "277807353a6726978996945af13e52829e3abd7a9a5b7fb2793894e18f1fcbb2"
+  url "https://ftp.gnu.org/gnu/mpfr/mpfr-4.2.2.tar.xz"
+  mirror "https://ftpmirror.gnu.org/mpfr/mpfr-4.2.2.tar.xz"
+  sha256 "b67ba0383ef7e8a8563734e2e889ef5ec3c3b898a01d00fa0a6869ad81c6ce01"
   license "LGPL-3.0-or-later"
+  head "https://gitlab.inria.fr/mpfr/mpfr.git", branch: "master"
 
   livecheck do
     url "https://www.mpfr.org/mpfr-current/"
@@ -23,32 +24,32 @@ class Mpfr < Formula
     end
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "51f0ca19e897731b928742401c9c8d1d7d93c3c275aa8a66a77b9ac01d0c223c"
-    sha256 cellar: :any,                 arm64_sonoma:   "71c4d6cc59a5bee30e0779b1d095c2e2db1cb63b51eac88d5d4191660e613d0c"
-    sha256 cellar: :any,                 arm64_ventura:  "28014245ba2ce1edebadedea884f9749c6c588352d938472821bc5c9e0f866cc"
-    sha256 cellar: :any,                 arm64_monterey: "209306f204f9cc2db3a1a500a9426f18e410f7783914d41e09e39782f94c55da"
-    sha256 cellar: :any,                 sequoia:        "862f19b07059671cf89b4e14b0d9d3242bcccaf5f118e7480bab2f03a323390a"
-    sha256 cellar: :any,                 sonoma:         "af35898aedfbb852d0ff927c1c60bf3676c2c29c61408f971490e1289b40cc5b"
-    sha256 cellar: :any,                 ventura:        "b8363c20660b5304f2ab4d73614a4c5bec7461d7cf245f02ef05e965477e67e6"
-    sha256 cellar: :any,                 monterey:       "6e073b5307a7376673527aef03644a5bdd27c0abe9a0739a3be3275a3567efa6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "18857bac44d9f49faeb1d147146ba7fb420d5bf85076f69c68a86a563b203c13"
+    sha256 cellar: :any,                 arm64_sequoia: "ed822b7e77645d7c17abb3ee9cc2b2a82a4d0f003acc7615b5df6226031479b2"
+    sha256 cellar: :any,                 arm64_sonoma:  "15168719e4dbbc4f497e6f7ec91dfec55659113020e2af705a704af566dbe888"
+    sha256 cellar: :any,                 arm64_ventura: "12528a52c96fb1318bf07778ee236d69f4f1c67e616f0c97375431056c27e34e"
+    sha256 cellar: :any,                 sequoia:       "ba4a1b8388386e6618de7c7e27199ae8de473373330f5773e2095567a71d76fd"
+    sha256 cellar: :any,                 sonoma:        "d0d63cabde366839e9140f92451c7e53f7a89d1986d1903bc9851f6122916213"
+    sha256 cellar: :any,                 ventura:       "69c8ea465b74361779391dd02f3fcb474f72d4f76d43dc0c2597fd4c1358936e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "fc5527d722406e18631498339752226ebebecc915bf5da08bfa48cffebeb1ba1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "91dfeb407daeeabb3c3caceb89af41dc02b1aa473b88e76c7533efbc2ad6066d"
   end
 
-  head do
-    url "https://gitlab.inria.fr/mpfr/mpfr.git", branch: "master"
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on "gmp"
+
+  on_system :linux, macos: :ventura_or_newer do
+    depends_on "texinfo" => :build
+  end
 
   def install
     system "./autogen.sh" if build.head?
 
-    system "./configure", *std_configure_args,
-                          "--disable-silent-rules"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make"
     system "make", "check"
     system "make", "install"

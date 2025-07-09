@@ -4,20 +4,25 @@ class Dmd < Formula
   license "BSL-1.0"
 
   stable do
-    url "https://github.com/dlang/dmd/archive/refs/tags/v2.109.1.tar.gz"
-    sha256 "8c2ce18945e3807a1568f6ec6ce0a8f2b88efa472ce0397ea1305fc2a1b8a587"
+    url "https://github.com/dlang/dmd/archive/refs/tags/v2.111.0.tar.gz"
+    sha256 "40b64dd049642dcdaef60815451d5c718ef6c861b6a02a3da998a6a3377900c1"
 
     resource "phobos" do
-      url "https://github.com/dlang/phobos/archive/refs/tags/v2.109.1.tar.gz"
-      sha256 "28974debe14d18eb58591db0dad3ddd4139e8f34783c3648c86619b67d7ba6f2"
+      url "https://github.com/dlang/phobos/archive/refs/tags/v2.111.0.tar.gz"
+      sha256 "b4a7beb5acac54457dc6dc2ab0899a713e446be10a9a584089238babf4e16d5a"
+
+      livecheck do
+        formula :parent
+      end
     end
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 sonoma:       "888f4825c9f75197c67767be536fcd13c45c6d62758f3d0b6a5d05dd331f4d7e"
-    sha256 ventura:      "dfdf2fc9e10f21f0dc248fbc22e66013e858738dfba0dc49f58b542b2dcba223"
-    sha256 monterey:     "45b25904b2bb4003cb3f52ff6e375852f2eb753ed20d1061c3650fa825a9f74d"
-    sha256 x86_64_linux: "cfb158ce63420e195494d3e2b211ca1d3c8c918850ea82cc7a3f8996c8b29dfb"
+    sha256 sonoma:       "58cc3b27e8e385cefb7105d6943a0ae6dec8718ca504901a165b6074bdf3d9d5"
+    sha256 ventura:      "dca27059dbaa82f6785ccf0255a5409ba0975d4ef525cd11945d78e82f3c4328"
+    sha256 x86_64_linux: "bd161341d03c4569d99398c857c4dba58118497300223acfce69fd747da0bca9"
   end
 
   head do
@@ -60,7 +65,6 @@ class Dmd < Formula
 
     kernel_name = OS.mac? ? "osx" : OS.kernel_name.downcase
     bin.install "generated/#{kernel_name}/release/64/dmd"
-    pkgshare.install "compiler/samples"
     man.install Dir["compiler/docs/man/*"]
 
     (include/"dlang/dmd").install Dir["druntime/import/*"]
@@ -112,7 +116,22 @@ class Dmd < Formula
   end
 
   test do
-    system bin/"dmd", "-fPIC", pkgshare/"samples/hello.d"
+    (testpath/"hello.d").write <<~EOS
+      import std.stdio;
+
+      void main(string[] args)
+      {
+          writeln("hello world");
+          writefln("args.length = %d", args.length);
+
+          foreach (index, arg; args)
+          {
+              writefln("args[%d] = '%s'", index, arg);
+          }
+      }
+    EOS
+
+    system bin/"dmd", "-fPIC", "hello.d"
     system "./hello"
   end
 end

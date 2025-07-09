@@ -10,6 +10,8 @@ class RegexOpt < Formula
     regex(/href=.*?regex-opt[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e8f6966781bb65e96887151f04d99914b4a4401e4888c2d88d5e82a15aa41937"
@@ -25,6 +27,7 @@ class RegexOpt < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "76b26dc9e766e7a8b0806660e966e3a49c593591b94d90439f89b7cbc797d019"
     sha256 cellar: :any_skip_relocation, high_sierra:    "0e46dec5d46b145e32ca597c00c75fea2e7097e57c5d3131be141e5bea2b96db"
     sha256 cellar: :any_skip_relocation, sierra:         "68b5f75c9fdb645334ae8a48a5b7e01620e19d5f103811579cb8bf96101c6ac7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "0ab2654a2088ac3ce8203f064d695612f9233dbbf2de6dbf892e589a1f1168e1"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9cf554c9bf9c98356aef52dc0d2eeeb514020d2505ed41764458f937e662b95e"
   end
 

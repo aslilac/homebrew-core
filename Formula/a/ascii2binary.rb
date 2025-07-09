@@ -10,6 +10,8 @@ class Ascii2binary < Formula
     regex(/href=.*?ascii2binary[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "5fa97a3db89565045338e7d0a725a0dfe87995651b8987d271bfb5eeb07e7728"
     sha256 cellar: :any,                 arm64_sonoma:   "fa4789ecc58d9510294d6ceb7e88865abecf9b50237def8dde810cea6a9a8477"
@@ -21,6 +23,7 @@ class Ascii2binary < Formula
     sha256 cellar: :any,                 monterey:       "3a8a279dfc5c852ab3fa081cd61eeb49ced7a94f3b3fb5fa0b9b747211cb2b51"
     sha256 cellar: :any,                 big_sur:        "8b85d75f6bdcf06c7ab2cd68f6f276532aeed3b258dfa7c370c913a5cf1e4e70"
     sha256 cellar: :any,                 catalina:       "7ad654dc498763cb63634191cb9c9c697604faa88fc41d51060df1bb6c0e42ab"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "dae63772ba06b7609d29d51fa608f8db00d29703b6c42837098b6629a35ac0a6"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "bb4b9cc5fe32d49bbb8e0b8acd72396dbbd8fde547777f441b0deab8be17ac57"
   end
 
@@ -41,8 +44,8 @@ class Ascii2binary < Formula
   end
 
   test do
-    binary = pipe_output("#{bin}/ascii2binary -t ui", "42")
-    ascii = pipe_output("#{bin}/binary2ascii -t ui", binary).strip
+    binary = pipe_output("#{bin}/ascii2binary -t ui", "42", 0)
+    ascii = pipe_output("#{bin}/binary2ascii -t ui", binary, 0).strip
     assert_equal "42", ascii
   end
 end

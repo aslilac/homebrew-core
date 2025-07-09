@@ -8,12 +8,15 @@ class Libgda < Formula
   license "LGPL-2.0-or-later"
   revision 4
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia: "2be57dbae0d6ba2cb489b405aeed1d4b00f6dc4ce1182dce49aec0fd1093a813"
     sha256 arm64_sonoma:  "9cf877eaebc81fecfc1970b452f851b801f326d8154291d88fdbbad78cceecfd"
     sha256 arm64_ventura: "4c863bea61f7fe27324a05e1ecaeb3f5baf67a87ad8fc0cdb9dbec71102a44db"
     sha256 sonoma:        "6385eb68f99390c392e26c8798c20fac9f07c3a22ca4f7bb6550b2cac507c6fc"
     sha256 ventura:       "1753780cc82f8f481ebaed1f645416d8aea7586a020876cebe631485977799a4"
+    sha256 arm64_linux:   "5fe8b7ec5d76567900e301e69b302f05a282fc2ead4063002502581bf6a1692e"
     sha256 x86_64_linux:  "2c0269be185ff06ae59bbd4eabf89b43b465a20c9282095ace9d4dd8ddb54762"
   end
 
@@ -22,7 +25,7 @@ class Libgda < Formula
   depends_on "intltool" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "vala" => :build
   depends_on "glib"
   depends_on "iso-codes"
@@ -69,7 +72,7 @@ class Libgda < Formula
 
   test do
     cp pkgshare/"example.c", testpath
-    flags = shell_output("pkg-config --cflags --libs libgda-#{version.major_minor}").chomp.split
+    flags = shell_output("pkgconf --cflags --libs libgda-#{version.major_minor}").chomp.split
     system ENV.cc, "example.c", "-o", "example", *flags
     assert_match <<~EOS, shell_output("./example")
       ------+---------+---------

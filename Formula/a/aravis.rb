@@ -1,8 +1,8 @@
 class Aravis < Formula
   desc "Vision library for genicam based cameras"
   homepage "https://github.com/AravisProject/aravis"
-  url "https://github.com/AravisProject/aravis/releases/download/0.8.33/aravis-0.8.33.tar.xz"
-  sha256 "3c4409a12ea70bba4de25e5b08c777112de854bc801896594f2cb6f8c2bd6fbc"
+  url "https://github.com/AravisProject/aravis/releases/download/0.8.35/aravis-0.8.35.tar.xz"
+  sha256 "8089af991fc3a2644ab04b2ddf82623cd663d80c7ebbdefa93ddbc17ea702ddb"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -11,14 +11,13 @@ class Aravis < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "96d182a7e33a41f832f692201bc0bf29067db30a48d7039c0b514c076e9b205b"
-    sha256 arm64_sonoma:   "e39510f09d4f2bda766c23e3f422d3040ee1225c5b8eddb8703b1318002484de"
-    sha256 arm64_ventura:  "d6313e2de688f3c43580f82848e2a6a47aa382491867ceceaccfaf6f133caaea"
-    sha256 arm64_monterey: "5574d293684a538839a1bf15949a0bda46905721e93718e8d04939734778d58b"
-    sha256 sonoma:         "2d5a187f29378ede5b3a2ea444ec088a58eb5f6e07a57d4bfdcd932cf931ae78"
-    sha256 ventura:        "5cb47f331e3d1a275fcf322085393bbbd487195439f167015c869b43e815825f"
-    sha256 monterey:       "082d64d606cba9a7915f7cdb07cd82358e01b5f1ea50ce99fbd18fea6b403295"
-    sha256 x86_64_linux:   "61d4079388a76864b9d039db61907ed2f9ba32f08570bbac330e03bcf936334f"
+    sha256 arm64_sequoia: "5dacbb067602cd6942321a0e548cdff50b237162f12819baf9f2ee34040aa3eb"
+    sha256 arm64_sonoma:  "82e9c7e422b14826f80abac1b17a271ead738e5abf4fe862799d68aad848e803"
+    sha256 arm64_ventura: "27e3c92eb7b96f192bf0e4d73a358088ada319fb8a10dab041e678d43b8472d9"
+    sha256 sonoma:        "e0eca377a1cf2abfa292ca80b36627376e0bd2f28237876ce5f07cbb97428947"
+    sha256 ventura:       "f08e8cc521c459783db474b8cd887947018393f33cc7eafbe9a00ac908b70b5c"
+    sha256 arm64_linux:   "086dca0e9de5c8780bf98bf202808565b73ec26419f02b5a99fc2c67040329e1"
+    sha256 x86_64_linux:  "50d18122eca4c3b85d4eb4f5fa4fb31d129ade755a4ef3bfde377cc64710814d"
   end
 
   depends_on "gettext" => :build

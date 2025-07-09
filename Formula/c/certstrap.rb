@@ -4,11 +4,14 @@ class Certstrap < Formula
   url "https://github.com/square/certstrap/archive/refs/tags/v1.3.0.tar.gz"
   sha256 "4b32289c20dfad7bf8ab653c200954b3b9981fcbf101b699ceb575c6e7661a90"
   license "Apache-2.0"
+  head "https://github.com/square/certstrap.git", branch: "master"
 
   livecheck do
     url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "d9bf9827e91f136d8e5b85211375f3130beabfd11963c8a7f6145f8870856816"

@@ -1,10 +1,10 @@
 class TransmissionCli < Formula
   desc "Lightweight BitTorrent client"
-  homepage "https://www.transmissionbt.com/"
+  homepage "https://transmissionbt.com/"
   url "https://github.com/transmission/transmission/releases/download/4.0.6/transmission-4.0.6.tar.xz"
   sha256 "2a38fe6d8a23991680b691c277a335f8875bdeca2b97c6b26b598bc9c7b0c45f"
   license any_of: ["GPL-2.0-only", "GPL-3.0-only"]
-  revision 1
+  revision 4
 
   livecheck do
     url :stable
@@ -12,14 +12,13 @@ class TransmissionCli < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "94d02b7c2b45b7450c52829a5ab321326233bfbed68dbfd893c8baff83fd0a0b"
-    sha256 arm64_sonoma:   "0f0903287fe52ce1b88eed158aae216a75bdf0ab494d5e99f295b65c411820cc"
-    sha256 arm64_ventura:  "4805411462de5ffd0816e57000adb672d111babf25e7e0776724e28063bbad1c"
-    sha256 arm64_monterey: "b1337b3c899974f389a87b82fdc534bfa3bfbdc084287bfb922424345d2cf870"
-    sha256 sonoma:         "e21900a4d0aca80c877027429c58988a95a57c690bee3b82e8d851b0d2b6b7d6"
-    sha256 ventura:        "2d3bfe4e50fa99d891cfd8271e41a4be8382833046e17a500e1ddc835c5a8059"
-    sha256 monterey:       "9a05cac7b4b68b0d327e78a8904ead9ca46221fadb7cd340cdf9b3315d85e98b"
-    sha256 x86_64_linux:   "2385b33a24c9f11c58274d956f42dee8e2ad66ef1cc849934f36e433250f90f3"
+    sha256 arm64_sequoia: "542c4fe40c57c427680eb5a982e0a6437bbaa9adac9b174fcb5f9fc5cf98dffe"
+    sha256 arm64_sonoma:  "2e13ac5fce4a74345d5e02ae860fea0b05c7d6fbe7f94a448d14a121d9586fea"
+    sha256 arm64_ventura: "61e957019a73bb95a8805af721ce6b7f9f9acdc30c6bc8a65ab0b47b273f869b"
+    sha256 sonoma:        "498982b372e53a61addf98d76169e5c01851d89bce7b70bc3915894f184ca558"
+    sha256 ventura:       "f25b459d033bdf9842d66e09ec65989a0336caca52b195206b6dfaf39cd9ee6d"
+    sha256 arm64_linux:   "a34e16ce8d16148d11ff1eedca2ba0bbfa45a5942a272d281d88d9936be05290"
+    sha256 x86_64_linux:  "d05e4a68c07c6fa2b73df241d91d566d6af0e5ea0008cdc360ad6e65d7379624"
   end
 
   depends_on "cmake" => :build
@@ -40,6 +39,11 @@ class TransmissionCli < Formula
   patch :DATA
 
   def install
+    odie "Remove cmake 4 build patch" if build.stable? && version > "4.0.6"
+
+    # CMake 4 compatibility for third-parties of miniupnpc
+    ENV["CMAKE_POLICY_VERSION_MINIMUM"] = "3.5"
+
     args = %w[
       -DENABLE_CLI=ON
       -DENABLE_DAEMON=ON

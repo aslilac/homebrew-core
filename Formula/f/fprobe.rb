@@ -5,6 +5,8 @@ class Fprobe < Formula
   sha256 "3a1cedf5e7b0d36c648aa90914fa71a158c6743ecf74a38f4850afbac57d22a0"
   license "GPL-2.0-only"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "edcd1f7fb0c159ed2363136b500af38948c8e4a9a1cb26b4b3c6e745f2ef67c4"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8bdcb6faba3511a0868787da0e4baeb9219e9862c0323722d6137473ac81d0f8"
@@ -20,17 +22,18 @@ class Fprobe < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "31efd46250371cfd9ab386ff34cc41eb98d10758d550769ec72f8373ac1df800"
     sha256 cellar: :any_skip_relocation, sierra:         "fe38758d956c43b2a223734d426c990c63ee44ac643dc769c3d6a0cd4f07ef6b"
     sha256 cellar: :any_skip_relocation, el_capitan:     "9b06507a358024842b59c9f4d637b94b3681e720dbd3a1a8bc93d4d34f9a4442"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "437bdecb9e1ca25e8791a4bb7408f128b11ab7b14267913a1ba106dd0dc6635d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e295fddc95d80d87b222455cca00e95aa3a429317c08daeee456aac1f3170732"
   end
 
   uses_from_macos "libpcap"
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--mandir=#{man}",
-                          "--prefix=#{prefix}"
+    args = []
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", "--disable-silent-rules", "--mandir=#{man}", *args, *std_configure_args
     system "make", "install"
   end
 

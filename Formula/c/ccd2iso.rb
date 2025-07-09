@@ -5,6 +5,8 @@ class Ccd2iso < Formula
   sha256 "f874b8fe26112db2cdb016d54a9f69cf286387fbd0c8a55882225f78e20700fc"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e7196c00e29751b4d90307dcc66d0d0f329dcce6bc4c9ce9ae88aceef81e55ee"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5c3859a54807a7d37e25bf568c22dd063ad9d613713242cc8e266e69f985cc59"
@@ -20,6 +22,7 @@ class Ccd2iso < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "9d33b636be5f43c1e40955323c2f5d4a02d603c990aab2c89e98b5cb16a5cf93"
     sha256 cellar: :any_skip_relocation, sierra:         "c855496f0265a8f806228cddc1c15d5a1d6e7186f4bb43c0a317a6256d8e8e85"
     sha256 cellar: :any_skip_relocation, el_capitan:     "e74b2779ef3d832bc899422285c2d03ea33aa6ab979ca835914343999b444671"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "929e63160bead9e5533fea39f455a370513e0879b1c66205b570ef1f87e9feea"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "eca2835beb5b622b6f0b2b781524e638e67a65b8d4f683cb0984c74c34c1603b"
   end
 

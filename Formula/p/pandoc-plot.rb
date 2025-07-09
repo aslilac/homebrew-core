@@ -11,11 +11,12 @@ class PandocPlot < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "a576bb85965c0aaab47ea0d10b1ce99310ce7ea453361e28f90fd6142644da7c"
     sha256 cellar: :any_skip_relocation, sonoma:        "eb0f022f0722c571818a6d9a4786e6aa92ed6a7ce0af8e47ce43bae83dd0c193"
     sha256 cellar: :any_skip_relocation, ventura:       "624f4ee454a269b92a633a306632b99e0365e952b0bd2de17e40bfec21443fb6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "d8054d18e5ca238e9dc229083d65ea5aba64262cac3f175fd412038dd70981b5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "177f0c90f6cb82159908834ad1ad93a3b60d4df9e282036862a9b9634f29bb2f"
   end
 
   depends_on "cabal-install" => :build
-  depends_on "ghc" => :build
+  depends_on "ghc@9.10" => :build
   depends_on "graphviz" => :test
 
   depends_on "pandoc"
@@ -28,7 +29,7 @@ class PandocPlot < Formula
   end
 
   test do
-    input_markdown_1 = <<~EOS
+    input_markdown_1 = <<~MARKDOWN
       # pandoc-plot demo
 
       ```{.graphviz}
@@ -36,9 +37,9 @@ class PandocPlot < Formula
         pandoc -> plot
       }
       ```
-    EOS
+    MARKDOWN
 
-    input_markdown_2 = <<~EOS
+    input_markdown_2 = <<~MARKDOWN
       # repeat the same thing
 
       ```{.graphviz}
@@ -46,18 +47,18 @@ class PandocPlot < Formula
         pandoc -> plot
       }
       ```
-    EOS
+    MARKDOWN
 
     output_html_1 = pipe_output("pandoc --filter #{bin}/pandoc-plot -f markdown -t html5", input_markdown_1)
     output_html_2 = pipe_output("pandoc --filter #{bin}/pandoc-plot -f markdown -t html5", input_markdown_2)
     filename = output_html_1.match(%r{(plots/[\da-z]+\.png)}i)
 
-    expected_html_2 = <<~EOS
+    expected_html_2 = <<~HTML
       <h1 id="repeat-the-same-thing">repeat the same thing</h1>
       <figure>
       <img src="#{filename}" />
       </figure>
-    EOS
+    HTML
 
     assert_equal expected_html_2, output_html_2
   end

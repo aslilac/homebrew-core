@@ -6,6 +6,8 @@ class Skktools < Formula
   license "GPL-2.0-or-later"
   revision 2
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "84de631d3930f335f030cfa8a3c8669d76c0052c26213b5321496087c4a156ec"
     sha256 cellar: :any,                 arm64_sonoma:   "e29e36abbb09213d335f3610286be258c8ee4f0f692cc30d66fa6553656c8e49"
@@ -17,11 +19,16 @@ class Skktools < Formula
     sha256 cellar: :any,                 monterey:       "e1183e406c1029e930284dd352e92429e12dc695af9e1f01d80d35871328c4bc"
     sha256 cellar: :any,                 big_sur:        "8fbd977dbce7602bff5b095508963570d20555cb607e8526d0fa0f7941aedc42"
     sha256 cellar: :any,                 catalina:       "3a24b4de5dd2f12b857d47a9776a979c0dc41f47525e0cf0d4e639e73fcd0df3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "0fb78300abadf0685a2be3a0e51eed5581127a51c3aa56d85da8ce6e4192d419"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ac8ed96d1342ecee708da56e9da672b9603b75c542bd835a83435d136e54100e"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "glib"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   on_linux do
     depends_on "gdbm"
@@ -34,7 +41,7 @@ class Skktools < Formula
       # Help find Homebrew's gdbm compatibility layer header
       inreplace %w[configure skkdic-expr.c], "gdbm/ndbm.h", "gdbm-ndbm.h"
     end
-    system "./configure", *std_configure_args, *args
+    system "./configure", *args, *std_configure_args
     system "make", "CC=#{ENV.cc}"
     ENV.deparallelize
     system "make", "install"

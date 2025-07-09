@@ -1,11 +1,13 @@
 class Bit < Formula
   desc "Distributed Code Component Manager"
   homepage "https://bit.dev"
-  url "https://registry.npmjs.org/bit-bin/-/bit-bin-14.8.8.tgz", using: :homebrew_curl
+  url "https://registry.npmjs.org/bit-bin/-/bit-bin-14.8.8.tgz"
   sha256 "25d899bacd06d77fad41026a9b19cbe94c8fb986f5fe59ead7ccec9f60fd0ef9"
   license "Apache-2.0"
   revision 1
   head "https://github.com/teambit/bit.git", branch: "master"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 1
@@ -16,6 +18,7 @@ class Bit < Formula
     sha256                               sonoma:         "a5b469dc4bfc6937d12296c2c768b9dc3a210c8a9e1fe796213823b7ecd68c19"
     sha256                               ventura:        "cbfe314c2c994b80648167a54ecca3cc3fb09c8824ef88f274d935d98ba8aafd"
     sha256                               monterey:       "57c91e19fbc60897fa432f7028898f75d47395239fce208cb9222f83f78a1ac5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e0b88da3686ca8ece21a232981d3d40196d0f4b1f8c9aabb55d2f4be142e33e7"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7d998d44c9e7d076515e9363153c1aeaa4c8ddee77f9554152f6af2fab077764"
   end
 
@@ -50,9 +53,6 @@ class Bit < Formula
       terminal_notifier_app = Formula["terminal-notifier"].opt_prefix/"terminal-notifier.app"
       ln_sf terminal_notifier_app.relative_path_from(terminal_notifier_dir), terminal_notifier_dir
     end
-
-    # Replace universal binaries with their native slices.
-    deuniversalize_machos
   end
 
   test do

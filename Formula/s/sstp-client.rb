@@ -1,11 +1,13 @@
 class SstpClient < Formula
   desc "SSTP (Microsoft's Remote Access Solution for PPP over SSL) client"
-  homepage "https://sstp-client.sourceforge.net/"
+  homepage "https://gitlab.com/sstp-project/sstp-client"
   url "https://gitlab.com/sstp-project/sstp-client/-/releases/1.0.20/downloads/dist-gzip/sstp-client-1.0.20.tar.gz"
   sha256 "6c84b6cdcc21ebea6daeb8c5356dcdfd8681f4981a734f8485ed0b31fc30aadd"
   license "GPL-2.0-or-later"
   version_scheme 1
   head "https://gitlab.com/sstp-project/sstp-client.git", branch: "master"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 arm64_sequoia:  "ff9e147017fa32a2f65c2ec46fdca292e7e92f3bb7cd6bdfa5d8ef77b34acf82"
@@ -15,19 +17,19 @@ class SstpClient < Formula
     sha256 sonoma:         "184766c884ccf2bd80dd683a219ceb022038474b7a620e2c3ce496625c1302ed"
     sha256 ventura:        "d1cf3956def117437343e10197b14bcbc03fd6a2dc96278b5036f2153085dc09"
     sha256 monterey:       "015cfdcec2002f2c9ec54e06d070e86c28222f776ef651625f255ff5238e0a5c"
+    sha256 arm64_linux:    "d6025e73684a9bc136b059d9339b385c0d57ea8f9e3dbb311b468b90c051878f"
     sha256 x86_64_linux:   "30078ed4805a4e3b52753c60ad87590d21a8a5289b31fde3d27be0116f179b2b"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libevent"
   depends_on "openssl@3"
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
+    system "./configure", "--disable-silent-rules",
                           "--disable-ppp-plugin",
-                          "--prefix=#{prefix}",
-                          "--with-runtime-dir=#{var}/run/sstpc"
+                          "--with-runtime-dir=#{var}/run/sstpc",
+                          *std_configure_args
     system "make", "install"
 
     # Create a directory needed by sstpc for privilege separation

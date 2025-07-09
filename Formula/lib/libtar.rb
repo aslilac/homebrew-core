@@ -6,6 +6,8 @@ class Libtar < Formula
       revision: "0907a9034eaf2a57e8e4a9439f793f3f05d446cd"
   license "NCSA"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any,                 arm64_sequoia:  "4c4e12298ea2527d81b280592e4442f703eb59473e9b22c171ca70be11c90575"
@@ -22,6 +24,7 @@ class Libtar < Formula
     sha256 cellar: :any,                 high_sierra:    "a263cfaa1499f0c82902009964df0a310e7841ddff29409c67ede0a79157c31e"
     sha256 cellar: :any,                 sierra:         "68bdebde24477a815ea03289878ad57e8a1f719b417bef430bf477c2d760cad7"
     sha256 cellar: :any,                 el_capitan:     "018f1c9897f52b783878db67db39a5933a4863a3f9dedc2af9b6bf13f2161957"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b1baa2051a67e4aff529c5a69ff529914422e2abd2c917d813929e915e633991"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5703c44aa7e1572385af551d05f17bafccf9a247eef56639a58dafd5aa8bdd46"
   end
 
@@ -32,11 +35,8 @@ class Libtar < Formula
   uses_from_macos "zlib"
 
   def install
-    system "autoreconf", "--force", "--install"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--mandir=#{man}", *std_configure_args
     system "make", "install"
   end
 
@@ -44,10 +44,10 @@ class Libtar < Formula
     (testpath/"homebrew.txt").write "This is a simple example"
     system "tar", "-cvf", "test.tar", "homebrew.txt"
     rm "homebrew.txt"
-    refute_predicate testpath/"homebrew.txt", :exist?
-    assert_predicate testpath/"test.tar", :exist?
+    refute_path_exists testpath/"homebrew.txt"
+    assert_path_exists testpath/"test.tar"
 
     system bin/"libtar", "-x", "test.tar"
-    assert_predicate testpath/"homebrew.txt", :exist?
+    assert_path_exists testpath/"homebrew.txt"
   end
 end

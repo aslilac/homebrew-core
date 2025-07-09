@@ -11,6 +11,8 @@ class Pass < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "28e5b23335b5260675224af5d330a5d4f3b5e3d9be5f9491c68dbdb48ab8a6fb"
@@ -20,6 +22,7 @@ class Pass < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "1132f363a63efb874ebf98f406dcc6f9346496b10b0a3b3c2063b447c8035180"
     sha256 cellar: :any_skip_relocation, ventura:        "1132f363a63efb874ebf98f406dcc6f9346496b10b0a3b3c2063b447c8035180"
     sha256 cellar: :any_skip_relocation, monterey:       "1132f363a63efb874ebf98f406dcc6f9346496b10b0a3b3c2063b447c8035180"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "22b1e65c5e116f21af96530d78f73e8b698debaec80c2b078d71c031895cc1fa"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ee3104f2584abf3c35e811152282541832cc3e672d8b28024ee8d77d49cca172"
   end
 
@@ -57,7 +60,7 @@ class Pass < Formula
       system Formula["gnupg"].opt_bin/"gpg", "--batch", "--gen-key", "batch.gpg"
       system bin/"pass", "init", "Testing"
       assert_match "The generated password for", shell_output("#{bin}/pass generate Email/testing@foo.bar 15")
-      assert_predicate testpath/".password-store/Email/testing@foo.bar.gpg", :exist?
+      assert_path_exists testpath/".password-store/Email/testing@foo.bar.gpg"
     ensure
       system Formula["gnupg"].opt_bin/"gpgconf", "--kill", "gpg-agent"
     end

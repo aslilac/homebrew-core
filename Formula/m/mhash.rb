@@ -10,6 +10,8 @@ class Mhash < Formula
     regex(%r{url=.*?/mhash[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "f9b2ec3b67100dfe39ef4bb32671b26b5dbff6044b02ddae177b9bb1429ae036"
     sha256 cellar: :any,                 arm64_sonoma:   "d9cc9da019d2ce0fe3aab219247d9ebd9f2fb744af69871d13dc97925e0e7295"
@@ -25,6 +27,7 @@ class Mhash < Formula
     sha256 cellar: :any,                 high_sierra:    "82f39af8037f070fafcad0280b151dc58e1b5b8c3ea1fb75f4ee372256d3ad2b"
     sha256 cellar: :any,                 sierra:         "f630165dd7f7a0f8e5b710e0e0af5ebca6ca0edc98cd46a01b617a3e16bff7ea"
     sha256 cellar: :any,                 el_capitan:     "8817cea2b724d7ea00fd1efb348aa8bdb5d93ca155cb9ccf8eb316f76b42941b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "55c3040b1081fba7cad5ff2ccd248b37b8face8513a609bdeff9a47c31241713"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "32a5e81c29e8407754448e5aa7f1f8ea2328bc5ce266ab5f3b350e3174373900"
   end
 

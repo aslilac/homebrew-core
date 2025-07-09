@@ -1,10 +1,9 @@
 class Gpgme < Formula
   desc "Library access to GnuPG"
   homepage "https://www.gnupg.org/related_software/gpgme/"
-  url "https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-1.24.0.tar.bz2"
-  sha256 "61e3a6ad89323fecfaff176bc1728fb8c3312f2faa83424d9d5077ba20f5f7da"
+  url "https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-1.24.3.tar.bz2"
+  sha256 "bfc17f5bd1b178c8649fdd918956d277080f33df006a2dc40acdecdce68c50dd"
   license "LGPL-2.1-or-later"
-  revision 1
 
   livecheck do
     url "https://gnupg.org/ftp/gcrypt/gpgme/"
@@ -12,12 +11,13 @@ class Gpgme < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "d527527678278ec8a1d1bbbfe47ae4c14ec6efde616ff423a444f620731cfa66"
-    sha256 cellar: :any,                 arm64_sonoma:  "126aa60956ea71060c3a7214a208909f44c5ef3d809b8861a11be31dd88090b9"
-    sha256 cellar: :any,                 arm64_ventura: "ad15a53119725ccc499fea4aa7611fcacd7b0e517913c3d4be5e07bd7a9bac13"
-    sha256 cellar: :any,                 sonoma:        "1f5747663a4d8fa271388a8683ae2d87ab4e10247ef5189b575b980dce82438b"
-    sha256 cellar: :any,                 ventura:       "ded898081e74189b242056b66b5979d86f11de849d4569ddd64c9a9f904e2ec2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bc5a08c5f2e458631a86a0a3447813157356513bfb0649307883fa53f84abac5"
+    sha256                               arm64_sequoia: "2c66995cde33a82fe56ec3a9310e8510cbf222da60b2a4602ee3fc64c6f93b8f"
+    sha256                               arm64_sonoma:  "f7fbaccad97dba68beba223f6968fbd0ad5414a4cb67743eaf11ee1cb7ed394f"
+    sha256                               arm64_ventura: "735a2f620ddc067d162045dbd56f0dda6f34494ee8fc2c6d79db5cb035fb9955"
+    sha256 cellar: :any,                 sonoma:        "9d7d49aec57a889c8505ab5d4fd5a42604b244f671432e88dbb5eedbfa6cd2a0"
+    sha256 cellar: :any,                 ventura:       "ce54ced3aba72951eafcb9cda15e1a5fb98a5fd4969f5f180bbabe9e312c1e0d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "5cfb6e3fddc6cb22702693c3e5c63dea2adeac6da18ba8796459081d67691ece"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fb901798817b1ffebf06359bcf72f1fd4cc31d8f008b8ff8ae79d015823058f9"
   end
 
   depends_on "python-setuptools" => :build

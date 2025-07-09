@@ -15,6 +15,8 @@ class Flex < Formula
     end
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "e675e024d2d6f1946303689717a345257cbfc6ba52c20b34447a25b75ae995ff"
     sha256 arm64_sonoma:   "0f7f1fc52a0326f07019c5e90dfc3dd728c69afaffc2e5a75154f132975e8b0b"
@@ -27,6 +29,7 @@ class Flex < Formula
     sha256 big_sur:        "89ec2b04b1aab94297f490c60fe6ca2bcde7de9b7661482728b07931e635d21c"
     sha256 catalina:       "e563a7a42aceff203cca4f420ebc6a8bbd5075a2b0007d46724f037ebc7b41a5"
     sha256 mojave:         "687132db0837bdcb6e02b5715f6a07f658bdf109b5353908f260d46d354f7bdb"
+    sha256 arm64_linux:    "87601a69b6f78fbd8135aad3717263a9fc4469de7a34418bbffc8b035c8d4837"
     sha256 x86_64_linux:   "b2bff056ad86d8a1cb1a08944867b5f60636ad4e7edca623810937330d87d8eb"
   end
 
@@ -73,7 +76,7 @@ class Flex < Formula
   end
 
   test do
-    (testpath/"test.flex").write <<~EOS
+    (testpath/"test.flex").write <<~FLEX
       CHAR   [a-z][A-Z]
       %%
       {CHAR}+      printf("%s", yytext);
@@ -84,10 +87,10 @@ class Flex < Formula
         yyin = stdin;
         yylex();
       }
-    EOS
+    FLEX
     system bin/"flex", "test.flex"
     system ENV.cc, "lex.yy.c", "-L#{lib}", "-lfl", "-o", "test"
-    assert_equal shell_output("echo \"Hello World\" | ./test"), <<~EOS
+    assert_equal <<~EOS, pipe_output("./test", "Hello World\n")
       Hello
       World
     EOS

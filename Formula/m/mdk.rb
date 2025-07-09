@@ -12,6 +12,8 @@ class Mdk < Formula
     regex(%r{href=["']?v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "7f8f1976f4085fd2069b0e8e36c7b4dc939a9da53776d446c5bd00587c166ba7"
     sha256 arm64_sonoma:   "fd1a717d1a4c992880d8afd9217b46416521dbe7d4c87b6caf86efdc9e603bb7"
@@ -20,12 +22,13 @@ class Mdk < Formula
     sha256 sonoma:         "af8fd1f81a41417af557691fc2cd065b7f4e9bca2f84110bca43a235c066eb0b"
     sha256 ventura:        "c2b79558a41c36b848cb8b9ef2500a82ee961c1c427a09a01fce486e5b9b2a06"
     sha256 monterey:       "90c9293131de5a4a7533cb6a1bc613cad2d9c1750833bde1fcd795cbbc7923ae"
+    sha256 arm64_linux:    "60f4588de7ace79258c78dbbeff43ed39e97a0f3fc8dde564a88e8863ac9d05f"
     sha256 x86_64_linux:   "baf283b8cdb2d96c284ced6a347f7754132b5f696663552bda24d45ca9ca2ca5"
   end
 
   depends_on "gettext" => :build
   depends_on "intltool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "adwaita-icon-theme"
   depends_on "flex"

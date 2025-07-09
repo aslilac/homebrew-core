@@ -11,6 +11,8 @@ class Stuntman < Formula
     regex(/href=.*?stunserver[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "0fb5a56446295b44863623d302e1d87d56304f6e48d8afa3b465fd6cb191c891"
@@ -23,6 +25,7 @@ class Stuntman < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "9ad956118fe74ee3af2a673b6a1afc0736d39f51342cb7f4b926dc13e0d28cab"
     sha256 cellar: :any_skip_relocation, big_sur:        "3180e4e3c719363753cefef52e45972031815f2709760c6b63b4d4e9721e1d4a"
     sha256 cellar: :any_skip_relocation, catalina:       "2ac7951871edd61c9b254d5436a1b8ba1d939908a9a22ac3ef05b975d34490a7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "cf40ac5709a4a0db7eee925acc32d0b2ca7e3a8b4dc3548314d3f2377060e1ec"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "bddee00f936559705e2837cc56956efbc2569f98da27d7abb41640d7f87df7d0"
   end
 

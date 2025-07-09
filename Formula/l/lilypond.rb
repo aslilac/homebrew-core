@@ -19,6 +19,8 @@ class Lilypond < Formula
     regex(/href=.*?lilypond[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 arm64_sequoia: "186ccba4e185bdb0160e66bc68c4e70594d77b9d18a863718886667817b0f8b0"
@@ -26,6 +28,7 @@ class Lilypond < Formula
     sha256 arm64_ventura: "38a76fb76615646d4b43b6578d368fac8daee24834dc049ea0f50ffaeca73b33"
     sha256 sonoma:        "b31020b0176335c832d55556e5709b45b54ac04b2c0d04129d16a6a25ef8e6e7"
     sha256 ventura:       "a4112ff2f62a0b79a6de8ba3c34db2167d0076949ac617eeb81f9335dd461607"
+    sha256 arm64_linux:   "23b8fdf9318178b066af933b4a82a96438d6a0096d368dd213544e13b9f67e50"
     sha256 x86_64_linux:  "d3bd2174c750e48ee24e19959f3587eaeaca0e155ba8d8dc973e3d43511d89d5"
   end
 
@@ -40,7 +43,7 @@ class Lilypond < Formula
 
   depends_on "bison" => :build # bison >= 2.4.1 is required
   depends_on "fontforge" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "t1utils" => :build
   depends_on "texinfo" => :build # makeinfo >= 6.1 is required
   depends_on "texlive" => :build
@@ -105,7 +108,7 @@ class Lilypond < Formula
   test do
     (testpath/"test.ly").write "\\relative { c' d e f g a b c }"
     system bin/"lilypond", "--loglevel=ERROR", "test.ly"
-    assert_predicate testpath/"test.pdf", :exist?
+    assert_path_exists testpath/"test.pdf"
 
     output = shell_output("#{bin}/lilypond --define-default=show-available-fonts 2>&1")
              .encode("UTF-8", invalid: :replace, replace: "\ufffd")

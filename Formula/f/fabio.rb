@@ -1,28 +1,22 @@
 class Fabio < Formula
   desc "Zero-conf load balancing HTTP(S) router"
   homepage "https://github.com/fabiolb/fabio"
-  url "https://github.com/fabiolb/fabio/archive/refs/tags/v1.6.3.tar.gz"
-  sha256 "e85b70a700652b051260b8c49ce63d21d2579517601a91d893a7fa9444635ad3"
+  url "https://github.com/fabiolb/fabio/archive/refs/tags/v1.6.7.tar.gz"
+  sha256 "846ac67c68b41428586f28183f772b5a3d5a9003b21625bc6f0f0ed361c8a890"
   license "MIT"
   head "https://github.com/fabiolb/fabio.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c60703966ecd1882b0fd0a5c0122864a26c376552b662cfb408093e3bc7a3949"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e4a20558083c013910f2d092982c75243b8a358b1599fc75a1b18de6890d9526"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ab8990ed9eeab8dee4b314bcb6189d50f4dc8eebee77de71bc496d4bf8c78b9b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "93816978aba8f3872e86a77f0ccf1965d92d7377389af58fa12a58c97f23033c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8f6bbd95332e4477f3dab83ab33e4ea0eefe9a5545d24b25388e435a14a6baba"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e034f62a86f59035c2bf31563214cc76234336f4ee9c5d6f049f8659c1d508aa"
-    sha256 cellar: :any_skip_relocation, ventura:        "f05450e71e0044473f85a289d549277edede0d51166a66ff985465f826290d6f"
-    sha256 cellar: :any_skip_relocation, monterey:       "ee9fa30859ec7a0e89cd3725759d6f57d039f6a36529abaca6dea2c5d22a163a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ca2de624dcf98c51943d3968c19bbf6fd5e4211826b29eadff3a9bde4d4ace45"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ee9395e3877ab2abdaa6dddba8405241ca30ce5c0ae56eada5b01e15cdb37382"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "31bc78f40b86f6687211aece737253a395f1f052d9b489b5d1bb5dcb2b434b5e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "61cd285af8c4af56ded6264910244e04e6f3473053d0276892df2b9fcb694bb0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "abd359ebaafe391dc7747a40efee2e9afc96da013f32ec05892396b251d0c402"
+    sha256 cellar: :any_skip_relocation, sonoma:        "5ac7d11c7b8d2a319ddf65a6aeb22c5518c6da3881b16c1a18b98ca75dc5dbf2"
+    sha256 cellar: :any_skip_relocation, ventura:       "3b4717f13ab398f9cb648db3cf8ee0c2c692f0255ffe050f2e706085c23efa13"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "cf6037cb7efd47d8b75ab54327b54a8505cba26c0f8b8cbd7be90a4aaf96fda4"
   end
 
-  deprecate! date: "2024-02-04", because: "depends on soon to be deprecated consul"
-
   depends_on "go" => :build
-  depends_on "consul"
+  depends_on "etcd" => :test
 
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w")
@@ -41,28 +35,32 @@ class Fabio < Formula
     require "socket"
     require "timeout"
 
-    consul_default_port = 8500
     fabio_default_port = 9999
     localhost_ip = "127.0.0.1".freeze
 
-    if port_open?(localhost_ip, fabio_default_port)
-      puts "Fabio already running or Consul not available or starting fabio failed."
-      false
-    else
-      if port_open?(localhost_ip, consul_default_port)
-        puts "Consul already running"
-      else
-        fork do
-          exec "consul agent -dev -bind 127.0.0.1"
-        end
-        sleep 30
-      end
-      fork do
-        exec bin/"fabio"
-      end
-      sleep 10
-      assert_equal true, port_open?(localhost_ip, fabio_default_port)
-      system "consul", "leave"
-    end
+    pid_etcd = spawn "etcd", "--advertise-client-urls", "http://127.0.0.1:2379",
+                             "--listen-client-urls", "http://127.0.0.1:2379"
+    sleep 10
+
+    system "etcdctl", "--endpoints=http://127.0.0.1:2379", "put", "/fabio/config", ""
+
+    (testpath/"fabio.properties").write <<~EOS
+      registry.backend=custom
+      registry.custom.host=127.0.0.1:2379
+      registry.custom.scheme=http
+      registry.custom.path=/fabio/config
+      registry.custom.timeout=5s
+      registry.custom.pollinterval=10s
+    EOS
+
+    pid_fabio = spawn bin/"fabio", "-cfg", testpath/"fabio.properties"
+    sleep 10
+
+    assert_equal true, port_open?(localhost_ip, fabio_default_port)
+  ensure
+    Process.kill("TERM", pid_etcd)
+    Process.kill("TERM", pid_fabio)
+    Process.wait(pid_etcd)
+    Process.wait(pid_fabio)
   end
 end

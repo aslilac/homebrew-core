@@ -1,17 +1,19 @@
 class Ctlptl < Formula
   desc "Making local Kubernetes clusters fun and easy to set up"
   homepage "https://github.com/tilt-dev/ctlptl"
-  url "https://github.com/tilt-dev/ctlptl/archive/refs/tags/v0.8.36.tar.gz"
-  sha256 "fd0a4bcee6b528ed6f3dc8d66018c54882ebc6a326c759f99d48cf90b818e570"
+  url "https://github.com/tilt-dev/ctlptl/archive/refs/tags/v0.8.42.tar.gz"
+  sha256 "2f940b982ec10dbd5464a4c65947a022a345b1d76b5c0446dae1cd2459eff669"
   license "Apache-2.0"
+  head "https://github.com/tilt-dev/ctlptl.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d70d92bb0b62a7307346826bb5d7e939b07c13ed0c5b401774f76fb66c0c38c7"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a1fdbe08009b9bc48865bfade4148d384629764caf4585478072f93d8a506c42"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "35802eff36bf61758349dbd5a38be3547d8aa57a690e2c9de0db8ec0b2e3542f"
-    sha256 cellar: :any_skip_relocation, sonoma:        "578e03987d6895a408d990c1867030a4b82e8d0b4bd41f730cc0bedb368db22f"
-    sha256 cellar: :any_skip_relocation, ventura:       "4b79aa8e9acc523d1d6dd7f88df357a8a87dcc627682fbca13787519c3716e64"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "86fa05b3db3d6423a8809322180aec82f6f2b6fb801bb5f91e4307e44a45687f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1f65690a21428923a104907bf1f36d68fe5548a8d1818bdd2c6b9d70ce9dd3c4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "95a9e91c72dc187882d2535aac2e1be20ee15b562434b087cbcba5bd282e6fb8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "eecec056b5b5043254277ef00a8b2932996ea9a2df185159959f91fe1ecf100e"
+    sha256 cellar: :any_skip_relocation, sonoma:        "56d950a9ca79bbc3bd4d86a61c6364f7977a74c8b51c76c45a5adeebe46552cb"
+    sha256 cellar: :any_skip_relocation, ventura:       "a191ccf424740643e74d5cb4e9e8b3a4837cad39fe5751a6ef9562eb9deca4b5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9d1b016bf961588b50c6727a161afad481658bf78bd0c3dc099a2dacef6a6a2f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "de48874a9cf5ae452d730dfa21b239ead2c042396e056a4b571c03fcf44ae14e"
   end
 
   depends_on "go" => :build
@@ -29,7 +31,7 @@ class Ctlptl < Formula
 
   test do
     assert_match "v#{version}", shell_output("#{bin}/ctlptl version")
-    assert_equal "", shell_output("#{bin}/ctlptl get")
+    assert_empty shell_output("#{bin}/ctlptl get")
     assert_match "not found", shell_output("#{bin}/ctlptl delete cluster nonexistent 2>&1", 1)
   end
 end

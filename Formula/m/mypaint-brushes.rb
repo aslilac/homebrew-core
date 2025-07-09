@@ -5,6 +5,8 @@ class MypaintBrushes < Formula
   sha256 "01032550dd817bb0f8e85d83a632ed2e50bc16e0735630839e6c508f02f800ac"
   license "CC0-1.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, all: "c919364f08de423bd1b2e8c674b76e277adebee4157b49c75dfdf38d84777878"
@@ -26,6 +28,6 @@ class MypaintBrushes < Formula
   end
 
   test do
-    assert_predicate share.glob("mypaint-data/*/brushes/classic/marker_small_prev.png").first, :exist?
+    assert_path_exists share.glob("mypaint-data/*/brushes/classic/marker_small_prev.png").first
   end
 end

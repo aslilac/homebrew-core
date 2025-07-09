@@ -6,6 +6,8 @@ class Tpl < Formula
   license "BSD-1-Clause"
   head "https://github.com/troydhanson/tpl.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "563eee39c340a994167ebeaa62bba135164a2873031485754b3bd237e235a313"
     sha256 cellar: :any,                 arm64_sonoma:   "648d49fb0cd54c646e5257ba9aba1b88867913b5cb54e8accdbdf45dcd2b038d"
@@ -21,6 +23,7 @@ class Tpl < Formula
     sha256 cellar: :any,                 high_sierra:    "18b15a737709ac6d8ec47963fb02fba255b5e9f6c8968c126dc60bb3a0d7adee"
     sha256 cellar: :any,                 sierra:         "1d8a496506b276702c07d594e17b9c7be4f43c1a4651120b765b2015c18bbe54"
     sha256 cellar: :any,                 el_capitan:     "a887350815a2791312bdec2ecdf82795d6f54c67f9e76842236e8bb1f507108d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "649efbc4c4e6c8e57d4f7207bc2ede36facb438e7fd272162722f9707db999bf"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "49c4f470d6782300dd24da0af8a3886cc977a9c24a0de37c606181b3db09e44d"
   end
 
@@ -29,7 +32,7 @@ class Tpl < Formula
   depends_on "libtool" => :build
 
   def install
-    system "autoreconf", "-fvi"
+    system "autoreconf", "--force", "--install", "--verbose"
     system "./configure", "--disable-silent-rules",
                           *std_configure_args.reject { |s| s["--disable-debug"] }
     system "make", "install"

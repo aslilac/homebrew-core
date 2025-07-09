@@ -1,26 +1,27 @@
 class Ktor < Formula
   desc "Generates Ktor projects through the command-line interface"
   homepage "https://github.com/ktorio/ktor-cli"
-  url "https://github.com/ktorio/ktor-cli/archive/refs/tags/0.3.1.tar.gz"
-  sha256 "d733b4e1bdb6dc1c24bdc5952805449e5fab974728c1491cbb680d94c88687bd"
+  url "https://github.com/ktorio/ktor-cli/archive/refs/tags/0.5.0.tar.gz"
+  sha256 "6bc452b6aa7e4a911649f10359a0c00d0017e8ab3a3c70b0e1412c026794f6a3"
   license "Apache-2.0"
   head "https://github.com/ktorio/ktor-cli.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6b7a13b7df5cabdf75f7b5e672f53c01c60d83849222931f8b8d4adff4d6de91"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6b7a13b7df5cabdf75f7b5e672f53c01c60d83849222931f8b8d4adff4d6de91"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "6b7a13b7df5cabdf75f7b5e672f53c01c60d83849222931f8b8d4adff4d6de91"
-    sha256 cellar: :any_skip_relocation, sonoma:        "5695e2ba9dab74be6437b89e40655a77da6f174b46ff08560c7a25b3adc69fe6"
-    sha256 cellar: :any_skip_relocation, ventura:       "5695e2ba9dab74be6437b89e40655a77da6f174b46ff08560c7a25b3adc69fe6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3ea8d0c87d24e4d2adec9724111c151e4a2f9034a32a12ea979ada403a84ed5e"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ae5827c1b6127ef87c86509969b51b57e264b3a86e2ff7f89f1ae2dd2d61fe7d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "320e97018245a83890d9d43f902bc9d3c15b052ce0168b0156d1046c26df271d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "67e92b3134de86c1f73851c12756d0b60b8d395d62eb599cc0688e2539d92ce4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b348f62c90905932ac7a0758eddb06ba18f61415034790c0d1cfb867e3512d5e"
+    sha256 cellar: :any_skip_relocation, ventura:       "40853271a7712e7914374bbe56cbf5eba3f14586b5568991a78bff8d46283643"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e3d5add07175e7adaab1079cd90d759fedd35ab162f57268c511a23d388164c1"
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["CGO_ENABLED"] = "0"
-    ldflags = "-X main.Version=#{version}"
-    system "go", "build", *std_go_args(ldflags:), "github.com/ktorio/ktor-cli/cmd/ktor"
+    ldflags = "-s -w -X main.Version=#{version}"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/ktor"
+    generate_completions_from_executable(bin/"ktor", "completions")
   end
 
   test do

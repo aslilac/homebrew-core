@@ -6,6 +6,8 @@ class Charls < Formula
   license "BSD-3-Clause"
   head "https://github.com/team-charls/charls.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "4c5a430f93616eee0bbf2464f5b950ebced3874e71fe95dd8c50c78d30752af8"
     sha256 cellar: :any,                 arm64_sonoma:   "76dca903581c658d0db0f4f7102cf6f766def35e259b8f5fd1b7b215f294b684"
@@ -16,6 +18,7 @@ class Charls < Formula
     sha256 cellar: :any,                 ventura:        "2c5587e6cc5f98c3fde8baee24ddda28bcf57fea3823ad50b8a723bccd2d92ed"
     sha256 cellar: :any,                 monterey:       "d7b1f60902af614082b112fb145a04cbe2ee474867a9ac0a5e6311e7763b406e"
     sha256 cellar: :any,                 big_sur:        "6d5ed0ccde713e3301144a103d26aadc8b5e737800536c68cb1b53ba992ffb34"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "7a1ff310d136b6dcce83438562977bd6ea391e315eb9eb066bbd62fbab5cc5dd"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c047efbbea396272b84c00659b8f68a03b7130c19b1835f9f83c5be28351a7e5"
   end
 

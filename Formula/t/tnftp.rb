@@ -11,6 +11,8 @@ class Tnftp < Formula
     regex(/href=.*?tnftp[._-]v?(\d+(?:\.\d+)*)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "14d89deb1cf265a42cfa512173e91ee2e2eef8bc7e2748eb744fcdb4548e85a3"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "11e76e93e1069f6e77346bde84e5d637d1b1b45dbfe22b5da7373c6724ec37c7"
@@ -21,6 +23,7 @@ class Tnftp < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "d1870a97a281b50e44b59a8132f2876d938b9602151eba9b7930ffc03326e849"
     sha256 cellar: :any_skip_relocation, monterey:       "f0df715364120f87c986db305942d7cc09f5088a7fd9ca3180348456818a3148"
     sha256 cellar: :any_skip_relocation, big_sur:        "5eff3aa4503a383db733447beddd456f2a53fe3fa7cb09c72805a55bd1a5ad8f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "c13adca8de35cdb0b8f5c5537f7cc79ee972b27b2d90f7b47dcf384a733593f6"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "270f4da016155138c1d305eedd0d82a600396cf39f011ba42ef0456b898ca198"
   end
 

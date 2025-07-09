@@ -6,6 +6,8 @@ class Malbolge < Formula
   sha256 "ca3b4f321bc3273195eb29eee7ee2002031b057c2bf0c8d7a4f7b6e5b3f648c0"
   license :public_domain
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a27217c73ffd65f6eeb9249e6120ec69dfbc0121bf2bd721d9270c9173f543e8"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "21e3313bf2fc20b33e637016710d778140383e9dbc2a4e45b14a564ddb081d30"
@@ -21,6 +23,7 @@ class Malbolge < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "5499e81bdb3bb7c6d93f7087c1d79a632e1dc5909e279bb1d37eb93906ca8c20"
     sha256 cellar: :any_skip_relocation, sierra:         "4e4b604d3ce7e8ccc5933dd949b55e77bdd59d21f084b4183b950e9dd552f368"
     sha256 cellar: :any_skip_relocation, el_capitan:     "20f743a8bcb4085f5958e65a54bc20399de6894155ecd64dfc056431d93ec477"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "fde58cf2cc3ca5bd14497c96ec0edd11c89f9570b0c8d8da7cc1ff52c927517e"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d562330170f412427bd1d214d7521b400c8dd5d198d27d86ff1c47cf60339322"
   end
 

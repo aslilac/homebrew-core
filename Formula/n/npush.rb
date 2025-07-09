@@ -6,6 +6,8 @@ class Npush < Formula
   license "GPL-2.0-or-later"
   head "https://svn.code.sf.net/p/npush/code/"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "52bb1bf2c16219188637e18260db7c52d8eead9d02dd9f65bb9d7cfb7adf6520"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "58edd27febec742ef46cf8e1b6fca1bf8053a99c953fbd53743a6b12387d924c"
@@ -21,6 +23,7 @@ class Npush < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "c3d40f8709487c01053f5ea09e35c047ae6bfede34d21e97703d38c9985d67b0"
     sha256 cellar: :any_skip_relocation, sierra:         "ce2f958ef8d766791137266e74b7c2cd0843755d080ecbbd6a7074bc7d035c19"
     sha256 cellar: :any_skip_relocation, el_capitan:     "c37e743784c68e9c1bb1527d4c6161a5653831de44b3203be8c1cb07d9eeb7c2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a2c260b48759fbd27ca1ea3c6bbfe102de40fb4755cd3fc88f03e6a27e2aa236"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e0f8e3339f262c42ed5d697817a274e292bdd647d5a6410f71d9a9752f044047"
   end
 
@@ -32,9 +35,9 @@ class Npush < Formula
     inreplace "Makefile", "$(PROGRAM) $(OBJECTS)", "$(PROGRAM) $(OBJECTS) -lncurses" unless OS.mac?
     system "make"
     pkgshare.install ["npush", "levels"]
-    (bin/"npush").write <<~EOS
+    (bin/"npush").write <<~SH
       #!/bin/sh
       cd "#{pkgshare}" && exec ./npush $@
-    EOS
+    SH
   end
 end

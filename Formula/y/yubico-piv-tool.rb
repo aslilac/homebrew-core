@@ -1,8 +1,8 @@
 class YubicoPivTool < Formula
   desc "Command-line tool for the YubiKey PIV application"
   homepage "https://developers.yubico.com/yubico-piv-tool/"
-  url "https://developers.yubico.com/yubico-piv-tool/Releases/yubico-piv-tool-2.6.1.tar.gz"
-  sha256 "d4efd2d7c5baca49ffc070dea5fb64c17239095e0e54b10766a8a156b0c09285"
+  url "https://developers.yubico.com/yubico-piv-tool/Releases/yubico-piv-tool-2.7.1.tar.gz"
+  sha256 "9813190a5c2560ef7fe8018c03614091e911e0596c5853ef25c82cd9283a444b"
   license "BSD-2-Clause"
 
   livecheck do
@@ -11,14 +11,13 @@ class YubicoPivTool < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "4c2b827134614f52f63ff975ff69078b9014ab698bc9fe17721e23ef87b3dac2"
-    sha256 cellar: :any,                 arm64_sonoma:   "be4e2c666d45c23553d4964357eaa8921417c64b48f2d04355ae46705e9761c7"
-    sha256 cellar: :any,                 arm64_ventura:  "442df6b223e692469b77a1ebc0576fbb55e944252d51e33bd983447f3cd132bd"
-    sha256 cellar: :any,                 arm64_monterey: "8ddc49bc10a2a6884f43e80e876e0c6962ee4d604a14e5a2da20b5cb226598d3"
-    sha256 cellar: :any,                 sonoma:         "a2c42549ad862e2a0e5cda13052bdc9a930cd8d1b8e1a144f1be07885f6e1bf6"
-    sha256 cellar: :any,                 ventura:        "db2740488dd6321dd460a395a11df1ee9b93ce916491ac393d8016a5a528cf51"
-    sha256 cellar: :any,                 monterey:       "8c6949b47d7b6b857ea14dcc88e3ff2d9c39100d970e738e7d76abd71b0e20ea"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bc638e52958800d21c0b1b981870ae56efcb035d312baa223f1bd97fa6166e39"
+    sha256 cellar: :any,                 arm64_sequoia: "852e180ed2fe18fe28777716db26c09e754238744f889078b61d137d61fa6e80"
+    sha256 cellar: :any,                 arm64_sonoma:  "c7a5dc4310d0f45106800d409de0933feda9ff5cedb14fae0b0c5d73df545ffe"
+    sha256 cellar: :any,                 arm64_ventura: "5270a529dab82aaf84696ae71fedf63786d36c20209bcd701debada9e08e6e5b"
+    sha256 cellar: :any,                 sonoma:        "8f3beb1c9c8532e03fe3730b561c2d54aa98def4f5d4c9e26ba3682acba762b5"
+    sha256 cellar: :any,                 ventura:       "c31f355c89499b1e03ca9655c03e0c9e7f279d6ce236238de851ccae68d1c2bd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "42bcc272539ce1f7047b105bd7cee46499f8dd95753553fe2b9f2d7f06a79fa0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e54ae29bc9056bc7763ee41cf8db4b6dbb744d43f1c7903e6d8d480d9b0014fd"
   end
 
   depends_on "check" => :build

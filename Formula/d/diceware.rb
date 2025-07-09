@@ -3,27 +3,21 @@ class Diceware < Formula
 
   desc "Passphrases to remember"
   homepage "https://github.com/ulif/diceware"
-  url "https://files.pythonhosted.org/packages/2f/7b/2ebe60ee2360170d93f1c3f1e4429353c8445992fc2bc501e98013697c71/diceware-0.10.tar.gz"
-  sha256 "b2b4cc9b59f568d2ef51bfdf9f7e1af941d25fb8f5c25f170191dbbabce96569"
+  url "https://files.pythonhosted.org/packages/8b/ba/db6c087f044f6a753a85c0d8b25848122018ced2130061298c0c08940a54/diceware-1.0.1.tar.gz"
+  sha256 "54b690809f0c56ab3085a18e15a0c3804d4a0d127f38aef0b5cf5f859d0f6639"
   license "GPL-3.0-or-later"
-  revision 1
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "30161c381edbde1a05ba7ee432f9533376240d025bab8db2c08c2efd44963678"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "30161c381edbde1a05ba7ee432f9533376240d025bab8db2c08c2efd44963678"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "30161c381edbde1a05ba7ee432f9533376240d025bab8db2c08c2efd44963678"
-    sha256 cellar: :any_skip_relocation, sonoma:        "c98ce2ef751cd800fe944900ca6ba267dbbef0d65bbb8ce9141f069425e41ba9"
-    sha256 cellar: :any_skip_relocation, ventura:       "c98ce2ef751cd800fe944900ca6ba267dbbef0d65bbb8ce9141f069425e41ba9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9fa6e49310aa8a310ffefc2fce7de4c134542b083ee86e2815a1ac8ce2633301"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1d9d1288469164e84e042091daf65cb61637113d7e343dc8fc6c3ac95a75c4a1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1d9d1288469164e84e042091daf65cb61637113d7e343dc8fc6c3ac95a75c4a1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "1d9d1288469164e84e042091daf65cb61637113d7e343dc8fc6c3ac95a75c4a1"
+    sha256 cellar: :any_skip_relocation, sonoma:        "fddd1640d30f4248092cf4a711f6902f31241e3e0db20a3ac962c8bb34a8fe30"
+    sha256 cellar: :any_skip_relocation, ventura:       "fddd1640d30f4248092cf4a711f6902f31241e3e0db20a3ac962c8bb34a8fe30"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0bbb8ae111a8a2534c4df6422a6c00802b43bc5744d6c9177d97b6cda883b0a8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1d9d1288469164e84e042091daf65cb61637113d7e343dc8fc6c3ac95a75c4a1"
   end
 
   depends_on "python@3.13"
-
-  resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/27/b8/f21073fde99492b33ca357876430822e4800cdf522011f18041351dfa74b/setuptools-75.1.0.tar.gz"
-    sha256 "d59a21b17a275fb872a9c3dae73963160ae079f1049ed956880cd7c09b120538"
-  end
 
   def install
     virtualenv_install_with_resources

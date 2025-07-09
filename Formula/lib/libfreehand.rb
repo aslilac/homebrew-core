@@ -11,6 +11,8 @@ class Libfreehand < Formula
     regex(/href=["']?libfreehand[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "9eeb0bbec76d98ba004514dad9c9dc345a66fde115e25cada3fc837efcb764c7"
     sha256 cellar: :any,                 arm64_sonoma:   "10f6c8c203685f706e8290abc6a8c6833203142083d267f2ef271d34e998497b"
@@ -24,11 +26,12 @@ class Libfreehand < Formula
     sha256 cellar: :any,                 catalina:       "337aeb3f1454487fc132f9d67e3662dc6c3f0ba40a38a9a9c58d9f0b9bfc1955"
     sha256 cellar: :any,                 mojave:         "b2e7566024327688b13ce6ba4a2bc93108d61d46923b0e6f59a6bc577ccc4eb9"
     sha256 cellar: :any,                 high_sierra:    "fed031e8bfce818f39ea578792a3ed1f1b74c9f86192f37b372e1c4fc493bc90"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "36565f2d8aeeeab824700436476cb784c742a76d4b412397de179a6a43828880"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "231727d040b34c931b60d06ad1f0fa86d08dbde4d00736e6233645d635393a7f"
   end
 
   depends_on "boost" => :build
-  depends_on "icu4c@76" => :build
+  depends_on "icu4c@77" => :build
   depends_on "pkgconf" => :build
   depends_on "librevenge"
   depends_on "little-cms2"

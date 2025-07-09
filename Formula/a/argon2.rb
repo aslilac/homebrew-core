@@ -7,6 +7,8 @@ class Argon2 < Formula
   revision 1
   head "https://github.com/P-H-C/phc-winner-argon2.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "4fe5808e09d5c48eac1991bb19bca51ac39517ae46d8e9f696580dc004c0bd08"
     sha256 cellar: :any,                 arm64_sonoma:   "c503692d2a7d5538d5cb241b69c283d998bde91b38e3065c01bc79fdbe8cd197"
@@ -21,6 +23,7 @@ class Argon2 < Formula
     sha256 cellar: :any,                 mojave:         "a76192a41826619fc399e7f6de5e6cb1c8a5fbe6bea4f2c1554daa830fa0e296"
     sha256 cellar: :any,                 high_sierra:    "830016982e60870f50b3f6fc9a215d8cc4bda6061595f4883f7c11ab19ecba39"
     sha256 cellar: :any,                 sierra:         "21889ac6ed40c792f1b372b5aa0d6b3be1be86577a4c1b06b08569124d2d0da2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "1149cb3482d46eb06f07d77b2d3e3ff3f71599f573bf32553c4407f0b470c45c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "58b4014f120e135a991f1023f210366ef3e9175a37a05a3fffb06a9fe3c23ff4"
   end
 
@@ -32,7 +35,7 @@ class Argon2 < Formula
   end
 
   test do
-    output = pipe_output("#{bin}/argon2 somesalt -t 2 -m 16 -p 4", "password")
+    output = pipe_output("#{bin}/argon2 somesalt -t 2 -m 16 -p 4", "password", 0)
     assert_match "c29tZXNhbHQ$IMit9qkFULCMA/ViizL57cnTLOa5DiVM9eMwpAvPw", output
   end
 end

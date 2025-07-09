@@ -12,6 +12,8 @@ class CeresSolver < Formula
     regex(/href=.*?ceres-solver[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "988b6c630059fd2c89f693ae791b329123e8edf5e1135f57b3a23434ef4fd6e2"
     sha256 cellar: :any,                 arm64_sonoma:   "82321500433aa189b94707782c92b280d9f370c2da70d81f337c33e7d3ce0924"
@@ -20,6 +22,7 @@ class CeresSolver < Formula
     sha256 cellar: :any,                 sonoma:         "f949ae21f99855aa96d25e8cb2a30cf7d001b8af8193a9b0ab4032969c5ab6a9"
     sha256 cellar: :any,                 ventura:        "0fb671f15c3b25e771ebeacb0bd8cfe5f3b47535c766091e24adc6f50e7e4e23"
     sha256 cellar: :any,                 monterey:       "c3dce08c0c5c4c239c60fad44ebe52333428f4925fd3f69faa30d1ad34d11f65"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a81bb14618a9bb0c8e3bace126d01e4d0e1c643aa10bc3bd6ce00f93a03ae3b4"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "68107edf1952d270ebdad753857acf97e253956b48cd115047d89b6364c3f903"
   end
 
@@ -31,8 +34,6 @@ class CeresSolver < Formula
   depends_on "openblas"
   depends_on "suite-sparse"
   depends_on "tbb"
-
-  fails_with gcc: "5" # C++17
 
   def install
     system "cmake", "-S", ".", "-B", "homebrew-build",
@@ -55,8 +56,8 @@ class CeresSolver < Formula
       target_link_libraries(helloworld Ceres::ceres)
     CMAKE
 
-    system "cmake", "."
-    system "make"
-    assert_match "CONVERGENCE", shell_output("./helloworld")
+    system "cmake", "-S", ".", "-B", "build"
+    system "cmake", "--build", "build"
+    assert_match "CONVERGENCE", shell_output("./build/helloworld")
   end
 end

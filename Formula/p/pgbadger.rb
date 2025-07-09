@@ -1,20 +1,19 @@
 class Pgbadger < Formula
   desc "Log analyzer for PostgreSQL"
   homepage "https://pgbadger.darold.net/"
-  url "https://github.com/darold/pgbadger/archive/refs/tags/v12.4.tar.gz"
-  sha256 "25456f0ea76e1de946d2bf09d937e9e830ca953ae4544a72bb9b747f11b4711a"
+  url "https://github.com/darold/pgbadger/archive/refs/tags/v13.1.tar.gz"
+  sha256 "9658ff222ed7b387d3cb76c3e3d90d1862b885c13b26aa9ff652e133f5d018f1"
   license "PostgreSQL"
   head "https://github.com/darold/pgbadger.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5f0868106355ade8dd3c388738f195b5af0117bbea2853ffa2a28356be381873"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2a1ef5586c181e4549202e3aa9f6444d9ec21e47497051683b433120eaf94923"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e2e5eec08628c0632b59f62169324beb9cf343c5f5a6207db97fef1ebd91b2b9"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e2e5eec08628c0632b59f62169324beb9cf343c5f5a6207db97fef1ebd91b2b9"
-    sha256 cellar: :any_skip_relocation, sonoma:         "3cc96eaa419d1c2d0beb889d8603412a5b3e39da4904c0b388ee88c0765d00e2"
-    sha256 cellar: :any_skip_relocation, ventura:        "4457fc2186c89bcb409c8b981918a58b80e72acfc79cb6f2696478fef6b1f6ad"
-    sha256 cellar: :any_skip_relocation, monterey:       "4457fc2186c89bcb409c8b981918a58b80e72acfc79cb6f2696478fef6b1f6ad"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ceb310563679b39f4c7b18a253e2aef5f6e0d24cb7d428e28e4bfc4e1eac5ea0"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d3e83fad1caf40cefd5ac3dd5d536286e5d1de2ba73cacb5c91de04ff359088f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d3e83fad1caf40cefd5ac3dd5d536286e5d1de2ba73cacb5c91de04ff359088f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "aaffda73eea02684a47c7e8fbba2d1ba4787be1cea304204a938408fa3ea9022"
+    sha256 cellar: :any_skip_relocation, sonoma:        "93fe9851cb986a58f8db18251ec636ab6e09d317f0813bbc7600b65f5989d284"
+    sha256 cellar: :any_skip_relocation, ventura:       "5fd44b906bbbbfa63e11b886b1514b97f2913d73a026d132f4cf84cbe4811657"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "24267f87df6ab44c1a9abd0b000338804af5514d865d7a82c1101bb9a9ae96d3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "24267f87df6ab44c1a9abd0b000338804af5514d865d7a82c1101bb9a9ae96d3"
   end
 
   def install
@@ -57,6 +56,6 @@ class Pgbadger < Formula
       LOG:  database system is ready to accept connections
     EOS
     system bin/"pgbadger", "-f", "syslog", "server.log"
-    assert_predicate testpath/"out.html", :exist?
+    assert_path_exists testpath/"out.html"
   end
 end

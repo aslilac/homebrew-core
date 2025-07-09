@@ -1,17 +1,18 @@
 class Facad < Formula
   desc "Modern, colorful directory listing tool for the command-line"
   homepage "https://github.com/yellow-footed-honeyguide/facad"
-  url "https://github.com/yellow-footed-honeyguide/facad/archive/refs/tags/v2.18.0.tar.gz"
-  sha256 "2c4b487fce0046767e37fbbfe77e530b38d4184a5a82710c9fdd74d184b71f0a"
+  url "https://github.com/yellow-footed-honeyguide/facad/archive/refs/tags/v2.20.13.tar.gz"
+  sha256 "381231de5429cc47fccdd163a34691b4478a33deea7146c78676d559d284439e"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c254eed36076c6b8d245084f8a81728d821eaac846c0b51a9e464062181efe27"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "52e69e6903590f5b7a7908b0c31a714a841ecf57905a93cc26dd8e4ad7790308"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "d67892e3de277927b006478e9beae4039db3e02f7c4ca599a06bb9ec9078721f"
-    sha256 cellar: :any_skip_relocation, sonoma:        "d109477775cc9e45648c9713d16452dbb3453449a3b52ad6a085f116cf2393c1"
-    sha256 cellar: :any_skip_relocation, ventura:       "f358dd6f18d143fc6af661391998eaad63d3d11a54e7d89aba4cbc328049667b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "62058b41a686d0bf5aa4e55b0efb2dadd14778b52a9591991b1fe69bd60d9adb"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "531b9fc1493250c2f12e7528cf444bf3e7751d27245337e3ffeddf1afa4c8b92"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "51ae9755ae9ee5957dcdaa2da6a07f8224fbab9b4311d13ddd3d979bf571ae9e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f3b6c413bedc1b61a406fdc0c3efe28c29d91fdbcf320639dae4454d512be8e2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "35b192bfefc8f26e4c7763085c090380e561e9124b5d1e5a4a31966554828c5a"
+    sha256 cellar: :any_skip_relocation, ventura:       "c2bc9275cf97c25ad138cd1d45ef09ffa22dd7965fbb68557ae30885368b7d00"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "1f621e7fd54c732d10a5d27d3c8a20f719b8710ccd8a5f5360c6ef45acf427aa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a37aec3747556f81333a13b7d860c22cfd31e8b05193b2414630dc8d0925649a"
   end
 
   depends_on "meson" => :build

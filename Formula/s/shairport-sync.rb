@@ -1,9 +1,10 @@
 class ShairportSync < Formula
   desc "AirTunes emulator that adds multi-room capability"
   homepage "https://github.com/mikebrady/shairport-sync"
-  url "https://github.com/mikebrady/shairport-sync/archive/refs/tags/4.3.4.tar.gz"
-  sha256 "3173cc54d06f6186a04509947697b56c7eac09c48153d7dea5f702042620a2df"
+  url "https://github.com/mikebrady/shairport-sync/archive/refs/tags/4.3.7.tar.gz"
+  sha256 "a1242d100b61fe1fffbbf706e919ed51d6a341c9fb8293fb42046e32ae2b3338"
   license "MIT"
+  revision 1
   head "https://github.com/mikebrady/shairport-sync.git", branch: "master"
 
   livecheck do
@@ -12,14 +13,13 @@ class ShairportSync < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "d9b6b11867be65a4177595aaf8583bf66c11d61f4c595a122546b324ea0f88d7"
-    sha256 arm64_sonoma:   "3ac27bf42aa216391c1f1b2c05a5e322b032e4f2f2cff51efe5447755c5027e3"
-    sha256 arm64_ventura:  "77c18154023144ff4789edbffa7d1e6e168ad1ffc40d00ee9937fbdced36aae9"
-    sha256 arm64_monterey: "7987d05e9b78cf528a84f37aa79c0d9853311510e8c172c66bd851e708642960"
-    sha256 sonoma:         "e9dbf27608fafad55da29029d02e4f7e214a81e1a4820555c41c4e2fae26e887"
-    sha256 ventura:        "5f3f0bb020de0b5c5f12ad9a6c979cdcb7ffbf742358d27c6961afcaac5aa6fe"
-    sha256 monterey:       "45fdb0ec804521006e50ec1682a20434cadb042842d53a41f07e9f9e7f88dd8b"
-    sha256 x86_64_linux:   "828edfc5d9301bfec852f6d387ef6080201643edb3c4b60d12d5202581cfbc87"
+    sha256 arm64_sequoia: "7545247fdb0c6f1d073bb20d3bc89304637ee0d57cee66e725e1ee32549dd1ae"
+    sha256 arm64_sonoma:  "21a738ff972c71852726ef8073116fb6e77db042d92a4846b9aee123af0f5ff8"
+    sha256 arm64_ventura: "1cb4522df509d78bc574c27a8d668b6bf639dcb0e6a68d015b8e93205c1c0ac3"
+    sha256 sonoma:        "a61879e3ed9398bd9683ad8851d54db9c49a0bdf701cf5b58b6bc79f101ed553"
+    sha256 ventura:       "eea7570e9fcc832b79f410bb906dac1fadb920deca94edb3d81f74544e48acb4"
+    sha256 arm64_linux:   "69d9c8f3540f793214bbc3e9bbf61b39b5b4caa3bcd7c5c17a958ab7eb599164"
+    sha256 x86_64_linux:  "5098428e618dec3360e3cb5ede3eaec09611ff3cc27596fc9a9fc2a737917bf5"
   end
 
   depends_on "autoconf" => :build
@@ -46,13 +46,12 @@ class ShairportSync < Formula
       --with-metadata
       --with-piddir=#{var}/run
       --sysconfdir=#{etc}/shairport-sync
-      --prefix=#{prefix}
     ]
     if OS.mac?
       args << "--with-dns_sd" # Enable bonjour
       args << "--with-os=darwin"
     end
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

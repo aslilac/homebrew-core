@@ -1,20 +1,16 @@
 class ChooseGui < Formula
   desc "Fuzzy matcher that uses std{in,out} and a native GUI"
   homepage "https://github.com/chipsenkbeil/choose"
-  url "https://github.com/chipsenkbeil/choose/archive/refs/tags/1.3.1.tar.gz"
-  sha256 "63d69aa24eca3e397ca5d6ca8da57921c1f1ed02c34e6ef351b999bc208861e4"
+  url "https://github.com/chipsenkbeil/choose/archive/refs/tags/1.5.0.tar.gz"
+  sha256 "34dd16ac0b5e1b8b2468d677a985690e3bac01cb0c45e2eaf5d493df968cca2b"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "6945adef420d93507a9b315deb745ede15be54bd5f3f7d2b739e66e63a641ae4"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e2f335db4a15c2bb6d13f34e2247b88537b30bdb29d88f315c00125a5ad510a7"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ea87b1a590c751e812b4fada4882951b3cda17c489ab4f6a1fd4398acbe262aa"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "630408a8095e21ae5a7f25892d49edd0936e0bc397d85af335f898d3d8c45508"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d742aa98d6c503e953531bcaac5807254e820a2f0c4888faa06a791f292365a3"
-    sha256 cellar: :any_skip_relocation, sonoma:         "792c8eb2aacfd6b7d2f45d2f32900052bc0be0fc478ed7b962ac012b67052af4"
-    sha256 cellar: :any_skip_relocation, ventura:        "051c460b229a5650d4acf03b9ab5c5627b50b5dd82285ff6d203ad611f7eaedb"
-    sha256 cellar: :any_skip_relocation, monterey:       "3fb160658f91298dbebbdca13ddd30c01565dd41146d07bc739f27a868a240a2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8bebb256288062b620e845055833832c14a98f835b330e3c1fa866390a880e24"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5d10306e841ecc9d2386cd713ca9174944a7fd1dfa00f27edbcdfad164abb516"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f81fb4fca698277ad669366d63027a63a071e5fdc1d94e2adf8adc21948004df"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "852c47ffe1bc97a5ec0bbda87d566099d049b03c2a42c98cfa1be1daab225f83"
+    sha256 cellar: :any_skip_relocation, sonoma:        "226d6aa34398a30e22e4e675451d96f698a39e0e316381ca95b5579f904e2d16"
+    sha256 cellar: :any_skip_relocation, ventura:       "e4af99e87b62cf372f365988114caf338c1a66bb87a2b624aedff0b0f5dd2bd4"
   end
 
   depends_on xcode: :build

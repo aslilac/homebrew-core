@@ -4,6 +4,9 @@ class LunchyGo < Formula
   url "https://github.com/sosedoff/lunchy-go/archive/refs/tags/v0.2.1.tar.gz"
   sha256 "58f10dd7d823eff369a3181b7b244e41c09ad8fec2820c9976b822b3daee022e"
   license "MIT"
+  head "https://github.com/sosedoff/lunchy-go.git", branch: "master"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "fba65395dd87db751184f0d6a5023465484f321d47b4cd62ff0095837656c1e6"
@@ -25,10 +28,14 @@ class LunchyGo < Formula
 
   conflicts_with "lunchy", because: "both install a `lunchy` binary"
 
+  # Add go.mod
+  patch do
+    url "https://github.com/sosedoff/lunchy-go/commit/756ad7892ca91763c9c1e70ff9c6570607843725.patch?full_index=1"
+    sha256 "e929312d6bb2441343e488988981e27fedab365fd963020089553608a9f93d5b"
+  end
+
   def install
-    ENV["GO111MODULE"] = "auto"
-    system "go", "build", *std_go_args
-    bin.install bin/"lunchy-go" => "lunchy"
+    system "go", "build", *std_go_args(ldflags: "-s -w", output: bin/"lunchy")
   end
 
   test do
@@ -59,6 +66,6 @@ class LunchyGo < Formula
       removed #{plist}
     EOS
 
-    refute_predicate plist, :exist?
+    refute_path_exists plist
   end
 end

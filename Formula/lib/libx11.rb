@@ -1,22 +1,21 @@
 class Libx11 < Formula
   desc "X.Org: Core X11 protocol client library"
   homepage "https://www.x.org/"
-  url "https://www.x.org/archive/individual/lib/libX11-1.8.10.tar.gz"
-  sha256 "b7a1a90d881bb7b94df5cf31509e6b03f15c0972d3ac25ab0441f5fbc789650f"
+  url "https://www.x.org/archive/individual/lib/libX11-1.8.12.tar.gz"
+  sha256 "220fbcf54b6e4d8dc40076ff4ab87954358019982490b33c7802190b62d89ce1"
   license "MIT"
 
   bottle do
-    sha256 arm64_sequoia:  "c6f87c76459254b07fff761beac4092db78f520edc26b0fb489b5f9c6b767fa5"
-    sha256 arm64_sonoma:   "5467d41501260e483586e9b05ed3137393f7faf7d49901c31bbeb0b25bd7caf5"
-    sha256 arm64_ventura:  "144c9ca0fd07301773ec072adf505ba73a2c2561ad211cc7067b98b92034cb72"
-    sha256 arm64_monterey: "f323202b5650d3114a7215bcf8017cc144140c49baf122501a8bc31d3b24bfa7"
-    sha256 sonoma:         "ae4c27d75532011351ec195f21e63640a1df4393a66985bf5078df0a446fee73"
-    sha256 ventura:        "220bce8f5d80d6894f7e25d02c32f1a3ec1d4d3f0ecf5f4ba619de7a80986a1a"
-    sha256 monterey:       "0989016905547b3899a956bbb45a95b6dc50fffab2af5afd6685486bea03281f"
-    sha256 x86_64_linux:   "12f965d5b1d09327b0040b9e0f385ca5d4db9ceb29f8c89e6fcbe6e98ecf71c6"
+    sha256 arm64_sequoia: "57ccd55767fd6ffc7d32940d1c59d59b42c82abff4abf795b4ca0df489da42f1"
+    sha256 arm64_sonoma:  "aa0440afde483eec625c716e22f9d4b883b5993a9b2bcf539f1199387127a46c"
+    sha256 arm64_ventura: "693416ac252f1635f9324ff123620482daa904debeb4297f69bc61b3e72176ff"
+    sha256 sonoma:        "5d916769cf91a23fff62dbd1b9c791beeca44504e72907511b352f8f758dae4b"
+    sha256 ventura:       "f1c6b7e52cfa19f8aa99cfd86dfa56597a719850244e4162905a385970862c54"
+    sha256 arm64_linux:   "b18a0e0f7eff31b9ba6de1352133bf25b7645ca83d0fb937afa29c6031607a37"
+    sha256 x86_64_linux:  "7e74d0c1204bf8bb3d9cc9984a0efce1cba85284505076a0508f29e190b7bb2b"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "util-macros" => :build
   depends_on "xtrans" => :build
   depends_on "libxcb"
@@ -37,7 +36,7 @@ class Libx11 < Formula
       --enable-specs=no
     ]
 
-    system "./configure", *std_configure_args, *args
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
   end

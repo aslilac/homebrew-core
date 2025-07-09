@@ -6,6 +6,8 @@ class Mktorrent < Formula
   license "GPL-2.0-or-later"
   revision 2
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "7710b5cf4314030f0c38e8ade9ef142c269decf770b77527ae931882dcc5b921"
     sha256 cellar: :any,                 arm64_sonoma:   "2a6c0b4358e1b70f05757b6e016d039c645cfbc6e92cece0b69b1fc12dc5e97b"
@@ -16,6 +18,7 @@ class Mktorrent < Formula
     sha256 cellar: :any,                 ventura:        "4fd92b8b522faa30fc1433bb6dca8550e81c7936344c09cd490a714b11654cc7"
     sha256 cellar: :any,                 monterey:       "b582261a10aebf9b44820f6e30a38bf8941833a9ffc3eba2a5869853c5514ef8"
     sha256 cellar: :any,                 big_sur:        "64810768318138d7d88d4915a619644fec95fb789d028508bde97b82e0e31ad0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "6e292323aabc0ae62a74a890caab3d43e94c26692f9a6fe171329a2add01a7a2"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2d977a90d91e84d0064b6d2134a85454c500d2093afece3e1b1e6d393c091cac"
   end
 
@@ -32,7 +35,7 @@ class Mktorrent < Formula
     EOS
 
     system bin/"mktorrent", "-d", "-c", "Martin Luther King Jr", "test.txt"
-    assert_predicate testpath/"test.txt.torrent", :exist?, "Torrent was not created"
+    assert_path_exists testpath/"test.txt.torrent", "Torrent was not created"
 
     file = File.read(testpath/"test.txt.torrent")
     output = file.force_encoding("ASCII-8BIT") if file.respond_to?(:force_encoding)

@@ -1,18 +1,19 @@
 class Cpr < Formula
   desc "C++ Requests, a spiritual port of Python Requests"
   homepage "https://docs.libcpr.org/"
-  url "https://github.com/libcpr/cpr/archive/refs/tags/1.11.0.tar.gz"
-  sha256 "fdafa3e3a87448b5ddbd9c7a16e7276a78f28bbe84a3fc6edcfef85eca977784"
+  url "https://github.com/libcpr/cpr/archive/refs/tags/1.12.0.tar.gz"
+  sha256 "f64b501de66e163d6a278fbb6a95f395ee873b7a66c905dd785eae107266a709"
   license "MIT"
   head "https://github.com/libcpr/cpr.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "52148bb941bbed4a3e8641a942edfcb73bd2c37ad949a4d21255cdc84e3a8772"
-    sha256 cellar: :any,                 arm64_sonoma:  "b4f5ac50892af98014d9536a09fbd84e10ed71fdfa0ff4b2d2a8c13a3cf01f17"
-    sha256 cellar: :any,                 arm64_ventura: "62221b4b1f800a1b10f7af4774f00a94219a160e79ecc629aeadbc6b0bfb32e3"
-    sha256 cellar: :any,                 sonoma:        "e429dd6fc464ef789d5ab13fedd4213266cf1c082319a69647d6cbd70d18c2ca"
-    sha256 cellar: :any,                 ventura:       "28de8df1ddca1b9d1c6bf5c3de5978e311b2a95adde7bb0de4981ff38c39ec9b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3cc60004b96d225fa1633e79ba527227bbf167b52e30730bbd859ea75c3bb558"
+    sha256 cellar: :any,                 arm64_sequoia: "09b831bfeb3f9574473d0389d56c54a98d6114401fc2461a459b81fae35441b7"
+    sha256 cellar: :any,                 arm64_sonoma:  "62774379c35c472b5ce32cd7a1044201f746fde63b6caa1fa0ca1aa6f063ceba"
+    sha256 cellar: :any,                 arm64_ventura: "1daf2a4ac0df3bde82610f88f16d84dbb470e5bcd5466376500d43b43fc14997"
+    sha256 cellar: :any,                 sonoma:        "6c4d6d71ee53bbe0ba524f3c91c00c33dd3256ac7f36ce5f66735d07203b8fc9"
+    sha256 cellar: :any,                 ventura:       "444ed2abda55e8ddbed0ae3f2baf2dd1c90828a158e96f8dbcd7b40288a68fc7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ce24deaf7cfd5c547c270bd903be2d12afb258dcd140938c1b27a98474bce2ad"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4986278145e9f1ba77fc0caff4fe08c91437e40cd7b18114cf4d44ba6dbe06e7"
   end
 
   depends_on "cmake" => :build
@@ -21,8 +22,6 @@ class Cpr < Formula
   on_linux do
     depends_on "openssl@3"
   end
-
-  fails_with gcc: "5" # C++17
 
   def install
     args = %W[

@@ -11,6 +11,8 @@ class Lpeg < Formula
     regex(/href=.*?lpeg[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "af50e5ff5ff953cb182ffb7657fdbf5fbfc9958f12be114c6713d7e62190c421"
@@ -22,6 +24,7 @@ class Lpeg < Formula
     sha256 cellar: :any,                 ventura:        "0bd6d115782c46c0a09e07a4d27429211bef1a251ceb8d33f14a5530ce530c9e"
     sha256 cellar: :any,                 monterey:       "66c950f321432b109386fa6182bdfe6afb26d59f38d2d70e3d1087f5cf1637ed"
     sha256 cellar: :any,                 big_sur:        "cb3e28c5aacd7007606fedac99181a819081e5bb80fe2eee6689b6a30dc1768b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e53aaa71544d8b622b5de93bc94ec6df302180ff3c89df5f25ddc5fc8da75dac"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3e9143038c664866b58c882ed78450fc005c6169d32d9bf2ded09f2af664b3c4"
   end
 

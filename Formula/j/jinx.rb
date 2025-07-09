@@ -6,6 +6,8 @@ class Jinx < Formula
   license "MIT"
   head "https://github.com/JamesBoer/Jinx.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "640fd3707ccc9262904729a97da5789a22e9cb46c658b7d20aecbb323749a1a2"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "24313e091b9222029e7d5e6e4aea87ef70e20facef9a6b82e0a0d4abfffcc511"
@@ -16,12 +18,11 @@ class Jinx < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "6f9d56b84c16029fbec98ffe69d6fcf84e83effbeabde98cd2c3a553cbb366ff"
     sha256 cellar: :any_skip_relocation, monterey:       "cafc3ac794c99f4e0a74380927681bd35eb465eb22d940a99cee23aae2f8ea61"
     sha256 cellar: :any_skip_relocation, big_sur:        "eb75b3db57ce5a1349190419c5e1f7e880c74c0d0f8ae5485a708739358592ff"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "56ecdc57ff29b8f45c0539ebbcef8608581644a619014cb6058c8d01b8aa3422"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ca7c15cf146241f441cf37fd695dbae391da90bdb5cf6b3fcf7d3c1f05be2270"
   end
 
   depends_on "cmake" => :build
-
-  fails_with gcc: "5"
 
   def install
     # disable building tests

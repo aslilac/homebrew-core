@@ -56,17 +56,20 @@ class Creduce < Formula
     regex(/^(?:creduce[._-])?v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia: "752bcd060b5ab5d04efc96dfd67d9128e6fd66a2d9b14b5e59735ba758d2d61b"
     sha256 cellar: :any,                 arm64_sonoma:  "c489f889cd95d689d226e4965582120a96b1119eb4fb2902c481c6b9338122aa"
     sha256 cellar: :any,                 arm64_ventura: "56cd23ed4e8cdf7a2928f740332b07eed6f3d5b8a22416cf30ab746fbecbe0a7"
     sha256 cellar: :any,                 sonoma:        "487aebd04b8609040875fb262122692867f20507b7c71e25a8914a920521242d"
     sha256 cellar: :any,                 ventura:       "937ef76ad140358b5458b394b8376746972ce80915e3fa91fc7b6065a94bc5ef"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7355a04a779fd118356fba1c777127451b6ef219c6d89797db1b379b5eebb977"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "299566ba27c179eb7e3aa48dfc766b6b3bfe6a4892a929b5777aede0b4e54a05"
   end
 
   depends_on "astyle"
-  depends_on "llvm@18"
+  depends_on "llvm@18" # LLVM 19 issue: https://github.com/csmith-project/creduce/issues/276
 
   uses_from_macos "flex" => :build
   uses_from_macos "perl"
@@ -137,11 +140,11 @@ class Creduce < Formula
         printf("%d\n", 0);
       }
     C
-    (testpath/"test1.sh").write <<~C
+    (testpath/"test1.sh").write <<~BASH
       #!/usr/bin/env bash
 
       #{ENV.cc} -Wall #{testpath}/test1.c 2>&1 | grep 'Wimplicit-function-declaration'
-    C
+    BASH
 
     chmod 0755, testpath/"test1.sh"
     system bin/"creduce", "test1.sh", "test1.c"

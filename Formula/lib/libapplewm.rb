@@ -5,6 +5,8 @@ class Libapplewm < Formula
   sha256 "5e5c85bcd81152b7bd33083135bfe2287636e707bba25f43ea09e1422c121d65"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any, arm64_sequoia:  "9aed87eee9abadbc7e94ee746f6b54588d3eacd9fb455b2d94a96c4b7a19425e"
     sha256 cellar: :any, arm64_sonoma:   "a85cafdda17d42585277fa6d22fb7b7d71d030c9ec591d4cbcc528a32ef5410e"
@@ -18,7 +20,7 @@ class Libapplewm < Formula
     sha256 cellar: :any, catalina:       "c3e392ce25599cfe0929f1cd14a24a4d512697c952f15dea0533c2dbb8755b23"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "libx11"
   depends_on "libxext"
@@ -30,7 +32,7 @@ class Libapplewm < Formula
     # https://gitlab.freedesktop.org/xorg/lib/libapplewm/-/commit/be972ebc3a97292e7d2b2350eff55ae12df99a42
     # TODO: Remove in the next release
     inreplace "src/Makefile.in", "-F", "-iframeworkwithsysroot "
-    system "./configure", *std_configure_args, "--with-sysroot=#{MacOS.sdk_path}"
+    system "./configure", "--with-sysroot=#{MacOS.sdk_path}", *std_configure_args
     system "make"
     system "make", "install"
   end

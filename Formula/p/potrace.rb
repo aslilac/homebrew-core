@@ -10,6 +10,8 @@ class Potrace < Formula
     regex(/href=.*?potrace[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "dec55e697af533180d68158fd557f596e65887a1e5043214dc0532464aa6ef27"
     sha256 cellar: :any,                 arm64_sonoma:   "003f7041bd6b4ea6de5ac2c8fbe9e2537a6a6dbd169f0c872627c5e2daa00afa"
@@ -23,6 +25,7 @@ class Potrace < Formula
     sha256 cellar: :any,                 catalina:       "c3f357a8bd6460384400acd00dab0d8571ad0b1543a81e5b9d5ff49d1ece4fa1"
     sha256 cellar: :any,                 mojave:         "3ad69cce4edecea6e5170b766201845b703a98bbac3c5272ef6a045f828643e2"
     sha256 cellar: :any,                 high_sierra:    "56d821a4d3579bedf64ebf5357fc04f214cb2efbea7ddb681b202e684e71d97e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "1226c34ff1e1baf0622e69e59d69bf515aa1d6a8a6381b7c82349c4d578447d5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d47c98611b15465f29e55972018135927d42929e5901153ad99c6579de32863c"
   end
 
@@ -44,6 +47,6 @@ class Potrace < Formula
   test do
     resource("head.pbm").stage testpath
     system bin/"potrace", "-o", "test.eps", "head.pbm"
-    assert_predicate testpath/"test.eps", :exist?
+    assert_path_exists testpath/"test.eps"
   end
 end

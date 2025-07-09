@@ -1,8 +1,8 @@
 class CdogsSdl < Formula
   desc "Classic overhead run-and-gun game"
   homepage "https://cxong.github.io/cdogs-sdl/"
-  url "https://github.com/cxong/cdogs-sdl/archive/refs/tags/2.1.0.tar.gz"
-  sha256 "ea24c15cf3372f7d2fd4275cea4f1fd658a2bd5f79f7e6d0c8e3f98991c60dc2"
+  url "https://github.com/cxong/cdogs-sdl/archive/refs/tags/2.3.0.tar.gz"
+  sha256 "6ea66e058503a5c160dbeccc25072061c87e190ced6876ae5b63a3e4d1ed0044"
   license "GPL-2.0-or-later"
   head "https://github.com/cxong/cdogs-sdl.git", branch: "master"
 
@@ -12,13 +12,13 @@ class CdogsSdl < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia: "736dd36381bef76aa631f7696e22fc5b96cba0abcc99cfee9ae94fd8c3e796e5"
-    sha256 arm64_sonoma:  "95b0f56706d78b2e473a116389305e73de5e9ded93aaee2619c33d304dd1535b"
-    sha256 arm64_ventura: "41018296c2b1a57018fc3b5d3c24b3b9f4a152369ea5a25fcfa226705f65b867"
-    sha256 sonoma:        "1da258a7f4c7e6cc4aa88d48d2f22f1cbb349c69c1c3cf4fd32a43959e58a7b0"
-    sha256 ventura:       "df8f925f73f088fafac90515404af72c1686419114763b9fb7eb50d83cd62dea"
-    sha256 x86_64_linux:  "e98f6240960c77881bd180e4e16bf546931d8b455ccf0c7e0531e9eb4395ec58"
+    sha256 arm64_sequoia: "08a30a5c543e87a3124a15c907b73060fe443820bbd6565569f49fb33541639d"
+    sha256 arm64_sonoma:  "c5a53c5b4fb1d8872f8df040958878bf133c7ef335111e31782c353a0b846c07"
+    sha256 arm64_ventura: "9d525e0b2132b29d012dd04fa065bf67a0424dba356c112e80370cc65e4fa446"
+    sha256 sonoma:        "f49ea1edd7342d5645cf54b49c0a07f4116df52c86d357c966d304615f4afc90"
+    sha256 ventura:       "1a60efaeb8e6680ff86ba951abf2ff25078a0e4fc6c6dcada978f547b85694e3"
+    sha256 arm64_linux:   "bf9707f098bb504f6ce1bb5d0b597e6325a68229a5e9fc8de9e6fe634f9d44eb"
+    sha256 x86_64_linux:  "6eed5b0c3979d10ba041c7755640461247e63979d6287fde09554dd712ec151e"
   end
 
   depends_on "cmake" => :build
@@ -36,11 +36,13 @@ class CdogsSdl < Formula
   end
 
   def install
-    args = std_cmake_args
-    args << "-DCDOGS_DATA_DIR=#{pkgshare}/"
-    system "cmake", ".", *args
-    system "make"
-    bin.install %w[src/cdogs-sdl src/cdogs-sdl-editor]
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DCDOGS_DATA_DIR=#{pkgshare}/",
+                    "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+                    *std_cmake_args
+    system "cmake", "--build", "build"
+
+    bin.install %w[build/src/cdogs-sdl build/src/cdogs-sdl-editor]
     pkgshare.install %w[data dogfights graphics missions music sounds]
     doc.install Dir["doc/*"]
   end
@@ -52,8 +54,7 @@ class CdogsSdl < Formula
     time_slept = 0
     time_slept += sleep(5) while !(testpath/".config/cdogs-sdl").exist? && time_slept < max_sleep_time
 
-    assert_predicate testpath/".config/cdogs-sdl",
-                     :exist?, "User config directory should exist"
+    assert_path_exists testpath/".config/cdogs-sdl"
   ensure
     Process.kill("TERM", pid)
   end

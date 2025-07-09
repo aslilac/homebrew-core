@@ -5,6 +5,8 @@ class Alass < Formula
   sha256 "ce88f92c7a427b623edcabb1b64e80be70cca2777f3da4b96702820a6cdf1e26"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "efa1a388ee9ecf5193edd9c9003af0f035ed138bf6a79b45e6b22654c32888e4"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4f42a7b7ef244c6018d9d16f3979f14758ca54a50a568b269011f9ccdcae5f39"
@@ -15,6 +17,7 @@ class Alass < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "1b6e4cc531bc410f1c4792f5e8709230fa1312425499c7179712714ecbfbc593"
     sha256 cellar: :any_skip_relocation, monterey:       "3b60c7670145e819679d32671912305e150b55164de74e39b4ea788586651696"
     sha256 cellar: :any_skip_relocation, big_sur:        "8aa09d2f899a21272a4703e587a036e475b4ce060bdb9ef0d214b449157126fe"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "dc47c934ca68489561b3f325fb9627fe7cd98d2cbffb0bca6bb1d4bbb0c9e0b6"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "499c4ee6c9cefa90b135dbfb668879f8a56fd5da4ab20dfd077ae1047b34f0f1"
   end
 

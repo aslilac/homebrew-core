@@ -1,8 +1,8 @@
 class Silk < Formula
   desc "Collection of traffic analysis tools"
   homepage "https://tools.netsa.cert.org/silk/"
-  url "https://tools.netsa.cert.org/releases/silk-3.23.1.tar.gz"
-  sha256 "c3277352764fa9167a6130739bd4b7cc8ebcb7b7d4f727b46facd7b135f26c23"
+  url "https://tools.netsa.cert.org/releases/silk-3.23.5.tar.gz"
+  sha256 "58701cd3b7ceb951fb5cda9c241b171608036daab4bad4893f6882f4a29b1680"
   license all_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later"]
 
   livecheck do
@@ -11,12 +11,13 @@ class Silk < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "9174f223744ea5a48b59a4ab66269bb36e0033cbd9925a248120708b33522eb0"
-    sha256 arm64_sonoma:  "df1f4e0f33fcf049b18992fb1a84323c9891339dd66bc6f9ea0d18405e97c6da"
-    sha256 arm64_ventura: "676fbf5554b1e229f629728f296ea6fa5f99080bf27745ce7af7f95c24f0a441"
-    sha256 sonoma:        "37d538756d940202a4319f73ce6d67011091bebd12aabeeecd3900edf854d9ba"
-    sha256 ventura:       "e3200fa12fbbe0cad5b28db61d65e73269abb80ab21396e1607783d0caf432e1"
-    sha256 x86_64_linux:  "41438d609da5625f2a222397a1e8e5e85c82d2fe5aed69192e5b82394f52ebc0"
+    sha256 arm64_sequoia: "95e2f74ac394bb9327e6e54a9b60fa4a4f320f1b974c640898fea6689b42bac4"
+    sha256 arm64_sonoma:  "861f979e9ca355c2bfcbfa383f1b052eaf98bf8550c8b8eccea603a7ca83db1c"
+    sha256 arm64_ventura: "ad2454feb3a3a60d32b8e889ad387fdc0408c84522dfe9af6c34cb32710d8c2b"
+    sha256 sonoma:        "155ccf0867d12599b416cb34c00f1e082894cd43462b206a09a6ee8e0cab363d"
+    sha256 ventura:       "f730eb216f5b4bf435000d1dfe1197a87c2f2ac4d25c3ff45e7f9d433b6760d4"
+    sha256 arm64_linux:   "f13652d2d255490d21f8b4cac9f5da8f8e3aaf2c1d50032d6d3c000d53eaacfd"
+    sha256 x86_64_linux:  "1b93547929821cca240e813162e1d6ff3066c4dd6df50060c027b59f33b6f6bb"
   end
 
   depends_on "pkgconf" => :build

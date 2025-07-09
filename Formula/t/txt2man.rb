@@ -10,6 +10,8 @@ class Txt2man < Formula
     regex(/^(?:txt2man[._-])?v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a35a60cd90ffb17bd56c29b9a003eb5298a40f270670da3fd62238eea9337f40"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "02ec46f5c280b3f46b613be3394a713727e1765199f90d5240505803d75f4a19"
@@ -20,6 +22,7 @@ class Txt2man < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "bf830d1619712538f9458fdd8c6e201d883297ee6e7210dd9e8d977318de216e"
     sha256 cellar: :any_skip_relocation, monterey:       "bf830d1619712538f9458fdd8c6e201d883297ee6e7210dd9e8d977318de216e"
     sha256 cellar: :any_skip_relocation, big_sur:        "bf830d1619712538f9458fdd8c6e201d883297ee6e7210dd9e8d977318de216e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "6b425f34d6d190a2e69695893eb4e8d648efec39b345278ad90ca531cbc5f164"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "665ae11624c51ed123faad382b4af7256b5e055c235d54f1d063e58589380909"
   end
 

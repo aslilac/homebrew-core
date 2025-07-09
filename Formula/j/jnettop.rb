@@ -11,6 +11,8 @@ class Jnettop < Formula
     regex(%r{url=.*?/jnettop[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any,                 arm64_sequoia:  "9660bd7bea038b091d0e0fdee7bbc5daf4c764ef2869282e6bf8e619f4a8d3f0"
@@ -24,6 +26,7 @@ class Jnettop < Formula
     sha256 cellar: :any,                 big_sur:        "1a077d39b05adcb4ba5a5e777e6ff054ad3b910876ff3d49172057f050e8b39c"
     sha256 cellar: :any,                 catalina:       "13d9effd79e9b18faa659af615a7b68c7a940adf5eaee5e30806553e1a237f0f"
     sha256 cellar: :any,                 mojave:         "5b4a91804760ca7e39c76cbd16cd7612ed002d429f8996004e1da49d92839c1a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a06d489b070670f237da6659aa5c1803bd5ec72b8b07540b00b14d392879402c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2e3617c2641b35e01517e783554157ece0999367fccf494fc9824618277464eb"
   end
 

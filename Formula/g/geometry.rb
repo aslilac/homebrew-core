@@ -6,12 +6,14 @@ class Geometry < Formula
   license "ISC"
   head "https://github.com/geometry-zsh/geometry.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "fb4186111a4ac55abbf13a80026f3d8de8c1f53fb505ceb9ff9d186fb2539c8d"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "fa0842885c350c64f807ccda07244f74d44825b7bcb12077f9fb803a3b1dddff"
   end
 
   depends_on "zsh-async"
-  uses_from_macos "expect" => :test
   uses_from_macos "zsh" => :test
 
   def install
@@ -27,15 +29,12 @@ class Geometry < Formula
 
   test do
     (testpath/".zshrc").write "source #{opt_pkgshare}/geometry.zsh"
-    (testpath/"prompt.exp").write <<~EOS
-      set timeout 1
-      spawn zsh
-      expect {
-        "▲" { exit 0 }
-        default { exit 1 }
-      }
-    EOS
 
-    system "expect", "-f", "prompt.exp"
+    require "expect"
+    require "pty"
+    PTY.spawn("zsh") do |r, w, _pid|
+      refute_nil r.expect("▲", 1), "Zsh prompt missing ▲"
+      w.write "exit\n"
+    end
   end
 end

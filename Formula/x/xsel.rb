@@ -6,6 +6,8 @@ class Xsel < Formula
   license "MIT"
   head "https://github.com/kfish/xsel.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "b4ef9c989ee8e286f69314d95de96579f0a33336fb5b673b494c27f764c25998"
     sha256 cellar: :any,                 arm64_sonoma:   "7a9deb3b1b185ac5194306be64ddffe8d129d9fb7bd0821eb1ad81fa264d790a"
@@ -16,6 +18,7 @@ class Xsel < Formula
     sha256 cellar: :any,                 ventura:        "46abd92de37296f5be3201a7d4b50e92e10c42a63a4bfd29cf51055cd81d099f"
     sha256 cellar: :any,                 monterey:       "6258269b70ace163a73341c5acb23161660f2bc0b1605086d93540845b926373"
     sha256 cellar: :any,                 big_sur:        "b52227ff66ee16f9e91938370c77e2658ceff2ec2f13ac812ba2920861322450"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "13f84b482a58030b9f25ce9dc75bf06a10328963ea7a95eab43484e859ed4a1b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "508a55a542e6d8fbc46e3d5b0356bab11270e898353dada474a76f6ea1369891"
   end
 

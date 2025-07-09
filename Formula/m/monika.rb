@@ -1,20 +1,19 @@
 class Monika < Formula
   desc "Synthetic monitoring made easy"
   homepage "https://monika.hyperjump.tech"
-  url "https://registry.npmjs.org/@hyperjumptech/monika/-/monika-1.21.0.tgz"
-  sha256 "b265ffce61fde24aaf51e6c84e30d158e3555474683598809d1174e768d61752"
+  url "https://registry.npmjs.org/@hyperjumptech/monika/-/monika-1.22.0.tgz"
+  sha256 "2b2ed6ac3186d72a9f060efb62d183c4b156494b2c37de9808c108f54655b84c"
   license "MIT"
+  revision 1
 
   bottle do
-    rebuild 1
-    sha256                               arm64_sequoia:  "7479124ad18ecf3c9ed273cae783fc4c3a7ffa9077418fa218b29c365820e4c2"
-    sha256                               arm64_sonoma:   "8d3b69446254d8e0d9667e7b08c6815357804538de8e91f3010829a3fde152e3"
-    sha256                               arm64_ventura:  "df4846dbe84f5ec928764cad0f39a02c01ed08cb914a34e03d0a511e914c4868"
-    sha256                               arm64_monterey: "191f1690fa6e465e29be220ca4ddc6da8edca36207e833ee77de90de725475d5"
-    sha256                               sonoma:         "138479415075dfac8741f4c153b4b3627715a436568746cb565bbbbab2f4f850"
-    sha256                               ventura:        "4a9ca5e23f852102f51d0c8850fa251d100674683aaafb4ee557cc5a287b8a66"
-    sha256                               monterey:       "70805c46425cfa7e0db73f712477f510f093e8f0cb3d435f83480a2c32786060"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3a71a527a6c518e829349b096c452213f5d4c41596c3ae28ffba0f94e9a5187b"
+    sha256                               arm64_sequoia: "f3e91a0c2e44a73268d2ad097f66b186d557e7c29bd6cc9bfbf5cdf6f83a51a4"
+    sha256                               arm64_sonoma:  "f2ae79c53a534008b89160ae1c8ae3fdda47aee6fc61218267468b19836a2369"
+    sha256                               arm64_ventura: "1a4b455c1dff23c63b60585ddfe58e19f9028fca8b7ebf5f48b63d2a83fca64b"
+    sha256                               sonoma:        "4ebb6355f4ed47cd9c1e85566eed9c2836b710bb5f79a6160ed7449d6217902b"
+    sha256                               ventura:       "ed6f5ea7a08fc1201b8e41b4172caf6bfaba98c1ddc7fce30c288516fe3e9f26"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ddaf84cdd4938c7a6884cad00e978282ba40458b44714405566a90bd9b412e41"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1e525f7478ff11969327f3a1a65e22bb296716c68a3ef064196029f816e19e4c"
   end
 
   depends_on "node"
@@ -27,7 +26,7 @@ class Monika < Formula
 
   def install
     system "npm", "install", *std_npm_args
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink libexec.glob("bin/*")
 
     # Remove incompatible pre-built binaries
     os = OS.kernel_name.downcase
@@ -36,8 +35,10 @@ class Monika < Formula
     node_modules.glob("nice-napi/prebuilds/*")
                 .each { |dir| rm_r(dir) if dir.basename.to_s != "#{os}-#{arch}" }
 
-    # Replace universal binaries with native slices.
-    deuniversalize_machos
+    cpu_profiler = "@sentry/profiling-node/lib/sentry_cpu_profiler"
+    node_modules.glob("#{cpu_profiler}-*")
+                .each { |file| rm(file) unless file.basename.to_s.start_with?("sentry_cpu_profiler-#{os}-#{arch}") }
+    node_modules.glob("#{cpu_profiler}-*-musl-*").map(&:unlink) if OS.linux?
   end
 
   test do
@@ -59,7 +60,8 @@ class Monika < Formula
       $stdout.reopen(monika_stdout)
       exec bin/"monika", "-r", "1", "-c", testpath/"config.yml"
     end
-    sleep 14
+    sleep 15
+    sleep 15 if OS.mac? && Hardware::CPU.intel?
 
     assert_match "Starting Monika. Probes: 1. Notifications: 1", monika_stdout.read
   end

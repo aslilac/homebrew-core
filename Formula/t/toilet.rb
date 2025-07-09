@@ -11,6 +11,8 @@ class Toilet < Formula
     regex(/href=.*?toilet[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "2c559d7c5172c0f9751ecb6a75a550e1202cf3f09a0cf867799672beea54c2b5"
     sha256 arm64_sonoma:   "e357c586a77052ed8e040b211e693d1f420c2667caffe012d5e5d121659bc3e7"
@@ -26,6 +28,7 @@ class Toilet < Formula
     sha256 high_sierra:    "dda87a313d7398dd3157ca74d752b3d364647fc56c3238fb5bd320fcc904ebd5"
     sha256 sierra:         "24008d251358aa73e7e597b203e360857fec5b88278e6ea6de08d4eef3865f80"
     sha256 el_capitan:     "93822fde3d2e69f46143dcb9d8551e7e4301c7a470ae53b3fda8ec6cb44584dd"
+    sha256 arm64_linux:    "b9b9b289bfeca15d75013d0cb29999beccaf644a914c8a6ce154be438a24c417"
     sha256 x86_64_linux:   "774d107ea52b43b2224252e84eaf529d8b944fa34746935d34a9c4bb791a110e"
   end
 

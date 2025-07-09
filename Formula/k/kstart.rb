@@ -10,6 +10,8 @@ class Kstart < Formula
     regex(/href=.*?kstart[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e4406b6bbb8c07dce6d556cafddb099811130501c3c377dd057f4c997ba2033c"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c7ca3f10529d5a1651d1e2d0a5a2940720825e35f996cb46b52ad543f7f63328"
@@ -22,6 +24,7 @@ class Kstart < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "d34ef88ac1505c9590dd1848fd62688af3fdfef8fae4975025cae75684879c99"
     sha256 cellar: :any_skip_relocation, catalina:       "a4fe5ae0036a4ace4191f41553d3d85ba6278e933f3792eb45ad234e10046e2c"
     sha256 cellar: :any_skip_relocation, mojave:         "c024af687ae576958110ee27c4f8437c6893f4c25cec966e9f5a6e13f2aea8e9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b4035780cf66ac0182d3ce1cfe54dff488f916cf2622b71cbd18f9b021da3a77"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "167f4e4df9e62e2e2e0f251dccfc043d993ee47ed0d41c60ebc7916c00e3b2cc"
   end
 

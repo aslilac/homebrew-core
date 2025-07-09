@@ -1,19 +1,18 @@
 class Bob < Formula
   desc "Version manager for neovim"
   homepage "https://github.com/MordechaiHadad/bob"
-  url "https://github.com/MordechaiHadad/bob/archive/refs/tags/v4.0.2.tar.gz"
-  sha256 "cf3bf4ccd6133b43f67ffbdd18bd994749366f1d06d3a2c55be75dddc9b14872"
+  url "https://github.com/MordechaiHadad/bob/archive/refs/tags/v4.1.1.tar.gz"
+  sha256 "2ed43e82505f462bcd8851579b55a5f37089825e1b717b3c928b2bfdbf5eecd0"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "2cc6c4f4d8f6574e4468e2dd8836bb35d0a01cc8003522d60c643e24bf1eba01"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bfd25f4b9f225014b4e64fc10f2a4b17d4aabb36762696320162ace2127e7075"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "52be99d73767678f9ae93ff628598ab212d32d7447f29c5a48e5e97d9b9ecd52"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "36f563cc3f649360276af08dd48ebfd9202736354a2070cadb80355286ee747c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c7dea8c6802d27cc5f00fb056cf91019b72433718cd58b3b9dbc1e69a13112d1"
-    sha256 cellar: :any_skip_relocation, ventura:        "dea63cbed1fd56d9d4eb59faf7b56ec5f77276e5eeb42e1a9d970b1d7b0b7a45"
-    sha256 cellar: :any_skip_relocation, monterey:       "56f100c6cdcaf69cfdd31471817fc3872fde77fef061d32b7bd2e525aaf25aca"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6f817d4431010c514473475c5cc9ed38687b61857bc63143496976534b2425da"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c2e9793a1957841ab2743fd3f4749e94ed11b28388063e01f233ce35788574cd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4d591774836a4ddb1bfa8f8843250dadc2c13c4359ae528d4359e237e8981281"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "261c373f5c07bb38f711c541c8e1a39d797b2b7d818ceda3f98421cb95a11c12"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7021cac89225b16ed3f045a3a1018e0413f0409efc826badb6595b88f3762a5c"
+    sha256 cellar: :any_skip_relocation, ventura:       "8a4833e729b8910ff0ecd4d7b5554228b9d2e6e0fdb6539a87b4b1db69a05431"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c89993e243dd292b078c9aee2523ea15f424c84333f4e9056e33753db97dedd7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "69841b5b77b0c3cf4b7ed6f206aee679d0e5581499a447be0e1de2af79fde443"
   end
 
   depends_on "rust" => :build
@@ -25,19 +24,24 @@ class Bob < Formula
 
   test do
     config_file = testpath/"config.json"
-    config_file.write <<~EOS
+    config_file.write <<~JSON
       {
         "downloads_location": "#{testpath}/.local/share/bob",
         "installation_location": "#{testpath}/.local/share/bob/nvim-bin"
       }
-    EOS
-    ENV["BOB_CONFIG"] = config_file
-    mkdir_p "#{testpath}/.local/share/bob"
-    mkdir_p "#{testpath}/.local/share/nvim-bin"
+    JSON
 
-    system bin/"bob", "install", "v0.9.0"
-    assert_match "v0.9.0", shell_output("#{bin}/bob list")
-    assert_predicate testpath/".local/share/bob/v0.9.0", :exist?
-    system bin/"bob", "erase"
+    ENV["BOB_CONFIG"] = config_file
+    mkdir_p testpath/".local/share/bob"
+    mkdir_p testpath/".local/share/nvim-bin"
+
+    neovim_version = "v0.11.0"
+    system bin/"bob", "install", neovim_version
+    assert_match neovim_version, shell_output("#{bin}/bob list")
+    assert_path_exists testpath/".local/share/bob"/neovim_version
+
+    # failed to run `bob erase` in linux CI
+    # upstream bug report, https://github.com/MordechaiHadad/bob/issues/287
+    system bin/"bob", "erase" unless OS.linux?
   end
 end

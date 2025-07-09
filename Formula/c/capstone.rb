@@ -1,8 +1,8 @@
 class Capstone < Formula
   desc "Multi-platform, multi-architecture disassembly framework"
   homepage "https://www.capstone-engine.org/"
-  url "https://github.com/capstone-engine/capstone/archive/refs/tags/5.0.3.tar.gz"
-  sha256 "3970c63ca1f8755f2c8e69b41432b710ff634f1b45ee4e5351defec4ec8e1753"
+  url "https://github.com/capstone-engine/capstone/archive/refs/tags/5.0.6.tar.gz"
+  sha256 "240ebc834c51aae41ca9215d3190cc372fd132b9c5c8aa2d5f19ca0c325e28f9"
   license "BSD-3-Clause"
   head "https://github.com/capstone-engine/capstone.git", branch: "next"
 
@@ -12,14 +12,13 @@ class Capstone < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "1bfbe3ed3ee90ede3b80ccef52d4cab75c81d215870ecd50d4bf6b30ba60b84d"
-    sha256 cellar: :any,                 arm64_sonoma:   "2c1c08af469f0307469b70ff6c277d5971495db3a8c7ae38c98bd2c70745acbb"
-    sha256 cellar: :any,                 arm64_ventura:  "8960b1111e9a59597c9c50a6b7ec3cfcfbc5e845d28bb2f42507a2d7bb108a71"
-    sha256 cellar: :any,                 arm64_monterey: "9fadfcd6aa4f0a077472715e2c9cd8da5e64c47d4e025a944525e70835619fbb"
-    sha256 cellar: :any,                 sonoma:         "87442182a186180fa0a4a8bdf3eef0acff55cd732001b191a83f032701520ca9"
-    sha256 cellar: :any,                 ventura:        "bcc3c9288b93bf10c8c10a08352bba47767bf1ffe147c9a6a5bb6e8567fb15de"
-    sha256 cellar: :any,                 monterey:       "eedc593b4cd8ff6baee45009248224d9a227abef8d4db98db868a42e5ae4c49d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6d8ed2e019394daca38715f2c7ab67fc2076c54aeb40e0a4d048d798ba0c51ba"
+    sha256 cellar: :any,                 arm64_sequoia: "eb410c79448b4cb73f7b34ad6fd733d60c493d0f884be84ec40cef075615e629"
+    sha256 cellar: :any,                 arm64_sonoma:  "808aee150aa07ab56497c7f4f8ea8c5a29508e12a51e04f5fd5a10b39552dd30"
+    sha256 cellar: :any,                 arm64_ventura: "9c34130c8f13ab1d2f151ef58e821d3227aefc60eccccf2ed3e9ba21b07266d4"
+    sha256 cellar: :any,                 sonoma:        "3222d61b83d900f610bdfbd2f16f42ac8d216254974e1dde6750cf3cbdfdcbff"
+    sha256 cellar: :any,                 ventura:       "bfdcb8212326f01615b010f6c5bb359d97e402f5f233e9addd8da64a031e46e8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b82b12f9c6415e7e7ded2519d7bd896bd55e8a48122dc9d7d48d1f7b65ef1ffa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e5c2eda3e2bb749151141b634a542346c0b8fab09e0e7bbc49e841ea7f82b8d6"
   end
 
   on_macos do

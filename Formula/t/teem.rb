@@ -7,6 +7,8 @@ class Teem < Formula
   license :cannot_represent
   head "https://svn.code.sf.net/p/teem/code/teem/trunk"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "81b45cdf2ea8755adac691f6e58accc314cf9ddfe9152c3f017fd839df3da9c2"
     sha256 cellar: :any,                 arm64_sonoma:   "3e9555bbe75fe5a36a3f62a36434158fa024153accdb69266ffce6d59254fed7"
@@ -22,19 +24,23 @@ class Teem < Formula
     sha256                               high_sierra:    "4cb2692b42e79880161879605c3990cd5d0c4fbb171c7ccd003bb9d6bb0fee09"
     sha256                               sierra:         "31d19cd9e0e4c064fb743c41a286736503e61b1d5e4b81f29140fcebf2cde2c8"
     sha256                               el_capitan:     "5ade8dc18d0c66ac154d802df6c64e88222781b6fc427a841fb1f4047f8c4e49"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b136f971a5b05201d52c353da5db32fb4d0781d79ded3ac590425f03e12ea3b1"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f5940970f22f2f7c70ad15cda8f227df675d47924d4a37ff5461699dde188f7f"
   end
 
   depends_on "cmake" => :build
   depends_on "libpng"
 
+  uses_from_macos "zlib"
+
   def install
     # Installs CMake archive files directly into lib, which we discourage.
     # Workaround by adding version to libdir & then symlink into expected structure.
-    system "cmake", *std_cmake_args,
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args,
                     "-DBUILD_SHARED_LIBS:BOOL=ON",
                     "-DTeem_USE_LIB_INSTALL_SUBDIR:BOOL=ON"
-    system "make", "install"
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
     lib.install_symlink Dir.glob(lib/"Teem-#{version}/#{shared_library("*")}")
     (lib/"cmake/teem").install_symlink Dir.glob(lib/"Teem-#{version}/*.cmake")

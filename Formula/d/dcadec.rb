@@ -22,18 +22,15 @@ class Dcadec < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "7f938bcd68b9078df3dc6e67d82e08beb55b10228a808d91543a6ed2d15a2002"
     sha256 cellar: :any_skip_relocation, sierra:         "7a51fb1bfa07f08c45176df419087429e9ffce945cbcd28d71e403c456762c74"
     sha256 cellar: :any_skip_relocation, el_capitan:     "89ddc5e9a5cfd72e604bdff54ee1f09f9ad4ec281fc79c93201971bbd380ccdd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "6218f10d2a60bde3becd795bf87e6a806219c7c88b5fcd426ce44cb95e8baef6"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6f727365cbd24d678682c06e73ff49a7fdf92b17a5a1c6b82068522e4d0e0b1f"
   end
 
   # Ref https://github.com/foo86/dcadec/commit/b93deed1a231dd6dd7e39b9fe7d2abe05aa00158
   deprecate! date: "2024-06-30", because: :deprecated_upstream
+  disable! date: "2025-07-02", because: :deprecated_upstream
 
   conflicts_with "libdca", because: "both install `dcadec` binaries"
-
-  resource "homebrew-testdata" do
-    url "https://github.com/foo86/dcadec-samples/raw/fa7dcf8c98c6d/xll_71_24_96_768.dtshd"
-    sha256 "d2911b34183f7379359cf914ee93228796894e0b0f0055e6ee5baefa4fd6a923"
-  end
 
   def install
     system "make", "all"
@@ -41,6 +38,11 @@ class Dcadec < Formula
   end
 
   test do
+    resource "homebrew-testdata" do
+      url "https://github.com/foo86/dcadec-samples/raw/fa7dcf8c98c6d/xll_71_24_96_768.dtshd"
+      sha256 "d2911b34183f7379359cf914ee93228796894e0b0f0055e6ee5baefa4fd6a923"
+    end
+
     resource("homebrew-testdata").stage do
       system bin/"dcadec", resource("homebrew-testdata").cached_download
     end

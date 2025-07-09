@@ -1,10 +1,10 @@
 class Ompl < Formula
   desc "Open Motion Planning Library consists of many motion planning algorithms"
   homepage "https://ompl.kavrakilab.org/"
-  url "https://github.com/ompl/ompl/archive/refs/tags/1.6.0.tar.gz"
-  sha256 "f03daa95d2bbf1c21e91a38786242c245f4740f16aa9e9adbf7c7e0236e3c625"
+  url "https://github.com/ompl/ompl/archive/refs/tags/1.7.0.tar.gz"
+  sha256 "e2e2700dfb0b4c2d86e216736754dd1b316bd6a46cc8818e1ffcbce4a388aca9"
   license "BSD-3-Clause"
-  revision 8
+  revision 1
   head "https://github.com/ompl/ompl.git", branch: "main"
 
   # We check the first-party download page because the "latest" GitHub release
@@ -15,25 +15,24 @@ class Ompl < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "8ddf0b61d4b9f4b0113ccb5ce2f77d2101026a614a88b4e539c6c8e0826bbe5e"
-    sha256 cellar: :any,                 arm64_sonoma:   "936f9237df933d9e854ff0abe2d5e42edcc14c3732227dc4fabd8d679175f66f"
-    sha256 cellar: :any,                 arm64_ventura:  "0039002b210c5f23e460cb2a99cad82d1e6db9bc5b9544aebf0dfe3325ecda03"
-    sha256 cellar: :any,                 arm64_monterey: "c0e8254f283aea3532dd73877e364182d96bf70f949db8f90f4a0aab14727922"
-    sha256 cellar: :any,                 sonoma:         "0ee91c9cb10f001e93bdcf38daf438c24aa4314b86020d1bd8c891d2c99ba0df"
-    sha256 cellar: :any,                 ventura:        "ddc6f4e98e47c9c752d8384d3b829196deca92f13e1c92e75aa68ec598c64432"
-    sha256 cellar: :any,                 monterey:       "1be17fd3d56afd8b7f378b3074b26b3679e370cb06ce700dbe66d8fcc065f992"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "474464a4a0bd3c59d6c888ab496c584dd5ccf38da1ebf51edef0a2a161d3278c"
+    sha256 cellar: :any,                 arm64_sequoia: "041e10c377511ea45af40e962fa9ce470616dae2cde49c01333731dfe38f4b56"
+    sha256 cellar: :any,                 arm64_sonoma:  "b821378e7302d00b6f8aadc22dd606392bda600b236ce744ab04a90617029477"
+    sha256 cellar: :any,                 arm64_ventura: "44393bc2559ef2cb1064943fdd2858cd6086b78a04cc0f98dcf19ec53f01bcb1"
+    sha256 cellar: :any,                 sonoma:        "7cba8c475175ae9ad1824cb05b8dacf2605092883cb99a0d8fea2f73c21d939f"
+    sha256 cellar: :any,                 ventura:       "7aa7fdf5d6d5e83483ce4a3ae8c923f8c212cef486896bba4b3bbfecd125a5eb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "36d4e4c8ae8e76a01f710f8af160e47e2e995633b8e53c09e8c67509ed64e79c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f0800e3f94cdbf5727e2f79e6a90fa1a80ac182519e4557d2245d63346d5cbf4"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "boost"
   depends_on "eigen"
   depends_on "flann"
   depends_on "ode"
 
   def install
-    args = std_cmake_args + %w[
+    args = %w[
       -DOMPL_REGISTRATION=OFF
       -DOMPL_BUILD_DEMOS=OFF
       -DOMPL_BUILD_TESTS=OFF
@@ -42,8 +41,10 @@ class Ompl < Formula
       -DCMAKE_DISABLE_FIND_PACKAGE_spot=ON
       -DCMAKE_DISABLE_FIND_PACKAGE_Triangle=ON
     ]
-    system "cmake", ".", *args
-    system "make", "install"
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

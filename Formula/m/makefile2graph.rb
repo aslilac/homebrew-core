@@ -6,6 +6,8 @@ class Makefile2graph < Formula
   license "MIT"
   head "https://github.com/lindenb/makefile2graph.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f81db552d0aeb5eeed846fe79b930bf69aae6b2b9552bec55ab68db856162a10"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "19431085aae2ceefa936a5a426a0d56d30ffd2f1385723741dd8b0fba4d7b624"
@@ -17,6 +19,7 @@ class Makefile2graph < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "6010cadf93231ec03033a5248ad53ff57b099915ec8a72aa847a9a80a401257f"
     sha256 cellar: :any_skip_relocation, big_sur:        "7018264b838135807ab0a5e062a6315cf20b8de88b8dcff3f71afa03251eb8a2"
     sha256 cellar: :any_skip_relocation, catalina:       "58d4ab28a477688fb01b4db124c5d7deda3d7c2076e94e4c303ea1e8ab9a65c8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "27d4553201201baa4731be6cf4dab2ffbce9f74a524bc1b6783300db9dd1a309"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "073d9b3b0eb9ff852a6f3f12aba6e3e2547d84e0d1257382b423a176df567299"
   end
 

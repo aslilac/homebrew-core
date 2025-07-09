@@ -1,22 +1,24 @@
 class PythonTkAT310 < Formula
   desc "Python interface to Tcl/Tk"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.10.15/Python-3.10.15.tgz"
-  sha256 "a27864e5ba2a4474f8f6c58ab92ff52767ac8b66f1646923355a53fe3ef15074"
+  url "https://www.python.org/ftp/python/3.10.18/Python-3.10.18.tgz"
+  sha256 "1b19ab802518eb36a851f5ddef571862c7a31ece533109a99df6d5af0a1ceb99"
   license "Python-2.0"
-  revision 1
 
   livecheck do
     formula "python@3.10"
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "bb493b45c3af673f353cda086feed51dc4da1f20ba9b0114b2cd8d318ea088e6"
-    sha256 cellar: :any,                 arm64_sonoma:  "b3e9fc8276fc21b82cf9420e370d4561a3846c712f88a40d6652d6d2c61eca84"
-    sha256 cellar: :any,                 arm64_ventura: "79ae5313ab99ed582a363997fbcde8dc5f724e56e19f4019c29970a81cceffc6"
-    sha256 cellar: :any,                 sonoma:        "e8b05abf545c822e0024b6f19094a78ae944c469b54696181490818064ed34a0"
-    sha256 cellar: :any,                 ventura:       "23c9e2cbbe7a8494bb496d754658b3deb8cdfc6f84dd358b51a6ec230fb84b95"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "014fbacded75238e7471ebce827c6de8cb40953bccf473259121228b0d1662ae"
+    sha256 cellar: :any,                 arm64_sequoia: "1f71b66d08ecc36332a7c98a093c13ba771584256859cd2a7b4dd609cbd2f62a"
+    sha256 cellar: :any,                 arm64_sonoma:  "597d8fdc4278dd17026d5f190c779d17fd5afff09f297902e98350371f37ff97"
+    sha256 cellar: :any,                 arm64_ventura: "47517511a709811f900ef3659698be6c2fd17af904878f2091304f257c13cdd5"
+    sha256 cellar: :any,                 sonoma:        "85c5b1383e410c1e54b5d07c386b9041381c51ff07724081f05e6f78f2809406"
+    sha256 cellar: :any,                 ventura:       "1181b2988faa56016526ad6a304b876d76a10f562b30cbedcd52c0cb29b3319c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c3dda7d8fd49b12103441387e348e98590f634a550fa7687fa31f2d86809c630"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8e2a4c5cec43887c789c02fd4ea7dc1c44e9d3313066d625eb0533706fd157e3"
   end
 
   keg_only :versioned_formula

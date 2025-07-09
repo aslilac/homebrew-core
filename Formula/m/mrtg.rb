@@ -10,6 +10,8 @@ class Mrtg < Formula
     regex(/href=.*?mrtg[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "6f57406896304b19653d1d9ad0f1d803709fe72cde0b1cc7acb141a126617dbd"
     sha256 cellar: :any,                 arm64_sonoma:   "8324ea6acce9878f8599a18ccd373c4b1852f3e51752d5b8309d5581005321eb"
@@ -21,6 +23,7 @@ class Mrtg < Formula
     sha256 cellar: :any,                 monterey:       "47c8ae5d5466514d50393ec5f48219313a2a9b7b1544b08dd923bf1e5642762e"
     sha256 cellar: :any,                 big_sur:        "28151b3e97ec16b70623caab573a79eddbb2e86ab8c25812e3339ac9612c38f5"
     sha256 cellar: :any,                 catalina:       "a9cf00745f42b6db7026d3954948319f2528526099a6aa7386c63224952f1732"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "0b695928011e9618ef06a39999a9e9a856840101e56019cfc53b1c78a99ba39e"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "25d13a8441a4958962e6812e1811c529021505443bf4fb5cde24214f8cc1332a"
   end
 

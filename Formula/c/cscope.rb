@@ -10,6 +10,8 @@ class Cscope < Formula
     regex(%r{url=.*?/cscope[._-]v?(\d+(?:\.\d+)+[a-z]?)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "690ea8542348fc155da1a174f6e98cf08d81be181a222853a504124c9071c08b"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "45fbc22efa33e380eeca6976ad47869871115e9be506b16dfce771783ccd7c0a"
@@ -24,6 +26,7 @@ class Cscope < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "0a8c76e372e2c965e654b5024cbf872931e6204b7e2ba79623d5d7d002cd3c2f"
     sha256 cellar: :any_skip_relocation, high_sierra:    "ae7b5f716debeb937c3472add41f69c7176e9c4a9a0668090afd63313eabbe86"
     sha256 cellar: :any_skip_relocation, sierra:         "7eef899511b0d7eb0d6a35acf677d9b19f89528aae0272d5c414bbafbe5daaaf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "57d5c5b934b8aa1bca7f20239d413f6522e192b107cd8f0ecabb75d2f3b390fb"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "aed0460f7dc9a9355d4fb019760284424d56012224f12df098c8fe9912c904c2"
   end
 

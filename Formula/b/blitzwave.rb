@@ -1,9 +1,11 @@
 class Blitzwave < Formula
   desc "C++ wavelet library"
-  homepage "https://oschulz.github.io/blitzwave"
+  homepage "https://oschulz.github.io/blitzwave/"
   url "https://github.com/oschulz/blitzwave/archive/refs/tags/v0.8.0.tar.gz"
   sha256 "edb0b708a0587e77b8e0aa3387b44f4e838855c17e896a8277bb80fbe79b9a63"
   license "GPL-2.0-or-later"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "6ddfd2d5b7388e38647c23c2556e37258da48bbb0408290ccc1e54c5970fc68f"
@@ -19,6 +21,7 @@ class Blitzwave < Formula
     sha256 cellar: :any,                 high_sierra:    "5ad4f6c2447b6efdad752ffc05c2d31be8ad1abbe0c6654f77f33141edaf300e"
     sha256 cellar: :any,                 sierra:         "1722c7dfacc458ca54d05dcc06a5281bbe48935f66eaaf7374c2551ad50298a8"
     sha256 cellar: :any,                 el_capitan:     "be9ba4deb07a468b23f430fe2f0896206b120f70e07f94d48267448c0524d3bc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "cb6ebd0241d46c3083fe7c665d80af3a6222e9dc33aad7d23a7b8cd9770541dd"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "353fd7cf26dc62a4441d2a7498a7d947c163dd0994a9bc2d1da6ef8677525b39"
   end
 

@@ -11,6 +11,8 @@ class Atari800 < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "82df74e82551f83d67d3a7fcba873d4bd62a0084bc96371fbcc16e760a80aac4"
     sha256 cellar: :any,                 arm64_sonoma:   "800ce7fc88004e578e5b69d573b4a3701245de0174fbd4a4494d37ad79c0f3d0"
@@ -19,6 +21,7 @@ class Atari800 < Formula
     sha256 cellar: :any,                 sonoma:         "4053e4f8f91302c40fa30f31ee533ea3819e4e0ee736b328d4a9468f9846bd8d"
     sha256 cellar: :any,                 ventura:        "ab29186147fd355b806981cf9df942da3fe9a5c84041db411efa67662862283d"
     sha256 cellar: :any,                 monterey:       "2b2a241d5c0d1a9992682a0ff96fe9e7cec19ab3217deeb3839703779a35f2ad"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "cdd1445eb9501d8495ebb18ee093636b15dc6b6490f2fa702c7a267eb3161440"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "656005889be7d36009a7b927d4b7437f38b988cc74063b5e3cefe3406bbffd77"
   end
 

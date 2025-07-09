@@ -1,20 +1,19 @@
 class CriTools < Formula
   desc "CLI and validation tools for Kubelet Container Runtime Interface (CRI)"
   homepage "https://github.com/kubernetes-sigs/cri-tools"
-  url "https://github.com/kubernetes-sigs/cri-tools/archive/refs/tags/v1.31.1.tar.gz"
-  sha256 "465bd14768a86a782c6e4b15b3683c4a5efd0363d68b241d5757a7bada9bcd21"
+  url "https://github.com/kubernetes-sigs/cri-tools/archive/refs/tags/v1.33.0.tar.gz"
+  sha256 "2d71ca416a4657646d54725345f993fc1b66c8023da02952bd0e63fd515f49e3"
   license "Apache-2.0"
   head "https://github.com/kubernetes-sigs/cri-tools.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "22360ee3f10a8868ce75f8f79f47a46307cd526a499948cf3a50882a7a3f0097"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0fa37dab5b7d97eafcabf743e4b0f10c9e58c0c589f01967c9944e8a3ad3b437"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0fa37dab5b7d97eafcabf743e4b0f10c9e58c0c589f01967c9944e8a3ad3b437"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0fa37dab5b7d97eafcabf743e4b0f10c9e58c0c589f01967c9944e8a3ad3b437"
-    sha256 cellar: :any_skip_relocation, sonoma:         "37ab62d27f08b4ee61bfeffbcb2fc24b785d6fc28fdda98d00783ea3dcc8eb97"
-    sha256 cellar: :any_skip_relocation, ventura:        "37ab62d27f08b4ee61bfeffbcb2fc24b785d6fc28fdda98d00783ea3dcc8eb97"
-    sha256 cellar: :any_skip_relocation, monterey:       "37ab62d27f08b4ee61bfeffbcb2fc24b785d6fc28fdda98d00783ea3dcc8eb97"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b6ee084f2f349c9081bc67d2244f9478308c5c5d736fd303f5b46a03892cfc63"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "008934d075ccd36341e98414e5bf5d42988d4e2e0e7a73f4dc242aff4bd4a51d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "008934d075ccd36341e98414e5bf5d42988d4e2e0e7a73f4dc242aff4bd4a51d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "008934d075ccd36341e98414e5bf5d42988d4e2e0e7a73f4dc242aff4bd4a51d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f21321f265b02859092aa0678ed0c633991a5ebc5462cabfd2207a872b409602"
+    sha256 cellar: :any_skip_relocation, ventura:       "f21321f265b02859092aa0678ed0c633991a5ebc5462cabfd2207a872b409602"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9f66d7e6cb312b27388c8cf93cae4f02136d4731b013a019f85e82153063f66d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4cf3c77059a9da11c6adc99068249b0acb444bf9fdf163e43110bb26e7fca0ac"
   end
 
   depends_on "go" => :build
@@ -28,7 +27,7 @@ class CriTools < Formula
       system "make", "install", "VERSION=#{version}"
     end
 
-    generate_completions_from_executable(bin/"crictl", "completion", base_name: "crictl")
+    generate_completions_from_executable(bin/"crictl", "completion")
   end
 
   test do

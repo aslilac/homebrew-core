@@ -14,8 +14,11 @@ class VueCli < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "566e867488804efc1ff36499d3abaf6d5d20bae6173f8577f54f8d50b120b6e2"
     sha256 cellar: :any_skip_relocation, ventura:        "566e867488804efc1ff36499d3abaf6d5d20bae6173f8577f54f8d50b120b6e2"
     sha256 cellar: :any_skip_relocation, monterey:       "566e867488804efc1ff36499d3abaf6d5d20bae6173f8577f54f8d50b120b6e2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "0f08dc625a000e5e23fb2ee9286233e8b9e2d3893cb091280423d3276919beba"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f068d7c069a1dae0ecbba18a4537d4816d55d6357ff9feb4806923ee486e92e9"
   end
+
+  deprecate! date: "2024-12-22", because: :deprecated_upstream
 
   depends_on "node"
 
@@ -25,7 +28,7 @@ class VueCli < Formula
 
   def install
     system "npm", "install", *std_npm_args
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink libexec.glob("bin/*")
 
     # Remove vendored pre-built binary `terminal-notifier`
     node_notifier_vendor_dir = libexec/"lib/node_modules/@vue/cli/node_modules/node-notifier/vendor"
@@ -42,14 +45,14 @@ class VueCli < Formula
   end
 
   test do
-    (testpath/".vuerc").write <<~EOS
+    (testpath/".vuerc").write <<~JSON
       {
         "useTaobaoRegistry": false,
         "packageManager": "yarn"
       }
-    EOS
+    JSON
 
-    assert_match "yarn", shell_output(bin/"vue config")
-    assert_match "npm", shell_output(bin/"vue info")
+    assert_match "yarn", shell_output("#{bin}/vue config")
+    assert_match "npm", shell_output("#{bin}/vue info")
   end
 end

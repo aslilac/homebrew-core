@@ -1,18 +1,18 @@
 class Aliyunpan < Formula
   desc "Command-line client tool for Alibaba aDrive disk"
   homepage "https://github.com/tickstep/aliyunpan"
-  url "https://github.com/tickstep/aliyunpan/archive/refs/tags/v0.3.4.tar.gz"
-  sha256 "fc657cc752c6818f6658ce46cb3931004f55b7bb536de25be56f80a756ecd911"
+  url "https://github.com/tickstep/aliyunpan/archive/refs/tags/v0.3.7.tar.gz"
+  sha256 "65003e0925e5f64b20f47ea030aa01cb40972dc4cce67cc93a69282d88f254b0"
   license "Apache-2.0"
   head "https://github.com/tickstep/aliyunpan.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f569e3b67095bfcaef12ad472152f4c0f37ce5179c103b8d61ad5e0b91025575"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f569e3b67095bfcaef12ad472152f4c0f37ce5179c103b8d61ad5e0b91025575"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "f569e3b67095bfcaef12ad472152f4c0f37ce5179c103b8d61ad5e0b91025575"
-    sha256 cellar: :any_skip_relocation, sonoma:        "95236bc14906d4459ccc5384feaaf5eb13bc65ab505dd43b7dfe2124d22ffbdc"
-    sha256 cellar: :any_skip_relocation, ventura:       "95236bc14906d4459ccc5384feaaf5eb13bc65ab505dd43b7dfe2124d22ffbdc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8d4a976ba7fcee08561b378a671bc31f5cbc089e7f058d838c85fe8efe25b67f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f43f03044ff8db6b97fee26628dbe66343935e13e53aee6d973adfddf0924b97"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f43f03044ff8db6b97fee26628dbe66343935e13e53aee6d973adfddf0924b97"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f43f03044ff8db6b97fee26628dbe66343935e13e53aee6d973adfddf0924b97"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d8a3e1de0f284f8c1bd1c0f8a96db80f885464e3f5e5a47c750bf3a0ff921fe5"
+    sha256 cellar: :any_skip_relocation, ventura:       "d8a3e1de0f284f8c1bd1c0f8a96db80f885464e3f5e5a47c750bf3a0ff921fe5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "cb7f77f47dc25c016a62ac1ce13546514e281d0f57bef014a32215a4b68bc0dc"
   end
 
   depends_on "go" => :build
@@ -23,6 +23,6 @@ class Aliyunpan < Formula
 
   test do
     system bin/"aliyunpan", "run", "touch", "output.txt"
-    assert_predicate testpath/"output.txt", :exist?
+    assert_path_exists testpath/"output.txt"
   end
 end

@@ -1,25 +1,22 @@
 class Blis < Formula
   desc "BLAS-like Library Instantiation Software Framework"
   homepage "https://github.com/flame/blis"
-  url "https://github.com/flame/blis/archive/refs/tags/1.0.tar.gz"
-  sha256 "9c12972aa1e50f64ca61684eba6828f2f3dd509384b1e41a1e8a9aedea4b16a6"
+  url "https://github.com/flame/blis/archive/refs/tags/2.0.tar.gz"
+  sha256 "08bbebd77914a6d1a43874ae5ec2f54fe6a77cba745f2532df28361b0f1ad1b3"
   license "BSD-3-Clause"
   head "https://github.com/flame/blis.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "01f6d68c4778655be5f5b5bae6952e5a6979e665c679daa3a39a3e93392d554d"
-    sha256 cellar: :any,                 arm64_sonoma:   "1d2a10987101529132b5b6ff330ae2b267cb724b4c647e995cdfeffafe7f66c4"
-    sha256 cellar: :any,                 arm64_ventura:  "fe6a791c00a37f507387293ad0dcbe87e75d93e6bbf74bcd8df9ab431d318f02"
-    sha256 cellar: :any,                 arm64_monterey: "a65ab186fb8c72a6e7c9bbe01f84c916e8ef841e3f91759a4b32f663df2e0723"
-    sha256 cellar: :any,                 sonoma:         "fa0c1fb994eebe51d4154c880e69508c6b24b28f37f73d66e7da75ba1e1978fe"
-    sha256 cellar: :any,                 ventura:        "65277d9faaa9a63cca586c9979fa271e1c62f14bd5a8113d814a8a85c1eb6ec8"
-    sha256 cellar: :any,                 monterey:       "021d57eed83f4d50a681d37d091b310449572e24fdcbbdbae14e39127376bc3c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c712e39e529db5de74f13c5c28c8645d01c1791bb1489308419a101c8e9ee627"
+    sha256 cellar: :any,                 arm64_sequoia: "eaa5b7da801e3b1915288ce0938b19d5add45ba87ce3dab1277e2beb78d77654"
+    sha256 cellar: :any,                 arm64_sonoma:  "ffd36f20fb15992d43255e6cd4ef2180d7415d54504d4793f9355e365e9bbc28"
+    sha256 cellar: :any,                 arm64_ventura: "90e2dad3813b09a2782a32a20555d5e2a9f046040bbcbda52f53ce6962a9b25d"
+    sha256 cellar: :any,                 sonoma:        "2164b835421ca2348ea9345fb673e48f97590f763fba9067ce10a181d42e661a"
+    sha256 cellar: :any,                 ventura:       "d8f4e5be9a956ac208b0aa9abde47dabac3968e194b008b1b5816cca934c538a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e26aed017b11935a26a0390a2ce77619d9886ff9c760db40509f3ae106390dea"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dca702952b8f726f414761a5714ba34a5ba69df4e4f1e5e94a45a2d55aaa023a"
   end
 
   uses_from_macos "python" => :build
-
-  fails_with gcc: "5"
 
   def install
     # https://github.com/flame/blis/blob/master/docs/ConfigurationHowTo.md

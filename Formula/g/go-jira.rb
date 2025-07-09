@@ -4,11 +4,14 @@ class GoJira < Formula
   url "https://github.com/go-jira/jira/archive/refs/tags/v1.0.27.tar.gz"
   sha256 "c5bcf7b61300b67a8f4e42ab60e462204130c352050e8551b1c23ab2ecafefc7"
   license "Apache-2.0"
+  head "https://github.com/go-jira/jira.git", branch: "master"
 
   livecheck do
     url :stable
     strategy :github_latest
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "71657b7b31e15f29675a246bb6a900dd5ae8d7156bbfe7aea9c2f07f460da220"
@@ -27,6 +30,8 @@ class GoJira < Formula
   end
 
   depends_on "go" => :build
+
+  conflicts_with "jira-cli", because: "both install `jira` binaries"
 
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w", output: bin/"jira"), "cmd/jira/main.go"

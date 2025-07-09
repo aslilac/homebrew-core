@@ -1,17 +1,18 @@
 class CargoEdit < Formula
   desc "Utility for managing cargo dependencies from the command-line"
   homepage "https://killercup.github.io/cargo-edit/"
-  url "https://github.com/killercup/cargo-edit/archive/refs/tags/v0.13.0.tar.gz"
-  sha256 "c81a73fb1ef4ffef722835baf473beed9868ce2c58ad98a27596f2cbabbfcba3"
+  url "https://github.com/killercup/cargo-edit/archive/refs/tags/v0.13.6.tar.gz"
+  sha256 "325975345522decc9089635bb19b61c30942254a34b570925049fb56672d400d"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "81b766b66cad606757d51623de9528c9903655ebf033b27e937223a80c00efdb"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8ae108fdc203e465e6848966d80c1a35bfa849d56b1c731ecbca7816e633561d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "8001ffca5d9922aecdac84259f3a2eabcb8addc230a5bf025d6bb540696baf44"
-    sha256 cellar: :any_skip_relocation, sonoma:        "47f845361ee58b364b10f603baea77a293cead7b2100941511394a2c06c9cada"
-    sha256 cellar: :any_skip_relocation, ventura:       "78769e2b803b68a887dcedf289236529880b2dae7b7b9eaf8d7a53bd7123d882"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "91a7e551e57b7ec7b6e22015bc2d4971ee8c9ec21eca1784855dd019c3b863ef"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f1a90ec96d74925779b5cc9ed1e9e4075ad9b6c2f9e6cfd82584070713e4b7bc"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "39cf574d3cb563c13d7f2b8316233841d2a1a2d6b966a1bd426aaacb2c508ee8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "fb65f2789b5acccd57238887df0b7697ce19f972e8a3110a91968e1645cf7064"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a4ea244762719cbbc605f752526c072a4366b386eb8bc42d7c6cc5be81345ed7"
+    sha256 cellar: :any_skip_relocation, ventura:       "838b11bfba83732ed849baa9b12881f3853498a91ecf3231f19a9a08b1ec1a14"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0e3416d3b3b736cb8bb936334b05847ad440279f786a325c17aad5f9ec4c02b8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4e5f730df10ffae88ebe4e5289c91bb19f9d85d34b32857f0cbc0a29d4f480c6"
   end
 
   depends_on "pkgconf" => :build
@@ -22,21 +23,12 @@ class CargoEdit < Formula
     system "cargo", "install", *std_cargo_args
   end
 
-  # TODO: Add this method to `brew`.
-  def check_binary_linkage(binary, library)
-    binary.dynamically_linked_libraries.any? do |dll|
-      next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)
-
-      File.realpath(dll) == File.realpath(library)
-    end
-  end
-
   test do
     # Show that we can use a different toolchain than the one provided by the `rust` formula.
     # https://github.com/Homebrew/homebrew-core/pull/134074#pullrequestreview-1484979359
     ENV.prepend_path "PATH", Formula["rustup"].bin
-    system "rustup", "default", "beta"
     system "rustup", "set", "profile", "minimal"
+    system "rustup", "default", "beta"
 
     crate = testpath/"demo-crate"
     mkdir crate do

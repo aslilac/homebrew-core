@@ -1,19 +1,20 @@
 class Texinfo < Formula
   desc "Official documentation format of the GNU project"
   homepage "https://www.gnu.org/software/texinfo/"
-  url "https://ftp.gnu.org/gnu/texinfo/texinfo-7.1.1.tar.xz"
-  mirror "https://ftpmirror.gnu.org/texinfo/texinfo-7.1.1.tar.xz"
-  sha256 "31ae37e46283529432b61bee1ce01ed0090d599e606fc6a29dca1f77c76a6c82"
+  url "https://ftp.gnu.org/gnu/texinfo/texinfo-7.2.tar.xz"
+  mirror "https://ftpmirror.gnu.org/texinfo/texinfo-7.2.tar.xz"
+  sha256 "0329d7788fbef113fa82cb80889ca197a344ce0df7646fe000974c5d714363a6"
   license "GPL-3.0-or-later"
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia: "9082daa6193349571bd407956bc3fb549368a7347ccbb0a86b5758dbbaccf126"
-    sha256 arm64_sonoma:  "aa6c8308ee525e1e4ed0b472ca83e9f93eb87b41b4e2194bc32dda0daaf83400"
-    sha256 arm64_ventura: "c2c12504461c084e4b5e57007d6089b7a93a976be08799875e72e5cc88050e76"
-    sha256 sonoma:        "74052641f0b6ae249d7910f1a5b08d7a74f2074c0f8c5996d4425d020caddc57"
-    sha256 ventura:       "5a8459fa51586034fa392457e581e24536b026ae1fad182253ecfd19a6db1bbf"
-    sha256 x86_64_linux:  "72a305001a5d11e454e7deaace1e8a08cd1f3f9914d00145ec34da0871d9a6aa"
+    sha256 arm64_sequoia: "abfc842bb08fd512dd878e2233ea6d0d3682685dd9d5a03a86c6c8d170ca104e"
+    sha256 arm64_sonoma:  "948d36004ea61e34f1b27d04d4b56c5b1e2cf7bc28861c89fa9cd7c3c87cbdb5"
+    sha256 arm64_ventura: "71ed6d2d1b181f10f9fabac5935ff3956d7b63f670e652465b601c2929a19cc2"
+    sha256 sequoia:       "bb81887583e785c41b1f6e9812f62f04a304f7d655dad3139d82077f2e61b64d"
+    sha256 sonoma:        "4bc4f8a0d5ed88dbee2565088997164573ca8c2e7f229030b2035ba8905172a2"
+    sha256 ventura:       "a8e566d23516d94e0f573b648122c74c317c7eea8d16acf55645e5347759c363"
+    sha256 arm64_linux:   "f749de410013d9fe866ac0dd634ed6e8d9f462f9979d341f2d9fa727bb1790ee"
+    sha256 x86_64_linux:  "46fdddc6b9297240790546b7f1405a7ea103a7c652c74c05cc1bef6b88f320f1"
   end
 
   uses_from_macos "ncurses"
@@ -21,6 +22,7 @@ class Texinfo < Formula
 
   on_system :linux, macos: :high_sierra_or_older do
     depends_on "gettext"
+    depends_on "libunistring"
   end
 
   def install

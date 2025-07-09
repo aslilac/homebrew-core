@@ -2,8 +2,8 @@ class DotnetAT8 < Formula
   desc ".NET Core"
   homepage "https://dotnet.microsoft.com/"
   # Source-build tag announced at https://github.com/dotnet/source-build/discussions
-  url "https://github.com/dotnet/dotnet/archive/refs/tags/v8.0.11.tar.gz"
-  sha256 "d7cb383bbfa20f86e085615ab3dcb769e5c9af7330d90834ce34889857bd92e5"
+  url "https://github.com/dotnet/dotnet/archive/refs/tags/v8.0.18.tar.gz"
+  sha256 "4555e0151553750de384f235006a2290ae7a6fb64d423dc60740a6fbbca77fd3"
   license "MIT"
 
   livecheck do
@@ -12,11 +12,12 @@ class DotnetAT8 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "92f8ec953388502d9d76fec33366fbd6693b5256a29bf54b0e5680db9dbfbef9"
-    sha256 cellar: :any,                 arm64_sonoma:  "0508065a204cb17ea203222d3b81fafd0b782e9eeca37f34c3fee7fad5fbb701"
-    sha256 cellar: :any,                 arm64_ventura: "ad714d85bb529c518fb1dc1d4f4cb906509039960ad5226be9620cb310f8f66c"
-    sha256 cellar: :any,                 ventura:       "f82094589ae3d400912a21ea9c70764c680fcda0e2b9ca779001686c98b371f9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2fa6691f08d7c23a8090f163d2074424eb3c1365170706248956ebe0c7460922"
+    sha256 cellar: :any,                 arm64_sequoia: "eb46597577b4a984f5d475a922f2f5ddf7aee8ac767a891f73a729b61641dd0d"
+    sha256 cellar: :any,                 arm64_sonoma:  "1125890d5396110e7c21d219af6ae1ea6b420e71a19d9ce14995a523dd6f2a2b"
+    sha256 cellar: :any,                 arm64_ventura: "fc9cd3c63ce4cc67d1936a763a20ae6679a3e9c3b17b4cc31e09e97d04a46db0"
+    sha256 cellar: :any,                 ventura:       "9c9eff2cb9679903cd468575dbf8472ffab06c3a4ed1ec8a5e48faeac09e297f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "81fefffd26ac224f1527f1159f7a76ed14601e9a60000b456fd5f255baff475a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "31b1a1bc0fb641661b300be2aebc80bedbd7df4d219cd50c36cae9d568e18336"
   end
 
   keg_only :versioned_formula
@@ -26,7 +27,7 @@ class DotnetAT8 < Formula
 
   depends_on "cmake" => :build
   depends_on "pkgconf" => :build
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "openssl@3"
 
   uses_from_macos "python" => :build, since: :catalina
@@ -43,15 +44,12 @@ class DotnetAT8 < Formula
   end
 
   resource "release.json" do
-    url "https://github.com/dotnet/dotnet/releases/download/v8.0.11/release.json"
-    sha256 "585e6094fa25acc8b8907220b6c8a167ba3611fc082c1b220486df1cebce4caf"
-  end
+    url "https://github.com/dotnet/dotnet/releases/download/v8.0.18/release.json"
+    sha256 "a463583aa71c9c24e9fd666a8c23ae4c92d0d8cf0d386d2f0b53baf5ae9a0b3c"
 
-  # Backport fix to build with Xcode 16
-  patch do
-    url "https://github.com/dotnet/runtime/commit/562efd6824762dd0c1826cc99e006ad34a7e9e85.patch?full_index=1"
-    sha256 "435002246227064be19db8065b945e94565b59362e75a72ee6d6322a25baa832"
-    directory "src/runtime"
+    livecheck do
+      formula :parent
+    end
   end
 
   def install

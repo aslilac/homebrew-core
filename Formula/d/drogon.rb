@@ -3,18 +3,19 @@ class Drogon < Formula
   homepage "https://drogon.org"
   # pull from git tag to get submodules
   url "https://github.com/drogonframework/drogon.git",
-      tag:      "v1.9.8",
-      revision: "6d9ecb8d8d8dcbbc14db618c0687c7ae4c792f1b"
+      tag:      "v1.9.11",
+      revision: "a22956b82b6b221ceeff83913c3014ce0d048555"
   license "MIT"
   head "https://github.com/drogonframework/drogon.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "104d0bcb26fdf65349b70c67fcaf5332c59b5c8a687de02a42e55e95b7822132"
-    sha256 cellar: :any,                 arm64_sonoma:  "ed7df8b6d3de6cb9591a19aff68a08a85655e8de7f5b2eac2d38eb14b4cfaa98"
-    sha256 cellar: :any,                 arm64_ventura: "6be94afa6a2f76bf1ca3bcc9c208699fcd593fa6cca818405ed4fe9eb255b523"
-    sha256 cellar: :any,                 sonoma:        "cf4dda4f454e4d79efab47179a4b271ed1abe4047357b2c96f035b8d3269cf25"
-    sha256 cellar: :any,                 ventura:       "2e4aa714582bb75849194dfde74de99fa1f5a4077d8aec2016a8c07467a0099c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "781436bf99dc8ba66be94afe8f63474cfe4b78c78cbd34d8b7d3695ba10804e9"
+    sha256                               arm64_sequoia: "59b637806180b7e5a9443091cbd70e98254b2372aa144ac1264c7e699a502919"
+    sha256                               arm64_sonoma:  "fe6f23a4a2c68e263204b89729118dc41799fb8aaed7dd75c6a53913b7eea207"
+    sha256                               arm64_ventura: "3145d83dfb9f8d3be0a3d93bdcac5df5184c19eb448e5a26ab724d50cd24f9cf"
+    sha256                               sonoma:        "5fa607c6e5df73eb556b1e7598aa931039ce8eee4fd911cfc81a0d536798f9db"
+    sha256                               ventura:       "35da5590e6144993de4570c01c52caa88f3da941b82376582273fd23c706586b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "164824b7a40e178b8f1db45d9c0ab20b6d616fb3a0e412ad837a4175561368ee"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b3cd681f4cdde59fce58c8a194c2a55ebac32205178673bc6d2ffe4ea3da3ccc"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -31,7 +32,7 @@ class Drogon < Formula
   end
 
   def install
-    args = []
+    args = ["-DBUILD_SHARED_LIBS=ON", "-DCMAKE_INSTALL_RPATH=#{rpath}"]
     args << "-DUUID_DIR=#{Formula["util-linux"].opt_prefix}" if OS.linux?
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args

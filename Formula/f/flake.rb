@@ -5,6 +5,8 @@ class Flake < Formula
   sha256 "8dd249888005c2949cb4564f02b6badb34b2a0f408a7ec7ab01e11ceca1b7f19"
   license "LGPL-2.1-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9d0c8523afc14e96a58b6494cf494b13527d6ba7f11c125b779999b1ad088644"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "54ce4e48992d14357903109712f7b68241c69159d9d41b89cef79c9de2226f26"
@@ -20,6 +22,7 @@ class Flake < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "c5a8fe6d24125870a5d420ebf39ab2acf14d5646e86df61632dc8d2e77887114"
     sha256 cellar: :any_skip_relocation, sierra:         "b2eca0967c020b082f7d7f8c4d15765204ea63aa9332012074c852967a0fee07"
     sha256 cellar: :any_skip_relocation, el_capitan:     "e521dae57260b2a71f161f16609530c854ff8ebee4252b0addf3c16b5abc982c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "52410b17b1618768e0840ed8a48c6bbb250a198231dd179d68c5a969adc12a72"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "8fab554771a1e61cc3b14670fd0394fef5b60c4e545558ef6eb75b33edf5b258"
   end
 

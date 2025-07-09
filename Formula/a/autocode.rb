@@ -5,6 +5,8 @@ class Autocode < Formula
   sha256 "952364766e645d4ddae30f9d6cc106fdb74d05afc4028066f75eeeb17c4b0247"
   license "Apache-2.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b77a0c5a2addfbdb49c0c77c50d5ef04b56462c3882588527dba9bbb81feefd8"
@@ -21,6 +23,7 @@ class Autocode < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "a11f1fbbbf04052b9885a00abc88e7539a6c1992e35a62c6776df7ea32daf890"
     sha256 cellar: :any_skip_relocation, sierra:         "f369819b2f33327071a68455a14f66855286c7614977f06704f21c38e2df5f89"
     sha256 cellar: :any_skip_relocation, el_capitan:     "c321c73e1662332392c5949467c544e18db30849019555086ad14eeb097656d2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f1e4d0a241cbecda677088d390da59e754c90f1236a101c6b36e5d3df6d3fc77"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "186b5262fed77462a1b2407dbd2106ebf80f9e1c48fd56bf57549f6716156f96"
   end
 

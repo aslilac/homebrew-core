@@ -5,6 +5,8 @@ class Pwgen < Formula
   sha256 "dab03dd30ad5a58e578c5581241a6e87e184a18eb2c3b2e0fffa8a9cf105c97b"
   license "GPL-2.0-only"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "78e78f3269e5a571f309e859d1765104c3a85a227bc12292efe437ca838696bb"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b8d6d5e6fb87ca3906b04af23e27464f3ae52100e9f0c98ed3cbbc9701e47a1f"
@@ -20,6 +22,7 @@ class Pwgen < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "185f2f56eb03da60277520734452204ec2e0059cbc1f0af5d0fec1e7fa837658"
     sha256 cellar: :any_skip_relocation, sierra:         "01a0709f74923e7b86d680f03d3ec056d3175cb7e54be176a26d5bfae890fd21"
     sha256 cellar: :any_skip_relocation, el_capitan:     "7dade70b172cb91635afffe8bb1eadb251f9dbd3368ab9e4a37f98a7c0a14b01"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "6115d9586e530f771801c25cde3ba6c33b287db18d84b73911d68721b5cd7eb0"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d869f0f3b08bf09648754a037fedc9a729b1b5e718bc366e2cf9a7cca2861813"
   end
 

@@ -1,8 +1,8 @@
 class Typst < Formula
   desc "Markup-based typesetting system"
   homepage "https://typst.app/"
-  url "https://github.com/typst/typst/archive/refs/tags/v0.12.0.tar.gz"
-  sha256 "5e92463965c0cf6aa003a3bacd1c68591ef2dc0db59dcdccb8f7b084836a1266"
+  url "https://github.com/typst/typst/archive/refs/tags/v0.13.1.tar.gz"
+  sha256 "2ffd8443668bc0adb59e9893f7904fd9f64dce8799a1930569f56a91305e8b71"
   license "Apache-2.0"
   version_scheme 1
   head "https://github.com/typst/typst.git", branch: "main"
@@ -13,12 +13,13 @@ class Typst < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5586435036b1ba98415dda2c346ffd7756a888bcb33a9447ec0618c52ba7fd8e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "af2d66c4beed4da51ef9f3ca8818b3df5986a3b98f8c73d48d123634e3c88d05"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "56b6fc67564c350e86b8d1370f98d197c7aa1c83a194cb464071cc1f9e89f83a"
-    sha256 cellar: :any_skip_relocation, sonoma:        "130bf8405ef2f904419776a5672d37717c91cdb58899c4978e55c7a3a0c19bc7"
-    sha256 cellar: :any_skip_relocation, ventura:       "cccad3f48cce4a2a3d38850f978866c7ae2cff9673cbfb83cae7a055ee6ff4fd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "66c9c3b7c7e3899fef7daacea96eb2a309add3524747e2fd4164a4afb9175169"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c187e0b7e86411fb7925307d34c2e63429103cee0da30bac01479d1abb7b0160"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "808d9896ed7680fbb788182c8de04914229f1fe36b4e8d48a826ce7f9a78d471"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "9d7fded4d1f467a78524ec9aeb9cb81ed08f5c0da380f0e81f91b7dc28772ac1"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a4af1021420e590f933035c3f996e70ec27131c0d12e7404d3abc7a0f68320b6"
+    sha256 cellar: :any_skip_relocation, ventura:       "39ce285d7af6080b660db41590acf877b3be5f51327e4e4914b7c324a65e5be0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "24d7ad7e8d31a809d124f49cd4d07c84c9b8e8b68f8b006d8092edd7b3e371b0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c411beb9f7379cbec800b101ded8249d3f02ea469a5a312b328c81806f7924db"
   end
 
   depends_on "pkgconf" => :build

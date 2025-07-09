@@ -1,25 +1,29 @@
 class Grpcui < Formula
   desc "Interactive web UI for gRPC, along the lines of postman"
   homepage "https://github.com/fullstorydev/grpcui"
-  url "https://github.com/fullstorydev/grpcui/archive/refs/tags/v1.4.1.tar.gz"
-  sha256 "af7adbdfbf26d297056afdc95e5f9eed390a3c668c15a358fb135fc8b3188ac6"
+  url "https://github.com/fullstorydev/grpcui/archive/refs/tags/v1.4.3.tar.gz"
+  sha256 "7fa3039bfa6c06a688c1094177445f759c592be2f04574a234da7a88ab2d0efd"
   license "MIT"
+  head "https://github.com/fullstorydev/grpcui.git", branch: "master"
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8218f707ed3b76afbbb444c2470c68a816a23da38ad2c5cfe338f27cff6a580a"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "409cbd513224c978af314d09819f9b5127d210f5a183f30ecc75904c9d95527b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "cec2bb7927963fdf92deb9a40696594a3a30089ef6face9ca74adf3941cbde52"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6b629edca9f7ce2e5bb9e0945e52f801dd5ebed5a02254933f067ebb6348a50c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "10c668cb2f977a231190ec9fd012caa1aa589ceb67265b2b3ffe9a8555f44497"
-    sha256 cellar: :any_skip_relocation, ventura:        "82608d661c1e52d77e890627953e3557da7058871d9aa95632ac8c78f09916b9"
-    sha256 cellar: :any_skip_relocation, monterey:       "3b6cd41a010cf893c281371cf5a6f22ad63cdd278b813d3d7b2c76feb01a5907"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2246a8ee7dceaaf95ec491588b4703cd79d051ef923334a7f17b27aca4982b88"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9ac35799e9b7d1c2a6c9eb8b1672f10ba975d0e32efe2665de2ecdc55d10ceeb"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9ac35799e9b7d1c2a6c9eb8b1672f10ba975d0e32efe2665de2ecdc55d10ceeb"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "9ac35799e9b7d1c2a6c9eb8b1672f10ba975d0e32efe2665de2ecdc55d10ceeb"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ba7e1920f634f492ee2b36de11763a0dc3b3f16e6c4691ef66bf5d1a6c651a30"
+    sha256 cellar: :any_skip_relocation, ventura:       "ba7e1920f634f492ee2b36de11763a0dc3b3f16e6c4691ef66bf5d1a6c651a30"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2a604659d4ba4f40852cc1d2b7924e0540f3e59f9f5628472826dfc6b0022dde"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-X main.version=#{version}"), "./cmd/grpcui"
+    system "go", "build", *std_go_args(ldflags: "-s -w -X main.version=#{version}"), "./cmd/grpcui"
   end
 
   test do

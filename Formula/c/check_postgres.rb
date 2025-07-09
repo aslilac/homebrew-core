@@ -11,6 +11,8 @@ class CheckPostgres < Formula
     regex(/latest version.*?v?(\d+(?:\.\d+)+)/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "357245d50daeb670b0e7acdf6ba808e045a3246a6a1666cded448100b78ffda5"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8138d47d70f097677e5f9ae0d88e797e66395026b1d0615781492cb28294b96d"
@@ -21,6 +23,7 @@ class CheckPostgres < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "f4023f4278d08648ad51b4c531a72e961e648736578efb14e6d44296af328496"
     sha256 cellar: :any_skip_relocation, monterey:       "f4023f4278d08648ad51b4c531a72e961e648736578efb14e6d44296af328496"
     sha256 cellar: :any_skip_relocation, big_sur:        "b37868aa190bf21cf2272f588d4e815b0621c873d824e1a13ab15bea6ceb2d4e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "8f1875eadbc232cfbc4e6a861d84981b2535167f18cdce21c64c5bdb6cda6550"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "15350f09487ed7fd501105b3abd217be8287cfdb4075b71673e179b1ba24cacc"
   end
 

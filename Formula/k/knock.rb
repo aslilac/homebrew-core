@@ -5,12 +5,12 @@ class Knock < Formula
   sha256 "698d8c965624ea2ecb1e3df4524ed05afe387f6d20ded1e8a231209ad48169c7"
   license "GPL-2.0-or-later"
 
-  # This formula uses a file from a GitHub release, so we check the latest
-  # release version instead of Git tags.
   livecheck do
     url :stable
     strategy :github_latest
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "6918a15821559b226ee8e3844a439277a1cf6b4dcd6fa503fd71531fe541fe8d"
@@ -24,6 +24,7 @@ class Knock < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "b8d423345658b70c35b16a032ace493f1da244144dbfe0f4c4b0ed79ce0ac560"
     sha256 cellar: :any_skip_relocation, catalina:       "2c9a3167f4b08e9b4ed890f6cc165eda8e813da9c911e741fd9cdb5d3742de31"
     sha256 cellar: :any_skip_relocation, mojave:         "5af91e5dcf61f216105c1562c032f2d06decbf6f6653171793d6af2101e27f0b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "cb2b4fc229f51debb0a56914b078a7c10f9ce2bd479e14104bf2c8d8e520abdf"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "92ee3bfd7171b2fd896bda24b35ccb710365acf17e8c87b01d6a119a5133d996"
   end
 
@@ -37,8 +38,8 @@ class Knock < Formula
   uses_from_macos "libpcap"
 
   def install
-    system "autoreconf", "-fi" if build.head?
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
+    system "./configure", *std_configure_args
     system "make"
     system "make", "install"
   end

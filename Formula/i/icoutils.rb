@@ -10,6 +10,8 @@ class Icoutils < Formula
     regex(/href=.*?icoutils[._-](\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any, arm64_sequoia:  "1f134eb8d5bfda13e1afd2742d87488abb2bd651f0ec059b6bbea76add8a647f"
@@ -21,6 +23,7 @@ class Icoutils < Formula
     sha256 cellar: :any, ventura:        "bc125498f4fb92c602479703be80ef4e1870dd4f74159e1ed0d2fd801179ba75"
     sha256 cellar: :any, monterey:       "23f46510e0108a2342a83ba36aa2b11346d18a3f5ae29aa238cb249f3e4fa3e8"
     sha256 cellar: :any, big_sur:        "2f71fa8b1131f534d2d7d674642091a80f61108a376240bd6e19c92d436aecfe"
+    sha256               arm64_linux:    "628929761f445827749c377cd6309471d0f4f5e70f3f70b6004d052f3dd8d1d0"
     sha256               x86_64_linux:   "4bcbbfe1270c90d060baf5fe79eea7cd07daaae074c110b57e8505eac348cdb8"
   end
 
@@ -36,11 +39,9 @@ class Icoutils < Formula
     inreplace "common/Makefile.am", "libcommon_a_LIBADD", "libcommon_la_LIBADD"
 
     # Workaround for Xcode 14 ld.
-    system "autoreconf", "--force", "--install" if OS.mac? && MacOS.version >= :monterey
+    system "autoreconf", "--force", "--install", "--verbose" if OS.mac? && MacOS.version >= :monterey
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-rpath",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-rpath", *std_configure_args
     system "make", "install"
   end
 

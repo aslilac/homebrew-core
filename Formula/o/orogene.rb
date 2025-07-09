@@ -6,6 +6,8 @@ class Orogene < Formula
   license "Apache-2.0"
   head "https://github.com/orogene/orogene.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "68164cd2ef24f2cc58c5562c7c81cb72bc9139ef96975f459f1bd6ce05c3e73a"
@@ -15,10 +17,11 @@ class Orogene < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "e72c4f89a0517891879aab76a95a3f12b9055d1dfd8510275bb5211883153c52"
     sha256 cellar: :any_skip_relocation, ventura:        "f94a9aa11660b3e6ad47ba48c38fdd988a8a51435ed7e6f1533983d5b939a66b"
     sha256 cellar: :any_skip_relocation, monterey:       "eecf977924a2d78a5b4871f5a58b3ea1733aa5b918849d743f0c2f1d9aec0e79"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f8fb64cd8e5659c0d3f72fe6c994248c8e7c7c63af9e8a1b5801df5e5e73b13d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ead950a69b6ee4a7d7023264f55372d0d84e83984c46af445280d8f5281871fc"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
 
   on_linux do

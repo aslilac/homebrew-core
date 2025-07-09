@@ -5,6 +5,8 @@ class Libnfc < Formula
   sha256 "6d9ad31c86408711f0a60f05b1933101c7497683c2e0d8917d1611a3feba3dd5"
   license "LGPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "2b82cd576da101ec339171c4a8ded0fee90ab4cf072513c8cd0a1b99721c72f9"
     sha256 arm64_sonoma:   "3e1ce25513819c59c110f28cfdb8cf4ecf265800d741d272ad7450805ba647f5"
@@ -18,6 +20,7 @@ class Libnfc < Formula
     sha256 catalina:       "6659f67e40774cdb8e95548c03542bbc123ccabc0f4a6160504c03e43fa43c26"
     sha256 mojave:         "9bc90c84f89408a8960289a668af7ad9b7b17d34a02996b83ec960c5cbefafeb"
     sha256 high_sierra:    "8e6abd4d61ef9aff76ef25b092806b95614c07a9e46a0e13ca6e915271454a92"
+    sha256 arm64_linux:    "65c10bb5ef9996f755126c6642fd8933c9fa2fbff028d1700dc75b2cd0458b47"
     sha256 x86_64_linux:   "db84cf74f8217a9cb32aa5c804cf20c9b74464ce21ea2a87805b0c8de5abdfe6"
   end
 
@@ -29,16 +32,16 @@ class Libnfc < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libusb-compat"
 
   uses_from_macos "pcsc-lite"
 
   def install
-    system "autoreconf", "-vfi" if build.head?
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--enable-serial-autoprobe",
-                          "--with-drivers=all"
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
+    system "./configure", "--enable-serial-autoprobe",
+                          "--with-drivers=all",
+                          *std_configure_args
     system "make", "install"
     (prefix/"etc/nfc/libnfc.conf").write "allow_intrusive_scan=yes"
   end

@@ -1,8 +1,8 @@
 class Vttest < Formula
   desc "Test compatibility of VT100-compatible terminals"
   homepage "https://invisible-island.net/vttest/"
-  url "https://invisible-mirror.net/archives/vttest/vttest-20241031.tgz", using: :homebrew_curl
-  sha256 "11c9dd187d9ee53dfe9ebe4bc9e472928c3f3926328f266953b7178c0ad5b4f2"
+  url "https://invisible-mirror.net/archives/vttest/vttest-20241208.tgz"
+  sha256 "8fee3bac7e87d4aa4a217bd2b38ab9910c3b8cf9a605b450c76ccc0ad2a6519d"
   license "BSD-3-Clause"
 
   livecheck do
@@ -10,13 +10,16 @@ class Vttest < Formula
     regex(/href=.*?vttest[._-]v?(\d+(?:[.-]\d+)*)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0ec238e8f75457525647ef8b756af38d417bce60e6c89290cbedcac3d6f936e4"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8e22018c2a7b1180923a963fb25ea4f7dc42ec5467921aae74b9769d7a4886ef"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "656fd61f21d899322975ef94e0880c44186308476c8d54f02ac1b19c310788d3"
-    sha256 cellar: :any_skip_relocation, sonoma:        "030bb430d0f4dd139415ef5de9c28142975f85b686511c121efcb7fbf50a9e76"
-    sha256 cellar: :any_skip_relocation, ventura:       "286ad98696e7d0f8293696327c6b6a4cf4a06217a68cc2f52babb024bdd6efa4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a322a1537189d0c57ec7c02c9b7f284a452c79f71cfcca31d89f405ae45b4c1e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5c0bf421235c658ec8217bcb7a68799df68c5f060b05940bb20f97e7fb43a7b3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7cdb02a9f59bf22b59a6efb440d27427e380fb411d7408b2cece68856c120ca8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "5ce70a33f514b64a73dd2012c56b0654a599cae4df45d7987f76ae50f6c84a6c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f6297dcf4f42e03066edf5ecf2440a4c40e19a63a57f3dd1857600adeb29422c"
+    sha256 cellar: :any_skip_relocation, ventura:       "1fa08429b674d918c8e3c4f68c070228f155fce751bfde191875b65f34a455de"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "a961a2d59fc8e50c696c22fa6b129751d3c8eefbff8778abd51f6c67597d31ab"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e0e0ebc43609027dc1615b1b71dd18f1d4a7e662cee41e3cd57ea480130f5205"
   end
 
   def install

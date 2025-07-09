@@ -1,8 +1,8 @@
 class Capnp < Formula
   desc "Data interchange format and capability-based RPC system"
   homepage "https://capnproto.org/"
-  url "https://capnproto.org/capnproto-c++-1.0.2.tar.gz"
-  sha256 "9057dbc0223366b74bbeca33a05de164a229b0377927f1b7ef3828cdd8cb1d7e"
+  url "https://capnproto.org/capnproto-c++-1.2.0.tar.gz"
+  sha256 "ed00e44ecbbda5186bc78a41ba64a8dc4a861b5f8d4e822959b0144ae6fd42ef"
   license "MIT"
   head "https://github.com/capnproto/capnproto.git", branch: "master"
 
@@ -12,14 +12,13 @@ class Capnp < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "86158801e5d5a2131d80c2526855da900d3f333080b19f8ed77ec4489b258721"
-    sha256 arm64_sonoma:   "19bd2ac85d9b982d0f5bb2cbf728823aeb1ceed838096c55459f1b973f6d9733"
-    sha256 arm64_ventura:  "f9f10d39ccda6aac9d9e4dee159dd2e882ba5cd027a8b19216f498fd1c39ae72"
-    sha256 arm64_monterey: "d4db0fb57022ca7980f402cdde520987d37ee66caaaa61b78037136b4476225f"
-    sha256 sonoma:         "5b90bfe71f8f407f71c0d0f3404a02607eb3d1fcc903067cce628653dd5c00ed"
-    sha256 ventura:        "37ba767871207bc87d5869e343738a4db44e8357366d7f6165618ddf211bd968"
-    sha256 monterey:       "ddd4e35539498174d233ed6fec3fce40c3ee7b2d61b93f5114e6b6eba5784e83"
-    sha256 x86_64_linux:   "28f2ac2e3b0ab17b31bcf092c2e3e6d810d5601e0a17e09c2a12872a4ec57348"
+    sha256 arm64_sequoia: "32850d9930ecb4a82632d22ba68f5dc3ee221d9b4b00e7bbcfd57fc093b0e6b9"
+    sha256 arm64_sonoma:  "5627bf9b2d201d61d69cd4fefcbea4170bfc6c37bcdacd11f541a170191836a6"
+    sha256 arm64_ventura: "628e24ec584599abf82afa1f517fa92a6064a9511175f646d26fc0eded6a28f9"
+    sha256 sonoma:        "fa74eafe82cb0fb8753552e68548a15106b9e2543263b837d6221c5962ee3a6f"
+    sha256 ventura:       "32dcff1c319cd23a163fc233426cd57e7f7170209f9344ecc485122dad3d7631"
+    sha256 arm64_linux:   "22fbab45d8401d46c54dd930009a3d527beced94406743a17c280466b0622e81"
+    sha256 x86_64_linux:  "0b35a0dde079a841e258c6d364e32e6f4cd543d00e94f240ae67e0c461192576"
   end
 
   depends_on "cmake" => :build
@@ -32,6 +31,7 @@ class Capnp < Formula
   def install
     # Build shared library
     system "cmake", "-S", ".", "-B", "build_shared",
+                    "-DCMAKE_CXX_STANDARD=20", # compile coroutine support, remove with 2.0 update
                     "-DBUILD_SHARED_LIBS=ON",
                     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
                     "-DCMAKE_INSTALL_RPATH=#{rpath}",
@@ -42,6 +42,7 @@ class Capnp < Formula
 
     # Build static library
     system "cmake", "-S", ".", "-B", "build_static",
+                    "-DCMAKE_CXX_STANDARD=20", # compile coroutine support, remove with 2.0 update
                     "-DBUILD_SHARED_LIBS=OFF",
                     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
                     "-DCMAKE_CXX_FLAGS=-fPIC",

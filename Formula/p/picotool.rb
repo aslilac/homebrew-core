@@ -4,24 +4,27 @@ class Picotool < Formula
   license "BSD-3-Clause"
 
   stable do
-    url "https://github.com/raspberrypi/picotool/archive/refs/tags/2.0.0.tar.gz"
-    sha256 "9392c4a31f16b80b70f861c37a029701d3212e212840daa097c8a3720282ce65"
+    url "https://github.com/raspberrypi/picotool/archive/refs/tags/2.1.1.tar.gz"
+    sha256 "19200c6dc4be5acd6fb53de3d7f35c826af596c18879d56f214b795300100260"
 
     resource "pico-sdk" do
-      url "https://github.com/raspberrypi/pico-sdk/archive/refs/tags/2.0.0.tar.gz"
-      sha256 "626db87779fa37f7f9c7cfe3e152f7e828fe19c486730af2e7c80836b6b57e1d"
+      url "https://github.com/raspberrypi/pico-sdk/archive/refs/tags/2.1.1.tar.gz"
+      sha256 "179c5531e75ac7f82d0679e70b6e8881f871738dc0ef17baf3b4ff4679291c41"
+
+      livecheck do
+        formula :parent
+      end
     end
   end
 
   bottle do
-    sha256 arm64_sequoia:  "16e96d14be7f3d63ad412bfe55a02e26b24d0becf10b8838ca3ddd658bb2f08e"
-    sha256 arm64_sonoma:   "d2cdf2d3bef83207f173ee96fcb66976fe14b638fa2b941e6f16f44ab60bfc93"
-    sha256 arm64_ventura:  "91dce37d751e159802bbccd9d11be16f8620197f04240c612efa6ba8bb09a393"
-    sha256 arm64_monterey: "e4bf549b3d172a4f93e1f965df6d004550ff4322a40118a1caf18774d729c297"
-    sha256 sonoma:         "8534519fb9e80d196690f5b4a27880533847dce3d1e3b2103d7c66565bf826f7"
-    sha256 ventura:        "56c36f61d6f798a875a6db5744e8fb4ad9936dc3f57c334ed46224fc9728b3d7"
-    sha256 monterey:       "19af651cbee2f74c3808681cf1afba755e849f39d01750cbe15e0a754486ae5d"
-    sha256 x86_64_linux:   "e92224ae304cef3422d9abb25f79316f895a26cfcfe8a7677c25266fc54e1eaf"
+    sha256 arm64_sequoia: "8e51e1b6845de5e0b23a077e14d62833a1a278dd152af0c3dfef5e61cc2256b5"
+    sha256 arm64_sonoma:  "cd8546607360520cf90fb05023ddedf4314f5091a405b26a14258671de27d43f"
+    sha256 arm64_ventura: "d4f3ee5104586f5333b44791ddab8cb73335674e9c34bba6087ac2b5173977bb"
+    sha256 sonoma:        "5a30e1353a4d3ab7d2dfc5ceb9e129e24d5909fd2a78e49a15f440c47d99b832"
+    sha256 ventura:       "968e9358bedbeb778f48ceea8aac90f86be7166073f560273a4a1175a17a1f74"
+    sha256 arm64_linux:   "238fcbc4f902a9f507d68e3f8a4988ae59b04e7cff40ab729d6eddc57d6f9643"
+    sha256 x86_64_linux:  "e1eedbfbeb6bbd81d3e6bdf3e3c086ef33689ea341967e00b1cdeef528f77ce8"
   end
 
   head do
@@ -33,13 +36,17 @@ class Picotool < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libusb"
 
   def install
+    odie "pico-sdk resource needs to be updated" if build.stable? && version != resource("pico-sdk").version
+
     resource("pico-sdk").stage buildpath/"pico-sdk"
 
     args = %W[-DPICO_SDK_PATH=#{buildpath}/pico-sdk]
+    args << "-DCMAKE_POLICY_VERSION_MINIMUM=3.5" if build.head?
+
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
@@ -54,7 +61,7 @@ class Picotool < Formula
 
     resource("homebrew-picow_blink").stage do
       result = <<~EOS
-        File blink_picow.uf2:
+        File blink_picow.uf2 family ID 'rp2040':
 
         Program Information
          name:          picow_blink

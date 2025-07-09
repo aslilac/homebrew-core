@@ -18,10 +18,9 @@ class Hyx < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "9f084d25734ace46da19988e530330c80da3aee8d09b474ed151c0fe67ee45ca"
     sha256 cellar: :any_skip_relocation, ventura:        "3328518acd239a750d5abf4aa64ce03a5cde6ba9e4d295008ba88211bf6da8fe"
     sha256 cellar: :any_skip_relocation, monterey:       "652226492680dbb33afac3764bac50c27386811d37922f08c487ef0086b3426f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "dcbfd8ea3d3bf741858c96956174d8813ddd1e925c334643cbcd7883b0dbdf10"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "caa4542a609e244b3d83ca4e45e3fb9a71d3fa77e8ba0346803b24f63cc205bf"
   end
-
-  uses_from_macos "expect" => :test
 
   def install
     system "make"
@@ -29,8 +28,18 @@ class Hyx < Formula
   end
 
   test do
-    assert_match(/window|0000/,
-      pipe_output("env TERM=tty expect -",
-                  "spawn #{bin}/hyx;send \"q\";expect eof"))
+    require "pty"
+    PTY.spawn(bin/"hyx", "test") do |r, w, pid|
+      r.winsize = [80, 43]
+      w.write "62726577:wq\n"
+      r.read
+    rescue Errno::EIO
+      # GNU/Linux raises EIO when read is done on closed pty
+    ensure
+      r.close
+      w.close
+      Process.wait(pid)
+    end
+    assert_equal "brew", (testpath/"test").read
   end
 end

@@ -1,8 +1,8 @@
 class Wazero < Formula
   desc "Zero dependency WebAssembly runtime"
   homepage "https://wazero.io"
-  url "https://github.com/tetratelabs/wazero/archive/refs/tags/v1.8.1.tar.gz"
-  sha256 "228e2d5b19e9de83f583c723b54a00b7cd751db44a44ffb0964957326b10d7a0"
+  url "https://github.com/tetratelabs/wazero/archive/refs/tags/v1.9.0.tar.gz"
+  sha256 "b294ef32baf69cb7ef9be85ecdfa13b0e59a4bac2f1ad58ec21231e7e0d592e0"
   license "Apache-2.0"
 
   livecheck do
@@ -11,12 +11,12 @@ class Wazero < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e42061077c9c88ee8017d07ad49d77b02bc63d33be890ebb65cfcc6632252b79"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e42061077c9c88ee8017d07ad49d77b02bc63d33be890ebb65cfcc6632252b79"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "e42061077c9c88ee8017d07ad49d77b02bc63d33be890ebb65cfcc6632252b79"
-    sha256 cellar: :any_skip_relocation, sonoma:        "8cbfed9906f15f5a73ce09aba01946014539a6d19b379181f16359c47c79056c"
-    sha256 cellar: :any_skip_relocation, ventura:       "8cbfed9906f15f5a73ce09aba01946014539a6d19b379181f16359c47c79056c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c9358e7efc73332d64c9edf09acdea0a787befdc6141ce269f9261bdda96c07b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c6c3e483291dbea6101c7498979e8f1186e5a3eeb71c594b4230d65a59599f27"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c6c3e483291dbea6101c7498979e8f1186e5a3eeb71c594b4230d65a59599f27"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c6c3e483291dbea6101c7498979e8f1186e5a3eeb71c594b4230d65a59599f27"
+    sha256 cellar: :any_skip_relocation, sonoma:        "0047c80bd8e21271e33bd11ccd8f245b5c5ea63aebf33cabcd32e1cc8757330b"
+    sha256 cellar: :any_skip_relocation, ventura:       "0047c80bd8e21271e33bd11ccd8f245b5c5ea63aebf33cabcd32e1cc8757330b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ff1579937c7bc3110eb9c001456a6d16dce670eb805e1492546dfedf05127391"
   end
 
   depends_on "go" => :build

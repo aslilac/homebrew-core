@@ -14,15 +14,11 @@ class Readpe < Formula
     sha256 sonoma:         "fa76a24e56248862f78f3533071511bbb799a7dc7cf73e7053ce20075df5c36a"
     sha256 ventura:        "853736579e5cf2720e23fdc87b76743df8f2da3cd443f7800534b5d12f5c1c0f"
     sha256 monterey:       "ec16bb320368c12138d4d78c7cd1d8d93df6ea966f257d3b15bf0772084a0002"
+    sha256 arm64_linux:    "9a4e8b547d3a3121f13f28da2a37f4ebafe1819dd2de79c07fb9c9e9ea9c6d56"
     sha256 x86_64_linux:   "7f4cb2c34a30a64949fe31d4597454732c7e99f1bbe3b450d317a9e4f0da5d61"
   end
 
   depends_on "openssl@3"
-
-  resource "homebrew-testfile" do
-    url "https://the.earth.li/~sgtatham/putty/0.78/w64/putty.exe"
-    sha256 "fc6f9dbdf4b9f8dd1f5f3a74cb6e55119d3fe2c9db52436e10ba07842e6c3d7c"
-  end
 
   def install
     ENV.deparallelize
@@ -32,6 +28,11 @@ class Readpe < Formula
   end
 
   test do
+    resource "homebrew-testfile" do
+      url "https://the.earth.li/~sgtatham/putty/0.78/w64/putty.exe"
+      sha256 "fc6f9dbdf4b9f8dd1f5f3a74cb6e55119d3fe2c9db52436e10ba07842e6c3d7c"
+    end
+
     resource("homebrew-testfile").stage do
       assert_match(/Bytes in last page:\s+120/, shell_output("#{bin}/readpe ./putty.exe"))
     end

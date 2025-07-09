@@ -5,6 +5,8 @@ class LibunwindHeaders < Formula
   sha256 "bbe469bd8778ba5a3e420823b9bf96ae98757a250f198893dee4628e0a432899"
   license "APSL-2.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "24ed849a21c0cb1b8eda429fb00a9c9ecdc2483195d84de351f5806071ce19fb"
@@ -14,6 +16,7 @@ class LibunwindHeaders < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "2493e296e5824c2caf88be9f46d111ca2b6691d6e459826f67f29498bb1bc3b2"
     sha256 cellar: :any_skip_relocation, ventura:        "2493e296e5824c2caf88be9f46d111ca2b6691d6e459826f67f29498bb1bc3b2"
     sha256 cellar: :any_skip_relocation, monterey:       "ddc5b02449351bb8ddc11fea2d25ca79ecf87657dde6c7cd7c15f1b5d6ff17c5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e811151bf776ce7f981651e7517c2914a64f6df45f1071cff7de1ff21414393a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ddc5b02449351bb8ddc11fea2d25ca79ecf87657dde6c7cd7c15f1b5d6ff17c5"
   end
 

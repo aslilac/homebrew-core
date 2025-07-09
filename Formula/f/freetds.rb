@@ -1,8 +1,8 @@
 class Freetds < Formula
   desc "Libraries to talk to Microsoft SQL Server and Sybase databases"
   homepage "https://www.freetds.org/"
-  url "https://www.freetds.org/files/stable/freetds-1.4.23.tar.bz2", using: :homebrew_curl
-  sha256 "93a3f186b82c6042a66a1970bd478d7914edb1c5669b642d80b4eaacf2a2d17e"
+  url "https://www.freetds.org/files/stable/freetds-1.5.4.tar.bz2"
+  sha256 "1d024ef418d74a3a8f2cca82f10f1561f1dde28dc3d6f65c815f07764d4f7ea8"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,12 +11,13 @@ class Freetds < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "038c79a890f8bfa86b4ad80b023a5d2d159e5560ee9fff8cb4843b744c35017a"
-    sha256 arm64_sonoma:  "567e374c5d48379edfcd1a337b8c2276369beee0a2c1feedf0286f4085919888"
-    sha256 arm64_ventura: "59d2dd5e0115c72865f8a2be26c6fd592f3c0b42029749e1d2f3c5ca206a21c6"
-    sha256 sonoma:        "47ec787d486077556a1da8a31107f49177c7db669d90ec3136f8ca2f7c5386ca"
-    sha256 ventura:       "a5844d1abc79fb45eadd6c8bff150e899b8afed949c82bb161ffe232bd99c461"
-    sha256 x86_64_linux:  "23ed83a76e8d45128b5ca26d4b1ed3b44c5738b1aa23149cc8045e6ecf08b057"
+    sha256 arm64_sequoia: "e2d39065bdad88c14d75e029e39f9cf01f77e2c122e07c8a70b64d44017b1554"
+    sha256 arm64_sonoma:  "297766108da331613944a346edef42808128b22b7a5a59cb92c606939d6e049e"
+    sha256 arm64_ventura: "ad86c54e8f7bb44364836eb3e427273e53f2c2d0240018bd3ad979ec995442df"
+    sha256 sonoma:        "4d7d3a0e65cd04ba4c63a68dc39d3ad0a8cdc52010f356e4c1117d0ee3ea087b"
+    sha256 ventura:       "79ce3d3a5016b066dc79e6cafd88fd57b3034d49cfef1ab607e7c7f30a05b3fd"
+    sha256 arm64_linux:   "9c730658234286c9a0519bcfe7a4ca8cf92fbbb3a359c32538b11bd059a40ba5"
+    sha256 x86_64_linux:  "a92decbd7230bb2df6a4fca029bf6093971f97fbbc058b84e036304d1dc73d8d"
   end
 
   head do
@@ -28,7 +29,7 @@ class Freetds < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "openssl@3"
   depends_on "unixodbc"
 
@@ -51,11 +52,8 @@ class Freetds < Formula
       --enable-odbc-wide
     ]
 
-    if build.head?
-      system "./autogen.sh", *args
-    else
-      system "./configure", *args
-    end
+    configure = build.head? ? "./autogen.sh" : "./configure"
+    system configure, *args
     system "make"
     ENV.deparallelize # Or fails to install on multi-core machines
     system "make", "install"

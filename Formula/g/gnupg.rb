@@ -1,25 +1,28 @@
 class Gnupg < Formula
   desc "GNU Pretty Good Privacy (PGP) package"
   homepage "https://gnupg.org/"
-  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.4.6.tar.bz2"
-  sha256 "95acfafda7004924a6f5c901677f15ac1bda2754511d973bb4523e8dd840e17a"
+  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.4.8.tar.bz2"
+  sha256 "b58c80d79b04d3243ff49c1c3fc6b5f83138eb3784689563bcdd060595318616"
   license "GPL-3.0-or-later"
 
+  # GnuPG appears to indicate stable releases with an even-numbered minor
+  # (https://gnupg.org/download/#end-of-life).
   livecheck do
     url "https://gnupg.org/ftp/gcrypt/gnupg/"
-    regex(/href=.*?gnupg[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    regex(/href=.*?gnupg[._-]v?(\d+\.\d*[02468](?:\.\d+)*)\.t/i)
   end
 
   bottle do
-    sha256 arm64_sequoia: "504f8f29547995be5fef21f91769f05e1b2e317c424d3d481d3e1c69561f93b6"
-    sha256 arm64_sonoma:  "5a23f8f2c150986e2e727a25bc42c12c5f89455bc27a213dcfa98289df377bf2"
-    sha256 arm64_ventura: "31f920052dda3ede08d6a75b56c7b38cdb41a0964ab18305ebfc70ac55bbcc37"
-    sha256 sonoma:        "e71ab7138942ea33cac896389aa8e82a4583d0ac5c1691d816e3671bd9327e7b"
-    sha256 ventura:       "e6106c117ccdceeadbad2f16a6ddb551e93b08be6c60e9fc5af615ec23c26e3d"
-    sha256 x86_64_linux:  "861b48d7bc2aa8e2a81f6c300d425ff2453ffb5bc948bc58cf1bdf1d93bd13ec"
+    sha256 arm64_sequoia: "7203b8a0af43aa4593cfc22e4152bd9331c35ba68450240353c2365e41d29895"
+    sha256 arm64_sonoma:  "f659c9e637d2c2932ec0402c2a334df0b019d2150b0e78810a9bab06adf82dc8"
+    sha256 arm64_ventura: "96233a9abeb43d4c4b14fcdd6e49e573f7799fc73ea6d4d91f1cd0ddfdbf46ae"
+    sha256 sonoma:        "bccb362c8eeb1f56f7b3fee1982ef890d1f0ff92018b7feb8c4182191cbe0113"
+    sha256 ventura:       "d18a1dc39de9890030ece85ae3df0497defdfbb8422385a3ef75455e8c82680a"
+    sha256 arm64_linux:   "4095b433173396ad34343f81f749ac26313f42287952da334283eb8b25c83116"
+    sha256 x86_64_linux:  "18c50e87640a9bed50bdc7a8fe579697965e5fd939ba5f180da9e4bc2e808977"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "gnutls"
   depends_on "libassuan"
   depends_on "libgcrypt"
@@ -39,11 +42,10 @@ class Gnupg < Formula
     depends_on "gettext"
   end
 
-  # Backport fix for missing unistd.h
-  patch do
-    url "https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=patch;h=1d5cfa9b7fd22e1c46eeed5fa9fed2af6f81d34f"
-    sha256 "610d0c50004e900f1310f58255fbf559db641edf22abb86a6f0eb6c270959a5d"
-  end
+  conflicts_with cask: "gpg-suite"
+  conflicts_with cask: "gpg-suite-no-mail"
+  conflicts_with cask: "gpg-suite-pinentry"
+  conflicts_with cask: "gpg-suite@nightly"
 
   def install
     libusb = Formula["libusb"]
@@ -54,6 +56,7 @@ class Gnupg < Formula
                              "--enable-all-tests",
                              "--sysconfdir=#{etc}",
                              "--with-pinentry-pgm=#{Formula["pinentry"].opt_bin}/pinentry",
+                             "--with-readline=#{Formula["readline"].opt_prefix}",
                              *std_configure_args
       system "make"
       system "make", "check"

@@ -1,8 +1,8 @@
 class Kamel < Formula
   desc "Apache Camel K CLI"
   homepage "https://camel.apache.org/"
-  url "https://github.com/apache/camel-k/archive/refs/tags/v2.5.0.tar.gz"
-  sha256 "6daf43eddcc495623c6d72873126d517c311bddb33b9760ff6a393746ac99645"
+  url "https://github.com/apache/camel-k/archive/refs/tags/v2.7.0.tar.gz"
+  sha256 "220e779be71e0e2c9e622346975abc5a70f7dd6b6c60daf3515bbcac46b92383"
   license "Apache-2.0"
   head "https://github.com/apache/camel-k.git", branch: "main"
 
@@ -12,12 +12,12 @@ class Kamel < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e9d4aab56cc3091e565478d7690bb37bbd89379b72248b09729cfd6f0b50dc3e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e9d4aab56cc3091e565478d7690bb37bbd89379b72248b09729cfd6f0b50dc3e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "e9d4aab56cc3091e565478d7690bb37bbd89379b72248b09729cfd6f0b50dc3e"
-    sha256 cellar: :any_skip_relocation, sonoma:        "12742f199c61f434187c4987b7e7d497457b4da53f8d0af923cc8f6a7dd61677"
-    sha256 cellar: :any_skip_relocation, ventura:       "12742f199c61f434187c4987b7e7d497457b4da53f8d0af923cc8f6a7dd61677"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "600a8d5222d7278cf7e1f79ec0114204ed7244ea088c802c1a2ac37edebc2a20"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "94866f102414ebf2847d884ea8413849d8542144015258123963a61e4d7e71d8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ec606d94e76dd467836a1e5dcb9e6f3b8a98459f5c2748181c8553e311dda518"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0be95ba7c330d904c297f623d855798cb59e7478e22838ee5da025f2d672100c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ad402478408c92bf84410dbef0df8f0bacf4737a236499f08da453e1ddb761f6"
+    sha256 cellar: :any_skip_relocation, ventura:       "395351fabedb60717cc1e452071cf013c9d7cf7b3d86070d7f66b8566f2b21d2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b76d52aec8f5c5d199f96a11cc65a80448064f8904b19537454d3d1d68c8e315"
   end
 
   depends_on "go" => :build

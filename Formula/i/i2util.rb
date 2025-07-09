@@ -1,8 +1,8 @@
 class I2util < Formula
   desc "Internet2 utility tools"
   homepage "https://github.com/perfsonar/i2util"
-  url "https://github.com/perfsonar/i2util/archive/refs/tags/v5.1.4.tar.gz"
-  sha256 "912ff463abd70d54eb5307a90afcc33f8fc99ab77280af4f92c54e3aea6c6d50"
+  url "https://github.com/perfsonar/i2util/archive/refs/tags/v5.2.1.tar.gz"
+  sha256 "8ef7fa11be1c8f753b4cf9a365520a35e632ac8c5a5815e0fae38fce698caa5f"
   license "Apache-2.0"
 
   livecheck do
@@ -11,12 +11,13 @@ class I2util < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6cc0c4bc1018bff30946b704981b5f4121919962ede12492366c3717777cf6bc"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c5d1c9bdbf91900b34bada6e9156d78591d320a8eaed4919032d5978a2ec7121"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "b24f1cef4b07175a76cef6b7fe947f0d79c28da9190f1e1178774f2e0a1e0972"
-    sha256 cellar: :any_skip_relocation, sonoma:        "befe3806ff0f7dfc7b16ad24d053b6d413f9b8707308a785ac5389a72bc138dd"
-    sha256 cellar: :any_skip_relocation, ventura:       "6eb5a9b77aa09934bab46691646a8b9ece5052463808e090475ba5acd4b2af0d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8e6aa9300019b1866dcf826c8c62d5dbcfe47ac41b318db7c32d45af4038c2cb"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4fbf969c2d9f258937ca9a0a00cf073fa03c5616e7820b1c006cc7338b36158e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "dfcba46e38b4f248933df5e573b389e33736ea5af165fe777e79a1d895ba46ca"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "833e11396752fbd08c116ef443fae135b9e376eba4adba095f07a6b84ca42800"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3b77b419849ddf0f4ccf3411ad8ca8387a41acb5756a0a753e67f6937a2e144c"
+    sha256 cellar: :any_skip_relocation, ventura:       "ad49de8d4542cbc69f2d54175bb09ea8985711cd1599dd211c0bb9023fd6732a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "be12cb5f38ee8f41c1f6e8cfc06b541512cd1efdff3c72d40ca2c8531a96c2d6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0a5d553ba2f6bbbba5e43f76248c25a871f4f45eaa9b86098fbd74751a2c557d"
   end
 
   depends_on "autoconf" => :build

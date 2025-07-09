@@ -6,6 +6,8 @@ class Gnirehtet < Formula
   license "Apache-2.0"
   head "https://github.com/Genymobile/gnirehtet.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5f0e5fbe1add7c5624e860f5301ff482236f9730fd5d9fa3d563a961bc54e22b"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ab10ed478b79d0bd8877a477d1f8bdecf2ca129755cbc3a8270d99e11d911c97"
@@ -16,6 +18,7 @@ class Gnirehtet < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "16e2b20622495234ad41bd99233c72288221e721b071d37984355c1f291e9377"
     sha256 cellar: :any_skip_relocation, monterey:       "984d3dfb57b8b4e76c9df974349af5f82d5e1b208ca4fdb87d1fc8f695ee6804"
     sha256 cellar: :any_skip_relocation, big_sur:        "2724057e42986f088b033462ab4c8bc058a1b16bc0deb6209904e0eb04a6c4e8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "4f8b6b690e847b806898b5f6b35340362d176eae643ec7df69bc1f11c94fa3b2"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4c3ffedc36f982c44315b5970a26ccd45fe13db36d3daf8c16510157f87d565d"
   end
 

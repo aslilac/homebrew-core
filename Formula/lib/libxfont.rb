@@ -5,6 +5,8 @@ class Libxfont < Formula
   sha256 "1a7f7490774c87f2052d146d1e0e64518d32e6848184a18654e8d0bb57883242"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "7274a6c0a84b2d5a62c3c7cbaeeb39467f6cd133c9f1e549d3d343cf6d413e97"
     sha256 cellar: :any,                 arm64_sonoma:   "fa76bdfe924cef05ae6293065ec87537cda1d850116b8d8a9b97ed33e5c7b2ca"
@@ -18,10 +20,11 @@ class Libxfont < Formula
     sha256 cellar: :any,                 catalina:       "0321fea5b7329575b6d4b3ed762d741309c329c74df6a9ae2693667828e9a1da"
     sha256 cellar: :any,                 mojave:         "68cfb860815eedac8d96bb1853a64a12c3cc77bcc0e99ffbd693666b2bfb9119"
     sha256 cellar: :any,                 high_sierra:    "54fe9ff4143205d5d14a416f276193c4f9f5dc83898a057823462ac78c8de891"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "cd90ca9f06f262584a557fb3109a3090f12a6786de1ca899b08a6fd99ea7de45"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c2c2202c343f1c42b642eaa9e4410f3886faf1158fd7a271ad928623922a43ee"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "util-macros" => :build
   depends_on "xtrans" => :build
   depends_on "freetype"
@@ -33,17 +36,15 @@ class Libxfont < Formula
 
   def install
     args = %W[
-      --prefix=#{prefix}
       --sysconfdir=#{etc}
       --localstatedir=#{var}
-      --disable-dependency-tracking
       --disable-silent-rules
       --enable-devel-docs=no
       --with-freetype-config=#{Formula["freetype"].opt_bin}/freetype-config
       --with-bzip2
     ]
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
   end

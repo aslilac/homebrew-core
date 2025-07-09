@@ -6,6 +6,8 @@ class Libnova < Formula
   # libnova is LGPL but the libnovaconfig binary is GPL
   license all_of: ["LGPL-2.0-or-later", "GPL-2.0-or-later"]
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "7c78e76239a8d99361a578d2726073d7cc300261a68effe3c189dd1edc2fbb4f"
     sha256 cellar: :any,                 arm64_sonoma:   "956371a814a279005c8b801707b40d0d7dce699c481f0bcac0ceb8cf8932505e"
@@ -20,6 +22,7 @@ class Libnova < Formula
     sha256 cellar: :any,                 mojave:         "2bcc962108ffee6fafeae45e5b9eb8f6b233bd2aaa0163f6c89e2f77ddc6eb3f"
     sha256 cellar: :any,                 high_sierra:    "08345c100121f219e199a833563b8f35d17e5368b93e3711377cc20acd0dce99"
     sha256 cellar: :any,                 sierra:         "1ef1a9898b97967ba9cabdf002ddcc4b398976f0c9bb7c826f7980ffaef87dd4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a6d298d08f8835795b6d9051626344d25e7f88725ed2b9a5a1b7a098f75438aa"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "41b0f8cff7affaeb1f8df48a2f13e4ce0fda9ad886c73ec3ada492cd1c9e862c"
   end
 
@@ -28,11 +31,8 @@ class Libnova < Formula
   depends_on "libtool" => :build
 
   def install
-    system "autoreconf", "-fiv"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make"
     system "make", "install"
   end

@@ -1,22 +1,30 @@
 class Libmediainfo < Formula
   desc "Shared library for mediainfo"
   homepage "https://mediaarea.net/en/MediaInfo"
-  url "https://mediaarea.net/download/source/libmediainfo/24.11/libmediainfo_24.11.tar.xz"
-  sha256 "96e44a617f90c8b63bb685ad53be6716b7df4221793c329780f02aea6e707aa1"
+  url "https://mediaarea.net/download/source/libmediainfo/25.04/libmediainfo_25.04.tar.xz"
+  sha256 "ad45ed7c9db7807aa803845ca88bad9526aa8da883a58127e5390aaa2d81bbb1"
   license "BSD-2-Clause"
   head "https://github.com/MediaArea/MediaInfoLib.git", branch: "master"
 
+  livecheck do
+    url "https://mediaarea.net/en/MediaInfo/Download/Source"
+    regex(/href=.*?libmediainfo[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "3427787833fe8c033078515e1ea8353eaab13e005941fd27eb6a85f85e9b5378"
-    sha256 cellar: :any,                 arm64_sonoma:  "85d5d24c152d76b6a05535b3ae22c5a0d88d8e17b81a347f2e5ef60e0c27a515"
-    sha256 cellar: :any,                 arm64_ventura: "38cb6ae2a91bbd88764cf647afa1ac2276d0b22e0644168486257e57756011dd"
-    sha256 cellar: :any,                 sonoma:        "d827fc809e651c6ac2719729a5cdbf26a837423a0ec27fab55b2eacfe7d74cd9"
-    sha256 cellar: :any,                 ventura:       "131a65274d572de55ce52e9cb01882f30a8abd778544995579f45942b0c477bc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "942d09d98a3ef3146243709d5109c2aa63d27ac42fca5f9c43fa1dd2c29b2ff2"
+    sha256 cellar: :any,                 arm64_sequoia: "c7a6a63c51275d03a196ba46853d9f9b643b3619b23ee28cc90f5b37c11fdda9"
+    sha256 cellar: :any,                 arm64_sonoma:  "a9ee33756021ae82ab8e208efe7e84b9ad73f2a7b991c175349d9e7486a14eee"
+    sha256 cellar: :any,                 arm64_ventura: "94d88eb9a3876d97ed93bb0eea13ebcaa4745166f78b74f2a6eb9f1962f9da4b"
+    sha256 cellar: :any,                 sonoma:        "8c98791b35146b240ef8e9b81a17ca7b884843effb22ddb9730ff2c1423d8a30"
+    sha256 cellar: :any,                 ventura:       "034550f80eb6d9d7913a3886b92addff34c1f78e7ca781de53bc1724817b5253"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6fbff65d4ff52c74656c7052b9d745a28223b81b4eec6502ed7edd70d72a5288"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a1d0d3285be1b862b4d2633939840143e6d6f3320fc0334e62c4b53f56eb28ec"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "libmms"
   depends_on "libzen"

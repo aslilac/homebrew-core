@@ -11,6 +11,8 @@ class Gphoto2 < Formula
     regex(%r{url=.*?/gphoto2[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "5ae6c7be0e9948d7fd7d0f473a4fcb0f62d37d8961c5e9ff33f42095fbc17463"
     sha256 arm64_sonoma:   "2c504b69c81e8ffa8b85422f2e253f728670335465411812dbdac5264cb721ec"
@@ -22,10 +24,11 @@ class Gphoto2 < Formula
     sha256 monterey:       "5ed1d4e739a9714fd521dab770b3f0158aa0f0e7ddeee83df73cbf29d7e00ff2"
     sha256 big_sur:        "ea0442d95d2eb20d04a01a70193130523501a977f8b6c90a151f4d79f27da454"
     sha256 catalina:       "50f8ac20116d922be552822446f438296df99e104509ccc3f9785576d7c01016"
+    sha256 arm64_linux:    "4e8228a62a33c494c943392deac6fc626d2f3484521549ce63fd5baff87519e6"
     sha256 x86_64_linux:   "52adb4dfc3a7c3b062ff23a25adf8ddcaaead4cef2df8e1e355067fb124f4873"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "jpeg-turbo"
   depends_on "libexif"
@@ -42,7 +45,7 @@ class Gphoto2 < Formula
   patch :DATA
 
   def install
-    system "./configure", *std_configure_args.reject { |s| s["--disable-debug"] }
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 

@@ -5,6 +5,8 @@ class H264bitstream < Formula
   sha256 "94912cb07ef67da762be9c580b325fd8957ad400793c9030f3fb6565c6d263a7"
   license "LGPL-2.1-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "4616a724fcfbdc091a8be99a5746c3c1a20e9be058fd4acd09a3e4ac12ab7756"
     sha256 cellar: :any,                 arm64_sonoma:   "946ce648f0daf4e64a182e2f39811d0d78946a5150899dffe5984bb1926a88f2"
@@ -18,6 +20,7 @@ class H264bitstream < Formula
     sha256 cellar: :any,                 catalina:       "ac1f452b4c4d4d90310ec1f3cd9ec45271665604844dca55df3f7a91885d28d7"
     sha256 cellar: :any,                 mojave:         "ebe66ef0a10e2afacf2b418eb15aa57ed873c6df73d6da71b6252efce8c15a5e"
     sha256 cellar: :any,                 high_sierra:    "191acedb64e2ab618696fe16c55b81cdadb9819a0b0fc594235d31a28a1cdf96"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "fc3ca9983f5e3f12e4f0f602606d56aa96e40ecdc224dd27018b9e7d3220a42f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c79de8d86abcc4f3f95f8bd7a504116fe189546101cec66d52ab6295bf0bf376"
   end
 
@@ -26,8 +29,8 @@ class H264bitstream < Formula
   depends_on "libtool" => :build
 
   def install
-    system "autoreconf", "-iv"
-    system "./configure", "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 end

@@ -1,6 +1,6 @@
 class Icon < Formula
   desc "General-purpose programming language"
-  homepage "https://www.cs.arizona.edu/icon/"
+  homepage "https://www2.cs.arizona.edu/icon/"
   url "https://github.com/gtownsend/icon/archive/refs/tags/v9.5.24b.tar.gz"
   version "9.5.24b"
   sha256 "85d695ab34d62f86d5b08f5bde91200026c1fc5a67f33f47c498f96e72543c62"
@@ -17,6 +17,7 @@ class Icon < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "ce83ff988cba709e562c1f9eb10b83b213dac39c0fbf5f35a0c604e5d946b395"
     sha256 cellar: :any_skip_relocation, sonoma:        "b0b3a9d4c3edecb4a85b91b50b434c0d2e1340ca56fd363255ad21e7e3d67566"
     sha256 cellar: :any_skip_relocation, ventura:       "305fba963c8ec8927afab6c2418cc27833fe06dd384549d2c84dfc6f68e556fc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3add527d5661f110ee2fbd4a9c9fd45c125570c6ffae22a302e4c0f2d54fe927"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "dd4a8c1440be1ac2b3dee44a515b8b0b9a173081242f1afa024a82bb03fa88f5"
   end
 

@@ -13,22 +13,21 @@ class FdkAacEncoder < Formula
     sha256 cellar: :any,                 sonoma:         "99f243a63d88d1350bc798ca8f90ed703485462aa7a99b92588aafecd2867874"
     sha256 cellar: :any,                 ventura:        "4cc459e64c6b70274d477f223911b3f4cef20646920cd6f365d0992faae184c3"
     sha256 cellar: :any,                 monterey:       "93b808efe4acbd0d60c1990acd03b8eebd5308c8c59350f8bd13394423a7baa6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "4b941b4a0be48f5ec58726a7f25547007f8085683a8b060ad24552532bd0880e"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5d3bcffd33552747f8c107a46e42f3cff7b500647fd2f268d688bee77ef711aa"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "fdk-aac"
 
   def install
-    system "autoreconf", "-i"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--disable-silent-rules",
+                          "--mandir=#{man}",
+                          *std_configure_args
     system "make", "install"
   end
 
@@ -58,7 +57,7 @@ class FdkAacEncoder < Formula
       (sample * 32767.0).round
     end
 
-    File.open("#{testpath}/tone.pcm", "wb") do |f|
+    (testpath/"tone.pcm").open("wb") do |f|
       f.syswrite(samples.flatten.pack("s*"))
     end
 

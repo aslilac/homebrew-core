@@ -1,9 +1,8 @@
 class MidnightCommander < Formula
   desc "Terminal-based visual file manager"
   homepage "https://www.midnight-commander.org/"
-  url "https://www.midnight-commander.org/downloads/mc-4.8.32.tar.xz"
-  mirror "https://ftp.osuosl.org/pub/midnightcommander/mc-4.8.32.tar.xz"
-  sha256 "4ddc83d1ede9af2363b3eab987f54b87cf6619324110ce2d3a0e70944d1359fe"
+  url "https://ftp.osuosl.org/pub/midnightcommander/mc-4.8.33.tar.xz"
+  sha256 "cae149d42f844e5185d8c81d7db3913a8fa214c65f852200a9d896b468af164c"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -12,14 +11,13 @@ class MidnightCommander < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "d4a361245ce1023f004e6e8204b11ba919e59b297898e7a66cc96b81ef58a44a"
-    sha256 arm64_sonoma:   "4d8ff2cfd4c5016efb2b731d4266a83900cfd164edb522acb54d2b4d3f732274"
-    sha256 arm64_ventura:  "233f9256cac1000fe98e86173cf2abb1e4555759a888261f76d4e1a3786fd699"
-    sha256 arm64_monterey: "71b2eb7e58eda80f71b0be79e403cc23221ca879611bfa1d42c5fbd8e305c4b2"
-    sha256 sonoma:         "7402ed037582a4c6571c058b2a447abbc7ce7b8b97a4728a7a0d70aedccf385c"
-    sha256 ventura:        "fa3d7102a91c5febc694952d63d1bab5f113fcc79db982a8b7983cabed7f0716"
-    sha256 monterey:       "f7915e04544fe79dd00fe848f603cc500292879d54135c8d2820db50bc36f309"
-    sha256 x86_64_linux:   "10d00a3f8507c74d6128eeb7f93ab82b89cae4f396f7eb0b94516983e11d4fa7"
+    sha256 arm64_sequoia: "c6914462166922365c2a56c49d4fc8bb3eb051d3022e67072e7fac0832e8121d"
+    sha256 arm64_sonoma:  "5b4c29d7bff65c72443cc3ae9e004d0af04c38392819c432f1bded428324b549"
+    sha256 arm64_ventura: "471749bae6d5735af1b5a8922700e74ef4f4f256b2e8b60ce5786a7148f51a7d"
+    sha256 sonoma:        "d6e4cf2c8b3f9f9bef3a7a0f3a066a378c1f4c1b4bd05c3b455f20b0bfc09792"
+    sha256 ventura:       "bd3a2cca7f5e7a5a19ce29ef376fdb01a6802a76d07daae05bf9bf7527edf08a"
+    sha256 arm64_linux:   "a5073a3422e3f6503eaaa200b14f719fe6ca10cf191f2c635d623ddca06cbd3f"
+    sha256 x86_64_linux:  "512a595e57bbdea41c7b80ef305023874b21d7d77a8f63ce6218af3afa0863c4"
   end
 
   head do
@@ -30,7 +28,7 @@ class MidnightCommander < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "glib"
   depends_on "libssh2"
@@ -53,7 +51,7 @@ class MidnightCommander < Formula
     ]
 
     system "./autogen.sh" if build.head?
-    system "./configure", *args, *std_configure_args.reject { |s| s["--disable-debug"] }
+    system "./configure", *args, *std_configure_args
     system "make", "install"
 
     if OS.mac?

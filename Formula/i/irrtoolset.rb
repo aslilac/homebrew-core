@@ -12,6 +12,8 @@ class Irrtoolset < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c8f841c2b1f1181dfd110bb27a4d374ff43d204bda34a871aa260bd8c67c7e43"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "89d7ae76431629fd7703e8295dae62fbaae4ef6adba8b261e14d92ff409fc450"
@@ -25,6 +27,7 @@ class Irrtoolset < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "958df309df54264b13dba2185761e5d4ce1397e3c6b079dbd9396e054d02d306"
     sha256 cellar: :any_skip_relocation, mojave:         "fd790b230ed1c3559d79c5e86080a6c5163d71817c13980a3abc904e15535d98"
     sha256 cellar: :any_skip_relocation, high_sierra:    "250f93336659350a65426d86c28053763f530b56ae9513b44f086196a91a59c3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "764470b02f51abbb9c5a21cb574bb11b226213478829953fd5d115b45e6e1f46"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b03e7fcf28c8481e33209b35b08bac6d1293240ea1f7d71714c3bce19ee98b88"
   end
 

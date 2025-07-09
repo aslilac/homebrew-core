@@ -19,7 +19,7 @@ class Utf8cpp < Formula
 
   test do
     (testpath/"CMakeLists.txt").write <<~CMAKE
-      cmake_minimum_required(VERSION 3.0.2 FATAL_ERROR)
+      cmake_minimum_required(VERSION 4.0 FATAL_ERROR)
       project(utf8_append LANGUAGES CXX)
       find_package(utf8cpp REQUIRED CONFIG)
       add_executable(utf8_append utf8_append.cpp)
@@ -34,8 +34,8 @@ class Utf8cpp < Formula
       }
     CPP
 
-    system "cmake", ".", "-DCMAKE_PREFIX_PATH:STRING=#{opt_lib}", "-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON"
-    system "make"
-    system "./utf8_append"
+    system "cmake", "-S", ".", "-B", "build", "-DCMAKE_PREFIX_PATH=#{opt_lib}", "-DCMAKE_VERBOSE_MAKEFILE=ON"
+    system "cmake", "--build", "build"
+    system "./build/utf8_append"
   end
 end

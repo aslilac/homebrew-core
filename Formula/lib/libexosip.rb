@@ -11,6 +11,8 @@ class Libexosip < Formula
     regex(/href=.*?libexosip2[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "642cdbf3c7e2c28d59ba0bfa578465767fcc52a0640153ae68efea87e928243a"
@@ -22,10 +24,11 @@ class Libexosip < Formula
     sha256 cellar: :any,                 ventura:        "836deee9270859281bfb13c2b75d44cad2e6d2f38a2a99490c086b749f45258e"
     sha256 cellar: :any,                 monterey:       "a3ffa4272cd49779d2ba780252af1a9e9bc56d30dae6e1b757bdd449e7c47221"
     sha256 cellar: :any,                 big_sur:        "7af6a64fb918f2ddc565947e49f911520f7340f8ddf09cb23a28aad2e4be35cf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f2248230c56cae9643494c59e8b62ed822cabc1dc5fc1013b98efbf608bad015"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "07fe4531bd26a4c6fabb8833e55dc9b955c3f995c5c024177b9a9e3800785782"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "c-ares"
   depends_on "libosip"
   depends_on "openssl@3"
@@ -38,7 +41,7 @@ class Libexosip < Formula
       ENV.append "LDFLAGS", "-framework CoreFoundation -framework CoreServices " \
                             "-framework Security"
     end
-    system "./configure", *std_configure_args, "--disable-silent-rules"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 

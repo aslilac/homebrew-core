@@ -7,6 +7,13 @@ class Libdvbcsa < Formula
   license "GPL-2.0-or-later"
   head "https://code.videolan.org/videolan/libdvbcsa.git", branch: "master"
 
+  livecheck do
+    url "https://get.videolan.org/libdvbcsa/"
+    regex(%r{href=["']?v?(\d+(?:\.\d+)+)/?["' >]}i)
+  end
+
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "e5119a840b0c4c13677acc889fc03d4c035c47fd74d6e6913a11786d5826192a"
     sha256 cellar: :any,                 arm64_sonoma:   "dccd0d514954d35f9965c1bd03bf4e917cf7c33b3b8eee56213c4e71b1a427eb"
@@ -17,6 +24,7 @@ class Libdvbcsa < Formula
     sha256 cellar: :any,                 ventura:        "6dbe9f5323baa58981e962a837d19357806a3d5ca233f87daf8e606855635146"
     sha256 cellar: :any,                 monterey:       "bbda0b438d4a659c99d2f23fd706db9fe72bfacea2394c69e0e8130f43e1d9d7"
     sha256 cellar: :any,                 big_sur:        "478a1dc726d6a48236b199e709f95440083afda1e25aee072ab33fac7f783183"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "0cd1059d9eab19ada7bf0c2035749b39665f32abb2b521ac344e1372f7093548"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "0cda58fe30ffc94214d77f45ee2d087a1bf8382c6429ad0bf1dd6503b208e23a"
   end
 

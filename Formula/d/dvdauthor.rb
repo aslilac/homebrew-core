@@ -11,6 +11,8 @@ class Dvdauthor < Formula
     regex(%r{url=.*?/dvdauthor[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "527ecacf46ecfaa771b7d5cb556e7d0002e331a79edad4250743c096babdc2f6"
@@ -23,6 +25,7 @@ class Dvdauthor < Formula
     sha256 cellar: :any,                 monterey:       "7b32bfedcf0a84223d860c886930d507a26006e6f79646fe0746ec681f4228fa"
     sha256 cellar: :any,                 big_sur:        "0522363b372b042bb8a672ee3d245b8f0551f8dec40bdf791b4c6eb787e810aa"
     sha256 cellar: :any,                 catalina:       "d79a1513ecb8ba4433fd4a368aaec314416c3ca8c4ab8fcabac6ed1f523e0b14"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "be433be51e3fb32144acd38f8e6b623b41ae24f4fe2320eb29b8387fbb875213"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7837acd0fce47d23873d6b1f1df3ba1dd75985a60e0b5c33778435eeb3094c08"
   end
 

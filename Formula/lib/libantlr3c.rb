@@ -10,6 +10,8 @@ class Libantlr3c < Formula
     regex(/^(?:(?:antlr|release)[._-])?v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "0b28c958040567aca016c773fe2d184aaf8bfe2a849a20265cae9e8980685ae9"
     sha256 cellar: :any,                 arm64_sonoma:   "c6fe962be8632362af50b3eb0bf10fe363ddc153d3624c29d0b5d7fdc8e443b0"
@@ -20,6 +22,7 @@ class Libantlr3c < Formula
     sha256 cellar: :any,                 ventura:        "8fefe8f54568cd3eb22e0d5ac36fe8cbb13b9d1c3be7dda36c6c343b092515fb"
     sha256 cellar: :any,                 monterey:       "6f84f798670e1dc4e99d4633c05ec77a29c2f31075be4fd479f446bbb1468d7e"
     sha256 cellar: :any,                 big_sur:        "74fe108eded5a9480d78624421c87ebdcf4ea8e55ea95b994f00935f9c7016d2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "23ffc02de7c8d3dd2b5db131e584aafd3d12c580a81ff7ff37f905d06214c54a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "89ea3b6e05a369ef0cf3d5ab56e1d98bd9a1507a77f5344da79b5ea12f7123f6"
   end
 
@@ -29,12 +32,15 @@ class Libantlr3c < Formula
 
   def install
     cd "runtime/C" do
-      system "autoreconf", "--force", "--install", "--verbose"
-      system "./configure", *std_configure_args.reject { |s| s["--disable-debug"] },
-                            "--disable-debuginfo",
-                            "--enable-64bit",
-                            "--disable-antlrdebug"
+      args = %w[
+        --disable-antlrdebug
+        --disable-debuginfo
+        --enable-64bit
+      ]
+      args << "--disable-abiflags" if OS.linux? && Hardware::CPU.arm?
 
+      system "autoreconf", "--force", "--install", "--verbose"
+      system "./configure", *args, *std_configure_args.reject { |s| s["--disable-debug"] }
       system "make", "install"
     end
   end

@@ -1,18 +1,19 @@
 class Tsduck < Formula
   desc "MPEG Transport Stream Toolkit"
   homepage "https://tsduck.io/"
-  url "https://github.com/tsduck/tsduck/archive/refs/tags/v3.39-3956.tar.gz"
-  sha256 "1a391504967bd7a6ffb1cabd98bc6ee904a742081c0a17ead4d6639d58c82979"
+  url "https://github.com/tsduck/tsduck/archive/refs/tags/v3.41-4299.tar.gz"
+  sha256 "1940946f5d15b9c1fea941e91d4685eb60cf4857a77f55eb3ad71d4e7e79ce65"
   license "BSD-2-Clause"
   head "https://github.com/tsduck/tsduck.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "85fcccc144054ae42b8e3fc935b61a17f3de645bebbdf937f27b4b844fcbea1e"
-    sha256 cellar: :any,                 arm64_sonoma:  "d6971736a613a09dc3ff5d4b6c2596f448e4430ce704c7ab4f31480a32c2821a"
-    sha256 cellar: :any,                 arm64_ventura: "bb3a3198574de64b13c459858e3d9e4a0bd5c4df853d77c2a871cfb68891f010"
-    sha256 cellar: :any,                 sonoma:        "49de30577f310a4f960c8edf64e33f1313cf40171e7e60a602d50d1f68ac0bdf"
-    sha256 cellar: :any,                 ventura:       "18819fa81eaebdf055ab92176acb3e06962969e1efb12bd522aea05a45303f21"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "27c7b137281536685aad911ccab6fe3dd99aa6fbea5d65e4b286d340d7446b5c"
+    sha256 cellar: :any,                 arm64_sequoia: "89caf54a4a8b3a60372e677578e3d075b8701fc1bd691a0025967a590ba87dba"
+    sha256 cellar: :any,                 arm64_sonoma:  "a0fbaf64f98fe26a65e7ea920e9035adf3eed5aa637d04bdb652225191335fc4"
+    sha256 cellar: :any,                 arm64_ventura: "e8e21c371612c8b33ee52e36e4bc96cf920fa28d64b7bbc91dff666be6b28233"
+    sha256 cellar: :any,                 sonoma:        "43a5fb8c411c30631c67af3a1d2229906b426bac871a9f03dae988fd1d91f427"
+    sha256 cellar: :any,                 ventura:       "7a2c6c741da948332d34dee8197d55dd27fb41439b97b00bed119c9086d708d0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "44021b8af87155ac7875e35893fd7b322b8c02ad44ff4d6eb7c61093f3a4876c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b249f7b5116a18bcb88e3930d3138450a1873c51f936b9211d7e7ba065d3c823"
   end
 
   depends_on "asciidoctor" => :build
@@ -30,14 +31,25 @@ class Tsduck < Formula
   uses_from_macos "curl"
   uses_from_macos "libedit"
   uses_from_macos "pcsc-lite"
+  uses_from_macos "zlib"
 
   on_macos do
     depends_on "bash" => :build
+    depends_on "llvm" => :build if DevelopmentTools.clang_build_version <= 1599
     depends_on "make" => :build
   end
 
+  # Needs clang 16
+  fails_with :clang do
+    build 1599
+    cause "Requires full C++20 support"
+  end
+
   def install
-    ENV["LINUXBREW"] = "true" if OS.linux?
+    if OS.linux?
+      ENV["LINUXBREW"] = "true"
+      ENV["VATEK_CFLAGS"] = "-I#{Formula["libvatek"].opt_include}/vatek"
+    end
     system "gmake", "NOGITHUB=1", "NOTEST=1"
     ENV.deparallelize
     system "gmake", "NOGITHUB=1", "NOTEST=1", "install", "SYSPREFIX=#{prefix}"

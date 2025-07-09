@@ -6,6 +6,8 @@ class Ecoji < Formula
   license "Apache-2.0"
   head "https://github.com/keith-turner/ecoji.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "fdfbe5a6aafb24454e05f4847c9b942f2cfa1f68872fd0e29f0afa67fd325b65"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b250a66fa8d6343158e39d70d313eb2ceb2ca22bb22c9a00744bb8f72f90e95a"
@@ -16,6 +18,7 @@ class Ecoji < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "262576c8572a6bf2b65b8fb0cb5091a2831616e84f586af9a88d72584f3b1c5c"
     sha256 cellar: :any_skip_relocation, monterey:       "262576c8572a6bf2b65b8fb0cb5091a2831616e84f586af9a88d72584f3b1c5c"
     sha256 cellar: :any_skip_relocation, big_sur:        "262576c8572a6bf2b65b8fb0cb5091a2831616e84f586af9a88d72584f3b1c5c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "8a2797643ced4e9f64b294ba6fcf9e9afaac65687e9e2117365941abdd0e6f6b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f8faad5be2a6c052f1489356052b81fab7bbfa597c7285f93842e99fe4f46f60"
   end
 
@@ -25,7 +28,6 @@ class Ecoji < Formula
     cd "cmd" do
       system "go", "build", *std_go_args(ldflags: "-s -w")
     end
-    # system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd"
   end
 
   test do

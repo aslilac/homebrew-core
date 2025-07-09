@@ -5,6 +5,8 @@ class Cconv < Formula
   sha256 "82f46a94829f5a8157d6f686e302ff5710108931973e133d6e19593061b81d84"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "09a537e89790d6af0c6c2f1bd9331b1860b86800285c55c5f4420317aeac02ce"
     sha256 cellar: :any,                 arm64_sonoma:   "da6b870d250ca95eff392c8da4c1e703d292a764c02df3b44f3a2ebf1ff06e31"
@@ -20,6 +22,7 @@ class Cconv < Formula
     sha256 cellar: :any,                 high_sierra:    "c4d197f979340a89d5a87e05eae6a39db38863f89b6ddda42f924472d87a5b0d"
     sha256 cellar: :any,                 sierra:         "2e885b9571a8814f2b23b088f3f0d45f47b1fe762f040c3e66b1a81f84673646"
     sha256 cellar: :any,                 el_capitan:     "bda78602260276dd3e5187a5a9d6bbcfb95ff40aa513840569e490d5dc96aab2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "bb747250621542e8deeda2696a06b14ce399459ce02ace26986e858446535c50"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d7176512194c3bed0f8db76bf768136559dd09bfaaa3562908acaa748ccbd288"
   end
 
@@ -30,8 +33,8 @@ class Cconv < Formula
   def install
     ENV.append "LDFLAGS", "-liconv" if OS.mac?
 
-    system "autoreconf", "-fvi"
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", *std_configure_args
     system "make", "install"
     rm(include/"unicode.h")
   end

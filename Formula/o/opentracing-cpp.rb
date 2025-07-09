@@ -22,12 +22,15 @@ class OpentracingCpp < Formula
   end
 
   deprecate! date: "2024-03-09", because: :repo_archived
+  disable! date: "2025-03-24", because: :repo_archived, replacement_formula: "opentelemetry-cpp"
 
   depends_on "cmake" => :build
 
   def install
-    system "cmake", ".", *std_cmake_args, "-DCMAKE_INSTALL_RPATH=#{rpath}"
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", "-DCMAKE_INSTALL_RPATH=#{rpath}", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
+
     pkgshare.install "example/tutorial/tutorial-example.cpp"
     pkgshare.install "example/tutorial/text_map_carrier.h"
   end

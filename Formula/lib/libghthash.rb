@@ -5,6 +5,8 @@ class Libghthash < Formula
   sha256 "e7e5f77df3e2a9152e0805f279ac048af9e572b83e60d29257cc754f8f9c22d6"
   license "LGPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "83b25e095be2d03fda04742c1c917ff6d5603d4c5ec2e6070f0e555f03e7b701"
     sha256 cellar: :any,                 arm64_sonoma:   "5339394b36965f5152703a4bc84c1303c6966114c3bd053ed9dd265951ad5b6e"
@@ -20,6 +22,7 @@ class Libghthash < Formula
     sha256 cellar: :any,                 high_sierra:    "f9f17a73ef48e31f809d884ce1a419fe4568b167bb962cdf07c4197688572d59"
     sha256 cellar: :any,                 sierra:         "730eb3945e001efa5ebfc84452c94b69237f3cdf830ef5c58cef8854ed4cd3d6"
     sha256 cellar: :any,                 el_capitan:     "e889f34ca4f1978869eff48334f1f55248628fbc586abdeb151fe017479d220e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "616c6f3e4acf1224a29ddea3cdf3a8092b317a197076c006555c43b23999b534"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5e68f5371484da5c89bbe2f40b66f8158334bfe4d436047aa521250d7ff111e6"
   end
 
@@ -28,7 +31,7 @@ class Libghthash < Formula
   depends_on "libtool" => :build
 
   def install
-    system "autoreconf", "-ivf"
+    system "autoreconf", "--force", "--install", "--verbose"
     system "./configure", "--disable-dependency-tracking",
            "--prefix=#{prefix}"
     system "make", "install"

@@ -6,6 +6,8 @@ class Shc < Formula
   license "GPL-3.0-or-later"
   head "https://github.com/neurobin/shc.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "280ac078e9ec3e7fd245942e1b6d141288fec51877aa5d032e57ce8403d24a8c"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c0e1db3eca184dfad518ba0f0ab5a1d4c66f34aca3097f44610a5471882ca311"
@@ -20,6 +22,7 @@ class Shc < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "ff3c55ef1d10c16066e97a20143dbd1e7781ceb9a2c5c8b46d140f6711bc79fa"
     sha256 cellar: :any_skip_relocation, high_sierra:    "c19f4586119be579006eace517045998138d83a17e2b5c8ec00ad73ea007b68c"
     sha256 cellar: :any_skip_relocation, sierra:         "6e1834ac7b4cc64ba972a59189512bb9ff9e0ec307df78f9e0fc1fee42378f6d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "7f215d4f82dede86a688d3924fb39a447b87159ab534b336971f2741b7989cfe"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2a659b8f040806dcf7303f42a3cc50eb61acf894c9d2066acefd897dc71f1452"
   end
 
@@ -30,11 +33,11 @@ class Shc < Formula
   end
 
   test do
-    (testpath/"test.sh").write <<~EOS
+    (testpath/"test.sh").write <<~SH
       #!/bin/sh
       echo hello
       exit 0
-    EOS
+    SH
     system bin/"shc", "-f", "test.sh", "-o", "test"
     assert_equal "hello", shell_output("./test").chomp
   end

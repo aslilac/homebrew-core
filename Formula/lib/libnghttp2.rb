@@ -1,12 +1,12 @@
 class Libnghttp2 < Formula
   desc "HTTP/2 C Library"
   homepage "https://nghttp2.org/"
-  url "https://github.com/nghttp2/nghttp2/releases/download/v1.64.0/nghttp2-1.64.0.tar.gz"
-  mirror "http://fresh-center.net/linux/www/nghttp2-1.64.0.tar.gz"
-  mirror "http://fresh-center.net/linux/www/legacy/nghttp2-1.64.0.tar.gz"
+  url "https://github.com/nghttp2/nghttp2/releases/download/v1.66.0/nghttp2-1.66.0.tar.gz"
+  mirror "http://fresh-center.net/linux/www/nghttp2-1.66.0.tar.gz"
+  mirror "http://fresh-center.net/linux/www/legacy/nghttp2-1.66.0.tar.gz"
   # this legacy mirror is for user to install from the source when https not working for them
   # see discussions in here, https://github.com/Homebrew/homebrew-core/pull/133078#discussion_r1221941917
-  sha256 "20e73f3cf9db3f05988996ac8b3a99ed529f4565ca91a49eb0550498e10621e8"
+  sha256 "e178687730c207f3a659730096df192b52d3752786c068b8e5ee7aeb8edae05a"
   license "MIT"
 
   livecheck do
@@ -14,12 +14,13 @@ class Libnghttp2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "f3851a8e7b386b11e2169671cf3b04acf811fceb406a67f94f9f2ecece9c9794"
-    sha256 cellar: :any,                 arm64_sonoma:  "13eddf43c08a660b4efb246dae54ef46fedb6cb083a916fa4900a6906297fd2f"
-    sha256 cellar: :any,                 arm64_ventura: "2a9ac2b92f79808902b895ec2cabd0cdb9551f99256b700e45ae6f0041a3db0f"
-    sha256 cellar: :any,                 sonoma:        "d89b39d43e99f59cd325cf8a61a6aa8a295deebf29c22ab0bc3185ff4ec26a54"
-    sha256 cellar: :any,                 ventura:       "8c755a5d140ed127dba02f303df785f687447cbfa6b302d4e741d819b322ff07"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8b4c922766aa304a0f749d7f9c019cd77f9706ac65ce0223857f60c68760319f"
+    sha256 cellar: :any,                 arm64_sequoia: "41c3c42b773f4a02cdd9e4f7724e10aea9b6bd1ee2a78408fb02083725a1443f"
+    sha256 cellar: :any,                 arm64_sonoma:  "85e76ae188d10f4d83851ef00582a643f2705f253ff51094c343a0cc027c2f58"
+    sha256 cellar: :any,                 arm64_ventura: "cd939c459dadf040f5268d14496986d3884ab19b95e5bd342bd9478f6f10d701"
+    sha256 cellar: :any,                 sonoma:        "ad8bf90461b2644c68a52eac9f1bee68878a646d8f66cd4440e9896b8bb9df3d"
+    sha256 cellar: :any,                 ventura:       "ca3275b8e548d6a0e3a614c7cf03f32ac9142917f270ee95e19489211e5b0ec7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "21619452882e67ec44b9c0a541a1928bc3f55838ae7fc83b5fd197d13100907b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1ffa3bde661552df4e257400ac387aee06b9e2ef4d9ad4822c6b8ad571e2d488"
   end
 
   head do
@@ -42,8 +43,8 @@ class Libnghttp2 < Formula
   link_overwrite "lib/pkgconfig/libnghttp2.pc"
 
   def install
-    system "autoreconf", "-ivf" if build.head?
-    system "./configure", *std_configure_args, "--enable-lib-only"
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
+    system "./configure", "--enable-lib-only", *std_configure_args
     system "make", "-C", "lib"
     system "make", "-C", "lib", "install"
   end

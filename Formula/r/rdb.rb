@@ -1,19 +1,17 @@
 class Rdb < Formula
   desc "Redis RDB parser"
   homepage "https://github.com/HDT3213/rdb/"
-  url "https://github.com/HDT3213/rdb/archive/refs/tags/v1.0.18.tar.gz"
-  sha256 "028e1bc6e6f4a71a6355676e290f5ad035019814af8b867e4f59c67a6bac154e"
+  url "https://github.com/HDT3213/rdb/archive/refs/tags/v1.2.0.tar.gz"
+  sha256 "db27f1f9ff917a062166771f19d5786bf1a509e6b8c298c942f2ae6c136b6294"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "631b25f5e7c0280add0c06d77f5b041ffc99ecf9710e25a18a181ba9d6645dbf"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "88c0e4faa32ed73f89369445ce46f2d25b83a4e5a3356ca91d061af9a9d4d382"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "88c0e4faa32ed73f89369445ce46f2d25b83a4e5a3356ca91d061af9a9d4d382"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "88c0e4faa32ed73f89369445ce46f2d25b83a4e5a3356ca91d061af9a9d4d382"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b696a5e5d687b9578ca5520779c971ad824eaf56fd070ac9f8800a67fe560893"
-    sha256 cellar: :any_skip_relocation, ventura:        "b696a5e5d687b9578ca5520779c971ad824eaf56fd070ac9f8800a67fe560893"
-    sha256 cellar: :any_skip_relocation, monterey:       "b696a5e5d687b9578ca5520779c971ad824eaf56fd070ac9f8800a67fe560893"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "247da86f4c3b6a03604995d7d07e1fba8561f6908fc8e0d7d68ab3bd55d6db08"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e092a6b244af0528dbcfc708ae545aa8b5417ac88a2664a99319c17d6094eec9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e092a6b244af0528dbcfc708ae545aa8b5417ac88a2664a99319c17d6094eec9"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "e092a6b244af0528dbcfc708ae545aa8b5417ac88a2664a99319c17d6094eec9"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d16a96738a592a2824f7dac0413c77117a6bf830370f2f7c963ce431e5827c35"
+    sha256 cellar: :any_skip_relocation, ventura:       "d16a96738a592a2824f7dac0413c77117a6bf830370f2f7c963ce431e5827c35"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "27356076b1c40fc0c40aaa86a5007d3d5ddead10fecd7aa0ea791c22099f9006"
   end
 
   depends_on "go" => :build

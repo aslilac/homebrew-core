@@ -5,6 +5,8 @@ class Admesh < Formula
   sha256 "0d7994bfa587c4e958b2ac7c7d2fb90dfb6c5463d32513ada169cf710a438535"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "c88ef051413ca638240add2cd10c366fc81c3b8d1cd29387cb137d7d3ef411c8"
     sha256 cellar: :any,                 arm64_sonoma:   "d8be2d072ff47a331d5a749e91598d85da1079f65e2f5f9a222f3f8bb386daff"
@@ -16,6 +18,7 @@ class Admesh < Formula
     sha256 cellar: :any,                 monterey:       "d2741e200d97e2528ea4e5d2449ae474a793218891db0bdd568d7bca314f0149"
     sha256 cellar: :any,                 big_sur:        "b9f6d7b1b242abeb35ce180f190f56acdbb10b547bc3f90a07b0c380bde3727f"
     sha256 cellar: :any,                 catalina:       "d741e030b9ae1a2022dad2e17a2e98dc6516bae9df607fb3841d6397317b8e83"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "9d436d9757a292b26c71acd6951a9c96b466006659787443c40d0231b9791401"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6d06691e618a708b7c30459acdc5e70f2abed11d5a2f8c7622b1fc6f8ef353f8"
   end
 

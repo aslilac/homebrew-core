@@ -5,6 +5,8 @@ class Libcmph < Formula
   sha256 "365f1e8056400d460f1ee7bfafdbf37d5ee6c78e8f4723bf4b3c081c89733f1e"
   license any_of: ["LGPL-2.1-only", "MPL-1.1"]
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "43f6a25f51d2e29fc992882901b8fae82353d80efe71305bc6acf5bd852ff6c7"
     sha256 cellar: :any,                 arm64_sonoma:   "72be852d28eec60c8526c263938023f4eb33dfd58edbbcd77b33d1e319816f82"
@@ -18,6 +20,7 @@ class Libcmph < Formula
     sha256 cellar: :any,                 catalina:       "c38019c153c728a28acbfe340cc86764285ec24edbdba5234b0593f83d355c22"
     sha256 cellar: :any,                 mojave:         "d02c761bd6b52424528bfdcd56b8d469d7cdd2e55f625c719229edb7f011889c"
     sha256 cellar: :any,                 high_sierra:    "abffeaf075db6387e636d43eb8fda9b76f02091bdb5533368306f899a46406c1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "09b7ae4a3fe814126fff575f57ba2cfac5599eb86cded4d810ae777d2e4c229e"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6b4a556fa47365d3ebf9312acddf3fc64921094161bd6d6e1bcda3df92be70cd"
   end
 

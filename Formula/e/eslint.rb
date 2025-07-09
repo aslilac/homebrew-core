@@ -1,24 +1,26 @@
 class Eslint < Formula
   desc "AST-based pattern checker for JavaScript"
   homepage "https://eslint.org"
-  url "https://registry.npmjs.org/eslint/-/eslint-9.15.0.tgz"
-  sha256 "8a400a3c6ac4cadaed2d7c2656ca4ac2d98722ddaf5d8e615670b72557b4e77e"
+  url "https://registry.npmjs.org/eslint/-/eslint-9.30.1.tgz"
+  sha256 "cbc47991b05e8269f02d15221df001cc640b4c2b9f3898e800c8f7df930afce7"
   license "MIT"
+  head "https://github.com/eslint/eslint.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b4c5ac218b5d4f99327ff8d39e867b9c0e35832b4301f04d35fe413d1e467afe"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b4c5ac218b5d4f99327ff8d39e867b9c0e35832b4301f04d35fe413d1e467afe"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "b4c5ac218b5d4f99327ff8d39e867b9c0e35832b4301f04d35fe413d1e467afe"
-    sha256 cellar: :any_skip_relocation, sonoma:        "b97983e4cee200074cd7c8df1585663fb70e7b3a6d65efcb337793fc0eef202b"
-    sha256 cellar: :any_skip_relocation, ventura:       "b97983e4cee200074cd7c8df1585663fb70e7b3a6d65efcb337793fc0eef202b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b4c5ac218b5d4f99327ff8d39e867b9c0e35832b4301f04d35fe413d1e467afe"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "57e20f35370279975c082711347f7932eb722d45341e4702b63b7cdf9322eff1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "57e20f35370279975c082711347f7932eb722d45341e4702b63b7cdf9322eff1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "57e20f35370279975c082711347f7932eb722d45341e4702b63b7cdf9322eff1"
+    sha256 cellar: :any_skip_relocation, sonoma:        "bf4c62ab5755303779bf14c34fc010255441e316c662b2c10be40cf82a1da044"
+    sha256 cellar: :any_skip_relocation, ventura:       "bf4c62ab5755303779bf14c34fc010255441e316c662b2c10be40cf82a1da044"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "57e20f35370279975c082711347f7932eb722d45341e4702b63b7cdf9322eff1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "57e20f35370279975c082711347f7932eb722d45341e4702b63b7cdf9322eff1"
   end
 
   depends_on "node"
 
   def install
     system "npm", "install", *std_npm_args
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink libexec.glob("bin/*")
   end
 
   test do

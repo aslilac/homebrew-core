@@ -17,6 +17,8 @@ class Remake < Formula
     end
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 arm64_sequoia:  "e653146f267c162714ce0110f5cc892c9a2cbf2e0555922a31f26e65139385ab"
@@ -28,23 +30,24 @@ class Remake < Formula
     sha256 ventura:        "cb1b7c4b4f65b0ee7bdc44243f69d45ef825c876f3349d8ed33c892998a2540f"
     sha256 monterey:       "692455854a3099491ec14ab4f1c45cbf9c92002a1ecc4c472e0418b73604901c"
     sha256 big_sur:        "523411a133faf8c381ca3d6ab6b057d42b4a14eaf21b249dc5a0213f5cfe974e"
+    sha256 arm64_linux:    "492ff0695438a46997ed2012687feacdb6f30a1a93e47c9be3cad34b76ac8ea1"
     sha256 x86_64_linux:   "caad81ec9c391c8a52c027ee7a7580d324c5743ad8fa1223c9ad11e41772d5b0"
   end
 
   depends_on "readline"
 
   def install
-    system "./configure", *std_configure_args, "--disable-silent-rules"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
     # Remove texinfo files for make to avoid conflict
-    info.glob("make.info*").map(&:unlink)
+    rm info.glob("make.info*")
   end
 
   test do
-    (testpath/"Makefile").write <<~EOS
+    (testpath/"Makefile").write <<~MAKE
       all:
-      \techo "Nothing here, move along"
-    EOS
+      	echo "Nothing here, move along"
+    MAKE
     system bin/"remake", "-x"
   end
 end

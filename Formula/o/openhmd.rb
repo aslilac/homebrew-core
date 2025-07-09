@@ -6,6 +6,8 @@ class Openhmd < Formula
   license "BSL-1.0"
   head "https://github.com/OpenHMD/OpenHMD.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "743ff7cdd099472c22867b6883dbebb8731898e770c6c9a9c16e42a99de5b10a"
     sha256 cellar: :any,                 arm64_sonoma:   "f234246a30572beddda70313054bf10e58a96ee842bbeded6e1d1017febc0c02"
@@ -20,23 +22,21 @@ class Openhmd < Formula
     sha256 cellar: :any,                 mojave:         "796c1a6f06715aa8a3304cca0083378d5fe2a1006b55da8727938922b5408c8d"
     sha256 cellar: :any,                 high_sierra:    "1c54727de5836916bca42065d0ed53f0a796d07ec6866408a69213c94b151092"
     sha256 cellar: :any,                 sierra:         "97f5dff1e77b6b615544ed6611aa6d8c3395e3c6dc759c4576084d87a4e976ad"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "73a9068341d342a933ae584e67ce2820ab612e05bd3ba35f9c2127102d9f2794"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c07dcb0b3e3848fe49493fef2323a7f143fb70a695e67738355f3c1f30008d44"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "hidapi"
 
   conflicts_with "cspice", because: "both install `simple` binaries"
 
   def install
     system "./autogen.sh"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
     (pkgshare/"tests").install bin/"unittests"
   end

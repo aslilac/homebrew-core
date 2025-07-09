@@ -5,6 +5,8 @@ class Mergelog < Formula
   sha256 "fd97c5b9ae88fbbf57d3be8d81c479e0df081ed9c4a0ada48b1ab8248a82676d"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b831541094e323e374a379048f0f9beb6fba7267c03b282e1974cc59900dfa75"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4216fbee6feb598e05ec9c55932afb3c291e6764492a95ae0c7ae07cfa3296e3"
@@ -20,6 +22,7 @@ class Mergelog < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "87f4253bd8e0d556dadfabcb376d4f138d6d07a5884c331074692b21cff16397"
     sha256 cellar: :any_skip_relocation, sierra:         "8f74bd002165acfb3009054be72f89794c11427194bb4bda229ea1c55fe0f4fb"
     sha256 cellar: :any_skip_relocation, el_capitan:     "70f188fb9d576b86d968a82bc5b19daabeb17660a2fa155b31b1006d27767deb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "09cf79df48692a01b15e1a7a8aed68310cae89597000c500b05f164816e91655"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9f3e79e1bdb70b4094c813fda9442f858828cbff21f19ba6a239628a0a53605f"
   end
 
@@ -37,6 +40,6 @@ class Mergelog < Formula
   end
 
   test do
-    system bin/"mergelog", "/dev/null"
+    system bin/"mergelog", File::NULL
   end
 end

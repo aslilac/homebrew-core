@@ -1,14 +1,16 @@
 class PerconaXtrabackup < Formula
   desc "Open source hot backup tool for InnoDB and XtraDB databases"
   homepage "https://www.percona.com/software/mysql-database/percona-xtrabackup"
-  url "https://downloads.percona.com/downloads/Percona-XtraBackup-LATEST/Percona-XtraBackup-8.0.35-31/source/tarball/percona-xtrabackup-8.0.35-31.tar.gz"
-  sha256 "c6bda1e7f983e5a667bff22d1d67d33404db4e741676d03c9c60bbd4b263cabf"
+  url "https://downloads.percona.com/downloads/Percona-XtraBackup-8.4/Percona-XtraBackup-8.4.0-2/source/tarball/percona-xtrabackup-8.4.0-2.tar.gz"
+  sha256 "0777e3d3c3b4d4649ed23ed7197ec0aa71379b4a4a41b969b7286f6cf8888b4a"
   license "GPL-2.0-only"
-  revision 6
+  revision 1
 
   livecheck do
-    url "https://docs.percona.com/percona-xtrabackup/latest/"
-    regex(/href=.*?v?(\d+(?:[.-]\d+)+)\.html/i)
+    url "https://www.percona.com/products-api.php", post_form: {
+      version: "Percona-XtraBackup-#{version.major_minor}",
+    }
+    regex(/value=["']?[^"' >]*?v?(\d+(?:[.-]\d+)+)[|"' >]/i)
     strategy :page_match do |page, regex|
       page.scan(regex).map do |match|
         # Convert a version like 1.2.3-4.0 to 1.2.3-4 (but leave a version like
@@ -19,39 +21,35 @@ class PerconaXtrabackup < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "e3b466d69ebad7a8020995326e37d19c905a0d9c0c8c9ab2aab6ff7dad131b17"
-    sha256 arm64_sonoma:  "1db2f3083327007dec6b5783eaddeb65f81faddfe06ec9bcbe489460af3bebbe"
-    sha256 arm64_ventura: "84d15e9881b7782825fed6b7fec70d99b82f2935e6834c36b13536f192293bda"
-    sha256 sonoma:        "7889406b4ccb32dab2cfd96356bdacf12e407ebe3fb7c18b3089ca1923048f34"
-    sha256 ventura:       "3312598e4919ebaf8067a9c60ca76e0c35c035bb6ce814922dbdf91b4461359e"
-    sha256 x86_64_linux:  "ab4f71ab25f0f3fb5675743d4906380299612c029ab1b3540039c91ed8b0f316"
+    sha256 arm64_sequoia: "8cc6f81a5301e2b99e83c06e51ffc55fc0ab22d77bf566f2830ee42623d8da00"
+    sha256 arm64_sonoma:  "2bf722f0ef5bc1f125e5cc04180a4c3ffad36af5a627564328610853184ea20e"
+    sha256 arm64_ventura: "a736c555bcfc109e19c1ffcd8f24af0b14b251e5a8895eb09098cee6b4263f30"
+    sha256 sonoma:        "1a7adbbc1ab31a5729855d9f955af58afbf81785314d51fb87492d90cc4416df"
+    sha256 ventura:       "e28fb7ac2afbad20555eab2b174d40b0367611421d033fd2bb7a9bbf1be2f05f"
+    sha256 arm64_linux:   "ac6bcb3444927d7acf41510cfb78abfeddd2bb12558f4bc36d6e69e15cbe30ff"
+    sha256 x86_64_linux:  "b360d2f4ca281109afbc8cb699f1958344fd12aac19df355bb69207a69744610"
   end
 
   depends_on "bison" => :build # needs bison >= 3.0.4
   depends_on "cmake" => :build
-  depends_on "libevent" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "sphinx-doc" => :build
-  depends_on "abseil"
-  depends_on "icu4c@76"
+  depends_on "mysql@8.4" => :test
+  depends_on "icu4c@77"
   depends_on "libev"
   depends_on "libgcrypt"
   depends_on "lz4"
-  depends_on "mysql-client"
   depends_on "openssl@3"
+  depends_on "perl-dbd-mysql"
   depends_on "protobuf"
   depends_on "zlib"
   depends_on "zstd"
 
+  uses_from_macos "cyrus-sasl" => :build
+  uses_from_macos "libedit" => :build
   uses_from_macos "vim" => :build # needed for xxd
   uses_from_macos "curl"
-  uses_from_macos "cyrus-sasl"
-  uses_from_macos "libedit"
   uses_from_macos "perl"
-
-  on_macos do
-    depends_on "libgpg-error"
-  end
 
   on_linux do
     depends_on "patchelf" => :build
@@ -59,32 +57,10 @@ class PerconaXtrabackup < Formula
     depends_on "procps"
   end
 
-  fails_with :gcc do
-    version "6"
-    cause "The build requires GCC 7.1 or later."
-  end
-
-  # Should be installed before DBD::mysql
-  resource "Devel::CheckLib" do
-    url "https://cpan.metacpan.org/authors/id/M/MA/MATTN/Devel-CheckLib-1.16.tar.gz"
-    sha256 "869d38c258e646dcef676609f0dd7ca90f085f56cf6fd7001b019a5d5b831fca"
-  end
-
-  # This is not part of the system Perl on Linux and on macOS since Mojave
-  resource "DBI" do
-    url "https://cpan.metacpan.org/authors/id/T/TI/TIMB/DBI-1.643.tar.gz"
-    sha256 "8a2b993db560a2c373c174ee976a51027dd780ec766ae17620c20393d2e836fa"
-  end
-
-  resource "DBD::mysql" do
-    url "https://cpan.metacpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-5.008.tar.gz"
-    sha256 "a2324566883b6538823c263ec8d7849b326414482a108e7650edc0bed55bcd89"
-  end
-
-  # https://github.com/percona/percona-xtrabackup/blob/percona-xtrabackup-#{version}/cmake/boost.cmake
-  resource "boost" do
-    url "https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.tar.bz2"
-    sha256 "fc9f85fc030e233142908241af7a846e60630aa7388de9a5fafb1f3a26840854"
+  # Apply fix for newer protobuf from MySQL repo. Remove once Percona syncs with MySQL 8.0.40 / 8.4.3
+  patch do
+    url "https://github.com/mysql/mysql-server/commit/941e4ac8cfdacc7c2cd1c11b4d72329b70c46564.patch?full_index=1"
+    sha256 "1c39061a6c90e25a542f547ff8e5463d84c446009b4ab317c2c52184a4f931b8"
   end
 
   # Patch out check for Homebrew `boost`.
@@ -96,22 +72,18 @@ class PerconaXtrabackup < Formula
     # Remove bundled libraries other than explicitly allowed below.
     # `boost` and `rapidjson` must use bundled copy due to patches.
     # `lz4` is still needed due to xxhash.c used by mysqlgcs
-    keep = %w[duktape libkmip lz4 rapidjson robin-hood-hashing]
+    keep = %w[boost libbacktrace libcno libkmip lz4 rapidjson unordered_dense]
     (buildpath/"extra").each_child { |dir| rm_r(dir) unless keep.include?(dir.basename.to_s) }
-    (buildpath/"boost").install resource("boost")
 
+    perl = "/usr/bin/perl"
     if OS.linux?
+      perl = Formula["perl"].opt_bin/"perl"
       # Disable ABI checking
       inreplace "cmake/abi_check.cmake", "RUN_ABI_CHECK 1", "RUN_ABI_CHECK 0"
-
-      # Work around build issue with Protobuf 22+ on Linux
-      # Ref: https://bugs.mysql.com/bug.php?id=113045
-      # Ref: https://bugs.mysql.com/bug.php?id=115163
-      inreplace "cmake/protobuf.cmake" do |s|
-        s.gsub! 'IF(APPLE AND WITH_PROTOBUF STREQUAL "system"', 'IF(WITH_PROTOBUF STREQUAL "system"'
-        s.gsub! ' INCLUDE REGEX "${HOMEBREW_HOME}.*")', ' INCLUDE REGEX "libabsl.*")'
-      end
     end
+
+    # Make sure Perl from `perl-dbd-mysql` is used at runtime. Otherwise may have incompatible modules
+    inreplace "storage/innobase/xtrabackup/src/backup_copy.cc", 'popen("perl",', "popen(\"#{perl}\","
 
     icu4c = deps.map(&:to_formula).find { |f| f.name.match?(/^icu4c@\d+$/) }
     # -DWITH_FIDO=system isn't set as feature isn't enabled and bundled copy was removed.
@@ -120,25 +92,22 @@ class PerconaXtrabackup < Formula
       -DBUILD_CONFIG=xtrabackup_release
       -DCOMPILATION_COMMENT=Homebrew
       -DINSTALL_PLUGINDIR=lib/percona-xtrabackup/plugin
-      -DINSTALL_MANDIR=share/man
+      -DINSTALL_MANDIR=#{man}
       -DWITH_MAN_PAGES=ON
       -DINSTALL_MYSQLTESTDIR=
       -DBISON_EXECUTABLE=#{Formula["bison"].opt_bin}/bison
       -DOPENSSL_ROOT_DIR=#{Formula["openssl@3"].opt_prefix}
       -DWITH_ICU=#{icu4c.opt_prefix}
       -DWITH_SYSTEM_LIBS=ON
-      -DWITH_BOOST=#{buildpath}/boost
       -DWITH_EDITLINE=system
-      -DWITH_LIBEVENT=system
       -DWITH_LZ4=system
       -DWITH_PROTOBUF=system
       -DWITH_SSL=system
       -DWITH_ZLIB=system
       -DWITH_ZSTD=system
     ]
-    # Work around build script incorrectly looking for procps on macOS.
-    # Issue ref: https://jira.percona.com/browse/PXB-3210
-    cmake_args << "-DPROCPS_INCLUDE_DIR=/dev/null" if OS.mac?
+    # Reduce overlinking on macOS
+    cmake_args += %w[EXE MODULE].map { |type| "-DCMAKE_#{type}_LINKER_FLAGS=-Wl,-dead_strip_dylibs" } if OS.mac?
 
     # Remove conflicting manpages
     rm (Dir["man/*"] - ["man/CMakeLists.txt"])
@@ -146,6 +115,7 @@ class PerconaXtrabackup < Formula
     system "cmake", "-S", ".", "-B", "build", *cmake_args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
+    bin.env_script_all_files(libexec/"bin", PERL5LIB: Formula["perl-dbd-mysql"].opt_libexec/"lib/perl5")
 
     # remove conflicting library that is already installed by mysql
     (lib/"libmysqlservices.a").unlink
@@ -154,54 +124,55 @@ class PerconaXtrabackup < Formula
     (lib/"libkmippp.a").unlink
     (include/"kmip.h").unlink
     (include/"kmippp.h").unlink
-
-    ENV.prepend_create_path "PERL5LIB", buildpath/"build_deps/lib/perl5"
-
-    resource("Devel::CheckLib").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{buildpath}/build_deps"
-      system "make", "install"
-    end
-
-    ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
-
-    # This is not part of the system Perl on Linux and on macOS since Mojave
-    if OS.linux? || MacOS.version >= :mojave
-      resource("DBI").stage do
-        system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-        system "make", "install"
-      end
-    end
-
-    resource("DBD::mysql").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make", "install"
-    end
-
-    bin.env_script_all_files(libexec/"bin", PERL5LIB: libexec/"lib/perl5")
   end
 
   test do
+    mysql = Formula["mysql@8.4"]
+    common_args = %W[--no-defaults --port=#{free_port} --socket=#{testpath}/mysql.sock]
+    client_args = %w[--user=root --password=]
+    server_args = %W[--datadir=#{testpath}/mysql --tmpdir=#{testpath}/tmp]
+    mysqld_args = common_args + server_args + %W[--mysqlx=OFF --user=#{ENV["USER"]}]
+    mysqladmin_args = common_args + client_args
+    xtrabackup_args = common_args + client_args + server_args + %W[--target-dir=#{testpath}/backup --backup]
+
+    (testpath/"backup").mkpath
+    (testpath/"mysql").mkpath
+    (testpath/"tmp").mkpath
+
     assert_match version.to_s, shell_output("#{bin}/xtrabackup --version 2>&1")
 
-    mkdir "backup"
-    output = shell_output("#{bin}/xtrabackup --target-dir=backup --backup 2>&1", 1)
+    output = shell_output("#{bin}/xtrabackup #{xtrabackup_args.join(" ")} 2>&1", 1)
     assert_match "Failed to connect to MySQL server", output
+
+    system mysql.bin/"mysqld", *mysqld_args, "--initialize-insecure"
+    pid = spawn(mysql.bin/"mysqld", *mysqld_args)
+    begin
+      sleep 5
+      output = shell_output("#{bin}/xtrabackup #{xtrabackup_args.join(" ")} 2>&1")
+      refute_match "[ERROR]", output
+      assert_match "[Xtrabackup] completed OK!", output
+      assert_match "version_check Done.", output # check Perl modules work
+      assert_path_exists testpath/"backup/xtrabackup_info"
+    ensure
+      system mysql.bin/"mysqladmin", *mysqladmin_args, "shutdown"
+      Process.kill "TERM", pid
+    end
   end
 end
 
 __END__
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 42e63d0..5d21cc3 100644
+index 438dff720c5..47863c17e23 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -1942,31 +1942,6 @@ MYSQL_CHECK_RAPIDJSON()
+@@ -1948,31 +1948,6 @@ MYSQL_CHECK_RAPIDJSON()
  MYSQL_CHECK_FIDO()
  MYSQL_CHECK_FIDO_DLLS()
 
 -IF(APPLE)
 -  GET_FILENAME_COMPONENT(HOMEBREW_BASE ${HOMEBREW_HOME} DIRECTORY)
 -  IF(EXISTS ${HOMEBREW_BASE}/include/boost)
--    FOREACH(SYSTEM_LIB ICU LIBEVENT LZ4 PROTOBUF ZSTD FIDO)
+-    FOREACH(SYSTEM_LIB ICU LZ4 PROTOBUF ZSTD FIDO)
 -      IF(WITH_${SYSTEM_LIB} STREQUAL "system")
 -        MESSAGE(FATAL_ERROR
 -          "WITH_${SYSTEM_LIB}=system is not compatible with Homebrew boost\n"
@@ -215,7 +186,7 @@ index 42e63d0..5d21cc3 100644
 -    ENDFOREACH()
 -  ENDIF()
 -  # Ensure that we look in /usr/local/include or /opt/homebrew/include
--  FOREACH(SYSTEM_LIB ICU LIBEVENT LZ4 PROTOBUF ZSTD FIDO)
+-  FOREACH(SYSTEM_LIB ICU LZ4 PROTOBUF ZSTD FIDO)
 -    IF(WITH_${SYSTEM_LIB} STREQUAL "system")
 -      INCLUDE_DIRECTORIES(SYSTEM ${HOMEBREW_BASE}/include)
 -      BREAK()
@@ -223,6 +194,6 @@ index 42e63d0..5d21cc3 100644
 -  ENDFOREACH()
 -ENDIF()
 -
- IF(WITH_AUTHENTICATION_FIDO OR WITH_AUTHENTICATION_CLIENT_PLUGINS)
+ IF(WITH_AUTHENTICATION_WEBAUTHN OR
+   WITH_AUTHENTICATION_CLIENT_PLUGINS)
    IF(WITH_FIDO STREQUAL "system" AND
-     NOT WITH_SSL STREQUAL "system")

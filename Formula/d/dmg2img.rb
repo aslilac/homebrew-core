@@ -11,6 +11,8 @@ class Dmg2img < Formula
     regex(/href=.*?dmg2img[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "4c3872719a1261f5cd981d5320bba65289e6c2c9e06e73478f3e3bb8267b64ec"
@@ -23,6 +25,7 @@ class Dmg2img < Formula
     sha256 cellar: :any,                 monterey:       "5f98d762bda9e92cf497e1bca2cfc1f738da6251c807802cdaf4128b9f6d0972"
     sha256 cellar: :any,                 big_sur:        "0fb916b99c3006b44195e38d0234cb38e1e1aef0c76f73688d75b25d704d689d"
     sha256 cellar: :any,                 catalina:       "f78214ca14fa444d792fd6c9eeec1068717cb64ee8ce635154ccc783bc37099e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "87d9a58139f343a3753c44a15ce9b451dedd5b8e7ef9672dd7b4a2b3f2eb8e86"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a6fe4e0cd5213bfcefed195911e5f7445c0d70016ce01e29ade4fb8dfd8cfa6b"
   end
 

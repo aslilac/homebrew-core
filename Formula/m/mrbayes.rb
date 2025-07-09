@@ -12,6 +12,8 @@ class Mrbayes < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "bc112b0be314f46b96f507ec3741b7f915b7b384e162ff88d98076a0370a728f"
     sha256 cellar: :any,                 arm64_sonoma:   "e671f59ccb6371a26c1ff58c6bbb800a2bf7472f625ac83d756eeb8b281fd6a9"
@@ -23,10 +25,11 @@ class Mrbayes < Formula
     sha256 cellar: :any,                 monterey:       "868362e98f0a1ebe8bf2a71f45fa96d6fd4d474e581f52e88e27192cc0086815"
     sha256 cellar: :any,                 big_sur:        "f00054f1f4fd5c3c7835ece867a6ce6d1a5156517a0a08233fe4548717b6a41e"
     sha256 cellar: :any,                 catalina:       "4239d03c3d4cf4e2b82b7b91dec3486836695da2770397238b7c8c4182930d20"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "2a4ec915301ae658e00a5fc302f84124e69ae54af8c0bfbc6167701fbe60d69f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "102eb61f76273eb1345ca920c8e0e4dc4cec0ccba93c56a9a2634376b727e3e6"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "beagle"
   depends_on "open-mpi"
 
@@ -49,7 +52,7 @@ class Mrbayes < Formula
       args << "ax_cv_have_avx_os_support_ext=no"
       args << "ax_cv_have_avx512_os_support_ext=no"
     end
-    system "./configure", *std_configure_args, *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
 
     doc.install share/"examples/mrbayes" => "examples"

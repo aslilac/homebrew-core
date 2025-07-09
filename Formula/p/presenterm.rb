@@ -1,18 +1,19 @@
 class Presenterm < Formula
   desc "Terminal slideshow tool"
   homepage "https://github.com/mfontanini/presenterm"
-  url "https://github.com/mfontanini/presenterm/archive/refs/tags/v0.9.0.tar.gz"
-  sha256 "755f2c868c4723f66490b5c3ff7297944d59b9c382efc5f0714787437cfac3ef"
+  url "https://github.com/mfontanini/presenterm/archive/refs/tags/v0.14.0.tar.gz"
+  sha256 "18a50e61c1a90928f6e0ce9f72bcfb8a2be76b2d220663830cf9a607ecd68386"
   license "BSD-2-Clause"
   head "https://github.com/mfontanini/presenterm.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "32e9ea4720555ef99bb5fa056cd48ed01869d66b311b738774ff577d44736783"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0931fd5bc071c7d232f92911979b0fa954c5992001785f9fa6a4e9776eeb6dd6"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "f7ff8a5713537c5d917f3b816e6bda13c91bdaf0e1fb5070e7117931ecb42f18"
-    sha256 cellar: :any_skip_relocation, sonoma:        "d907f2cbad59b10f56be3285f140648950a233a0803226bd0b3fd724b9939c12"
-    sha256 cellar: :any_skip_relocation, ventura:       "a37d714844a20661815bb943d549f5ddd773aa456edea98e3875ac9b11198e86"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e83143fa91f1e69bb231709ca88a31f7c925cde4bbb282b7cbb8a8367c1d6975"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9428716f30ece91baa9dff6280be4c54f0eb8ceb8e08692ec0cd538df44968d3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "41408cc1581c0d36d4f0be98ddd41605ec257c3f4fd01b5a78fa895e72aeb144"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "e5c802de2d1e83438664fc1363053d587bdc15aa7ed39ac56025f4d00d131357"
+    sha256 cellar: :any_skip_relocation, sonoma:        "187acb5df813157c843c2ec49685d404c7d6b30f65d2f770ee9615e5e1e714e8"
+    sha256 cellar: :any_skip_relocation, ventura:       "07dc30e32fec87cf558d9cb56353e30d908a2bee7859aff74ac3cef63ec9f584"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e420f9ca21ad201913fb7f7e418c5a8fd9158e6418bd2f8878a2c8d44d3dfd56"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "257b87be0c02044715ac508726cc3802865fbed2427a3bd48f307502912f9145"
   end
 
   depends_on "rust" => :build

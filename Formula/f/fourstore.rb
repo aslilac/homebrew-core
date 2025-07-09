@@ -1,7 +1,6 @@
 class Fourstore < Formula
   desc "Efficient, stable RDF database"
   homepage "https://github.com/4store/4store"
-  # NOTE: Try building without `avahi` at version bump.
   url "https://github.com/4store/4store/archive/refs/tags/v1.1.7.tar.gz"
   sha256 "e511f1adb094e2506545d4773a6005a462f6b4532731e91f1115b038ab25a8f0"
   license "GPL-3.0-or-later"
@@ -14,13 +13,14 @@ class Fourstore < Formula
     sha256 sonoma:         "2814fa83d67d9ea064801194bb973aba7af059c593af3a6d1392a578b45283ef"
     sha256 ventura:        "b4ee510fc81c7a204a28aff547cae9dfd48902137cf189d262d7c249abda656c"
     sha256 monterey:       "172b0d12bcbd2d1109280aa3f9366bdcb8fdee66e0fa9b25e2108b657f179b6f"
+    sha256 arm64_linux:    "60fc8b5d5caa74ad49b561e5b66e94a51341cc96fc3b31803bc836948d298cc0"
     sha256 x86_64_linux:   "5bef880ded18c7328064abc7bda9914dd0b4a6294b9719b041bc2eefc151c84e"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "dbus"
   depends_on "glib"

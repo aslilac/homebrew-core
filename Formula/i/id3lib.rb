@@ -1,24 +1,12 @@
 class Id3lib < Formula
   desc "ID3 tag manipulation"
   homepage "https://id3lib.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/id3lib/id3lib/3.8.3/id3lib-3.8.3.tar.gz"
+  sha256 "2749cc3c0cd7280b299518b1ddf5a5bcfe2d1100614519b68702230e26c7d079"
   license "LGPL-2.0-or-later"
   revision 1
-  head ":pserver:anonymous:@id3lib.cvs.sourceforge.net:/cvsroot/id3lib", using: :cvs, module: "id3lib-devel"
 
-  stable do
-    url "https://downloads.sourceforge.net/project/id3lib/id3lib/3.8.3/id3lib-3.8.3.tar.gz"
-    sha256 "2749cc3c0cd7280b299518b1ddf5a5bcfe2d1100614519b68702230e26c7d079"
-
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/e223e971/id3lib/id3lib-vbr-overflow.patch"
-      sha256 "0ec91c9d89d80f40983c04147211ced8b4a4d8a5be207fbe631f5eefbbd185c2"
-    end
-
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/e223e971/id3lib/id3lib-main.patch"
-      sha256 "83c8d2fa54e8f88b682402b2a8730dcbcc8a7578681301a6c034fd53e1275463"
-    end
-  end
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "2043f772a3513c2eeaf0c6c18894930ececbfc0a8480f7223995ed81abf00401"
@@ -35,6 +23,7 @@ class Id3lib < Formula
     sha256 cellar: :any,                 high_sierra:    "33c419dd2789c20e5e71b96185e41b2c81b2056d84b0e1a5cea0835e58dfb572"
     sha256 cellar: :any,                 sierra:         "1dddf1fac71acc4bd54cfcc6cdb80884129754d25f42efff5fbe6d5d38d99c0a"
     sha256 cellar: :any,                 el_capitan:     "266926f3fe3593bd04db9b9ff200676aaeb879d1f855e289cc41d2b40d72a16d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "be0089c2991abe20d74640693515a56a0883fc88effaa2fda69799cd0025a83c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5648fdcafc5fc4ea60431c568ff4856334be3a139e4d4d696257b58b1a6be09b"
   end
 
@@ -43,6 +32,16 @@ class Id3lib < Formula
   depends_on "libtool" => :build
 
   uses_from_macos "zlib"
+
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/e223e971/id3lib/id3lib-main.patch"
+    sha256 "83c8d2fa54e8f88b682402b2a8730dcbcc8a7578681301a6c034fd53e1275463"
+  end
+
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/e223e971/id3lib/id3lib-vbr-overflow.patch"
+    sha256 "0ec91c9d89d80f40983c04147211ced8b4a4d8a5be207fbe631f5eefbbd185c2"
+  end
 
   patch do
     url "https://raw.githubusercontent.com/Homebrew/formula-patches/e223e971/id3lib/no-iomanip.h.patch"
@@ -68,9 +67,8 @@ class Id3lib < Formula
   patch :DATA
 
   def install
-    system "autoreconf", "-fvi"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 end

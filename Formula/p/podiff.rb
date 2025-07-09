@@ -10,6 +10,8 @@ class Podiff < Formula
     regex(/href=.*?podiff[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f182567ba8a6a7b58d52d49833b794b0347a7e35d32dc0fb786ded005b36f407"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4410226ffe7c84b1612f2546a2975a4bf6467b7c84dff6aeb19b86b306f2679b"
@@ -21,6 +23,7 @@ class Podiff < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "0c49d38d09ff613608a0aa1347e9fdd08d4a59056b74843e4a81cbd2d6f3e84d"
     sha256 cellar: :any_skip_relocation, big_sur:        "102324c4a33351f8ade8b7ca889945300a5dc36a7b1fb93460b0d26124bda63f"
     sha256 cellar: :any_skip_relocation, catalina:       "72109e409ad2097e8e6137b7cf7cc2464df145ff2e2c8db65504f0185f9c4ac0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "26f2355ea5742f14c20c4ae5b57aa6a50dac0ed10364cf3ce8f2fd7075ed6388"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4b64d367ffe00d91903f42a1b643e1b467b219f773f8d34b722d1c88ddfcc30c"
   end
 

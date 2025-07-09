@@ -3,7 +3,7 @@ class Csound < Formula
   homepage "https://csound.com"
   license "LGPL-2.1-or-later"
   revision 11
-  head "https://github.com/csound/csound.git", branch: "master"
+  head "https://github.com/csound/csound.git", branch: "develop"
 
   # Remove `stable` block when patches are no longer needed
   stable do
@@ -21,6 +21,12 @@ class Csound < Formula
       url "https://github.com/csound/csound/commit/2a071ae8ca89bc21b5c80037f8c95a01bb670ac9.patch?full_index=1"
       sha256 "c7026330b5c89ab399e74aff17019067705011b7e35b9c75f9ed1a5878f53b4b"
     end
+
+    # Fix build failure due to incorrect member name on macOS 15+
+    patch do
+      url "https://github.com/csound/csound/commit/bb9bafcfa17a87d3733eda1e25a812fd0be08ac6.patch?full_index=1"
+      sha256 "b1492e344a7cc067989ef600a08319d388bebb344fee616d83dce969f3afe8cb"
+    end
   end
 
   livecheck do
@@ -28,12 +34,16 @@ class Csound < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia: "61be90827875be2da1ff759baea46c74e0c0ccd7344bc8ab949efe3b05260106"
     sha256 arm64_sonoma:  "71adfde634382610bffb31c3fbf3aeacf25773de90e06b5158e09b18e4d205e9"
     sha256 arm64_ventura: "e3b0dfd98b61b7b2d1e575fd3719d915982f0da0232368137412d71d03c0dbea"
     sha256 sonoma:        "9431a7350d67b3e144136416cdca5162aba4a31ac7149c64c412be297c660c00"
     sha256 ventura:       "334cd0b0985e049534ab67125b7c173146dff78a7ddd66be4d1b14a8a12d357e"
+    sha256 arm64_linux:   "3a44f46b8aab6877c5dec7ef7a411803aca10dcd0271e834433ca480da0eb2ae"
+    sha256 x86_64_linux:  "a44c216a87f3465ac04b31775785e7b2226308cb88dc715f4f103a8b021b0e09"
   end
 
   depends_on "asio" => :build
@@ -73,11 +83,9 @@ class Csound < Formula
 
   conflicts_with "libextractor", because: "both install `extract` binaries"
 
-  fails_with gcc: "5"
-
   resource "ableton-link" do
-    url "https://github.com/Ableton/link/archive/refs/tags/Link-3.1.2.tar.gz"
-    sha256 "2673dfad75b1484e8388deb8393673c3304b3ab5662dd5828e08e029ca8797aa"
+    url "https://github.com/Ableton/link/archive/refs/tags/Link-3.1.3.tar.gz"
+    sha256 "b0eba86d40a46b01ab821cdfb53041bfc693f0266538ea8163f1cea7ac42f476"
   end
 
   resource "csound-plugins" do
@@ -130,7 +138,10 @@ class Csound < Formula
       resource("ableton-link").stage buildpath/"ableton-link"
       resource("getfem").stage { cp_r "src/gmm", buildpath }
 
+      # Can remove minimum policy in a release with
+      # https://github.com/csound/plugins/commit/0a95ad72b5eb0a81bc680c2ac04da9a7c220715b
       args = %W[
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5
         -DABLETON_LINK_HOME=#{buildpath}/ableton-link
         -DBUILD_ABLETON_LINK_OPCODES=ON
         -DBUILD_CHUA_OPCODES=ON
@@ -204,7 +215,6 @@ class Csound < Formula
     (testpath/"test.orc").write <<~ORC
       0dbfs = 1
       gi_peer link_create
-      gi_programHandle faustcompile "process = _;", "--vectorize --loop-variant 1"
       FLrun
       gi_fluidEngineNumber fluidEngine
       gi_realVector la_i_vr_create 1
@@ -235,11 +245,12 @@ class Csound < Formula
 
     system bin/"csound", "test.orc", "test.sco"
 
-    assert_predicate testpath/"test.#{OS.mac? ? "aif" : "wav"}", :exist?
-    assert_predicate testpath/"test.h5", :exist?
-    assert_predicate testpath/"test.mp3", :exist?
+    assert_path_exists testpath/"test.#{OS.mac? ? "aif" : "wav"}"
+    assert_path_exists testpath/"test.h5"
+    assert_path_exists testpath/"test.mp3"
 
     (testpath/"opcode-existence.orc").write <<~ORC
+      gi_programHandle faustcompile "process = _;", "--vectorize --loop-variant 1"
       JackoInfo
       instr 1
           i_ websocket 8888, 0

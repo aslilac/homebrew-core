@@ -12,6 +12,8 @@ class Gcab < Formula
     regex(/gcab[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "e6e1d52d928e85cb2fbbea1220fb224c61dae65fe1525959ae6fb61f7f77b013"
     sha256 arm64_sonoma:   "7191f605413c808ef98d36eb37021fc8b038692ace3b8429b2d1b7e1c49b941e"
@@ -22,6 +24,7 @@ class Gcab < Formula
     sha256 ventura:        "d8cdcdfd05260f7ea32808b2b58f6711b2d1288bdd57b003dae112c99bc67a7d"
     sha256 monterey:       "3ccbb8269e8171382a3e9a3de7805a96f7c64e402eed4a0a277eb57978485c22"
     sha256 big_sur:        "2f7491f5f92549e9f9d23e42091f4dc24e36a921284a540a79665c6073e663f4"
+    sha256 arm64_linux:    "c41cdb0840e595d8cca48e6a741036dbe4c646970d45f1f04a8c87d84915b6e2"
     sha256 x86_64_linux:   "88ce4ede127ca2477d6939b9053f9474bb8c23c3cee2cf53c6a4f003d2b8ea63"
   end
 
@@ -29,7 +32,7 @@ class Gcab < Formula
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "vala" => :build
   depends_on "glib"
 

@@ -1,18 +1,19 @@
 class Csvlens < Formula
   desc "Command-line csv viewer"
   homepage "https://github.com/YS-L/csvlens"
-  url "https://github.com/YS-L/csvlens/archive/refs/tags/v0.10.1.tar.gz"
-  sha256 "7d9062fa94a67fec121062bd45efb00a40bf26236f3cc635ec0945793344e097"
+  url "https://github.com/YS-L/csvlens/archive/refs/tags/v0.13.0.tar.gz"
+  sha256 "99d172e85b108242da13d51ac379e45cddd2cd79da2ec2e92edb680f78fba562"
   license "MIT"
   head "https://github.com/YS-L/csvlens.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e15ca33c987cfa9e2649aa3a374b3f323c6de6cf000a6e8960fed4e7b743672c"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b124b4af51bd667998443544ccd19e53a9ce7a8f371b8b50dab154d45f00bc58"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "140f8a7589e47ffb645d660e728287809e7be34241b6c4d5eb24edd8c156aee2"
-    sha256 cellar: :any_skip_relocation, sonoma:        "54306a793ddaba7cc4c44857d22ad274b2c5fb405f114327211f0fd81a76c3f9"
-    sha256 cellar: :any_skip_relocation, ventura:       "44ad684fc850eac40a85de7da11d6e00f68513ff302d84b6975f05357ef0aa5a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "74cc0a74db62274d21f53a9c10d01bb459ef266f138eb49e0d86f2c2db612f99"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b948961570b0f7b21a22155c306bbd315b268646f07b9f890aed2e192618f173"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5a0b764ac0258c85f57512b576c028c6837e54edadb9fec5a2d702b5e96154f8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "404f19214d256a644b4fe6bcb68cb1c30243abb2cab5816051f1609b37fb7601"
+    sha256 cellar: :any_skip_relocation, sonoma:        "186eb2007f02ea8d942e492a852e879673b3d92f24175aeb691fec02ef14dff7"
+    sha256 cellar: :any_skip_relocation, ventura:       "b29d5dac7669c1b01087b7438812a7c581224ea552d8449e78caee3edce72a80"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "151e62e16ba400bf842288a6282a714aa2992611c5090ad3b772b62cffa3d610"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "85062d3112201b709f5e1a561d6d3b3d3121b1770abb48808abcedc27128ebd8"
   end
 
   depends_on "rust" => :build

@@ -6,6 +6,8 @@ class Miruo < Formula
   sha256 "0b31a5bde5b0e92a245611a8e671cec3d330686316691daeb1de76360d2fa5f1"
   license "GPL-3.0-only"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "07c790261ecabfbdd53bd0bec573d4e93148f906229f8e3e2fba8a6da213794e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "55dcd6ea73bec9f341df715534d5bd504d048a8bee3f8d5627302cb734840f0b"
@@ -21,6 +23,7 @@ class Miruo < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "36df62e0454d4b7e5743a002a2ff3293e087a9fb607c369f3d23732d87330e4e"
     sha256 cellar: :any_skip_relocation, sierra:         "dbe92dd3ab515528597eb76aa986f4e9d8dd512504d76ca60b86b5dc5dc70449"
     sha256 cellar: :any_skip_relocation, el_capitan:     "8a5402f68bcb73e22f13fb0b049caea5d186520e81bf77889c91a558d9988c59"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "981815843bbf557cc108baa34c2dc61b101df2fc14b23451c732102468527f81"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f079697d80cff4b00726c8c149727a4a19c3db789e417692f470175ad9f24f25"
   end
 

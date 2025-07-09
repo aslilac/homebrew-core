@@ -1,8 +1,8 @@
 class SuiteSparse < Formula
   desc "Suite of Sparse Matrix Software"
   homepage "https://people.engr.tamu.edu/davis/suitesparse.html"
-  url "https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/refs/tags/v7.8.3.tar.gz"
-  sha256 "ce39b28d4038a09c14f21e02c664401be73c0cb96a9198418d6a98a7db73a259"
+  url "https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/refs/tags/v7.10.3.tar.gz"
+  sha256 "09e7bcc8e5de0a5b55d2ae9fd6378d5f4dc1b85a933593339a0872b24e2cc102"
   license all_of: [
     "BSD-3-Clause",
     "LGPL-2.1-or-later",
@@ -18,12 +18,13 @@ class SuiteSparse < Formula
   end
 
   bottle do
-    sha256                               arm64_sequoia: "b3be4466aad46989c1d9eed2186c9d9aa78d3b74e23f6cf24fce800137971008"
-    sha256                               arm64_sonoma:  "b1d17e11272fe3812f316a4ee000aae8ea965651191112f97d810abfeffc1cb4"
-    sha256                               arm64_ventura: "d29bad2907d1bae7f44ed975a881134c41c87174545b67ce2fad454829e944ed"
-    sha256                               sonoma:        "41c4267660a34693c857e3fd72d296a053efd3cbe727e08b6cbdb82c8504472a"
-    sha256                               ventura:       "ff7eadebe8c167bb4018d07285929e8d9429383169138a72b51d69ea81bf1d7d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2fac51e98f64e011d40a02a3f0ef52536f25089ad00c2989f47c61e671887b04"
+    sha256                               arm64_sequoia: "17e3905105eccbe9cc090941b651eda66ee6a72f6eba341b730e69cf96337de1"
+    sha256                               arm64_sonoma:  "66689c5de3bf52ab8a7c01bc1018e775748325c29c889d71f3582a8194dfcc63"
+    sha256                               arm64_ventura: "b754dbf20365a1baf955844246308101f312ae5e8ad08cd90b4a146b0a17dc71"
+    sha256                               sonoma:        "4facf2d177821397d2b04f54cec3d4a0d14ce20963ae3b23cc82c342d511685e"
+    sha256                               ventura:       "c335cdbd49c6fceeb0d2438c7ff1637d94d06b63647d9222b35598257cf92d8e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0a8dc094c74c995bf7cc887b6cc270c123be9fd501b6657779c8a975b9a138df"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b484a7475a7c907b153f18a88c187aba0a946f4088ba635c18d207b93fc75fcc"
   end
 
   depends_on "cmake" => :build
@@ -44,10 +45,8 @@ class SuiteSparse < Formula
 
   def install
     # Avoid references to Homebrew shims
-    if OS.mac?
-      inreplace "GraphBLAS/cmake_modules/GraphBLAS_JIT_configure.cmake",
-          "C_COMPILER_BINARY \"${CMAKE_C_COMPILER}\"", "C_COMPILER_BINARY \"#{ENV.cc}\""
-    end
+    inreplace "GraphBLAS/cmake_modules/GraphBLAS_JIT_configure.cmake",
+              "C_COMPILER_BINARY \"${CMAKE_C_COMPILER}\"", "C_COMPILER_BINARY \"#{ENV.cc}\""
 
     system "cmake", "-S", ".", "-B", "build", "-DCMAKE_INSTALL_RPATH=#{rpath}",
                                               *std_cmake_args
@@ -61,7 +60,7 @@ class SuiteSparse < Formula
     system ENV.cc, "-o", "test", pkgshare/"klu_simple.c",
                    "-I#{include}/suitesparse", "-L#{lib}",
                    "-lsuitesparseconfig", "-lklu"
-    assert_predicate testpath/"test", :exist?
+    assert_path_exists testpath/"test"
     assert_match "x [0] = 1", shell_output("./test")
   end
 end

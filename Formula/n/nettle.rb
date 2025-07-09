@@ -1,20 +1,19 @@
 class Nettle < Formula
   desc "Low-level cryptographic library"
   homepage "https://www.lysator.liu.se/~nisse/nettle/"
-  url "https://ftp.gnu.org/gnu/nettle/nettle-3.10.tar.gz"
-  mirror "https://ftpmirror.gnu.org/nettle/nettle-3.10.tar.gz"
-  sha256 "b4c518adb174e484cb4acea54118f02380c7133771e7e9beb98a0787194ee47c"
+  url "https://ftp.gnu.org/gnu/nettle/nettle-3.10.2.tar.gz"
+  mirror "https://ftpmirror.gnu.org/nettle/nettle-3.10.2.tar.gz"
+  sha256 "fe9ff51cb1f2abb5e65a6b8c10a92da0ab5ab6eaf26e7fc2b675c45f1fb519b5"
   license any_of: ["GPL-2.0-or-later", "LGPL-3.0-or-later"]
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "8dd077a363c69d5d31968c7cfbc79dd5ec856b58957bc081f6f38632d59029cf"
-    sha256 cellar: :any,                 arm64_sonoma:   "79f26a53dfc0202c437153961d441a8793fb651d1eb61930f1558d139cdfd99a"
-    sha256 cellar: :any,                 arm64_ventura:  "cc13fe4481bb5c606b811561da643eace9e0da7f30de62ced74811659b8bb41d"
-    sha256 cellar: :any,                 arm64_monterey: "8be68cdd3cc9b2df465840fd843b50e6bb10fda11c5711e50f002bb31267cb1f"
-    sha256 cellar: :any,                 sonoma:         "2638a7bfcca9dbaa6a935f7ae80aed9d3f1064b64189a0f3364f4b20f4a9d341"
-    sha256 cellar: :any,                 ventura:        "372ad197aa7857e6ac863471ae301cdc13f313b34397309b7e1a27ca5b104ba0"
-    sha256 cellar: :any,                 monterey:       "c04364b7c2beb64a5c7d2ba645749e07e256b7c5d30968cfa2722c289be24542"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "05101c1f60cf7b267464af60a6814404e32691af7630e4ea23ed5b85ae1257a7"
+    sha256 cellar: :any,                 arm64_sequoia: "12c88e8d20a6b5161aa759820710b0d793212f46be7d48933e4519198480bd85"
+    sha256 cellar: :any,                 arm64_sonoma:  "57596e345b70dbb3debba5d8ba9b90147963f62e25022c2661a3672f25304753"
+    sha256 cellar: :any,                 arm64_ventura: "a5f3b6f969357a94626cc52f6e5869a77a0c6fe8bc5ab4fc491ea83ae6986e65"
+    sha256 cellar: :any,                 sonoma:        "46f05ed1c965061f176755083b8a14e6f8cfc3543201d95691bc2a4090309152"
+    sha256 cellar: :any,                 ventura:       "d82f1ec725dc230650b93facd5d8b5d7f0c2bd6f76b0aa7c6a9d6c3a154e4e91"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "411e940ef2c87423f8c0ed34427aa5235e0bc702b40943e3564878a62c76d420"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ff4a7452b4dcf2f1ad266f19f5eb5a29e02b5d1215d4bc46f3d4c4ca4b8e6282"
   end
 
   depends_on "gmp"

@@ -1,20 +1,20 @@
 class Abseil < Formula
   desc "C++ Common Libraries"
   homepage "https://abseil.io"
-  url "https://github.com/abseil/abseil-cpp/archive/refs/tags/20240722.0.tar.gz"
-  sha256 "f50e5ac311a81382da7fa75b97310e4b9006474f9560ac46f54a9967f07d4ae3"
+  url "https://github.com/abseil/abseil-cpp/archive/refs/tags/20240722.1.tar.gz"
+  sha256 "40cee67604060a7c8794d931538cb55f4d444073e556980c88b6c49bb9b19bb7"
   license "Apache-2.0"
   head "https://github.com/abseil/abseil-cpp.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "280f470ee5ae12531a5528850dd90010acb872699064ee273598e4bbc46e304b"
-    sha256 cellar: :any,                 arm64_sonoma:   "922c5d7b256fed577b3f7c84ec7a8ce67dddfc7670726e417eaed71bb6878fc6"
-    sha256 cellar: :any,                 arm64_ventura:  "0e81f268b9e514694f0dbe17a2cf6fecf1537ed680206e6ef88671345482f7e9"
-    sha256 cellar: :any,                 arm64_monterey: "e10b87de708e6731f27a22e3585884749dbcf967a3bd2486ddcae0f410951c3f"
-    sha256 cellar: :any,                 sonoma:         "e669331fc89560e725f40f61ad5ef970eeb3f883586f482ac45d45bc21124b82"
-    sha256 cellar: :any,                 ventura:        "5d72497268f8335b3955ea9408e33f6235ae1c13dcfb67b14b6a58a0600e4908"
-    sha256 cellar: :any,                 monterey:       "68b478c629ee72fd66bca1b4c3944c29e053d9d85315ffc8cd4fe225daefa9a3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "847b8ef8ec4bb017c0e43121225b03f742d74d570a560d411db7408d0385e9bd"
+    rebuild 1
+    sha256                               arm64_sequoia: "7e5a0a8ef391c005cb154d461e76ee997ad0d3c0176f09757d85027c01a14392"
+    sha256                               arm64_sonoma:  "77fe46423b43ca37df6acc3867c4c1206b2afd28ff511aab7a3d70515ce70856"
+    sha256                               arm64_ventura: "bdcb35636c6cd1c570a15a15dedf77e2e671945d55e28fcba50e2c62bf67a410"
+    sha256 cellar: :any,                 sonoma:        "f59d69e8c777caaa48de0e78bd35d7437c3848be3c85952684075bfb6df10312"
+    sha256 cellar: :any,                 ventura:       "a534872a681524cd15c94713f9f2fa3ee48d71e585cdb1cb7b11c677607c62b8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "700f81a3eb4942d1f8e87feabb6cbb5655d07fcc86efea65e514cc9d2865eb47"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4ffaa8c163b9b3ee6de502d076c148e0f64395f4d30e3eccbb0bb4d6f3c44400"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -22,8 +22,6 @@ class Abseil < Formula
   on_macos do
     depends_on "googletest" => :build # For test helpers
   end
-
-  fails_with gcc: "5" # C++17
 
   # Fix shell option group handling in pkgconfig files
   # https://github.com/abseil/abseil-cpp/pull/1738

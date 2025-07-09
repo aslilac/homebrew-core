@@ -10,6 +10,8 @@ class Libdvdcss < Formula
     regex(%r{href=["']?v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "eaa70f0ac608a56a596243c9bc63070dc358c7b31894f05cc3f3ac181035e8c2"
     sha256 cellar: :any,                 arm64_sonoma:   "a88500318685760e0425a099d0459f7be9f7505b89e69785af9d7ae183e40541"
@@ -22,6 +24,7 @@ class Libdvdcss < Formula
     sha256 cellar: :any,                 big_sur:        "6410e6fd033c0145e2d6d4676776cc4f4c20cf540836963d74a16788c842a7fd"
     sha256 cellar: :any,                 catalina:       "b5915184be3174c64f03a0895a9ee71dc8baac9dcd5bf5e904977890ccbba2ed"
     sha256 cellar: :any,                 mojave:         "786743340aeae4fde2966f29bb0457123b529c42c5cbe52609ebdaad447b7280"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "55bdf3ba9c347dd52ee1c5319b6a286c0e76cc8251c09d631f26e490a28d28d1"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5b3979306018ca60bc17dc7547699ef716342c46c1e755ba15d53f6eb9ac92dd"
   end
 
@@ -33,8 +36,8 @@ class Libdvdcss < Formula
   end
 
   def install
-    system "autoreconf", "-if" if build.head?
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 end

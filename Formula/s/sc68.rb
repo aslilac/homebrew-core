@@ -10,6 +10,8 @@ class Sc68 < Formula
     regex(%r{url=.*?/sc68[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "530da22ced84ec1181ddf6887028d6a4e9fa955446a492c039e5c807d6f2ec82"
     sha256 arm64_sonoma:   "f6c0c19ce245cb76ed53a1e9d017eb6b598ac1834f5c7ff215978147498be18e"
@@ -25,6 +27,7 @@ class Sc68 < Formula
     sha256 high_sierra:    "b3e4809754847ca52468463ed60293032efeecf42f24acd3026bb03d369a91d9"
     sha256 sierra:         "0b5a0931d6f72700ca691436ed69d467cc043aea9b3454d628050886ccd12141"
     sha256 el_capitan:     "d5ac5c810d4f3505230f2cdb9bc3f9f8c14394e1663f30f8d601fe4a559f99c8"
+    sha256 arm64_linux:    "ce25e34fecfd668e1f6fa0ef0d924b96df389c43c5428e386b54a5411c7f0d24"
     sha256 x86_64_linux:   "1876d7c98fac9c5a36824c13141354e0cbce33508f155741d8430182d7fd6104"
   end
 
@@ -53,9 +56,11 @@ class Sc68 < Formula
       ENV.append_to_cflags "-Wno-incompatible-function-pointer-types" if DevelopmentTools.clang_build_version >= 1500
     end
 
-    system "./configure", "--mandir=#{man}",
-                          "--infodir=#{info}",
-                          *std_configure_args
+    args = ["--mandir=#{man}", "--infodir=#{info}"]
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

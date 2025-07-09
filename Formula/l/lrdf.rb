@@ -5,6 +5,8 @@ class Lrdf < Formula
   sha256 "d579417c477ac3635844cd1b94f273ee2529a8c3b6b21f9b09d15f462b89b1ef"
   license "GPL-2.0-only"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "e4f7f5611084a0b10affb934cbec578c9b021da49d439b605539da12666ee47c"
     sha256 cellar: :any,                 arm64_sonoma:   "2088f2cfbf3cac00eccd96cc9b7afdc8462d2e8a8e191cd2832f476270fd6daa"
@@ -20,19 +22,19 @@ class Lrdf < Formula
     sha256 cellar: :any,                 high_sierra:    "e15d0f6129cd4ba502860f0ab0367eceadf2a377be9dd25af30c52ebffd064c6"
     sha256 cellar: :any,                 sierra:         "27f0d95eed42b70eb6685ffe8608465b0f39b88b544dbee080fe3decf81512ed"
     sha256 cellar: :any,                 el_capitan:     "f615e775140216eff74cd0fe751ace5993030c00921574da635a44b41d8bba57"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "7ebc904f67f824e682d13f0ca1f0176c17b8aadcea4270c1cf476a4bcfd40835"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4cb0169c0f75331b17aedb8d9f54283c5487230015b284429f6a6ee9f72344d2"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "raptor"
 
   def install
     system "./autogen.sh"
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make", "install"
     (pkgshare/"examples").install Dir["examples/*"] - Dir["examples/Makefile*"]
   end

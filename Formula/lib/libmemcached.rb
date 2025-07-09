@@ -6,6 +6,8 @@ class Libmemcached < Formula
   license "BSD-3-Clause"
   revision 2
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any,                 arm64_sequoia:  "2f6eb0738eb824d203e31cd7243942c7d14d07599ece42c8ddd895077a6bdde1"
@@ -18,6 +20,7 @@ class Libmemcached < Formula
     sha256 cellar: :any,                 monterey:       "902c0e16ba5ec76696c3f45888ef0c61b840a10b344149242bec812a7c99ee0d"
     sha256 cellar: :any,                 big_sur:        "c41f0bfdc440d240f8d0653dcc87270bd315571eab6979ff94d3271f863cb0e7"
     sha256 cellar: :any,                 catalina:       "70c6e1e3dd76241e343a4a3b38a62fae5bea6d2e2405739b11473d084f4409a9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b9e04c066fb48f43434519b8da53433b1659b0c8942cae5115b80393694fc197"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b551d4cc72d953e3018369057901f77a88b1b633661f5acfedcf6bba37385a8b"
   end
 

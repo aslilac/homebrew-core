@@ -6,6 +6,8 @@ class Rslint < Formula
   license "MIT"
   head "https://github.com/rslint/rslint.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ac8cd4c717dfda47bbf135c332e2468c8129772a797f577836c79ae8a5e427e3"
@@ -18,6 +20,7 @@ class Rslint < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "6e5a4f7bb10c80874a93dec67e40d8cd9288782bb5d97259ec4aa5993bd82bc8"
     sha256 cellar: :any_skip_relocation, big_sur:        "67894ab1b9743c341e0032f8a62140494625d9196fe53040b7de5482cd2fae35"
     sha256 cellar: :any_skip_relocation, catalina:       "ee4645f20575b26bb225f0cc02f8d16fbf2bee3d567e61f9ac62205deaa2a2e7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "bcf5941ceabbe4a4b694a9f29898172742c9f1cda811628b189b36fa9d851abd"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a7afca2f2944a01e7f7605e4e8f63ca50a4881c5655aa61a50ca939b5c800790"
   end
 

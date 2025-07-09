@@ -7,6 +7,8 @@ class Tcpstat < Formula
   license "BSD-2-Clause"
   head "https://github.com/jtt/tcpstat.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "2e7c67338b0d6c0f83589d31ce70046af5888a6bb752e5f2d69361d81b57ef99"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "05facda1f2a318b0253ef9b01500561ed6791d0b5143c5aeb05d1187902a6758"
@@ -22,25 +24,25 @@ class Tcpstat < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "164e0b5ef61bb28432b7a3d5aa23ca78d291130aa9473b9019dce643ac93bc03"
     sha256 cellar: :any_skip_relocation, sierra:         "378e42522ee14d64c0f5bf9bceeb0100c9193210eea2ee2ff80433b2b3da0166"
     sha256 cellar: :any_skip_relocation, el_capitan:     "e483bf39d0e42a8124c3e2e50f117e66b285bada33df94c1b070460c6df622ea"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "bfd5b8071a1b3ad738db96ecd1ee944f6b58e781b9759cc9ec0d5be421fe99af"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "036527a4c4492a1ca44c9b7c29ab1437108fc2c57105ade2f98fa8cf43a4e839"
   end
 
-  uses_from_macos "expect" => :test
   uses_from_macos "ncurses"
 
   def install
+    # Workaround for arm64 linux. Upstream isn't actively maintained
+    if OS.linux? && Hardware::CPU.arm?
+      inreplace "Makefile" do |s|
+        s.change_make_var! "CFLAGS", "#{s.get_make_var("CFLAGS")} -fsigned-char"
+      end
+    end
+
     system "make"
     bin.install "tcpstat"
   end
 
   test do
-    (testpath/"script.exp").write <<~EOS
-      set timeout 30
-      spawn "#{bin}/tcpstat"
-      send -- "q"
-      expect eof
-    EOS
-
-    system "expect", "-f", "script.exp"
+    assert_match "Resolving", pipe_output(bin/"tcpstat", "q")
   end
 end

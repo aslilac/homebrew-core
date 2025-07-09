@@ -5,6 +5,8 @@ class Lsyncd < Formula
   sha256 "fc19a77b2258dc6dbb16a74f023de7cd62451c26984cedbec63e20ff22bcbdd8"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "b1de715ecf63cc59a9f4725b7800e039d417d297dbaf6a8f3643d95979dc1cfd"
@@ -16,6 +18,7 @@ class Lsyncd < Formula
     sha256 cellar: :any,                 ventura:        "36f5613aab337d30135d232e5abf5bc5baa63470537cbaa7917fd202fdf45b3e"
     sha256 cellar: :any,                 monterey:       "453140f96382bf6eb4b4ecc9df475ef25ea690f27a870f0b457619d0fc15a69c"
     sha256 cellar: :any,                 big_sur:        "c221932f57a2ddbda8c4722cbd4c547244fd4492a1eb46959aea03244897566f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "ed00787f9706cd469cc6314c2af9edf287432a308870c52f0cb46347009952bd"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "de8ec6eb7f7122c422cb82bf5c1f1051ce23bde9dc48bb2327da7dca1573f757"
   end
 

@@ -5,6 +5,8 @@ class Xmp < Formula
   sha256 "dc54513af9a4681029a1243fd0c9cdf153d813a1125de6c782926674285bc5ae"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "656fb3759733a4e097ca973439b9ed791ddfeb768bbbe8203b9aa5684bb5883b"
     sha256 arm64_sonoma:   "95c30bbd87a818cdc81a4a90f27ba11585c5e11ddebfa5bc552e20246a4ab26c"
@@ -15,6 +17,7 @@ class Xmp < Formula
     sha256 ventura:        "f6b3bd880711583a9412817d663c83d05c64e70bde3fc17a20e050af70b9cb8c"
     sha256 monterey:       "151f11955e3f9db1c51ebde5e40ec1af12a3856ab50940f585983a3d59ff186f"
     sha256 big_sur:        "43193a0619e22f454184a1427ce8b306a22327b807f3f8d81fdb726357bc9842"
+    sha256 arm64_linux:    "43d7f8abecadad5b2730da6399bce8db70e7f27289be34a5fc404afccfda33c5"
     sha256 x86_64_linux:   "bfa9f0f48823e7861c008d89c25cd43bdbe3553196b6684d15d962c8ca7087b4"
   end
 

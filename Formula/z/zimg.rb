@@ -6,6 +6,8 @@ class Zimg < Formula
   license "WTFPL"
   head "https://github.com/sekrit-twc/zimg.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "16b38c35a093542456e5c026cb464df27ebe509eb857696cbfbb6146708e5cd1"
     sha256 cellar: :any,                 arm64_sonoma:   "1a08f06a0a7fc2a23266a03e8afd63759f99f3a0041d1503fafc5ce9410df8dc"
@@ -16,6 +18,7 @@ class Zimg < Formula
     sha256 cellar: :any,                 ventura:        "31d345c4d6927d6a5f5e1d04b8d78a53db597309c24d301bd0963afcc0702c35"
     sha256 cellar: :any,                 monterey:       "5a8049c1c8fa6e09f79dda6e18ec22909da4b4b567e7f52d4e6338f7ac6dfa64"
     sha256 cellar: :any,                 big_sur:        "5cabd4f2485ba7bb49feecac4584afaa7f05e097cb3935d7e9ea8a06336b4bcf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "04bb46c6db6937d885699986d894f4ac44fea72827b9a51199e0b05e700cd8e5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a33e194d2d9132c9c35d9cb9affc078e77e26a6c8c11fd5b015c6f28914c52fe"
   end
 

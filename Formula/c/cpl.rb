@@ -11,6 +11,8 @@ class Cpl < Formula
     regex(/href=.*?cpl[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "44e6e7500a5c7a392a2b4d6ec6aeb8572da5c72ed27650293780e481d3fd05bf"
     sha256 cellar: :any,                 arm64_sonoma:   "710c0bce11e34ef18dcba1f2c592b82827daa9027a2e6ffdf7a5523db746f4c3"
@@ -21,6 +23,7 @@ class Cpl < Formula
     sha256 cellar: :any,                 ventura:        "fc6cfb837a591afec3369fa882e5abbd9d806f9d67ed83bd9f345ce3d89a4415"
     sha256 cellar: :any,                 monterey:       "a74afb54620905b6ae184bf64d73f67713e1016e27f97a6db6b793c72b4ba646"
     sha256 cellar: :any,                 big_sur:        "2fff6fb7574c82deb23328136b2666cd181d864fe09eb42780bea78cf63327a1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "fcd05867d38798a06a3afcac0afff080e67484785148b6d412031f44a9e44d4b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "90683dbc3fc0a9636c4fe77573a82895cd369ff2449d140a6ba5e84db6d571dc"
   end
 
@@ -42,7 +45,7 @@ class Cpl < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOF
+    (testpath/"test.c").write <<~C
       #include <cpl.h>
       int main(){
         cpl_init(CPL_INIT_DEFAULT);
@@ -50,7 +53,7 @@ class Cpl < Formula
         cpl_end();
         return 0;
       }
-    EOF
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-I#{include}", "-lcplcore", "-lcext", "-o", "test"
     system "./test"
   end

@@ -5,6 +5,8 @@ class Diffr < Formula
   sha256 "6c5861e5b8f5d798e027fe69cc186452848dc4ae5641326b41b5c160d3e91654"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "25cdb1a853eceeba0ce00dee4f2b5657abe9865ee7568a0cf18ee0b5fe95d3bd"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2bc9706cc3bf1e99eda0b2138a3dbea9b4da2c097f4e4c421aa6249269146678"
@@ -15,6 +17,7 @@ class Diffr < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "6d3a1af07c576b6db1522a77560bbe540a567a7339838dc5c660e7781a2302bb"
     sha256 cellar: :any_skip_relocation, monterey:       "d4d630b6e9973149bd9eb76134f9953ec0630274592ee4f5c1bce2d38de0b10e"
     sha256 cellar: :any_skip_relocation, big_sur:        "de79ded7a7f2b81026d2c8d5c9148ddc19815a953c10120b52874e52af9d25b4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "ce5653f762bcb8260b50f894f1c0a3b52549fd8e36baaf95c320169585b58c90"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6340e51e0dd0f436f0cf3450d125f3a16b652cadf4b7de0fe9127ea7d90007b1"
   end
 

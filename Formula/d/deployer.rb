@@ -1,29 +1,22 @@
 class Deployer < Formula
   desc "Deployment tool written in PHP with support for popular frameworks"
   homepage "https://deployer.org/"
-  # Bump to php 8.4 on the next release, if possible.
-  url "https://github.com/deployphp/deployer/releases/download/v7.5.5/deployer.phar"
-  sha256 "30c1c09038b0c390f40d21b3cb0a9e1ff46cfeefe4da1c834aeca6adfb5952d4"
+  url "https://github.com/deployphp/deployer/releases/download/v7.5.12/deployer.phar"
+  sha256 "b55c6609653e888c672d327c407f8bba6324b9c9cc24f9dcfb3f4b3922760632"
   license "MIT"
-  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "7e54fce47176409d67d6508aa9b661e62600d211fe8ad81948029823f7a51b32"
+    sha256 cellar: :any_skip_relocation, all: "7ad0768ee13aaf77122d729f2248c27da237354fd1efc5bc0f41aeda11e5631b"
   end
 
-  depends_on "php@8.3"
+  depends_on "php"
 
   def install
-    libexec.install "deployer.phar" => "dep"
-
-    (bin/"dep").write <<~EOS
-      #!#{Formula["php@8.3"].opt_bin}/php
-      <?php require '#{libexec}/dep';
-    EOS
+    bin.install "deployer.phar" => "dep"
   end
 
   test do
     system bin/"dep", "init", "--no-interaction"
-    assert_predicate testpath/"deploy.php", :exist?
+    assert_path_exists testpath/"deploy.php"
   end
 end

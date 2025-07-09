@@ -5,6 +5,8 @@ class Libid3tag < Formula
   sha256 "0561009778513a95d91dac33cee8418d6622f710450a7cb56a74636d53b588cb"
   license "GPL-2.0-only"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "511a214c725978fd5596e7bb1a4c1b9846d3f95a59c1da05aa49ac687d997d07"
@@ -14,11 +16,12 @@ class Libid3tag < Formula
     sha256 cellar: :any,                 sonoma:         "09c2bb42b12b186cce68cc20388585b26452eb75a39caebaaefd7c36beb9460e"
     sha256 cellar: :any,                 ventura:        "2fea4c1d71287947cf0bbb995782f610c671608f811bebcd2f1f80e5a137705a"
     sha256 cellar: :any,                 monterey:       "1569b5187d5108de0a9fa10ff46c87634e5a6164dcff622aa5b46d0084db50ab"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "238671fe5e115d97846ea8b1d07d23970451659d2fd169b26f6854eec2cbf858"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9833f57ba6eec9cc19fdc34e93077cd21ec11636320aad4d9945196a7cd69f7b"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :test
+  depends_on "pkgconf" => :test
 
   uses_from_macos "gperf"
   uses_from_macos "zlib"
@@ -43,8 +46,8 @@ class Libid3tag < Formula
       }
     C
 
-    pkg_config_cflags = shell_output("pkg-config --cflags --libs id3tag").chomp.split
-    system ENV.cc, "test.c", *pkg_config_cflags, "-o", "test"
+    flags = shell_output("pkgconf --cflags --libs id3tag").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
 end

@@ -1,19 +1,13 @@
 class Jsign < Formula
   desc "Tool for signing Windows executable files, installers and scripts"
   homepage "https://ebourg.github.io/jsign/"
-  url "https://github.com/ebourg/jsign/archive/refs/tags/6.0.tar.gz"
-  sha256 "df98690164440627bbecab7498690231c80fb19a68cdf7784b88e19ba24bd7a8"
+  url "https://github.com/ebourg/jsign/archive/refs/tags/7.1.tar.gz"
+  sha256 "bb6a6cc0fdcc9802b5ab47e7080601c94c545fa235c0feac242d11b9a2524d7d"
   license "Apache-2.0"
   head "https://github.com/ebourg/jsign.git", branch: "master"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b00098005ac7db789bb40bbb7586303706bf40ecb565c00cf16e72da8973afab"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1f22c6ddf024d78f5e251838dfe6737906048a265d6186a487183d03eb75fb65"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "1fa5c59d84abae2fcf6df7f6b4de93e6f8f366a8ab49e3f08274e5a57b8e42c8"
-    sha256 cellar: :any_skip_relocation, sonoma:        "ff260c3a23a688662cddaff0704a35b36333dfbf8ecff36ef264b22ed01a2637"
-    sha256 cellar: :any_skip_relocation, ventura:       "1f014aa2f1412a040d6c997e4fae0038168fa8d793cc94fd7be648d5b189ad9e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1fa5c59d84abae2fcf6df7f6b4de93e6f8f366a8ab49e3f08274e5a57b8e42c8"
+    sha256 cellar: :any_skip_relocation, all: "398d1b30442ae333b029ad878b635c9f1301be644aa5b2b838de8eb93b039eda"
   end
 
   depends_on "maven" => :build

@@ -1,12 +1,12 @@
 class StructurizrCli < Formula
   desc "Command-line utility for Structurizr"
-  homepage "https://structurizr.com"
-  url "https://github.com/structurizr/cli/releases/download/v2024.11.04/structurizr-cli.zip"
-  sha256 "5c4e9ded37501450da642fdb112607cf6ad5a5e2d17be6454571d50675d90361"
+  homepage "https://docs.structurizr.com/cli"
+  url "https://github.com/structurizr/cli/releases/download/v2025.05.28/structurizr-cli.zip"
+  sha256 "bbe87f7bdcc272755e0bc056fe1641dc4e95d263f109e6733daea96d8acdadc5"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "19340dc955170ef3a78b2005896c37905cb44ad5cfb28e1caae9c0450ebd7f13"
+    sha256 cellar: :any_skip_relocation, all: "a2e906d447ee8cab70797e0dc00db2527e1408bf371cb2094c94b5f03e762152"
   end
 
   depends_on "openjdk"

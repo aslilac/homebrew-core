@@ -1,10 +1,9 @@
 class X3270 < Formula
   desc "IBM 3270 terminal emulator for the X Window System and Windows"
-  homepage "http://x3270.bgp.nu/"
-  url "http://x3270.bgp.nu/download/04.03/suite3270-4.3ga9-src.tgz"
-  sha256 "6404d27b29a40d896daab35ff153cab157d85094b38bdeb4ebaaaf2673ce4db1"
+  homepage "https://x3270.bgp.nu/"
+  url "https://x3270.bgp.nu/download/04.04/suite3270-4.4ga6-src.tgz"
+  sha256 "8438eee59795cd3bfbf1963053369b9aa30af6b85e4d927b7254d24e992433b1"
   license "BSD-3-Clause"
-  revision 1
 
   livecheck do
     url "https://x3270.miraheze.org/wiki/Downloads"
@@ -12,17 +11,19 @@ class X3270 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "0725784134da0c9564ae116b52664de68d9c75e9cf5768b418433ed8cf70c0da"
-    sha256 arm64_sonoma:  "137040aa21e9886c430ba38359497c1dca16b586d78647dbe4f31ba84c100dea"
-    sha256 arm64_ventura: "955a63b7239ed7a6a9682c91021ff2b655a45894740fd1b77fb32ac3ca207ee5"
-    sha256 sonoma:        "d32203222eaf6eb19139bcbd717bee3d4490da036878ebfa733ac6f29ed6cd9d"
-    sha256 ventura:       "d11a8334691d3d3b974e697c82bcd7afc3e880ef34d1b8edababea80e86c0f07"
-    sha256 x86_64_linux:  "920b8aa544fd833e7558f755776e1ded14bf9e28c9aa278412e263c267254815"
+    sha256 arm64_sequoia: "27aad9bf9750bcc9f3e22ca5150559af09105b01a684b2d7f91eba7757942485"
+    sha256 arm64_sonoma:  "0f1fffff06aa9b8c0ead0cc40a740e7b68e3e3cf75d75b88bce4c5dcde44aa25"
+    sha256 arm64_ventura: "cde560236680e967de2c50994f50ff6191b7e050f8743cd527a6f813d5047314"
+    sha256 sonoma:        "a681f80c3fc9d2fef71fbbad22372459c35c42f1e1903158bd3ed86568774f84"
+    sha256 ventura:       "947c464bdb65d405a4a6394d257bc7443bdd741e0a0650c824e7a26ca0f76118"
+    sha256 arm64_linux:   "11ae872d7b58bf4a98111deb5eb80174998e0e20a9707aca53ab9e91e98762e8"
+    sha256 x86_64_linux:  "052c65259275d5f9e458f3b0d15182e820d0b204872d32eee8d6c898c0988050"
   end
 
   depends_on "openssl@3"
   depends_on "readline"
 
+  uses_from_macos "python" => :build
   uses_from_macos "ncurses"
 
   on_linux do
@@ -30,6 +31,10 @@ class X3270 < Formula
   end
 
   def install
+    # Fix to read SOURCE_DATE_EPOCH as an unix timestamp not a date string
+    inreplace "Common/mkversion.py", "strptime(os.environ['SOURCE_DATE_EPOCH'], '%a %b %d %H:%M:%S %Z %Y')",
+                                     "fromtimestamp(int(os.environ['SOURCE_DATE_EPOCH']))"
+
     ENV.append "CPPFLAGS", "-I#{Formula["tcl-tk@8"].opt_include}/tcl-tk" if OS.linux?
 
     args = %w[

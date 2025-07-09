@@ -1,7 +1,7 @@
 class Form < Formula
   desc "Symbolic manipulation system"
   homepage "https://www.nikhef.nl/~form/"
-  url "https://github.com/vermaseren/form/releases/download/v4.3.1/form-4.3.1.tar.gz"
+  url "https://github.com/form-dev/form/releases/download/v4.3.1/form-4.3.1.tar.gz"
   sha256 "f1f512dc34fe9bbd6b19f2dfef05fcb9912dfb43c8368a75b796ec472ee8bbce"
   license "GPL-3.0-or-later"
 
@@ -9,6 +9,8 @@ class Form < Formula
     url :stable
     strategy :github_latest
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "891f2e2731329a342dcbda8da08939d5ef910a1bedfaab2be34da51c1f6fe72d"
@@ -20,6 +22,7 @@ class Form < Formula
     sha256 cellar: :any,                 ventura:        "fc08ffd719328fbd615fc269e7a0a70ed51b1d365abdbd336361ab3645a90d63"
     sha256 cellar: :any,                 monterey:       "4e4183cd34e538a43a6cfcb99ef054ab75786e40088806aed7d61a54950869e5"
     sha256 cellar: :any,                 big_sur:        "62ddb0717b667323815d8a35c6377bb479be7ebe6ceb5e331d341191d6cb0e5e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "97d17131f6de2b0dff19e8777cf5e26148e0b713c6e6ea2ad66bb740ed8ca5a0"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1bdafe12587a3d4a8f64c28024b01ba0137e81ae5ceab40c865614544c66eb89"
   end
 

@@ -10,6 +10,8 @@ class Docbook2x < Formula
     regex(%r{url=.*?/docbook2X[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "6515ef361ee9ad2b83b539b46bb8869a09e98819fdb23277340e0557be168635"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e4f01a96cb46dee789a5d363b8c5b169f25d1698b93b7c81d82cc99ce434fdf5"
@@ -25,6 +27,7 @@ class Docbook2x < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "81734088203909fc5db96462d14116596058910cd1b7ab67389a7bf93c9bae63"
     sha256 cellar: :any_skip_relocation, sierra:         "a1110d4bd90cecf9ce8edacc27a3edc84dfcd4db7ab50b67269af0eb6a9bb00a"
     sha256 cellar: :any_skip_relocation, el_capitan:     "acfdd1c80cb523b213dea0125819b1b6fc783d6d740cc8fc0047f44756b57889"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "1e923a7ee931f5342768cc3c60503b9cf1e8c58bbc177225b0132f564deb175c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1e054b07a0d7e8817a58b2c656e8f435289cd1d2110d7fae083e1bf79eece522"
   end
 
@@ -92,6 +95,6 @@ class Docbook2x < Formula
       </refentry>
     XML
     system bin/"docbook2man", testpath/"brew.1.xml"
-    assert_predicate testpath/"brew.1", :exist?, "Failed to create man page!"
+    assert_path_exists testpath/"brew.1", "Failed to create man page!"
   end
 end

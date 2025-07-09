@@ -5,6 +5,8 @@ class Libmusicbrainz < Formula
   sha256 "6749259e89bbb273f3f5ad7acdffb7c47a2cf8fcaeab4c4695484cef5f4c6b46"
   license "LGPL-2.1-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "ada38db81da84d8fb85cae7dbc30682461a1d198556fdb01d9be05fcbe9059f4"
     sha256 cellar: :any,                 arm64_sonoma:   "62762e1b184d0c47bb287e151333dafaa526b733ea2c4bd5fbd097d987b84aa4"
@@ -20,23 +22,25 @@ class Libmusicbrainz < Formula
     sha256 cellar: :any,                 high_sierra:    "99b598b941ac0ce3747d8821943a1e730f3673b721421d9c0428b70259e789c0"
     sha256 cellar: :any,                 sierra:         "8fe055e1f987e23a569f915082031e172a5c3d0aef6f86de78ce9c8258f53cd2"
     sha256 cellar: :any,                 el_capitan:     "6a63410ca9eae84b263d7165d05701801f4e05de26a9e95a7396f95a602cedd7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a233e5f068712c01e17c57f8055fef4a9c42f6184287d69fd65b8760bf51d15d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e9a39724adbf24eb1dd5b25478d8b571be9f8fdc42d6249696e0934e07a1e4c9"
   end
 
   depends_on "cmake" => :build
+  depends_on "pkgconf" => :build
   depends_on "neon"
 
   uses_from_macos "libxml2"
 
-  on_linux do
-    depends_on "pkg-config"
+  # Backport fix to build with newer libxml2
+  patch do
+    url "https://github.com/metabrainz/libmusicbrainz/commit/4655b571a70d73d41467091f59c518517c956198.patch?full_index=1"
+    sha256 "ee0c63e56a17156bca13b157744a54aeed6e19b39f65b14f2a5ac4e504358c8e"
   end
 
   def install
-    neon = Formula["neon"]
-    neon_args = %W[-DNEON_LIBRARIES:FILEPATH=#{neon.lib}/#{shared_library("libneon")}
-                   -DNEON_INCLUDE_DIR:PATH=#{neon.include}/neon]
-    system "cmake", ".", *(std_cmake_args + neon_args)
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", ".", *std_cmake_args
+    system "cmake", "--build", "."
+    system "cmake", "--install", "."
   end
 end

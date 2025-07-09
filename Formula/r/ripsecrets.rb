@@ -1,26 +1,31 @@
 class Ripsecrets < Formula
   desc "Prevent committing secret keys into your source code"
   homepage "https://github.com/sirwart/ripsecrets"
-  url "https://github.com/sirwart/ripsecrets/archive/refs/tags/v0.1.8.tar.gz"
-  sha256 "4d7209605d3babde73092fed955628b0ecf280d8d68633b9056d2f859741109d"
+  url "https://github.com/sirwart/ripsecrets/archive/refs/tags/v0.1.11.tar.gz"
+  sha256 "786c1b7555c1f9562d7eb3994d932445ab869791be65bc77b8bd1fbbae3890b8"
   license "MIT"
   head "https://github.com/sirwart/ripsecrets.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "639780b0f64128ef351b9d42b74850ef30bb16adb2af696e578a6911b96d434d"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "97d6467ccc89611a01d5c6dc308a085cbf3ff6df1d54ddbe7e1c3cf47f860143"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "12e44af7c0222497ed34b983d84e857db3d97acdc89f33d1c378360d8e2662b0"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ecdf92bc91cda77a1d73866bdfdbc1f454513bb6565be60d55fd33030ca6e0dc"
-    sha256 cellar: :any_skip_relocation, sonoma:         "5e61070109ca60cb01955ccccdfad6578594b35749d15faefb93f2333b5cc031"
-    sha256 cellar: :any_skip_relocation, ventura:        "19f111f72fb222bc0a3d80e08581af0e41ca9f799935fcaee51d43a8e7e9eae4"
-    sha256 cellar: :any_skip_relocation, monterey:       "4f7d5ae55ff9a171700bc7db5a1a5bbf3f0cc18f38afbbcb7c5eab33d593c964"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "81f30166cdc076a1b6b9d512250c5c03692a479948c94b9a261358480ddb97a7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2be229f02f517c7c9f809999ab00daee0b4650f7bf6eab3e31132c4dacc7c1db"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "da96cf200c77669126e46472b94098c5e14cad9d75eb648a6fc05feafb754946"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "7b7c30db103b32ff7a4b8ed285a9aa61dd648cd0fb8d2fd30b165930ffa193b6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "58ce1e4409a7648607e32cfb9a1a43b5b25656f83d9570dc66137bd97a7971ef"
+    sha256 cellar: :any_skip_relocation, ventura:       "5d8a3bf678aa0016c6c28511bd19b7689248dca8291169bc2e2fbe97cfe486ae"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0b5fcd9d6cb13c93553bdca9e23f0b1b2c0d5de7dbcbe082ab1537edf610bd78"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7fb68c8ad22e92b64ce40f6380978572e9857d8e13fdba1e9efbbb0c8a0e004a"
   end
 
   depends_on "rust" => :build
 
   def install
     system "cargo", "install", *std_cargo_args
+
+    out_dir = Dir["target/release/build/ripsecrets-*/out"].first
+    bash_completion.install "#{out_dir}/ripsecrets.bash" => "ripsecrets"
+    fish_completion.install "#{out_dir}/ripsecrets.fish"
+    zsh_completion.install "#{out_dir}/_ripsecrets"
+    man1.install "#{out_dir}/ripsecrets.1"
   end
 
   test do

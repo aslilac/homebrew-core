@@ -5,6 +5,8 @@ class Apng2gif < Formula
   sha256 "9a07e386017dc696573cd7bc7b46b2575c06da0bc68c3c4f1c24a4b39cdedd4d"
   license all_of: ["libpng-2.0", "Zlib"]
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "0f86e3508b3328f66e3ada01096160126c5ef87912d0a6a187a0200293d0d93f"
@@ -21,6 +23,7 @@ class Apng2gif < Formula
     sha256 cellar: :any,                 high_sierra:    "810005bcbc32c60c7084b248eef3d007e756180842051f64385fb90cfac66c63"
     sha256 cellar: :any,                 sierra:         "fa18274f18fb0d3a2b3f5c360c24587b805db3f4734972c350643c35b8677174"
     sha256 cellar: :any,                 el_capitan:     "42d033ae0a661d75b588af8d7c0cdb67a81bfc481aa88665973d95d3e4fb64ec"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e05a9e7698a6e549570520d9c2edbd687265df5b5a7fc5d806d8c525b178fd6c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f98dfacc9457ddd5742ff27448fdd3b51dbd1445a586447327404bcb0028b72a"
   end
 
@@ -34,6 +37,6 @@ class Apng2gif < Formula
   test do
     cp test_fixtures("test.png"), testpath/"test.png"
     system bin/"apng2gif", testpath/"test.png"
-    assert_predicate testpath/"test.gif", :exist?, "Failed to create test.gif"
+    assert_path_exists testpath/"test.gif", "Failed to create test.gif"
   end
 end

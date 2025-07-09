@@ -4,20 +4,22 @@ class Pdftoipe < Formula
   url "https://github.com/otfried/ipe-tools/archive/refs/tags/v7.2.29.1.tar.gz"
   sha256 "604ef6e83ad8648fa09c41a788549db28193bb3638033d69cac2b0b3f33bd69b"
   license "GPL-2.0-or-later"
+  revision 8
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "676487a4936713e7959e84fc88044043702b83264a252b993e81a9dd86d6d319"
-    sha256 cellar: :any,                 arm64_sonoma:  "360ff0144680ed13f66f522aaf25ad20a614e94100646f613ac85cc7be579a1e"
-    sha256 cellar: :any,                 arm64_ventura: "c95975c6051e420465edb2678ac971ae8d6f4a14d3c7e8dd99de384149ca5da2"
-    sha256 cellar: :any,                 sonoma:        "c1d0b1dd05122e9d7efffa64af044688da047af048200a52f5ef4c7c3e3e0835"
-    sha256 cellar: :any,                 ventura:       "c1807495f1e45996dc8296fe8d4783f7b0f5642cba6ff7317d9f7a4fd43be564"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "65c63824a5a34755e35f7355010e82ddc080e1e42e8c8f869e1582821d0c041d"
+    sha256 cellar: :any,                 arm64_sequoia: "73ef0b93cb20c5a6f607856003175f96a3185859c409181709fb3e0d34cba4f8"
+    sha256 cellar: :any,                 arm64_sonoma:  "3c5c3ae4556a3dad3b1f891b325613edaaaf193474574295cf40d6dcf37651a3"
+    sha256 cellar: :any,                 arm64_ventura: "884f0b8f60c43651be7ae0a08873855b9aecc86ac4c58a72760fd7d11914b05e"
+    sha256 cellar: :any,                 sonoma:        "53fc4df76a9e88347b9a531d4e9f6f8272a76af2b021b700dfb32a82b3d12f72"
+    sha256 cellar: :any,                 ventura:       "482f5b67b34e9f392ede0a2a7d1670fea573f0c090d64923ce498e6fa1592ec4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9294b423b731fb9e82da7f949dde35f864d74a4040429459546d6fbac76a0a46"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "225dd057b1255d16f2d639f8b2457a7ee3a3a059b7e791c48a457c8043120d0e"
   end
 
   depends_on "pkgconf" => :build
   depends_on "poppler"
-
-  fails_with gcc: "5"
 
   def install
     cd "pdftoipe" do

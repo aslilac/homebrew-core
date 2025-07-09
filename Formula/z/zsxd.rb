@@ -6,6 +6,8 @@ class Zsxd < Formula
   license all_of: ["CC-BY-SA-4.0", "GPL-3.0-only"]
   head "https://gitlab.com/solarus-games/games/zsxd.git", branch: "dev"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "7f0acd40f96b33fa5dfb02c86c7c5565d0c02043888ab1824e9c65bc515cbd8e"
@@ -20,6 +22,7 @@ class Zsxd < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "aabcc393aae8f00a45ffa24d959ff57a6023caace90a815f8107c579e113b87e"
     sha256 cellar: :any_skip_relocation, mojave:         "8b6e336bd61f16c620ab8323ccd15dfc35cf1665c71799a838c4436fefd561b0"
     sha256 cellar: :any_skip_relocation, high_sierra:    "fa0726547d624647bd7453100b6e2221ce0ec9174e0cd43275844b09aefb6c0d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "81e1d2d168374d4baedd1ce60c4349439b049bc1d3f20dc3fa6ab2a0bc554297"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6b29f50a29f5874e4197504acbc4bd1f0162df77d8e30152a10c4bf82befc446"
   end
 
@@ -30,7 +33,10 @@ class Zsxd < Formula
   uses_from_macos "unzip" => :test
 
   def install
-    system "cmake", "-S", ".", "-B", "build", "-DSOLARUS_INSTALL_DATADIR=#{share}", *std_cmake_args
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+                    "-DSOLARUS_INSTALL_DATADIR=#{share}",
+                    *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

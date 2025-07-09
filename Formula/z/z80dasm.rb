@@ -12,6 +12,8 @@ class Z80dasm < Formula
     regex(/href=.*?z80dasm[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "49cc209ae7b34afcfe58fd310bdcb228f6d35cadeee692049a61202bed11176f"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2a83c07ded5a4004a80cd9fbd9554f2a4395412279c43f50bc8482060c978a6c"
@@ -22,6 +24,7 @@ class Z80dasm < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "f47879873a19e8c08153ae4981bf3b80073a46b0cb898f21207d764434c6a649"
     sha256 cellar: :any_skip_relocation, monterey:       "3593f87e2f01e8754f88014b5cdbe2875deea710b547390f69edf0412fbe6014"
     sha256 cellar: :any_skip_relocation, big_sur:        "b6a79ae13c2cbebebc1d511dc11707c466fbab7737483d2665433c6e4484802d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f804e92b96102101c261303a335651172b29e3ee2fd033b0524e2aec3ca1b27b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3974fe69ab6b1bfddf25cdad7ff5e7c462b8df8c6605ef528a067aa5cffbb3ec"
   end
 

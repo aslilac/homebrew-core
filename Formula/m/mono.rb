@@ -1,31 +1,33 @@
 class Mono < Formula
   desc "Cross platform, open source .NET development framework"
   homepage "https://www.mono-project.com/"
-  url "https://github.com/mono/mono.git",
-      tag:      "mono-6.12.0.206",
-      revision: "0cbf0e290c31adb476f9de0fa44b1d8829affa40"
-  license "MIT"
+  url "https://dl.winehq.org/mono/sources/mono/mono-6.14.1.tar.xz"
+  sha256 "3024c97c0bc8cbcd611c401d5f994528704108ceb31f31b28dea4783004d0820"
+  license "Apache-2.0"
+  head "https://gitlab.winehq.org/mono/mono.git", branch: "main"
 
   livecheck do
-    url "https://www.mono-project.com/download/stable/"
-    regex(/href=.*?(\d+(?:\.\d+)+)[._-]macos/i)
+    url :head
+    regex(/^mono[._-]v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    rebuild 2
-    sha256 arm64_sequoia: "ed25bcec51134d7a3c6cf04635d1b378fdb06f7127dd4705e3bf525373700c8c"
-    sha256 arm64_sonoma:  "e69f64033ac83adbf465fdc284e5d145f18b0759b0c866177fd65975ccaf58f7"
-    sha256 arm64_ventura: "e1b8fc0bfbdc638a220abed1d2fa5b48a7790a5b1668bafb3252b8539b14965d"
-    sha256 sonoma:        "bb0d701d0120bffedba03081a169a5cd6b679c5d437163daec0e2d2bf6e61652"
-    sha256 ventura:       "749ada5c5fb3013cae9ba9e862655ca2cd397f0c558be85b7f65ebeb9191598e"
-    sha256 x86_64_linux:  "7aea7983b72286cf2ce2e6438d2b846908359e6b577d76ad36ce32f8ac9691d7"
+    sha256 arm64_sequoia: "41128a9161b2880c1ff0da606a970a610255f46426ea970ac505c7f7cc77c817"
+    sha256 arm64_sonoma:  "2207ce97c51add48bdb178771a7e6496da62c099a8a740c976772a4f69ff2cd4"
+    sha256 arm64_ventura: "a98870bf0b93c31318f1edbf9b441c24ecb805ef32e0c2e92654b457dd27346a"
+    sha256 sonoma:        "3a024c3814922097b3b8b08d9a80b7ce81100e1da46b137857507eb0565bd63e"
+    sha256 ventura:       "90b8a3c1bb6caea2325c4fc796890c8d0256a8ffc9058699fdc6917538f187c3"
+    sha256 arm64_linux:   "acbf40ca28dfb5b841e215db980aea60894545ce8104864b78b3e447467dc70e"
+    sha256 x86_64_linux:  "e444b5cd477167205ef6e5fcb7ecddf09781ea3edc2ce53ea0879511fcc2055b"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "cmake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "python@3.13"
 
@@ -34,7 +36,7 @@ class Mono < Formula
   uses_from_macos "zlib"
 
   on_macos do
-    if DevelopmentTools.clang_build_version == 1600
+    if DevelopmentTools.clang_build_version >= 1600
       depends_on "llvm" => :build
 
       fails_with :clang do
@@ -65,7 +67,7 @@ class Mono < Formula
   link_overwrite "lib/cli"
 
   def install
-    ENV.llvm_clang if DevelopmentTools.clang_build_version == 1600
+    ENV.llvm_clang if DevelopmentTools.clang_build_version >= 1600
 
     # Replace hardcoded /usr/share directory. Paths like /usr/share/.mono,
     # /usr/share/.isolatedstorage, and /usr/share/template are referenced in code.
@@ -78,10 +80,6 @@ class Mono < Formula
       man/mozroots.1
     ]
     inreplace inreplace_files, %r{/usr/share(?=[/"])}, pkgshare
-
-    # Remove use of -flat_namespace. Upstreamed at
-    # https://github.com/mono/mono/pull/21257
-    inreplace "mono/profiler/Makefile.am", "-Wl,suppress -Wl,-flat_namespace", "-Wl,dynamic_lookup"
 
     system "./autogen.sh", "--disable-nls",
                            "--disable-silent-rules",
@@ -107,7 +105,7 @@ class Mono < Formula
   test do
     test_str = "Hello Homebrew"
     test_name = "hello.cs"
-    (testpath/test_name).write <<~EOS
+    (testpath/test_name).write <<~CSHARP
       public class Hello1
       {
          public static void Main()
@@ -115,7 +113,7 @@ class Mono < Formula
             System.Console.WriteLine("#{test_str}");
          }
       }
-    EOS
+    CSHARP
     shell_output("#{bin}/mcs #{test_name}")
     output = shell_output("#{bin}/mono hello.exe")
     assert_match test_str, output.strip

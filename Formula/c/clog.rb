@@ -11,6 +11,8 @@ class Clog < Formula
     regex(/href=.*?clog[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "324768db7056ee6258ee9bc6a19b15e325061e637a4074201e299f110979f81b"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ca002e0ad80711f5ca0edc944efd4ab5c0eb5698eecce8913f53e961d7040a90"
@@ -26,14 +28,16 @@ class Clog < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "b5309f9e692f111a0b68599ff465da02783d2f28a4b10d958c19e616177eb37a"
     sha256 cellar: :any_skip_relocation, sierra:         "97e07b94ea058c766f4d036cc503fc6ec08ca64cddced33d63723e4611534595"
     sha256 cellar: :any_skip_relocation, el_capitan:     "8f42168b8e165c4c1f1265b410ef62087b370075cc27269f1908eb0f373645c5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "1d94d1596bb077ec7890f1bee8650ecf592c75c9415e310eb55f541df1d52c13"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "74b571a8740f2d0d8798ed8ee046d9239404ec6789987b98eb48b25c122c00e3"
   end
 
   depends_on "cmake" => :build
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   def caveats
@@ -51,6 +55,6 @@ class Clog < Formula
     assert_equal "do not suppress", pipe_output("#{bin}/clog --file #{testpath}/.clogrc", "do not suppress").chomp
 
     # Test to ensure that a line that matches the above rule is suppressed
-    assert_equal "", pipe_output("#{bin}/clog --file #{testpath}/.clogrc", "ignore this line").chomp
+    assert_empty pipe_output("#{bin}/clog --file #{testpath}/.clogrc", "ignore this line").chomp
   end
 end

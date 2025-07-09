@@ -1,24 +1,25 @@
 class Gocloc < Formula
   desc "Little fast LoC counter"
   homepage "https://github.com/hhatto/gocloc"
-  url "https://github.com/hhatto/gocloc/archive/refs/tags/v0.5.3.tar.gz"
-  sha256 "d5f875df523bb8cc884d9e118de609f0b8eca50a3c6f6c220ad01118da3387ce"
+  url "https://github.com/hhatto/gocloc/archive/refs/tags/v0.7.0.tar.gz"
+  sha256 "9375f6699a7bffad42da661b4ba7988af23dd01191da4a4b21eca8f9bb676d9a"
   license "MIT"
   head "https://github.com/hhatto/gocloc.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b9f4dc85c3ddc43c31527fd3f6df113617dd112aa22bca294e3355baa4b90d08"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b9f4dc85c3ddc43c31527fd3f6df113617dd112aa22bca294e3355baa4b90d08"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "b9f4dc85c3ddc43c31527fd3f6df113617dd112aa22bca294e3355baa4b90d08"
-    sha256 cellar: :any_skip_relocation, sonoma:        "bf63923a441b475a1978069a8cc40370ab978ea02b793c7c63c1ede93c140ffe"
-    sha256 cellar: :any_skip_relocation, ventura:       "bf63923a441b475a1978069a8cc40370ab978ea02b793c7c63c1ede93c140ffe"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c7ca7a047ee079c90fa7dd1e53b51057ef72641bc296e1d3d2d043eae5ef32ce"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e452e9000a544b1086039bd90fe518fdc8926255f7a274b0170d5c7b6d761e57"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e452e9000a544b1086039bd90fe518fdc8926255f7a274b0170d5c7b6d761e57"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "e452e9000a544b1086039bd90fe518fdc8926255f7a274b0170d5c7b6d761e57"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b823c57b1e74b2f39fd119e41bd39582f023dd8d8afef45267c77f361a7c24c1"
+    sha256 cellar: :any_skip_relocation, ventura:       "b823c57b1e74b2f39fd119e41bd39582f023dd8d8afef45267c77f361a7c24c1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "04d88a1716d37d1d9c14cdcc9a3804e8e2f4959b8bb614482a2f9c71c2c2a372"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1583c49ecfb4ccc1ae98e917f9c53021afbca5641bdcd70ed934064255034c71"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args, "./cmd/gocloc"
+    system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd/gocloc"
   end
 
   test do

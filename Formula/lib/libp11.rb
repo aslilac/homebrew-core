@@ -1,8 +1,8 @@
 class Libp11 < Formula
   desc "PKCS#11 wrapper library in C"
   homepage "https://github.com/OpenSC/libp11/wiki"
-  url "https://github.com/OpenSC/libp11/releases/download/libp11-0.4.12/libp11-0.4.12.tar.gz"
-  sha256 "1e1a2533b3fcc45fde4da64c9c00261b1047f14c3f911377ebd1b147b3321cfd"
+  url "https://github.com/OpenSC/libp11/releases/download/libp11-0.4.16/libp11-0.4.16.tar.gz"
+  sha256 "97777640492fa9e5831497e5892e291dfbf39a7b119d9cb6abb3ec8c56d17553"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -11,17 +11,13 @@ class Libp11 < Formula
   end
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any,                 arm64_sequoia:  "69fa67771704383e9ca206beb447f4ab55860e78747347024d66372499592e90"
-    sha256 cellar: :any,                 arm64_sonoma:   "a40c03cf47eee36fc36e7bb54291fd0ba8c97add6b785f1067628f8779a01345"
-    sha256 cellar: :any,                 arm64_ventura:  "6af6b0d767af1cb7ec7c3a7265bbdeafb86921fc2e7f5966be2efc9007b8a3d2"
-    sha256 cellar: :any,                 arm64_monterey: "0be4080fadb8580fe8b9618dc2a37670919dc21a0a22d4375d295c3fa40aee98"
-    sha256 cellar: :any,                 arm64_big_sur:  "2c61eab1e9b91d1158a719ca59253a3b65562a7f55c32909319b5359bca5e705"
-    sha256 cellar: :any,                 sonoma:         "76f868ad8917493682541c1f0c9f133567fe3c8306ae2488cfafa4701306a4b0"
-    sha256 cellar: :any,                 ventura:        "da2d7d7a89310ef22f4326c9128f491961bff43ded083b1b52e8240076777c44"
-    sha256 cellar: :any,                 monterey:       "0cc69d822cbf9a934c9c72e1ff421958367333a9fa69f060fba581afb58731c5"
-    sha256 cellar: :any,                 big_sur:        "1546eb96b8f270994559dc63591f852ef0f6fbbcf93f92c8e8071a60db2cb9d3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6370c44a401aca7e4f6fe02e2220a1c8b8791d697f8c88dbb5a0a2de0c297349"
+    sha256 cellar: :any,                 arm64_sequoia: "b3552045716b3b73091ceca3106ecc3252344c5719d8b79fe72e372bc833c12a"
+    sha256 cellar: :any,                 arm64_sonoma:  "5a34df1ff3e44371a025e099d6619163e9f1bbe1c3401cdf457c9d5892745b00"
+    sha256 cellar: :any,                 arm64_ventura: "2637f42b811baecfbe34b682c63ad9e2d4945e5bc752cfe1954941060542d814"
+    sha256 cellar: :any,                 sonoma:        "616d6d08932fbaa5146558c034ac353078e8c482315f798537ac44a160d11e6e"
+    sha256 cellar: :any,                 ventura:       "5ff7176868b03b686d989cf271878741de182d86d77ebf2313bea1e94f95948a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9db183852e3b414c23ee0d2a4c5cb66994c1eb966af3e199cff703b3a5d5db82"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "971063937a7ee5f24b7fffcb6d339cd5b7cb713db777d6165c8a47a14fb3bf78"
   end
 
   head do
@@ -30,20 +26,24 @@ class Libp11 < Formula
     depends_on "automake" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libtool"
   depends_on "openssl@3"
 
   def install
     openssl = deps.find { |d| d.name.match?(/^openssl/) }
                   .to_formula
-    enginesdir = Utils.safe_popen_read("pkg-config", "--variable=enginesdir", "libcrypto").chomp
+    enginesdir = Utils.safe_popen_read("pkgconf", "--variable=enginesdir", "libcrypto").chomp
     enginesdir.sub!(openssl.prefix.realpath, prefix)
 
+    modulesdir = Utils.safe_popen_read("pkgconf", "--variable=modulesdir", "libcrypto").chomp
+    modulesdir.sub!(openssl.prefix.realpath, prefix)
+
     system "./bootstrap" if build.head?
-    system "./configure", *std_configure_args,
-                          "--disable-silent-rules",
-                          "--with-enginesdir=#{enginesdir}"
+    system "./configure", "--disable-silent-rules",
+                          "--with-enginesdir=#{enginesdir}",
+                          "--with-modulesdir=#{modulesdir}",
+                          *std_configure_args
     system "make", "install"
     pkgshare.install "examples/auth.c"
   end

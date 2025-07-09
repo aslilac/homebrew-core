@@ -15,20 +15,18 @@ class Gitless < Formula
     sha256 cellar: :any,                 arm64_ventura: "e8fbf4d8f756335b3561196b5719f8423976b856eccd9947e9516dd0aaa242f6"
     sha256 cellar: :any,                 sonoma:        "4ec5cff232a3f893b45b29764e50c274ef294acae3ae67e39a8794f3a1f87e1e"
     sha256 cellar: :any,                 ventura:       "42dbacc0c5716aaf7a7670bbbb3aaf56b1dfd35322e79ebe354da998f70d663f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c12fac140e28d8dde8bd59cca0f7c6297e229e5c4a4b31bdde816ec53e0411f9"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "622c76bbb49845b2917a374693a0f6d0043fdb6f2d83b29e8a79bd2678ab90b5"
   end
 
   # https://github.com/gitless-vcs/gitless/issues/248
   deprecate! date: "2024-07-17", because: :unmaintained
 
+  depends_on "pkgconf" => :build
   depends_on "libgit2@1.7"
   depends_on "python@3.13"
 
   uses_from_macos "libffi"
-
-  on_linux do
-    depends_on "pkg-config" => :build
-  end
 
   resource "args" do
     url "https://files.pythonhosted.org/packages/e5/1c/b701b3f4bd8d3667df8342f311b3efaeab86078a840fb826bd204118cc6b/args-0.1.0.tar.gz"

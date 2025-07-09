@@ -14,6 +14,8 @@ class PgTop < Formula
     regex(/^v?(3(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "b9d888449873a35c6f29b43698da65bda0e4136eb1f2d0176338fcbc617e4e5b"
     sha256 cellar: :any,                 arm64_sonoma:   "852a0e040171868c8c6c677306c82c81ed1fc52e7cb47413c1ddcb48cf5bb987"
@@ -25,6 +27,7 @@ class PgTop < Formula
     sha256 cellar: :any,                 monterey:       "6252dc42f3d6e6570b0371f2f10cd146a06bd52b492636bbb35f62ff07239b7a"
     sha256 cellar: :any,                 big_sur:        "7980c5af9dec1de3a76a74fbd4b359ec1a90bdd7223fa7ffc8f4294642042fc8"
     sha256 cellar: :any,                 catalina:       "edf54d452403cf5be9b63a0a744560a00bb9e83ace3885ae33d36d96b0a8c2a4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "fbf1018624db8c4c76d72d83d18a7d079ae6d1fba0d7c65aea8078f9e1c31519"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "65fe3861c5e90a4c9403f4b551892cd8ac85fbbea1cc23f551ee0eda3c9de01d"
   end
 
@@ -36,10 +39,9 @@ class PgTop < Formula
   uses_from_macos "ncurses"
 
   def install
-    system "autoreconf", "-fvi"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-postgresql=#{Formula["libpq"].opt_prefix}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--with-postgresql=#{Formula["libpq"].opt_prefix}", *std_configure_args
+
     (buildpath/"config.h").append_lines "#define HAVE_DECL_STRLCPY 1"
     # On modern OS/X [v]snprinf() are macros that optionally add some security checks
     # In c.h this package provides their own declaration of these assuming they're

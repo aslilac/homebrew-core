@@ -1,17 +1,17 @@
 class Sfcgal < Formula
   desc "C++ wrapper library around CGAL"
   homepage "https://sfcgal.gitlab.io/SFCGAL/"
-  url "https://gitlab.com/sfcgal/SFCGAL/-/archive/v2.0.0/SFCGAL-v2.0.0.tar.gz"
-  sha256 "11843953f49e7e4432c42fd27d54e1ff7ca55d0cc72507725c2a5d840c2c6535"
+  url "https://gitlab.com/sfcgal/SFCGAL/-/archive/v2.1.0/SFCGAL-v2.1.0.tar.gz"
+  sha256 "cb73a0496c61a5c7bf0ccc68c42e4378bfc441b242e9dee894067e24d2e21d0f"
   license "LGPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "7f0234c24f1574be350718dad2f1612124f90631a34d2161f950eff8fad4d808"
-    sha256 cellar: :any,                 arm64_sonoma:  "387e36ad36d122b0aa717bdd99e93c255e61635713f58952d2e2df127f9a6047"
-    sha256 cellar: :any,                 arm64_ventura: "181bfdebb902c3ba670822d6daf26ea65f4f5650989a0e0fb84ca40bfe2e83d2"
-    sha256 cellar: :any,                 sonoma:        "b7d0fb782537f604f54a3c822bf92153287cde911b2358bd8662e314b375e873"
-    sha256 cellar: :any,                 ventura:       "f11493b60f86dbc38b954a8268558d7906799be6067256b36618366bf71ecd43"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "009288471a8e2969d49f20270ea842e90a1af155bc71b3106e338f27c3403d65"
+    sha256 cellar: :any,                 arm64_sequoia: "a7b0727c269876eec4f2d4220b0f982d7c226eb88abacf424673f7d16a659a4e"
+    sha256 cellar: :any,                 arm64_sonoma:  "f6e6c487463be6bef875dc78e278a276446d5f3c8c511d89b88364280a6130c2"
+    sha256 cellar: :any,                 arm64_ventura: "a3e42c1c990f00fae52418a0239789d03358bde48902a98e30b9ba28470df6f0"
+    sha256 cellar: :any,                 sonoma:        "d7c5ded8a7de47e7533b4f84978ae9897f155d966e9730ad989880422285bb6a"
+    sha256 cellar: :any,                 ventura:       "93486bc9c6599461e48bc2e3afde3d9923b986a44e0405a1dd1af9f2793be4ed"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bddf5bf890c2df8cf195fb80b7bab394c939f637d204d845716fb80563639617"
   end
 
   depends_on "cmake" => :build
@@ -19,9 +19,6 @@ class Sfcgal < Formula
   depends_on "cgal"
   depends_on "gmp"
   depends_on "mpfr"
-
-  # error: array must be initialized with a brace-enclosed initializer
-  fails_with gcc: "5"
 
   def install
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args

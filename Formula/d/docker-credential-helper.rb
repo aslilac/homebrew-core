@@ -1,26 +1,25 @@
 class DockerCredentialHelper < Formula
   desc "Platform keystore credential helper for Docker"
   homepage "https://github.com/docker/docker-credential-helpers"
-  url "https://github.com/docker/docker-credential-helpers/archive/refs/tags/v0.8.2.tar.gz"
-  sha256 "bc887a126dc294f5c60d0b2d50481cc9ee330249c482bcedd16607e4d18c98ba"
+  url "https://github.com/docker/docker-credential-helpers/archive/refs/tags/v0.9.3.tar.gz"
+  sha256 "1111c403d50fc26bee310db8bed4fb7d98a43e88850e2ad47403e8f2e9109860"
   license "MIT"
   head "https://github.com/docker/docker-credential-helpers.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "10090a385f96a72b82a69d8b2119e92c98f1dd5f521c06aae78eba36998cb543"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2752b85c6b23f36246c8d0acbd27c21867e02992052065e6246e612489da4282"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "040055d7b2b5a6c28a5b9cbbd02db57851cfd802b3847d1309296e8528c44e1c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1854fc6611526742b847c83413ed00dc40880840055ff48a6503d9b2df4c9c53"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c16d39b6d79d9603ea4deec7af1875801e026e4af5a53ce4da80d038921eca1d"
-    sha256 cellar: :any_skip_relocation, ventura:        "ae3bf8797540c1e053ab6fbd1bedcaf03417e9ba938cbfe37107ce63afd1fdf7"
-    sha256 cellar: :any_skip_relocation, monterey:       "e4eebc9ee7fb41bf05e20710561f238993f0586e10833852bc2818c08e73be9b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "091c57eb5a7ea0f35d599cf0395f28ed611a0da4979ce2db28c57680433de570"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a366588cad8733a471b83be8c4ecd16b9d3e46a21981ebb1aaac7e5d975eb218"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "65cf8b678861bf541c2add288c76ffd8f55449e0d785531ee886335dc548cfed"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "e7d0a074a828667999d5ccbc63a9014c496d8080f5588c5ca97c3f960ffab3e1"
+    sha256 cellar: :any_skip_relocation, sonoma:        "87eb53c2e0c38484d644a34fa771252fa80a9357b448029a6878e5e8e8db58e7"
+    sha256 cellar: :any_skip_relocation, ventura:       "e1fe2f7169aa164531f1184404d8213af4725dd85c9ff5257487c28d260788a9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "81fe5fb3a19c029f2a4b89a5b8f7446de61c7ef9749630419c4e8c6760f55bee"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a87eaee572a78cf7b00111afa196e6732f05794d83189620bb7be85c4dd217ed"
   end
 
   depends_on "go" => :build
+  depends_on "pkgconf" => :build
 
   on_linux do
-    depends_on "pkgconf" => :build
     depends_on "glib"
     depends_on "libsecret"
   end

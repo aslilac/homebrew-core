@@ -1,19 +1,18 @@
 class Crane < Formula
   desc "Tool for interacting with remote images and registries"
   homepage "https://github.com/google/go-containerregistry"
-  url "https://github.com/google/go-containerregistry/archive/refs/tags/v0.20.2.tar.gz"
-  sha256 "064e9c47e3dac49acddccb4afe908b9d835725d371ee9a471fd445d134fbbf1d"
+  url "https://github.com/google/go-containerregistry/archive/refs/tags/v0.20.6.tar.gz"
+  sha256 "53f17964ade63f63b2c66231a6e1ea606345cfcc325e49a5267017bb475bdcb4"
   license "Apache-2.0"
+  head "https://github.com/google/go-containerregistry.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e0cc6ea093955193954e8b8ea3b56661411e75880b56446414a5fa0f1896bd09"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "07d234e90cf176df22f36ff4fbfec94b60e441a9fb88ce756777d6e8d29ac24c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "543bcd7edbed1c3e52c59da7385256ce6bf2664329890b57a507aa154e98fb3f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9f9fee3ac2c33bfc5867ef1190567bc5a4a19f0ce157c05d789e818b3364f85f"
-    sha256 cellar: :any_skip_relocation, sonoma:         "55f74183ac13afdb3f07f45de9a5cf898171a1e2114311911fc675d94990384b"
-    sha256 cellar: :any_skip_relocation, ventura:        "2dcffe3708e0d51ebc5e946487e16219430062ea231066ec6cce1564fe2f6da1"
-    sha256 cellar: :any_skip_relocation, monterey:       "95a24c7749edcd103079a24ae7fbcb5216beaba991c2d09f4795fce4095e264e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6cf67c250d910642844c86f2e0962f98bcc35c8167a3c1e3848ef264b306db39"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bf1acaf4cde02176b9f0a3684e4d062b9cc8758977ee056dfbcab5cd2fae028f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "bf1acaf4cde02176b9f0a3684e4d062b9cc8758977ee056dfbcab5cd2fae028f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "bf1acaf4cde02176b9f0a3684e4d062b9cc8758977ee056dfbcab5cd2fae028f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "693d1829b69430956cfcfc35a90e0f2b2099fbf2b50a8ec05389f45e2502d9b1"
+    sha256 cellar: :any_skip_relocation, ventura:       "693d1829b69430956cfcfc35a90e0f2b2099fbf2b50a8ec05389f45e2502d9b1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "82c5b30322c819286dc77c9f3af7e04ba387a3a0358e6fabf23325fba2f43542"
   end
 
   depends_on "go" => :build

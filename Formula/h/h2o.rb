@@ -6,6 +6,8 @@ class H2o < Formula
   license "MIT"
   revision 3
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "c54b0d937a91c61b234753347dd756cb2a26dcb3b7f1aa37252b55fb9ee065ae"
     sha256 arm64_sonoma:   "02473fe011f04525a6e4fd604baa839c43988ca3fc96396774d96200e79daf87"
@@ -16,6 +18,7 @@ class H2o < Formula
     sha256 ventura:        "4d046c5d98b9a75b8f53bdc068f2246c7c1958e8f4863ed2f8f2610ee6674934"
     sha256 monterey:       "bd75d169a42961123cc4791aa219572cf9181185ae0cb8679a3a10e7705a688c"
     sha256 big_sur:        "d54fbb44713fa39e3172e0e70a224fbd67e7657357c8179a2c257b510a9bf167"
+    sha256 arm64_linux:    "a7aafba0cec8e259b00f5a12d5a65ff12652803f1d2638c8d7c8697b44d02796"
     sha256 x86_64_linux:   "ec3f7d26e8df24768cf2953db461dcff9a5713bb79a23c553cd30016b6a7fba6"
   end
 

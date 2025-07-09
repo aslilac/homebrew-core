@@ -1,11 +1,12 @@
 class Stolon < Formula
   desc "Cloud native PostgreSQL manager for high availability"
   homepage "https://github.com/sorintlab/stolon"
-  url "https://github.com/sorintlab/stolon.git",
-      tag:      "v0.17.0",
-      revision: "dc942da234caf016a69df599d0bb455c0716f5b6"
+  url "https://github.com/sorintlab/stolon/archive/refs/tags/v0.17.0.tar.gz"
+  sha256 "dad967378e7d0c5ee1df53a543e4f377af2c4fea37e59f3d518d67274cff5b34"
   license "Apache-2.0"
   revision 1
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5a9cff2775f8b7655d68bd8899ae8090a23c1d38add3f842fd850ea5fdd3b258"
@@ -21,10 +22,8 @@ class Stolon < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "30ca55abf39725e1760d6610e38ea05f089fd382724da55c170f2cf914ee1050"
   end
 
-  deprecate! date: "2024-02-04", because: "depends on soon to be deprecated consul"
-
   depends_on "go" => :build
-  depends_on "consul" => :test
+  depends_on "etcd" => :test
   depends_on "libpq"
 
   def install
@@ -40,42 +39,25 @@ class Stolon < Formula
     end
   end
 
-  def port_open?(ip_address, port, seconds = 1)
-    Timeout.timeout(seconds) do
-      TCPSocket.new(ip_address, port).close
-    end
-    true
-  rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Timeout::Error
-    false
-  end
-
   test do
-    require "socket"
-    require "timeout"
+    endpoint = "http://127.0.0.1:2379"
+    pid = spawn "etcd", "--advertise-client-urls", endpoint, "--listen-client-urls", endpoint
 
-    consul_default_port = 8500
-    localhost_ip = "127.0.0.1".freeze
+    sleep 5
 
-    if port_open?(localhost_ip, consul_default_port)
-      puts "Consul already running"
-    else
-      fork do
-        exec "consul agent -dev -bind 127.0.0.1"
-        puts "Consul started"
-      end
-      sleep 5
-    end
     assert_match "stolonctl version #{version}",
       shell_output("#{bin}/stolonctl version 2>&1")
-    assert_match "nil cluster data: <nil>",
-      shell_output("#{bin}/stolonctl status --cluster-name test --store-backend consul 2>&1", 1)
+    output = shell_output("#{bin}/stolonctl status --cluster-name test " \
+                          "--store-backend etcdv3 --store-endpoints #{endpoint} 2>&1", 1)
+    assert_match "nil cluster data: <nil>", output
     assert_match "stolon-keeper version #{version}",
       shell_output("#{bin}/stolon-keeper --version 2>&1")
     assert_match "stolon-sentinel version #{version}",
       shell_output("#{bin}/stolon-sentinel --version 2>&1")
     assert_match "stolon-proxy version #{version}",
       shell_output("#{bin}/stolon-proxy --version 2>&1")
-
-    system "consul", "leave"
+  ensure
+    Process.kill("TERM", pid)
+    Process.wait(pid)
   end
 end

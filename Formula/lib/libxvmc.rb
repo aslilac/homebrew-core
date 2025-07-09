@@ -13,10 +13,11 @@ class Libxvmc < Formula
     sha256 cellar: :any,                 sonoma:         "f014a42faf3225b6d7b56c397e7f87a704386e514c86802f04f1351b6d7133e1"
     sha256 cellar: :any,                 ventura:        "06b0927fac5c241e00f13de5a609de3580550e7cfd2088937de8ef3c50fad465"
     sha256 cellar: :any,                 monterey:       "a0bc605754551292b8d475d0dc8dbe35fcb7753385576651601df0a4af9ef690"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f6a849f057352628d93b8b5682b40bf90b196ae1746911f746046f3e79ad665a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7bb9249003ad6c7905548d56c1863abf21b9a0f07407139d8060e6a553eff45e"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "util-macros" => :build
   depends_on "xorgproto" => :build
   depends_on "libx11"
@@ -25,14 +26,12 @@ class Libxvmc < Formula
 
   def install
     args = %W[
-      --prefix=#{prefix}
       --sysconfdir=#{etc}
       --localstatedir=#{var}
-      --disable-dependency-tracking
       --disable-silent-rules
     ]
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
   end

@@ -5,6 +5,8 @@ class So < Formula
   sha256 "36d8bc53b9c05e242fd4c9ba8ae447fae6c4a35d8c7e071f8994a7c0f07c225d"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "82b3ba2bd29430167b84cbc7116ca22c70679e0c6a59b340c3349ead364c0e16"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4c26864040cdb083f702827d253cc9128d018f12eeeff0d4477908385c38eda3"
@@ -13,13 +15,14 @@ class So < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "ffb713476e09d5bc6930cc1b550efd65d9556103f6641e2f2ca8bd9a8d9c374f"
     sha256 cellar: :any_skip_relocation, ventura:        "e80a401d20434c2716eb29d1a3b80ff9647ea7b00e6797a8d35b260e4f7cf6c8"
     sha256 cellar: :any_skip_relocation, monterey:       "72daa345f044b21902150324f5b8240d5625c96ae25a46f4696374da30965567"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a1477dceb51ed2cb6ba94b4f5755376fdaebcfe22b7301273120dede98403ce7"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "dff017b24e8061f4c5ea8b37e9f675d636449f6206735d130dcde4db047729b5"
   end
 
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
 
   on_linux do
-    depends_on "pkg-config" => :build
     depends_on "openssl@3"
   end
 

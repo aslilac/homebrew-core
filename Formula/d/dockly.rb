@@ -1,20 +1,18 @@
 class Dockly < Formula
   desc "Immersive terminal interface for managing docker containers and services"
   homepage "https://lirantal.github.io/dockly/"
-  url "https://registry.npmjs.org/dockly/-/dockly-3.24.3.tgz"
-  sha256 "3c1890a0ae136a36e9c8fabb343db35e4239a172fb284a77d3485a6bab939479"
+  url "https://registry.npmjs.org/dockly/-/dockly-3.24.5.tgz"
+  sha256 "278203ca5fe88f802f50a9fe58f37e95309ccb098b47a6f5f3558ccc9dc623b6"
   license "MIT"
 
   bottle do
-    rebuild 1
-    sha256                               arm64_sequoia:  "0dd40f2f0850ba036bdc93a1fc471b0ed3e4c1f8ed443245c01486a3e3f43839"
-    sha256                               arm64_sonoma:   "ee7e39240a8e4017526ecb770228cc52bf30e022bff0342cf914ddf8962d6a01"
-    sha256                               arm64_ventura:  "c9c59d9621bf60c835ee39a326dfe2139cca675ff1bef2e4d8d78b2bc126fd6e"
-    sha256                               arm64_monterey: "453c7bcc52e314d2e1af4b261cf3e109174b4fb59786b64267e015c4cfda0aed"
-    sha256                               sonoma:         "4b33d715efe6a38e9d4340e2511f289ab422d4ae7cab70b6c05880fca76f9857"
-    sha256                               ventura:        "7be2fcbcaf3b00eb2881b215dc3afff9f6426ee7b9b9d1a0c8f55f8374596f33"
-    sha256                               monterey:       "70ac7382b4faaa4a13abb067225aa06a9140309e29f0a0c0bd0b8acd50178a37"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dfb3be9c9648d45b2b73cc768da86ef8470c3144acf6df65e164f0a3eb8c2567"
+    sha256                               arm64_sequoia: "6765be9e2eb88427da832627e84bfc14e832546ec895c4f3a80e618521a29bbb"
+    sha256                               arm64_sonoma:  "21d9206c6dd01067b8ab10a86bbce37c1c1b33c1fa8f06aaed4ab4b3e2d11f79"
+    sha256                               arm64_ventura: "edba097b50de91a673b9504054ec42ed435cbd6766985af57a90b4de005900c8"
+    sha256                               sonoma:        "b6075b00e725da80c041f56a98977e4c74059eaec6486d26d628e5288157301a"
+    sha256                               ventura:       "fa994bb066eb8c0190c2c7cfa674255fe9de6491a4a182d75697f2eed99dd435"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "961cd52469f0445138bda46c29f8466f7d7f2e0587af77d2f0981a9d30e253a0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f10763b5b89d92dd010032e24ac0e060df6bb12f44118dec3ee2e0c28938d55a"
   end
 
   depends_on "node"

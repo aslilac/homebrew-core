@@ -1,24 +1,25 @@
 class Svgbob < Formula
   desc "Convert your ascii diagram scribbles into happy little SVG"
   homepage "https://ivanceras.github.io/svgbob-editor/"
-  url "https://github.com/ivanceras/svgbob/archive/refs/tags/0.7.3.tar.gz"
-  sha256 "f859372839614af9102e476f643956a14b2334dd56819e5935d7192153cb99c2"
+  url "https://github.com/ivanceras/svgbob/archive/refs/tags/0.7.6.tar.gz"
+  sha256 "d5b5fc4a04e9efc1cd313c84a8f843d8221718b34e8d3e135e97d44b81317bbf"
   license "Apache-2.0"
   head "https://github.com/ivanceras/svgbob.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d5e32c07bde74477d219d2266b7afa1748ce67bfc26ad55871353d2c2ba2f297"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ab59853ca30109c4eceae025555aa9cc09a325dffafc6e0793c7c652281920e2"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "23309dbad0fd01e0de87a8b3a2ecbc79a41c70f835880e95ea3ccc6812e44ef4"
-    sha256 cellar: :any_skip_relocation, sonoma:        "42b47e238ffbf33c0e2649198c1fceb9df3eb0e0974940cd296c93a0df06e4dc"
-    sha256 cellar: :any_skip_relocation, ventura:       "f0f0fd5aea7eec08b9db8e1274783afef44ad3b635a398f7dab5018d6e154d68"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b0891f49bb80e9a7d8445da24921cfeaacdda15be39cdc64f91a10f13bcc58b6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2a03f39e2238bd9ef7e474b580f9bdf820e755d2a6bc4569c2e43accef6f9eb9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "47b10e463d3bdf705337cfa3a8bf38bb369eb100403b5f0833ad2f53ee616a2d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "dff76ac4bbd579cca1d3a11e37e55f8b68285e3f45dba68d23fc289f193d129e"
+    sha256 cellar: :any_skip_relocation, sonoma:        "e6870e719346a6f048b08186f6832c6fa96e532f2198e42bc45d2c6039785492"
+    sha256 cellar: :any_skip_relocation, ventura:       "36dcdfa05c440af6513da77701762c7d97aee573eac47dec79cb9e72605bba10"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ca0200d4df7df55439d0ec87ab584b580ffa86caa3604ce55776ac17488d059a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "39ef6cc1b6c2841686f831901ce97230633658fe2f76b16958af86e49f6d7e82"
   end
 
   depends_on "rust" => :build
 
   def install
-    system "cargo", "install", *std_cargo_args(path: "packages/svgbob_cli")
+    system "cargo", "install", *std_cargo_args(path: "crates/svgbob_cli")
     # The cli tool was renamed (0.6.2 -> 0.6.3)
     # Create a symlink to not break compatibility
     bin.install_symlink bin/"svgbob_cli" => "svgbob"

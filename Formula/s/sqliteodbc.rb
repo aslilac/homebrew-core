@@ -1,7 +1,7 @@
 class Sqliteodbc < Formula
   desc "ODBC driver for SQLite"
-  homepage "https://ch-werner.homepage.t-online.de/sqliteodbc/"
-  url "https://ch-werner.homepage.t-online.de/sqliteodbc/sqliteodbc-0.99991.tar.gz"
+  homepage "https://ch-werner.hier-im-netz.de/sqliteodbc/"
+  url "https://ch-werner.hier-im-netz.de/sqliteodbc/sqliteodbc-0.99991.tar.gz"
   sha256 "4d94adb8d3cde1fa94a28aeb0dfcc7be73145bcdfcdf3d5e225434db31dc8a5c"
   license "TCL"
 
@@ -9,6 +9,8 @@ class Sqliteodbc < Formula
     url :homepage
     regex(/href=.*?sqliteodbc[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "61de52252306e865b3c14e8ef775b1c4ccd22da7c7e5ea2b0f91c54c7877e08c"
@@ -18,6 +20,7 @@ class Sqliteodbc < Formula
     sha256 cellar: :any,                 sonoma:         "8512cd23bae8277c72c3b432749364595234724a8b20f201a98f61497edb2f3c"
     sha256 cellar: :any,                 ventura:        "3aae3791f2bceb04e3d9261ebbcb2c639491c530628ac2632c2a9cf64c2c7b1a"
     sha256 cellar: :any,                 monterey:       "1d3e62b967aa75bb3ea2f4db75e350dd920d2210edc4c268600313311d255476"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f3105e72f81fb1c85b2cd028b0063e6e413549706f4a7e4286f48fb9fa420144"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4a61acd439d7530e91d25824689b621be04831e3f28aa00f28cb0d7d810a5afb"
   end
 

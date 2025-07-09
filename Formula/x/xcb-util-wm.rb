@@ -5,6 +5,8 @@ class XcbUtilWm < Formula
   sha256 "dcecaaa535802fd57c84cceeff50c64efe7f2326bf752e16d2b77945649c8cd7"
   license "X11"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "78b8c05d6a387da472f24f9b4fa8a60eb3c1815a2b013a5cd9c379d54362f058"
     sha256 cellar: :any,                 arm64_sonoma:   "f2e885b4eefb54d3e9b5f2d4a8dbf4fd93141e8b3c12fbcaa99b318a3dfdad1e"
@@ -16,6 +18,7 @@ class XcbUtilWm < Formula
     sha256 cellar: :any,                 monterey:       "a6cd012acf4ff3199b3866e93c3b930e399f33eea2a5e49220f4214c31e8d15f"
     sha256 cellar: :any,                 big_sur:        "7bad0c4c7883daaba35df770a5a544d935d6531292c02a6df2c956ef3e8a2b42"
     sha256 cellar: :any,                 catalina:       "aa6fc4ef555883fac180c46b4e6d5e03096bd9369640fbe8f6ec8fa9f63c70c0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f11f34a4be29819b423e16998acd71c598b901090252da96b7d7a6b554edb9bc"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1045d2418ab117484c0645ced40c1c7dfe9751443b56e1fdff639a2591732acb"
   end
 

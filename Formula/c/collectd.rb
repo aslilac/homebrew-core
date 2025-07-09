@@ -20,12 +20,15 @@ class Collectd < Formula
     regex(/href=.*?collectd[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia: "58f7a44814b1a467e4f68fcf719069fe352920ce6e800fc5d60e8ad2e6af1332"
     sha256 arm64_sonoma:  "ceb6cf730de48b1f6eadfc3784060f0b6ed437c3a4fcb7f991e75853eb0d8295"
     sha256 arm64_ventura: "756fa1c1b080652bc6654718c11f5955b1a674b319eb848609e0416415a0cde1"
     sha256 sonoma:        "74e6ebaf66605da54399207a4f083833b39a90f6ff9edb92c82673f874af5e09"
     sha256 ventura:       "cea97da9e5ba92d5d02fb688cc72bf698f245e5d849f44f2d3419f64f1ed5000"
+    sha256 arm64_linux:   "ee5c347f93b603ae28b0cc8f952a7ed5cca462dee6e429cf80d7e6475b8bc6e8"
     sha256 x86_64_linux:  "5e73f288cbe0d9d1bd8e35b1782593ab8ef268d41bd05e34913bc63678d926d1"
   end
 
@@ -89,7 +92,7 @@ class Collectd < Formula
     begin
       pid = fork { exec sbin/"collectd", "-f", "-C", "collectd.conf" }
       sleep 3
-      assert_predicate log, :exist?, "Failed to create log file"
+      assert_path_exists log, "Failed to create log file"
       assert_match "plugin \"memory\" successfully loaded.", log.read
     ensure
       Process.kill("SIGINT", pid)

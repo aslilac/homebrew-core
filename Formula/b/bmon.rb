@@ -6,6 +6,8 @@ class Bmon < Formula
   license "BSD-2-Clause"
   revision 2
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "f32d98f5dbf21deda940949e6b11a722ad0d69a7acfc1841d2779ce5b3af12ed"
@@ -19,6 +21,7 @@ class Bmon < Formula
     sha256 cellar: :any,                 big_sur:        "c5a460a6ada9a74638176734db89e6e7fc6f8c171a8e580d06bb7b77b9432c1b"
     sha256 cellar: :any,                 catalina:       "0e5a38ac18b9a385c33eeedd7c64c649bad0a6160aada5725cf3c1b2557b74f8"
     sha256 cellar: :any,                 mojave:         "54c90f958df855b99cc0b6fa4cbabd4b135e7913b844d774e607fb6d14045dcf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "00927e3a0dbf34649e09b491181022e05e8fb8b5c4924cc2f2bd1951228e716c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4c35f5e85c98f864cb59ce589b03c05ce6dd37563a731d86c4491e8930449b8d"
   end
 

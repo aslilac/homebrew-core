@@ -6,6 +6,8 @@ class Paps < Formula
   license "LGPL-2.0-or-later"
   revision 2
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any, arm64_sequoia:  "1dc9e0d4ae5edd03013091933251474c8dcd4b1bc4f72a4df502734228c62f6f"
     sha256 cellar: :any, arm64_sonoma:   "df67721a4260dd63be5164d348ba57058f3a43298915726c7c1d0d3c43927794"
@@ -14,12 +16,13 @@ class Paps < Formula
     sha256 cellar: :any, sonoma:         "d9cd43c14cd780ac32cbd23e42b129db879e0dc6f1dd13e1b6d554845b46cc11"
     sha256 cellar: :any, ventura:        "eae81c50573f8ef3d0220e2237326bd8b712f15ed7c37cac40709feafdab7c86"
     sha256 cellar: :any, monterey:       "82f0ec08cfa698dafb97b18e8f5508c8648c9f1a80445c2077a3ab80168c7829"
+    sha256               arm64_linux:    "1400c61fe5c429d51c0a3032a6f8a405503b89062b8082d7ab415466cff7f61f"
     sha256               x86_64_linux:   "9edc0fa1b1d9b411f896f492b1bc10fe2c8e85c70065212630f358b1c8d5d771"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "cairo"
   depends_on "fmt"
   depends_on "glib"
@@ -46,7 +49,7 @@ class Paps < Formula
 
   test do
     system bin/"paps", pkgshare/"examples/small-hello.utf8", "--encoding=UTF-8", "-o", "paps.ps"
-    assert_predicate testpath/"paps.ps", :exist?
+    assert_path_exists testpath/"paps.ps"
     assert_match "%!PS-Adobe-3.0", (testpath/"paps.ps").read
   end
 end

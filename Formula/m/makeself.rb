@@ -6,6 +6,8 @@ class Makeself < Formula
   license "GPL-2.0-or-later"
   head "https://github.com/megastep/makeself.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, all: "3e45d0c2e2373b3a70edf4d95447341b46f57eca3acf42e10ac0403cac4cd620"
@@ -25,10 +27,10 @@ class Makeself < Formula
     source = testpath/"source"
     source.mkdir
     (source/"foo").write "bar"
-    (source/"script.sh").write <<~EOS
+    (source/"script.sh").write <<~SH
       #!/bin/sh
       echo 'Hello Homebrew!'
-    EOS
+    SH
     chmod 0755, source/"script.sh"
     system bin/"makeself", source, "testfile.run", "'A test file'", "./script.sh"
     assert_match "Hello Homebrew!", shell_output("./testfile.run --target output")

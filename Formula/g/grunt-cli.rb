@@ -5,6 +5,8 @@ class GruntCli < Formula
   sha256 "4f7f52cf9f3bc62ebc7ae60d2db5c7f896cb0915ad1202dab9285d6117d7536d"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "6623c9c49be25c0d046324eae90919e3360542d69f9cf921b3cc47a44573c984"
@@ -14,6 +16,7 @@ class GruntCli < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "be6201a69eafbd7b9d93fa919cd410dc0c8e03eef63f686836690fdee13b9fe0"
     sha256 cellar: :any_skip_relocation, ventura:        "be6201a69eafbd7b9d93fa919cd410dc0c8e03eef63f686836690fdee13b9fe0"
     sha256 cellar: :any_skip_relocation, monterey:       "be6201a69eafbd7b9d93fa919cd410dc0c8e03eef63f686836690fdee13b9fe0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "7cfb7579ba83a114818c2ef065a534f5d237cbd21b3be57d73063e5763addaa8"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b9383dff764eb6833c08ecf8ac67a869c40c5830ec27471577094357feabac56"
   end
 
@@ -45,6 +48,6 @@ class GruntCli < Formula
 
     system "npm", "install", *std_npm_args(prefix: false)
     system bin/"grunt"
-    assert_predicate testpath/"output.txt", :exist?, "output.txt was not generated"
+    assert_path_exists testpath/"output.txt", "output.txt was not generated"
   end
 end

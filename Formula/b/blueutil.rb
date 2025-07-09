@@ -1,19 +1,17 @@
 class Blueutil < Formula
   desc "Get/set bluetooth power and discoverable state"
   homepage "https://github.com/toy/blueutil"
-  url "https://github.com/toy/blueutil/archive/refs/tags/v2.10.0.tar.gz"
-  sha256 "1558977dd4095ff89768a2f7eaff765e760b56c736a9cd5956b1227ebfee8f2b"
+  url "https://github.com/toy/blueutil/archive/refs/tags/v2.12.0.tar.gz"
+  sha256 "944d5d1a3003a453e5c6eb05e860185763f4898c6e419a3858d981743f88afcd"
   license "MIT"
   head "https://github.com/toy/blueutil.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "061e8edbdab4c9da236494c79209543a8cb679f00e815966456c1b314bcdfbf5"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "02e1c9fad6e8b343d5b9e15a4aa0c4b853a1d2b1dac339d01da0b01fcbad86de"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d0c09f20aad162c559723b5c883c63db270c2cb60005283b170f629de63f8313"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a9f5aa947b307b1983cdfe545d47884074364a0db4a912891ca0d0ab4f20f843"
-    sha256 cellar: :any_skip_relocation, sonoma:         "2faeff79878497b5db013e243f8f2a88f54c1932a1df1ab422a671d472ebfd43"
-    sha256 cellar: :any_skip_relocation, ventura:        "288321f9b4d1e1bdd7371dfd70f3faaa5ef87fd8ca19f68a6062cd4d6789f97b"
-    sha256 cellar: :any_skip_relocation, monterey:       "d2d9405fa33c97ca5f9fdbac3e287c44902d97a7c80becf152eb6177f2c33163"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "aed3c4cc18a795d9b00d44c727e304e95a30d779adf1a3f5516c5ef919d2222d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c3194c8488aadf7c368c147dfd1123f6079ce1a355f749fc985661e14d9655d5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "df4282fa2f6747837f20f66be1d38f3347544f4a17a5322beceff985febe1a59"
+    sha256 cellar: :any_skip_relocation, sonoma:        "851da7f3bef7af931468e91562285943c756c851bf2692cd1df4d20e444f0e66"
+    sha256 cellar: :any_skip_relocation, ventura:       "cf1441c45a6e73cf3476a342a6c9e376d7a7024916269e69ee7c67500b5e36ed"
   end
 
   depends_on xcode: :build

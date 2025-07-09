@@ -1,25 +1,23 @@
 class Cocogitto < Formula
   desc "Conventional Commits toolbox"
   homepage "https://docs.cocogitto.io/"
-  url "https://github.com/cocogitto/cocogitto/archive/refs/tags/6.1.0.tar.gz"
-  sha256 "756bc574f311311639723297f3dc793f7494d9b3ae375d6bc3e6e714432d08f0"
+  url "https://github.com/cocogitto/cocogitto/archive/refs/tags/6.3.0.tar.gz"
+  sha256 "bf78a06ec20cd33c4f9bcddb427067de34d005fb6d4a41727239b7b1e8e916e0"
   license "MIT"
-  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "9af39545522af295f59ee4be503a0416a32fdd409253a55c927752e20b2fc5f4"
-    sha256 cellar: :any,                 arm64_sonoma:   "78143145d4ad6e3882c09189bda0c96adfc34ddb544bee9fa5658c9c0a09d42f"
-    sha256 cellar: :any,                 arm64_ventura:  "4d250f3ca8f2d8883c89f0ca7ede68c7f3bc36ddf113f17e19a69e4bb4430c72"
-    sha256 cellar: :any,                 arm64_monterey: "8234e0b85119c68705cffda63d43f31b86c0336e0365ff2bdd47b6ea9d523393"
-    sha256 cellar: :any,                 sonoma:         "2440a1f23340d2a4c190971535c346775f85c10d4ac1cee5b393c892002ed095"
-    sha256 cellar: :any,                 ventura:        "56f49ee11cd3a9c2483fe81cb8bfbefeb17439dcbe246c5aee3e7da3ee1154e0"
-    sha256 cellar: :any,                 monterey:       "84480d041c83ebad7f0ad1e4f7233505d8b083b81b716c2b83bf0ac9b9324694"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1aff6d16e56cddef28b7cad4d730bc0984c75134525f7e3761918b275774826c"
+    sha256 cellar: :any,                 arm64_sequoia: "653bfecc7e5bf0d31506f6b7e0e6a39d42a1786df4320071e4bae07dadf57f0b"
+    sha256 cellar: :any,                 arm64_sonoma:  "32504a5766eefb9b00ce51cb505f25c287c683bc244f29792113df3b8b7e2131"
+    sha256 cellar: :any,                 arm64_ventura: "0f133691154d002414e87fde8af45598f7e1bbb73db79cd0a36cdfadf7bc0978"
+    sha256 cellar: :any,                 sonoma:        "de432bba61a74787063511a9c4346b036572c7579748af9056c583d9b0f22a8e"
+    sha256 cellar: :any,                 ventura:       "3bc5fbfef19cf37d680111f4b16d9bc70f046ffcbd07f801d5ed09769724c8a0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "abbe9fb10c06ade07ae9790a397ee02355f026fdcef62fa482733a5cd63dfac4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1fa05ff9b1e802473de9ababb53942b8c3aeb6ea3d7ca9aefbdf5a80e53aeb61"
   end
 
   depends_on "pkgconf" => :build
   depends_on "rust" => :build
-  depends_on "libgit2@1.7"
+  depends_on "libgit2"
 
   conflicts_with "cog", because: "both install `cog` binaries"
 
@@ -27,7 +25,7 @@ class Cocogitto < Formula
     ENV["LIBGIT2_NO_VENDOR"] = "1"
 
     system "cargo", "install", *std_cargo_args
-    generate_completions_from_executable(bin/"cog", "generate-completions", base_name: "cog")
+    generate_completions_from_executable(bin/"cog", "generate-completions")
 
     system bin/"cog", "generate-manpages", buildpath
     man1.install Dir["*.1"]
@@ -46,7 +44,7 @@ class Cocogitto < Formula
     linkage_with_libgit2 = (bin/"cog").dynamically_linked_libraries.any? do |dll|
       next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)
 
-      File.realpath(dll) == (Formula["libgit2@1.7"].opt_lib/shared_library("libgit2")).realpath.to_s
+      File.realpath(dll) == (Formula["libgit2"].opt_lib/shared_library("libgit2")).realpath.to_s
     end
 
     assert linkage_with_libgit2, "No linkage with libgit2! Cargo is likely using a vendored version."

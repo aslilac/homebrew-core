@@ -10,6 +10,8 @@ class Libmodplug < Formula
     regex(%r{url=.*?/libmodplug[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any,                 arm64_sequoia:  "586ee0ddb6205b40860132f0f8dfdb74fdef762fb32ec0e9f2d3147db7229c63"
@@ -22,6 +24,7 @@ class Libmodplug < Formula
     sha256 cellar: :any,                 monterey:       "f773d6e23b5a2b84304c91c740b050c7364e3102714d4b1ccc3985e64f97d98e"
     sha256 cellar: :any,                 big_sur:        "2411526634753034b19df000bf941383eac622926cc50c31ff80dc5a484c7abe"
     sha256 cellar: :any,                 catalina:       "cd9af3b0e9c72274ac8a63934d0af44edb08cfbcfecc30772b862be74f68de9d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "0209868506e112abe52575b8604d3aa1ac4f804ef2fec00937ca15711a24ce7c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d166a7f4a737de154ada685c9af4f82d22238a1b6cb323ce49a4496a3e9b2911"
   end
 

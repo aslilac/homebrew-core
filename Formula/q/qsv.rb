@@ -1,20 +1,31 @@
 class Qsv < Formula
   desc "Ultra-fast CSV data-wrangling toolkit"
-  homepage "https://github.com/jqnatividad/qsv"
-  url "https://github.com/jqnatividad/qsv/archive/refs/tags/0.138.0.tar.gz"
-  sha256 "c53299dc56dbf7776a86d3802e928a8dc44a922b1bdaa1f1903d0ab8bb457201"
+  homepage "https://qsv.dathere.com/"
+  url "https://github.com/dathere/qsv/archive/refs/tags/5.1.0.tar.gz"
+  sha256 "9bed0898cce8de237a0a04f8d28947720dbb6d0b2919cf297007a1a57569dfd2"
   license any_of: ["MIT", "Unlicense"]
-  head "https://github.com/jqnatividad/qsv.git", branch: "master"
+  head "https://github.com/dathere/qsv.git", branch: "master"
 
-  bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d56c8970528f50a4398845eb53cab377f6fd0439d98b14df83fdf288fa94a13c"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "fd153b282502bbd20966b7847e5bba50db797e98c156e9e6a65fc01313fb5e7f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "e81c99fcb0b10ac5080db96e0b10095931ecb363c52d92d6fd756879d2b27225"
-    sha256 cellar: :any_skip_relocation, sonoma:        "331e8f2eee4d80be9bea99ce0ab8ae63324d0d329d995b86355147600b5162c0"
-    sha256 cellar: :any_skip_relocation, ventura:       "0d14e68b4d1c8c176ea9c8bc9e2c23a58c0861e37a251d3c76797b7fd073eec8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0f124c350f63133eb4b7f75adb577beafe131662eb162d99d75ba2dd17a79ef0"
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  # of the Git tags.
+  livecheck do
+    url :stable
+    strategy :github_latest
   end
 
+  bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "243f7f28836c546e018a36ea0788eb1d58268d93a67b0f613cc7608baddb61b2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ee4ea68fc70b1425682668d71bcb8e7c95c11730c6c35b80c9fffc5d4e4df742"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "2073e3fced0e3c6eac7d9a82eaa8826e9351f957154a6518c0597472c7a3776b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "002b6176e87d61dbdfcc366d5c73448e354b4f21f82d4a9c72c550ab207b757e"
+    sha256 cellar: :any_skip_relocation, ventura:       "a85210ffe5b8ea93d2f7eb46b97d3e87f03e6e881e08f3c717592a57aaa7c717"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "84939af77a2217dc553e0aed84018d7795759f7e469d05e62ed38b899a35394e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d294a8766c948fad6a9bed4581616729bd6d73ede3bfd772e04b7191a42daa01"
+  end
+
+  depends_on "cmake" => :build # for libz-ng-sys
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
 
   on_linux do
@@ -22,6 +33,10 @@ class Qsv < Formula
   end
 
   def install
+    # Use explicit CPU target instead of "native" to avoid brittle behavior
+    # see discussion at https://github.com/briansmith/ring/discussions/2528#discussioncomment-13196576
+    ENV["RUSTFLAGS"] = "-C target-cpu=apple-m1" if OS.mac? && Hardware::CPU.arm?
+
     system "cargo", "install", *std_cargo_args, "--features", "apply,luau,feature_capable"
     bash_completion.install "contrib/completions/examples/qsv.bash" => "qsv"
     fish_completion.install "contrib/completions/examples/qsv.fish"
@@ -30,10 +45,14 @@ class Qsv < Formula
 
   test do
     (testpath/"test.csv").write("first header,second header")
-    assert_equal <<~EOS, shell_output("#{bin}/qsv stats test.csv")
-      field,type,is_ascii,sum,min,max,range,sort_order,min_length,max_length,sum_length,avg_length,mean,sem,stddev,variance,cv,nullcount,max_precision,sparsity
-      first header,NULL,,,,,,,,,,,,,,,,0,,
-      second header,NULL,,,,,,,,,,,,,,,,0,,
+    assert_equal <<~EOS, shell_output("#{bin}/qsv stats --dataset-stats test.csv")
+      field,type,is_ascii,sum,min,max,range,sort_order,sortiness,min_length,max_length,sum_length,avg_length,stddev_length,variance_length,cv_length,mean,sem,geometric_mean,harmonic_mean,stddev,variance,cv,nullcount,max_precision,sparsity,qsv__value
+      first header,NULL,,,,,,,,,,,,,,,,,,,,,,0,,,
+      second header,NULL,,,,,,,,,,,,,,,,,,,,,,0,,,
+      qsv__rowcount,,,,,,,,,,,,,,,,,,,,,,,,,,0
+      qsv__columncount,,,,,,,,,,,,,,,,,,,,,,,,,,2
+      qsv__filesize_bytes,,,,,,,,,,,,,,,,,,,,,,,,,,26
+      qsv__fingerprint_hash,,,,,,,,,,,,,,,,,,,,,,,,,,589aa48c29e0a4abf207a0ff266da0903608c1281478acd75457c8f8ccea455a
     EOS
   end
 end

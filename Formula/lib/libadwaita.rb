@@ -1,8 +1,8 @@
 class Libadwaita < Formula
   desc "Building blocks for modern adaptive GNOME applications"
   homepage "https://gnome.pages.gitlab.gnome.org/libadwaita/"
-  url "https://download.gnome.org/sources/libadwaita/1.6/libadwaita-1.6.2.tar.xz"
-  sha256 "7542f8354e6808dd4e9a31551bbdfc0170735e4af4d1b3e69186500ccb9c01eb"
+  url "https://download.gnome.org/sources/libadwaita/1.7/libadwaita-1.7.5.tar.xz"
+  sha256 "c2c1813c967d45c0f49e907f8c26e66f68fe49dec6436e2d3349350ac9efbd2e"
   license "LGPL-2.1-or-later"
 
   # libadwaita doesn't use GNOME's "even-numbered minor is stable" version
@@ -14,19 +14,21 @@ class Libadwaita < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "13d92d28f98949976a8341203c02e25ea86e84256284853d5a2fcf8cd32c200c"
-    sha256 arm64_sonoma:  "7819b92c2564312c677b5a2d10667e697a546bad0504d45c24c5054c9ac2c498"
-    sha256 arm64_ventura: "ac8c01f8bc8276f344faaba79de4479ee527fb7d1984330cdca5c89e43f1ecca"
-    sha256 sonoma:        "fed0f6cab3d0dc8559b3b7adc54fc6621b64d9b9ac8702c6472c55e82240e1f5"
-    sha256 ventura:       "5d08da4b11d78c04d95afca8dcd20f6671030008e3bb074ce599b3b241306d3b"
-    sha256 x86_64_linux:  "3032eb6e251162728b2f8ed9abd132e1500a299669e088cde074ff4693cce686"
+    sha256 arm64_sequoia: "22959b3d8b982ccf83548adeeff944caada0f5344bff40156f1f59223cbc3245"
+    sha256 arm64_sonoma:  "29b318e1f75c73341bef069be91cdccb904eb8657bced61393c98becd91ed3ac"
+    sha256 arm64_ventura: "0e9f92f69c3e960041275204cada6d3e59f214fda42ff939329249fdcd9cd6ae"
+    sha256 sonoma:        "4d50c14085b2448715740b92690ac4c205967b58a7b2c62ef10625f3703442e1"
+    sha256 ventura:       "e79bcb3bbe6b058a3f28cc1feeb134c40b917262c41ee7d8fbbc23fe6981c615"
+    sha256 arm64_linux:   "76a5f8d47185d83cde3d6df264422ccb2f077c773380b4532a0884a3f3931a4c"
+    sha256 x86_64_linux:  "b99426b869ae665f2cf42c05aa86d859bdb32040daed46ca1e2a694d6b75369b"
   end
 
   depends_on "gettext" => :build
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
+  depends_on "sassc" => :build
   depends_on "vala" => :build
 
   depends_on "appstream"
@@ -34,6 +36,7 @@ class Libadwaita < Formula
   depends_on "glib"
   depends_on "graphene"
   depends_on "gtk4"
+  depends_on "libsass"
   depends_on "pango"
 
   uses_from_macos "python" => :build
@@ -58,7 +61,7 @@ class Libadwaita < Formula
         return g_application_run (G_APPLICATION (app), argc, argv);
       }
     C
-    flags = shell_output("#{Formula["pkg-config"].opt_bin}/pkg-config --cflags --libs libadwaita-1").strip.split
+    flags = shell_output("#{Formula["pkgconf"].opt_bin}/pkgconf --cflags --libs libadwaita-1").strip.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test", "--help"
 

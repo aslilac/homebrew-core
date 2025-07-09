@@ -10,6 +10,8 @@ class Libxp < Formula
     regex(/^libXp[._-]v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "58ea4743cac65c66cd744b26ab6cd8e83a282e2da52ef872898e2237c948b563"
     sha256 cellar: :any,                 arm64_sonoma:   "ebdf40af1b62e90da723be29ff1c9a2f636bb09dbd7b4caa69975f2928123c71"
@@ -21,15 +23,18 @@ class Libxp < Formula
     sha256 cellar: :any,                 monterey:       "afa942a7ef9f5244bcfd7ce8e61b8235e3085f41bdc521bb3c930eb9402ff8bb"
     sha256 cellar: :any,                 big_sur:        "ebf2ccca3126f773869610f9ca07888226e6caf7ab90a3b493aeadbf81354022"
     sha256 cellar: :any,                 catalina:       "0687d2c037f00590ebf445e0b7f5531a703ddd8390dc903eaacbd451fdd10a6c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "02bd6784a427333504ac05c8dc0d54e57219cce3d0efbdaed91b1029594b7045"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ff2541a82e9806bac37aedb6fcaa83846e4f4d8710d4ea632a09fe826746da99"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "util-macros" => :build
+
   depends_on "libx11"
+  depends_on "libxau"
   depends_on "libxext"
 
   resource "printproto" do
@@ -40,23 +45,17 @@ class Libxp < Formula
   def install
     resource("printproto").stage do
       system "sh", "autogen.sh"
-      system "./configure", "--disable-debug",
-                            "--disable-dependency-tracking",
-                            "--disable-silent-rules",
-                            "--prefix=#{prefix}"
+      system "./configure", "--disable-silent-rules", *std_configure_args
       system "make", "install"
     end
 
     ENV.prepend_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
     system "sh", "autogen.sh"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 
   test do
-    assert_match "-I#{include}", shell_output("pkg-config --cflags xp").chomp
+    assert_match "-I#{include}", shell_output("pkgconf --cflags xp").chomp
   end
 end

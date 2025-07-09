@@ -6,6 +6,8 @@ class Ohcount < Formula
   license "GPL-2.0-only"
   head "https://github.com/blackducksoftware/ohcount.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "d537aa1e6a4a264ac45a9fa154b6dc8d0fdfae03fafe2cc2f81cdd4396aa5769"
     sha256 cellar: :any,                 arm64_sonoma:   "27c7e0899c7845d03e7f17f2a97f2fa6e47a6923fb1c232ce50551cd5a95122a"
@@ -20,6 +22,7 @@ class Ohcount < Formula
     sha256 cellar: :any,                 mojave:         "b93054a4459a246895a524de21559fc1387e8cc6436d83481c7d85afc10be9e8"
     sha256 cellar: :any,                 high_sierra:    "2bcddb3687af78d9317be143579afe692f8a3034c51b1e7e07ddd53491792365"
     sha256 cellar: :any,                 sierra:         "716a64cf45acdb062651994384e88e74e5bf258a1b70b9b29cf09c5c115084e5"
+    sha256                               arm64_linux:    "e5b7f38361c5247632be1f37eae14d3d1fee98d4a35c3feb6864e699300f2fc2"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "39d8342b2b51c283aa66ab2c23b79ad9bc4a98c6c2d93bb8ae857a63fbe1f23b"
   end
 

@@ -10,6 +10,8 @@ class Libbtbb < Formula
   revision 1
   head "https://github.com/greatscottgadgets/libbtbb.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 3
     sha256 cellar: :any,                 arm64_sequoia: "64901cfb8edd8d6ccbb685335ef735d0de585d4e2d82b246a9e720fde31a60cb"
@@ -17,6 +19,7 @@ class Libbtbb < Formula
     sha256 cellar: :any,                 arm64_ventura: "cf6b1a34c31a753e2ff677dad8b5668c05a3c7f857ab4d961e8ed5218b83313c"
     sha256 cellar: :any,                 sonoma:        "9328d6ce06defac48d51045a420021f25b7ce7165c766d702c14611ae8c2fc92"
     sha256 cellar: :any,                 ventura:       "f82f1bcc5ad54c8fc3c86295050bcab0f570b99904f1582464b6c0131d10cc5f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "85e0a063f6196f8022335ecb838bfc169e2116533ced2ac80b510bb032694507"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "bb29f005dbfc0f47754c839a37d3812f1c872409e7918426c5e1ed9bf345d744"
   end
 

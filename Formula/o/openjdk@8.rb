@@ -1,10 +1,10 @@
 class OpenjdkAT8 < Formula
   desc "Development kit for the Java programming language"
   homepage "https://openjdk.java.net/"
-  url "https://github.com/openjdk/jdk8u/archive/refs/tags/jdk8u432-ga.tar.gz"
-  version "1.8.0-432"
-  BUILD_NUMBER = "b06".freeze # Please update when a new GA release is available: https://wiki.openjdk.org/display/jdk8u.
-  sha256 "6ac8ee2b6932e4632ea2c33fe2320d6ceaca50a67521fac02a67027e40437460"
+  url "https://github.com/openjdk/jdk8u/archive/refs/tags/jdk8u452-ga.tar.gz"
+  version "1.8.0-452"
+  BUILD_NUMBER = "b09".freeze # Please update when a new GA release is available: https://wiki.openjdk.org/display/jdk8u.
+  sha256 "cf1009e18b6332ef2b4a54257a6087611970bcdab5368907ac67ada1e9709676"
   license "GPL-2.0-only"
 
   livecheck do
@@ -16,22 +16,26 @@ class OpenjdkAT8 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 sonoma:       "74fcd1c6fb4f0525f752cbadb57405ecac2dc63c9eab76a142b3c5f0fd2fd841"
-    sha256 cellar: :any,                 ventura:      "d80f5850880120a4614a938aed49d8475d639676b2f4726cfa47e106a04973c6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "29e82fd950a5da51998d665b1cb124daf4163bff8d1012fb1fdb9ce0166b9845"
+    sha256 cellar: :any,                 sonoma:       "79dbf7dcfd23168817af9383b5a17a8fd908be0f106d0ec920327438625dc588"
+    sha256 cellar: :any,                 ventura:      "f60a98b1d90f1480b60fff0c121857e470a680115cead8892af69419b48db5be"
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "586959a85569b0cca59fde64c8fcf8dbc38a68a088e0c2beea1f89b17f10abd6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "95ad19e02cfa50d6bb0c737445d3b5b2106e910e1ebd3b58d1066ce6b826a53b"
   end
 
   keg_only :versioned_formula
 
   depends_on "autoconf" => :build
-  depends_on "pkg-config" => :build
-  depends_on arch: :x86_64
+  depends_on "pkgconf" => :build
   depends_on "freetype"
   depends_on "giflib"
 
   uses_from_macos "cups"
   uses_from_macos "unzip"
   uses_from_macos "zip"
+
+  on_macos do
+    depends_on arch: :x86_64
+  end
 
   on_monterey :or_newer do
     depends_on "gawk" => :build
@@ -57,8 +61,14 @@ class OpenjdkAT8 < Formula
       sha256 "31909aa6233289f8f1d015586825587e95658ef59b632665e1e49fc33a2cdf06"
     end
     on_linux do
-      url "https://cdn.azul.com/zulu/bin/zulu7.56.0.11-ca-jdk7.0.352-linux_x64.tar.gz"
-      sha256 "8a7387c1ed151474301b6553c6046f865dc6c1e1890bcf106acc2780c55727c8"
+      on_arm do
+        url "https://cdn.azul.com/zulu/bin/zulu8.82.0.21-ca-jdk8.0.432-linux_aarch64.tar.gz"
+        sha256 "b400f65b63243e41851f20b64374def6ae687de8d15bfb37ef876c2d77548bf5"
+      end
+      on_intel do
+        url "https://cdn.azul.com/zulu/bin/zulu7.56.0.11-ca-jdk7.0.352-linux_x64.tar.gz"
+        sha256 "8a7387c1ed151474301b6553c6046f865dc6c1e1890bcf106acc2780c55727c8"
+      end
     end
   end
 
@@ -163,7 +173,8 @@ class OpenjdkAT8 < Formula
         --with-fontconfig=#{HOMEBREW_PREFIX}
         --with-stdc++lib=dynamic
       ]
-      extra_rpath = rpath(source: libexec/"lib/amd64", target: libexec/"jre/lib/amd64")
+      arch = Hardware::CPU.arm? ? "aarch64" : "amd64"
+      extra_rpath = rpath(source: libexec/"lib"/arch, target: libexec/"jre/lib"/arch)
       ldflags << "-Wl,-rpath,#{extra_rpath.gsub("$", "\\$$$$")}"
     end
     args << "--with-extra-ldflags=#{ldflags.join(" ")}"

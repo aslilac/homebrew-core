@@ -11,6 +11,8 @@ class Javacc < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9095c2d3b973f05a81fc336594a9adcab73f8a65634827167fad98f831719fff"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f625a9b59d0fd505b1d69243c0147c292e4cd354550df5b352bcae140f7a2cbd"
@@ -19,6 +21,7 @@ class Javacc < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "b84312451176ab1a2df3d822798ca872ad17e94463cfa36711a5e2cfc4ff906b"
     sha256 cellar: :any_skip_relocation, ventura:        "ecd5ae75666cee39459c65063a32d4c24a27be79ae2125b12fa3ad5042bcb0d3"
     sha256 cellar: :any_skip_relocation, monterey:       "d4c07d3a5e68b54df0a7de796394bb9d765d9d863249f51e81a1921a38ca89cd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "546e4c009d4fda3ed41b4a229d77059fb613c9558e158a037ddf47f7d6488c49"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "8cfcf0b2f8d787fe06ac54aea4134722f7a4222f17b5402238a37177a0d73cc8"
   end
 
@@ -45,12 +48,12 @@ class Javacc < Formula
     output_file_stem = testpath/"Simple1"
 
     system bin/"javacc", src_file
-    assert_predicate output_file_stem.sub_ext(".java"), :exist?
+    assert_path_exists output_file_stem.sub_ext(".java")
 
     system bin/"jjtree", src_file
-    assert_predicate output_file_stem.sub_ext(".jj.jj"), :exist?
+    assert_path_exists output_file_stem.sub_ext(".jj.jj")
 
     system bin/"jjdoc", src_file
-    assert_predicate output_file_stem.sub_ext(".html"), :exist?
+    assert_path_exists output_file_stem.sub_ext(".html")
   end
 end

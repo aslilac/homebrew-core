@@ -1,8 +1,8 @@
 class Groonga < Formula
   desc "Fulltext search engine and column store"
   homepage "https://groonga.org/"
-  url "https://github.com/groonga/groonga/releases/download/v14.1.0/groonga-14.1.0.tar.gz"
-  sha256 "6507e5003beb5937d0c163959b7722cdf972da26779fd317a59513d29453096a"
+  url "https://github.com/groonga/groonga/releases/download/v15.1.2/groonga-15.1.2.tar.gz"
+  sha256 "98aff53631cc28c6435de88ab82bcf2cbd46f652abecce1cd0e9c0f9984b1670"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -11,12 +11,13 @@ class Groonga < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "a5a2a3460f94f015df0ffa80bfe8df2b6d4d6c0a7223f2162dd37ffb4ecadc39"
-    sha256 arm64_sonoma:  "9547cac3bc8a78c3604011efc0b1baf3b5febfd167db2dbcd338f977f9a245e4"
-    sha256 arm64_ventura: "cac81fb586adbcbed7203f0e3d7b013be78a164dccb26ff0adead711b9aa6278"
-    sha256 sonoma:        "7e16fe04d456e0825ec55ab683e0baf941a22facb123e65268a5c293204e273d"
-    sha256 ventura:       "8a60fee64fd5375f9f0e63728407892f441c1149afdbdf32b5b73f23ace13a7f"
-    sha256 x86_64_linux:  "2b954a4e967dc4df12f59b7d04b857353bc569696a497e1f816cab1f74a81549"
+    sha256 arm64_sequoia: "21bbbf121d0a2d3db1739d801d3f7b5d3cea5d005ff36ca3e838e2b2b3a77b1d"
+    sha256 arm64_sonoma:  "60950b1d9fdf46c40fa396cd243c2be11c19741138cb16854d20b1ceef14f89e"
+    sha256 arm64_ventura: "bddcc60b1e52789749d91ba306abc2b7c0f2039d6e7369d922cd7f9f844056eb"
+    sha256 sonoma:        "adf141a90f6eceb2fe73a8a14010574ca746afcbf1e10b1baffce82d0025f2e5"
+    sha256 ventura:       "fd522e2125a74af23f7eaaee3be76c9f2aa521e4c43c335bad0cfb5aa3075b93"
+    sha256 arm64_linux:   "cfa2db7e64e36835ab38a891c9850b3b7c94d79365d308efc8250f03ae5a6fb7"
+    sha256 x86_64_linux:  "f7786711f1c731f963364c88b815ca1952672a80121a29efbfeeb3db8c9ec5eb"
   end
 
   head do
@@ -26,7 +27,7 @@ class Groonga < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "mecab"
   depends_on "mecab-ipadic"
   depends_on "msgpack"

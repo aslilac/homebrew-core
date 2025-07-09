@@ -7,6 +7,8 @@ class Gimmecert < Formula
   sha256 "eb00848fab5295903b4d5ef997c411fe063abc5b0f520a78ca2cd23f77e3fd99"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, all: "ce6b72c7aa229c3fd7341fa4c132c47b341bc8a972e70b0db0a94e57304b50b5"
@@ -40,9 +42,9 @@ class Gimmecert < Formula
     output2 = shell_output(bin/"gimmecert status")
     assert_match "No server certificates have been issued", output2
 
-    assert_predicate testpath/".gimmecert/ca/level1.key.pem", :exist?
-    assert_predicate testpath/".gimmecert/ca/level1.cert.pem", :exist?
-    assert_predicate testpath/".gimmecert/ca/chain-full.cert.pem", :exist?
+    assert_path_exists testpath/".gimmecert/ca/level1.key.pem"
+    assert_path_exists testpath/".gimmecert/ca/level1.cert.pem"
+    assert_path_exists testpath/".gimmecert/ca/chain-full.cert.pem"
   end
 end
 

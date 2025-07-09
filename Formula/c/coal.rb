@@ -1,9 +1,10 @@
 class Coal < Formula
   desc "Extension of the Flexible Collision Library"
   homepage "https://github.com/coal-library/coal"
-  url "https://github.com/coal-library/coal/releases/download/v3.0.0/coal-3.0.0.tar.gz"
-  sha256 "6a9cbd4684e907fd16577e5227fbace06ac15ca861c0846dfe5bc81e565fb1e7"
+  url "https://github.com/coal-library/coal/releases/download/v3.0.1/coal-3.0.1.tar.gz"
+  sha256 "b9609301baefbbf45b4e0f80865abc2b2dcbb69c323a55b0cd95f141959c478c"
   license "BSD-2-Clause"
+  revision 2
   head "https://github.com/coal-library/coal.git", branch: "devel"
 
   livecheck do
@@ -12,12 +13,13 @@ class Coal < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "f153b19d41512585b847003ef4f1586ffb75ed3517da98396e84393aaa27e44e"
-    sha256 cellar: :any,                 arm64_sonoma:  "1c506cc8bb8da18b2a51c6fb6e12752168a330b499ee2a0d2935f01743fc11e9"
-    sha256 cellar: :any,                 arm64_ventura: "271b8781233c2a06d72a9fee9cb2dca85366f0ae69b4f566c3b770ccfffe74e6"
-    sha256 cellar: :any,                 sonoma:        "84f719d46ed7c2c09ca17eac6d7e05c0258faf74f23d95a6a779c06cae35b7bc"
-    sha256 cellar: :any,                 ventura:       "31b33f22e75a9afd53c5fe8c4fb2959b62af1e61c9233e11887eb4186222c131"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5e9bf476dc22586356da2407ee3b2e0efb1985605eaa6cffb18890c11a3e3361"
+    sha256 cellar: :any,                 arm64_sequoia: "93c89b2873259086699a57459a415d65ddd1dfce265bd6c7de2ee8363eb150b7"
+    sha256 cellar: :any,                 arm64_sonoma:  "9f81a45edd66ba140010c12490a6eb8b80ca8a54d6f83543493114196fb7f84a"
+    sha256 cellar: :any,                 arm64_ventura: "620f933d21f49c2c6bf839d51fec7a422b121954a1ab38afee108a23be4bf384"
+    sha256 cellar: :any,                 sonoma:        "f72dc67fe2f95b217a2c38e24f1d4f72c9a2bc65df0e0d71673fe1186a054f4f"
+    sha256 cellar: :any,                 ventura:       "7c7b5a8a8333d93f7dcd39f71c34c1c647c9c4f9d699d7dcccb6d3fbb0024eb8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "96cf06bd85207f780e6129df13d3c39fa76849dd9ffd5b200910905af72bfbc6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b0df7e903422fecd27c66c998d6b7ed694292527e5089d973bf6d75635ec60ce"
   end
 
   depends_on "cmake" => :build
@@ -29,10 +31,10 @@ class Coal < Formula
   depends_on "eigen"
   depends_on "eigenpy"
   depends_on "octomap"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   def python3
-    "python3.12"
+    "python3.13"
   end
 
   def install

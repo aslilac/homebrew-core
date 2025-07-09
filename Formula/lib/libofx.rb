@@ -5,6 +5,8 @@ class Libofx < Formula
   sha256 "1ca89ff7d681c9edad312172ac464231a8de686e653213612f9417492cef0d37"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "e4b8c683f7d31032a59fc92af99e162ed7b91d250b05ddb8f22f2a92d44ae571"
     sha256 arm64_sonoma:   "ed293b1aa272081ac72e90ed0fde58477750798dccfc1daaa7c46813d950f268"
@@ -16,6 +18,7 @@ class Libofx < Formula
     sha256 monterey:       "aa32a1500793c8add1ae49017887b2288f5c0d921d4db3681c1150f854da1038"
     sha256 big_sur:        "8e0d20d6e6f664a559e2e4cd665562b514b17ec491fe9a433bc8b85fb4ba221e"
     sha256 catalina:       "08593e309b9133e1b534200b44ed4a87446fa305f63dfdc79e1de93a9ac22835"
+    sha256 arm64_linux:    "c388005e8748764a55e879ecad1fd1ee36f004050585ade3f76103b861fba479"
     sha256 x86_64_linux:   "88107478b5837f83a6f9f6f99279b3fa10c9465b7fca30fb52ff51a6b07f1271"
   end
 

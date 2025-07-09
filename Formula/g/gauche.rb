@@ -13,6 +13,8 @@ class Gauche < Formula
     end
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "34e7cab7687a3fad3c7a4e24cc869f71db411c4b9b83ca93daab9b3f205ae828"
     sha256 arm64_sonoma:   "090ea0130482168c2f2c8ba1bce87c9b3e2c6cb5066dd89d311848a8d5b9a742"
@@ -21,6 +23,7 @@ class Gauche < Formula
     sha256 sonoma:         "723aa7870618f0a7591472266d84817873b8f6956c3d68200bfa95b2cd62547d"
     sha256 ventura:        "2fb60084dd73329026216d0ee1177d4a62ff5bbb6e2466ed6a6fc53816513edc"
     sha256 monterey:       "2b079d1c270ec9ea36caed1f2762a88120f61326f2b81a67128aef54304d9295"
+    sha256 arm64_linux:    "94f40a53316e570db2ded529c5cf1be6f4cfed7de7c2bb51085cd29604db80f6"
     sha256 x86_64_linux:   "bdff2646649040e73891540a312c8280bfed6a5427a8a5748b57fee8560c1c63"
   end
 

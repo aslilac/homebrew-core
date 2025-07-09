@@ -10,6 +10,8 @@ class RandomizeLines < Formula
     regex(/href=.*?rl[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8ec08636ac3e5aa68060b1f43a1bd6a5cad418f489a4bbc9b9554053aa06188e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "194a2a869a8ecdeab95baf1f6b5f9d5d13c12eba7b6acd1378817da3e01a9740"
@@ -25,6 +27,7 @@ class RandomizeLines < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "2d539a346c5a41f2b20773d8373e61f91a5d7e5b72b6d6dde7bd7c99dae64b6e"
     sha256 cellar: :any_skip_relocation, sierra:         "19f42b1930e7a523778b18834c9615eb3c891ee490a1cb41a73f61bc47c336f6"
     sha256 cellar: :any_skip_relocation, el_capitan:     "e61c986a537a9f0c77b1382add72096e72f7447ef50ac8acc01320014681e691"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "764e49f56b35776d575f1c96474373185c667956751c0c3b829680038a32e9d9"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5d3ca6029fbd900632e5f09b68c583b1f441cf1bb711041ab00d519ee8fd323a"
   end
 

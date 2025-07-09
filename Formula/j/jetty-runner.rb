@@ -1,8 +1,8 @@
 class JettyRunner < Formula
   desc "Use Jetty without an installed distribution"
   homepage "https://jetty.org/"
-  url "https://search.maven.org/remotecontent?filepath=org/eclipse/jetty/jetty-runner/11.0.24/jetty-runner-11.0.24.jar"
-  sha256 "4f00fac144cc16ef3e628e678d808f6979a662e39f55087ed124b59bfcdb0933"
+  url "https://search.maven.org/remotecontent?filepath=org/eclipse/jetty/jetty-runner/11.0.25/jetty-runner-11.0.25.jar"
+  sha256 "40549bd12c0b8818ad1c93e588d3482f9f110a182405684563f5d4e381958993"
   license any_of: ["Apache-2.0", "EPL-1.0"]
 
   livecheck do
@@ -11,8 +11,12 @@ class JettyRunner < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "a758369d5fc8879cea803b07635e425dba98faeca8367e5f3e7d0a9dd396f44d"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "09bbc60a77038dc30b859e15ef151f4766c8d301950fd5d8c55d7d57a31e7823"
   end
+
+  # See: https://github.com/jetty/jetty.project/issues/1905#issuecomment-409662335
+  deprecate! date: "2018-08-02", because: :deprecated_upstream
 
   depends_on "openjdk"
 

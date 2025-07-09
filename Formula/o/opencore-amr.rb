@@ -10,6 +10,8 @@ class OpencoreAmr < Formula
     regex(%r{url=.*?/opencore-amr[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "48a7944b5baf1d23777ff16d0f1b44ba3fb1872728e578e245993019895b0075"
     sha256 cellar: :any,                 arm64_sonoma:   "b9598108fb81e647206266d1ebfd43872454df8d9eb8292e09b550fb190e5c4f"
@@ -21,6 +23,7 @@ class OpencoreAmr < Formula
     sha256 cellar: :any,                 monterey:       "cc0a074376ddcb0b30ab94027b603f8228fa951e35fda58b7bd274ae2efb4206"
     sha256 cellar: :any,                 big_sur:        "f235307e30e1ff626c14009955d924826d86cf92518ea36707c5e63469d29a8c"
     sha256 cellar: :any,                 catalina:       "afe967f68360acc0d6c3aa40853170f228499bf6917d13257ab3b90a341d1968"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "8119c11b0478615bb8b9942f67e333a8947abea04766d36c3b38deb175c90a8d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "63626c6d52b176f1289a792a8dea8845104f85e86538054e88efadbf920a9835"
   end
 

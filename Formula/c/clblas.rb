@@ -6,6 +6,8 @@ class Clblas < Formula
   license "Apache-2.0"
   revision 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "e01b9a3b09dc996c6feb5b474e99f463b4079417aa0c24c69d5ace2cb896b036"
     sha256 cellar: :any,                 arm64_sonoma:   "932e8b3b551e5d7e9bd274802aed00a7de5844a2fa3ead6b52647ffb7e2bdbed"
@@ -16,6 +18,7 @@ class Clblas < Formula
     sha256 cellar: :any,                 ventura:        "d8bc99eb36031d7e6f662b40b2d8ef98a1d60fe414959c2ec5f23c590ebcf353"
     sha256 cellar: :any,                 monterey:       "2be6e0730bf2740496eb4b90b90077ce65185ab8fc1c0714edb8ea834904a8ec"
     sha256 cellar: :any,                 big_sur:        "3f4f8ceae96d4b24049e7b81e89f7bc5785bcd7968bf5378fb54cafd259b6d92"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b645eb13199f77329df60710febfdbf4ca896fab88df65e3c03b2c4e221fc675"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "afc8e13fe7b5d465840eac248a461975d7fd33b89ba74a238cb743c1ac6c7c1f"
   end
 

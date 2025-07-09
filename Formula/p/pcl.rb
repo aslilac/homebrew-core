@@ -1,35 +1,24 @@
 class Pcl < Formula
   desc "Library for 2D/3D image and point cloud processing"
   homepage "https://pointclouds.org/"
+  url "https://github.com/PointCloudLibrary/pcl/archive/refs/tags/pcl-1.15.0.tar.gz"
+  sha256 "e90c981c21e89c45201c5083db8308e099f34c1782f92fd65a0a4eb0b72c6fbf"
   license "BSD-3-Clause"
   revision 1
   head "https://github.com/PointCloudLibrary/pcl.git", branch: "master"
 
-  stable do
-    url "https://github.com/PointCloudLibrary/pcl/archive/refs/tags/pcl-1.14.1.tar.gz"
-    sha256 "5dc5e09509644f703de9a3fb76d99ab2cc67ef53eaf5637db2c6c8b933b28af6"
-
-    # Backport fix for Boost 1.86.0
-    patch do
-      url "https://github.com/PointCloudLibrary/pcl/commit/c6bbf02a084a39a02d9e2fc318a59fe2f1ff55c1.patch?full_index=1"
-      sha256 "e3af29b8b70ef9697d430a1af969c8501fe597d2cc02025e5f9254a0d6d715cd"
-    end
-  end
-
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "7a056d0967f7edd1dcdbb11e32c0c8371ea8c0b8f240023f44b389c2b95e76d1"
-    sha256 cellar: :any,                 arm64_ventura:  "25f45fec0e436ebcc1e331877b251782844afc78e28c237bedd7f3ba06cfa75c"
-    sha256 cellar: :any,                 arm64_monterey: "b86c9e27adab7ac013780786c585126d6f0a2d97497600b8731f209177fb9faf"
-    sha256 cellar: :any,                 sonoma:         "c336ac4d50edbfc9196b6736b8796f8ec65a854724f6a974cbec56e4bc2a6533"
-    sha256 cellar: :any,                 ventura:        "2c84f410098d125c7d4ab95b334dba18d8eeb8f6c040f07b3fd79299f3c92355"
-    sha256 cellar: :any,                 monterey:       "f393fce3941f2f7934edcfcd066148ee7e2ba3856d50dd303582a9347eada63a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6c54f3593d2d799ca37f2b7f9ef34a1d8f2a4e79930ae49d209343717bf0e2d6"
+    sha256 cellar: :any,                 arm64_sonoma:  "03fde7c94634272d2b7b00d03942edbfd0a522be1dccb79d6cc7c5bbc8a31f42"
+    sha256 cellar: :any,                 arm64_ventura: "747c17ba17c637e726e7bd4016af13867223c979a513705293ca6f912b2db62a"
+    sha256 cellar: :any,                 sonoma:        "43a7b7cb8a0712dc1db29cdb073242ef20200ae6883eca9616c9ada9f0b00367"
+    sha256 cellar: :any,                 ventura:       "174bdea4b9e66ef9e3a8f5887f65dbfa3f9edf7cb3808860b379d2df11cdc25e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a5d708d8ddda9491022bea26195a43f176f7bf4a1d89d1b09a160c5c41a154e2"
   end
 
   depends_on "cmake" => [:build, :test]
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "boost"
-  depends_on "cminpack"
+  depends_on "cjson"
   depends_on "eigen"
   depends_on "flann"
   depends_on "glew"
@@ -42,6 +31,7 @@ class Pcl < Formula
   depends_on "vtk"
 
   on_macos do
+    depends_on "freetype"
     depends_on "libomp"
   end
 
@@ -90,7 +80,7 @@ class Pcl < Formula
     assert_match "tiff files", shell_output("#{bin}/pcl_tiff2pcd -h", 255)
     # inspired by https://pointclouds.org/documentation/tutorials/writing_pcd.html
     (testpath/"CMakeLists.txt").write <<~CMAKE
-      cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+      cmake_minimum_required(VERSION 4.0 FATAL_ERROR)
       project(pcd_write)
       find_package(PCL 1.2 REQUIRED)
       include_directories(${PCL_INCLUDE_DIRS})
@@ -137,7 +127,7 @@ class Pcl < Formula
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "./build/pcd_write"
-    assert_predicate (testpath/"test_pcd.pcd"), :exist?
+    assert_path_exists testpath/"test_pcd.pcd"
     output = File.read("test_pcd.pcd")
     assert_match "POINTS 2", output
     assert_match "1 2 3", output

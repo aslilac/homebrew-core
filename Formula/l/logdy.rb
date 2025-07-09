@@ -1,17 +1,18 @@
 class Logdy < Formula
   desc "Web based real-time log viewer"
   homepage "https://logdy.dev"
-  url "https://github.com/logdyhq/logdy-core/archive/refs/tags/v0.13.1.tar.gz"
-  sha256 "aaa5b05b13c52d58ea840c4e54b86315df516b8f0131145379040311ea8117f0"
+  url "https://github.com/logdyhq/logdy-core/archive/refs/tags/v0.17.1.tar.gz"
+  sha256 "bd5db124e736e42d3671697787a26b354e0be6e787a95e69c054ad873058fcec"
   license "Apache-2.0"
+  head "https://github.com/logdyhq/logdy-core.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a68c4abfb604f793b9073993c79242aa020a479e8bbe1f36fc758189163d4c76"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a68c4abfb604f793b9073993c79242aa020a479e8bbe1f36fc758189163d4c76"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a68c4abfb604f793b9073993c79242aa020a479e8bbe1f36fc758189163d4c76"
-    sha256 cellar: :any_skip_relocation, sonoma:        "4fa1aadfd4b1f56d083b44cbcb9e82aaa78ea18e3773d1dce93f0d0b0879c2e7"
-    sha256 cellar: :any_skip_relocation, ventura:       "4fa1aadfd4b1f56d083b44cbcb9e82aaa78ea18e3773d1dce93f0d0b0879c2e7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "69f015fc0b94b74132eb8d846a33fefc6d207e4f902eb27f7d9b0d1b22431994"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9d3eeee30fcc05e4c7265ee505fd23095dff74d6154866ddeeaeaa76ef5d240b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9d3eeee30fcc05e4c7265ee505fd23095dff74d6154866ddeeaeaa76ef5d240b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "9d3eeee30fcc05e4c7265ee505fd23095dff74d6154866ddeeaeaa76ef5d240b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "282b0cb5c348d5d7bd00ba2c20df88ec44f27ae6d18bf38a4f8b3bbfda8a1859"
+    sha256 cellar: :any_skip_relocation, ventura:       "282b0cb5c348d5d7bd00ba2c20df88ec44f27ae6d18bf38a4f8b3bbfda8a1859"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d6799e27353bd503dd977227b839131b17ff91a0006562464465eaa6d165a0bf"
   end
 
   depends_on "go" => :build
@@ -19,6 +20,8 @@ class Logdy < Formula
   def install
     ldflags = "-s -w -X main.Version=#{version}"
     system "go", "build", *std_go_args(ldflags:)
+
+    generate_completions_from_executable(bin/"logdy", "completion")
   end
 
   test do

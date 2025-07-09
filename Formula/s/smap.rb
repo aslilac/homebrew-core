@@ -11,6 +11,8 @@ class Smap < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "76fbb860e3293a917a8c0ea81e911cda57c0af6cb4e8cd89afb5c5063e45676f"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "162d821d45208c377855150781facff0c083300805aff8b02303def6c0f107f8"
@@ -28,12 +30,12 @@ class Smap < Formula
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd/..."
+    system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd/smap"
   end
 
   test do
     assert_match "scan report for google.com", shell_output("#{bin}/smap google.com p80,443")
     system bin/"smap", "google.com", "-oX", "output.xml"
-    assert_predicate testpath/"output.xml", :exist?
+    assert_path_exists testpath/"output.xml"
   end
 end

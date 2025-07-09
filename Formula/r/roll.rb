@@ -5,6 +5,8 @@ class Roll < Formula
   sha256 "399bd4958d92f82fb75ff308decb2d482c9a8db80234014f6d42f6513b144179"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "fb1ee4685b24f925ca41abe63c8e7703a9656b96088c4fba6b483cfcdeea9e76"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7a4fb62e0cf82c19e312fa67b94af3ffecae251323a0a327fd7b99aec74a85e6"
@@ -16,6 +18,7 @@ class Roll < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "6f3f061734bc251d233b72aa805dc1cc3d7865e276c3e3c6c75854686ac06fdb"
     sha256 cellar: :any_skip_relocation, big_sur:        "123c5c66e945afdfac73b0cf5b553df895c8b03ac22c32124ab6ff98e52e3478"
     sha256 cellar: :any_skip_relocation, catalina:       "c62fd4ce38c97e3f2a41203420feda3601359815a4cf20a6d68e3a9aa37bdcf2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "904914c6aeae44b64aa7fe97d2567ec15ee48c0b1dc8700381a8608b20259174"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e98554d4358ec561afd285196543baf10606cfcb0a6b842ba4949cf7b477894d"
   end
 

@@ -5,6 +5,8 @@ class Advancecomp < Formula
   sha256 "b07d77735540409771cbe1b6df165b5151c11bb9c3d8f01290be0ec88ec3498f"
   license "GPL-3.0-only"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5777e7f8547c26b139edefeaf97664e1f8140947043ac1edc932ff03d58eac66"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "847145cf9a8712c77732c65eb448cba870e669606e84a9014cb9757a02a8ed2c"
@@ -13,6 +15,7 @@ class Advancecomp < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "ee89dce9384c81e60d5bd776cc63401e01f3b7ca54b13e95caf08d79fc195640"
     sha256 cellar: :any_skip_relocation, ventura:        "bff1aa324fdb1cbeea5f49d22e5bfd3eb2e9b1d7c59b6735dbdf41e37ca7ba1e"
     sha256 cellar: :any_skip_relocation, monterey:       "0cee2346975f74c9e601ccd07704a820d0aed34751ced2df5df0767d38a7d504"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "58852c7c4a248abf531cd35832281b6c9d4b618826690415687a28f9a05259c3"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f1329faa8c59e53b7570dbed75709d2dc07d3fcbf1ac6610ccee09c817aee056"
   end
 
@@ -24,9 +27,8 @@ class Advancecomp < Formula
   uses_from_macos "zlib"
 
   def install
-    system "autoreconf", "-fiv"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--enable-bzip2", "--prefix=#{prefix}", "--mandir=#{man}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--enable-bzip2", "--mandir=#{man}", *std_configure_args
     system "make", "install"
   end
 

@@ -1,23 +1,22 @@
 class Giza < Formula
   desc "Scientific plotting library for C/Fortran built on cairo"
   homepage "https://danieljprice.github.io/giza/"
-  url "https://github.com/danieljprice/giza/archive/refs/tags/v1.4.1.tar.gz"
-  sha256 "67c8eba2cc44a4eb16ff89b10147fa1a157be5801668391726200735c522faf7"
+  url "https://github.com/danieljprice/giza/archive/refs/tags/v1.5.0.tar.gz"
+  sha256 "d45f1f930b4e4a3c77e0b110b97b732c290d169bf9ae0c3fc7dcd2895c1b3afe"
   license "LGPL-3.0-only"
   head "https://github.com/danieljprice/giza.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "fa14dd38b5754c4b39efc904b9ec559e4d1efc9d93af47ec48c6dde4fd2c6dfd"
-    sha256 cellar: :any,                 arm64_sonoma:   "22cb653beed8d13da143eb46eb02c85923f512a59f28301cbad9d3d3fc461393"
-    sha256 cellar: :any,                 arm64_ventura:  "033d6270f86668e5400734f04b1d35dbeaac4ebeb66179ecb679a4a29af0f1fe"
-    sha256 cellar: :any,                 arm64_monterey: "3cae4c7547de87c4dea58f0c10581b4419676a70a52791fbaaeade23617dd404"
-    sha256 cellar: :any,                 sonoma:         "0a9de6e1beb8f7d26b3da09236d5f3d072548ad95e44b3a9ece430e88d4bef75"
-    sha256 cellar: :any,                 ventura:        "3ffc862d71532358649df9236f1e25f6889ccd6d16e16fda16881db6e7ac22f8"
-    sha256 cellar: :any,                 monterey:       "59f5440bf93bb86b074965904d9baaeca01e44d4825c71059085a7f8e44b84c7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d59a3cb64df7fae5c3b094273d6dcfd0b455e05216bf251b0b116b8a4f0e3dfc"
+    sha256 cellar: :any,                 arm64_sequoia: "d5cc5b8ea3baf6cb3405ec37acb4ef91623456492cd0222787bf9461272d4e80"
+    sha256 cellar: :any,                 arm64_sonoma:  "77d5fc21407f015635c46f41f0bdcb5aabbb320c967f30d3eafe639f9b1d9b71"
+    sha256 cellar: :any,                 arm64_ventura: "bdd8d667ec2cd0d4553748b79f8e77f41a4740f7bae0e584e0981274f3def56d"
+    sha256 cellar: :any,                 sonoma:        "b4eed7ab19e5b3d979c9e3329d764ad7059b4d65b6ae3fcf75ce2a6159cf2f7c"
+    sha256 cellar: :any,                 ventura:       "0e7d7bed8f2db32709a52169fb98bd47c57c361138364e4dbc7a4a41604273e5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7d695e84283aa5d04c6565ef04815a27020c0011ffdf3f6a58e86565a08aef9d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ce3e71bc56a0ebaaf18f8649b0b92eec8e51149ebc6a2ce5bdd9ffce0e5c6cdf"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "cairo"
   depends_on "fontconfig"
@@ -26,7 +25,7 @@ class Giza < Formula
   depends_on "libx11"
 
   def install
-    system "./configure", "--disable-silent-rules", *std_configure_args.reject { |s| s["--disable-debug"] }
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
 
     # Clean up stray Makefiles in test folder

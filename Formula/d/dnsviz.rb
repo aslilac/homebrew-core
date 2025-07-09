@@ -3,18 +3,21 @@ class Dnsviz < Formula
 
   desc "Tools for analyzing and visualizing DNS and DNSSEC behavior"
   homepage "https://github.com/dnsviz/dnsviz/"
-  url "https://files.pythonhosted.org/packages/30/26/57a692b8f913ae22450f5b1dde5c52fe9a262c3e678eb63a4bdc0e464781/dnsviz-0.11.0.tar.gz"
-  sha256 "3e93055950fc7837a40058f06190b0d9d7392332ea1aa0da6f9ff00c3b076d3e"
+  url "https://files.pythonhosted.org/packages/59/91/aa152739fea36d4456fbcc71a26333ffef587526d722c10c281ab12a6a35/dnsviz-0.11.1.tar.gz"
+  sha256 "203b1aa2e3aa09af415a96a0afc98eef4acf845ab8af57bf9f7569bd13161717"
   license "GPL-2.0-or-later"
+  revision 1
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "7c45ee34909c224567abf12553318e640f7571a9bc180d7fa772efc915a5d2dc"
-    sha256 cellar: :any,                 arm64_sonoma:  "2775217da4980d520e017a024d9f0640a5c3dd8d65c8f15134e18edb1d0823fb"
-    sha256 cellar: :any,                 arm64_ventura: "658087f1a301001e35345cc79528fe8c990f0abc0d8b25fe11ee9bad935dc59f"
-    sha256 cellar: :any,                 sonoma:        "95ab3f0f1a91635998ad85cbcd8f2324fea9c29559a201d7b00ed9ed7a0af5ae"
-    sha256 cellar: :any,                 ventura:       "146eea3d7c4dfc1c96cdc0eed1011df849ab3ebfbb6833e0a6a76d43ea7dbbc2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0f1ed73bf2095d6d7527ed2be53ee8675011a45c96d34f01a4ece50a702604bd"
+    sha256 cellar: :any,                 arm64_sequoia: "caed4a974f2a1111d2a16262e543e453902627186de111aaa61ddb8032dd35a1"
+    sha256 cellar: :any,                 arm64_sonoma:  "1581924ecb9d02d792a419193ac546d9bd23cf9eebb6c24036057215bb426155"
+    sha256 cellar: :any,                 arm64_ventura: "5298cc8506b62c7a0ab4d777bac991fb323e4fb7aeb3df58c9cdbe30a5705758"
+    sha256 cellar: :any,                 sonoma:        "868cb74462053d69ac21313706d77ee77784e0f16bc1bfa9f4954c75f786d492"
+    sha256 cellar: :any,                 ventura:       "ce1d41d45c74b5fd99a9304908e6f2e0c1b96b6e4c1885092798125107c6af0b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "a2bf1c4ac13ab45adc76818b196bc0a29cdb15bebb708418cfe1ebae5c851348"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0c57ff69d2c3f50edf3a9ae8c07f2d1d0ba7c0d72dc697c58b46363bb3c3895a"
   end
 
   depends_on "bind" => [:build, :test]
@@ -27,8 +30,8 @@ class Dnsviz < Formula
   depends_on "python@3.13"
 
   resource "dnspython" do
-    url "https://files.pythonhosted.org/packages/37/7d/c871f55054e403fdfd6b8f65fd6d1c4e147ed100d3e9f9ba1fe695403939/dnspython-2.6.1.tar.gz"
-    sha256 "e8f0f9c23a7b7cb99ded64e6c3a6f3e701d78f50c55e002b839dea7225cff7cc"
+    url "https://files.pythonhosted.org/packages/b5/4a/263763cb2ba3816dd94b08ad3a33d5fdae34ecb856678773cc40a3605829/dnspython-2.7.0.tar.gz"
+    sha256 "ce9c432eda0dc91cf618a5cedf1a4e142651196bbcd2c80e89ed5a907e5cfaf1"
   end
 
   resource "pygraphviz" do
@@ -50,9 +53,9 @@ class Dnsviz < Formula
       system bin/"dnsviz", "probe", "-d", "0",
         "-r", "example.com-probe-auth.json",
         "-o", "example.com.json"
-      system bin/"dnsviz", "graph", "-r", "example.com.json", "-Thtml", "-o", "/dev/null"
-      system bin/"dnsviz", "grok", "-r", "example.com.json", "-o", "/dev/null"
-      system bin/"dnsviz", "print", "-r", "example.com.json", "-o", "/dev/null"
+      system bin/"dnsviz", "graph", "-r", "example.com.json", "-Thtml", "-o", File::NULL
+      system bin/"dnsviz", "grok", "-r", "example.com.json", "-o", File::NULL
+      system bin/"dnsviz", "print", "-r", "example.com.json", "-o", File::NULL
     end
   end
 end

@@ -14,17 +14,17 @@ class BcGh < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "60a78a50e4599775dd214f3c04662a918f0ca3ba7a4329e55334b8839f746bb1"
     sha256 cellar: :any_skip_relocation, sonoma:        "523f2085ce15b58bd77afc8324da625747be012b5706135c567d51a45ce906fb"
     sha256 cellar: :any_skip_relocation, ventura:       "ac2490db545515f79aea51d3433aa0bedef36f220fb0948851921c63cf5d82c9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c3c909b75dd473d2d9f9e7a266a485c23867721b4e1c08b41c68225ceccb5ac2"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "99d223ee8690ef3a798c6c342faa78b304230ea30cb4957ce7e06b89fc213866"
   end
 
-  # TODO: keg_only :provided_by_macos (replaced GNU bc since Ventura)
-  keg_only :shadowed_by_macos
+  keg_only :provided_by_macos # since Ventura
 
   depends_on "pkgconf" => :build
 
   uses_from_macos "libedit"
 
-  # TODO: conflicts_with "bc", because: "both install `bc` and `dc` binaries"
+  conflicts_with "bc", because: "both install `bc` and `dc` binaries"
 
   def install
     # https://git.gavinhoward.com/gavin/bc#recommended-optimizations
@@ -44,6 +44,6 @@ class BcGh < Formula
 
   test do
     system bin/"bc", "--version"
-    assert_match "2", pipe_output(bin/"bc", "1+1\n")
+    assert_match "2", pipe_output(bin/"bc", "1+1\n", 0)
   end
 end

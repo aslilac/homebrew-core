@@ -8,6 +8,8 @@ class Thefuck < Formula
   license "MIT"
   head "https://github.com/nvbn/thefuck.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 5
     sha256 cellar: :any_skip_relocation, arm64_sequoia: "e9b85cc4f5627d8e8df33c99af43c0a9871b07ffc2eb9d1ff9b6d03e1cfcce52"
@@ -15,6 +17,7 @@ class Thefuck < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "881e92e475fe094f95d2a8c29012383bb85366cb4dbcd5551557f8aef8702229"
     sha256 cellar: :any_skip_relocation, sonoma:        "90e149f15d0eb582f0a1eee2318cc26ee5872696b9739f784262f2c674ac3c74"
     sha256 cellar: :any_skip_relocation, ventura:       "a617ea4dee27842f3c8036b52a5f7e5c94ccd2a3bceb879daa310e53582e25a3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9d9e84aaaf57c182157cd816bae166c2cdecf3b85e9c281251f0132b6d331e56"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "db78af05631768ac7364dffaaf9782679d837b882d6dae9ae9dc8e020366b5cd"
   end
 

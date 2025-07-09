@@ -10,10 +10,13 @@ class Opentsdb < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
-    sha256 cellar: :any_skip_relocation, sonoma:  "1e94a2ce5cc95c944f5763df3442cc2fe71d12279f134b0a051549c6b4bd902a"
-    sha256 cellar: :any_skip_relocation, ventura: "022671a452bff9bacb3c84213f26adfb9d4fc50bdfbd28e2997262f6f5936607"
+    sha256 cellar: :any_skip_relocation, sonoma:       "1e94a2ce5cc95c944f5763df3442cc2fe71d12279f134b0a051549c6b4bd902a"
+    sha256 cellar: :any_skip_relocation, ventura:      "022671a452bff9bacb3c84213f26adfb9d4fc50bdfbd28e2997262f6f5936607"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "8c51dd6ebd008e6868a745d85dfe01374ef3b4e3ada22a54d4015d89e7973443"
   end
 
   depends_on "autoconf" => :build
@@ -33,11 +36,11 @@ class Opentsdb < Formula
     with_env(JAVA_HOME: Language::Java.java_home("1.8")) do
       ENV.prepend_path "PATH", Formula["python@3.13"].opt_libexec/"bin"
       system "autoreconf", "--force", "--install", "--verbose"
-      system "./configure", *std_configure_args,
-                            "--disable-silent-rules",
+      system "./configure", "--disable-silent-rules",
+                            "--localstatedir=#{var}/opentsdb",
                             "--mandir=#{man}",
                             "--sysconfdir=#{etc}",
-                            "--localstatedir=#{var}/opentsdb"
+                            *std_configure_args
       system "make"
       bin.mkpath
       (pkgshare/"static/gwt/opentsdb/images/ie6").mkpath
@@ -58,7 +61,7 @@ class Opentsdb < Formula
     etc.install pkgshare/"etc/opentsdb"
     (pkgshare/"plugins/.keep").write ""
 
-    (bin/"start-tsdb.sh").write <<~EOS
+    (bin/"start-tsdb.sh").write <<~SH
       #!/bin/sh
       exec "#{opt_bin}/tsdb" tsd \\
         --config="#{etc}/opentsdb/opentsdb.conf" \\
@@ -69,7 +72,7 @@ class Opentsdb < Formula
         --zkbasedir=/hbase \\
         --auto-metric \\
         "$@"
-    EOS
+    SH
     (bin/"start-tsdb.sh").chmod 0755
 
     libexec.mkpath
@@ -106,7 +109,7 @@ class Opentsdb < Formula
     ENV["HBASE_CONF_DIR"] = testpath/"conf"
     ENV["HBASE_PID_DIR"]  = testpath/"pid"
 
-    system "#{Formula["hbase"].opt_bin}/start-hbase.sh"
+    system Formula["hbase"].opt_bin/"start-hbase.sh"
     begin
       sleep 10
 
@@ -121,7 +124,11 @@ class Opentsdb < Formula
       end
       sleep 15
 
-      pipe_output("nc localhost 4242 2>&1", "put homebrew.install.test 1356998400 42.5 host=webserver01 cpu=0\n")
+      TCPSocket.open("localhost", 4242) do |sock|
+        sock.puts("put homebrew.install.test 1356998400 42.5 host=webserver01 cpu=0\n")
+      ensure
+        sock.close
+      end
 
       system bin/"tsdb", "query", "1356998000", "1356999000", "sum",
              "homebrew.install.test", "host=webserver01", "cpu=0"

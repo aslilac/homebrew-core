@@ -1,8 +1,8 @@
 class Pixman < Formula
   desc "Low-level library for pixel manipulation"
   homepage "https://cairographics.org/"
-  url "https://cairographics.org/releases/pixman-0.44.0.tar.gz"
-  sha256 "89a4c1e1e45e0b23dffe708202cb2eaffde0fe3727d7692b2e1739fec78a7dac"
+  url "https://cairographics.org/releases/pixman-0.46.2.tar.gz"
+  sha256 "3e0de5ba6e356916946a3d958192f15505dcab85134771bfeab4ce4e29bbd733"
   license "MIT"
 
   livecheck do
@@ -11,17 +11,18 @@ class Pixman < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "b26be1b25cf0bdda8c0d59d991ddfa34a3c220c42a3008872491c5e83973485c"
-    sha256 cellar: :any,                 arm64_sonoma:  "3c7d27ea7cc15c0283badcc09ee681c7d34aa368d1f73a078a616514e94dface"
-    sha256 cellar: :any,                 arm64_ventura: "375eefc10510f6061e00967ca595cdadce5a42540ed54665f8fe1220ce50b338"
-    sha256 cellar: :any,                 sonoma:        "95af491e269b608248d34c4dbc31a8bd3d06bb02b36a7519c44521e184ee8459"
-    sha256 cellar: :any,                 ventura:       "ab1538d1bd569f5183a9482e6f3399b5342bf9c5d5634c8dafc1ae056a0c1877"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7cf37e617951c3acc3f85ccb404e76be4a0e3b62a92467126a6448743530af5c"
+    sha256 cellar: :any,                 arm64_sequoia: "562fd713cba6bd2d1b67efc0985e25a0540243c6af8bcfb1add2c59e79a6a4c6"
+    sha256 cellar: :any,                 arm64_sonoma:  "c987aaa3c13f36ba7f1d09b7c6e1551caca2b766a8a3483ee78f1be6af099904"
+    sha256 cellar: :any,                 arm64_ventura: "d95aaa640c1545ca252fc63356c15ac1922cdf12a1b3b53c0a7cc81d37f56d6b"
+    sha256 cellar: :any,                 sonoma:        "e36b4e62524a998dfcba997b3e827537ef8179df9f9c558e203476cd264e2c9f"
+    sha256 cellar: :any,                 ventura:       "76bf47b17df80924d7e3e181756bc4b626726fb3edbb64712f8efaf3a9084390"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b0348b9a6b322df730a5b2d6486f48ab5ffa7417bfb7d82470159c8c25f3bd9e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dae8493d70813d203b6e05abbf9297edff4c5b94320fe74492198f9169930f09"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :test
+  depends_on "pkgconf" => :test
 
   def install
     system "meson", "setup", "build", *std_meson_args
@@ -42,8 +43,8 @@ class Pixman < Formula
       }
     C
 
-    pkg_config_flags = shell_output("pkg-config --cflags --libs pixman-1").chomp.split
-    system ENV.cc, "test.c", "-o", "test", *pkg_config_flags
+    pkgconf_flags = shell_output("pkgconf --cflags --libs pixman-1").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *pkgconf_flags
     system "./test"
   end
 end

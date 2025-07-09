@@ -1,8 +1,8 @@
 class Nsd < Formula
   desc "Name server daemon"
   homepage "https://www.nlnetlabs.nl/projects/nsd/"
-  url "https://www.nlnetlabs.nl/downloads/nsd/nsd-4.10.1.tar.gz"
-  sha256 "c0190f923f0095995f2e6331dacd92c6e1f4d578b880d61690602b43a5acfd84"
+  url "https://www.nlnetlabs.nl/downloads/nsd/nsd-4.12.0.tar.gz"
+  sha256 "f9ecc2cf79ba50580f2df62918efc440084c5bf11057db44c19aa9643cd4b5e8"
   license "BSD-3-Clause"
 
   # We check the GitHub repo tags instead of
@@ -18,16 +18,16 @@ class Nsd < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "7ae36d4553f3fc44b8e502fccf7029a594a6764f03d5881f7e5512641a7d565b"
-    sha256 arm64_sonoma:   "3460116714f6081ea1b1ff74aa6d69af3dcd90c5afdebe393aae19af8d052224"
-    sha256 arm64_ventura:  "6b051779b60b8d878dd094338c58fed35c7a54874297f3039a1c1e196b95e363"
-    sha256 arm64_monterey: "7a814959891aea2529609ab8e88f382956669f2ba69d194c7c4a57bf9085454f"
-    sha256 sonoma:         "cd6d2ed468d4183bcf79002d0f533f01380ba0eea2c606200b69bc4f56104e27"
-    sha256 ventura:        "93bbc4a2bd5b2f7cb8e764c011e262785a06398d5c7a362fe9955422d3c5c4ba"
-    sha256 monterey:       "2a607b26919ffce37e867e790d24bc6920fd6a6a2cb19393dab5f1f64ff0d608"
-    sha256 x86_64_linux:   "202a6511ed192c3cb3409f9ba7c50b8bfcb3dcb887037fe67b7317e34eb1f765"
+    sha256 arm64_sequoia: "85bb70cef58045b06ced5a968940b759002712735aed244bc11332a9f39dcb94"
+    sha256 arm64_sonoma:  "25250277cb9ea1362f84c54ebedb00bf7d0495137bb6cd382837066827088565"
+    sha256 arm64_ventura: "d9bfd250e34039636ce4b0f280f1355b2c1df8fb23a8d1f3fc79a3396dd88aeb"
+    sha256 sonoma:        "46f180636949a9d29fdc7407781738e88e682310d17f75d8a149973c851aba28"
+    sha256 ventura:       "17aaaf7af44e90ff1ed56862b487cff20aa5c07e88a5e062d81f01626bba8418"
+    sha256 arm64_linux:   "74c83fbff5f64a0c06dc293f179c42f09ebef07e2d0053ba175e8d9fb7fbd180"
+    sha256 x86_64_linux:  "5d1dff89d0761927aabd2c62ef96c1e304f1f411ee1b7f454792364c81aadf04"
   end
 
+  depends_on "pkgconf" => :build
   depends_on "libevent"
   depends_on "openssl@3"
 

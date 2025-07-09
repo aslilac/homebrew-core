@@ -26,7 +26,7 @@ class AutoconfAT269 < Formula
 
   keg_only :versioned_formula
 
-  deprecate! date: "2023-12-14", because: :versioned_formula
+  disable! date: "2024-12-14", because: :versioned_formula
 
   depends_on "m4"
   uses_from_macos "perl"
@@ -61,7 +61,7 @@ class AutoconfAT269 < Formula
 
     system bin/"autoconf"
     system "./configure"
-    assert_predicate testpath/"config.status", :exist?
+    assert_path_exists testpath/"config.status"
     assert_match(/\nCC=.*#{ENV.cc}/, (testpath/"config.log").read)
   end
 end

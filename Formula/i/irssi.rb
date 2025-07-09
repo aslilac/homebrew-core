@@ -6,12 +6,12 @@ class Irssi < Formula
   license "GPL-2.0-or-later" => { with: "openvpn-openssl-exception" }
   revision 1
 
-  # This formula uses a file from a GitHub release, so we check the latest
-  # release version instead of Git tags.
   livecheck do
     url :stable
     strategy :github_latest
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 arm64_sequoia: "9f640f1d64cf5331669a1f872ef3f797d4c4360015bba172c9b2ce4c48412453"
@@ -19,6 +19,7 @@ class Irssi < Formula
     sha256 arm64_ventura: "618eb4e0270a79ba93e8a11a190c9650cbf274fb25b029b57c306c236ec68d07"
     sha256 sonoma:        "24ab2a3d9546159460cb4248a74a0548cc63799ca80ab588f52a04a159c19282"
     sha256 ventura:       "f35187d68cac2f55f1208c5ca2a362676e55fff197bea91e1a3720dd9e590f52"
+    sha256 arm64_linux:   "41225f150571644cb4b871859ff86b56eac1188ba6c6694a03c3800c22e7842c"
     sha256 x86_64_linux:  "4af07634acbc8972700abb9dd307360a506032ab34eaf389fbb55780f4cd9781"
   end
 

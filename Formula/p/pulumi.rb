@@ -2,18 +2,20 @@ class Pulumi < Formula
   desc "Cloud native development platform"
   homepage "https://pulumi.io/"
   url "https://github.com/pulumi/pulumi.git",
-      tag:      "v3.141.0",
-      revision: "861144e19a0b41abe7e61eba2750b5cd6747d619"
+      tag:      "v3.181.0",
+      revision: "c53ffb7ac46c37cba575096f5c166dcfee74d282"
   license "Apache-2.0"
   head "https://github.com/pulumi/pulumi.git", branch: "master"
 
+  no_autobump! because: :bumped_by_upstream
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "616969371789911d3c697f2aa00743d17b778a9e5f3ece2d598bc2a5e72eb593"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2adc12171aa681d345c2f870bf261f19d75bf1ab501c18a16dbd907b02bf69ef"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "1bb4e255506fb7cda706be339d23165d7e3965f736b59792c41ddfbf57cb6c84"
-    sha256 cellar: :any_skip_relocation, sonoma:        "6875791c638c85afe2df4bdc5ae93a93179fb15244489a8b39d38271eca0c7cd"
-    sha256 cellar: :any_skip_relocation, ventura:       "2aced33f0a41e7a92fd8970c01bc30d2b3df6d363312c141dacdf9d42616ceb6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "251ede00f2e84ed2605fb08b6f2a4e3d0132a161e219f984e43b17df33ef2754"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a6604b5d903d69162425f509ee98f344f7f0abf9abf6712ee38ffee6ed2a515e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "711af81550b5db7ef504d9c3dd4eb601180c68ca16997fe10bbcf0c1024f74d2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "5e3f5e6aa88b3d651d4d62f888af5329f303065b2de7dcdb54da7be56443ffea"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ecf650819d7d828110e4ae41c69f29b8fce50ba6d5349f86ad590611c2d243cf"
+    sha256 cellar: :any_skip_relocation, ventura:       "76f69423e71d9f9c1ab3046f599e7fe14103dbda65f909fe7d95f4fbbadc397c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "70e44008085084f1e377c9cc4b77677066f201bfe5b265902e64e8e423af7f8e"
   end
 
   depends_on "go" => :build
@@ -36,9 +38,9 @@ class Pulumi < Formula
 
   test do
     ENV["PULUMI_ACCESS_TOKEN"] = "local://"
+    ENV["PULUMI_HOME"] = testpath
     ENV["PULUMI_TEMPLATE_PATH"] = testpath/"templates"
-    system bin/"pulumi", "new", "aws-typescript", "--generate-only",
-                                                     "--force", "-y"
-    assert_predicate testpath/"Pulumi.yaml", :exist?, "Project was not created"
+    assert_match "invalid access token",
+                 shell_output(bin/"pulumi new aws-typescript --generate-only --force --yes 2>&1", 255)
   end
 end

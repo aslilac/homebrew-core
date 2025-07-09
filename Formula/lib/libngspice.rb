@@ -1,23 +1,24 @@
 class Libngspice < Formula
   desc "Spice circuit simulator as shared library"
   homepage "https://ngspice.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/43/ngspice-43.tar.gz"
-  sha256 "14dd6a6f08531f2051c13ae63790a45708bd43f3e77886a6a84898c297b13699"
+  url "https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/44.2/ngspice-44.2.tar.gz"
+  sha256 "e7dadfb7bd5474fd22409c1e5a67acdec19f77e597df68e17c5549bc1390d7fd"
   license :cannot_represent
 
   livecheck do
     formula "ngspice"
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "58d94f62b040d2233be90e43c2c245577b58a7ad26e3061f6c543cc836c7679c"
-    sha256 cellar: :any,                 arm64_sonoma:   "08d34caae24bf2e5922e21bf6cc069fc0104d6a91bec5df245b2c10eda161ea5"
-    sha256 cellar: :any,                 arm64_ventura:  "655107924c134dba8f4d014157a0dcd96a540e477cde0daf572e89606808ee5c"
-    sha256 cellar: :any,                 arm64_monterey: "796bc6f9713683e875d6f8ddf1c34b961269791fa8b3543a3056e49c1b05d819"
-    sha256 cellar: :any,                 sonoma:         "e0a25a456c4fbe11c600fa59edd984502cb26938da52b8a8f94bef8f139e2fbb"
-    sha256 cellar: :any,                 ventura:        "e82c34fa66368d3ad017e5fcb55a38aec99053a4b48181e5ef836c6a1672ac55"
-    sha256 cellar: :any,                 monterey:       "d5d137b9a286bef3d5ce8f9fa82c2886d2a68cc491ed6ddd39116c47116c8a17"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b2f0e80dc6c18dade4045ecca05f3e2824d1eb6c220c26b055272ce9bcd2f75d"
+    sha256 cellar: :any,                 arm64_sequoia: "5a4bc846e0ffc9fa23d9c15509b5cf041de5c5dadcf476ffb167302b84f5bf75"
+    sha256 cellar: :any,                 arm64_sonoma:  "be3d94c10d2554bcc43c71f7e6061005280929a551a6c96e3735dcd6060391d5"
+    sha256 cellar: :any,                 arm64_ventura: "63fbc552611b183799b6a0837db9c9f06c0d4f215ccfbfb0f6bc699343931804"
+    sha256 cellar: :any,                 sonoma:        "27eb9642d676e757187eff463ea80dcd2c1bbecb0da4558f4d7c98792e8199b5"
+    sha256 cellar: :any,                 ventura:       "9c9b8a825a59abf6e61518cedf952a3bb62929fa175ac23898603a3a7618c063"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "22e30c641b1925c47f728f45f2fedeb7eede9447fb06f6449acb2cf25c24e6c9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "151d4740e5f524966fa99db6635c338e5a70428b45b098c61ca23d38567fdfef"
   end
 
   head do
@@ -32,8 +33,6 @@ class Libngspice < Formula
   uses_from_macos "flex" => :build
 
   def install
-    system "./autogen.sh" if build.head?
-
     args = %w[
       --with-ngshared
       --enable-cider

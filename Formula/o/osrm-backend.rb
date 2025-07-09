@@ -1,44 +1,30 @@
 class OsrmBackend < Formula
   desc "High performance routing engine"
   homepage "https://project-osrm.org/"
+  url "https://github.com/Project-OSRM/osrm-backend/archive/refs/tags/v6.0.0.tar.gz"
+  sha256 "369192672c0041600740c623ce961ef856e618878b7d28ae5e80c9f6c2643031"
   license "BSD-2-Clause"
-  revision 6
   head "https://github.com/Project-OSRM/osrm-backend.git", branch: "master"
-
-  # TODO: Remove `conflicts_with "mapnik"` in release that has following commit:
-  # https://github.com/Project-OSRM/osrm-backend/commit/c1ed73126dd467171dc7adb4ad07864909bcb90f
-  stable do
-    url "https://github.com/Project-OSRM/osrm-backend/archive/refs/tags/v5.27.1.tar.gz"
-    sha256 "52391580e0f92663dd7b21cbcc7b9064d6704470e2601bf3ec5c5170b471629a"
-
-    # Backport fix for missing include. Remove in the next release.
-    # Ref: https://github.com/Project-OSRM/osrm-backend/commit/565959b3896945a0eb437cc799b697be023121ef
-    #
-    # Also add temporary build fix to 'include/util/lua_util.hpp' for Boost 1.85.0.
-    # Issue ref: https://github.com/Project-OSRM/osrm-backend/issues/6850
-    #
-    # Also backport sol2.hpp workaround to avoid a Clang bug. Remove in the next release
-    # Ref: https://github.com/Project-OSRM/osrm-backend/commit/523ee762f077908d03b66d0976c877b52adf22fa
-    patch :DATA
-  end
 
   livecheck do
     url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "ea5f99145c4fe841d95fba33e08a093f88b291e311e219b0b833fd9777caeb9e"
-    sha256 cellar: :any,                 arm64_sonoma:   "650d17a3915469c4bbd23eec83f8ceb27570b0d3207c1a3598f3d6747296c21e"
-    sha256 cellar: :any,                 arm64_ventura:  "ccd438e39cdec24fdff74bb2ed43cee49d00af2b3144ad90802fa3e3bb53eb79"
-    sha256 cellar: :any,                 arm64_monterey: "072bd2264dec2d9db23593505666eb8b67b5f993d5753a67decae862be2b5330"
-    sha256 cellar: :any,                 sonoma:         "2fd84b9de2a0e5f091371d7480b8cc2fa0296d71e5f910291e8e293b00e26523"
-    sha256 cellar: :any,                 ventura:        "c34da972144b065eb8bcd678359b298c63631052fce4dfd2565042d77a9e7fd7"
-    sha256 cellar: :any,                 monterey:       "0883df366fab00865ab4f9b83a0879d73006abbcd0856c0f27165d631f79269e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c8d9c984c196e0eba61bb632babccb693d2a5e1bb49864d6656a3bf64c6eef51"
+    sha256 cellar: :any,                 arm64_sequoia: "d99d43985b7eb9874b9a854559a8dd7ba095653a0bc7991f540a9f691098f381"
+    sha256 cellar: :any,                 arm64_sonoma:  "1238dc214ee091861d48367a2c78b5458ccdfdd6737404fd8184f4dd815e6d34"
+    sha256 cellar: :any,                 arm64_ventura: "af0a8f5ceb7d82b9aece2b378d98d9d2aefbd830a9cfbaba79d5433160540528"
+    sha256 cellar: :any,                 sonoma:        "fb84337d531fe6c48eee4a7dd0abf33cc4ad0af6742abf9466880847e1470ba1"
+    sha256 cellar: :any,                 ventura:       "2eeecffa84cf777cb0e381b6e6e61ce41fc32ca7aa7b5a8c0244410d585c7c8d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9aa04dc44e906b36396551a0acc0482eaad60ebb811243bafa85f2c39d2903c1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dc54945839a76c5d681129b99814b936674ef7caf365a7d9d45919d79710f160"
   end
 
   depends_on "cmake" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "boost"
   depends_on "libstxxl"
@@ -50,6 +36,18 @@ class OsrmBackend < Formula
   uses_from_macos "bzip2"
   uses_from_macos "expat"
   uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "gcc@12" if DevelopmentTools.gcc_version("gcc") < 12
+
+    fails_with :gcc do
+      version "11"
+      cause <<~CAUSE
+        /usr/include/c++/11/type_traits:987:52: error: static assertion failed: template argument must be a complete class or an unbounded array
+          static_assert(std::__is_complete_or_unbounded(__type_identity<_Tp>{}),
+      CAUSE
+    end
+  end
 
   conflicts_with "flatbuffers", because: "both install flatbuffers headers"
   conflicts_with "mapnik", because: "both install Mapbox Variant headers"
@@ -108,70 +106,6 @@ class OsrmBackend < Formula
 
     safe_system bin/"osrm-extract", "test.osm", "--profile", "tiny-profile.lua"
     safe_system bin/"osrm-contract", "test.osrm"
-    assert_predicate testpath/"test.osrm.names", :exist?, "osrm-extract generated no output!"
+    assert_path_exists testpath/"test.osrm.names", "osrm-extract generated no output!"
   end
 end
-
-__END__
-diff --git a/include/extractor/suffix_table.hpp b/include/extractor/suffix_table.hpp
-index 5d16fe6..2c378bf 100644
---- a/include/extractor/suffix_table.hpp
-+++ b/include/extractor/suffix_table.hpp
-@@ -3,6 +3,7 @@
-
- #include <string>
- #include <unordered_set>
-+#include <vector>
-
- #include "util/string_view.hpp"
-
-diff --git a/include/util/lua_util.hpp b/include/util/lua_util.hpp
-index 36af5a1f3..cd2d1311c 100644
---- a/include/util/lua_util.hpp
-+++ b/include/util/lua_util.hpp
-@@ -8,7 +8,7 @@ extern "C"
- #include <lualib.h>
- }
-
--#include <boost/filesystem/convenience.hpp>
-+#include <boost/filesystem/operations.hpp>
-
- #include <iostream>
- #include <string>
-
-diff --git a/third_party/sol2-3.3.0/include/sol/sol.hpp b/third_party/sol2-3.3.0/include/sol/sol.hpp
-index 8b0b7d36ea4ef2a36133ce28476ae1620fcd72b5..d7da763f735434bf4a40b204ff735f4e464c1b13 100644
---- a/third_party/sol2-3.3.0/include/sol/sol.hpp
-+++ b/third_party/sol2-3.3.0/include/sol/sol.hpp
-@@ -19416,7 +19416,14 @@ namespace sol { namespace function_detail {
- 		}
-
- 		template <bool is_yielding, bool no_trampoline>
--		static int call(lua_State* L) noexcept(std::is_nothrow_copy_assignable_v<T>) {
-+		static int call(lua_State* L)
-+// see https://github.com/ThePhD/sol2/issues/1581#issuecomment-2103463524
-+#if SOL_IS_ON(SOL_COMPILER_CLANG)
-+		// apparent regression in clang 18 - llvm/llvm-project#91362
-+#else
-+			noexcept(std::is_nothrow_copy_assignable_v<T>)
-+#endif
-+		{
- 			int nr;
- 			if constexpr (no_trampoline) {
- 				nr = real_call(L);
-@@ -19456,7 +19463,14 @@ namespace sol { namespace function_detail {
- 		}
-
- 		template <bool is_yielding, bool no_trampoline>
--		static int call(lua_State* L) noexcept(std::is_nothrow_copy_assignable_v<T>) {
-+		static int call(lua_State* L)
-+// see https://github.com/ThePhD/sol2/issues/1581#issuecomment-2103463524
-+#if SOL_IS_ON(SOL_COMPILER_CLANG)
-+		// apparent regression in clang 18 - llvm/llvm-project#91362
-+#else
-+			noexcept(std::is_nothrow_copy_assignable_v<T>)
-+#endif
-+		{
- 			int nr;
- 			if constexpr (no_trampoline) {
- 				nr = real_call(L);

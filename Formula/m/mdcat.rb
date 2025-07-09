@@ -1,25 +1,30 @@
 class Mdcat < Formula
   desc "Show markdown documents on text terminals"
   homepage "https://github.com/swsnr/mdcat"
-  url "https://github.com/swsnr/mdcat/archive/refs/tags/mdcat-2.6.1.tar.gz"
-  sha256 "0dac8322b74d3eefc412ea13fca448aac43b257a3ff3e361d3343c6220a6618f"
+  url "https://github.com/swsnr/mdcat/archive/refs/tags/mdcat-2.7.1.tar.gz"
+  sha256 "460024d9795eb578be09ec2284af243627721151aa001aae6ffb5589380b2ba1"
   license "MPL-2.0"
   head "https://github.com/swsnr/mdcat.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5c26c22a9efb034b2b8d562af1621099ce62d70908b1f303acc61460355211f4"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "381588c26928902bad2f8b21d6b2cf9fcac7fa1c2697972cdbd9b1f4a0ce3497"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "613dddcd20631d34b8349dc2915e1214ad9f34deec489d5e83c68b36501281ce"
-    sha256 cellar: :any_skip_relocation, sonoma:        "ae56e8127ef9d13c94fe29e19da32bc8d5f43ceb09361b07254a766076a71be7"
-    sha256 cellar: :any_skip_relocation, ventura:       "3d15ec90a4ab3121b98080e412ccfd1b25864d42695aa5acac988f3ecfeace80"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fa7d5f06422524927d87e1c53333548ed11980a39de2b7befc0bcbd8137b8e42"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dda4028d4876c70766d9ae577c60741c5604de5673b8acae0e26dc4f5d8df08e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "803ea6ced03a51fc184834642a4abed39d82525146c410dd0c9471f4a132f4b6"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "200c351ba8ad70ddd893f6735451af5ecef7cf7670504af15b471b625e26c705"
+    sha256 cellar: :any_skip_relocation, sonoma:        "fe41c5dbc3b3ef5656a566a95df8227296c1b9c0bd17857892a641e3d54c73ec"
+    sha256 cellar: :any_skip_relocation, ventura:       "aaf95c5c8d0b6d2acf5fb02ae129fb8d8db0b32eaabc878b6a9423a14cc5f0fc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "85b2d4cdae8247b29aaf22ba0390f2febcf5a9ee2dd9abd60cf7ae5fb9a1c1dd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "87635e02c1cf4066926983af95ae4b67647749adaf2020687c3b258e3937fc9e"
   end
 
+  deprecate! date: "2025-01-10", because: :repo_archived
+
   depends_on "asciidoctor" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
 
+  uses_from_macos "curl"
+
   on_linux do
-    depends_on "pkg-config" => :build
     depends_on "openssl@3"
   end
 

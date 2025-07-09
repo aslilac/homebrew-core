@@ -6,6 +6,8 @@ class Qjson < Formula
   license "LGPL-2.1-only"
   revision 2
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "d2d3a43592241e2217ea2508fa0ac418058d95d774f5d9fac89cbfe6ec031af0"
@@ -24,11 +26,10 @@ class Qjson < Formula
   depends_on "cmake" => :build
   depends_on "qt@5"
 
-  fails_with gcc: "5"
-
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

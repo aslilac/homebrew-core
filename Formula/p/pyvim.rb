@@ -7,6 +7,8 @@ class Pyvim < Formula
   sha256 "2a3506690f73a79dd02cdc45f872d3edf20a214d4c3666d12459e2ce5b644baa"
   license "BSD-3-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 4
     sha256 cellar: :any_skip_relocation, arm64_sequoia: "704fda45ac7e30a081b5490c20420d172244219adbe364367f10bc0a2d550465"
@@ -14,6 +16,7 @@ class Pyvim < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "704fda45ac7e30a081b5490c20420d172244219adbe364367f10bc0a2d550465"
     sha256 cellar: :any_skip_relocation, sonoma:        "747334faeda98a61b4d7c24ff0ff889327485c5bb537752219434fab188c71fd"
     sha256 cellar: :any_skip_relocation, ventura:       "747334faeda98a61b4d7c24ff0ff889327485c5bb537752219434fab188c71fd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "04d636c06d1064f60fc65972601654289156bbfbaeb63f085d39c67ef4c1097a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "704fda45ac7e30a081b5490c20420d172244219adbe364367f10bc0a2d550465"
   end
 

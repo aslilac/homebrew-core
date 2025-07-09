@@ -1,8 +1,8 @@
 class HaproxyAT28 < Formula
   desc "Reliable, high performance TCP/HTTP load balancer"
   homepage "https://www.haproxy.org/"
-  url "https://www.haproxy.org/download/2.8/src/haproxy-2.8.12.tar.gz"
-  sha256 "16c16c1d7ba6793c89a8fae7f20c595d19497bb18d75fedd9f2db77741b1fa75"
+  url "https://www.haproxy.org/download/2.8/src/haproxy-2.8.15.tar.gz"
+  sha256 "98f0551b9c3041a87869f4cd4e1465adf6fbef2056e83aabea92106032585242"
   license "GPL-2.0-or-later" => { with: "openvpn-openssl-exception" }
 
   livecheck do
@@ -11,12 +11,13 @@ class HaproxyAT28 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "0fb522bb53acc24cdfe84205af8ad35373125a1b3659e3fe56e91be99b0ec82e"
-    sha256 cellar: :any,                 arm64_sonoma:  "e347343a43dddcc239643c3058c212a5dbd60baf8c2b76dc8d5b57b72d4fdec7"
-    sha256 cellar: :any,                 arm64_ventura: "3a1691dcd48c96339d8ef4f6064b5e8f4974bbbbcbd23722c93805a48d80ccef"
-    sha256 cellar: :any,                 sonoma:        "df6033baff96005ed609993c6b0f42738cad9995311ed99dfccbf843eb5d9c0e"
-    sha256 cellar: :any,                 ventura:       "9c8c0bdb81e445d742b8a2f1a48fcb8ca9d5565d680aa66f0e11ec694ea48ed3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "44ec714355176deb568d035613381ec896c2fb54e58535757bb07a2cd58ebc4c"
+    sha256 cellar: :any,                 arm64_sequoia: "9c2974edd35e97688c43cc7d2eeb05f99d7d1e77d4775b75252f0596c7d3be38"
+    sha256 cellar: :any,                 arm64_sonoma:  "8d88b51a5bdd02a5ad295a62798be487f2402449da9a00d3a1e894fff2e98760"
+    sha256 cellar: :any,                 arm64_ventura: "e48343df1514212e3befa265ef2ccff16f0a8895ec0e19bb6f92edde2bc6a62a"
+    sha256 cellar: :any,                 sonoma:        "f68328ce7705a4ab218a7d9a4242be1a48e5f130727d4d0cbc31c473508ed6be"
+    sha256 cellar: :any,                 ventura:       "cbbad755a7f67a6125833975e7c774175da4c01ca7fa60f1e1ae78e14cad7623"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6afa3c123ad4870ee3d15c19ac44d3d586a1f8120ee1bad07f6e0874ef445450"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "afe78555e84ac066998a7016ff4448317b992fe410a9046ce065d0733c268559"
   end
 
   keg_only :versioned_formula

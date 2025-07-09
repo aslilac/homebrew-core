@@ -1,18 +1,21 @@
 class Usage < Formula
   desc "Tool for working with usage-spec CLIs"
   homepage "https://usage.jdx.dev/"
-  url "https://github.com/jdx/usage/archive/refs/tags/v1.3.3.tar.gz"
-  sha256 "5681ca5a6a398ed6673c2053b34c7088154d25b7aa7fb3363835b247d0fa4b45"
+  url "https://github.com/jdx/usage/archive/refs/tags/v2.1.1.tar.gz"
+  sha256 "8a28fe01b2c3b1273e80b113d137197fc62c97a542f577dc2dd2414a236c78d0"
   license "MIT"
   head "https://github.com/jdx/usage.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fd088878db0106529872da09aee186f359f1c4c131ee68732c7671de50ca80ac"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "27b5dbb3d779b2bd3018b2d063b683e869fef69201f876fb1a78bfd47ea66355"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "79c902848035dc39bb6c0e1dfcf98833065867cd942df2af3f1a60cc8c0fc071"
-    sha256 cellar: :any_skip_relocation, sonoma:        "1c9dca974c2afdd21915c1ae32a2e19129c6ac17fed2dce39e78cec522939d38"
-    sha256 cellar: :any_skip_relocation, ventura:       "952be9ed82407f64b2ac2f4e869fab99fab47fe18b6107902a2f390f778946ac"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5d197fbe9ef3d650d37bc57b6923010e0a9521c8b266fb0cae4d8886bbd328ff"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "48749a36fe6f537c4fe3e123d21627fd4b25ff38609d4d24cc81f1fad83ea000"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3943027449c6376bdfe6a1ddc228d1b3a78cf003dd88c20126f6cabc04a6799b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "73feaf7c10b53a1aa1eeee36a906c122a66ba270020ab632172d94cf0e07f438"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f31104fa7604e9fea8b2f2c09b90bbc539f18d98e7a36d50bd549507e002c61b"
+    sha256 cellar: :any_skip_relocation, ventura:       "470250bcd2129d522eae4da6f001dafc87b4e753d244928905824b4ed3ed25e7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e31653c676b32d99ae9e5e7f7fb431ea3d11b90f08013ab7c482f97231012baf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "752b905bbfd6fa99f56ae3dc6d1c2cc0d430d6c0023dae8a84ef7eb4f5c05f07"
   end
 
   depends_on "rust" => :build

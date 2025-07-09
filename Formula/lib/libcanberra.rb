@@ -19,6 +19,8 @@ class Libcanberra < Formula
     regex(/href=.*?libcanberra[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "710648952f9dde5a4292a1d0911d3da6d471684f86eb2c0192b9a6110ae28acd"
@@ -33,18 +35,19 @@ class Libcanberra < Formula
     sha256 cellar: :any,                 catalina:       "34ff83c6dc8af0afc1f1988ebde1ccb4c17d4604fa6d36567daedef43da3047d"
     sha256 cellar: :any,                 mojave:         "3d32a254ac069ef41b785f6950e3eea625de6faaf99d2402236b451f8c765b05"
     sha256 cellar: :any,                 high_sierra:    "561aa9aba4e6b5f191b74d3dd1c96de9951e3dc5b696d93abaeaa301aa117bae"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "74befcfd2bc08601e7ec7cff6548d6a6a8960a9d904340948fbe9513cfc1b620"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a8c25edecba69fd90fbd847fede6df5a01107e469422a2f937fff082a43d6073"
   end
 
   head do
-    url "git://git.0pointer.de/libcanberra", branch: "master"
+    url "https://git.0pointer.net/libcanberra.git", branch: "master"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "gtk-doc"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libtool"
   depends_on "libvorbis"
 

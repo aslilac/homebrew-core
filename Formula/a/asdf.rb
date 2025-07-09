@@ -1,49 +1,41 @@
 class Asdf < Formula
   desc "Extendable version manager with support for Ruby, Node.js, Erlang & more"
   homepage "https://asdf-vm.com/"
-  url "https://github.com/asdf-vm/asdf/archive/refs/tags/v0.14.1.tar.gz"
-  sha256 "308a7f2e1eb551e435458974fbe37dcef1c940e961ad40e47ae78cabc154543e"
+  url "https://github.com/asdf-vm/asdf/archive/refs/tags/v0.18.0.tar.gz"
+  sha256 "c452a886503277260b7c82c07031800340f892bb2147bb3af67dca7268a410b5"
   license "MIT"
   head "https://github.com/asdf-vm/asdf.git", branch: "master"
 
-  bottle do
-    sha256 cellar: :any_skip_relocation, all: "e9b4116ff1cd0efd06d32b784cac45845bf4b277754e0e3f8ac70e8be11f0a8d"
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
-  depends_on "autoconf"
-  depends_on "automake"
-  depends_on "coreutils"
-  depends_on "libtool"
-  depends_on "libyaml"
-  depends_on "openssl@3"
-  depends_on "readline"
-  depends_on "unixodbc"
+  bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ae721d20a3a3f9402d2bad6201a001379adcc3300c01a4548fbb5067daeee338"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ae721d20a3a3f9402d2bad6201a001379adcc3300c01a4548fbb5067daeee338"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "ae721d20a3a3f9402d2bad6201a001379adcc3300c01a4548fbb5067daeee338"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6bc472f55318b4b9810673f11731f42338e6ebf466cd4098426e0d72b483dd6a"
+    sha256 cellar: :any_skip_relocation, ventura:       "6bc472f55318b4b9810673f11731f42338e6ebf466cd4098426e0d72b483dd6a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "884f05b0a2dd2c2e377fb8f9c0ccd7070d1f499175fac67544d99f4df5e75e19"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5f6863a8bc60de461a3228c19198f8c927bac21c4e17618a8c28d22ccfa7675a"
+  end
+
+  depends_on "go" => :build
+  depends_on "git"
 
   def install
-    bash_completion.install "completions/asdf.bash"
-    fish_completion.install "completions/asdf.fish"
-    zsh_completion.install "completions/_asdf"
-    libexec.install Dir["*"]
-    touch libexec/"asdf_updates_disabled"
+    # fix https://github.com/asdf-vm/asdf/issues/1992
+    # relates to https://github.com/Homebrew/homebrew-core/issues/163826
+    ENV["CGO_ENABLED"] = OS.mac? ? "1" : "0"
 
-    bin.write_exec_script libexec/"bin/asdf"
-  end
-
-  def caveats
-    <<~EOS
-      To use asdf, add the following line (or equivalent) to your shell profile
-      e.g. ~/.profile or ~/.zshrc:
-        . #{opt_libexec}/asdf.sh
-      e.g. ~/.config/fish/config.fish
-        source #{opt_libexec}/asdf.fish
-      Restart your terminal for the settings to take effect.
-    EOS
+    system "go", "build", *std_go_args(ldflags: "-s -w -X main.version=#{version}"), "./cmd/asdf"
+    generate_completions_from_executable(bin/"asdf", "completion")
+    libexec.install Dir["asdf.*"]
   end
 
   test do
     assert_match version.to_s, shell_output("#{bin}/asdf version")
-    output = shell_output("#{bin}/asdf plugin-list 2>&1")
-    assert_match "No plugins installed", output
-    assert_match "Update command disabled.", shell_output("#{bin}/asdf update", 42)
+    assert_match "No plugins installed", shell_output("#{bin}/asdf plugin list 2>&1")
   end
 end

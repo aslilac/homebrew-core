@@ -7,6 +7,8 @@ class Libmowgli < Formula
   revision 1
   head "https://github.com/atheme/libmowgli-2.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "00f3b1d8ae9a7210417aa4b09f041dc3e04e1a60097724fc28ebf5b1fb00ab89"
@@ -19,6 +21,7 @@ class Libmowgli < Formula
     sha256 cellar: :any,                 monterey:       "62bff6552997f1240e9568627847e46c1f55371f2b383d005a8a62975ed2a029"
     sha256 cellar: :any,                 big_sur:        "f64462da9e3debd990315e0c16ecfcffae50fcdddf44538f125ae9dbd4c98fdc"
     sha256 cellar: :any,                 catalina:       "5ade175e55ef972a810e63c5508941679fb65a8c8583d7844676ce68e6c57dd1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "30beecb54f1b874ff6f34866b679a96a2aacb1e2e0d10afc51bc72a278444978"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6251f4bbfcc34a629e644b110d247a21e5ca26464ec056924f718a9ca46a5b71"
   end
 

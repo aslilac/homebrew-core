@@ -6,6 +6,8 @@ class Libmrss < Formula
   license "LGPL-2.1-or-later"
   head "https://github.com/bakulf/libmrss.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "183934eb440639c9d4506bcc74cc7c86da915e1bc65d041d79ebbc6eff5f6f1b"
     sha256 cellar: :any,                 arm64_sonoma:   "b28e679db851fa12e08db6e3c5061cd7dc8daa31b8d39686ae4fc40f6e5164a7"
@@ -14,14 +16,17 @@ class Libmrss < Formula
     sha256 cellar: :any,                 sonoma:         "a3aeb6af0ab68d39a8e9dfb4d3b22501c4e84077d7ebf65cf8403f65db270f26"
     sha256 cellar: :any,                 ventura:        "1df7a24f602409e59cc256c621e83d69d50cd985d8ffe33398853676a1cbaa82"
     sha256 cellar: :any,                 monterey:       "f4b7cf45e3d2fcdafd282770ef575cbee21d8d9d5da4eadc34058adfb3c74ac6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "3ae2132725abace2b6a09d82e011f722daf45abe1ec5bcda7fdc4f602a3ae099"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "60d84960b66d364c0d2e8221bade1462f73eef410a6107e00a736235e1f2ec5b"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "libnxml"
+
+  uses_from_macos "curl"
 
   def install
     # need NEWS file for build
@@ -59,8 +64,8 @@ class Libmrss < Formula
       }
     C
 
-    pkg_config_flags = shell_output("pkg-config --cflags --libs mrss").chomp.split
-    system ENV.cc, "test.c", *pkg_config_flags, "-o", "test"
+    flags = shell_output("pkgconf --cflags --libs mrss").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *flags
     assert_match "Title: {{ post.title | xml_escape}}", shell_output("./test")
   end
 end

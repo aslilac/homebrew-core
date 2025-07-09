@@ -6,6 +6,8 @@ class Plenv < Formula
   license any_of: ["Artistic-1.0-Perl", "GPL-1.0-or-later"]
   head "https://github.com/tokuhirom/plenv.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9ae1be5da65e151734516a4c61d65dcdf5c64895c6477a28bce5351888f57627"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f269a34269c43edc721fe59d7d6bed6740c27544de3b7936290a52644957d2da"
@@ -18,6 +20,7 @@ class Plenv < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "ae532487be7748372f5e4af1f5f5543ea98c2821ae63a28b85fe5a47c17734a2"
     sha256 cellar: :any_skip_relocation, catalina:       "ae532487be7748372f5e4af1f5f5543ea98c2821ae63a28b85fe5a47c17734a2"
     sha256 cellar: :any_skip_relocation, mojave:         "ae532487be7748372f5e4af1f5f5543ea98c2821ae63a28b85fe5a47c17734a2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "4b80e2706c6cc7af6ec145bb53a32deab34a91b0a9339ad8e16e4a6cbc7c0c40"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6898b01d73122d18ac80e714614e566482fdc1b8055a3ef01cc11a3c9cde503c"
   end
 

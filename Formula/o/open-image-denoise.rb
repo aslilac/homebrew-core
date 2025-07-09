@@ -1,22 +1,24 @@
 class OpenImageDenoise < Formula
   desc "High-performance denoising library for ray tracing"
   homepage "https://openimagedenoise.github.io"
-  url "https://github.com/OpenImageDenoise/oidn/releases/download/v2.3.1/oidn-2.3.1.src.tar.gz"
-  sha256 "225879b4225bfe015273f0372bf6e7a69d01030043c8aefa017196b41ecf8148"
+  url "https://github.com/RenderKit/oidn/releases/download/v2.3.3/oidn-2.3.3.src.tar.gz"
+  sha256 "ccf221535b4007607fb53d3ff5afa74de25413bb8ef5d03d215f46c7cc2f96cf"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "9f64e80c1449ceb35fb8255a7e598584d822d00ebaf76d8d77ab4ca44b8735f0"
-    sha256 cellar: :any, arm64_sonoma:  "9b1fead166634b11bcbe0433524253f1a4c132c7d9f84e045b88156a9a99248d"
-    sha256 cellar: :any, arm64_ventura: "1366c44e78888e88a8b5225dc26a4f0ec5f9e56ce9660406e65b7efe6565895b"
-    sha256 cellar: :any, sonoma:        "6267f407a2efe2129b7f28c3ee391e0c63f350883988b9c75fa172d1674f6220"
-    sha256 cellar: :any, ventura:       "bd7271ed6729302479e074e72c06f2751cc6c932b038face0f7fb03d0ff13a84"
+    sha256 cellar: :any,                 arm64_sequoia: "fb2f37cd4206daef638b9709675e8f7fff631f1490cb4350399692a466de75ca"
+    sha256 cellar: :any,                 arm64_sonoma:  "8293f0fd356661e248c12c58b5e4c51f71073a5627da0877ec11510e9b7f1c2d"
+    sha256 cellar: :any,                 arm64_ventura: "ea3c2e87a36a569173f86834bd8d8d3eb55eaa306c7616767bb0dd4e930fddf0"
+    sha256 cellar: :any,                 sonoma:        "99222539372f4f10834f985f8edfba2f1437a642872ef8045bb06e4f3cb25eed"
+    sha256 cellar: :any,                 ventura:       "35b3558245c2e6631e88bfb6efa5c2fc095775e54507f7c80acf4b995d495bff"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0e8d55aeccf7b7b57fc294722c980a7f4dfbc98ea9477bb89a8938408085e6d3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a922b413332b0dc8202a4fe78c372e38a3598c95d91333c1d31de22616843f89"
   end
 
   depends_on "cmake" => :build
   depends_on "ispc" => :build
   # clang: error: unknown argument: '-fopenmp-simd'
-  # https://github.com/OpenImageDenoise/oidn/issues/35
+  # https://github.com/RenderKit/oidn/issues/35
   depends_on macos: :high_sierra
   depends_on "tbb"
 

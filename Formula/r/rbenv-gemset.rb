@@ -6,6 +6,8 @@ class RbenvGemset < Formula
   license :public_domain
   head "https://github.com/jf/rbenv-gemset.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f4b32914a93a0af5a444ff4ace90678f07969a6e0e3aa5d63d0af655e3e570f1"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f3a6b6c538ac4b69ed5322a2d056b782ee42a40260359c71465c7817ee87d71a"
@@ -17,6 +19,7 @@ class RbenvGemset < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "7db514b2352ec2cd623ebf7efe1feebb8125960531fbeda72e7a4e37cfe576f6"
     sha256 cellar: :any_skip_relocation, big_sur:        "7db514b2352ec2cd623ebf7efe1feebb8125960531fbeda72e7a4e37cfe576f6"
     sha256 cellar: :any_skip_relocation, catalina:       "7db514b2352ec2cd623ebf7efe1feebb8125960531fbeda72e7a4e37cfe576f6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "8a35b02c901c91d1e7c94b6aaecce7f143d1164f35f5fec234e55e69b4aef0ff"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "cd878825e721949e665c84452d74ec2c36c1b04a2da825ffb7dec3301d663fea"
   end
 

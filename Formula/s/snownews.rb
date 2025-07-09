@@ -6,6 +6,8 @@ class Snownews < Formula
   license "GPL-3.0-only"
   revision 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "0a953106b529951a0e5900c9819c2df6ef3b26822fa3ce924c333546f9264734"
     sha256 arm64_sonoma:   "aeeabd29b3c85814440dad193c88e96de8bbdc802e38f5b6fc998425d90dfc1d"
@@ -16,11 +18,12 @@ class Snownews < Formula
     sha256 ventura:        "35c17b0d8809918731e6f942a4ffabacf6f765bc0c28f0349cfde4fdccc76e01"
     sha256 monterey:       "84d7beb8653c713161180127550d58c277ccdc9253941fd1bce3bbb2d86419a2"
     sha256 big_sur:        "36c1b6a9f496f530d31eb71cb50c74f57075f73e4a5a101e2c81be5bb9698940"
+    sha256 arm64_linux:    "dcd9bbda7584163d13f96f37ae60f89995110a90828c3864e02969da1f82b139"
     sha256 x86_64_linux:   "dfd5d4c92583abd0e7b299f6ac41eb728e814f6aba8a7ebf9fca9e8392d80f9e"
   end
 
   depends_on "gettext" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "ncurses"
   depends_on "openssl@3"
 

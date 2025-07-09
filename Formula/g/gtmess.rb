@@ -6,6 +6,8 @@ class Gtmess < Formula
   license "GPL-2.0-or-later"
   revision 2
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256                               arm64_sequoia:  "89e1ecfa7ac4a5fe6aeefeb3596be4602112e32ca6bd2a6de51da26abaaad0f5"
@@ -18,6 +20,7 @@ class Gtmess < Formula
     sha256                               monterey:       "ff05dfd808dd3c468e004dfa944117208e9f44bfe542bd45cbaa851f8981e04a"
     sha256                               big_sur:        "28119023b99b93091412443d9ca881c06cd120b97f60719bf3705680d8c2eb39"
     sha256                               catalina:       "b371a2eba5b1703eb6598daae20d72b08a866fe1db95505a9cfddacc470d4804"
+    sha256                               arm64_linux:    "9a4e59aeaeb6da7270ae2ccf566297007dd7710da2f13440089a7e6edbfdb163"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ae09e63f26ccef723a73cf04f5dc36ba60ab1588b558d15b5e248132d7d88eea"
   end
 

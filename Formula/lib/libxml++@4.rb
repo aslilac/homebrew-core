@@ -18,17 +18,16 @@ class LibxmlxxAT4 < Formula
     sha256 cellar: :any, sonoma:         "3784bffd82c84684b1c75fa7ea33adff114727fffebe2ccef5fcdb590c92c937"
     sha256 cellar: :any, ventura:        "bc1972685d7e69a840ebdb2c53b0596055ec1f5371c94508d02f04d9c70b5124"
     sha256 cellar: :any, monterey:       "1d4f0949c6e5caafd5e0d4476241bf827244bca988698aa9d78a8d03ad3e12c9"
+    sha256               arm64_linux:    "b46a5d38b50a62cb3e2120ef3eed2794a0ea47394255ab88439a44fe4cfe92e3"
     sha256               x86_64_linux:   "02e771bea9bfa9710d1425f7bce4e387eafb8056c8fd526935f5a661ccc74281"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "glibmm"
 
   uses_from_macos "libxml2"
-
-  fails_with gcc: "5"
 
   def install
     system "meson", "setup", "build", *std_meson_args
@@ -48,7 +47,7 @@ class LibxmlxxAT4 < Formula
          return 0;
       }
     CPP
-    command = "#{Formula["pkg-config"].opt_bin}/pkg-config --cflags --libs libxml++-4.0"
+    command = "#{Formula["pkgconf"].opt_bin}/pkgconf --cflags --libs libxml++-4.0"
     flags = shell_output(command).strip.split
     system ENV.cxx, "-std=c++17", "test.cpp", "-o", "test", *flags
     system "./test"

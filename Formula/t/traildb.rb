@@ -10,6 +10,8 @@ class Traildb < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 arm64_sequoia:  "6855e108a52b0df9a4f13492f09ccf0d8ae7efcb2b25441f88a9d1e214137c4c"
@@ -21,6 +23,7 @@ class Traildb < Formula
     sha256 ventura:        "0534a5fd56705faf95c68bd3a4e0ab4b401baaef55d4e8fc37f88126643e5f16"
     sha256 monterey:       "f973d38d9cfe84c422bf98fc4c91265b2d3865efde148fe9b32a2a3af75d44e9"
     sha256 big_sur:        "c86da6038d5ffb50fac4db5af5e0e4cb91c93814fcd712fc4e2697747db2a0a8"
+    sha256 arm64_linux:    "3f4b1ec53424608bb138857437b16b36f9ec0ca5272e2833665d1c2280b25a20"
     sha256 x86_64_linux:   "eacba47e211b4e29a1a44507087e2fc1cb501f00c853ee406a0c954c8ba4c47e"
   end
 
@@ -28,20 +31,26 @@ class Traildb < Formula
   depends_on "judy"
   depends_on "libarchive"
 
-  on_linux do
-    depends_on "python@3.11" => :build
-  end
+  uses_from_macos "python" => :build
 
   # Update waf script for Python 3
   # Use resource instead of patch since applying corrupts waf
   resource "waf" do
-    url "https://raw.githubusercontent.com/traildb/traildb/053ed8e5d0301c792f3ee703cd9936c49ecf41a1/waf"
-    sha256 "2e0cf83a63843da127610420cef1d3126f1187d8e572b6b3a28052fc2250d4bf"
+    on_macos do
+      url "https://raw.githubusercontent.com/traildb/traildb/053ed8e5d0301c792f3ee703cd9936c49ecf41a1/waf"
+      sha256 "2e0cf83a63843da127610420cef1d3126f1187d8e572b6b3a28052fc2250d4bf"
+    end
+    on_linux do
+      # Update `waf` further for Python 3.12+ support. We don't use this on macOS as newer versions
+      # fail to find `libarchive` on non-/usr/local prefix due to wscript PKG_CONFIG_PATH override
+      url "https://waf.io/waf-2.1.4"
+      sha256 "7803d63e698ada49a74ab6979a0fd708a5f9a3456206cba3a3e07387fdcf946d"
+    end
   end
 
   def install
     ENV["PREFIX"] = prefix
-    buildpath.install resource("waf")
+    resource("waf").stage { buildpath.install Dir["*"].first => "waf" }
     system "python3", "./waf", "configure", "install"
   end
 

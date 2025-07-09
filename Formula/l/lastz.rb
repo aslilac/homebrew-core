@@ -1,23 +1,19 @@
 class Lastz < Formula
   desc "Pairwise aligner for DNA sequences"
   homepage "https://lastz.github.io/lastz/"
-  url "https://github.com/lastz/lastz/archive/refs/tags/1.04.22.tar.gz"
-  sha256 "4c829603ba4aed7ddf64255b528cd88850e4557382fca29580d3576c25c5054a"
+  url "https://github.com/lastz/lastz/archive/refs/tags/1.04.52.tar.gz"
+  sha256 "274bf0d774e3f4da87c23ca0b5cc4269f3dcaecf71a1c6289d426e24fbccf4c8"
   license "MIT"
   head "https://github.com/lastz/lastz.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e171bea5d447d6d860eab8b2c878739c7280ed060e8de64cacb4d85fc8a65809"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "11f902131e41dc1f91a235e30fac2fd5eabc1267edec376cb1a65efb8845ae45"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "78b2de045fb9e026d2d83f13711c67109c2e0b76acbd9a3e55ce589e4d74156b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0079336e54ddda2906063ae8e1345c285b907945ee992908bf2911298995a9e4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "869cf05ab0957ebf07fda9c95fe6e853610383a07f85f93a0b8efbd0a412b642"
-    sha256 cellar: :any_skip_relocation, sonoma:         "2c4ab82afd5171da9197de323047d138ef4e4b1d0ca707f1aa8767e3b403869e"
-    sha256 cellar: :any_skip_relocation, ventura:        "76da49110084c31baa426e5c5c5668ea70666680f17520a9e1d1bafa3d3010ec"
-    sha256 cellar: :any_skip_relocation, monterey:       "9ce7a7414d2cda02aa35efe3b9dfe418c8b6cdda4b58322a5554488c79a2d85a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "bbf2688ff167ad24a18a218b1ba24175d06a9ea1a13f63914565b240848250ab"
-    sha256 cellar: :any_skip_relocation, catalina:       "9870cfbbcdee4b2512ef695f80c5bbc4f15bbbb98738009c7d7ea1a936016020"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "46d6ba10ae062a21f3538006e2415897b089d50f264a6e048a81f210765435e3"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0d663670926ee95d2ef1724b63284c96fb3f3a0a1c517f67a3066aaf9f2c03ee"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "591be15975aa9dd43fd51b15ed647d79dc22724fbf206af81baf67b3d8fe4877"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "7f64eee65d64b28cf1cdbaf97b1c1f59289aa1add290e394d778377245645f57"
+    sha256 cellar: :any_skip_relocation, sonoma:        "cbf9f6ac6360306a7d16069ba875c3b7bbc8bf519eeeae744d1e3fd2a9b67ed9"
+    sha256 cellar: :any_skip_relocation, ventura:       "87ed31cf1d1be9434962ea5261dedf49c514a452fa6f98e4e0c59219cb41c34c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "def54adb8c80103f68796212aa25a879efef110fc751f811c821e1508793772a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b99c52372809d20f0228dc754d73c23fb5bf8bf0654025b472eba065b4341aec"
   end
 
   def install

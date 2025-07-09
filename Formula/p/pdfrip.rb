@@ -6,6 +6,8 @@ class Pdfrip < Formula
   license "MIT"
   head "https://github.com/mufeedvh/pdfrip.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "bca08e27db986d69640df5ab539f1b84fcaada7f43d6f8235d472bfb26acc1f1"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "92eafcb03fc927dbe7a94aa8b5657038621d342f1405c2a09d6766a94ee04231"
@@ -14,6 +16,7 @@ class Pdfrip < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "a1d72c6cfcec8a572e0e8c3e07acea03120fb692c321c8c88993dac530a127e0"
     sha256 cellar: :any_skip_relocation, ventura:        "83cd8a56b4a4238f6ccf0dca5519393686ec2c4e144d035841c71228637a7933"
     sha256 cellar: :any_skip_relocation, monterey:       "cf71e60e04dc370096a46ba62694e46749dbeaf9e5fbdd9050bd355f0d8be40b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "c4ce0bc480f1229dfb409f87690ac832a3022a56d0bfe56b562c3d1a192d5a8f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "311c5aacf5d23a6e692524c39f632bac0bc0a4984b0a5de34ff452f6490d9a28"
   end
 

@@ -6,6 +6,8 @@ class Owfs < Formula
   sha256 "af0a5035f3f3df876ca15aea13486bfed6b3ef5409dee016db0be67755c35fcc"
   license "GPL-2.0-only"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "9ffbd0a7e7138e0e41418388b894e28c1afa188d2182acd3f8518dfad76fd4a0"
     sha256 cellar: :any,                 arm64_sonoma:   "1366e03d70c70d75caede1b7144164ed21adf1396793cb0f75ce9cf3a7d6b1bc"
@@ -19,10 +21,11 @@ class Owfs < Formula
     sha256 cellar: :any,                 catalina:       "659e132d059f5b07c1f53f7ebc8676edf732da7b36f4e85065a30fe616358f50"
     sha256 cellar: :any,                 mojave:         "f67044700191dc6becb4b768d2c89f8e6714411ec4182c8297edcf3d3eac1318"
     sha256 cellar: :any,                 high_sierra:    "1812f6546d6e6957fc34aefadb1ce83ab8c7995a4c9c67b85f0ff7ba4e7e381c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f84aad3b6008729382761e7b772b106b7db195baa4515f99b87810cad4652101"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "dc7081d7fe26ec46288fa5bb16f5404e9697f1c567dde4ded5e181f0b54bbb6b"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libftdi"
   depends_on "libusb"
 
@@ -35,8 +38,7 @@ class Owfs < Formula
   def install
     ENV.append_to_cflags "-D_DARWIN_C_SOURCE" if OS.mac? && MacOS.version >= :sequoia
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-swig",
+    system "./configure", "--disable-swig",
                           "--disable-owtcl",
                           "--disable-zero",
                           "--disable-owpython",
@@ -44,7 +46,7 @@ class Owfs < Formula
                           "--disable-swig",
                           "--enable-ftdi",
                           "--enable-usb",
-                          "--prefix=#{prefix}"
+                          *std_configure_args
     system "make", "install"
   end
 

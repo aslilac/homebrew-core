@@ -5,6 +5,8 @@ class Yconalyzer < Formula
   sha256 "3b2bd33ffa9f6de707c91deeb32d9e9a56c51e232be5002fbed7e7a6373b4d5b"
   license "BSD-3-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f09a5c77a631fe4cf72c038f9196324faa22a94e9bf1513a864f65a6ef6eea54"
@@ -21,6 +23,7 @@ class Yconalyzer < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "4341ba620cc2724608dea783a2ddbd3bde93fd2017cc675e906f233941fb4ab3"
     sha256 cellar: :any_skip_relocation, sierra:         "3bf190ad069a4ee9423e79415907a684320e8e776916329f46d7620274a03434"
     sha256 cellar: :any_skip_relocation, el_capitan:     "918ca6d2bca328923ec3ff6e5612e9a0336aad666e993cfb0d1bc42a99758f1c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "ceb7984dedb18edb2dcd60885d5cb626ce8217ebc2b11246ed47af4eeb5bdee5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c416d91d76c10a6331d9703d23597b5e03fb67c97155247cb6e5e3f852f89953"
   end
 

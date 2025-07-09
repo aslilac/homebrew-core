@@ -5,6 +5,8 @@ class Fex < Formula
   sha256 "03043c8eac74f43173068a2e693b6f73d5b45f453a063e6da11f34455d0e374e"
   license "Apache-2.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "d0777ac160fda3d6860d6a7077e98e05e0a7a80f75c4c15e39c58699bd9c22ff"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0265e802a5e8b6d206890f636723f6ba34c0da506b1de7b47f84208d8d93f278"
@@ -20,6 +22,7 @@ class Fex < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "1b293789f75a67d36037f9d80641814119c8f4534a78dbf321744276a41f2c15"
     sha256 cellar: :any_skip_relocation, sierra:         "e42328824017f1432ace562fdd70061e504c5524d2702f3d4b470c40b1bf105e"
     sha256 cellar: :any_skip_relocation, el_capitan:     "952c166ae7efc5c7955bba3c54fefc1e5c18fe2296804b15554a8703285034e1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "106493be88cc6c2467a1bf144a6bb3bf49779831d4c7577046a864d09adc6db7"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c8ec5c054bfa085ae8e70f521aa235ddae7a2a481f4b9512751490c8a5166c09"
   end
 

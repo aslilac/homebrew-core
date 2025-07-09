@@ -10,6 +10,8 @@ class Cdb < Formula
     regex(/href=.*?cdb[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8ea510b1e7233cd4f071d380ee73c44e72ea5d220798faa58ee7ac41280350f6"
@@ -26,6 +28,7 @@ class Cdb < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "f187d9ff7ddb1a1532e83924d32d02521afc943738e4b21c79da5712340b0bbb"
     sha256 cellar: :any_skip_relocation, sierra:         "16b08929c8c42feeb2df4eaed5b46967eca487aaa20585dc5869ba44a28f0fe8"
     sha256 cellar: :any_skip_relocation, el_capitan:     "ac5a34c222875d86113275127632fe02ccc15c0332c7719cdac8321aa0f83bc4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "5d6ce5f6553dc71dabdde82a193e896ca52984ddfd00566aae92429c2bc008d5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e39c6409d00f0176fd3bd2def3b15b555d5ea89d3b0f6dc9710f1ce61a442e99"
   end
 
@@ -46,7 +49,7 @@ class Cdb < Formula
   test do
     record = "+4,8:test->homebrew\n\n"
     pipe_output("#{bin}/cdbmake db dbtmp", record, 0)
-    assert_predicate testpath/"db", :exist?
+    assert_path_exists testpath/"db"
     assert_equal(record,
                  pipe_output("#{bin}/cdbdump", (testpath/"db").binread, 0))
   end

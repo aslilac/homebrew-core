@@ -17,6 +17,8 @@ class Arabica < Formula
     end
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "5448f9dfdd462014fca6f549d3d8e42a8831e7af763ec90ec55d5f9de259a171"
     sha256 cellar: :any,                 arm64_sonoma:   "d066bb2e2067e8487d5e161c2c0d438ac331f377b4103833ee4859c6d680540a"
@@ -30,6 +32,7 @@ class Arabica < Formula
     sha256 cellar: :any,                 catalina:       "4fbf676c46941de213b095ab74f0b4973e5984c2bbaa7679757b0db4b369480a"
     sha256 cellar: :any,                 mojave:         "acc299016dbd644658880e9fa29af6d3f0b9f8e226b16ccd3fcaea8dae23febf"
     sha256 cellar: :any,                 high_sierra:    "62920d4f26c2da71c6abf60c90c1322457e340df8142d7133a9ee1f7c2b46745"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "fca2b168c6149c388d0692cecce3959175ef8aeec053cb64c0fa653f2c6553a2"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "129967d8e801a766a2d8209dff39cc8358bff641249838682ac1a943d0b7d385"
   end
 
@@ -43,8 +46,8 @@ class Arabica < Formula
   conflicts_with "nss", because: "both install `mangle` binaries"
 
   def install
-    system "autoreconf", "-fvi"
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", *std_configure_args
     system "make"
     system "make", "check"
     system "make", "install"

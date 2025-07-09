@@ -1,8 +1,8 @@
 class Chrony < Formula
   desc "Versatile implementation of the Network Time Protocol (NTP)"
   homepage "https://chrony-project.org"
-  url "https://chrony-project.org/releases/chrony-4.6.1.tar.gz"
-  sha256 "571ff73fbf0ae3097f0604eca2e00b1d8bb2e91affe1a3494785ff21d6199c5c"
+  url "https://chrony-project.org/releases/chrony-4.7.tar.gz"
+  sha256 "c0de41a8c051e5d32b101b5f7014b98ca978b18e592f30ce6840b6d4602d947b"
   license "GPL-2.0-only"
 
   livecheck do
@@ -11,12 +11,13 @@ class Chrony < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "4c6e88d135fc7248907d23dfeeb0dc7d7d59fdb3e4b4bf5d64cb88cbde144e7b"
-    sha256 cellar: :any,                 arm64_sonoma:  "7e9968c5ec5ea5eef8f8e8067102aa76abe5ba51f743ff128ce5a65f77187d38"
-    sha256 cellar: :any,                 arm64_ventura: "92e281e61b4343f5e1adc70edfbd7ef37cee3a810f7ebcbaaaee8494095d73e9"
-    sha256 cellar: :any,                 sonoma:        "47023cbf95a7711a26f5077d40b0a4564b864fbae5eb7d371952120bb4620d53"
-    sha256 cellar: :any,                 ventura:       "a2b6f67ac680be5e10d64b0a8e1c580a64bbd9e53fdabb1b0884562db5b4cef5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "55cd6ef009f00d493b55f8ced8b850f4029c6bc9f17e628303d65d4391df69d4"
+    sha256 cellar: :any,                 arm64_sequoia: "5bc762661550523d320eb4800a722f834d3a7f79d8d146ffa931af3b4f03a044"
+    sha256 cellar: :any,                 arm64_sonoma:  "36e70e780a187bbd1737c7ac9ff58fbf93fcb7a428c57e5b8bdf574dbe5f3b72"
+    sha256 cellar: :any,                 arm64_ventura: "c98de581a7c39b30775ee5e0903cfc608933ca15957cbfeded3feab0fd126259"
+    sha256 cellar: :any,                 sonoma:        "c4dea04dba1efea22ee8380d3631a7fdf97eb3652caf54bc8d9cc0d502544322"
+    sha256 cellar: :any,                 ventura:       "a0871c43ac8530c8a51c3b95c62ecad9ca3f4cbb526bfc5c37d58bffca29bdad"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b0b2df0414311fdbcb18fbaded353b58bdaaed679965a895871ba7d4b629864a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "348ae587ae09f3a9f4ba8e98043d80589b229cf9eb4a510726508c82c3ec595a"
   end
 
   depends_on "pkgconf" => :build
@@ -31,7 +32,7 @@ class Chrony < Formula
   end
 
   test do
-    (testpath/"test.conf").write "pool pool.ntp.org iburst\n"
+    (testpath/"test.conf").write "pool pool.chrony.eu iburst\n"
     output = shell_output(sbin/"chronyd -Q -f #{testpath}/test.conf 2>&1")
     assert_match(/System clock wrong by -?\d+\.\d+ seconds \(ignored\)/, output)
   end

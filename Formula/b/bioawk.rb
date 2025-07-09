@@ -5,6 +5,8 @@ class Bioawk < Formula
   sha256 "5cbef3f39b085daba45510ff450afcf943cfdfdd483a546c8a509d3075ff51b5"
   license "HPND"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "581ec8168890f6010df9a49953f2d52a3a86020fc350cb7cdb64fae38e23b0c8"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "781164882120d8b28e1cdac8b8db1f5c9a8bdedea381aedad9b35b6d185f2897"
@@ -20,6 +22,7 @@ class Bioawk < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "023f5cafaa31404e68b8fc6bcfbeee27e63eb5fbcab897d2f406fceda90ec9ff"
     sha256 cellar: :any_skip_relocation, sierra:         "154d44dd9ea56db8170127711e991950d487e379ae12df76332e4b7512f79fe8"
     sha256 cellar: :any_skip_relocation, el_capitan:     "df0810bc087f924cdddcdb73f00faf9772de9475e0e698c7af8a7d036b3a4c91"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "9c71291338d2d1a4306c9d9124a5475d1ef05357bfb80846d6d573c06f55afaa"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1d611e2578e57304e571f02a58ec46efc83752a97a7d830b40e03a2c83749bb3"
   end
 

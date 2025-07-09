@@ -5,6 +5,8 @@ class Reaver < Formula
   sha256 "e329a0da0b6dd888916046535ff86a6aa144644561937954e560bb1810ab6702"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "67906250f6cd74d13aa313315e80b46b0998e898a1c0589dcb67a3652b02081f"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "700af545d75c81c4edaecf553e15ca681dca5d5c99beb69c54eac5698e75ccc6"
@@ -16,6 +18,7 @@ class Reaver < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "69e3fcd6c69e7e71bfdbf84a780f466097163cc8a34f8928350d02b4fb57a1ce"
     sha256 cellar: :any_skip_relocation, big_sur:        "ec036d6b49bce14bfdee5ff3f7f03468148d60b48c06ee75bfd156a9c387baf1"
     sha256 cellar: :any_skip_relocation, catalina:       "e4f10cca5698e3ae3d03841e67d84d277d8e05a06c181567a2a1de5ad74f40a3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "372d02db04ebd4e99b333c155eeddedb257fa4eb0340feaed66507713c0553fc"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5301d082e3bd0a833d6b352e994d3b39edced488a46ef597b17aaa1e25669989"
   end
 

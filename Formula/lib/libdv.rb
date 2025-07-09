@@ -5,6 +5,8 @@ class Libdv < Formula
   sha256 "a305734033a9c25541a59e8dd1c254409953269ea7c710c39e540bd8853389ba"
   license "LGPL-2.1-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "d9ec199c7cbb78a2e15ba681e90f94cb34e7c4e4d4856ebe85553661847a4f3b"
@@ -21,42 +23,43 @@ class Libdv < Formula
     sha256 cellar: :any,                 high_sierra:    "0f7c7db1baa95682ad66b9d628d51978f162558f6d8296715a38150f83a7c72f"
     sha256 cellar: :any,                 sierra:         "9ea1a006d7aa954c5a1d61497f9f7f43e0b1bd5bce911b6d334a693d8af58671"
     sha256 cellar: :any,                 el_capitan:     "0624e82748111d0a8a050a802ec4251c443127c39c93b3b2469a00816a602040"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a7be333d02ace53395d0dcaad23163a9bf3a159aa05cc71a7202ee8eb917adf3"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b4e579189286f35409557243fe450e7509536f831777f37ae2f7519913bddcf8"
   end
 
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "pkgconf" => :build
   depends_on "popt"
-
-  on_macos do
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-    depends_on "pkg-config" => :build
-  end
 
   # remove SDL1 dependency by force
   patch :DATA
 
   def install
-    if OS.mac?
-      # This fixes an undefined symbol error on compile.
-      # See the port file for libdv:
-      #   https://trac.macports.org/browser/trunk/dports/multimedia/libdv/Portfile
-      # This flag is the preferred method over what macports uses.
-      # See the apple docs: https://cl.ly/2HeF bottom of the "Finding Imported Symbols" section
-      ENV.append "LDFLAGS", "-undefined dynamic_lookup"
-      system "autoreconf", "-fvi"
-    end
+    # This fixes an undefined symbol error on compile.
+    # See the port file for libdv:
+    #   https://trac.macports.org/browser/trunk/dports/multimedia/libdv/Portfile
+    # This flag is the preferred method over what macports uses.
+    # See the apple docs: https://cl.ly/2HeF bottom of the "Finding Imported Symbols" section
+    ENV.append "LDFLAGS", "-undefined dynamic_lookup" if OS.mac?
+
+    system "autoreconf", "--force", "--install", "--verbose"
 
     # Fix compile with newer Clang
     ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
+    system "./configure", "--disable-asm",
                           "--disable-gtktest",
                           "--disable-gtk",
-                          "--disable-asm",
-                          "--disable-sdltest"
+                          "--disable-sdltest",
+                          *std_configure_args
     system "make", "install"
+  end
+
+  test do
+    system bin/"dubdv", "--version"
+    system bin/"dvconnect", "--version"
   end
 end
 

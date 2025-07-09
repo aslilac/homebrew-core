@@ -1,17 +1,18 @@
 class Libdeflate < Formula
   desc "Heavily optimized DEFLATE/zlib/gzip compression and decompression"
   homepage "https://github.com/ebiggers/libdeflate"
-  url "https://github.com/ebiggers/libdeflate/archive/refs/tags/v1.22.tar.gz"
-  sha256 "7f343c7bf2ba46e774d8a632bf073235e1fd27723ef0a12a90f8947b7fe851d6"
+  url "https://github.com/ebiggers/libdeflate/archive/refs/tags/v1.24.tar.gz"
+  sha256 "ad8d3723d0065c4723ab738be9723f2ff1cb0f1571e8bfcf0301ff9661f475e8"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "cb6e2d1eb27e02b14541f965fb81f8bfd98852e8db7729540e135c2a356ab4fb"
-    sha256 cellar: :any,                 arm64_sonoma:  "d0855ef6b2947b130aae38dc3f7e758c450b03dfcd4e923669b573d4aeefede1"
-    sha256 cellar: :any,                 arm64_ventura: "ad4a626589cb82f253cf065aef92ea5dc77f51bb80cbbf66558a212cd88665ac"
-    sha256 cellar: :any,                 sonoma:        "34c07181913c15251daa7dcf9801d29f1bb7abfb6719ea6c98054e48e25dcebb"
-    sha256 cellar: :any,                 ventura:       "d0fb44f38bffe30a903f94c28a4097e5b6a034af7d676931b351cac801aa985b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4014531967553e8f002d52585698b5f2cdc689e1359563145ec3723c7ddc490b"
+    sha256 cellar: :any,                 arm64_sequoia: "187850054c03e9417b2234ab30efa87b93a029b31e28fcb95b169579217ad333"
+    sha256 cellar: :any,                 arm64_sonoma:  "b0672b22ba14406d032136734bb5852125bbe61c651253a3ed1820d7196557a2"
+    sha256 cellar: :any,                 arm64_ventura: "66411c4bcde1c756aaa09c46dd3e70e3b3992843efd5c795c23b0750a2f58002"
+    sha256 cellar: :any,                 sonoma:        "2e7067afa9095766f5ea81162c05028e50d433bd334162874974598841fb9415"
+    sha256 cellar: :any,                 ventura:       "879ece3dc6bbe8171520d17bb94f234df0a0eed235c99397ff053d8596ecd20a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "552ea942fcb9f35324efe30f6465f1938987c80d9a391c34b22f3e81a1191a2d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "784b1c1d1259c7b078883e0e14aabed1df975bf4eb483faea843cf2526032020"
   end
 
   depends_on "cmake" => :build

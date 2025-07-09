@@ -5,11 +5,6 @@ class PythonAT38 < Formula
   sha256 "6fb89a7124201c61125c0ab4cf7f6894df339a40c02833bfd28ab4d7691fafb4"
   license "Python-2.0"
 
-  livecheck do
-    url "https://www.python.org/ftp/python/"
-    regex(%r{href=.*?v?(3\.8(?:\.\d+)*)/?["' >]}i)
-  end
-
   bottle do
     sha256 arm64_sequoia:  "1fa19eccb400ea5724d9cd6077ef473ecb1d506b8f515034b3565222f0cd8cb6"
     sha256 arm64_sonoma:   "49082bc289bc3547b509f24e962cc8cbefad015345c0675631e42b3b23d2ecc7"
@@ -328,18 +323,17 @@ class PythonAT38 < Formula
                     Formula["sqlite"].opt_lib], Formula["tcl-tk"].opt_lib
 
     cfg = lib_cellar/"distutils/distutils.cfg"
-
-    cfg.atomic_write <<~EOS
+    cfg.atomic_write <<~INI
       [install]
       prefix=#{HOMEBREW_PREFIX}
       [build_ext]
       include_dirs=#{include_dirs.join ":"}
       library_dirs=#{library_dirs.join ":"}
-    EOS
+    INI
   end
 
   def sitecustomize
-    <<~EOS
+    <<~PYTHON
       # This file is created by Homebrew and is executed on each python startup.
       # Don't print from here, or else python command line scripts may fail!
       # <https://docs.brew.sh/Homebrew-and-Python>
@@ -372,7 +366,7 @@ class PythonAT38 < Formula
           # explicitly set and we are not in a virtualenv:
           if 'PYTHONEXECUTABLE' not in os.environ and sys.prefix == sys.base_prefix:
               sys.executable = '#{opt_bin}/python#{version.major_minor}'
-    EOS
+    PYTHON
   end
 
   def caveats

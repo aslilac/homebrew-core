@@ -3,8 +3,8 @@ class Uhd < Formula
 
   desc "Hardware driver for all USRP devices"
   homepage "https://files.ettus.com/manual/"
-  url "https://github.com/EttusResearch/uhd/archive/refs/tags/v4.7.0.0.tar.gz"
-  sha256 "afe56842587ce72d6a57535a2b15c061905f0a039abcc9d79f0106f072a00d10"
+  url "https://github.com/EttusResearch/uhd/archive/refs/tags/v4.8.0.0.tar.gz"
+  sha256 "a2159491949477dca67f5a9b05f5a80d8c2b32e91b95dd7fac8ddd3893e36d09"
   license all_of: ["GPL-3.0-or-later", "LGPL-3.0-or-later", "MIT", "BSD-3-Clause", "Apache-2.0"]
   revision 1
   head "https://github.com/EttusResearch/uhd.git", branch: "master"
@@ -15,13 +15,13 @@ class Uhd < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256                               arm64_sequoia: "8af487212569ce117181b6bb884536580a701a581823cd615168e8fc5b1699e0"
-    sha256                               arm64_sonoma:  "87477b72f2b117d10c580fdc2812e3e1c032309e4e2ce86836cc5250655ef03f"
-    sha256                               arm64_ventura: "86904ebacfd828a291f1f205df0859de71bc412527270400c6eac5df69dfb43d"
-    sha256                               sonoma:        "4a9799003cc7f032a630c857d17a6c970de02beb7f5778c143aa955df670b654"
-    sha256                               ventura:       "43358e6612f828c025c1c7b2e6f00785546f33ab84d4b6c9bf7f4ea850d60947"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a8be6e51f1458a8f8ac8d85ab25e00e7d064fb6bbdc23c9abf62890a43cc45fc"
+    sha256                               arm64_sequoia: "ebaad7dcd0a6646f5bba5fb5d2ec4741caba9c9512a40ccc45876b91adda40f9"
+    sha256                               arm64_sonoma:  "b81edc91475c72d0a15f1043619819316f3f268476dd5c416220c5ec16b30c23"
+    sha256                               arm64_ventura: "bc397dbb79d7c69e12b2df8988fc4d36ffb1dcc1199c33acf322a10d5ebb73a3"
+    sha256                               sonoma:        "88b4e190d80fc5342838f7aa22dfd2b8cb3a529455181cf0708e2af6cae83373"
+    sha256                               ventura:       "477921aa456e442999d455a94068c158878e11f3fe6bc662f82c2c4a03476acc"
+    sha256                               arm64_linux:   "23a80186cfe77cbba4fa2bbd2e088d0f4f7f2b28108e1966d3b76c35b53cd931"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c8e6f330239720cba66bd647287d85126b9f32cd0eac5d30aaff28539049ef7b"
   end
 
   depends_on "cmake" => :build
@@ -36,13 +36,25 @@ class Uhd < Formula
   end
 
   resource "mako" do
-    url "https://files.pythonhosted.org/packages/67/03/fb5ba97ff65ce64f6d35b582aacffc26b693a98053fa831ab43a437cbddb/Mako-1.3.5.tar.gz"
-    sha256 "48dbc20568c1d276a2698b36d968fa76161bf127194907ea6fc594fa81f943bc"
+    url "https://files.pythonhosted.org/packages/5f/d9/8518279534ed7dace1795d5a47e49d5299dd0994eed1053996402a8902f9/mako-1.3.8.tar.gz"
+    sha256 "577b97e414580d3e088d47c2dbbe9594aa7a5146ed2875d4dfa9075af2dd3cc8"
   end
 
   resource "markupsafe" do
-    url "https://files.pythonhosted.org/packages/b4/d2/38ff920762f2247c3af5cbbbbc40756f575d9692d381d7c520f45deb9b8f/markupsafe-3.0.1.tar.gz"
-    sha256 "3e683ee4f5d0fa2dde4db77ed8dd8a876686e3fc417655c2ece9a90576905344"
+    url "https://files.pythonhosted.org/packages/b2/97/5d42485e71dfc078108a86d6de8fa46db44a1a9295e89c5d6d4a06e23a62/markupsafe-3.0.2.tar.gz"
+    sha256 "ee55d3edf80167e48ea11a923c7386f4669df67d7994554387f84e7d8b0a2bf0"
+  end
+
+  # Support building with CMake 4.0, pr ref: https://github.com/EttusResearch/uhd/pull/849
+  patch do
+    url "https://github.com/EttusResearch/uhd/commit/8caa8e1d1adb6f73a30676f42c2c80041ccc4e9a.patch?full_index=1"
+    sha256 "818dd3e65c7c25040887850713fa9bf9a3f6cf3ef791b1f73f7b8de12921452f"
+  end
+
+  # Support building with Boost 1.88.0, pr ref: https://github.com/EttusResearch/uhd/pull/850
+  patch do
+    url "https://github.com/EttusResearch/uhd/commit/16dbcb37976ca1e959d275f20246924fb455176e.patch?full_index=1"
+    sha256 "0dc5cf491ca2037819e894fdb21b8b98230eb8ca2aee0d2312889e365da961e8"
   end
 
   def python3

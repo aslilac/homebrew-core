@@ -1,17 +1,18 @@
 class KamalProxy < Formula
   desc "Lightweight proxy server for Kamal"
   homepage "https://kamal-deploy.org/"
-  url "https://github.com/basecamp/kamal-proxy/archive/refs/tags/v0.8.2.tar.gz"
-  sha256 "dcb6ba86a0eb8771884f4bad110b3ac28334516c05cf02e52e70dd1434fa0cad"
+  url "https://github.com/basecamp/kamal-proxy/archive/refs/tags/v0.9.1.tar.gz"
+  sha256 "12d8a7ac96c71cbcb46b51b7d004f268a86cb45a44da010a1e524fb6ccd924a7"
   license "MIT"
+  head "https://github.com/basecamp/kamal-proxy.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "27f2299580f86be5dfbbe42f9181a8330191d6092672e4d2f4aa86227264c4ac"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "27f2299580f86be5dfbbe42f9181a8330191d6092672e4d2f4aa86227264c4ac"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "27f2299580f86be5dfbbe42f9181a8330191d6092672e4d2f4aa86227264c4ac"
-    sha256 cellar: :any_skip_relocation, sonoma:        "42ef7b193be5835f13c2c3abd144fdcbf4179d4cf41da38c26f3652610bb262a"
-    sha256 cellar: :any_skip_relocation, ventura:       "42ef7b193be5835f13c2c3abd144fdcbf4179d4cf41da38c26f3652610bb262a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4cb885d5b0167d06fa67b8b67231eecdcc6f42ae8d8dc4d1890c80fb2d7550b5"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b4ef131344c9f0f105992aec587df576bbf7c2413f0ac17993785b3efe1a0e8c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e17166f0d9e23a46713cb7282fc3fb7b8b9ba77abf563760666bf89b8a30e10f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "060e0f6992d77247bb4daf6dcbaaeb0bc53768469c0d1fc1e67dc46b57f01cda"
+    sha256 cellar: :any_skip_relocation, sonoma:        "14815fff3c55b5a86faf522f9f3d060ea30d059908f1ed0fb8c448866fa451ec"
+    sha256 cellar: :any_skip_relocation, ventura:       "7dbb7ea2b7ed3dc7a06fedb1a563ecdb89d18f992d691a14a013398f343f4b83"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bf8e6876771e9d510a93a42ce58dfed4f1b017ca0895c0ae11016a34168a9feb"
   end
 
   depends_on "go" => :build

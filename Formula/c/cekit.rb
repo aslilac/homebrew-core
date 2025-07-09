@@ -3,31 +3,31 @@ class Cekit < Formula
 
   desc "Container Evolution Kit"
   homepage "https://cekit.io"
-  url "https://files.pythonhosted.org/packages/45/68/5adda4ed0c9f5443110ac7b3c41f5492f09d34d939c39fccba6b0a5a00e9/cekit-4.13.0.tar.gz"
-  sha256 "be38d96435c645504698afbc55b73c5737f7b79b574d3e796e19301012e91318"
+  url "https://files.pythonhosted.org/packages/19/bf/e6f731ca9eae441dbf08d4af91ed3fc76eb021f1e5870dff3692936bb50b/cekit-4.15.0.tar.gz"
+  sha256 "3ced63835728e6fe43c63583ca0b1a45e65b573230ec9cb73dcd3aa9aa0a5aa9"
   license "MIT"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "8c9bdc57f07f69ef3422726357c2ca8621718f5db71e4d64ad02de20cf61e8d3"
-    sha256 cellar: :any,                 arm64_sonoma:  "1952390764ef7379ea5e562ec4288a2f1b456844197e64fdcd2edb23cf3a5b45"
-    sha256 cellar: :any,                 arm64_ventura: "8fe4c3b39ee0832f60facf312e3b4a6b92f557a8970d29f39c4663c023d44174"
-    sha256 cellar: :any,                 sonoma:        "230345a4c7b7f85068fbb5bdd6ac1f2e2edd950cce6a86286d0877960dfad4f0"
-    sha256 cellar: :any,                 ventura:       "0aa18f58d631bc2e41be3eff5ca8090ff73996d55ffe2b3a184edc0283566b1d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f1b13fab7f82c1748e99148bd3628dcbfb694a957b0523d07cd41450cad8a7ad"
+    sha256 cellar: :any,                 arm64_sequoia: "b8b3f0bbe83f0c8a5aa1074e8d0c0eb203b9984cca78a2c33d131a23d55344e5"
+    sha256 cellar: :any,                 arm64_sonoma:  "edd7964819caef1448222ace74fcd6662bfaaa86b217f6d4a2ea375d68743819"
+    sha256 cellar: :any,                 arm64_ventura: "11b5a994c414eb5da1d067ceff2d0e39e9283ac76c483aefca3e0e28a6e930e3"
+    sha256 cellar: :any,                 sonoma:        "3bbd6a4ccd41e14f74656f9955f6a1e9e35a4fe6e5149d524be0acd7f1839e03"
+    sha256 cellar: :any,                 ventura:       "7f260afdeb6c019731fad22987af4f1d58669b7d9148dccc501766a05c09c150"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0ce6285077882bc971758f48c71d22202d3bcdf105cc923daea26f1ad5037d82"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "071761f34a39ecb8ce7b7a806b5cd29b47a01402bf57c29ad376d3835d294d6d"
   end
 
   depends_on "libyaml"
   depends_on "python@3.13"
 
   resource "click" do
-    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
-    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
+    url "https://files.pythonhosted.org/packages/b9/2e/0090cbf739cee7d23781ad4b89a9894a41538e4fcf4c31dcdd705b78eb8b/click-8.1.8.tar.gz"
+    sha256 "ed53c9d8990d83c2a27deae68e4ee337473f6330c040a31d4225c9574d16096a"
   end
 
   resource "colorlog" do
-    url "https://files.pythonhosted.org/packages/db/38/2992ff192eaa7dd5a793f8b6570d6bbe887c4fbbf7e72702eb0a693a01c8/colorlog-6.8.2.tar.gz"
-    sha256 "3e3e079a41feb5a1b64f978b5ea4f46040a94f11f0e8bbb8261e3dbbeca64d44"
+    url "https://files.pythonhosted.org/packages/d3/7a/359f4d5df2353f26172b3cc39ea32daa39af8de522205f512f458923e677/colorlog-6.9.0.tar.gz"
+    sha256 "bfba54a1b93b94f54e1f4fe48395725a3d92fd2a4af702f6bd70946bdc0c6ac2"
   end
 
   resource "docopt" do
@@ -36,18 +36,18 @@ class Cekit < Formula
   end
 
   resource "jinja2" do
-    url "https://files.pythonhosted.org/packages/ed/55/39036716d19cab0747a5020fc7e907f362fbf48c984b14e62127f7e68e5d/jinja2-3.1.4.tar.gz"
-    sha256 "4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"
+    url "https://files.pythonhosted.org/packages/df/bf/f7da0350254c0ed7c72f3e33cef02e048281fec7ecec5f032d4aac52226b/jinja2-3.1.6.tar.gz"
+    sha256 "0137fb05990d35f1275a587e9aee6d56da821fc83491a0fb838183be43f66d6d"
   end
 
   resource "markupsafe" do
-    url "https://files.pythonhosted.org/packages/b4/d2/38ff920762f2247c3af5cbbbbc40756f575d9692d381d7c520f45deb9b8f/markupsafe-3.0.1.tar.gz"
-    sha256 "3e683ee4f5d0fa2dde4db77ed8dd8a876686e3fc417655c2ece9a90576905344"
+    url "https://files.pythonhosted.org/packages/b2/97/5d42485e71dfc078108a86d6de8fa46db44a1a9295e89c5d6d4a06e23a62/markupsafe-3.0.2.tar.gz"
+    sha256 "ee55d3edf80167e48ea11a923c7386f4669df67d7994554387f84e7d8b0a2bf0"
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
-    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
+    url "https://files.pythonhosted.org/packages/a1/d4/1fc4078c65507b51b96ca8f8c3ba19e6a61c8253c72794544580a7b6c24d/packaging-25.0.tar.gz"
+    sha256 "d443872c98d677bf60f6a1f2f8c1cb748e8fe762d2bf9d3148b5599295b0fc4f"
   end
 
   resource "pykwalify" do
@@ -66,13 +66,13 @@ class Cekit < Formula
   end
 
   resource "ruamel-yaml" do
-    url "https://files.pythonhosted.org/packages/29/81/4dfc17eb6ebb1aac314a3eb863c1325b907863a1b8b1382cdffcb6ac0ed9/ruamel.yaml-0.18.6.tar.gz"
-    sha256 "8b27e6a217e786c6fbe5634d8f3f11bc63e0f80f6a5890f28863d9c45aac311b"
+    url "https://files.pythonhosted.org/packages/ea/46/f44d8be06b85bc7c4d8c95d658be2b68f27711f279bf9dd0612a5e4794f5/ruamel.yaml-0.18.10.tar.gz"
+    sha256 "20c86ab29ac2153f80a428e1254a8adf686d3383df04490514ca3b79a362db58"
   end
 
   resource "six" do
-    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
-    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
+    url "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz"
+    sha256 "ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81"
   end
 
   def install
@@ -93,7 +93,7 @@ class Cekit < Formula
     assert_match "INFO  Finished!",
 shell_output("#{bin}/cekit --descriptor #{testpath}/test.yml build --dry-run docker 2>&1")
     system bin/"cekit", "--descriptor", "#{testpath}/test.yml", "build", "--dry-run", "docker"
-    assert_predicate testpath/"target/image/Dockerfile", :exist?
+    assert_path_exists testpath/"target/image/Dockerfile"
     assert_match "FROM scratch", File.read(testpath/"target/image/Dockerfile")
   end
 end

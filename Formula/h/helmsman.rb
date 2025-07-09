@@ -1,19 +1,18 @@
 class Helmsman < Formula
   desc "Helm Charts as Code tool"
-  homepage "https://github.com/Praqma/helmsman"
-  url "https://github.com/Praqma/helmsman.git",
-      tag:      "v3.17.1",
-      revision: "9f1ea20e04d3ddf2e0974f2e1114aa25d71f7f4d"
+  homepage "https://github.com/mkubaczyk/helmsman"
+  url "https://github.com/mkubaczyk/helmsman/archive/refs/tags/v4.0.1.tar.gz"
+  sha256 "1fd57af9978681f0c148157e5ef7929b5154e6e79bc13c41711892340320254e"
   license "MIT"
-  head "https://github.com/Praqma/helmsman.git", branch: "master"
+  head "https://github.com/mkubaczyk/helmsman.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5f3fcfafb13a1c2242fead84ff3f2852157d34b4c19285e5e2705ab3dcb4066b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5f3fcfafb13a1c2242fead84ff3f2852157d34b4c19285e5e2705ab3dcb4066b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "5f3fcfafb13a1c2242fead84ff3f2852157d34b4c19285e5e2705ab3dcb4066b"
-    sha256 cellar: :any_skip_relocation, sonoma:        "a0b7e6374f25556479c46efa1252f68a9b1793b64568c71e9deace2924f5d13f"
-    sha256 cellar: :any_skip_relocation, ventura:       "a0b7e6374f25556479c46efa1252f68a9b1793b64568c71e9deace2924f5d13f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c76b767dc0a37dd3d02d9a8c09b578d85cfb5c0fccbaf9a848e54a2a00d0a0ec"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b083ce72a651f9040fcd994a3c2472ea05689e460a1837d793ddd2fae40800ed"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b083ce72a651f9040fcd994a3c2472ea05689e460a1837d793ddd2fae40800ed"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b083ce72a651f9040fcd994a3c2472ea05689e460a1837d793ddd2fae40800ed"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a3446b60d03f301e50972b2a38239cc0ffe0a0052bef78ecac9cb892aeacb9f3"
+    sha256 cellar: :any_skip_relocation, ventura:       "a3446b60d03f301e50972b2a38239cc0ffe0a0052bef78ecac9cb892aeacb9f3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d40bb6b1568328e315a28aa502c5cbf8b86cb95f493647ff4edd639878f7ba1d"
   end
 
   depends_on "go" => :build
@@ -22,8 +21,7 @@ class Helmsman < Formula
 
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w -X main.version=#{version}"), "./cmd/helmsman"
-    pkgshare.install "examples/example.yaml"
-    pkgshare.install "examples/job.yaml"
+    pkgshare.install "examples/example.yaml", "examples/job.yaml"
   end
 
   test do

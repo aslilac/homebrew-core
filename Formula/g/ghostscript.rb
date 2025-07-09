@@ -1,8 +1,8 @@
 class Ghostscript < Formula
   desc "Interpreter for PostScript and PDF"
   homepage "https://www.ghostscript.com/"
-  url "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs10040/ghostpdl-10.04.0.tar.xz"
-  sha256 "0603f5629bc6f567b454911d104cd96702489c9e70e577787843f480b23d4a77"
+  url "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs10051/ghostpdl-10.05.1.tar.xz"
+  sha256 "320d97f46f2f1f0e770a97d2a9ed8699c8770e46987e3a3de127855856696eb9"
   license "AGPL-3.0-or-later"
 
   # The GitHub tags omit delimiters (e.g. `gs9533` for version 9.53.3). The
@@ -11,16 +11,21 @@ class Ghostscript < Formula
   # check the version from the first-party website instead.
   livecheck do
     url "https://www.ghostscript.com/json/settings.json"
-    regex(/["']GS_VER["']:\s*?["']v?(\d+(?:\.\d+)+)["']/i)
+    strategy :json do |json|
+      json["GS_VER"]
+    end
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 arm64_sequoia: "1ec5dc13df46f9336bd39399ba4d0564fcba2f63f0c4ca008f2b86e3172f4d04"
-    sha256 arm64_sonoma:  "0193b5a6ca5b47a35263cb547d09b438048ff532315d010cd544bf513d2a64ec"
-    sha256 arm64_ventura: "ddc4cba70de0af25125eba0ba9e5b7ced5e2290622f83bba20f20da246637594"
-    sha256 sonoma:        "0ea2144019a3128a6b1e0b640d491b5d457666be21d0763166ffe94764eab716"
-    sha256 ventura:       "6505dca6f56f4af62d12af839ee75b3ad5ef91c880d87982b81567b1f59835e2"
-    sha256 x86_64_linux:  "51882cc46695af1c7e7732ddedfa8e02e41a4c7797981e5c77bd3dc75bdb6950"
+    sha256 arm64_sequoia: "29a6c1c81a8c04ccc3a1a918b7bb75843318e13c4123cd196bae785466dc572a"
+    sha256 arm64_sonoma:  "f27ecbe17374b336ed1c402eb9b85afde9ab8584e472616595d66f820c38ef15"
+    sha256 arm64_ventura: "186b6ef887ecf25c6391596e5512666f5b0ec9b597ab69dc23079f06a7cddac3"
+    sha256 sonoma:        "d3d6fa441d393c477f19e9ba76603eb1ac087ec981c8d580608dc374fd57e2b5"
+    sha256 ventura:       "af5e17cda31fd12b3060df288a2a81d6887f4f4f338c2c191528b992902eac56"
+    sha256 arm64_linux:   "78257507e8c15192dd279a2332d006bdf2afbd906ea294700b3e2fdc9f7c55ae"
+    sha256 x86_64_linux:  "549c239558aabcb90990f44a9c48cb13899a6d1605c62f20918ed2e5a8481bc0"
   end
 
   head do
@@ -31,7 +36,7 @@ class Ghostscript < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "fontconfig"
   depends_on "freetype"
   depends_on "jbig2dec"
@@ -51,8 +56,6 @@ class Ghostscript < Formula
   conflicts_with "gambit-scheme", because: "both install `gsc` binary"
   conflicts_with "git-spice", because: "both install `gs` binary"
 
-  fails_with gcc: "5"
-
   # https://sourceforge.net/projects/gs-fonts/
   resource "fonts" do
     url "https://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz"
@@ -70,17 +73,32 @@ class Ghostscript < Formula
               --disable-cups
               --disable-gtk
               --with-system-libtiff
+              --without-versioned-path
               --without-x]
 
     # Set the correct library install names so that `brew` doesn't need to fix them up later.
     ENV["DARWIN_LDFLAGS_SO_PREFIX"] = "#{opt_lib}/"
-    system configure, *std_configure_args, *args
+    system configure, *args, *std_configure_args
 
     # Install binaries and libraries
     system "make", "install"
     ENV.deparallelize { system "make", "install-so" }
 
     (pkgshare/"fonts").install resource("fonts")
+
+    # Temporary backwards compatibility symlinks
+    if build.stable?
+      odie "Remove backwards compatibility symlink and caveat!" if version >= "10.07"
+      pkgshare.install_symlink pkgshare => version.to_s
+      doc.install_symlink doc => version.to_s
+    end
+  end
+
+  def caveats
+    <<~CAVEATS
+      Ghostscript is now built `--without-versioned-path`. Temporary backwards
+      compatibility symlinks exist but will be removed with 10.07.0 release.
+    CAVEATS
   end
 
   test do

@@ -6,6 +6,8 @@ class Cc65 < Formula
   license "Zlib"
   head "https://github.com/cc65/cc65.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "55807c89176cd3d4570b3728a7fabf1ac2c7014d11f6aec4ca5ed7fdd58c364b"
     sha256 arm64_sonoma:   "41632cc243d34d069cc66bd938aaa297265ab1f5438c59bfef49d8c49965c0a2"
@@ -18,6 +20,7 @@ class Cc65 < Formula
     sha256 big_sur:        "d0010fe7f4b58daea95dd57f4116668bd2bedfbd5392e73412162292034d456d"
     sha256 catalina:       "a773d68d33b81899ebe7c10d294c0d6e2c2eab9063206f787b1e8c5b8e36f437"
     sha256 mojave:         "bd750ae3470b736a6b7260723ead51d6e871edc8d8607f53b670f03c84932a00"
+    sha256 arm64_linux:    "668380deeb544b5843f43f62f70d7d8acf4e25063764429c77a5ebc276a49ce0"
     sha256 x86_64_linux:   "a07773f9ba0bcbe345f8e3c27495b9f149ff0a4df6245748cb8152a75b13880f"
   end
 
@@ -37,6 +40,6 @@ class Cc65 < Formula
     (testpath/"foo.c").write "int main (void) { return 0; }"
 
     system bin/"cl65", "foo.c" # compile and link
-    assert_predicate testpath/"foo", :exist? # binary
+    assert_path_exists testpath/"foo" # binary
   end
 end

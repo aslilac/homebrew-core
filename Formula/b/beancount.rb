@@ -3,26 +3,28 @@ class Beancount < Formula
 
   desc "Double-entry accounting tool that works on plain text files"
   homepage "https://beancount.github.io/"
-  url "https://files.pythonhosted.org/packages/bb/0d/4bfa4e10c1dac42a8cf4bf43a7867b32b7779ff44272639b765a04b8553e/beancount-3.0.0.tar.gz"
-  sha256 "cf6686869c7ea3eefc094ee13ed866bf5f7a2bb0c61e4d4f5df3e35f846cffdf"
+  url "https://files.pythonhosted.org/packages/93/a6/973010277d08f95ba3c6f4685010fe00c6858a136ed357c7e797a0ccbc04/beancount-3.1.0.tar.gz"
+  sha256 "1e70aba21fae648bc069452999d62c94c91edd7567f41697395c951be791ee0b"
   license "GPL-2.0-only"
   head "https://github.com/beancount/beancount.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bd46704b5f7378d8f22c21d28dd7889e5c4128e74fffad77abbd15c97690e0d9"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b3156bab6cb30a56af2bc10fde877271be206952204334f8cf6623e56baa37a5"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "53f9b70c1f228ae55aa911283407a2d2eaa535e9da434270c9e8328371c345a9"
-    sha256 cellar: :any_skip_relocation, sonoma:        "7ee09aef497ae1937ef164f58f2894704b3fb0a362d01e42cd877abeea23a9b0"
-    sha256 cellar: :any_skip_relocation, ventura:       "9c8678874984a80f6df58b18f09bf90bc73cf180421299b403e7f91e062c0298"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6052aec81c41e933c8ba47c69673e45539088e07282b0b91dd5128c97acbb6af"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8dc1fcd7f2317ea72784d7fbf2f76c54e2db0326d7526f22a1b9a9c291efc222"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9a4c201840e45d79de983afd1068d188f3bc8d55d6d45f7cb2bb3434920f1e77"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "ea4e49c721b56ee17b5c3cb7adbf37427f73beb5feb9dba8b96319f2c15e6a00"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c87741dafbf02e62986b0fa4b485542bb2f1e8cbc2d8f967475e94d46058c6a9"
+    sha256 cellar: :any_skip_relocation, ventura:       "0417cdbffbbb58e14ed1f6496f390da38ffddf7f43483206ae61ceb97dff809b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "1b9d0b7dd0cbb81adba41b95cf6f87bd7810d5236d087c884c2398fdfffefba3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f61124a05787d02519432086cbbbafef2b979e40747d7e9801559d81b0b1003f"
   end
 
+  depends_on "bison" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "certifi"
   depends_on "python@3.13"
 
+  uses_from_macos "flex" => :build
   uses_from_macos "libxml2", since: :ventura
   uses_from_macos "libxslt"
 
@@ -31,8 +33,8 @@ class Beancount < Formula
   end
 
   resource "click" do
-    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
-    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
+    url "https://files.pythonhosted.org/packages/b9/2e/0090cbf739cee7d23781ad4b89a9894a41538e4fcf4c31dcdd705b78eb8b/click-8.1.8.tar.gz"
+    sha256 "ed53c9d8990d83c2a27deae68e4ee337473f6330c040a31d4225c9574d16096a"
   end
 
   resource "python-dateutil" do
@@ -41,21 +43,25 @@ class Beancount < Formula
   end
 
   resource "regex" do
-    url "https://files.pythonhosted.org/packages/f9/38/148df33b4dbca3bd069b963acab5e0fa1a9dbd6820f8c322d0dd6faeff96/regex-2024.9.11.tar.gz"
-    sha256 "6c188c307e8433bcb63dc1915022deb553b4203a70722fc542c363bf120a01fd"
+    url "https://files.pythonhosted.org/packages/8e/5f/bd69653fbfb76cf8604468d3b4ec4c403197144c7bfe0e6a5fc9e02a07cb/regex-2024.11.6.tar.gz"
+    sha256 "7ab159b063c52a0333c884e4679f8d7a85112ee3078fe3d9004b2dd875585519"
   end
 
   resource "six" do
-    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
-    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
+    url "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz"
+    sha256 "ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81"
   end
 
   def install
     virtualenv_install_with_resources
+
+    bin.glob("bean-*") do |executable|
+      generate_completions_from_executable(executable, shells: [:fish, :zsh], shell_parameter_format: :click)
+    end
   end
 
   test do
     (testpath/"example.ledger").write shell_output("#{bin}/bean-example").strip
-    assert_equal "", shell_output("#{bin}/bean-check #{testpath}/example.ledger").strip
+    assert_empty shell_output("#{bin}/bean-check #{testpath}/example.ledger").strip
   end
 end

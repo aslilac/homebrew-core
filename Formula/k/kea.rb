@@ -1,12 +1,14 @@
 class Kea < Formula
   desc "DHCP server"
   homepage "https://www.isc.org/kea/"
+  url "https://ftp.isc.org/isc/kea/3.0.0/kea-3.0.0.tar.xz"
+  mirror "https://dl.cloudsmith.io/public/isc/kea-3-0/raw/versions/3.0.0/kea-3.0.0.tar.xz"
+  sha256 "bf963d1e10951d8c570c6042afccf27c709d45e03813bd2639d7bb1cfc4fee76"
+  license "MPL-2.0"
+  head "https://gitlab.isc.org/isc-projects/kea.git", branch: "master"
+
   # NOTE: the livecheck block is a best guess at excluding development versions.
   #       Check https://www.isc.org/download/#Kea to make sure we're using a stable version.
-  url "https://ftp.isc.org/isc/kea/2.6.1/kea-2.6.1.tar.gz"
-  mirror "https://dl.cloudsmith.io/public/isc/kea-2-6/raw/versions/2.6.1/kea-2.6.1.tar.gz"
-  sha256 "d2ce14a91c2e248ad2876e29152d647bcc5e433bc68dafad0ee96ec166fcfad1"
-  license "MPL-2.0"
 
   livecheck do
     url "ftp://ftp.isc.org/isc/kea/"
@@ -16,37 +18,36 @@ class Kea < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "1c084c993083468c76a0729dfb4b2b231a737fe7323f9f99f6490098cb74f147"
-    sha256 arm64_sonoma:   "198b4e13a2d22180c619d3cdd825e06c2ea6deacf1e1e0f1edb4bf8a4f811a56"
-    sha256 arm64_ventura:  "dd9a0ee71e6edb0445804e2acdac49e4ac9f14e954c8716f2bccf217b3c42960"
-    sha256 arm64_monterey: "4d6ef86f0bc8fd533f67de887f6aa0244fa0199c82fd3f596e8ca7af6616b9fc"
-    sha256 sonoma:         "b12c07c7ea8512625d415ac5f90b2acf153f49bd57764a3c173448235906b0ee"
-    sha256 ventura:        "d2443974aad0fdc56d03a21795d83e8101928ff0605467ee6055b9939d34ef9d"
-    sha256 monterey:       "29c57e487849a00ae7bcf4ee78afade4e64503cb197b63684dbe60777fae4d22"
-    sha256 x86_64_linux:   "b45ed2602b200d7f2ea8ccad1a72b9c8362e63766b606edf9ae3ddb5a780abea"
+    sha256 arm64_sequoia: "f0e83d9140f20f6355907c13ff072dfe70132db802effe8d485b8cb01e1ef2d2"
+    sha256 arm64_sonoma:  "bf539cf6840a30b7b4b4fec39e24e63118cabb9c0035d9c3b36929d725df22c0"
+    sha256 arm64_ventura: "5ba48075f58961f427074a7b828dd18a5cf1b1c20015a009b25ac77db2c84e82"
+    sha256 sonoma:        "a94f296cdd03ec1b144daf89a0d39784c690faacd60dc1d58a3adeb0ce6de845"
+    sha256 ventura:       "1e0e8f7dc19a6e593793d59ff68e56efb5b7e78a7e0c4db8c43eba4bb888e820"
+    sha256 arm64_linux:   "b0bc98ac3a87fd3b035560adc0b6ebaa58b329026b9887f2de464dfbc32f9800"
+    sha256 x86_64_linux:  "4eda8328fcd0007696b0e3effd87578eab7b118bc058e4be7c6b2d5cda41f44a"
   end
 
-  head do
-    url "https://gitlab.isc.org/isc-projects/kea.git", branch: "master"
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
+  depends_on "bison" => :build
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkgconf" => :build
+  depends_on "python@3.13" => :build
   depends_on "boost"
   depends_on "log4cplus"
   depends_on "openssl@3"
 
   def install
-    system "autoreconf", "--force", "--install", "--verbose" if build.head?
-    system "./configure", "--disable-silent-rules",
-                          "--with-openssl=#{Formula["openssl@3"].opt_prefix}",
-                          "--sysconfdir=#{etc}",
-                          "--localstatedir=#{var}",
-                          *std_configure_args
-    system "make", "install"
+    # the build system looks for `sudo` to run some commands, but we don't want to use it
+    inreplace "meson.build",
+              "SUDO = find_program('sudo', required: false)",
+              "SUDO = find_program('', required: false)"
+
+    system "meson", "setup", "build", "-Dcpp_std=c++20", *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
+
+    # Remove the meson-info directory as it contains shim references
+    rm_r(pkgshare/"meson-info")
   end
 
   test do

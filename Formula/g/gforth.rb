@@ -6,6 +6,8 @@ class Gforth < Formula
   license "GPL-3.0-or-later"
   revision 3
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 arm64_sequoia:  "d883e4eb6b087d2168148fcef85b3d792c38f748a0b18b7a303151d9247df073"
@@ -18,6 +20,7 @@ class Gforth < Formula
     sha256 monterey:       "679a6c16f2b39d18f1430f02e0904a4f1102675e9de018f6032f9b2d7c727479"
     sha256 big_sur:        "95ea067782d74310f18e223546a868bcec0a7f4869e335d6c15c30e559e5ef95"
     sha256 catalina:       "f8acb137af0f0005116a15761d2ef72cd721416f6ed1d88ad86f2a0655296e1e"
+    sha256 arm64_linux:    "ffbdc90074b784e4c3d1ce52dced0ce93cbed7c442e2f416e0ca9ee703005562"
     sha256 x86_64_linux:   "187183a4751b63734bccc9021f00f44c118623d4bf8c2bddc1c167c9194e6be3"
   end
 

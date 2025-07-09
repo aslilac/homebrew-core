@@ -1,23 +1,21 @@
 class Hiredis < Formula
   desc "Minimalistic client for Redis"
   homepage "https://github.com/redis/hiredis"
-  url "https://github.com/redis/hiredis/archive/refs/tags/v1.2.0.tar.gz"
-  sha256 "82ad632d31ee05da13b537c124f819eb88e18851d9cb0c30ae0552084811588c"
+  url "https://github.com/redis/hiredis/archive/refs/tags/v1.3.0.tar.gz"
+  sha256 "25cee4500f359cf5cad3b51ed62059aadfc0939b05150c1f19c7e2829123631c"
   license "BSD-3-Clause"
   head "https://github.com/redis/hiredis.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia:  "f330d6ee8e148d934c22b5db5bbe158b45a1687106ce09349f25cb29013c5026"
-    sha256 cellar: :any,                 arm64_sonoma:   "cbf3d6f42b38399ecd917d2efc963457831c8992dd6dfc458ab5b8e169aa8c93"
-    sha256 cellar: :any,                 arm64_ventura:  "9970a5ff45d25be488b5f3e843fb777624b4824510d8434b23565fc9b703a59a"
-    sha256 cellar: :any,                 arm64_monterey: "bf180f8a975c907210d5c130be249f21a9cc050710c83acc9dd6b699c398ae24"
-    sha256 cellar: :any,                 arm64_big_sur:  "f1d1112d4969beb75a30b43faa1fb953f0b869ffe5d9dc02af2f16780abe34ad"
-    sha256 cellar: :any,                 sonoma:         "55627ae2c171d51464a2d7c2b6fb3e2194c7769d5e9173a286781f3ab491f065"
-    sha256 cellar: :any,                 ventura:        "ca336f556d8c10e7cfae516c8e6d5333f5e55533d0971e68f8ed2a730bb765fd"
-    sha256 cellar: :any,                 monterey:       "33a1ced3df2be2279bb716e924f948d1be77f3dc3f831880900655f71daf2e95"
-    sha256 cellar: :any,                 big_sur:        "de9df908dc8e52a552d1f6faed0bc839750f44aad97666d835dd0f7634e3e051"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f8c2054cf967b075da6153fea843f3b48e285213aa5944aab4d4b6e14e650bb1"
+    sha256 cellar: :any,                 arm64_sequoia: "d3bb6a7fd40584c74321d404d0c459f11e3d612c329a5f95367c372cb21bbdca"
+    sha256 cellar: :any,                 arm64_sonoma:  "68e9423a13a8c5dc27884296ec0ee6ab25930aaa85d3b6e5e8726855fd864211"
+    sha256 cellar: :any,                 arm64_ventura: "fa65af1fbbc772155907ee6332c3a21c8780a3ce8491b762470d05cf3ae57c85"
+    sha256 cellar: :any,                 sonoma:        "d7ed68aa281c0ccd51c7e28ffe6eef652478b7a03cd0e7ffd239cdd54f9412c6"
+    sha256 cellar: :any,                 ventura:       "d08d4992b894522efb41ad2f502a1fa4b0e48b7a3ada25a87c7b73a03bbb6cfb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0760d1e33d3c044724b3c8c1053514f85a6fc12d55edfa3745cec4ed5dcf0fa3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0280a87a599747410042bebf2811c9c20bbe2ca577e066daa784a5ad5e1ffa31"
   end
 
   depends_on "openssl@3"
@@ -32,6 +30,6 @@ class Hiredis < Formula
     # sure it compiles
     system ENV.cc, pkgshare/"examples/example.c", "-o", testpath/"test",
                    "-I#{include}/hiredis", "-L#{lib}", "-lhiredis"
-    assert_predicate testpath/"test", :exist?
+    assert_path_exists testpath/"test"
   end
 end

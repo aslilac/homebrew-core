@@ -6,6 +6,8 @@ class Sl < Formula
   license "MIT"
   head "https://github.com/mtoyoda/sl.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "154511be7a41ffedfc392b2be2134fc6e5a0a7de8a34c27cc00b41dce1f6cd38"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c867d7c636940322cd83ce8edc47d04be3b67293194fecc6ffafcba71a464bc3"
@@ -21,6 +23,7 @@ class Sl < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "627b0b5f8027f876466d03038da7dd0d75804cccc3bbcf45f0fe9c91199be3c3"
     sha256 cellar: :any_skip_relocation, sierra:         "afd30cb3a99d238a8ac52810834244d5f47fc2ff597db9ad61012bd2014395b9"
     sha256 cellar: :any_skip_relocation, el_capitan:     "f186cb86f4d48929aa671434dbd6be0a861069608098a30dc952697bcca85972"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "036507954ad40e929a63e30e6feb092a7bf142a6d08c15bdb9d43ac34feeb0cc"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2afd20ebfe0276c9b39a77ef22611e8815eb936c3c21abb31cfd8f097f161476"
   end
 

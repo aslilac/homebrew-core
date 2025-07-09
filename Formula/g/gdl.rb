@@ -1,6 +1,6 @@
 class Gdl < Formula
   desc "GNOME Docking Library provides docking features for GTK+ 3"
-  homepage "https://gitlab.gnome.org/GNOME/gdl"
+  homepage "https://gitlab.gnome.org/Archive/gdl"
   url "https://download.gnome.org/sources/gdl/3.40/gdl-3.40.0.tar.xz"
   sha256 "3641d4fd669d1e1818aeff3cf9ffb7887fc5c367850b78c28c775eba4ab6a555"
   license "LGPL-2.0-or-later"
@@ -14,13 +14,16 @@ class Gdl < Formula
     sha256                               sonoma:         "4696c6de941ce9c03db4631ce5bc3a53d83f5edfdbff117b3d9c4cba1af3ca1f"
     sha256                               ventura:        "9485abd2cefbb7793c73f8de136bed12524f5e54452bc89b386bc19274f09b1b"
     sha256                               monterey:       "96f6f072cd160b556e5f3e02eb8ffd5cbbe1d4a77877d8f1f4b0d9d986bdfc19"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "ded0ca92240f97cb5a6b90b5df67e139c5ef4bc6e82e093f8046834d260b2bae"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "83b01e8322122e6bbca3d696cb820b83409a1320a3439ef5aa3f56a2de3e908f"
   end
+
+  deprecate! date: "2025-01-15", because: :repo_archived
 
   depends_on "gettext" => :build
   depends_on "gobject-introspection" => :build
   depends_on "intltool" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
 
   depends_on "cairo"
   depends_on "gdk-pixbuf"
@@ -51,7 +54,7 @@ class Gdl < Formula
   def install
     system "./configure", "--disable-silent-rules",
                           "--enable-introspection=yes",
-                          *std_configure_args.reject { |s| s["--disable-debug"] }
+                          *std_configure_args
     system "make", "install"
   end
 
@@ -65,8 +68,8 @@ class Gdl < Formula
       }
     C
 
-    pkg_config_flags = shell_output("pkg-config --cflags --libs gdl-3.0").chomp.split
-    system ENV.cc, "test.c", *pkg_config_flags, "-o", "test"
+    pkgconf_flags = shell_output("pkgconf --cflags --libs gdl-3.0").chomp.split
+    system ENV.cc, "test.c", *pkgconf_flags, "-o", "test"
     system "./test"
   end
 end

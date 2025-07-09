@@ -4,11 +4,14 @@ class Obfs4proxy < Formula
   url "https://gitlab.com/yawning/obfs4/-/archive/obfs4proxy-0.0.14/obfs4-obfs4proxy-0.0.14.tar.gz"
   sha256 "a4b7520e732b0f168832f6f2fdf1be57f3e2cce0612e743d3f6b51341a740903"
   license "BSD-2-Clause"
+  head "https://gitlab.com/yawning/obfs4.git", branch: "master"
 
   livecheck do
     url :stable
     regex(/^obfs4proxy[._-]v?(\d+(?:\.\d+)+)$/i)
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "d5b38ec72de48413c006b6e39d6e246c1b9823a79b72b24213c9a656eb6d5d79"

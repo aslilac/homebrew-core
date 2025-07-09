@@ -5,6 +5,8 @@ class Hilite < Formula
   sha256 "e15bdff2605e8d23832d6828a62194ca26dedab691c9d75df2877468c2f6aaeb"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f3535152f7fa6b54957f00de4158dd790073c81737140ae90c16cbda8d37ba51"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "428126844c77fdfab8f4d4d007a3e5c2a743511b4005e71f91b74a4a162836d1"
@@ -20,6 +22,7 @@ class Hilite < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "0266c20b3be69d398a14f1cb9332d34fe9ffca36c827b6e3681b636c0eab6073"
     sha256 cellar: :any_skip_relocation, sierra:         "b4bab9fd50310b7401d2605b9a9cdad0a8d7069e5b477d5f53fef61847bea624"
     sha256 cellar: :any_skip_relocation, el_capitan:     "2c407d12952089ade6602be85acda46eceb3127e32ba2068c0034df8a486e989"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "1da54468f24162b4804bcca235bce6c1320c722fd9d5c1dfde11e71885bde309"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "45f0c131886b8932ee87061c612877ff71fa38650e81340eab5694de95e6cb40"
   end
 

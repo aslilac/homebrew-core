@@ -5,6 +5,8 @@ class Jless < Formula
   sha256 "43527a78ba2e5e43a7ebd8d0da8b5af17a72455c5f88b4d1134f34908a594239"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "6227a6ccd685510fd4a4db69ac652e12b785dfb320afab4dfdced92ca546f6a5"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ce76bc45d945ae9210c3ede829ae8dbf7087faffa41f8edd18887566aca9a944"
@@ -15,6 +17,7 @@ class Jless < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "5fd473bb7164c9c5ea0ce8695e0c1aa7976a7acf914455c3ddde42c24d3c25c4"
     sha256 cellar: :any_skip_relocation, monterey:       "d89da34d0330ce44f59bc97d83fff9c2e1851210587d1e5fa69b4b9d6ec784e8"
     sha256 cellar: :any_skip_relocation, big_sur:        "ebeed1f09b8a73d3918d0123d2d9dbc26da31d40be642f6dc6a9d9d02a7ae972"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "5dd5790c437fc0b474aaf0e9e2add485ebc5867d64955e99d72aa0920aaf0e05"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d0502fb07b111d0bd0b5bb2983225e8f2e313329fd7dad6287aac989dac9f8e1"
   end
 

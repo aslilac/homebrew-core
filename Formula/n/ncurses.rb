@@ -8,6 +8,8 @@ class Ncurses < Formula
   sha256 "136d91bc269a9a5785e5f9e980bc76ab57428f604ce3e5a5a90cebc767971cc6"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "4a529cb864994c26766c55ae8e506297523b36319e0f5f5af0faf8250a451f77"
     sha256 arm64_sonoma:   "ee5253473badfa0701deac8e9973a7358c761dd287f0d748f753130a7a6d2705"
@@ -16,6 +18,7 @@ class Ncurses < Formula
     sha256 sonoma:         "eb22b3753261f99aa36f5d9e1511a0bca5ea70cd645f7068af2ac5514aafd6a7"
     sha256 ventura:        "d6316fb9989753d52db231cc4dfe20746c5e2b6dced2ba6136ad1f11e99814aa"
     sha256 monterey:       "9c262007804eca602c67d686878778051d2ff813237d6805665831a1ea705477"
+    sha256 arm64_linux:    "a41105c555fcaf7cc16cf53be73187724576129a8c39902378d742a8dc396850"
     sha256 x86_64_linux:   "7c49662d0f319baec24475d38210b2f9c754b2ec1d21a4a3ff39ce81d8605f03"
   end
 

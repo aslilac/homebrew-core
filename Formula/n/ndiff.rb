@@ -10,6 +10,8 @@ class Ndiff < Formula
     regex(/href=.*?ndiff[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a23ac16ac1bda1aa63ff7e64c8a101bc5a1bb1dfda6ee25ad6e6aac1eae3e2b9"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4b4c46a18f21ebab95fba30b75734e9cc3e9e392909961e8901e43624faf2f74"
@@ -25,6 +27,7 @@ class Ndiff < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "e07f1749ab348c33f3918e0278ac4dacbb6aee0553dbb62434a8b59174d20746"
     sha256 cellar: :any_skip_relocation, sierra:         "ed6f753f9fe240486de3b6589350fcc0e7afbe345ae2e01bf6b47e132de9be4e"
     sha256 cellar: :any_skip_relocation, el_capitan:     "6faf20ce4c88110019c76cc4253cd65e5743fab7cff109fc8a7d41c8f411012e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "c030a5b399fa30e0f1ce974e9900718dead459f3fffd5d856ada54ebc277c204"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "417d767a85801798bdd56f860a6554abbac5cf980080106ab5767be4c53121ca"
   end
 

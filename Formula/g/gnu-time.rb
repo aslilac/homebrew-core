@@ -6,6 +6,8 @@ class GnuTime < Formula
   sha256 "fbacf0c81e62429df3e33bda4cee38756604f18e01d977338e23306a3e3b521e"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "963acabedfade9cea9496798c8b026794762de08137f791c778e128310fcb1ad"
@@ -21,6 +23,7 @@ class GnuTime < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "dc007b95e2f9fb0df3380da55d3c9337529b1a4a3cd762972eb88512f567ea1c"
     sha256 cellar: :any_skip_relocation, high_sierra:    "ad5d776c38e43f16fad8976770eeaa18e40562c166fa65fdaa12af61981c7b90"
     sha256 cellar: :any_skip_relocation, sierra:         "d51ef948a5a87281175fef771cb28469cbdb3085e3c51ad325d780ff921cc013"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "79c0f6005a2a310f26244eca58d2fb373618921a745704cf868b4ca6190545e6"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c9c5ae5e7ac2f00cf8655ce4b6095e4706bcc36300d36a1c7121ab03d010ea5f"
   end
 

@@ -11,6 +11,8 @@ class Webfs < Formula
     regex(/href=.*?webfs[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 arm64_sequoia:  "3291625be9eb1abecfaf361089d2cfcd6ae76f8123cd08280b2e8d41d176686c"
@@ -23,6 +25,7 @@ class Webfs < Formula
     sha256 monterey:       "d5e072f43509860bf1720573e0da3762e734aeb450dabe4e2e8ae4cd96dff185"
     sha256 big_sur:        "3d7288254445f01e83e1950144448608501a91897b793cc8c173657d8d17ac2d"
     sha256 catalina:       "0b85fe4886d6c3e04d1f96fdfb39bc70dea3a4e75aa5e943c2b8bf4dde3e17aa"
+    sha256 arm64_linux:    "b797c9b3bda23e449f53975e905232df8010c9301d3117101167f82701a00d75"
     sha256 x86_64_linux:   "3656131d83b5affd389f147cc542fa0c5717aa0cd7aec1b03e05603f3a4ac06e"
   end
 

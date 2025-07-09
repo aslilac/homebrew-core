@@ -5,6 +5,8 @@ class Ired < Formula
   sha256 "c15d37b96b1a25c44435d824bd7ef1f9aea9dc191be14c78b689d3156312d58a"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "05e4599eb5ff1fd43a3865f5b14dc52db0eae92d3972fd83baa67bc1ad2b20fb"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c0ca5910c721240b35e486d26d4f4fac34e55014fb3ecb92c41c89bb89c830f4"
@@ -20,6 +22,7 @@ class Ired < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "f6af714455a74c02769c9726855a92832e43c37c79a0c589a0c7744beac8956c"
     sha256 cellar: :any_skip_relocation, sierra:         "5d10dfac87e4a4ca589a9fa76e8f9aff62625ef6358b6ab29360e79fe4a6dc35"
     sha256 cellar: :any_skip_relocation, el_capitan:     "4fc558225913b629b144661385841e63ebb167beb9900475fadb0c0e886b4997"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "611fb6eb2d5001ab972a13ec8dffcd4c80cb10f2429989d394c4f13c7f827695"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f3ddb4735af8b485b31fb3c9b2b8cc87c0aadfd1c3a2ae43df84bee8d5f16701"
   end
 

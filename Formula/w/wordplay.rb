@@ -21,6 +21,8 @@ class Wordplay < Formula
     end
   end
 
+  no_autobump! because: :incompatible_version_format
+
   bottle do
     rebuild 1
     sha256                               arm64_sequoia:  "7117e25ad1d78a133f0ad6f3e68c7f203cf83387903e27d6346852b97b3c409a"
@@ -36,6 +38,7 @@ class Wordplay < Formula
     sha256                               mojave:         "d98d89abff244c21cf2ad4eb651ed39afea5b3146bf0ec3277483b813c4e8d89"
     sha256                               high_sierra:    "9056fb79657b3be7ba8a97f4a13b1777e72447b717bd9fd1b7830023bda964a6"
     sha256                               sierra:         "5141a8f5456e5a685b65c5d9f3100029c6f42b3f0c80aa3d6a4736d3028a6a6b"
+    sha256                               arm64_linux:    "40b8d661df34ff03a28922e62a862fa037d3b66925cd51528018f7f45de587d1"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f7e8e9383f4bbbe56afbd9d2c400867ecf0f229a3aa3431c5b809dd95ffd6a30"
   end
 

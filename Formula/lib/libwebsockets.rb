@@ -1,8 +1,8 @@
 class Libwebsockets < Formula
   desc "C websockets server library"
   homepage "https://github.com/warmcat/libwebsockets"
-  url "https://github.com/warmcat/libwebsockets/archive/refs/tags/v4.3.3.tar.gz"
-  sha256 "6fd33527b410a37ebc91bb64ca51bdabab12b076bc99d153d7c5dd405e4bdf90"
+  url "https://github.com/warmcat/libwebsockets/archive/refs/tags/v4.3.5.tar.gz"
+  sha256 "87f99ad32803ed325fceac5327aae1f5c1b417d54ee61ad36cffc8df5f5ab276"
   license "MIT"
   head "https://github.com/warmcat/libwebsockets.git", branch: "main"
 
@@ -12,14 +12,13 @@ class Libwebsockets < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "62d77884d8a09ddd1d79f74aa1a82103c85953c2b90ee08299a5343ca1d8833c"
-    sha256 arm64_sonoma:   "72f689227f1633f1b5e71cf03c85375ec946fd88de6f11a5f9801e7b141a869e"
-    sha256 arm64_ventura:  "577e551d2c2546b15a06ea63da365f64f9498d8087556b92bd2bf6571e198a8e"
-    sha256 arm64_monterey: "da25e134a7c8bf8d9c9c87f4cc6c264fc1f387bd7f8518735c07d337c6890fae"
-    sha256 sonoma:         "cef5f2e6af340223c19a5e59ee1469a8f5ffb677a7dce8201b23b554ff08bf1d"
-    sha256 ventura:        "ad87e6e2c204feb0b8cd809660c0febaca9d7fc69e14dc095fe587960af13b9d"
-    sha256 monterey:       "684e36d44f18efccb524ad8202740e465ece1a24e5d654954434c1caa0ccdb58"
-    sha256 x86_64_linux:   "e8cbe679ed2c4a909afd481b3de3c779669b91fe4f57ee0cdd6c9614a9b02e58"
+    sha256 arm64_sequoia: "9e99f2685bfac3273ac873bedec5c4ce4514666bf717dc9318856810ab92f7d2"
+    sha256 arm64_sonoma:  "8ea3a281fe5caf527100e46eeda10d31ac366839d846785da3c5b365f8882e75"
+    sha256 arm64_ventura: "1fe9ee68992714b466b2cfe7dffe84f4e08fe10de909d44916b5155887f9e825"
+    sha256 sonoma:        "aa41d5252a17883dbb24bf7f88a1246ba5f928fd6373983923fc74aec5f34198"
+    sha256 ventura:       "7690e37818cd8b559f7fd44ef1380da6ade8830294899f2d02c513c446ac3f15"
+    sha256 arm64_linux:   "543d812d4c12757637936ae3180496ce33254d92bfa4577f12fac418736f84c0"
+    sha256 x86_64_linux:  "a5baeb55111964b22daeb1bcc9138d7835999ee92e836eaac24fb616859dc654"
   end
 
   depends_on "cmake" => :build

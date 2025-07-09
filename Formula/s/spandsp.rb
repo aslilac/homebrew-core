@@ -11,6 +11,8 @@ class Spandsp < Formula
     regex(/href=.*?spandsp[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "fb9acce46b687e18c6e016cf9db9be77645778722eccc71589bc06b7fa7c6344"
     sha256 cellar: :any,                 arm64_sonoma:   "c0031a76da7569594a6e541f5373a81fd8fd67fe51d8ded0bc317c22b7c9d61b"
@@ -21,6 +23,7 @@ class Spandsp < Formula
     sha256 cellar: :any,                 ventura:        "c950d3121cfcf2033617bac7b3c440ac07b5cba8166102f6fab8aeaa1eec20bb"
     sha256 cellar: :any,                 monterey:       "5a2514fe428dbc60642c6d787a0d7e2f9c337ee11c8e0cd10b8e67630919ab82"
     sha256 cellar: :any,                 big_sur:        "89a015496e6aedb1a07ae9186b799dfe96ae673213c27a9da9937d3d09ceb577"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "ca858d2c651cb3176d0e89acb9350b584f884238fc4e285cf7d3fa69d45ff23b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e56ef470947c1215482b5155d62c0c5a6c72485bbea7ce74bf6e8f1d629ab1e1"
   end
 
@@ -34,7 +37,11 @@ class Spandsp < Formula
 
   def install
     ENV.deparallelize
-    system "./configure", *std_configure_args, "--disable-silent-rules"
+    args = ["--disable-silent-rules"]
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
   end

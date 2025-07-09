@@ -29,6 +29,8 @@ class Ctags < Formula
     regex(%r{url=.*?/ctags[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "614a735ab93afb5ed2a2f12a66819e0b35a1c644021670057d0cac0fbe9910ae"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b28f3ab751719782670837ff160aa2aee6889b8e0e064da834ac525d383b2e7a"
@@ -41,6 +43,7 @@ class Ctags < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "9986b3f6897b60cbdf5d73b4ad819d2d30726043dc0d665b77ba2def399a60b4"
     sha256 cellar: :any_skip_relocation, catalina:       "2292b70a7b744c2238507417e40c2dc7273c6d919c9fe037bf668cf00863ad92"
     sha256 cellar: :any_skip_relocation, mojave:         "238b65e5e1614f1d24fd88b6741c04d1cf48fd5f5d247cdbcd1f82d5796197d5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "7300588a624817e1bc68e4fac3a1cb1dec65cfb7073c383910b6ace2d87ddea9"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b8630326626ccee22ad669f9e7c459735a8dc72c765ae40ec218f31e015dc76a"
   end
 

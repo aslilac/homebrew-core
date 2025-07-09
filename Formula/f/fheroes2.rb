@@ -1,8 +1,8 @@
 class Fheroes2 < Formula
   desc "Recreation of the Heroes of Might and Magic II game engine"
   homepage "https://ihhub.github.io/fheroes2/"
-  url "https://github.com/ihhub/fheroes2/archive/refs/tags/1.1.3.tar.gz"
-  sha256 "f91760f7e8a512fa4b2b5eb02d852d358106fca50faa13db942d8314926ca6d8"
+  url "https://github.com/ihhub/fheroes2/archive/refs/tags/1.1.9.tar.gz"
+  sha256 "b343f9737b9cf75846192db8defeda254b2184ff7dd83f674581fa10ce8f38ed"
   license "GPL-2.0-or-later"
   head "https://github.com/ihhub/fheroes2.git", branch: "master"
 
@@ -12,12 +12,13 @@ class Fheroes2 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "abd77f3c7b0748848798a86ced7e6db626a2d5e30a2a8d209d70ae7614b3699a"
-    sha256 arm64_sonoma:  "73c1a13e93e0ebc14e5f8c50cdba23ccc54b4865e4d5ede1a1155e89946fd817"
-    sha256 arm64_ventura: "929d227e53e7e290a1e65ea7571c97e0a0866e2338dc3d634474d92cced55603"
-    sha256 sonoma:        "d73ad420578eee3093ac978ce6c3718f4b5baefb723c3b7a25517f0a3edaca7c"
-    sha256 ventura:       "90909dd4ea8a865b40bcc9d5c388bae3e4cf5011c91bb9c018c0656dd03dc2fa"
-    sha256 x86_64_linux:  "0831cfb9c4feb8703f716628d937685457164e33d88bb90ae2269ca28a9379f5"
+    sha256 arm64_sequoia: "db1601c64ada78fa39b4ba7e5dd5317a143320960f70781432e8c717c065cb8a"
+    sha256 arm64_sonoma:  "010c27aad5921e6f5413f6334583ad73eff73dff976c669447a99be5a75b8101"
+    sha256 arm64_ventura: "8e3e63fef4fca0663be2aebf6e7c50fa6ec9a3642dc495e00907a203eccda699"
+    sha256 sonoma:        "e7483d20bec21950ce1acb406d2b4e9e4ca57ea29ca28580c6d99528ed1b1b39"
+    sha256 ventura:       "4261947e7b383a196f1dd72b928ab6e5ddde760fc94253752d27eff341bf9974"
+    sha256 arm64_linux:   "b509f1b129408ece2493b36f28269e944da7a0fd17e7a9209dd30ba4b426c0a3"
+    sha256 x86_64_linux:  "f6639ecee8632bac0f66f438c9ddb5f2296b05742d32dfaa8cf8687e508f0b0d"
   end
 
   depends_on "cmake" => :build
@@ -29,15 +30,34 @@ class Fheroes2 < Formula
 
   uses_from_macos "zlib"
 
-  fails_with gcc: "5"
+  on_macos do
+    depends_on "dylibbundler" => :build
+  end
 
   def install
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    args = std_cmake_args
+    args << "-DMACOS_APP_BUNDLE=ON" if OS.mac?
+    system "cmake", "-S", ".", "-B", "build", *args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 
-    bin.install "script/demo/download_demo_version.sh" => "fheroes2-install-demo"
-    bin.install "script/homm2/extract_homm2_resources.sh" => "fheroes2-extract-resources"
+    if OS.mac?
+      prefix.install "build/fheroes2.app"
+      bin.write_exec_script "#{prefix}/fheroes2.app/Contents/MacOS/fheroes2"
+
+      libexec.install "script/demo/download_demo_version.sh"
+      libexec.install "script/demo/download_demo_version_for_app_bundle.sh"
+      libexec.install "script/homm2/extract_homm2_resources.sh"
+      libexec.install "script/homm2/extract_homm2_resources_for_app_bundle.sh"
+      chmod "+x", Dir["#{libexec}/*"]
+      bin.write_exec_script libexec/"download_demo_version_for_app_bundle.sh"
+      bin.write_exec_script libexec/"extract_homm2_resources_for_app_bundle.sh"
+      mv bin/"download_demo_version_for_app_bundle.sh", bin/"fheroes2-install-demo"
+      mv bin/"extract_homm2_resources_for_app_bundle.sh", bin/"fheroes2-extract-resources"
+    else
+      bin.install "script/demo/download_demo_version.sh" => "fheroes2-install-demo"
+      bin.install "script/homm2/extract_homm2_resources.sh" => "fheroes2-extract-resources"
+    end
   end
 
   def caveats
@@ -54,9 +74,21 @@ class Fheroes2 < Formula
   end
 
   test do
-    io = IO.popen("#{bin}/fheroes2 2>&1")
-    io.any? do |line|
-      line.include?("fheroes2 engine, version:")
+    assert_path_exists bin/"fheroes2"
+    assert_predicate bin/"fheroes2", :executable?
+    if OS.mac?
+      begin
+        pid = spawn(bin/"fheroes2")
+        sleep 2
+      ensure
+        Process.kill("SIGINT", pid)
+        Process.wait(pid)
+      end
+    else
+      io = IO.popen("#{bin}/fheroes2 2>&1")
+      io.any? do |line|
+        line.include?("fheroes2 engine, version:")
+      end
     end
   end
 end

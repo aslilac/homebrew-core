@@ -1,26 +1,25 @@
 class Mandown < Formula
   desc "Man-page inspired Markdown viewer"
   homepage "https://github.com/Titor8115/mandown"
-  url "https://github.com/Titor8115/mandown/archive/refs/tags/v1.0.4.tar.gz"
-  sha256 "dc719e6a28a4585fe89458eb8c810140ed5175512b089b4815b3dda6a954ce3e"
+  url "https://github.com/Titor8115/mandown/archive/refs/tags/v1.0.5.2.tar.gz"
+  sha256 "9903203fb95364a8b2774fe4eb4260daa725873d8f9a6e079d4c2ace81bede92"
   license "GPL-3.0-or-later"
+  revision 1
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia:  "729bf8e294a1ad8f1f18a4555cf370cf6969e55b7fcf0abbafe1665422397ffc"
-    sha256 cellar: :any, arm64_sonoma:   "77a810adcb13125cce9d5a965a9e2a81f7f8fb025ee35bbfeb5f8975f50dabbe"
-    sha256 cellar: :any, arm64_ventura:  "8f38c697d7d7fff6d1de02483bbf49b3dcf3b65e127047fbc2a9b84228657a28"
-    sha256 cellar: :any, arm64_monterey: "cc29dc5580e538cac4010354481a5e9081e90735583380c99bd070e612c8c7bf"
-    sha256 cellar: :any, arm64_big_sur:  "ade14b3cea59db3e21e4ee249f877ae6fb634100d78c62fbba62ce541a2a5562"
-    sha256 cellar: :any, sonoma:         "906c662c4be28c0ab41bb4fc22d2b80372f20d890c504903e723c21ef7d038e4"
-    sha256 cellar: :any, ventura:        "09b8c52b987c8d1eb510c75c9d395a62d1a69eb66f483e32c10728cc51beb8a0"
-    sha256 cellar: :any, monterey:       "b13a81a1680806978c759cd0f2eb8b8e6d155818ac88456b9bc2ed24fdcf903e"
-    sha256 cellar: :any, big_sur:        "6cd1c1d88d93223b889eecd77b5e278dc59f9de445b7a08eb7d41c7152db6b6d"
+    sha256 cellar: :any,                 arm64_sequoia: "62058c08be40e955aa5a9092da1b9c5975391f1715432219bbe6dad514c681b1"
+    sha256 cellar: :any,                 arm64_sonoma:  "d343e0a1552d905a9fcd584e61c76529bcc8d26d91974b93b29ec0af577f7291"
+    sha256 cellar: :any,                 arm64_ventura: "51097a822ac6600795f5edcc3731477189e06856cf244d8d21ba6c0ff565ac26"
+    sha256 cellar: :any,                 sonoma:        "2bb2bfe9ada4cdbb8c6a6076919aeaff49d7cc62624370f887193b55dd7963f1"
+    sha256 cellar: :any,                 ventura:       "ab61a2e08c5a47dc9cac7f6dfed509bae5bf0b4639710b68bbb8b2c4414d1c70"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "57dfe62d68152f7084d3a6e565ad0ff2dc182e78134938d16e73fd8a845c310e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0629af3814a1f1ddb1db8d5d1c2fa110114b959899dce4b8e4e3261e91469c4a"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libconfig"
+  depends_on "ncurses" # undeclared identifier 'BUTTON5_PRESSED' with macos
   uses_from_macos "libxml2"
-  uses_from_macos "ncurses"
 
   def install
     system "make", "install", "PREFIX=#{prefix}", "PKG_CONFIG=pkg-config"
@@ -31,11 +30,17 @@ class Mandown < Formula
     (testpath/"test.md").write <<~MARKDOWN
       # Hi from readme file!
     MARKDOWN
-    expected_output = <<~EOS
+    expected_output = <<~HTML
       <html><head><title>test.md(7)</title></head><body><h1>Hi from readme file!</h1>
       </body></html>
-    EOS
-    system bin/"mdn", "-f", "test.md", "-o", "test"
+    HTML
+    if OS.mac?
+      system bin/"mdn", "-f", "test.md", "-o", "test"
+    else
+      require "pty"
+      _, _, pid = PTY.spawn(bin/"mdn", "-f", "test.md", "-o", "test")
+      Process.wait(pid)
+    end
     assert_equal expected_output, File.read("test")
   end
 end

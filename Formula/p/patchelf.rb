@@ -20,6 +20,7 @@ class Patchelf < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "6b230c2ad0a046653bb8f2b5652d069f4f9e7c6f17bdb4d4e9b6dc35a94a3693"
     sha256 cellar: :any_skip_relocation, monterey:       "37bd9ca1e04a76f8b160fdaf1f1f76c2f396a264f5d3af88670d3338c577638b"
     sha256 cellar: :any_skip_relocation, big_sur:        "0c12fe3723bc1b72e6635713ff2f6c12cf7f13e8e9533fb58360a2c163187d4f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e5ac0544c3916f7198d156d69a25d8f142905c694946ac1d430d5375f94f0bc1"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "fe8a76cdde4a5666cccbcdfc328bfb77f5d05b63a52ce103b487166be696ac6b"
   end
 
@@ -28,13 +29,6 @@ class Patchelf < Formula
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
-  end
-
-  fails_with gcc: "5" # Needs std::optional
-
-  resource "homebrew-helloworld" do
-    url "http://timelessname.com/elfbin/helloworld.tar.gz"
-    sha256 "d8c1e93f13e0b7d8fc13ce75d5b089f4d4cec15dad91d08d94a166822d749459"
   end
 
   def install
@@ -53,11 +47,16 @@ class Patchelf < Formula
   end
 
   test do
+    resource "homebrew-helloworld" do
+      url "http://timelessname.com/elfbin/helloworld.tar.gz"
+      sha256 "d8c1e93f13e0b7d8fc13ce75d5b089f4d4cec15dad91d08d94a166822d749459"
+    end
+
     resource("homebrew-helloworld").stage do
       assert_equal "/lib/ld-linux.so.2\n", shell_output("#{bin}/patchelf --print-interpreter chello")
       assert_equal "libc.so.6\n", shell_output("#{bin}/patchelf --print-needed chello")
       assert_equal "\n", shell_output("#{bin}/patchelf --print-rpath chello")
-      assert_equal "", shell_output("#{bin}/patchelf --set-rpath /usr/local/lib chello")
+      assert_empty shell_output("#{bin}/patchelf --set-rpath /usr/local/lib chello")
       assert_equal "/usr/local/lib\n", shell_output("#{bin}/patchelf --print-rpath chello")
     end
   end

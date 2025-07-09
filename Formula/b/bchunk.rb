@@ -11,6 +11,8 @@ class Bchunk < Formula
     regex(/href=.*?bchunk[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "22c3f5e3b6a740a91ac5ddd9b384efc9fd9d399a9356f2bb5e0eabad6df25b97"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "68a57a42fd8bc5ba39762d9b0731fd2ade2a6ec3862e2d2179daee64d60593b7"
@@ -26,6 +28,7 @@ class Bchunk < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "d6183607b5b987345ee3380263819f1d5e12f2f3cc9f6fd55accfbf92c26d5ef"
     sha256 cellar: :any_skip_relocation, sierra:         "95ef5fddc2234902187dde834690fb5957bd99ce11403e3d0f8881a705bb8f27"
     sha256 cellar: :any_skip_relocation, el_capitan:     "665af973709071e982939f37ba39c79c6e41f7f18277d65670475ba9d8315f94"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "cb5ff1ac028a138667c1d1dae887d33348e009b44f4a9a042d7d10c7387b5d37"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "97b11f40a695dccaf6033a9911a9377984ffa7d3ed59bc1272fce7b3a0958edf"
   end
 
@@ -45,6 +48,6 @@ class Bchunk < Formula
     touch testpath/"foo.bin"
 
     system bin/"bchunk", "foo.bin", "foo.cue", "foo"
-    assert_predicate testpath/"foo01.iso", :exist?
+    assert_path_exists testpath/"foo01.iso"
   end
 end

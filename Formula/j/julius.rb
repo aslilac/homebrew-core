@@ -5,6 +5,8 @@ class Julius < Formula
   sha256 "74447d7adb3bd119adae7915ba9422b7da553556f979ac4ee53a262d94d47b47"
   license "BSD-3-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "d0918ba6c8c4c755b0a7ad73e0efcc5e6a20924490acebf3ff0af45aef2dcfd1"
     sha256 cellar: :any,                 arm64_sonoma:   "3b9b28223b4853e92cc9be12a3e46ab876cdf7e48fe7fce4ce2c22459ce91db3"
@@ -18,6 +20,7 @@ class Julius < Formula
     sha256 cellar: :any,                 catalina:       "b06b9ca71df4cccff10e36a4a75a55f7d5bdb009f4dba9f940044da6ba0c258d"
     sha256 cellar: :any,                 mojave:         "041d7a3185850375ef67148a74ab9513e9a4eb6de05deeb3595f3941c41010d6"
     sha256 cellar: :any,                 high_sierra:    "d699dbf645c69f795421569e21c9d676e0db534a8d72fabfb721d5864e391549"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "47883d170fbc7ce73b8498ce37bb9e26ba3d57e5574f8ed03d11af3bc8ed81be"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "576576ac4069a3fd9e89e71ac2cefe9f3d1e666b9aa92915f248f8bffcf19de5"
   end
 
@@ -39,11 +42,11 @@ class Julius < Formula
     inreplace "libsent/src/adin/adin_mic_darwin_coreaudio.c",
       "#include <stdio.h>", "#include <stdio.h>\n#include <sent/stddefs.h>"
 
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--mandir=#{man}",
-                          "--prefix=#{prefix}"
+    args = ["--disable-silent-rules", "--mandir=#{man}"]
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
   end

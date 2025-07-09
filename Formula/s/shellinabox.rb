@@ -6,6 +6,8 @@ class Shellinabox < Formula
   license "GPL-2.0-only"
   revision 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b3bc61dfd3c0f3764b43daadc5f1538a1108f349b60cf26903487c1e7bb0a909"
@@ -18,6 +20,7 @@ class Shellinabox < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "17b6552900a2b8eb5297e6db21d07479821a95cbcc3d34d0c553e47ebd2595ed"
     sha256 cellar: :any_skip_relocation, big_sur:        "920301191fb40b3f036e5d08175f829e512f9e6df63760cdc389a12a7c01429f"
     sha256 cellar: :any_skip_relocation, catalina:       "a0d28e1679ea480a87fa8deeae9f3378f18322d6f3062d4a0f0dd71dbe5c6469"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "902b4bafa9a15233ccd8f67815f447bb38700e85b5883bf310a37b6419d4dbbb"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "402a852e03ce83de0813d1775222f02e1fd4a52e13ce6757bd16a3adda0688fa"
   end
 
@@ -41,7 +44,7 @@ class Shellinabox < Formula
     ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
 
     # Force use of native ptsname_r(), to work around a weird XCode issue on 10.13
-    ENV.append_to_cflags "-DHAVE_PTSNAME_R=1" if MacOS.version == :high_sierra
+    ENV.append_to_cflags "-DHAVE_PTSNAME_R=1" if OS.mac? && MacOS.version == :high_sierra
     system "autoreconf", "-fiv"
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"

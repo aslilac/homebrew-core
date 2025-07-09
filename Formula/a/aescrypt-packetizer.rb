@@ -7,10 +7,6 @@ class AescryptPacketizer < Formula
   sha256 "e2e192d0b45eab9748efe59e97b656cc55f1faeb595a2f77ab84d44b0ec084d2"
   license "GPL-2.0-or-later"
 
-  livecheck do
-    skip "v4 is under a commercial license"
-  end
-
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "1039232a96b3efc3d8c4a1da6d48d8d37cc2991e8275dc467d0b8b16229ead5c"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d840ff8d10cb48274d58dac6bc26126ceba767c36e56b2e9e24f2b591dccca0d"
@@ -22,16 +18,13 @@ class AescryptPacketizer < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "3e96703d06fcb1ac6114af1929f87cba2c6d04cb65f2d44aa4f51b56d28c04ac"
     sha256 cellar: :any_skip_relocation, big_sur:        "6ded6050675d0f771f473d5873bf897d0391859c9f9280362444f2189661ac3b"
     sha256 cellar: :any_skip_relocation, catalina:       "d129279cb28702f27173f99338f5ffd08f042202f5cc3bf2fd71f9107155cc51"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "64bf374350078c9e283cd1b4e283fc477f9c484ca0388eebf12a140d1f1fa999"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3eddb8372fd630b7f93288f2fb19c3ec96a061b1de150918bee53d0a7a1d55ee"
   end
 
-  head do
-    url "https://github.com/paulej/AESCrypt.git", branch: "master"
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  # v3 source code has been unavailable since at least 2024-09-01.
+  # v4 requires purchase of license (https://www.aescrypt.com/license.html)
+  deprecate! date: "2025-03-17", because: "switched to a commercial license in v4"
 
   def install
     if build.head?
@@ -68,7 +61,7 @@ class AescryptPacketizer < Formula
     path.write original_contents
 
     system bin/"paescrypt", "-e", "-p", "fire", path
-    assert_predicate testpath/"#{path}.aes", :exist?
+    assert_path_exists testpath/"#{path}.aes"
 
     system bin/"paescrypt", "-d", "-p", "fire", "#{path}.aes"
     assert_equal original_contents, path.read

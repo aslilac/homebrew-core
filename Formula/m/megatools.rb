@@ -1,27 +1,28 @@
 class Megatools < Formula
   desc "Command-line client for Mega.co.nz"
-  homepage "https://megatools.megous.com/"
-  url "https://megatools.megous.com/builds/megatools-1.11.1.20241028.tar.gz"
-  sha256 "3632135a23aa737950e74183199eb23d4e44461ca4221842717225fb31527a4d"
+  homepage "https://xff.cz/megatools/"
+  url "https://xff.cz/megatools/builds/megatools-1.11.5.20250706.tar.gz"
+  sha256 "51f78a03748a64b1066ce28a2ca75d98dbef5f00fe9789dc894827f9a913b362"
   license "GPL-2.0-or-later" => { with: "openvpn-openssl-exception" }
 
   livecheck do
-    url "https://megatools.megous.com/builds/"
+    url "https://xff.cz/megatools/builds/"
     regex(/href=.*?megatools[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "a148a907f62ef0d56c1b37fb6e4c353b98f8d2bf70c3edfea47c2748436038b4"
-    sha256 cellar: :any, arm64_sonoma:  "52dc8dc0be48c9892b452a93528f5ca3367ed388586ab2e3b1d8163b6037e8b2"
-    sha256 cellar: :any, arm64_ventura: "b9e5952709570af2516206bf02281cd5bc8213010b780f3c55e60d86e6fd59e7"
-    sha256 cellar: :any, sonoma:        "53486056197b1902084319e1107bba9831201bbf4c0486c87f9a9d966704c703"
-    sha256 cellar: :any, ventura:       "f273dc42b8873611dd8ac1a70013438749f7bb406d8a506b8fb8bffd01686941"
-    sha256               x86_64_linux:  "08d6b16aefc7d5691364a22fe12f02f34a14302ab0f0c44695f6e29bad5c7e56"
+    sha256 cellar: :any, arm64_sequoia: "cbdaf47635fdec1fc36736de8b84d3a96d9eb83da463f0db512d138464009e2f"
+    sha256 cellar: :any, arm64_sonoma:  "b6f04ece0c4f9db9b77383d8bbf83497f83108f64c94db171a7841c7311c7cf0"
+    sha256 cellar: :any, arm64_ventura: "ece0dd5f77f6c087e65c8ea1a78a770a1d1fbeb4fda0f0271cc89b107fce63f7"
+    sha256 cellar: :any, sonoma:        "c95b1c27bf14bccfb31ea2ea00540910a81b00861176b2facc32ae1d392628ca"
+    sha256 cellar: :any, ventura:       "134758d6274b2aba59587c780f34b60b7ad7efa36e54c9ddb5a558f3e8ad43a7"
+    sha256               arm64_linux:   "3cf9bf34c4d780c22dcd0aed0d34d5d9f3ee3f1df79fd96c2db62f07f2054147"
+    sha256               x86_64_linux:  "bb702e9c4d883d99115f1003bac6dc09f0717ee64c9b52ca50b5e91a36d4cbe0"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "glib"
   depends_on "openssl@3"

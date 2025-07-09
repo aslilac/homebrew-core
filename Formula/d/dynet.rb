@@ -5,6 +5,8 @@ class Dynet < Formula
   sha256 "014505dc3da2001db54f4b8f3a7a6e7a1bb9f33a18b6081b2a4044e082dab9c8"
   license "Apache-2.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "13425cf394c191250670db43c3090541143f76d156e06a11f2cba7294333926e"
     sha256 cellar: :any,                 arm64_sonoma:   "f64ed80ea96d473dd96800bdd9928eaa1b4fbe56cef809daf8d5241d3fb936e7"
@@ -18,16 +20,26 @@ class Dynet < Formula
     sha256 cellar: :any,                 catalina:       "d699aaf34e601dca84a10d735a822954de02b2139757699da77df2632d9ae95c"
     sha256 cellar: :any,                 mojave:         "edc5ba7539f3c224b091ae08b2f23ae667f6851ebbc10515e410fbe2efb2aec4"
     sha256 cellar: :any,                 high_sierra:    "a8b5c58b84c07911937f5b2c633e38e884f860ac97fc45881bfa817f6045c467"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b34f9dd2d85fa95eb0d7894a2c3e8ae7758c8c2e0caeb10e69fef515d6249398"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d6b8b9842ad483b362f47b1a5562e4cf839c26be13dd4fc525ed456f1dae230c"
   end
 
   depends_on "cmake" => :build
   depends_on "eigen"
 
-  conflicts_with "freeling", because: "freeling ships its own copy of dynet"
+  on_linux do
+    on_arm do
+      depends_on "llvm" => :build
+
+      fails_with :gcc do
+        cause "https://github.com/clab/dynet/issues/266"
+      end
+    end
+  end
 
   def install
     args = %W[
+      -DCMAKE_POLICY_VERSION_MINIMUM=3.5
       -DEIGEN3_INCLUDE_DIR=#{Formula["eigen"].opt_include}/eigen3
     ]
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args

@@ -2,18 +2,19 @@ class Gossip < Formula
   desc "Desktop client for Nostr written in Rust"
   homepage "https://github.com/mikedilger/gossip"
   url "https://github.com/mikedilger/gossip.git",
-      tag:      "v0.12.0",
-      revision: "cddb57cac6ca983e8d6aaa1636d4b466baefa811"
+      tag:      "v0.14.0",
+      revision: "53ba02c672e1f2e14da1df11a0fc43fcf19d2526"
   license "MIT"
   head "https://github.com/mikedilger/gossip.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8290c0cd8e7d1881d6e9beb2cbcff288684f11930207857da69b614507d1eeab"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7834d369df37c14e3a7af29d6c18288c1e4ddaf0e5b867c94d80ac22f965ce4f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "e1ea21ca38ec0b44ce03a87ff4d4be0e8148bbc64f9a7efc2a2a998ca59000dc"
-    sha256 cellar: :any_skip_relocation, sonoma:        "61ad70cf5c127ff720a26192c30d69d6070f9480b5ef6d720d95b60b07fca3f1"
-    sha256 cellar: :any_skip_relocation, ventura:       "c433b47fec2c914d0bb16309b25756b43c9bd11e79d86cbfff3349988e65ab80"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1a1cc186edaa3971fd03ea1109cac44e9936125af49499da70093320073c38fb"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "094397fd6b7fc10ccb5abfa09aacb87bc1bf9785e5931428e1147bbac8053a5c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "22707c47f4bc31392a931bf3b3eff6edd2e56dba3a038c4dbbce58e85db35843"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "e16ee0487520298ce54b97437576af2fea08c177c436126734109125f74b00a6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "bba898419ef93f501fef1bc643215d94f7b0fc2d335798cdb14ac222f300698d"
+    sha256 cellar: :any_skip_relocation, ventura:       "3b547d284bcaf51552faa323dc36f67a1b0e70a7ba8fe925f557794adb67f233"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "cf6f593ed8a27f441c52b38ad115ed7dd7e683c249dedad561f727ec871d2bd3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "96696a0e96b1d6726003ed559c0a659df7925d310dcd3af9fc2623f5b48b3ba2"
   end
 
   depends_on "rust" => :build

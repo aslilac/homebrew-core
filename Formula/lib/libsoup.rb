@@ -1,24 +1,25 @@
 class Libsoup < Formula
   desc "HTTP client/server library for GNOME"
   homepage "https://wiki.gnome.org/Projects/libsoup"
-  url "https://download.gnome.org/sources/libsoup/3.6/libsoup-3.6.1.tar.xz"
-  sha256 "ceb1f1aa2bdd73b2cd8159d3998c96c55ef097ef15e4b4f36029209fa18af838"
+  url "https://download.gnome.org/sources/libsoup/3.6/libsoup-3.6.5.tar.xz"
+  sha256 "6891765aac3e949017945c3eaebd8cc8216df772456dc9f460976fbdb7ada234"
   license "LGPL-2.0-or-later"
 
   bottle do
-    sha256 arm64_sequoia: "59038c9b01838bd300de8378545f93ac519f5514fdbc46eb5d14f3c14fda283d"
-    sha256 arm64_sonoma:  "0ca5b4869214fdbe8f94a95cadd4f54c76e90e7d654532e2dd47aead8e7115b1"
-    sha256 arm64_ventura: "6e1ca00c8119f8822b07dd5f5afeb3a81b3826aa5996041690e83b41f0325eaa"
-    sha256 sonoma:        "86f64098da67f9990514394e8628395adfec0a74047f95e64b3d72a6be5e3ddd"
-    sha256 ventura:       "e10c4fd428919efd579e021ebfbffd5b99568456503bd8e4f4fd170924fc9dda"
-    sha256 x86_64_linux:  "f104ffff26ffffbc3838c42fe3bdbff8be2f1b25f2e4570d2c30005dc24b3e48"
+    sha256 arm64_sequoia: "9347047d84f194d6079f4a42bd07a493182bff757bcd099498d344f608996b68"
+    sha256 arm64_sonoma:  "3524cbb252af5c9cc9b39cb0ff9733d2130be70e264339c926189564c121b82d"
+    sha256 arm64_ventura: "7af02d6ee61baf7463f21b0261430cccb10bc72102a3bad27be16c5f74173c57"
+    sha256 sonoma:        "3be670d505dedb3a71e0b9617e4c0b8096cafcf70486a3657c38f02f0502f28e"
+    sha256 ventura:       "430c7a028fbcc2239b1213faec338814bf055c037a4cfc22828a0ab3e3edc245"
+    sha256 arm64_linux:   "dc576162b656fc666022b3a276dda763823e13fed31e7da72b5189602460f2da"
+    sha256 x86_64_linux:  "426c2decb12e1fc035d9f50477a173fa04625cd1e3895dbf04cecce15aefe3a3"
   end
 
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
-  depends_on "python@3.12" => :build
+  depends_on "pkgconf" => [:build, :test]
+  depends_on "python@3.13" => :build
   depends_on "vala" => :build
 
   depends_on "glib"
@@ -68,8 +69,8 @@ class Libsoup < Formula
       }
     C
 
-    pkg_config_flags = shell_output("pkg-config --cflags --libs libsoup-3.0").chomp.split
-    system ENV.cc, "test.c", "-o", "test", *pkg_config_flags
+    flags = shell_output("pkgconf --cflags --libs libsoup-3.0").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
 end

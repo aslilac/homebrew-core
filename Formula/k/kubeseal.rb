@@ -2,9 +2,10 @@ class Kubeseal < Formula
   desc "Kubernetes controller and tool for one-way encrypted Secrets"
   homepage "https://github.com/bitnami-labs/sealed-secrets"
   url "https://github.com/bitnami-labs/sealed-secrets.git",
-      tag:      "v0.27.2",
-      revision: "28ec06b4c7e1a42919baeaeab4ab79d6a610af02"
+      tag:      "v0.30.0",
+      revision: "6e0beae85afcd1e981b4b56f22399ded6cbe6a88"
   license "Apache-2.0"
+  head "https://github.com/bitnami-labs/sealed-secrets.git", branch: "main"
 
   livecheck do
     url :stable
@@ -12,12 +13,12 @@ class Kubeseal < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6fdbd6b4b3953cbf7440b1ff783ec87889c8869b63c491be233866e277f2269a"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "da1f87aa0e16882a4d2f26a6af8363b19d4fca8310c1a837d8aa0931b2f1151e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "7cddaf27cb5049381d49a539e6ed7228d3a2e562c7113e665579e472bba907ce"
-    sha256 cellar: :any_skip_relocation, sonoma:        "3f5c18b0aa5f5ed986be8fabbc635a86e160eb728c2b07f53af78a1e929433d0"
-    sha256 cellar: :any_skip_relocation, ventura:       "c4c16b82340b6d5562a87b7f100cd9549ba50dfca34d3d3078c133bd6f7438de"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "372aed1924650bee95565fa1e5d22407e8e6aabbbf45b7aaa2b0eca16b0a8d84"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1f1998778a51c55251f10cdba515b19d19039ecb2c0bfe3125e82eae5a808d2e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8c6a879a779085d4da5f145ebcef73976245e4f2816f48bd7ec4a71e9dbfb149"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "38acdcf8cd85cbfd61f2bbb31d0f42fb7e6dcb086f2928a54ffbbdb36ea006c1"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6afbe477c2f01c9877fbbe417dc1bbd13b62ef1d280107c66daeed1c6bc99297"
+    sha256 cellar: :any_skip_relocation, ventura:       "425c03a07b9d7d46dd9d41aa40bb7c464370df9a4c15bf1a25cbf4e01b9606d5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fd76936ebd3cfbeecf75897c71bc480728c544c5bd89344e9cef2d316d9f3118"
   end
 
   depends_on "go" => :build

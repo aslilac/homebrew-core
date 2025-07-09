@@ -6,6 +6,8 @@ class Libaribcaption < Formula
   license "MIT"
   head "https://github.com/xqq/libaribcaption.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "ee6159957adc5a0d51c97ea3ff269abb39c5eafb0a8bddf7c14033827f22a6d0"
     sha256 cellar: :any,                 arm64_sonoma:   "350944da4a91c77f3a44925b3f563b97b763f71c9a3ca42d0a6a47d064f27a8c"
@@ -14,14 +16,14 @@ class Libaribcaption < Formula
     sha256 cellar: :any,                 sonoma:         "9789d6fea6f6dfd1443d067eec9591d3e67b0f68b724e2db60b0aae6ff77f605"
     sha256 cellar: :any,                 ventura:        "9c3435a993b489b7b25d02c1c586cc6df386fc1ad9d7563d5b46c84e26560430"
     sha256 cellar: :any,                 monterey:       "00512bb7e8fcb54f7b407a0eb1a32620dc364a0a87a6d78374bd9942a4ac4fe1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "84244a732beff5af9dd11ecc22abe0c05a665a091bbc98727f2b07a608439945"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b6f81f903e8e95519c2f783bc8749cf9513e684545230d518f445b8e407b8764"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :test
+  depends_on "pkgconf" => [:build, :test]
 
   on_linux do
-    depends_on "pkg-config" => :build
     depends_on "fontconfig"
     depends_on "freetype"
   end
@@ -44,7 +46,7 @@ class Libaribcaption < Formula
         return 0;
       }
     C
-    flags = shell_output("pkg-config --cflags --libs libaribcaption").chomp.split
+    flags = shell_output("pkgconf --cflags --libs libaribcaption").chomp.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

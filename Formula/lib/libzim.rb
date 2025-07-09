@@ -1,25 +1,26 @@
 class Libzim < Formula
   desc "Reference implementation of the ZIM specification"
   homepage "https://github.com/openzim/libzim"
-  url "https://github.com/openzim/libzim/archive/refs/tags/9.2.3.tar.gz"
-  sha256 "7c6e7fcaf5bc82447edb12c6c573779af6d77b3b79227da57586e81c4e13f1bf"
+  url "https://github.com/openzim/libzim/archive/refs/tags/9.3.0.tar.gz"
+  sha256 "791220e51e6a160d349491b9744ec1a9c1a104f11a79e8e73673daf242be69ed"
   license "GPL-2.0-or-later"
   revision 2
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "00a0a3a9e17a6cf09d3de5ff755527249bff3d816f99a5adb1d6afa47968fba9"
-    sha256 cellar: :any, arm64_sonoma:  "2c0d7acbee282b749a9c760c88f6fb8e7af12d7dba0e3f6311aa555b3f248514"
-    sha256 cellar: :any, arm64_ventura: "b4a7c832065ec969960e9fcbdfc1e6a88d11c880a1d16aba435fd8312633b8de"
-    sha256 cellar: :any, sonoma:        "e01388b83bd200d3ff68a46874b22b1ae97498e4b3d5f9c5329e6673be6cd48c"
-    sha256 cellar: :any, ventura:       "08a2d63cabf9559ddd61a62fced46ce4ea8e1c9efbdda6f6c28f08f9487b6bda"
-    sha256               x86_64_linux:  "a3ffacd30b339af12c349bdc37c1891446c03790e817ffc9aaff6a5175e39fb4"
+    sha256 cellar: :any, arm64_sequoia: "b4ceecbeedcfc12b93d6f09afd9108509970317095e61792c171908037dfebd7"
+    sha256 cellar: :any, arm64_sonoma:  "faebeb4b051a2de69ce34863390dbb6c623ea2f01d0ddc7265e9b73cab5aa917"
+    sha256 cellar: :any, arm64_ventura: "0a36f78d2ec284ba491c030e071a9a5875106dac327bd6e060f479410b6c9331"
+    sha256 cellar: :any, sonoma:        "c68a4e4aeb4d87ac9faec8349222751f49a4e570c15d5b1c05e93d2ca5cc57a7"
+    sha256 cellar: :any, ventura:       "d342df82217c3d5d6e160bd5b5c6eb1301854bfeb7d2691bb250c04e3a634389"
+    sha256               arm64_linux:   "5c4f15314c93fa0ab0f858bae329925eb9fabc5eeb75b390b34100f91208d6ee"
+    sha256               x86_64_linux:  "8e90267f0cbdcda4336951766f6bce92b4b694031c98b19597ee146546bf9781"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "xapian"
   depends_on "xz"
   depends_on "zstd"

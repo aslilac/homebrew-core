@@ -6,6 +6,8 @@ class Make < Formula
   sha256 "8814ba072182b605d156d7589c19a43b89fc58ea479b9355146160946f8cf6e9"
   license "GPL-3.0-only"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 arm64_sequoia:  "f361639a5ec1a9355e12f985c511dd6631b6790452a52057032a3a07a690ca4e"
@@ -16,6 +18,7 @@ class Make < Formula
     sha256 sonoma:         "3cc4a3aa1a3fe8ef30b2c7089708c5bdb04be3ae47ebc620f2cfd270941e96f2"
     sha256 ventura:        "e5b435315db19e1634289e888fcbd4282ed985a85591a7bec9661595a091d56f"
     sha256 monterey:       "d6d6e4b66e31ed8499dd7d1fecdc4d33b11af9073d0d884aedf9248bcbe6ac3e"
+    sha256 arm64_linux:    "8f7572f0b8e63ba05ce8487f7742bcd815413cdb9803f59e0c276564af36daab"
     sha256 x86_64_linux:   "b9fc9f80dd7f93b1b5eb9545044d6f7b016a372e7b2beb03f3e1a045e701410f"
   end
 
@@ -70,14 +73,14 @@ class Make < Formula
   end
 
   test do
-    (testpath/"Makefile").write <<~EOS
+    (testpath/"Makefile").write <<~MAKE
       default:
-      \t@echo Homebrew
-    EOS
+      	@echo Homebrew
+    MAKE
 
     if OS.mac?
-      assert_equal "Homebrew\n", shell_output("#{bin}/gmake")
-      assert_equal "Homebrew\n", shell_output("#{opt_libexec}/gnubin/make")
+      assert_equal "Homebrew\n", shell_output(bin/"gmake")
+      assert_equal "Homebrew\n", shell_output(libexec/"gnubin/make")
     else
       assert_equal "Homebrew\n", shell_output(bin/"make")
     end

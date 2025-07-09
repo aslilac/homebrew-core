@@ -1,18 +1,19 @@
 class GoMd2man < Formula
   desc "Converts markdown into roff (man pages)"
   homepage "https://github.com/cpuguy83/go-md2man"
-  url "https://github.com/cpuguy83/go-md2man.git",
-      tag:      "v2.0.5",
-      revision: "b14773d4db11046c50d0d1c05955839604aae991"
+  url "https://github.com/cpuguy83/go-md2man/archive/refs/tags/v2.0.7.tar.gz"
+  sha256 "ca3a5b57e2c01759f5a00ad2a578d034c5370fae9aa7a6c3af5648b2fc802a92"
   license "MIT"
+  head "https://github.com/cpuguy83/go-md2man.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1688591f368bcff0f7570bc26db52b35ce57e8080ff34c47210e9aa4f881fd30"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1688591f368bcff0f7570bc26db52b35ce57e8080ff34c47210e9aa4f881fd30"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "1688591f368bcff0f7570bc26db52b35ce57e8080ff34c47210e9aa4f881fd30"
-    sha256 cellar: :any_skip_relocation, sonoma:        "b5931e14240a993944ec49813e0059e638af688e66e4091ea0467cace7a85bd8"
-    sha256 cellar: :any_skip_relocation, ventura:       "b5931e14240a993944ec49813e0059e638af688e66e4091ea0467cace7a85bd8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3d33463c6582ce1cea93e4c7876d922c8b36d67d6a7029cdc1828d58e12798f7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "88fbded5a27da6f0f25f33b129b3164a0c4509f49c635c56f5154c3503cef78b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "88fbded5a27da6f0f25f33b129b3164a0c4509f49c635c56f5154c3503cef78b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "88fbded5a27da6f0f25f33b129b3164a0c4509f49c635c56f5154c3503cef78b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "001d4ae9334dbaffa5b3d40beb39a21397ceb816f60a458c765b034bff064870"
+    sha256 cellar: :any_skip_relocation, ventura:       "001d4ae9334dbaffa5b3d40beb39a21397ceb816f60a458c765b034bff064870"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "fa96d601898022e5d295bb25b910340e3a0be8353372480cc6415a38d677f471"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0a1f544ec626911acd8c1572b41f2de2b97c1c2f49d0c6bcf85f31f12654ab3f"
   end
 
   depends_on "go" => :build

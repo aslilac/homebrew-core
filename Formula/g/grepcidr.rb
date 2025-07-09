@@ -10,6 +10,8 @@ class Grepcidr < Formula
     regex(/href=.*?grepcidr[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a5eaf72370f021e79e6cc7d25139a7789fad25fdef67ce5ceaa0f69dbd655b97"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "aa33ac07532a239621ac6bfd62414cfdb9bcb12ea26be37a0631f4762755fc38"
@@ -25,6 +27,7 @@ class Grepcidr < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "7266be7b9262d50ab08d63529cf9858764573784ab63918010454ec2d76363b6"
     sha256 cellar: :any_skip_relocation, sierra:         "12dfa49026bffb77ed1c4a08e9b60b56859eb183bbf791754d0b1d476ba6d795"
     sha256 cellar: :any_skip_relocation, el_capitan:     "31ccf6792cab3c5022530ef4576ea53e6dedd4855b939d11212fea0d7fa294dc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "09dad0097782fb44285be071fa851331a56913239bc33dd6c868e28a1e133a75"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "cb0c1384a2e7e8c25c10ca2c767732ba49a4b57d7e2249ce415d11b76c4dadc0"
   end
 

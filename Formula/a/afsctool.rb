@@ -6,6 +6,8 @@ class Afsctool < Formula
   license all_of: ["GPL-3.0-only", "BSL-1.0"]
   head "https://github.com/RJVB/afsctool.git"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9eab0e700160a5bf2d1f62f8e67a017280e10315030cb09134933ee782974a95"
@@ -29,10 +31,9 @@ class Afsctool < Formula
 
   def install
     (buildpath/"src/private/lzfse").install resource("lzfse")
-    system "cmake", ".", *std_cmake_args
-    system "cmake", "--build", "."
-    bin.install "afsctool"
-    bin.install "zfsctool"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    bin.install "build/afsctool", "build/zfsctool"
   end
 
   test do

@@ -1,31 +1,32 @@
 class Muparser < Formula
   desc "C++ math expression parser library"
   homepage "https://github.com/beltoforion/muparser"
-  url "https://github.com/beltoforion/muparser/archive/refs/tags/v2.3.4.tar.gz"
-  sha256 "0c3fa54a3ebf36dda0ed3e7cd5451c964afbb15102bdbcba08aafb359a290121"
+  url "https://github.com/beltoforion/muparser/archive/refs/tags/v2.3.5.tar.gz"
+  sha256 "20b43cc68c655665db83711906f01b20c51909368973116dfc8d7b3c4ddb5dd4"
   license "BSD-2-Clause"
+  revision 1
   head "https://github.com/beltoforion/muparser.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "36af0dc46c37f63d7b95d5fbbfd6faedb587b0f66994022486b6216cc1b4a620"
-    sha256 cellar: :any,                 arm64_sonoma:   "badcf6bec2378a87e78207e2b378d525a75ce0fc3511e47c7dc10fc8e5ed5fbb"
-    sha256 cellar: :any,                 arm64_ventura:  "6b959115733d494a5a6cb3256853e368313eda71d1df964ae2b67496e092f55d"
-    sha256 cellar: :any,                 arm64_monterey: "c2514a95c8f9e08c8c9792ecbc78397fd1c8e52069cf16fdaf87d9cc1cfc8de5"
-    sha256 cellar: :any,                 arm64_big_sur:  "36f09677be96fe1f60945c6d16c0bbe48b51d898443420f6360d07c478c1127c"
-    sha256 cellar: :any,                 sonoma:         "ce0a3ba8a87a944fc5d1ab48efc3fd69db79d10c8d5224231e690b6de23f788b"
-    sha256 cellar: :any,                 ventura:        "f1312db2dadecaabd79c4539f9d19dfbbcff6320ac1e3f019dc2696938eebcfb"
-    sha256 cellar: :any,                 monterey:       "091cad450a37fbe0b51d83a0302260eca95f872d6d272811df0b82319f37d822"
-    sha256 cellar: :any,                 big_sur:        "646599aca3fac21f7e0d0f9f3c02d28dae9f03bae2130d3866e7953125ee9779"
-    sha256 cellar: :any,                 catalina:       "dce05e4517b703b8d41d7477fb64585b20d26cdf83e1bc1e591555e2246f6826"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a22a520b128642ade29eded38b0c9e33c20ddbdcc6055f8522409a48b416df04"
+    sha256 cellar: :any,                 arm64_sequoia: "b9dd0fef93be805c1e9d38e0a65f780482e4f31600e2ca06de03117961482515"
+    sha256 cellar: :any,                 arm64_sonoma:  "45cdabf66b22739dc8e558b062cc6a1f330d38d0ec7400c0ba0399f4b70f8d18"
+    sha256 cellar: :any,                 arm64_ventura: "0e8b448240be0fc032dee25dae2d40a7d4c143b7acbabd7abfce2f066e09da24"
+    sha256 cellar: :any,                 sonoma:        "bb235a4e1df126fe983925b4debd0b971abab5d2d588d1184fa55cef232b7eef"
+    sha256 cellar: :any,                 ventura:       "a17fbefec1301c80a8ff8f5d1fece66401a4e959c6f9aded0290f51cf31edede"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8d3d3f6acf9815f9e2c3bb3210ea66d744f88d72a75a70e9a3214bafb8306f14"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "531bcd3892d0938e5fd2b8e174be8a0ddb75183601bea0a31199bfdeabbf822a"
   end
 
   depends_on "cmake" => :build
 
+  on_macos do
+    conflicts_with "gromacs", because: "gromacs ships its own copy of muparser"
+  end
+
   def install
     ENV.cxx11 if OS.linux?
 
-    system "cmake", "-S", ".", "-B", "build", "-DENABLE_OPENMP=OFF", *std_cmake_args
+    system "cmake", "-S", ".", "-B", "build", "-DENABLE_OPENMP=#{OS.mac? ? "OFF" : "ON"}", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

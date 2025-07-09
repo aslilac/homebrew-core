@@ -1,9 +1,9 @@
 class ArmNoneEabiGdb < Formula
   desc "GNU debugger for arm-none-eabi cross development"
   homepage "https://www.gnu.org/software/gdb/"
-  url "https://ftp.gnu.org/gnu/gdb/gdb-15.2.tar.xz"
-  mirror "https://ftpmirror.gnu.org/gdb/gdb-15.2.tar.xz"
-  sha256 "83350ccd35b5b5a0cba6b334c41294ea968158c573940904f00b92f76345314d"
+  url "https://ftp.gnu.org/gnu/gdb/gdb-16.3.tar.xz"
+  mirror "https://ftpmirror.gnu.org/gdb/gdb-16.3.tar.xz"
+  sha256 "bcfcd095528a987917acf9fff3f1672181694926cc18d609c99d0042c00224c5"
   license "GPL-3.0-or-later"
   head "https://sourceware.org/git/binutils-gdb.git", branch: "master"
 
@@ -11,25 +11,38 @@ class ArmNoneEabiGdb < Formula
     formula "gdb"
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
-    sha256 arm64_sequoia: "4212f97b11f45baa44772a48ac04c55a27637ec92c94da6c828d8c71c1d75ee2"
-    sha256 arm64_sonoma:  "a80ab3c12a9ac961f5d8ac57a6645a83104534319372d007bcae5f2def70b666"
-    sha256 arm64_ventura: "98a52491d822c7400b726aafec2ed6ede84a53ccd3634d316ef38cdc3c13fa02"
-    sha256 sonoma:        "ae9ae170293d76f2d1c680dc7fc952cc3c8879ce6bcb87547dd6be1956ae0d8b"
-    sha256 ventura:       "dd0627ce4bc99fd95ce688ea794161e2eb2437308cedf0fbacc63fcd3d9370f2"
-    sha256 x86_64_linux:  "4be06338b7071a1f2b1dd245f53a154b8946594e21cd26f4c1df7fa1e9464fb7"
+    sha256 arm64_sequoia: "1a7301cc72a0e20ca3210b0a039226319eaa33259670ef53d9f2fe57a3ad91ef"
+    sha256 arm64_sonoma:  "e3f460c763a63f70e0b3f93a9763638a3e2a358e561d3216d102cabea65cebb5"
+    sha256 arm64_ventura: "185b464524777e63901da56fb727d6ae6c3b1d776213294d330ca7ffa8c0b55f"
+    sha256 sonoma:        "0768015caa13cddc4e56cfa265e396bef30e786d052417d530595f6965fc6e13"
+    sha256 ventura:       "bafd4327eaf7943a9b11d28e9d99699245b8e1ff2302db8474a4466142446b15"
+    sha256 arm64_linux:   "2866df5b2c8bb8e5d8a7ee04b407cca220877c0494004cda4e35bb17af9b4069"
+    sha256 x86_64_linux:  "50f19c339ae4ea0e2e15300ef4d1720f3550c99cffe4ed4f9b3302a543e34d97"
   end
 
+  depends_on "pkgconf" => :build
   depends_on "arm-none-eabi-gcc" => :test
   depends_on "gmp"
   depends_on "mpfr"
+  depends_on "ncurses" # https://github.com/Homebrew/homebrew-core/issues/224294
   depends_on "python@3.13"
+  depends_on "readline"
   depends_on "xz" # required for lzma support
+  depends_on "zstd"
 
-  uses_from_macos "expat"
-  uses_from_macos "ncurses"
+  uses_from_macos "expat", since: :sequoia # minimum macOS due to python
   uses_from_macos "zlib"
+
+  # Workaround for https://github.com/Homebrew/brew/issues/19315
+  on_sequoia :or_newer do
+    on_intel do
+      depends_on "expat"
+    end
+  end
 
   on_system :linux, macos: :ventura_or_newer do
     depends_on "texinfo" => :build
@@ -43,10 +56,16 @@ class ArmNoneEabiGdb < Formula
       --includedir=#{include}/#{target}
       --infodir=#{info}/#{target}
       --mandir=#{man}
-      --with-lzma
-      --with-python=#{Formula["python@3.13"].opt_bin}/python3.13
-      --with-system-zlib
       --disable-binutils
+      --disable-nls
+      --enable-tui
+      --with-curses
+      --with-expat
+      --with-lzma
+      --with-python=#{which("python3.13")}
+      --with-system-readline
+      --with-system-zlib
+      --with-zstd
     ]
 
     mkdir "build" do

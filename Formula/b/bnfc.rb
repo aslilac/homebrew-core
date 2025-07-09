@@ -1,11 +1,13 @@
 class Bnfc < Formula
   desc "BNF Converter"
-  homepage "https://bnfc.digitalgrammars.com/"
+  homepage "https://github.com/BNFC/bnfc"
   url "https://github.com/BNFC/bnfc/archive/refs/tags/v2.9.5.tar.gz"
   sha256 "32a6293b95e10cf1192f348ec79f3c125b52a56350caa4f67087feb3642eef77"
   license "BSD-3-Clause"
   revision 1
   head "https://github.com/BNFC/bnfc.git", branch: "master"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 1
@@ -16,6 +18,7 @@ class Bnfc < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "f70febbdc989129871dae2ad9ac254c8a68e137921854a1e9728a301f4bba2f8"
     sha256 cellar: :any_skip_relocation, ventura:        "d645135dfed8bd688b12de81f12c3496d69dc58b1c6c523b48752c44df64cebe"
     sha256 cellar: :any_skip_relocation, monterey:       "efe525933e08206d108405241096da7f5e4b55c00c5cda02fae546b14e94d7cd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "9a0f394ee5a67102753f9ba868bfa1763195f44a71d1992980a1409c7da6063a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "428910364e4bb5f3fb7f79e578298b97d429b75793ed2dd3c91052209a130e2e"
   end
 
@@ -27,31 +30,24 @@ class Bnfc < Formula
   depends_on "bison" => :test
   depends_on "flex" => :test
   depends_on "openjdk" => :test
+  depends_on "gmp"
+
+  uses_from_macos "libffi"
 
   def install
-    cd "source" do
-      system "cabal", "v2-update"
-      system "cabal", "v2-install", *std_cabal_v2_args
-      doc.install "CHANGELOG.md"
-      doc.install "src/BNFC.cf" => "BNFC.cf"
-    end
-    cd "docs" do
-      system "make", "text", "man", "SPHINXBUILD=#{Formula["sphinx-doc"].bin/"sphinx-build"}"
-      cd "_build" do
-        doc.install "text" => "manual"
-        man1.install "man/bnfc.1" => "bnfc.1"
-      end
-    end
-    doc.install %w[README.md examples]
+    system "cabal", "v2-update"
+    system "cabal", "v2-install", buildpath/"source", *std_cabal_v2_args
+    system "make", "-C", "docs", "text", "man", "SPHINXBUILD=#{Formula["sphinx-doc"].bin}/sphinx-build"
+
+    man1.install "docs/_build/man/bnfc.1"
+    doc.install "docs/_build/text" => "manual"
+    doc.install "README.md", "examples", "source/CHANGELOG.md", "source/src/BNFC.cf"
   end
 
   test do
     ENV.prepend_create_path "PATH", testpath/"tools-bin"
     system "cabal", "v2-update"
-    system "cabal", "v2-install",
-           "--jobs=#{ENV.make_jobs}", "--max-backjumps=100000",
-           "--install-method=copy", "--installdir=#{testpath/"tools-bin"}",
-           "alex", "happy"
+    system "cabal", "v2-install", "alex", "happy", *std_cabal_v2_args.map { |s| s.sub bin, testpath/"tools-bin" }
 
     (testpath/"calc.cf").write <<~EOS
       EAdd. Exp  ::= Exp  "+" Exp1 ;
@@ -109,45 +105,38 @@ class Bnfc < Formula
       14 * (3 + 2 / 5 - 8)
     EOS
 
-    mktemp "c-test" do
+    flex_bison_args = ["FLEX=#{Formula["flex"].bin}/flex", "BISON=#{Formula["bison"].bin}/bison"]
+
+    mkdir "c-test" do
       system bin/"bnfc", "-m", "-o.", "--c", testpath/"calc.cf"
-      system "make", "CC=#{ENV.cc}", "CCFLAGS=#{ENV.cflags}",
-             "FLEX=#{Formula["flex"].bin/"flex"}",
-             "BISON=#{Formula["bison"].bin/"bison"}"
-      test_out = shell_output("./Testcalc #{testpath}/test.calc")
-      assert_equal check_out_c, test_out
+      system "make", "CC=#{ENV.cc}", "CCFLAGS=#{ENV.cflags}", *flex_bison_args
+      assert_equal check_out_c, shell_output("./Testcalc #{testpath}/test.calc")
     end
 
-    mktemp "cxx-test" do
+    mkdir "cxx-test" do
       system bin/"bnfc", "-m", "-o.", "--cpp", testpath/"calc.cf"
-      system "make", "CC=#{ENV.cxx}", "CCFLAGS=#{ENV.cxxflags}",
-             "FLEX=#{Formula["flex"].bin/"flex"}",
-             "BISON=#{Formula["bison"].bin/"bison"}"
-      test_out = shell_output("./Testcalc #{testpath}/test.calc")
-      assert_equal check_out_c, test_out
+      system "make", "CC=#{ENV.cxx}", "CCFLAGS=#{ENV.cxxflags}", *flex_bison_args
+      assert_equal check_out_c, shell_output("./Testcalc #{testpath}/test.calc")
     end
 
-    mktemp "agda-test" do
+    mkdir "agda-test" do
       system bin/"bnfc", "-m", "-o.", "--haskell", "--text-token",
              "--generic", "--functor", "--agda", "-d", testpath/"calc.cf"
       system "make"
-      test_out = shell_output("./Calc/Test #{testpath/"test.calc"}") # Haskell
-      assert_equal check_out_hs, test_out
-      test_out = shell_output("./Main #{testpath/"test.calc"}") # Agda
-      assert_equal check_out_agda, test_out
+      assert_equal check_out_hs, shell_output("./Calc/Test #{testpath}/test.calc") # Haskell
+      assert_equal check_out_agda, shell_output("./Main #{testpath}/test.calc") # Agda
     end
 
     ENV.deparallelize do # only the Java test needs this
-      mktemp "java-test" do
+      mkdir "java-test" do
         jdk_dir = Formula["openjdk"].bin
         antlr_bin = Formula["antlr"].bin/"antlr"
-        antlr_jar = Dir[Formula["antlr"].prefix/"antlr-*-complete.jar"][0]
+        antlr_jar = Formula["antlr"].prefix.glob("antlr-*-complete.jar").first
         ENV["CLASSPATH"] = ".:#{antlr_jar}"
         system bin/"bnfc", "-m", "-o.", "--java", "--antlr4", testpath/"calc.cf"
-        system "make", "JAVAC=#{jdk_dir/"javac"}", "JAVA=#{jdk_dir/"java"}",
+        system "make", "JAVAC=#{jdk_dir}/javac", "JAVA=#{jdk_dir}/java",
                "LEXER=#{antlr_bin}", "PARSER=#{antlr_bin}"
-        test_out = shell_output("#{jdk_dir}/java calc.Test #{testpath}/test.calc")
-        assert_equal check_out_java, test_out
+        assert_equal check_out_java, shell_output("#{jdk_dir}/java calc.Test #{testpath}/test.calc")
       end
     end
   end

@@ -11,6 +11,8 @@ class Tal < Formula
     regex(/href=.*?tal[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "dd3c811b07d428e7beccf39eda7c3a0af73695f03188dfc7ea652472d492c794"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "94631ec0dafade563c1652e557981e5b4ed4f3583f3586bc9091be4d96c2b7b3"
@@ -26,16 +28,30 @@ class Tal < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "852023d9d33d893ca0852f36d795b044212e69911e2380cc4f0d22f99e22c1c2"
     sha256 cellar: :any_skip_relocation, sierra:         "9c2c4e5f9d6922f9a9d434485dea4ddf321744728c83adcda822c3c314f6a86e"
     sha256 cellar: :any_skip_relocation, el_capitan:     "bbdef6b2c92650352b7199cc2a9e3bc4698bf2a14fce46397eebcee72c1de419"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "779b8afc3da3186f16ce41fd9d40257f24e01b80520b625ddcf848f636646357"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "568fa7d6db8a642d71501bd804351e281c512fa82f3c2757bc870e7e8d871ecd"
   end
 
   def install
-    system "make", "linux"
+    system "make", "tal"
     bin.install "tal"
     man1.install "tal.1"
   end
 
   test do
-    system bin/"tal", "/etc/passwd"
+    (testpath/"test.c").write <<~C
+      /***************************************************/
+      /* some text and so on                    */
+      /*       even more text                                   */
+      /*       foo, bar. bar bar.                   */
+      /***************************************************/
+    C
+    assert_equal <<~C, shell_output("#{bin}/tal -p 0 test.c")
+      /***************************************************/
+      /* some text and so on                             */
+      /*       even more text                            */
+      /*       foo, bar. bar bar.                        */
+      /***************************************************/
+    C
   end
 end

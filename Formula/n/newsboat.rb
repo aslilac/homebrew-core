@@ -1,18 +1,19 @@
 class Newsboat < Formula
   desc "RSS/Atom feed reader for text terminals"
   homepage "https://newsboat.org/"
-  url "https://newsboat.org/releases/2.37/newsboat-2.37.tar.xz"
-  sha256 "4f54dea385c25b95e8ce0df1107f0336db41b18c645368e6164ce1070efba77c"
+  url "https://newsboat.org/releases/2.40/newsboat-2.40.tar.xz"
+  sha256 "1e656636009ffad3aeb87f8d0e4c36d2e913eac155b5f3ec85d00e8287b477c2"
   license "MIT"
   head "https://github.com/newsboat/newsboat.git", branch: "master"
 
   bottle do
-    sha256 arm64_sequoia: "300636df7d095784a08a1dc80c767a75f91c6b46428c341665f111763a2e325d"
-    sha256 arm64_sonoma:  "a5c275ca088b11096188d1c16892ad95e31a3c7dde78d1a44c3b3ebde2e25e3f"
-    sha256 arm64_ventura: "afa76014b9eb5526dd94e28258fdda1fc94ea795f3d0384054cd32ae911a2c07"
-    sha256 sonoma:        "c7e9b83443b8d3e92b9a3d87eec6f7175d8f13644286508688f0c0e435ae64f9"
-    sha256 ventura:       "c718942047b57a41b1c0610457603c85c8f74cd1027f4a22d3a21213e8a042ae"
-    sha256 x86_64_linux:  "9b4badabe9019a7b23f157d6548b1d9a52291b5d9a77865082f18c486448d2c3"
+    sha256 arm64_sequoia: "62beb795654ad0e034cae9415b3d9762037dd5b7a6b084195338d66dfe12e5d4"
+    sha256 arm64_sonoma:  "eaab1099251d9341a040788309e8de0cd3a2210eb45b8feaa15dd96303c3ad94"
+    sha256 arm64_ventura: "00456fdf96b6cf458a1ef3e68343ded5c41f4c41dea5af060c477c782b74e535"
+    sha256 sonoma:        "a1f9d6d589a29fcead823ff5598eac302898403c3faa4936eb946224fa05a16a"
+    sha256 ventura:       "c0f4e28fdd96b4e278f37f97ba42376a3fd896e938904e28e971d232c0663b5a"
+    sha256 arm64_linux:   "a00dbb6fe0ed510fd078d1690c6a64881f674ac2af943e944ca1895d3282246a"
+    sha256 x86_64_linux:  "c9ec61ffc627d29d3a32c984db34f6ae4cc641804b37aeb2b0b5918fb59aceec"
   end
 
   depends_on "asciidoctor" => :build
@@ -39,7 +40,7 @@ class Newsboat < Formula
   # https://github.com/newsboat/newsboat/issues/232
   resource("libstfl") do
     url "https://github.com/newsboat/stfl.git",
-        revision: "c2c10b8a50fef613c0aacdc5d06a0fa610bf79e9"
+        revision: "bbb2404580e845df2556560112c8aefa27494d66"
   end
 
   def install
@@ -101,7 +102,7 @@ class Newsboat < Formula
   end
 
   test do
-    (testpath/"urls.txt").write "https://github.com/blog/subscribe"
+    (testpath/"urls.txt").write "https://github.blog/subscribe/"
     assert_match "Newsboat - Exported Feeds", shell_output("LC_ALL=C #{bin}/newsboat -e -u urls.txt")
   end
 end

@@ -2,17 +2,18 @@ class Libmsquic < Formula
   desc "Cross-platform, C implementation of the IETF QUIC protocol"
   homepage "https://github.com/microsoft/msquic"
   url "https://github.com/microsoft/msquic.git",
-      tag:      "v2.4.5",
-      revision: "66ddc271efc0096411144a6732b6afe3bd2855dd"
+      tag:      "v2.4.11",
+      revision: "18b58030a1aee72d94d705d5738cfb87650b063a"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "ae84e481cf520b7f5e796cdb23d798b77c4a75c1514c1efeecb9ba75402c8b43"
-    sha256 cellar: :any,                 arm64_sonoma:  "990b3c4a37baeb3968a5f15b08fb8b0765a0fd50e12f549128d39b94a55ba217"
-    sha256 cellar: :any,                 arm64_ventura: "e29cb2058af5c07ce360c207ef73d815a74ae1a732ff021d4bd02972a68b60e4"
-    sha256 cellar: :any,                 sonoma:        "3410cc3a1462e5f8b8838d88eb5a8eaaebd766e4080606eca76af0cebf779952"
-    sha256 cellar: :any,                 ventura:       "2bb02eafb9f8a22cdd4a3c2e585d044900992228ba7831d8688d9f9f11113e29"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c4ea9ad1b92b59ee9cff735cdf8168c16c43ffe2f961b310babafaef444dc64a"
+    sha256 cellar: :any,                 arm64_sequoia: "89bbdc9b1db3f643d9f223538b09cbf0b4bb1133c662630e65430db4692a94ae"
+    sha256 cellar: :any,                 arm64_sonoma:  "8325d65147aec0bda760fff3877c7a5906317d15f49f21c644e8fd994ce749ee"
+    sha256 cellar: :any,                 arm64_ventura: "1fcbd01c40f6eec8d01052e3635e61af732e8fae1f53ad4e1b1125ea119819e3"
+    sha256 cellar: :any,                 sonoma:        "3eac3ea81c90f349167dcacfdfc2f98447f700c297f8060d5f4f7f302aaf6147"
+    sha256 cellar: :any,                 ventura:       "f4a98a03a312f0cb685d111690cd7687bfc15250d22d768e642b69528b11d4c2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8c01a5f417fe2d51b8f21803595b2091745d2eeb0f5ab0653ecc9c836ef17ffa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5d79cb6eaecbe706a86c2a93feb7f45841395d5a2ee2ab7101f5570e77c2482a"
   end
 
   depends_on "cmake" => :build
@@ -37,7 +38,7 @@ class Libmsquic < Formula
 
   test do
     example = testpath/"example.cpp"
-    example.write <<~EOS
+    example.write <<~CPP
       #include <iostream>
       #include <msquic.h>
 
@@ -54,7 +55,7 @@ class Libmsquic < Formula
           MsQuicClose(ptr);
           return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, example, "-I#{include}", "-L#{lib}", "-lmsquic", "-o", "test"
     assert_equal "MsQuicOpen2 succeeded", shell_output("./test").strip
   end

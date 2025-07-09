@@ -1,6 +1,6 @@
 class Globjects < Formula
   desc "C++ library strictly wrapping OpenGL objects"
-  homepage "https://github.com/cginternals/globjects"
+  homepage "https://globjects.org/"
   license "MIT"
   revision 1
 
@@ -12,6 +12,8 @@ class Globjects < Formula
     depends_on "glbinding@2"
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "51e3056d71789e3db8e17d7fc966a530ecb1120c0e91bec0edc3c5b6b524db1d"
     sha256 cellar: :any,                 arm64_sonoma:   "85b4f1d5eb729806747d7590376b8a4803615e12b1020f857ed953bc26e90438"
@@ -20,6 +22,7 @@ class Globjects < Formula
     sha256 cellar: :any,                 sonoma:         "275eaa25310c701e9ba4e1022b1b9bdadf3bdb64cf6a86ae77298523d152329c"
     sha256 cellar: :any,                 ventura:        "4c43449656c4dcc9a7f2b355632daba1cbd002d6ad45f54d502ae372d74bffa9"
     sha256 cellar: :any,                 monterey:       "046dc6b5271eec1551fd899bca30036981fb8ca95edc02a342ea0ec0a87313d5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "ce8e15f50d3531a9368c305fb260a5b13c9114b1f3b29671c42b9ce9f6f5c98f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4fb290699d5ea7fa3ab29b1d53ffcb2ad1580115b04258cd237e26a4f3e2a717"
   end
 
@@ -36,7 +39,10 @@ class Globjects < Formula
     # considers /usr and /usr/local to be valid for a system installation
     inreplace "CMakeLists.txt", "set(SYSTEM_DIR_INSTALL FALSE)", "set(SYSTEM_DIR_INSTALL TRUE)"
 
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+                    "-DOPTION_BUILD_TESTS=OFF",
+                    *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

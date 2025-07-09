@@ -10,6 +10,8 @@ class Fdclone < Formula
     regex(%r{href=.*?\./FD[._-]v?(\d+(?:\.\d+)+[a-z]?)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sonoma:   "78daa3983f98bea1071db92ef70b8c9a3ea5e01f1d36a32d093de1512b1a65d8"
     sha256 arm64_ventura:  "6307f6eece0a8e13794fb57ef3ac793c5f72bb2769310803e4fee5bb30352e2b"
@@ -22,6 +24,7 @@ class Fdclone < Formula
     sha256 catalina:       "6272d033132a7a2c355ab19629241021087c606de3114e2ebe4aa301e6bee840"
     sha256 mojave:         "b3a56f6b62622696f4da6554a487557a57c0875c2aba28705e300b7207f6a8ce"
     sha256 high_sierra:    "f894bed33d254c5c48341485e835f945b60e632a0ecbf484c818f12c61350122"
+    sha256 arm64_linux:    "f711ab13e2d255a899f98e9b4d1938dd8fd94236362c62a8fcdbcd3b9346dc54"
     sha256 x86_64_linux:   "b7a4047ede40d7981d2496e42cf32f2886a9bb182a2275f4697b70f20ec5f7f3"
   end
 

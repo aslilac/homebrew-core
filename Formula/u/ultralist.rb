@@ -1,9 +1,11 @@
 class Ultralist < Formula
   desc "Simple GTD-style task management for the command-line"
   homepage "https://ultralist.io"
-  url "https://github.com/ultralist/ultralist/archive/refs/tags/1.7.0.tar.gz"
+  url "https://github.com/gammons/ultralist/archive/refs/tags/1.7.0.tar.gz"
   sha256 "d4a524c94c1ea4a748711a1187246ed1fd00eaaafd5b8153ad23b42d36485f79"
   license "MIT"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "110edc14d3b119a73a5de437726450fb928f436c94743d94db437bfe132b37be"
@@ -29,7 +31,7 @@ class Ultralist < Formula
 
   test do
     system bin/"ultralist", "init"
-    assert_predicate testpath/".todos.json", :exist?
+    assert_path_exists testpath/".todos.json"
     add_task = shell_output("#{bin}/ultralist add learn the Tango")
     assert_match(/Todo.* added/, add_task)
   end

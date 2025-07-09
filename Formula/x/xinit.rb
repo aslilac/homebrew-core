@@ -1,21 +1,18 @@
 class Xinit < Formula
   desc "Start the X Window System server"
   homepage "https://gitlab.freedesktop.org/xorg/app/xinit"
-  url "https://www.x.org/releases/individual/app/xinit-1.4.2.tar.xz"
-  sha256 "b7d8dc8d22ef9f15985a10b606ee4f2aad6828befa437359934647e88d331f23"
+  url "https://www.x.org/releases/individual/app/xinit-1.4.4.tar.xz"
+  sha256 "40a47c7a164c7f981ce3787b4b37f7e411fb43231dcde543d70094075dacfef9"
   license all_of: ["MIT", "APSL-2.0"]
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "15d5a518d2a37401674216f24e90c812d27b7ce053f67325be0524152210df44"
-    sha256 cellar: :any,                 arm64_sonoma:   "b5dbad520af878ccb170fb1924e58f0bcb0c384377ae7aaca2d64091aa8ff4ee"
-    sha256 cellar: :any,                 arm64_ventura:  "0fbd33c0f3e8a01224d5f4c2f1437236957d9f9b80d0199f6bf729fe783320c9"
-    sha256 cellar: :any,                 arm64_monterey: "b32fd947d6ab4e3d27cae884ecba3d25d618cc5df48869995db8211857a75cf9"
-    sha256                               arm64_big_sur:  "e3fa6b976ee03fddeea911fb37cf872c72b23b8a4b00ed11299925656b983fd5"
-    sha256                               sonoma:         "579c01be1581c78fb55db87ed20f5c6b5ed0db7e39ab9f48f39882b2ee1886e6"
-    sha256                               ventura:        "3db4e377fbe430f3ea074f0ec1f433b3b7278aa451da736d95a8a1ff72e87047"
-    sha256 cellar: :any,                 monterey:       "b206deb4ff3200499ab32a8984c90901277094697eaed812ec0e8d10765e64d6"
-    sha256 cellar: :any,                 big_sur:        "1b62cbaab6ec39e95a11057e5ce26209c5b4f5696eaab24c0a59e1b7374a7fe0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "540015cba432ff1f7e719b37f9c2c3af6d8f40784840eeb8e8774cf8575b82a0"
+    sha256 arm64_sequoia: "f032d2ee9b34ba1ee42d99701266d51e3dcbdcb30d66883ec8f05033894356bb"
+    sha256 arm64_sonoma:  "12231945f0af6967b64ea1e6f992caedcc760a7ed13d142590dab52ae7fc3e96"
+    sha256 arm64_ventura: "6f5350a1fceed943594b743212e2ae40e37559e1daa82c31e617311a706ee25a"
+    sha256 sonoma:        "14ad40b8e7143eb60fd252ecadaa4012428a33d9572920fc7e4968ac52904d38"
+    sha256 ventura:       "caf7be003b70bc8a6a0a2c0fd64df3b6f1479ecb437ecbb00b4675660bf15319"
+    sha256 arm64_linux:   "5afccb26823574faa9cc8e322ffa73ba0f5466862dd88ca5a8a4c828ab0d95cc"
+    sha256 x86_64_linux:  "8b8186133c32e00a1411809fa7b2569bffacaa9fd2ddbd575605abd3555c6316"
   end
 
   depends_on "pkgconf" => :build
@@ -35,8 +32,8 @@ class Xinit < Formula
     depends_on "quartz-wm"
 
     resource "xquartz" do
-      url "https://github.com/XQuartz/XQuartz/archive/refs/tags/XQuartz-2.8.2.tar.gz"
-      sha256 "050c538cf2ed39f49a366c7424c7b22781c9f7ebe02aa697f12e314913041000"
+      url "https://github.com/XQuartz/XQuartz/archive/refs/tags/XQuartz-2.8.5.tar.gz"
+      sha256 "5c8c4f48d5e30fdabfba3543174ea67e53f334650b4cfd637714e559eec102d4"
     end
   end
 

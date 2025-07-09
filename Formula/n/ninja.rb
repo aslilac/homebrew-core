@@ -1,8 +1,8 @@
 class Ninja < Formula
   desc "Small build system for use with gyp or CMake"
   homepage "https://ninja-build.org/"
-  url "https://github.com/ninja-build/ninja/archive/refs/tags/v1.12.1.tar.gz"
-  sha256 "821bdff48a3f683bc4bb3b6f0b5fe7b2d647cf65d52aeb63328c91a6c6df285a"
+  url "https://github.com/ninja-build/ninja/archive/refs/tags/v1.13.0.tar.gz"
+  sha256 "f08641d00099a9e40d44ec0146f841c472ae58b7e6dd517bee3945cfd923cedf"
   license "Apache-2.0"
   head "https://github.com/ninja-build/ninja.git", branch: "master"
 
@@ -12,15 +12,13 @@ class Ninja < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4ccb687bdd51f132eb4e87bda877c7ec7fbd565dd567c59e074083977c7e027b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e0137a7ca41103118431134051e264a38dfcfd90a1d23354527dec7ecd4098d0"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ee3cb1d64ad324420cb83866236159703faa91825353d4f2ac70aa8a729d03f7"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4853917b940c67e971ecc4575d490080e88ea812b1af2e9f3b383c5f9012f9eb"
-    sha256 cellar: :any_skip_relocation, sequoia:        "8b078ad9df50b80bd296614204d1dc0a42e9340edd45d0aa0c6576cd538be50f"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b9e7f5d59c29882398cbf1cf9fcf358db480afa96ad9fb51a87aa0da9b5fabd7"
-    sha256 cellar: :any_skip_relocation, ventura:        "4cda186dde7fff9284bc64d2469faf3a6af148e656f9ee9c27d731d1e02bb637"
-    sha256 cellar: :any_skip_relocation, monterey:       "ef5eced95e4a700b49d67acdf1fa25547242ca95e36ed197339dc24f5239c312"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bb1fdec103d46cf08a086a70f0c4bda35927cfdfcef35bad0da2b0b4430c8801"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "60f60dca4793f8f81a4ba72809d49ee79cfb36eed2eb0555dfd735a7af7396f3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "357970eb2a15833392163be15cd02e9a76157df1b0bb98a5acd5e0ba8f49d468"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "532af454e1545c1ed766f6548501627ae77bbaf2e1195855837728b78d72bd89"
+    sha256 cellar: :any_skip_relocation, sonoma:        "17bfc6d443b17cb1d7056704139c4fd7a026d194f095115ae9988917981dca18"
+    sha256 cellar: :any_skip_relocation, ventura:       "2c2b200597f74af5963e7a9d383e4a9052c45850e9b5433c0dbce775460774ee"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "14ff87446ae39dea37b93a04dec35c452ef51c7a4d87e9a1b7f5306126c77374"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dda32b8743cdb0d0c2d88acc01adef28f2d7a911c18b80b1705505f798ab2693"
   end
 
   uses_from_macos "python" => [:build, :test], since: :catalina
@@ -29,22 +27,21 @@ class Ninja < Formula
     system "python3", "configure.py", "--bootstrap", "--verbose", "--with-python=python3"
 
     bin.install "ninja"
-    bash_completion.install "misc/bash-completion" => "ninja-completion.sh"
+    bash_completion.install "misc/bash-completion" => "ninja"
     zsh_completion.install "misc/zsh-completion" => "_ninja"
     doc.install "doc/manual.asciidoc"
-    elisp.install "misc/ninja-mode.el"
     (share/"vim/vimfiles/syntax").install "misc/ninja.vim"
   end
 
   test do
-    (testpath/"build.ninja").write <<~EOS
+    (testpath/"build.ninja").write <<~NINJA
       cflags = -Wall
 
       rule cc
         command = gcc $cflags -c $in -o $out
 
       build foo.o: cc foo.c
-    EOS
+    NINJA
     system bin/"ninja", "-t", "targets"
     port = free_port
     fork do

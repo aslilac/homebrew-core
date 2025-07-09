@@ -5,6 +5,8 @@ class Sambamba < Formula
   sha256 "955a51a00be9122aa9b0c27796874bfdda85de58aa0181148ef63548ea5192b0"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "920be291227ca05e361411dc0199507c0c341b492b47db42248b52b27ed99ccc"
     sha256 cellar: :any,                 arm64_sonoma:   "ddb87f1e11e5f6c241ba9165e9902311d40216ce3a5a7fac3b0d020e24ff17cc"
@@ -15,6 +17,7 @@ class Sambamba < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "40d87797c5a61358da3981c7a1e798fe72b6c1047407b4d8a0f37c21d7b056f2"
     sha256 cellar: :any_skip_relocation, monterey:       "4ba6feddd3eeafa845c0f66dc6aea389f554c09a8a0c3609644fa44d028e5563"
     sha256 cellar: :any_skip_relocation, big_sur:        "da17c4589ffb5d927025ce617fafa051c6690665643f5c5544b319882b3bf298"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "8bf2af3910f3a4bdb5e3c20c1755f0eb345cabe44861dca0b2c2799d02a68f03"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1981702ab5c074bebeb8054d69f81b4d6df4daea2907026efae832baa8d362ae"
   end
 
@@ -41,7 +44,7 @@ class Sambamba < Formula
     resource("homebrew-testdata").stage testpath
     system bin/"sambamba", "view", "-S", "ex1_header.sam", "-f", "bam", "-o", "ex1_header.bam"
     system bin/"sambamba", "sort", "-t2", "-n", "ex1_header.bam", "-o", "ex1_header.sorted.bam", "-m", "200K"
-    assert_predicate testpath/"ex1_header.sorted.bam", :exist?
+    assert_path_exists testpath/"ex1_header.sorted.bam"
   end
 end
 

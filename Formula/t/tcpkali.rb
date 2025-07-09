@@ -1,7 +1,7 @@
 class Tcpkali < Formula
   desc "High performance TCP and WebSocket load generator and sink"
-  homepage "https://github.com/satori-com/tcpkali"
-  url "https://github.com/satori-com/tcpkali/releases/download/v1.1.1/tcpkali-1.1.1.tar.gz"
+  homepage "https://web.archive.org/web/20230303212249/https://github.com/satori-com/tcpkali"
+  url "https://www.mirrorservice.org/sites/distfiles.macports.org/tcpkali/tcpkali-1.1.1.tar.gz"
   sha256 "a9a15a1703fc4960360a414ee282d821a7b42d4bbba89f9e72a796164ff69598"
   license "BSD-2-Clause"
 
@@ -20,14 +20,24 @@ class Tcpkali < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "b82b2ea3a3d17d3fd464a5e887c9cce14dce8a82bbcb350df5f7bd321893bfdb"
     sha256 cellar: :any_skip_relocation, sierra:         "f73513ed96b6436085e0941865f0cc4fd2ce1009a1d8770c740e8e97d5173cf1"
     sha256 cellar: :any_skip_relocation, el_capitan:     "2d0075b2fca885fb694660a3914362030be255c8e3dfed407bb8ca96c996bbf7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a21cdba0e1d2863bb691ab0b2a6b416f801b38236a399a3bd8d6cfc67762f539"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ae1230bcf9879d1d8f09d5e0a3b80c9baf7f59c2bfa77a296a06ed6a821d5be7"
   end
+
+  deprecate! date: "2025-03-19", because: :repo_removed
 
   uses_from_macos "bison" => :build
   uses_from_macos "ncurses"
 
   def install
-    system "./configure", *std_configure_args
+    args = []
+    if OS.linux?
+      inreplace "src/tcpkali_syslimits.c", "<sys/sysctl.h>", "<linux/sysctl.h>"
+      # Help old config scripts identify arm64 linux
+      args << "--build=aarch64-unknown-linux-gnu" if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+    end
+
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

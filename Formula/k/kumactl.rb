@@ -1,9 +1,10 @@
 class Kumactl < Formula
   desc "Kuma control plane command-line utility"
   homepage "https://kuma.io/"
-  url "https://github.com/kumahq/kuma/archive/refs/tags/2.9.1.tar.gz"
-  sha256 "16af959cb80b4a81492322db2a8aab0e779de0567cb83b480c89fe9a6e07cb9e"
+  url "https://github.com/kumahq/kuma/archive/refs/tags/2.11.1.tar.gz"
+  sha256 "0a18d919efdbaae3ca725aa9c33fe7441e99d7ba230b84145f90018f1c00b267"
   license "Apache-2.0"
+  head "https://github.com/kumahq/kuma.git", branch: "master"
 
   livecheck do
     url :stable
@@ -11,12 +12,12 @@ class Kumactl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fa81171a7eabe5efe3a5eca2573104c59ca95630be5bfa7a29e8f2ce0a2ad01a"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "fa81171a7eabe5efe3a5eca2573104c59ca95630be5bfa7a29e8f2ce0a2ad01a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "fa81171a7eabe5efe3a5eca2573104c59ca95630be5bfa7a29e8f2ce0a2ad01a"
-    sha256 cellar: :any_skip_relocation, sonoma:        "f6f7581d14a381060dc52df2f5ad1fe1d8fa8fa2bf10fcf2b00ebc947e954759"
-    sha256 cellar: :any_skip_relocation, ventura:       "f6f7581d14a381060dc52df2f5ad1fe1d8fa8fa2bf10fcf2b00ebc947e954759"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dae3a5dfe504561a21fda63776621ab6b2f9e910c3449a0cd80109afe9426164"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "12ff3e10dfa59342a442b1715a109ef50eddcb7b5cade3076070e64227d90841"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4c4f1bfb0df2d031e9654f993768f7c9fb31ed2a5229a8d40e5836a3c84c775c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "58087a53877d636c419376fdc64255b452656ea0686c2fbef1c10a505f1eac4a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "af2e194eeb1599bc7399fe82089306aedfd026d8b4df9cb59b53d70655a7beb1"
+    sha256 cellar: :any_skip_relocation, ventura:       "6b185e4e7fc82c73915f142af2d88ecd5798a759b86ae6bdfe3b331319a13019"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a1b55821da8620dfce86232ea8ba12674a76050ea52090239d3b9eb224686755"
   end
 
   depends_on "go" => :build

@@ -5,6 +5,8 @@ class AdrTools < Formula
   sha256 "9490f31a457c253c4113313ed6352efcbf8f924970a309a08488833b9c325d7c"
   license "CC-BY-4.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, all: "76cb31e149dbe88de67cbb6911e3837f7fddda5d773b9abc3b8374f770bc309d"
@@ -15,11 +17,11 @@ class AdrTools < Formula
 
     # Unlink and re-write to matches homebrew's installation conventions
     config.unlink
-    config.write <<~EOS
+    config.write <<~SHELL
       #!/bin/bash
       echo 'adr_bin_dir="#{bin}"'
       echo 'adr_template_dir="#{prefix}"'
-    EOS
+    SHELL
 
     prefix.install Dir["src/*.md"]
     bin.install Dir["src/*"]

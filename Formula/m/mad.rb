@@ -10,6 +10,8 @@ class Mad < Formula
     regex(%r{url=.*?/libmad[._-]v?(\d+(?:\.\d+)+[a-z]?)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any,                 arm64_sequoia:  "1facd8abee7e62bba7c7e445d2cbc5900dfe2dc7903be43a40b128c68f519b02"
@@ -23,6 +25,7 @@ class Mad < Formula
     sha256 cellar: :any,                 big_sur:        "0ad06329f73d5dc15cba262feca6e1c582e10ad3b9ca0476e46c37e6d878d0ab"
     sha256 cellar: :any,                 catalina:       "5416172dc7ccd3c5a5065b3f7dc18c00e83a7e20dfc6b09e0586afc4a76c5722"
     sha256 cellar: :any,                 mojave:         "5baadb23763805521d306268861ff82fe2055da1eb7976aaa7c78f83d3c2f43a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "668e0c8d4351150999731a1dd2072f503ac4fac27e6e215df78a795743535260"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "05670a88d2d0a50d03407a39987c573806c8bf9b7d67f2df4db3d121328123ae"
   end
 
@@ -34,8 +37,8 @@ class Mad < Formula
     touch "NEWS"
     touch "AUTHORS"
     touch "ChangeLog"
-    system "autoreconf", "-fiv"
-    system "./configure", "--disable-debugging", "--enable-fpm=64bit", "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--disable-debugging", "--enable-fpm=64bit", *std_configure_args
     system "make", "CFLAGS=#{ENV.cflags}", "LDFLAGS=#{ENV.ldflags}", "install"
     (lib+"pkgconfig/mad.pc").write pc_file
     pkgshare.install "minimad.c"

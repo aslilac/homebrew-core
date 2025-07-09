@@ -1,9 +1,11 @@
 class GlbindingAT2 < Formula
   desc "C++ binding for the OpenGL API"
-  homepage "https://github.com/cginternals/glbinding"
+  homepage "https://glbinding.org/"
   url "https://github.com/cginternals/glbinding/archive/refs/tags/v2.1.4.tar.gz"
   sha256 "cb5971b086c0d217b2304d31368803fd2b8c12ee0d41c280d40d7c23588f8be2"
   license "MIT"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "05fe3756c9e2f1a9efec689a64cbc3d55c7d00831af9d19411f9572b71ca81c4"
@@ -13,6 +15,7 @@ class GlbindingAT2 < Formula
     sha256 cellar: :any,                 sonoma:         "f3b925f4e2eada4a1c18e8bdf6506227bbf884141c5e21098450974838745633"
     sha256 cellar: :any,                 ventura:        "004e4f718650c5f8204a1690b03b67fdb1b29aaf1aa8ee50835c0d82d695e7f3"
     sha256 cellar: :any,                 monterey:       "9b1ae7f55a826ba144b346a769c1a417a8c4be0252a8fe66aaab68aa332ac68e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "61a0c29c4f4d29510e0737c374c85a42eed6da3504510c8107ab578e770e59eb"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "28aa58dd696d850b91f8e6552e8b23389c0c437be19319c6939d3b7e52265dc3"
   end
 
@@ -32,6 +35,7 @@ class GlbindingAT2 < Formula
 
     system "cmake", "-S", ".", "-B", "build",
                     "-DCMAKE_INSTALL_RPATH=#{rpath}",
+                    "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
                     "-DOPTION_BUILD_TESTS=OFF",
                     "-DOPTION_BUILD_GPU_TESTS=OFF",
                     *std_cmake_args

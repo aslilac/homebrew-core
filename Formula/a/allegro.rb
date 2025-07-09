@@ -1,9 +1,10 @@
 class Allegro < Formula
   desc "C/C++ multimedia library for cross-platform game development"
   homepage "https://liballeg.org/"
-  url "https://github.com/liballeg/allegro5/releases/download/5.2.9.1/allegro-5.2.9.1.tar.gz"
-  sha256 "0ee3fc22ae74601ad36c70afd793ff062f0f7187eeb6e78f8a24e5bf69170d30"
+  url "https://github.com/liballeg/allegro5/releases/download/5.2.10.1/allegro-5.2.10.1.tar.gz"
+  sha256 "2ef9f77f0b19459ea2c7645cc4762fc35c74d3d297bfc38d8592307757166f05"
   license "Zlib"
+  revision 1
   head "https://github.com/liballeg/allegro5.git", branch: "master"
 
   livecheck do
@@ -12,21 +13,21 @@ class Allegro < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "e7cb14592b50dd4cecf96f955fc51cdd42971d10beb3d3c3916177fe49abdc20"
-    sha256 cellar: :any,                 arm64_sonoma:   "b97f4ec79c8d719f8fbdc13ba2f8a22ccccffe0f2018b24a1e07da97d0f9b657"
-    sha256 cellar: :any,                 arm64_ventura:  "aa6bb7451473ddcdd561b18320ab796b8b49da42298051d4cc3296bac2bdd1a2"
-    sha256 cellar: :any,                 arm64_monterey: "519864e5f46d08950e520c5b6e78a2862870bb75c104fa39f49d23b03d3e12e7"
-    sha256 cellar: :any,                 sonoma:         "220a11469f57805a841c694e01c4380cace79d824763f87ae020f9d417478b8f"
-    sha256 cellar: :any,                 ventura:        "2f313c856da22770699bf8aa80995a5df7f07b0bf62f36166647e001ca925dfd"
-    sha256 cellar: :any,                 monterey:       "f8c47be9eb80f02a1cfdd6d2bba2a148a6794542fc3941861389dce011bcb3b6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ee72b21114fea150045e575b6ab3db8ab7332deb7499d25d284e776c9a367a4b"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "db24d012cd88b23d8587898aceab3203169a995e7bc874e0db849942459ececa"
+    sha256 cellar: :any,                 arm64_sonoma:  "871af04f1451b1064666dc3b696f810cb105fa4f0245125a61007d11d3210442"
+    sha256 cellar: :any,                 arm64_ventura: "cc0ab101b41137fa5ea75ca65427c21e51164ad3ddd0af841816d068e932de97"
+    sha256 cellar: :any,                 sonoma:        "0285e3c404d3351c218ed93958d982001a32092a6be106454772e5b981eebddb"
+    sha256 cellar: :any,                 ventura:       "4b0d776e4d1539a4826a9e6eb721a9c769110cd33d20657d5ca1c870ff47c4da"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7b00b980e261ff3cab81d54a8952e7e46868c55c03bce69da9a38b0314d21298"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "77d8fa148090e9335b24c1bcd37d711c5206657ac0124c6dc7275e7c8f3e8da2"
   end
 
   depends_on "cmake" => :build
-  depends_on "dumb"
   depends_on "flac"
   depends_on "freetype"
   depends_on "libogg"
+  depends_on "libopenmpt"
   depends_on "libvorbis"
   depends_on "opusfile"
   depends_on "physfs"
@@ -50,15 +51,15 @@ class Allegro < Formula
     depends_on "mesa-glu"
   end
 
-  fails_with gcc: "5"
-
   def install
-    cmake_args = std_cmake_args + %W[
+    cmake_args = %W[
       -DWANT_DOCS=OFF
+      -DWANT_DUMB=OFF
       -DCMAKE_INSTALL_RPATH=#{rpath}
+      -DCMAKE_POLICY_VERSION_MINIMUM=3.5
     ]
 
-    system "cmake", "-S", ".", "-B", "build", *cmake_args
+    system "cmake", "-S", ".", "-B", "build", *cmake_args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

@@ -10,6 +10,8 @@ class Aescrypt < Formula
     regex(/href=.*?aescrypt[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b4ec90c9ff44239c6cf43b35377e7ff709983c1b76577ea84cd8dbc638d763ee"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c7cb68631e925aa19e1e1c3cc513dab638b264b078d69a4033789e011876207b"
@@ -25,6 +27,7 @@ class Aescrypt < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "1b2326e6dbc73d394cb5d4d7bf655b026fa77a7d66d02da386bff16b84e84d83"
     sha256 cellar: :any_skip_relocation, sierra:         "2250bd07f689721287269dc70c504b4f08ac2a02b5550ad9f0a51dca60ed6f9a"
     sha256 cellar: :any_skip_relocation, el_capitan:     "0cd940c7c9e59104746a8f83f92a06e703e7f98195a202d20516c03b588fd63f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "249795b1e998522e6adeaab21b99f1cd97afcabcdc5069196604a036f68c97dd"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2a2705c4423a86919b9309235a468b5cc1ac66200501bd255cefe0d26d1f07c6"
   end
 
@@ -44,8 +47,8 @@ class Aescrypt < Formula
   test do
     (testpath/"key").write "kk=12345678901234567890123456789abc0"
     original_text = "hello"
-    cipher_text = pipe_output("#{bin}/aescrypt -k #{testpath}/key -s 128", original_text)
-    deciphered_text = pipe_output("#{bin}/aesget -k #{testpath}/key -s 128", cipher_text)
+    cipher_text = pipe_output("#{bin}/aescrypt -k #{testpath}/key -s 128", original_text, 0)
+    deciphered_text = pipe_output("#{bin}/aesget -k #{testpath}/key -s 128", cipher_text, 0)
     refute_equal original_text, cipher_text
     assert_equal original_text, deciphered_text
   end

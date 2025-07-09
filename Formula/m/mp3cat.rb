@@ -5,6 +5,8 @@ class Mp3cat < Formula
   sha256 "b1ec915c09c7e1c0ff48f54844db273505bc0157163bed7b2940792dca8ff951"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5320e93de9cf583fc6b074a45c450c4ebb0fc6b86dbf887c9d77196a34655271"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e5c88c18fd159e395849b60bea5da8355546c7e3de34a521c5d5e9eb5f6ddd83"
@@ -19,6 +21,7 @@ class Mp3cat < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "e075f29990e6b5222d3e82ed27de698bed42257097e9bd59f0d60f64ea7ae46b"
     sha256 cellar: :any_skip_relocation, high_sierra:    "91152cced755097c42117c72e71f3db9023716e2e9befd1e8a6630fd225e3cea"
     sha256 cellar: :any_skip_relocation, sierra:         "3954ad75806e1948a4e69efb74fb2e86a4920c7e6b61537ca48f696289ca998a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "2f43d17baaae1fdf3ad7d231ad245e93212ff4fca7af462567fcc6c5980735fa"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1644ebe7bba692667cae251c36c2d7c7d2d5aa49e53291a247831bf866ed2ba4"
   end
 

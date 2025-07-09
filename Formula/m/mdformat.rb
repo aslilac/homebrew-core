@@ -3,12 +3,12 @@ class Mdformat < Formula
 
   desc "CommonMark compliant Markdown formatter"
   homepage "https://mdformat.readthedocs.io/en/stable/"
-  url "https://files.pythonhosted.org/packages/1c/bc/71d461905953d1c716c30e11ca513d7b43097c2d0aa46fde838e30eefe32/mdformat-0.7.19.tar.gz"
-  sha256 "a7d22df9802383432367864da907d2d147485b5cb6872e2d66937c1333e4d58a"
+  url "https://files.pythonhosted.org/packages/fc/eb/b5cbf2484411af039a3d4aeb53a5160fae25dd8c84af6a4243bc2f3fedb3/mdformat-0.7.22.tar.gz"
+  sha256 "eef84fa8f233d3162734683c2a8a6222227a229b9206872e6139658d99acb1ea"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "afbdce8013fa157c340da53689cc3cc3d96299e5cee6beee21480590a89695f3"
+    sha256 cellar: :any_skip_relocation, all: "8de37d6131f8a139fd4493056489324953ac35c54314d0bfbfe3d64064fffb64"
   end
 
   depends_on "python@3.13"

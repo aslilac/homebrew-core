@@ -14,6 +14,7 @@ class Teip < Formula
     sha256 cellar: :any,                 sonoma:         "3f757977cbafda79df194a8e162bd144236fc7c4bbb7ec3c3adc389130470a3a"
     sha256 cellar: :any,                 ventura:        "3c20de30934eb61457693d5c6747425220abcba516f541eaed678e5c21cf7278"
     sha256 cellar: :any,                 monterey:       "700d30d9d917de84ae8f2e517a9d424a279cc3cbad82caaa360a2b78a1133047"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e5278da10c0acf92bf08183e58fe34b4c000fa56923afb1e12f8352fb296f10f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "82477350d16f0ce242352d7d6046fb2a1a2024cd9ba064219012e5c451d9b582"
   end
 
@@ -33,22 +34,16 @@ class Teip < Formula
     bash_completion.install "completion/bash/teip"
   end
 
-  def check_binary_linkage(binary, library)
-    binary.dynamically_linked_libraries.any? do |dll|
-      next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)
-
-      File.realpath(dll) == File.realpath(library)
-    end
-  end
-
   test do
+    require "utils/linkage"
+
     ENV["TEIP_HIGHLIGHT"] = "<{}>"
     assert_match "<1>23", pipe_output("#{bin}/teip -c 1", "123", 0)
 
     [
       Formula["oniguruma"].opt_lib/shared_library("libonig"),
     ].each do |library|
-      assert check_binary_linkage(bin/"teip", library),
+      assert Utils.binary_linked_to_library?(bin/"teip", library),
              "No linkage with #{library.basename}! Cargo is likely using a vendored version."
     end
   end

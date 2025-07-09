@@ -1,10 +1,9 @@
 class Cherrytree < Formula
   desc "Hierarchical note taking application featuring rich text and syntax highlighting"
   homepage "https://www.giuspen.com/cherrytree/"
-  url "https://www.giuspen.com/software/cherrytree_1.2.0.tar.xz"
-  sha256 "b9d9c9a0d7853e846657ceccdf74730f79190e19af296eeb955e5f4b54425ec2"
+  url "https://www.giuspen.com/software/cherrytree_1.5.0.tar.xz"
+  sha256 "55d477f721ad95d6d2302c04d44894b2371a98b0d2e43a3d5c455f82457553b7"
   license "GPL-3.0-or-later"
-  revision 1
   head "https://github.com/giuspen/cherrytree.git", branch: "master"
 
   livecheck do
@@ -13,12 +12,13 @@ class Cherrytree < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "f3876c40c8ce23942721414871f91de6f5923c4d291e09bdcb3bbd8b6dac50d0"
-    sha256 arm64_sonoma:  "e7beb83cd769765c49866dec5157d3d91abe89dd76aa5a70b4537e7ce17907f1"
-    sha256 arm64_ventura: "8fe04de9ad5a41b54eac69ad39d204ee4369c6f15dd80c3d1e595d1c68d1091b"
-    sha256 sonoma:        "af90c242b21ca2bf9859deecdd461f97d1617170948804564378849acd588ead"
-    sha256 ventura:       "fced9c8a668436bea65ecae91d794d0c8850c1045dac00801299c9b840df8322"
-    sha256 x86_64_linux:  "bab50a450df78f7839faa8b08bce999163d4eee8fbf905f3f05afd77e98f1d71"
+    sha256 arm64_sequoia: "175a5543d6409ee1d63ec81ad1efa8d6debd07f8604f059109ca61d166697cef"
+    sha256 arm64_sonoma:  "d7a101d4d440f2d3a07556b6ab938b87a2515494f471c34155b3859f93396b72"
+    sha256 arm64_ventura: "9b78bc301d252bc5814bdb2275c66504214f4f01bf639f633a6bd3c87de8cd1e"
+    sha256 sonoma:        "6b91c7e2aed90219e9d046044f325a407cd930a1b56a41165cb68b16b81b5cec"
+    sha256 ventura:       "92d84cf1934e09151d9d89e6422a18b1a65c154303e5383101cf918f0e134d9e"
+    sha256 arm64_linux:   "3ef3773c02d717477d42a1f9d46e9348cc33c56f5f59c36a1df49e1d56f47de6"
+    sha256 x86_64_linux:  "157950835f27e8c4df1d41b8211a47f6b0825303dcf6d599519ae346c9ca06c5"
   end
 
   depends_on "cmake" => :build
@@ -57,8 +57,6 @@ class Cherrytree < Formula
     depends_on "harfbuzz"
   end
 
-  fails_with gcc: "5" # Needs std::optional
-
   def install
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args
     system "cmake", "--build", "build"
@@ -69,7 +67,7 @@ class Cherrytree < Formula
     # (cherrytree:46081): Gtk-WARNING **: 17:33:48.386: cannot open display
     return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
-    (testpath/"homebrew.ctd").write <<~EOS
+    (testpath/"homebrew.ctd").write <<~XML
       <?xml version="1.0" encoding="UTF-8"?>
       <cherrytree>
         <bookmarks list=""/>
@@ -89,9 +87,10 @@ class Cherrytree < Formula
           <rich_text>print('hello world')</rich_text>
         </node>
       </cherrytree>
-    EOS
+    XML
+
     system bin/"cherrytree", testpath/"homebrew.ctd", "--export_to_txt_dir", testpath, "--export_single_file"
-    assert_predicate testpath/"homebrew.ctd.txt", :exist?
+    assert_path_exists testpath/"homebrew.ctd.txt"
     assert_match "rich text", (testpath/"homebrew.ctd.txt").read
     assert_match "this is a simple command line test for homebrew", (testpath/"homebrew.ctd.txt").read
     assert_match "code", (testpath/"homebrew.ctd.txt").read

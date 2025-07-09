@@ -16,6 +16,8 @@ class AircrackNg < Formula
     regex(/href=.*?aircrack-ng[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256                               arm64_sequoia:  "52dbe4ce295e97351a0ec2dfbb986abf37b2665a1775aa580fb70b45e806cbe2"
     sha256                               arm64_sonoma:   "fe96a817b4755ca8a498ad1cd45666a04238d3ed1a7bd3ce97f27f0fd68ae2ef"
@@ -27,6 +29,7 @@ class AircrackNg < Formula
     sha256                               monterey:       "32bab474db5a9602788ffd7d32f4bd25199732705cc4856b7335c96d6675a961"
     sha256                               big_sur:        "c7b4666859d336a5219c53d5b9310547495438e460d38c7f1b3175c274245b55"
     sha256                               catalina:       "09115822ebac9a6d9903635faa0a393dc1bcaaaf2fcbb344a5dee123fe1f02f1"
+    sha256                               arm64_linux:    "8a789a3419bcd0c237abc1f7e10743d97eac240bdd6d49ec1ed9656e0b42f64a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "72556b434c07c994c66ac4f37b9946884357af00a7543d6e961808ca78a6818c"
   end
 
@@ -39,6 +42,7 @@ class AircrackNg < Formula
   depends_on "sqlite"
 
   uses_from_macos "libpcap"
+  uses_from_macos "zlib"
 
   # Remove root requirement from OUI update script. See:
   # https://github.com/Homebrew/homebrew/pull/12755
@@ -97,6 +101,6 @@ __END__
 -	echo Run it as root ; exit ;
 -fi
 -
- 
+
  if [ ! -d "${OUI_PATH}" ]; then
  	mkdir -p ${OUI_PATH}

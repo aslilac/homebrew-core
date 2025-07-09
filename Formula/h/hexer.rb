@@ -10,6 +10,8 @@ class Hexer < Formula
     regex(/href=.*?hexer[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "bd7a6cbea17a087bc8c9f58fbd4dcc595ea3c1f65760a6c1f7c34d9e4c2c7b1c"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e5bd5b3ffa68b3200ee5cdda6afa4ed5982760598c759bebc1497404abf170b9"
@@ -20,10 +22,10 @@ class Hexer < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "019c5a1806bd439ff70d9efee99d3202385da58529bb5970c24f8e435c9b660f"
     sha256 cellar: :any_skip_relocation, monterey:       "88fc357578acfb6e88b9b1e5c1a07bae269a7d3811269fcd6d14ec86c5efc04d"
     sha256 cellar: :any_skip_relocation, big_sur:        "c9f70c4af623ee7ffbc9da870f2b07b527b27ccab166243febbd206f4a78eb2c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f74c6862bfe432093fa0a9db2c6cd3dca5812a5c86bae57777410e41956c2f7a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "0d2555b996ecdfe5178d26c9b7279c882fbdbff1551b8f71b6d232338ccf2c74"
   end
 
-  uses_from_macos "expect" => :test
   uses_from_macos "ncurses"
 
   def install
@@ -31,15 +33,8 @@ class Hexer < Formula
   end
 
   test do
-    script = (testpath/"script.exp")
-    script.write <<~EOS
-      #!/usr/bin/expect -f
-      set timeout 10
-      spawn hexer
-      send -- ":q\n"
-      expect eof
-    EOS
-    script.chmod 0700
-    system "expect", "-f", "script.exp"
+    ENV["TERM"] = "xterm"
+    assert_match "00000000:  62 72 65 77", pipe_output("#{bin}/hexer test", "i62726577\e:wq\n")
+    assert_equal "brew", (testpath/"test").read
   end
 end

@@ -10,6 +10,8 @@ class Mpdscribble < Formula
     regex(/href=.*?mpdscribble[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "b3c8401d8bd06997be951e75b158905c4fa35cdeceffee5e6b242ec1843b0074"
     sha256 arm64_sonoma:   "bb677d73c33aa3c1a22f8c85b5c0e829ba230ce3faf3ea433c6662ee33496c0e"
@@ -18,13 +20,14 @@ class Mpdscribble < Formula
     sha256 sonoma:         "a56d2f601abc41777b2fead2ac177532a4520fc923d876c1505b29cee1c24e9d"
     sha256 ventura:        "e87c590b8e83b9f6085531deb948b7bca8a55de844f6fa3608036aa82050b2a6"
     sha256 monterey:       "6737329de585fa6af1a59f076f418b4f552944be5eff1126c462e1cecbd35a96"
+    sha256 arm64_linux:    "5bf3500d5c908338c5389f4a212a7c85609b953943e8683fc4d8011ed266f51e"
     sha256 x86_64_linux:   "4e5852c3dcb301ca9378826b19a679be1b0592d1b99dc64bed775ef092f4eecc"
   end
 
   depends_on "boost" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libgcrypt"
   depends_on "libmpdclient"
 

@@ -13,6 +13,8 @@ class Cmuclmtk < Formula
     strategy :page_match
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "17749777bf2cedd02ab511ce2bab36a69389ea9c1f0b03c8a92927e3e54a5fae"
     sha256 cellar: :any,                 arm64_sonoma:   "1fe5f5fcb73a7580ae29500204bc6efb7073a5b9359dbadf0b045bc358de7697"
@@ -28,6 +30,7 @@ class Cmuclmtk < Formula
     sha256 cellar: :any,                 high_sierra:    "85a6d2a8fcad4e2b6e7d9d22ec74dd5e5f463dabc5b2f01373d3a48178b2ce6e"
     sha256 cellar: :any,                 sierra:         "716c78af6b276392a20fb02d58ff60e705509117da932d62d3ff8c6e4dd0bf5d"
     sha256 cellar: :any,                 el_capitan:     "c647327d709c3b4a93d5541f8b340d2726540c9efdcbc53d1124043c8c4989bd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "fbf62c45fadfecaf2d9cd51668c6ea132d904afe1e456f099f067427667b1284"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "708324bb6cf751c76f927c6a648416ee38012499dddfc80c4b2c50cf36431c4d"
   end
 
@@ -46,7 +49,11 @@ class Cmuclmtk < Formula
   end
 
   def install
-    system "./configure", *std_configure_args
+    args = []
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

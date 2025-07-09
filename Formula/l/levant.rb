@@ -17,6 +17,8 @@ class Levant < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "37422a0f475593fbd1213d9ff47edc4dc2258d0bc507733b71443547c5a79815"
   end
 
+  deprecate! date: "2025-06-27", because: :repo_archived
+
   depends_on "go" => :build
 
   def install

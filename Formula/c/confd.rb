@@ -6,6 +6,8 @@ class Confd < Formula
   license "MIT"
   head "https://github.com/kelseyhightower/confd.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "51310afd5fe23174446bd8cec35b69abf7f13075e1035b714a700f40582d05f8"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4320090003f15247aa5f860a784bf57f9791b917aab9504f27b576f7b692e028"
@@ -41,7 +43,7 @@ class Confd < Formula
     EOS
 
     conffile = testpath/"conf.d/conf.toml"
-    conffile.write <<~EOS
+    conffile.write <<~TOML
       [template]
       prefix = "/"
       src = "test.tmpl"
@@ -49,15 +51,15 @@ class Confd < Formula
       keys = [
           "/version"
       ]
-    EOS
+    TOML
 
     keysfile = testpath/"keys.yaml"
-    keysfile.write <<~EOS
+    keysfile.write <<~YAML
       version: v1
-    EOS
+    YAML
 
     system bin/"confd", "-backend", "file", "-file", "keys.yaml", "-onetime", "-confdir=."
-    assert_predicate testpath/"test.conf", :exist?
+    assert_path_exists testpath/"test.conf"
     refute_predicate (testpath/"test.conf").size, :zero?
   end
 end

@@ -10,6 +10,8 @@ class Dmalloc < Formula
     regex(/href=.*?dmalloc[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "2406c340e3935d9f228d695c270eb5fd74abef38bafa84f10bded7826c8e8c80"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5326a45ed099179ae2f05299e3bf0e90b2f7b037594cf175da72830963687acf"
@@ -22,6 +24,7 @@ class Dmalloc < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "300f9e7b54c15071bc36fb861cc6b75ef671052c8be6096a99314b1ca0077565"
     sha256 cellar: :any_skip_relocation, catalina:       "770699ff908a65026ecdebbe57272a50e57f60341c2918302ee4b6729e866533"
     sha256 cellar: :any_skip_relocation, mojave:         "40c8cf6501477c243064179e7b634da0d9d32348155d3aee9fbf6631ffdc7ba7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "37749e2907a9db34407034a0c00e0f72e96584049a9daea5de8239e654731501"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c170666de851ea2229c7c7e5dbd2d45960d8033bae31ceffd7eaf5289c1c7aba"
   end
 

@@ -10,6 +10,8 @@ class Libretls < Formula
     regex(/href=.*?libretls[._-]v?(\d+(?:\.\d+)+(?:p\d+)?)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "19bba1bc2787f51fb0415c0af6cd57a2428318ce53c5abcf2076a5763a5e738b"
     sha256 cellar: :any,                 arm64_sonoma:   "45109b58836fd475c43f0d0dc84c01651c4f6da03732dc7e8c75d6bef69f1a0a"
@@ -18,6 +20,7 @@ class Libretls < Formula
     sha256 cellar: :any,                 sonoma:         "73bf7016f11e9ac566bab92a996855e0b324ca455aeffeb80c4625b40e06bd18"
     sha256 cellar: :any,                 ventura:        "b6b3b3ecdd3815d542edf2501309a30568e1e03b35e1c793e0b724324c0925c5"
     sha256 cellar: :any,                 monterey:       "9d52d3007f279b514bfda52afd77bd06f0a420d8daa8ab2ef697b618c5b4666f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "5ca54d06ba267e8bc15a341c50abc0b2dcd6b64c1d07a734281d025f5a4485ce"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "44fe94119c4fd8be706393a1b2818af2e7851985fc3ec7dc4ebec2aa2045697e"
   end
 

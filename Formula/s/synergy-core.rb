@@ -31,6 +31,8 @@ class SynergyCore < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256                               arm64_sonoma:   "b51e183a0c07609d4b5f81e194251ce29c93fc220b8989d50e7a7ee58ac49021"
     sha256                               arm64_ventura:  "2a7b87a5e398dd460a081cb8899bd611175c9b8ed473bc908ed8bc116ca10964"
@@ -51,7 +53,7 @@ class SynergyCore < Formula
   end
 
   on_linux do
-    depends_on "pkg-config" => :build
+    depends_on "pkgconf" => :build
     depends_on "gdk-pixbuf"
     depends_on "glib"
     depends_on "libnotify"
@@ -67,10 +69,6 @@ class SynergyCore < Formula
   fails_with :clang do
     build 1402
     cause "needs `std::ranges::find`"
-  end
-
-  fails_with gcc: "5" do
-    cause "synergy-core requires C++17 support"
   end
 
   def install

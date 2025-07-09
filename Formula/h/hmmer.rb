@@ -10,6 +10,8 @@ class Hmmer < Formula
     regex(/href=.*?hmmer[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "3342dd2de2909df5053dea525398b3e3902b07a1d58dab35a940bb7bf77b877b"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f0b23b02bb7bf3113ad01b32f5410ad7e1aade6186e5b54f788bc4c5345ea7d4"
@@ -20,6 +22,7 @@ class Hmmer < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "1158f5420a01acc1906a56f654c564dc1538fc7961472f4a00598875b474f7c3"
     sha256 cellar: :any_skip_relocation, monterey:       "454e0ba7a19efebc0ec14b06d0075c377fab5ffc69c2a2fc7c54a2bac6406d76"
     sha256 cellar: :any_skip_relocation, big_sur:        "3fd8305a219c8084fa7fa34915fb904837b172fe7f3aafc8d6aa3c4e9a6f919d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "fdfea197f9b659764a9a641cd3bd27d10d27f53c116801332b2074d40fd3b9b7"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6de4e838a141d9cd836421806beeb8fea120434756ab1897a7dcd2d6e858e0ae"
   end
 

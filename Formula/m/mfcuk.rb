@@ -6,6 +6,8 @@ class Mfcuk < Formula
   license "GPL-2.0-or-later"
   revision 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "102426161778216f2bf11462bbaa8bb369a883cc818b560491d85bc5307ef9d9"
     sha256 cellar: :any,                 arm64_sonoma:   "b607795d4f69c5e9a8b6cb6b6017411e8acff391b71ea51e86229352a9ea4a91"
@@ -19,16 +21,16 @@ class Mfcuk < Formula
     sha256 cellar: :any,                 catalina:       "c9191edf0484422fa432827e017d05d4854cde1fd8194a3735eec0e060884652"
     sha256 cellar: :any,                 mojave:         "2540f3232f4220dac3cf296c43fea2f2582c71ab18037e9d0c047c4f1df39f71"
     sha256 cellar: :any,                 high_sierra:    "f624f03ed0674915332412b50d0013a9495aece4b1ef773767024d11b8fd0d8c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "360682a51ff5e48899affc75b1fa66db90faf99ebdde7059cc0dce49f319bf03"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ce46cb3bb5f400139ff5e306dbdd76d4e1c0fe62acd3b9bc5711e3cc734ee835"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libnfc"
   depends_on "libusb"
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make"
     system "make", "install"
   end

@@ -5,8 +5,11 @@ class SimpleMtpfs < Formula
   sha256 "1d011df3fa09ad0a5c09d48d84c03e6cddf86390af9eb4e0c178193f32f0e2fc"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 3
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "6af8a1b67540db583e256e6391410483d8480100ed0598e040bbaf59cda85de1"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "c194161a8dbd1095e449cceb1b21e7e64f68d6541ab32c63ff78092260df8d49"
   end
 

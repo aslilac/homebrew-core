@@ -1,57 +1,60 @@
 class Prr < Formula
   desc "Mailing list style code reviews for github"
   homepage "https://github.com/danobi/prr"
-  url "https://github.com/danobi/prr/archive/refs/tags/v0.18.0.tar.gz"
-  sha256 "3c32911854a33a1a7870382db0e759923315ec943b5d43dec42d751820473094"
+  url "https://github.com/danobi/prr/archive/refs/tags/v0.20.0.tar.gz"
+  sha256 "fa25e4690a6976af37738b417b01f1fa0df7448efd631239aadea0399a9e862a"
   license "GPL-2.0-only"
-  revision 1
   head "https://github.com/danobi/prr.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "4a822cf091a1f6789490698744ac828c6d4f36a6421830e24c114f7b0c485916"
-    sha256 cellar: :any,                 arm64_sonoma:   "28f80c091dcaf14c6fe7733f95dadcd2d0bd2fa7b0d78f1ba848cfd6d64fda7b"
-    sha256 cellar: :any,                 arm64_ventura:  "a8944bd7c8638a6359224c2b3c0b0013a4886dbf9b8742604f6e7ea7d35255b9"
-    sha256 cellar: :any,                 arm64_monterey: "ffae88ab388c852d1b2b901a936d97907ea92716a602c335dc4a3972bba56751"
-    sha256 cellar: :any,                 sonoma:         "5e5aa701fddf38bf75dc86ab1cac71b9243397cc80b9d87cc30262367b690468"
-    sha256 cellar: :any,                 ventura:        "a74c399d838ade14f19e655f06a98e26f3a7d7ff9ee9944be51139ea194063fa"
-    sha256 cellar: :any,                 monterey:       "41edc115e3e5173dca78d6b87332a320c4b3362873a63727a523c858b44a6806"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b261dc29a087e6b2f8cb517e1f3fcc0f465fddf33cfb7ae5c958d23d7efcccc0"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "020e2b1af8b7a3f2b1f39096597b06e80e338ff308a50d8f9f4b73094728a12d"
+    sha256 cellar: :any,                 arm64_sonoma:  "43547eb2228e9fa399f34b9bd5202fbe7aed3257095a1a93f75a667d36d8658d"
+    sha256 cellar: :any,                 arm64_ventura: "1ae08fc4c7d6625baf22b16df0cf1178efee1f699bfc25c6bb961f3f7560f75e"
+    sha256 cellar: :any,                 sonoma:        "ff40fe06171b1047bfadd9391918a99f47090ba502584677085052764ff8f71b"
+    sha256 cellar: :any,                 ventura:       "a3bad778d1010031a272e32535c8ed6c9e487aa0587de878350429f5683cb5ae"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3c096eed0ee69a0b6e4e5d7ebd12357edd22d0c2b61d93e3d5b2c2625f216ac9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f78629fe312045ec89e5377a86cf1c165eca5c5ff60114100a111c0ccfe60eef"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
-  depends_on "libgit2@1.7"
+  depends_on "libgit2"
+  depends_on "libssh2"
   depends_on "openssl@3"
 
   uses_from_macos "zlib"
 
   def install
-    # Ensure the declared `openssl@3` dependency will be picked up.
-    # https://docs.rs/openssl/latest/openssl/#manual
+    ENV["LIBGIT2_NO_VENDOR"] = "1"
+    ENV["LIBSSH2_SYS_USE_PKG_CONFIG"] = "1"
+    # Ensure the correct `openssl` will be picked up.
     ENV["OPENSSL_DIR"] = Formula["openssl@3"].opt_prefix
     ENV["OPENSSL_NO_VENDOR"] = "1"
 
-    ENV["LIBGIT2_NO_VENDOR"] = "1"
+    # Specify GEN_DIR for shell completions and manpage generation
+    ENV["GEN_DIR"] = buildpath
+
     system "cargo", "install", *std_cargo_args
-  end
 
-  def check_binary_linkage(binary, library)
-    binary.dynamically_linked_libraries.any? do |dll|
-      next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)
-
-      File.realpath(dll) == File.realpath(library)
-    end
+    bash_completion.install "completions/prr.bash" => "prr"
+    fish_completion.install "completions/prr.fish"
+    zsh_completion.install "completions/_prr"
+    man1.install Dir["man/*.1"]
   end
 
   test do
+    require "utils/linkage"
+
     assert_match "Failed to read config", shell_output("#{bin}/prr get Homebrew/homebrew-core/6 2>&1", 1)
 
     [
-      Formula["libgit2@1.7"].opt_lib/shared_library("libgit2"),
+      Formula["libgit2"].opt_lib/shared_library("libgit2"),
+      Formula["libssh2"].opt_lib/shared_library("libssh2"),
       Formula["openssl@3"].opt_lib/shared_library("libssl"),
       Formula["openssl@3"].opt_lib/shared_library("libcrypto"),
     ].each do |library|
-      assert check_binary_linkage(bin/"prr", library),
+      assert Utils.binary_linked_to_library?(bin/"prr", library),
              "No linkage with #{library.basename}! Cargo is likely using a vendored version."
     end
   end

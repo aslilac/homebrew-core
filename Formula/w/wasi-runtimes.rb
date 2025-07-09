@@ -1,8 +1,8 @@
 class WasiRuntimes < Formula
   desc "Compiler-RT and libc++ runtimes for WASI"
   homepage "https://wasi.dev"
-  url "https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.3/llvm-project-19.1.3.src.tar.xz"
-  sha256 "324d483ff0b714c8ce7819a1b679dd9e4706cf91c6caf7336dc4ac0c1d3bf636"
+  url "https://github.com/llvm/llvm-project/releases/download/llvmorg-20.1.7/llvm-project-20.1.7.src.tar.xz"
+  sha256 "cd8fd55d97ad3e360b1d5aaf98388d1f70dfffb7df36beee478be3b839ff9008"
   license "Apache-2.0" => { with: "LLVM-exception" }
   head "https://github.com/llvm/llvm-project.git", branch: "main"
 
@@ -11,13 +11,13 @@ class WasiRuntimes < Formula
   end
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "407d8f5515eeb0c443c72ee65936ce362560b62d50787a098d4ace42cab7b356"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9d19c4646703cf96b1fabbc25dd0c9b28fcb5f448f6362b8411df884191f51df"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "26a3fcb3f14649a6e9532a6d6944e1ec251e6146438f638795d52b264c12e4af"
-    sha256 cellar: :any_skip_relocation, sonoma:        "ac92285ab2996d0a377cfc6b307ad84a3f34208760bb8301ddee62626e7d9859"
-    sha256 cellar: :any_skip_relocation, ventura:       "142c5fcdf46f3c0a6d30ed428a4d605bb0dba236eee5efc25e8ca9a43097ef43"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "552aa9660900fe06d884d14ce7cd9b6389f7d4535f7f039a52cc5450477d23bf"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3302cee9215d8bc9c6a5ce58b7fad3ac2b33185d012f2535c6212e055c6373ae"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8f5c7f8c7cd47cb19b87b44b3670a8579427750f4332054f9b9c277bc1d483e2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "56d0f17add18995968c71f9a6568a877a8bc6ad7fb1fecd6a15ef0c20088e246"
+    sha256 cellar: :any_skip_relocation, sonoma:        "465f311024407c92d7bde5c65fc073dbba4100e71d0489ec5f104dd168073383"
+    sha256 cellar: :any_skip_relocation, ventura:       "f67e43e36d921157f52bcf75d2ae73bbeca6f9ddc4139c637d61f57c2aa3ac92"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "d8cee5d06f2a812c5ee88b9eb85b0f68e54ce2f4d709ca2852e658f563cf6d92"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b79c85b5c9470bb3dc4e0587485ebc0bdd2ac18862e5d287e80c8d375ff1198c"
   end
 
   depends_on "cmake" => :build
@@ -61,15 +61,22 @@ class WasiRuntimes < Formula
       -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=#{HOMEBREW_LIBRARY_PATH}/cmake/trap_fetchcontent_provider.cmake
     ]
     # Compiler flags taken from:
-    # https://github.com/WebAssembly/wasi-sdk/blob/5e04cd81eb749edb5642537d150ab1ab7aedabe9/cmake/wasi-sdk-sysroot.cmake#L65-L75
+    # https://github.com/WebAssembly/wasi-sdk/blob/53551e59438641b25e63bf304869ab4da6d512d9/cmake/wasi-sdk-sysroot.cmake#L71-L88
     compiler_rt_args = %W[
       -DCMAKE_INSTALL_PREFIX=#{pkgshare}
       -DCOMPILER_RT_BAREMETAL_BUILD=ON
       -DCOMPILER_RT_BUILD_XRAY=OFF
       -DCOMPILER_RT_INCLUDE_TESTS=OFF
       -DCOMPILER_RT_HAS_FPIC_FLAG=OFF
-      -DCOMPILER_RT_ENABLE_IOS=OFF
       -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON
+      -DCOMPILER_RT_BUILD_SANITIZERS=OFF
+      -DCOMPILER_RT_BUILD_XRAY=OFF
+      -DCOMPILER_RT_BUILD_LIBFUZZER=OFF
+      -DCOMPILER_RT_BUILD_PROFILE=OFF
+      -DCOMPILER_RT_BUILD_CTX_PROFILE=OFF
+      -DCOMPILER_RT_BUILD_MEMPROF=OFF
+      -DCOMPILER_RT_BUILD_ORC=OFF
+      -DCOMPILER_RT_BUILD_GWP_ASAN=OFF
       -DCMAKE_C_COMPILER_TARGET=wasm32-wasi
       -DCOMPILER_RT_OS_DIR=wasi
     ]
@@ -209,7 +216,8 @@ class WasiRuntimes < Formula
       system clang, "--target=#{target}", "-v", "test.c", "-o", "test-#{target}"
       assert_equal "the answer is 42", shell_output("wasmtime #{testpath}/test-#{target}")
 
-      system "#{clang}++", "--target=#{target}", "-v", "test.cc", "-o", "test-cxx-#{target}"
+      pthread_flags = target.end_with?("-threads") ? ["-pthread"] : []
+      system "#{clang}++", "--target=#{target}", "-v", "test.cc", "-o", "test-cxx-#{target}", *pthread_flags
       assert_equal "hello from C++ main with cout!", shell_output("wasmtime #{testpath}/test-cxx-#{target}").chomp
     end
   end

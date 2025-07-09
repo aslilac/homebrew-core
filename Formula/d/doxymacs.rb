@@ -5,6 +5,8 @@ class Doxymacs < Formula
   sha256 "a23fd833bc3c21ee5387c62597610941e987f9d4372916f996bf6249cc495afa"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "d6f35d29f2d9bf0ab3a13916922b7fb4506e133d83fe26c10b00fe0c6c27be17"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2aa03231378a72916d1f1bdb3c63d47751fd1891d9d92daa680b44cbf80e3ce2"
@@ -20,6 +22,7 @@ class Doxymacs < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "29a4865170b12a2194c238c35ec5e0902b8e637e378f9013b7aef64fa21eb0fc"
     sha256 cellar: :any_skip_relocation, sierra:         "2fd3dc59a8c0c8fdccf8195265d320aaa7b5d67e9a81b5a085f27cc287e7370e"
     sha256 cellar: :any_skip_relocation, el_capitan:     "fb892db831aed57dbdcb2d3a81d78bd05c5b689376d4b7f14bffc56826205ce9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "fe41948e3c5a21e01c2db606c4001bc17a9f3a5e610da7adefad289bc521420a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "00c2ebbdf243dded3a23783b3a22ee3705a53dd0ba50c292dcb190bb5bcebc9a"
   end
 
@@ -50,11 +53,11 @@ class Doxymacs < Formula
   end
 
   test do
-    (testpath/"test.el").write <<~EOS
+    (testpath/"test.el").write <<~LISP
       (add-to-list 'load-path "#{elisp}")
       (load "doxymacs")
       (print doxymacs-version)
-    EOS
+    LISP
 
     output = shell_output("emacs -Q --batch -l #{testpath}/test.el").strip
     assert_equal "\"#{version}\"", output

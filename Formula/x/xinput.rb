@@ -5,6 +5,8 @@ class Xinput < Formula
   sha256 "ad04d00d656884d133110eeddc34e9c69e626ebebbbab04dc95791c2907057c8"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "c70d8603d13e94505f514890678cef419551a0ac6688356fdd28e6ecaad1fffd"
     sha256 cellar: :any,                 arm64_sonoma:   "2f027d634882891977ee75bdd55f1cd68a7498cf32b036cbd551c8e9a42f4d81"
@@ -15,6 +17,7 @@ class Xinput < Formula
     sha256 cellar: :any,                 ventura:        "fc941b892085cf448f2fb8f560d0f7bf4b1ae9d50bd3fde91c09618cfb38ddbc"
     sha256 cellar: :any,                 monterey:       "dfc3f16159f75487037348ee85a29d539376fd3e168417174403b4a3c0942a13"
     sha256 cellar: :any,                 big_sur:        "e21d1963e880afe1acc8001912fc0d091797e664a5dce9d8e9738700139aea3f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "ec5a8a49c566256840876bb3ffe0d4748343b7ba863c30b3c045c7cd39f59dbe"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "48811518afc1be944c7f11606493feeffa4acd7653ad98f80e2dd583e6144bf0"
   end
 
@@ -39,7 +42,7 @@ class Xinput < Formula
   end
 
   test do
-    assert_predicate bin/"xinput", :exist?
+    assert_path_exists bin/"xinput"
     assert_equal %Q(.TH xinput 1 "xinput #{version}" "X Version 11"),
       shell_output("head -n 1 #{man1}/xinput.1").chomp
   end

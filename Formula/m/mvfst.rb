@@ -1,18 +1,19 @@
 class Mvfst < Formula
   desc "QUIC transport protocol implementation"
   homepage "https://github.com/facebook/mvfst"
-  url "https://github.com/facebook/mvfst/archive/refs/tags/v2024.11.18.00.tar.gz"
-  sha256 "4855fa55044769021877ae60683a9650bd2ad724d84b0a7897a7d802f610a4ee"
+  url "https://github.com/facebook/mvfst/archive/refs/tags/v2025.06.30.00.tar.gz"
+  sha256 "93a9a1900169d450dd7b208de1c434ffe731de7e5d051a5f69f349eb9a570c05"
   license "MIT"
   head "https://github.com/facebook/mvfst.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "a41ddd4aa12034bda7b95dd4475655bcd3634702a4efbffe8b443e18b3fc1542"
-    sha256 cellar: :any,                 arm64_sonoma:  "38ebe320cc6a43ca4d6a0c540ab695c36776bee6d6cd70db8620282c4cd0e5b1"
-    sha256 cellar: :any,                 arm64_ventura: "4dee7b734c8e26283863ba249560f61590841829433b1b184a6860463eb7bf61"
-    sha256 cellar: :any,                 sonoma:        "54d3c6f31410314a5727e822d0e80408b423edcd9270938b23ce71b3d0e535f2"
-    sha256 cellar: :any,                 ventura:       "9f71fac8073e3d1109f2004be74bee3e331fa60111ca560fe403a65cb2d01570"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6062a9c767f8ccb62b71e0476a2867fcc20a289c7ca8ba8e435a26165c431bb1"
+    sha256                               arm64_sequoia: "07e9052ea6960620586c039b8da09123db9187b902b5a1fd0e806a217126c754"
+    sha256                               arm64_sonoma:  "6bc0b05fc96918bc216e4e4be2c5cd31108eceab23c46bd9583cbc17f4568faa"
+    sha256                               arm64_ventura: "7cd119487f0912d3f2bd42fa16edc69f1726f07c2f997a96d77740b1f79da084"
+    sha256 cellar: :any,                 sonoma:        "563087b036e91ef1eba5e63d339cf0832ee9df098c50fc2109d6cb35f6d5a400"
+    sha256 cellar: :any,                 ventura:       "53f3be65d32dcd5007c69cf04995a91f19cb1e8a43af20dffdf107f5b5c39423"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "30d78fdab8e451d7a5990e555810fe6300849e4e0a59a8499e13e33fcb6682dd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "755e26f10afbbfd53b30d7c8cd4baf7055812616f103f8a91f33257dfaeb49fe"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -59,20 +60,21 @@ class Mvfst < Formula
       )
       target_link_libraries(echo ${mvfst_LIBRARIES} fizz::fizz_test_support GTest::gmock)
       target_include_directories(echo PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+      set_target_properties(echo PROPERTIES BUILD_RPATH "#{lib};#{HOMEBREW_PREFIX}/lib")
     CMAKE
 
-    system "cmake", ".", *std_cmake_args
-    system "cmake", "--build", "."
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
 
     server_port = free_port
-    server_pid = spawn "./echo", "--mode", "server",
-                                 "--host", "127.0.0.1", "--port", server_port.to_s
+    server_pid = spawn "./build/echo", "--mode", "server",
+                                       "--host", "127.0.0.1", "--port", server_port.to_s
     sleep 5
 
     Open3.popen3(
-      "./echo", "--mode", "client",
+      "./build/echo", "--mode", "client",
                 "--host", "127.0.0.1", "--port", server_port.to_s
-    ) do |stdin, _, stderr|
+    ) do |stdin, _, stderr, w|
       stdin.write "Hello world!\n"
       Timeout.timeout(60) do
         stderr.each do |line|
@@ -80,6 +82,8 @@ class Mvfst < Formula
         end
       end
       stdin.close
+    ensure
+      Process.kill "TERM", w.pid
     end
   ensure
     Process.kill "TERM", server_pid

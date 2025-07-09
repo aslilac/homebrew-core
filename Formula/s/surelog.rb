@@ -4,17 +4,19 @@ class Surelog < Formula
   url "https://github.com/chipsalliance/Surelog/archive/refs/tags/v1.84.tar.gz"
   sha256 "ddcbc0d943ee52f2487b7a064c57a8239d525efd9a45b1f3e3e4a96a56cb3377"
   license "Apache-2.0"
+  revision 2
   head "https://github.com/chipsalliance/Surelog.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "5a7918b04d91dab87e2aa0ee10bc54e5a560288af6714db5abf6d30f3feab0fc"
-    sha256 cellar: :any,                 arm64_sonoma:   "85204e65ac92cea0739274b1836c7bae77eaf3005eb013ec20241dfe5500ba8d"
-    sha256 cellar: :any,                 arm64_ventura:  "2ff2bedf7480466f17c675bb0a34882222158d8b4d460b72bb4aa2082cffb8e4"
-    sha256 cellar: :any,                 arm64_monterey: "9325935c4d32f32009230864c7418d73ac42a373978f068751437914f898e72b"
-    sha256 cellar: :any,                 sonoma:         "2400e046712df69761721f69f70017ad1d4e9880ba91377589e792428e2de399"
-    sha256 cellar: :any,                 ventura:        "5310dfc346c2bff4520151aecf9c942b1908bbaff85a4e7c57221bdf71a0aaf1"
-    sha256 cellar: :any,                 monterey:       "f71d7d68cc8be8de38a47dfdde9a93163f78bd8b67babc5c6206cbf2b576f986"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d5b576e3198b44eaefa5b52736ddbf80d8e314c40261f3d3cb60c096b069675c"
+    sha256 cellar: :any,                 arm64_sequoia: "727db7b3c19efd328fef24f1eae4d5790e37d6c47a570edcd87a63042486d076"
+    sha256 cellar: :any,                 arm64_sonoma:  "3743df7ef2d3f379e55bc9d8e77fc9de3c9716a76bcb055a86ba5c52e027559c"
+    sha256 cellar: :any,                 arm64_ventura: "d489c736ba9d3ae719c3302d27e62a29a7072d28f5f42e41ed5218948e88436e"
+    sha256 cellar: :any,                 sonoma:        "4ef650973f4b852bf578c0a2df59948e6754b637eb1bbc75e65bfd6f4942b9d2"
+    sha256 cellar: :any,                 ventura:       "b1c5876a1bd6548646d385182550baf7e9a41f64eab6c7cdaf4d6b23075f4850"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6c6afd3cb1e3a200aa037ea9ef4a09e7a136fe30b963ca1d91242dc44332f535"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ecfa15659fbee451ba2f7e6649fb7796707edc5de841ce124b031a6162113005"
   end
 
   depends_on "antlr" => :build
@@ -22,7 +24,7 @@ class Surelog < Formula
   depends_on "nlohmann-json" => :build
   depends_on "openjdk" => :build
   depends_on "python@3.13" => :build
-  depends_on "pkg-config" => :test
+  depends_on "pkgconf" => :test
   depends_on "antlr4-cpp-runtime"
   depends_on "capnp"
   depends_on "uhdm"
@@ -105,7 +107,7 @@ class Surelog < Formula
       }
     CPP
 
-    flags = shell_output("pkg-config --cflags --libs Surelog").chomp.split
+    flags = shell_output("pkgconf --cflags --libs Surelog").chomp.split
     system ENV.cxx, testpath/"test.cpp", "-o", "test",
                     "-L#{Formula["antlr4-cpp-runtime"].opt_prefix}/lib",
                     "-fPIC", "-std=c++17", *flags

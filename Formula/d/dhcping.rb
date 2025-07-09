@@ -11,6 +11,8 @@ class Dhcping < Formula
     regex(/href=.*?dhcping[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "57a8c433ed1c7da1d25968b298425ee8c4eb654cc2c3db24ef634eb98fe2c2f6"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b2f1f36436e5638b5410267578913125a9244b2ab37573e77f53d1be3bb46bcb"
@@ -26,11 +28,16 @@ class Dhcping < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "e30ef14d867a06bcc9bcde18965fa00366780c3323841ca0fb25f864077044d6"
     sha256 cellar: :any_skip_relocation, sierra:         "5c41d596cb2a9835fc5f170ccd602294c98f163ba3f2a8d5c83bae252189817e"
     sha256 cellar: :any_skip_relocation, el_capitan:     "d3b03b1004d3a2d97b80fbbe9714bd29d006d9099a8f6baec343feb2833f3996"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "32108c60d2bcb26968fa5a19800f076c6414e3e254857797cfd60563e75bf0b7"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "dad6d3c832c13d4199c87f8afb9bd93641b7145990edd3d0747612d3546b70cc"
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+    args = ["--mandir=#{man}"]
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

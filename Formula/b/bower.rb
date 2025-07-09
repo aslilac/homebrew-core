@@ -5,6 +5,8 @@ class Bower < Formula
   sha256 "00df3dcc6e8b3a4dd7668934a20e60e6fc0c4269790192179388c928553a3f7e"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "27cfa496a8b8d490f3dd6eeba235e0b64561da813d88bcc89fe1b03114dc091c"
@@ -14,10 +16,13 @@ class Bower < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "5e40c22cfa9946b9bf731953c371b9793808754b6903037276be89b7c4c479b5"
     sha256 cellar: :any_skip_relocation, ventura:        "5e40c22cfa9946b9bf731953c371b9793808754b6903037276be89b7c4c479b5"
     sha256 cellar: :any_skip_relocation, monterey:       "5e40c22cfa9946b9bf731953c371b9793808754b6903037276be89b7c4c479b5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "4d900e656c726f0a5afd2168de6c57ee24f7df977cec79b504d01b7f1117acae"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "771a98dc248a03e567cf7dee75bb4711dd51ff9ff36df04186642c86d8f22263"
   end
 
   depends_on "node"
+
+  conflicts_with "bower-mail", because: "both install `bower` binaries"
 
   def install
     system "npm", "install", *std_npm_args
@@ -26,6 +31,6 @@ class Bower < Formula
 
   test do
     system bin/"bower", "install", "jquery"
-    assert_predicate testpath/"bower_components/jquery/dist/jquery.min.js", :exist?, "jquery.min.js was not installed"
+    assert_path_exists testpath/"bower_components/jquery/dist/jquery.min.js", "jquery.min.js was not installed"
   end
 end

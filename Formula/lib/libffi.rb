@@ -1,8 +1,8 @@
 class Libffi < Formula
   desc "Portable Foreign Function Interface library"
   homepage "https://sourceware.org/libffi/"
-  url "https://github.com/libffi/libffi/releases/download/v3.4.6/libffi-3.4.6.tar.gz"
-  sha256 "b0dea9df23c863a7a50e825440f3ebffabd65df1497108e5d437747843895a4e"
+  url "https://github.com/libffi/libffi/releases/download/v3.5.1/libffi-3.5.1.tar.gz"
+  sha256 "f99eb68a67c7d54866b7706af245e87ba060d419a062474b456d3bc8d4abdbd1"
   license "MIT"
 
   livecheck do
@@ -11,14 +11,13 @@ class Libffi < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "3c98bcb95fbcf46bdc04e0bdc87c5253a8f965edc8da1f1fe1213a9e438abc7e"
-    sha256 cellar: :any,                 arm64_sonoma:   "e81237234a3e21d5222c1c8baf4017bc2f2ad7e444fbf58ad6b635fc0ace5078"
-    sha256 cellar: :any,                 arm64_ventura:  "7a6a1d1dffe41d4e9bf117440190be51c432a2a192945ed8e2e10c4bb1f95ad0"
-    sha256 cellar: :any,                 arm64_monterey: "eacdfea3b29d48dc8c3fb7578a9a59dbeb9048eca6493b8cd95605c86652e6de"
-    sha256 cellar: :any,                 sonoma:         "d783974753df1f7347d8cef16403e157f0625302848e8267626064c4f79a97d8"
-    sha256 cellar: :any,                 ventura:        "e5adecfb6ddd1a18ccb492c051adfd693eb091c4b24a58ad7b1cecb6afb0a575"
-    sha256 cellar: :any,                 monterey:       "8b3cb29277a584f1684661823c8232659b04234873430164bc80ba484c8aa8da"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "798c3983a917698d5dd0c60063e7b8c1e5b4fc377d9e11d7cba010725eca1bfb"
+    sha256 cellar: :any,                 arm64_sequoia: "48eb150271830a3c7da1a28485bd7252c38de09764485b25cf90c0ec93a20be5"
+    sha256 cellar: :any,                 arm64_sonoma:  "45087c0c963358486ef2b1ef0d40ddb20ec63e7fb3b921d8a3568891be8b4b48"
+    sha256 cellar: :any,                 arm64_ventura: "87b515b6ce34421bbb4d4dfacb5b915ba36d73fb1465389ad74c56880c0d85ac"
+    sha256 cellar: :any,                 sonoma:        "2e2b8886c994abb887b1ffad984ed78bda1323eded54bbd4809e8c3a6d48ae45"
+    sha256 cellar: :any,                 ventura:       "895087d2591f6e5b2a828370adfcc8615890a09d4638d30ea105822c4590d4f3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "a71102b55f4d06b91b438222adbdb7dc221fa8b335744773aaece9d671abb527"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2109450cd961d89edfdf8b0fce916dd9c5c63a15f52a97c443412a62b2ca8264"
   end
 
   head do

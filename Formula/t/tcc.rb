@@ -9,6 +9,7 @@ class Tcc < Formula
     url "https://download.savannah.nongnu.org/releases/tinycc/tcc-0.9.27.tar.bz2"
     sha256 "de23af78fca90ce32dff2dd45b3432b2334740bb9bb7b05bf60fdbfc396ceb9c"
 
+    depends_on arch: :x86_64
     # Big Sur and later are not supported
     # http://savannah.nongnu.org/bugs/?59640
     depends_on maximum_macos: :catalina
@@ -18,6 +19,8 @@ class Tcc < Formula
     url "https://download.savannah.nongnu.org/releases/tinycc/"
     regex(/href=.*?tcc[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 catalina:     "68930891a8746b34b372ecfe43a6a042d0097414713c831353a095135d7b9569"

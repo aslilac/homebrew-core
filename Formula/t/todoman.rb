@@ -14,6 +14,7 @@ class Todoman < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "3192caf6ebc642ffa76145ade0db63f852a69123317c012e73d5eed568616de5"
     sha256 cellar: :any_skip_relocation, sonoma:        "4f54a18bc2134dae96cf4104b9c19f755c9c5e4af2352f5929d720df5655d070"
     sha256 cellar: :any_skip_relocation, ventura:       "4f54a18bc2134dae96cf4104b9c19f755c9c5e4af2352f5929d720df5655d070"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "bead3ac237dfb10916efa5d115596ec048de9bdc4b6783ad4325f84c53fbdd76"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "3192caf6ebc642ffa76145ade0db63f852a69123317c012e73d5eed568616de5"
   end
 
@@ -21,7 +22,6 @@ class Todoman < Formula
   depends_on "python@3.13"
 
   conflicts_with "bash-snippets", because: "both install `todo` binaries"
-  conflicts_with "devtodo", because: "both install a `todo` binary"
 
   resource "atomicwrites" do
     url "https://files.pythonhosted.org/packages/87/c6/53da25344e3e3a9c01095a89f16dbcda021c609ddb42dd6d7c0528236fb2/atomicwrites-1.4.1.tar.gz"

@@ -5,6 +5,8 @@ class Arss < Formula
   sha256 "e2faca8b8a3902226353c4053cd9ab71595eec6ead657b5b44c14b4bef52b2b2"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "02051c251dcf51557823a6ae6effb432c9c892a42a3ab19e80c9b8f0e61327ad"
     sha256 cellar: :any,                 arm64_sonoma:   "b0bf1ad20a051b16f65fbbe1ee4780b674ae2a12953291e51de2ca4fd1d478d8"
@@ -20,6 +22,7 @@ class Arss < Formula
     sha256 cellar: :any,                 high_sierra:    "b848efa3abde7c5fffd18289c1ab51a842cd93e0e97d6af32329acf869909d38"
     sha256 cellar: :any,                 sierra:         "2311c31ae2e80905dfc41c8adb9639314664103352540b198f24c54e0c102550"
     sha256 cellar: :any,                 el_capitan:     "5da45934b19d0cab02c809932fb8c5da3fd76d2f781bc9e2e7a98fa1825989eb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "3e094f664eda5e0dabb7269b9a6129d97028bf76e10a6f0d3966479fee9cc79f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c5c0a1ade41f7ff063620d37b071556cd71382e9728f160c24393809f89c0f80"
   end
 
@@ -27,10 +30,14 @@ class Arss < Formula
   depends_on "fftw"
 
   def install
-    cd "src" do
-      system "cmake", ".", *std_cmake_args
-      system "make", "install"
-    end
+    # Work around failure from GCC 10+ using default of `-fno-common`
+    # multiple definition of `LOGBASE'; CMakeFiles/arss.dir/arss.o:(.bss+0x18): first defined here
+    # multiple definition of `pi'; CMakeFiles/arss.dir/arss.o:(.bss+0x20): first defined here
+    ENV.append_to_cflags "-fcommon" if OS.linux?
+
+    system "cmake", "-S", "src", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    bin.install "build/arss"
   end
 
   test do

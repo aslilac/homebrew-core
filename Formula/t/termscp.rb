@@ -1,18 +1,19 @@
 class Termscp < Formula
   desc "Feature rich terminal file transfer and explorer"
   homepage "https://termscp.veeso.dev/"
-  url "https://github.com/veeso/termscp/archive/refs/tags/v0.16.1.tar.gz"
-  sha256 "318673db7d4c8b580f8f6a2b4e305fed3e7afc151217be5e16cf1a8f33fc2af4"
+  url "https://github.com/veeso/termscp/archive/refs/tags/v0.18.0.tar.gz"
+  sha256 "3791b4c4b63dd4ea31b6e4d7be754edf9441c5a84c9e7be878463411c4337588"
   license "MIT"
   head "https://github.com/veeso/termscp.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "2b75f4e9766d4fcbd48bc687b4748b185b33e231df05156e5bbac26a9aac70b4"
-    sha256 cellar: :any,                 arm64_sonoma:  "5b32e256d2194f098ccb0a4e607448a98302c2540293c543be13fb33306cca3b"
-    sha256 cellar: :any,                 arm64_ventura: "35ee471631fdb7dd12e8ed0f86fbae1e6eed916f37a0a05d70210d0cf2c926d1"
-    sha256 cellar: :any,                 sonoma:        "ac38e634acb2b732c9eea95046b6483de1d746822bd03036a5a30e45d105b597"
-    sha256 cellar: :any,                 ventura:       "5f6b391675789a9ac469ca554dbe36771b12d5f96737ae2b307723d61068588a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c205c5785124bee178c50b264518b55a5365c83a53dc5e694dd473e8710c166e"
+    sha256 cellar: :any,                 arm64_sequoia: "9b0ebfc7d1e98d38f9a60557b4c17746b24c62634beb0117d7fa033549d20b67"
+    sha256 cellar: :any,                 arm64_sonoma:  "0134e8eb5be800b3dd71f9d1924df8c83500c6fb0b83e48e22644f91873b830a"
+    sha256 cellar: :any,                 arm64_ventura: "9fb082121f4c9fec8023e9d2b06238155dd0e504891bb2485b4110c3a7759e0b"
+    sha256 cellar: :any,                 sonoma:        "6cec211fe0514243a27ad595b7f7f11ad871a0b47d26534e09ecac5dff811f8b"
+    sha256 cellar: :any,                 ventura:       "8e51d0d0f3286718ab030dbc926b20cbf444b4bb286b7ecd38937308df549717"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ed399ac73da3fd8546765a6d84ee1438101316f12996f2468414a8ae0b4d6a3b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f36219c281e9b898a73a0f0fd79ba0bdbc0a36675a4503d30282a272d87e0a90"
   end
 
   depends_on "pkgconf" => :build

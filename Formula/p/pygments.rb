@@ -3,14 +3,13 @@ class Pygments < Formula
 
   desc "Generic syntax highlighter"
   homepage "https://pygments.org/"
-  url "https://files.pythonhosted.org/packages/8e/62/8336eff65bcbc8e4cb5d05b55faf041285951b6e80f33e2bff2024788f31/pygments-2.18.0.tar.gz"
-  sha256 "786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"
+  url "https://files.pythonhosted.org/packages/b0/77/a5b8c569bf593b0140bde72ea885a803b82086995367bf2037de0159d924/pygments-2.19.2.tar.gz"
+  sha256 "636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887"
   license "BSD-2-Clause"
   head "https://github.com/pygments/pygments.git", branch: "master"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, all: "5037962de309d66c8e911926c625c979fb4d414c756aef3c74542d8e50c02355"
+    sha256 cellar: :any_skip_relocation, all: "6fd25fda6e0590ec617b6ddaa4334b2770ecf3303027d83bd06bafd74aef8d42"
   end
 
   depends_on "python@3.13"
@@ -27,6 +26,6 @@ class Pygments < Formula
     PYTHON
 
     system bin/"pygmentize", "-f", "html", "-o", "test.html", testpath/"test.py"
-    assert_predicate testpath/"test.html", :exist?
+    assert_path_exists testpath/"test.html"
   end
 end

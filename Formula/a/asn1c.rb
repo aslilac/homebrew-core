@@ -1,9 +1,11 @@
 class Asn1c < Formula
   desc "Compile ASN.1 specifications into C source code"
-  homepage "http://www.lionet.info/asn1c/"
+  homepage "https://lionet.info/asn1c/"
   url "https://github.com/vlm/asn1c/releases/download/v0.9.28/asn1c-0.9.28.tar.gz"
   sha256 "8007440b647ef2dd9fb73d931c33ac11764e6afb2437dbe638bb4e5fc82386b9"
   license "BSD-2-Clause"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 1
@@ -17,6 +19,7 @@ class Asn1c < Formula
     sha256 monterey:       "a3999e6443202ae87c2c44823efb4ce4939838124f870cccbf19d8be61a01974"
     sha256 big_sur:        "d3db341a38f139efbea8f9d2f70912af6e80d4f9cd0b472f2f6202bcd31431b3"
     sha256 catalina:       "a7688d139182258a7377b3a30cf57ef3ff95c184940bcb171d0968c2c152f65f"
+    sha256 arm64_linux:    "1cf47d0986b911c566f919454694f2abc20927425eb4b002d1761c2e9c8d714a"
     sha256 x86_64_linux:   "fe7fa5f68ab94a7d748a2af7451d496192c7bc543bd9dc9c660673cb8026bda4"
   end
 
@@ -28,10 +31,13 @@ class Asn1c < Formula
   end
 
   def install
-    system "autoreconf", "-iv" if build.head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
+
+    args = []
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", "--mandir=#{man}", *args, *std_configure_args
     system "make", "install"
   end
 

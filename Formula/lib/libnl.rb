@@ -5,17 +5,20 @@ class Libnl < Formula
   sha256 "2a56e1edefa3e68a7c00879496736fdbf62fc94ed3232c0baba127ecfa76874d"
   license "LGPL-2.1-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
+    sha256 arm64_linux:  "cf02f2e5551dbb36e507e97a53c96710e6e7042232de601fe8f23bd92f0d3e65"
     sha256 x86_64_linux: "4f38d449757989f549668b55ff19e6d5a19d574c720bb15e3543b15564db966b"
   end
 
   depends_on "bison" => :build
   depends_on "flex" => :build
-  depends_on "pkg-config" => :test
+  depends_on "pkgconf" => :test
   depends_on :linux # Netlink sockets are only available in Linux.
 
   def install
-    system "./configure", *std_configure_args, "--disable-silent-rules", "--sysconfdir=#{etc}"
+    system "./configure", "--disable-silent-rules", "--sysconfdir=#{etc}", *std_configure_args
     system "make", "install"
   end
 
@@ -53,9 +56,9 @@ class Libnl < Formula
       }
     C
 
-    pkg_config_flags = shell_output("pkg-config --cflags --libs libnl-3.0 libnl-route-3.0").chomp.split
-    system ENV.cc, "test.c", *pkg_config_flags, "-o", "test"
-    assert_match "Unable to delete link: Operation not permitted", shell_output("#{testpath}/test 2>&1", 228)
+    flags = shell_output("pkgconf --cflags --libs libnl-3.0 libnl-route-3.0").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *flags
+    assert_match "Unable to delete link: Operation not permitted", shell_output("./test 2>&1", 228)
 
     assert_match "inet 127.0.0.1", shell_output("#{bin}/nl-route-list")
   end

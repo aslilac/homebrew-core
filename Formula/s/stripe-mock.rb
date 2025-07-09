@@ -1,23 +1,23 @@
 class StripeMock < Formula
   desc "Mock HTTP server that responds like the real Stripe API"
   homepage "https://github.com/stripe/stripe-mock"
-  url "https://github.com/stripe/stripe-mock/archive/refs/tags/v0.192.0.tar.gz"
-  sha256 "9b38137b879d3c3b580ce6697dfe4de074a0178a7c96ea55502f26417b1e37e4"
+  url "https://github.com/stripe/stripe-mock/archive/refs/tags/v0.195.0.tar.gz"
+  sha256 "830a70cdbefc14b77f1c397ed29b401ea79a8f2bfdc2bbf9708a901e17208559"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ec7f7d65d240f5f0a4f15e2434ade968cf6aa97b7c72a263923f5655c93e1ccf"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ec7f7d65d240f5f0a4f15e2434ade968cf6aa97b7c72a263923f5655c93e1ccf"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "ec7f7d65d240f5f0a4f15e2434ade968cf6aa97b7c72a263923f5655c93e1ccf"
-    sha256 cellar: :any_skip_relocation, sonoma:        "0cce95a8ff69747e41e9b0110afc740776498d734d9491ba4197031279ca4fcd"
-    sha256 cellar: :any_skip_relocation, ventura:       "0cce95a8ff69747e41e9b0110afc740776498d734d9491ba4197031279ca4fcd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4dd145e4dc0930347a066c450bd811626e7e10bf699314531208d9a2fe38faf1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "eb00df69c89beb8cb7465d9aea84b30e20e669a320dfa1d1f2fde9f1a3f20734"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "eb00df69c89beb8cb7465d9aea84b30e20e669a320dfa1d1f2fde9f1a3f20734"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "eb00df69c89beb8cb7465d9aea84b30e20e669a320dfa1d1f2fde9f1a3f20734"
+    sha256 cellar: :any_skip_relocation, sonoma:        "db97b4f234bf4e99abe4fcf7f94e23aa6c66613536875987d90cbb149b257bf3"
+    sha256 cellar: :any_skip_relocation, ventura:       "db97b4f234bf4e99abe4fcf7f94e23aa6c66613536875987d90cbb149b257bf3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "cfb32a534ce1b0ab692a753f11cc4c00b28d05b0a161e472798c504f7d5f683a"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-X main.version=#{version}")
+    system "go", "build", *std_go_args(ldflags: "-s -w -X main.version=#{version}")
   end
 
   service do

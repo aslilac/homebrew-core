@@ -1,35 +1,34 @@
 class Atf < Formula
   desc "Automated testing framework"
   homepage "https://github.com/freebsd/atf"
-  url "https://github.com/freebsd/atf/releases/download/atf-0.21/atf-0.21.tar.gz"
-  sha256 "92bc64180135eea8fe84c91c9f894e678767764f6dbc8482021d4dde09857505"
+  url "https://github.com/freebsd/atf/releases/download/atf-0.23/atf-0.23.tar.gz"
+  sha256 "a64e2427d021297f25b3f2e1798f8ec4dc3061ffb01a1cd3f66cc4cee486b10f"
   license "BSD-2-Clause"
+  head "https://github.com/freebsd/atf.git", branch: "master"
+
+  livecheck do
+    url :stable
+    regex(/^atf[._-]?v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
-    sha256 arm64_sequoia:  "027aca4d45bfe562aa551797885e8fa12d6b7ebe3db747deef462d6d4bfd2696"
-    sha256 arm64_sonoma:   "e71d7a1bc4ac64cbd1e03fbdf7f309a6bef3ce9de57ceffa97df28ea91da3b9e"
-    sha256 arm64_ventura:  "a450d3062f887473809527c9e45451941476c4b22d5f0803bc261dafc5986168"
-    sha256 arm64_monterey: "650c374c9509cd3634ef36fd0d61bd7c852536778be5ffa2c0c9b4590fc92d66"
-    sha256 arm64_big_sur:  "67cc581f8b6a72d2ebe4a5d9210ff0b39c247f76852afa50df699988c3617783"
-    sha256 sonoma:         "61780429c46ebf5b74382c0414f610f55518b343b0cbf6f630fa979638b011b4"
-    sha256 ventura:        "d6c554da757f3069d0bc49db0e9beb981c38255016ed3685fed2ac593a10e02f"
-    sha256 monterey:       "4c9f336e433ec164c422e391de58eb6a68539b58463e0bc8eeefc151dd8767c2"
-    sha256 big_sur:        "fff75eabcd7eb2a52aca286d42f82f4488b5a28fc2c7dc154fd0b34d62366272"
-    sha256 catalina:       "39570850845a8c01f2ce167fec23284fc6172c816a9d5806b9c9034448d5a0a3"
-    sha256 mojave:         "c8e2c7b3d06d8c84409ef21b12201803113244d668eb092decf073fc5066fdab"
-    sha256 high_sierra:    "034a9f29ce63bd5cd019b957bc544a3129df7ec3872453f57f24914dce1f2da8"
-    sha256 sierra:         "a58333135e72fa1817c0411f3801615780c4346347d73d25ddec6eca6b213c41"
-    sha256 el_capitan:     "74493d4b4868628a7a84338eb28ecfce8afdd896962f3ba632b1e785def48737"
-    sha256 x86_64_linux:   "c9a94b838e115887902fd1e12ef77cce606f475772668278908382fb161d1ca6"
+    sha256 arm64_sequoia: "14d17d25d50313d4fbd2794874b972925f23c67dea567ae1ec692efd32c2647f"
+    sha256 arm64_sonoma:  "b8f3e848fb9147744c021fae004abe9cb8ac262c94d6bcd4a487b79ea73e6cee"
+    sha256 arm64_ventura: "b0e02364b9ab0b317420b1ed1045e9c701ad002653b9180832a18e29c5c542ec"
+    sha256 sonoma:        "9cd739eb6f0f1ec5c7a7718c66fea9ea8a3435ffd3506da93d60393f0bda5f0d"
+    sha256 ventura:       "f454fa5d1f845261d605e9d94a926b6cd4e3a120a6782fe0f93776ab01697df6"
+    sha256 arm64_linux:   "5b259959f57b981567bc83a2889401ef8224bc504e46428a62569cb3eebb054a"
+    sha256 x86_64_linux:  "9e2c5311676f2350c618ba8b2092a67df2fa2300c1212d1f25bd70f4650ea934"
   end
 
-  # Fix -flat_namespace being used on Big Sur and later.
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/890be5f6af88e7913d177af87a50129049e681bb/libtool/configure-pre-0.4.3-big_sur.diff"
-    sha256 "58557ebff9e6b8e9b9b71dc6c5820ad3e0c550a385d4126c6078caa2b72e63c1"
-  end
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
+    system "glibtoolize", "--force", "--install"
+    system "autoreconf", "--force", "--install", "--verbose"
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}"
@@ -39,11 +38,11 @@ class Atf < Formula
   end
 
   test do
-    (testpath/"test.sh").write <<~EOS
+    (testpath/"test.sh").write <<~SHELL
       #!/usr/bin/env atf-sh
       echo test
       exit 0
-    EOS
+    SHELL
     system "bash", "test.sh"
   end
 end

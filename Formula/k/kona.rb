@@ -12,6 +12,8 @@ class Kona < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "84c61f1623af99fce59ff37ac3310eeb4c20bfa9ed42b78eec9dcacb8c9d57c5"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3173ebdcc5b42b89e00caa74715d04512069ef0fd7d124f0c9b8fb92fd2a54a0"
@@ -23,6 +25,7 @@ class Kona < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "73330e436e416c19f9a4abdd920173c99725bc5e8ca4b18ef3ebf1df20a561c5"
     sha256 cellar: :any_skip_relocation, big_sur:        "bc727b02b917dc2a6b81d8ad679618ed7128320bbb177cbba4967ff75d35a810"
     sha256 cellar: :any_skip_relocation, catalina:       "39a59be89532f96362eeeef2d5be14770da588944666ce3a178926f04b0f6e1c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "d6b3318bcb3e9c9129958230cc0884fdf263255e07f96d1a62acdb872c0d28d5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2e0418f26e5be870a8be5747b920ae20db61707f110c3e63c992ab397b8b87dc"
   end
 

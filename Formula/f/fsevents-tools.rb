@@ -10,6 +10,8 @@ class FseventsTools < Formula
     regex(/href=.*?fsevents-tools[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "69d137adc9cbcce94aa7160b76705454f3f04fc0598f2146264887fc0a278c2e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "665d116f18811af91513b9cd670e8504cc765bebc6e114fbf815930bd48386f7"
@@ -32,16 +34,14 @@ class FseventsTools < Formula
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
-    depends_on "pkg-config" => :build
+    depends_on "pkgconf" => :build
   end
 
   depends_on :macos
 
   def install
     system "./autogen.sh" if build.head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 

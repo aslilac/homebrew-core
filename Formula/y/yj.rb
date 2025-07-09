@@ -6,6 +6,8 @@ class Yj < Formula
   license "Apache-2.0"
   head "https://github.com/sclevine/yj.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "71786086bcb09233fdf3ac0df85662d4bc72a897a96456f170e69b047042f56d"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9b768047213c8d89fbf913d6a7558bc7375b2bb212c3de790dc818f4b5220886"
@@ -17,6 +19,7 @@ class Yj < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "5171d044ed87a081eaa9cf71a7acad2bede581c9b451a0f21b3908e4d2e45105"
     sha256 cellar: :any_skip_relocation, big_sur:        "5171d044ed87a081eaa9cf71a7acad2bede581c9b451a0f21b3908e4d2e45105"
     sha256 cellar: :any_skip_relocation, catalina:       "5171d044ed87a081eaa9cf71a7acad2bede581c9b451a0f21b3908e4d2e45105"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "61d9ed575a78bd459f308817a76f8078a6d1e5742609e8ea8d7d2d921309c6fc"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ca06f08696b263564c3f22ad114cca8863eb06f805a83c6b5fbf4134854a0413"
   end
 

@@ -5,6 +5,8 @@ class Jshon < Formula
   sha256 "28420f6f02c6b762732898692cc0b0795cfe1a59fbfb24e67b80f332cf6d4fa2"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "c71de9488ca461a0438c85645c42ba5e5c8b81c9272c2639c258a5e6b80d5432"
     sha256 cellar: :any,                 arm64_sonoma:   "9f0b7bc5a2120f0ee203a1398bf9f35b45e3ba143adf38a6220c066db09e48f6"
@@ -20,6 +22,7 @@ class Jshon < Formula
     sha256 cellar: :any,                 high_sierra:    "c32084666ea13118a66803175575de9b74ca5a04d5a32bdd91883007ef6822b8"
     sha256 cellar: :any,                 sierra:         "3215b76a79af85c6ae21b7de4e2eff0eb83098c0c5e1ae5b8c870d912498ed13"
     sha256 cellar: :any,                 el_capitan:     "bab45017500667c7f8cf3b73c513f043cd04da04610cb2dc8a117ad5c9a5b99a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "0afe7df1a37e88dd5f3f54e74c972fb4e8233722b321b6e67f5a0318720fe7be"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "75afb2192ca7b1257b811c27359474bed0d281e1d67eb3fdb86fbf04005563db"
   end
 

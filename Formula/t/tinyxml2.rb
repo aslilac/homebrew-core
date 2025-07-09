@@ -1,20 +1,19 @@
 class Tinyxml2 < Formula
   desc "Improved tinyxml (in memory efficiency and size)"
   homepage "https://leethomason.github.io/tinyxml2/"
-  url "https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz"
-  sha256 "3bdf15128ba16686e69bce256cc468e76c7b94ff2c7f391cc5ec09e40bff3839"
+  url "https://github.com/leethomason/tinyxml2/archive/refs/tags/11.0.0.tar.gz"
+  sha256 "5556deb5081fb246ee92afae73efd943c889cef0cafea92b0b82422d6a18f289"
   license "Zlib"
   head "https://github.com/leethomason/tinyxml2.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "b1381b9a6caaa5ef675098d7d1b8eb6bf3d9db3cfa9fac81583096587a6eaa21"
-    sha256 cellar: :any,                 arm64_sonoma:   "06a3ca5d84a41d897f5d303d2484f343ba516531a0efb596a1b4bbfe0743024c"
-    sha256 cellar: :any,                 arm64_ventura:  "21ff74d7f6c4c49c53b68a0740a570dbd3867ec9d77c5f025b4a87813f19abe5"
-    sha256 cellar: :any,                 arm64_monterey: "47b57551b8a816d40ee5c0f63e9293b8a9cf29f4c14dcb3bfb972715a24612bf"
-    sha256 cellar: :any,                 sonoma:         "73eb82df5d628a8ace54ff37ec4e46d5afdaf7815a6d3008c298857d6e928d82"
-    sha256 cellar: :any,                 ventura:        "6e21df3cebd2648c87b89d4476189d68faab14ec314e151262facc3a90bb7ccb"
-    sha256 cellar: :any,                 monterey:       "ede0c2a39f7278272a57040f653cee188899ecc26360cc1063227846e8ba566d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e75dbe5e041fef9e70a8770ada43b74cd327d1806f4fac459665d967af937e6c"
+    sha256 cellar: :any,                 arm64_sequoia: "547cd64f4a05b78839ba3b1aa14f062a0bfe39c54fe22d34229c729f5258fbd4"
+    sha256 cellar: :any,                 arm64_sonoma:  "c2003e2db45283b198c1bdedde97f4802da748639ccf484d1bd88a7802bd6149"
+    sha256 cellar: :any,                 arm64_ventura: "1e5668be8fa0aa9055dd729b63c8e588093e2ed7142f3f1987b646ede0cd46eb"
+    sha256 cellar: :any,                 sonoma:        "7e9a788c39b407964a7c3fe4314597f9dcd79ccfb2e0285bed668400a683f656"
+    sha256 cellar: :any,                 ventura:       "65a3ebdb7165567537c04c772f7bda89bf86c76aaeae1bed179807be0925b04f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e7f5f7fc450393d4fc812c231db8b66464ee6f40be800b5e77bfb89ea819e6b6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "13c9eee32ef5d3a82e63177c56653c9514b179a4c07f42c4b1bccbae27e0670b"
   end
 
   depends_on "cmake" => :build

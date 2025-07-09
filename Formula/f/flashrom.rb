@@ -1,8 +1,8 @@
 class Flashrom < Formula
   desc "Identify, read, write, verify, and erase flash chips"
   homepage "https://flashrom.org/"
-  url "https://download.flashrom.org/releases/flashrom-1.4.0.tar.xz"
-  sha256 "ad7ee1b49239c6fb4f8f55e36706fcd731435db1a4bd2fab3d80f1f72508ccee"
+  url "https://download.flashrom.org/releases/flashrom-v1.5.1.tar.xz"
+  sha256 "1f934b076ed49eace203655ec249fc7861a6b8e87fe4aef732e47b6e485b6293"
   license "GPL-2.0-or-later"
   head "https://review.coreboot.org/flashrom.git", branch: "master"
 
@@ -12,26 +12,22 @@ class Flashrom < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "f7d23af87392e5d84eee90c05b77ceaa3c607df03fed061fa5a442486ed5e801"
-    sha256 cellar: :any,                 arm64_sonoma:   "f6a24fb6e9db1e1283cdbc40e045b004ad53f12bc86a1f3f63407abfc361400a"
-    sha256 cellar: :any,                 arm64_ventura:  "2e892b95bdc41d71063b3279f258e9b6ab010cc000d3fb2aec3c755fee1455f4"
-    sha256 cellar: :any,                 arm64_monterey: "bbe8b4003bf7f78060ff7e174e66043277c28993206fd6d98b4101bf18799a4b"
-    sha256 cellar: :any,                 sonoma:         "66f0c3e9c787271359921b10a5e624a96667f3b2052fbfb068f17b890484d99b"
-    sha256 cellar: :any,                 ventura:        "f07e8bc13a2567551ff670e2b3565ba9e4613dffab040470c52b8e970f4ad6e5"
-    sha256 cellar: :any,                 monterey:       "414ad270f9b00e71d020f99779b6b428646ebab33160d4967c506728505b8169"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a81a9eb50bf2cbfd072cbc065c1793e197690fbb08f8a3c6aad12e1692674190"
+    sha256 cellar: :any, arm64_sequoia: "ccb844bba9ff0f004d66daddc0b834fe4a91eace389ae3486cc99854795ce807"
+    sha256 cellar: :any, arm64_sonoma:  "2cada41d9ec587f23a4b6a8cdd4ff21a3c0b176c4da270c01b38a3cf4073a94c"
+    sha256 cellar: :any, arm64_ventura: "d3aa6a371dccd77654c46ad73ba10dc4bfabedebb5a920eb9fde56fd21d1b96f"
+    sha256 cellar: :any, sonoma:        "6dc12de3566c4f6078a22b979ce76e18100320bb004a9f463fffbe65ef72840b"
+    sha256 cellar: :any, ventura:       "f853dbc8d2957263f3a6c0875a51c8f5760deb2fede2c1f02edce9b6946ad04b"
+    sha256               arm64_linux:   "99930741fa83500c75daa0a4f5578a5365e3063e0151740a304c251376b9b6d3"
+    sha256               x86_64_linux:  "e7ca720f79b5b454b2ee3c4268352042d6ee6036b23f004cba7b3333565f1e14"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
+  depends_on "pkgconf" => :build
+
   depends_on "libftdi"
   depends_on "libusb"
-
-  # no DirectHW framework available
-  on_macos do
-    on_intel do
-      patch :DATA
-    end
-  end
+  depends_on "openssl@3"
 
   resource "DirectHW" do
     url "https://github.com/PureDarwin/DirectHW/archive/refs/tags/DirectHW-1.tar.gz"
@@ -48,29 +44,15 @@ class Flashrom < Formula
       ENV.append "CFLAGS", "-I#{buildpath}"
     end
 
-    system "make", "DESTDIR=#{prefix}", "PREFIX=/", "install"
-    mv sbin, bin
+    system "meson", "setup", "build", *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
   end
 
   test do
-    system bin/"flashrom", "--version"
+    system sbin/"flashrom", "--version"
 
-    output = shell_output("#{bin}/flashrom --erase --programmer dummy 2>&1", 1)
+    output = shell_output("#{sbin}/flashrom --erase --programmer dummy 2>&1", 1)
     assert_match "No EEPROM/flash device found", output
   end
 end
-
-__END__
-diff --git a/Makefile b/Makefile
-index a8df91f..a178074 100644
---- a/Makefile
-+++ b/Makefile
-@@ -834,7 +834,7 @@ PROGRAMMER_OBJS += hwaccess_physmap.o
- endif
-
- ifeq (Darwin yes, $(TARGET_OS) $(filter $(USE_X86_MSR) $(USE_X86_PORT_IO) $(USE_RAW_MEM_ACCESS), yes))
--override LDFLAGS += -framework IOKit -framework DirectHW
-+override LDFLAGS += -framework IOKit
- endif
-
- ifeq (NetBSD yes, $(TARGET_OS) $(filter $(USE_X86_MSR) $(USE_X86_PORT_IO), yes))

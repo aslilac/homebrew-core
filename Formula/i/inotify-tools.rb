@@ -5,8 +5,11 @@ class InotifyTools < Formula
   sha256 "1dfa33f80b6797ce2f6c01f454fd486d30be4dca1b0c5c2ea9ba3c30a5c39855"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "801e47d3b577a62bc15e16656cb20cfd09be683592513df4446b01ea875b82b1"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "c9a50d94145be77d8493bb7e2a8ee259784c209113e84b9ce5b1df586868f052"
   end
 

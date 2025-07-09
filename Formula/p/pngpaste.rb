@@ -5,6 +5,8 @@ class Pngpaste < Formula
   sha256 "6221201cb05191855f0d2707ce7f4055f6e1330de8efc09d386be2a6629f543b"
   license "BSD-2-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c50c153907877dd733f9e98807bf00246a12cb2f8add332a9e3842fe6057cf9e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "15c6b1b199b6fb33956d42c3bc0cbe2f6d19ed8a578ecf49e44234fec474534c"
@@ -31,6 +33,6 @@ class Pngpaste < Formula
     png = test_fixtures("test.png")
     system "osascript", "-e", "set the clipboard to POSIX file (\"#{png}\")"
     system bin/"pngpaste", "test.png"
-    assert_predicate testpath/"test.png", :exist?
+    assert_path_exists testpath/"test.png"
   end
 end

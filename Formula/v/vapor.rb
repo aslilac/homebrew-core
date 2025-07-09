@@ -1,25 +1,22 @@
 class Vapor < Formula
   desc "Command-line tool for Vapor (Server-side Swift web framework)"
   homepage "https://vapor.codes"
-  url "https://github.com/vapor/toolbox/archive/refs/tags/18.7.5.tar.gz"
-  sha256 "0322fee24872b713e1e495070e6b7b1fca468bed19f48bcf7a1397ffdf701e9a"
+  url "https://github.com/vapor/toolbox/archive/refs/tags/19.2.0.tar.gz"
+  sha256 "c2970459166469afe8614ecdca33dae556a5e2fb386b92eeba2498af9014fc60"
   license "MIT"
-  revision 1
   head "https://github.com/vapor/toolbox.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b457b119c396cd83259510166ddf9d9cccf7b699052baf04ab94b63b19ac53f4"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2192519ec8d2181f08f86d0b735b9ce722612659e068481415c7483f4e1616a5"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "28fab09761f167d57d34130f67925049db4bdb5002c0f3dbd75cb1027c4353d8"
-    sha256 cellar: :any_skip_relocation, sonoma:        "9b811fd0499f54a6fa4dd3397d608f2daabba985bdb68d88a6670ad50de149b5"
-    sha256 cellar: :any_skip_relocation, ventura:       "839f36608641d08575dddcf5614850ffc9125459bb67c2560f52f70c990e0607"
-    sha256                               x86_64_linux:  "421fd857c04941c7c5443faac4183e79cf919db6b2066668022a40fb57d0c78b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0f2c6943fa3c7ce08edf4fe755bc457fd5182b5cbefbb8d72c529c9c725b7a29"
+    sha256 cellar: :any,                 arm64_sonoma:  "e4eb5458e494f81f695d6be97343d49befba175e46d1408f2d97d39ad60a9e3e"
+    sha256 cellar: :any,                 arm64_ventura: "485828ab22141232f3b316fe8bb6d71140de71ef521de4854a1500b922ba093b"
+    sha256 cellar: :any,                 sonoma:        "286cab5c6174a01ace08ae6c190aff18d484b7466ea718164bea75ced45540db"
+    sha256 cellar: :any,                 ventura:       "140bed5e1eb6392a50317549580f1ed06031cc684c32337cc28e668e92d71e89"
+    sha256                               arm64_linux:   "3c7444e3bc22eda208626e10ebf482b669a7fe043cd83912ed9227e4e8b5a681"
+    sha256                               x86_64_linux:  "68d00588ea3a03d785c0e2fd0745d3310136cd5f366de20a9b2db8142d0be06b"
   end
 
-  # vapor requires Swift 5.6.0
-  depends_on xcode: "13.3"
-
-  uses_from_macos "swift"
+  uses_from_macos "swift", since: :sequoia # Swift 6.0
 
   def install
     args = if OS.mac?
@@ -33,6 +30,6 @@ class Vapor < Formula
 
   test do
     system bin/"vapor", "new", "hello-world", "-n"
-    assert_predicate testpath/"hello-world/Package.swift", :exist?
+    assert_path_exists testpath/"hello-world/Package.swift"
   end
 end

@@ -1,17 +1,17 @@
 class TerraformProviderLibvirt < Formula
   desc "Terraform provisioning with Linux KVM using libvirt"
   homepage "https://github.com/dmacvicar/terraform-provider-libvirt"
-  url "https://github.com/dmacvicar/terraform-provider-libvirt/archive/refs/tags/v0.8.1.tar.gz"
-  sha256 "6bb585f384ebc9a250ef06ebc15bc8232abe5c074a0221e32665ef6f79c2a73e"
+  url "https://github.com/dmacvicar/terraform-provider-libvirt/archive/refs/tags/v0.8.3.tar.gz"
+  sha256 "9d04ca75d7cb3db511ea251369890d1bdf2a6b7d77c4d4ce5d3cb0d2c0214252"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bc12facb3daa95ad2287892fabf6525319609cb4ccc875b7913725b75f836aef"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "bc12facb3daa95ad2287892fabf6525319609cb4ccc875b7913725b75f836aef"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "bc12facb3daa95ad2287892fabf6525319609cb4ccc875b7913725b75f836aef"
-    sha256 cellar: :any_skip_relocation, sonoma:        "3a1e7b09bde735780521766f372e5bc88db11ce3ecc6ab57ffe1c33b73640a65"
-    sha256 cellar: :any_skip_relocation, ventura:       "3a1e7b09bde735780521766f372e5bc88db11ce3ecc6ab57ffe1c33b73640a65"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fbd985adb0f773bd08c7b4e3775656baa01d7867c3dbd7fcbf475b6610483339"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b4965933e5ec39c5f04ae18a08828df9e0dbbda8f7d80d1278c4951493fe9d15"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b4965933e5ec39c5f04ae18a08828df9e0dbbda8f7d80d1278c4951493fe9d15"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b4965933e5ec39c5f04ae18a08828df9e0dbbda8f7d80d1278c4951493fe9d15"
+    sha256 cellar: :any_skip_relocation, sonoma:        "15e9fab3f999c737143ad9c66ff18fb3861f17035636179d3ffe752fbb120933"
+    sha256 cellar: :any_skip_relocation, ventura:       "15e9fab3f999c737143ad9c66ff18fb3861f17035636179d3ffe752fbb120933"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "42969edbf2abbbba627cf3bd855e749aba8a2cbf570e5da9fa1a45a912444374"
   end
 
   depends_on "go" => :build

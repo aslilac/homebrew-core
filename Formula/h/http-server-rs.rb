@@ -6,6 +6,8 @@ class HttpServerRs < Formula
   license "Apache-2.0"
   head "https://github.com/http-server-rs/http-server.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "fe010697a6d9851c061d2939929b4e6f9750ad2612ba486b35610175da62c604"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d6f29de99576b74d2398a7fc093bc700a3de1d7d5c1db98224c3750c1ae79226"
@@ -14,6 +16,7 @@ class HttpServerRs < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "9fd1a8e7f2e528913edb6e48b07d03d61b7b39e63173b77e64696394a5f33318"
     sha256 cellar: :any_skip_relocation, ventura:        "2b555ba245fc88ce42aacc38c80c1409176d0f7900d85945609111bc3bdf6573"
     sha256 cellar: :any_skip_relocation, monterey:       "6611eb126def91614acb470f6393229f827905ee621fedf4f3791f8c94cff625"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "619764056faf97e193acababdbd3afc2f94c239dbfa695cefc953836445d653f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "580cdfea1cd7aacdc67e69c5db6e16f057c8a459c8567b0eea601628c30352b7"
   end
 

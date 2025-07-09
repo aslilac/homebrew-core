@@ -1,8 +1,8 @@
 class Tintin < Formula
   desc "MUD client"
   homepage "https://tintin.mudhalla.net/"
-  url "https://github.com/scandum/tintin/releases/download/2.02.41/tintin-2.02.41.tar.gz"
-  sha256 "b86b4af5a57b986d4ef5db41e64d38e027cf85004749479c9424f18df7642a49"
+  url "https://github.com/scandum/tintin/releases/download/2.02.51/tintin-2.02.51.tar.gz"
+  sha256 "9279f25d18defddf449863f4bad6ec971feacd297a9d9ddaac28c9b5d5eced02"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,14 +11,13 @@ class Tintin < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "dac578a0c6c96217dd1dcd1d0c4be5716ca9876798fbc990bf00ef6a0c34f643"
-    sha256 cellar: :any,                 arm64_sonoma:   "64acefaf2f1dae303c72b1c27e507a16198b2dd38fe051aa98bfcc96beb413e5"
-    sha256 cellar: :any,                 arm64_ventura:  "93a881b57f3f805973ddf227470ed4b3f6d71ab49f4dfab877d8997a1f390a89"
-    sha256 cellar: :any,                 arm64_monterey: "807575c3e4722326d51bb213a11d9bb62d22e30c27494e0e3b09eef34d60b1dd"
-    sha256 cellar: :any,                 sonoma:         "bf152b74032e58f7938f17084c1b69c0c691e89a448d355cd58d6cfb73185da8"
-    sha256 cellar: :any,                 ventura:        "65e603e6184e01f46203b2e461ac88141bcb0d6759c8510d892327d7e32eab8f"
-    sha256 cellar: :any,                 monterey:       "78e273335ab2a23248743fce208fa0089009d3df2d5bfaea0c53fc3dc4a8feee"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d1d3b0b57e1fb479e274dbb7a5cb50c48ba7e1fed97f2896e2c010125790abb2"
+    sha256 cellar: :any,                 arm64_sequoia: "c8410631e4b5913d30deff7f49b6c1f0b8e5d86b9aa894a61a5a61138ce4a8fe"
+    sha256 cellar: :any,                 arm64_sonoma:  "699fae6ad2d5b69edb8a966d22364e25c27485084d3c8a55d6b767680e4be03e"
+    sha256 cellar: :any,                 arm64_ventura: "27270803fb800ee49cd574dcbfa6a7d2e3dd18e4baf5a7d04107684421d15849"
+    sha256 cellar: :any,                 sonoma:        "39d054d89de62da4d8e05f4f85e33bcf7eaac2ac6ca5567138bc9b0dbf94b912"
+    sha256 cellar: :any,                 ventura:       "1bf5c897c70f625d4d2b115b832470b7ff7009caf600f03b4a6075fc66c1b813"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "12d800c80fab044fd6ac3cc2052516797095394b8e5e532e8e59c7a3bb0dd52f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "135f4682a04e95b104a5bcb6ac078c42bd87cc5c355a455c96d9ae796ce9d34a"
   end
 
   depends_on "gnutls"

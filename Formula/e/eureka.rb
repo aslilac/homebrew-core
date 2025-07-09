@@ -6,6 +6,8 @@ class Eureka < Formula
   license "MIT"
   head "https://github.com/simeg/eureka.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "02998b7bb77a41e30a5053ec6530d04f4ce8224a05100a60604373b3cbe00857"
@@ -18,17 +20,15 @@ class Eureka < Formula
     sha256 cellar: :any,                 monterey:       "37888fa43d99d9740479bf57078b60a87eaaf7f082f18a790bdf81df6fb4ce8e"
     sha256 cellar: :any,                 big_sur:        "6b50c3a975f63a84f975c16b919f775ffb163d8b7c1d40f0219ee660d12f9f88"
     sha256 cellar: :any,                 catalina:       "0e7559a426bc893f8c14aca3e9110465658a94a0fb7561264e05fcf3c8756096"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "80091c818c70edbf57173bc1c78d09f3bc7ab8ea404bf9234eb84a0a8b0a280b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b8df396a1e2c9e87f093dfd44dafed480bd97ff2115beac25725d12d3d028439"
   end
 
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "openssl@3"
 
   uses_from_macos "zlib"
-
-  on_linux do
-    depends_on "pkg-config" => :build
-  end
 
   def install
     system "cargo", "install", *std_cargo_args

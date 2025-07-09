@@ -6,6 +6,8 @@ class Nedit < Formula
   license "GPL-2.0-or-later"
   revision 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "a4e7775080f68b28a71f10c696a4a57c347d4f6620dde7e033bb3c5083db4250"
     sha256 cellar: :any,                 arm64_sonoma:   "8f6e94981bc35788dba9284a2313b48003f8a6bb10b26f15ee4dc2f20c4ecba5"
@@ -19,6 +21,7 @@ class Nedit < Formula
     sha256 cellar: :any,                 catalina:       "c726811764a5d12465d4c11b273229482af935921df472f6d083a27e34b39b3f"
     sha256 cellar: :any,                 mojave:         "7e3760fcb4d5a78393094c94b0c97a4e9b73487eeca6510963f098ebaeddf281"
     sha256 cellar: :any,                 high_sierra:    "0f1ea26247cf5abe89ecc7038820b937ee20046fa44b504363604af4a7bbb093"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "55378caed6582cb7f9dc529539d45ec7195c4ef042eca0d152d76663c60af47a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "cd75a55df6025af2525c13fb2657d74632fac30c2d813eda1d07ae1eea146ffa"
   end
 

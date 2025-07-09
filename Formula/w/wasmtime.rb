@@ -2,8 +2,8 @@ class Wasmtime < Formula
   desc "Standalone JIT-style runtime for WebAssembly, using Cranelift"
   homepage "https://wasmtime.dev/"
   url "https://github.com/bytecodealliance/wasmtime.git",
-      tag:      "v27.0.0",
-      revision: "8eefa236f8ef0cc766977e0c0cbb0d602132dfa4"
+      tag:      "v34.0.1",
+      revision: "ebdadc4e0d80c0692fe1d4baf628f081a34afefa"
   license "Apache-2.0" => { with: "LLVM-exception" }
   head "https://github.com/bytecodealliance/wasmtime.git", branch: "main"
 
@@ -16,12 +16,13 @@ class Wasmtime < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "dcf825cb9449c7aeeb0b2542156cddb3ae9725dcefc128aa1e404abb6c8479ff"
-    sha256 cellar: :any,                 arm64_sonoma:  "70900d469e765cb6a9274dc730f90f0ca40ed7f28070bf84e57e035e93f4bdcb"
-    sha256 cellar: :any,                 arm64_ventura: "3c2c604cab16c4f253937918ea74be0468279c0291f82878581fdfde29d4cb4a"
-    sha256 cellar: :any,                 sonoma:        "803a824a03b53677a80d441d9f049576e818ee635a5654e50296b4cd99bacf46"
-    sha256 cellar: :any,                 ventura:       "3df748d1006c3b755e0fb22c87dcf4da5820bf380ee046afc68a6563bf798a2e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e0b9b9588dd4360dfdacdf0209508a3b20ef34e61862fdbe0f1a9d8cfb54b067"
+    sha256 cellar: :any,                 arm64_sequoia: "4228f8401abe94cf04b6899c2a449ac8583fe9634f846ba4453dfb15388216a3"
+    sha256 cellar: :any,                 arm64_sonoma:  "612fc176a4fade789ea9ca36c4a2bc2bdb7d7a596bc11ab5aabe1bca79b9ad1a"
+    sha256 cellar: :any,                 arm64_ventura: "f68b8451d64b79714479f1315fc3148983f009d81a4f63121de225c7a1944b70"
+    sha256 cellar: :any,                 sonoma:        "bf29df40ebe11677ce829e29d5c55857a3c40d8a1e7c9119318595aa04dbd870"
+    sha256 cellar: :any,                 ventura:       "d3ef5efa171e7229e83885eb58723c004d5da01c7f81c8cb91ccdc6baa204f1f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f1b0b95645780058ba448608480742bfda8e08e4f0d219bd6d5a816e67559e0d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "03b13d82fc9324bf8d99310934be7c3c6ea15cd9ac6a7d23ef39953b5482cf45"
   end
 
   depends_on "cmake" => :build
@@ -33,6 +34,8 @@ class Wasmtime < Formula
     system "cmake", "-S", "crates/c-api", "-B", "build", "-DWASMTIME_FASTEST_RUNTIME=ON", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
+
+    generate_completions_from_executable(bin/"wasmtime", "completion")
   end
 
   test do

@@ -17,6 +17,7 @@ class Pyflow < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "669b62cb0547ffc164ad936a930cb0108052b7d1f92f7e6c7f5a25a04cb2167f"
     sha256 cellar: :any_skip_relocation, big_sur:        "06c81ecf12284c17a47d8701ff9bff608809038943ae473e36af80d166faf956"
     sha256 cellar: :any_skip_relocation, catalina:       "33cca1590360162f960d97c4544b0ee0bb3449e55b43d0f2f7f652fd5f0b7be5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "170b84149913a41134a4c6463c661306fc3920c105a420e2bcc55c734b65d575"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f63dcd026d508c2db194de790d0f3c9e5d7f6ca40ef6e4c294f00d2a42778201"
   end
 
@@ -34,7 +35,7 @@ class Pyflow < Formula
     python3 = "python3"
     pyver = Language::Python.major_minor_version python3
     pipe_output("#{bin}/pyflow init", "#{pyver}\n1")
-    assert_predicate testpath/"pyproject.toml", :exist?
-    assert_predicate testpath/"pyflow.lock", :exist?
+    assert_path_exists testpath/"pyproject.toml"
+    assert_path_exists testpath/"pyflow.lock"
   end
 end

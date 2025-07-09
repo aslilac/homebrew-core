@@ -9,6 +9,8 @@ class Ren < Formula
     skip "Not actively developed or maintained"
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "7a3c1d2e3849aad71fa4b7f54cfbae86184153159a8019839ac7fb69747cebc0"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7e228ed14477809a0b2e182d476e09213ac70ffa87469e637e3c8d0f446be2a1"
@@ -24,6 +26,7 @@ class Ren < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "7cf1fe07fb7a4cd0e6171f65a8fda8187973c879b8853e416c39282527f1c0ef"
     sha256 cellar: :any_skip_relocation, sierra:         "bf3e11211d6884d8969fc99ccf8a42b3132dc48bd3100492a442eb5a41fdbd88"
     sha256 cellar: :any_skip_relocation, el_capitan:     "966876dfcc9f36c4bc3d1358a9a8500c79d9324ebd8697033571146f1e482685"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "64e739899aad37892c2f55907c142bacc1fe090cf2363aa8256e1d8564e4a845"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "355528c07f8022b72a8f20419d97004040f5348e60596f84ab9f3ab461cbb13f"
   end
 
@@ -42,9 +45,9 @@ class Ren < Formula
     touch "test1.foo"
     touch "test2.foo"
     system bin/"ren", "*.foo", "#1.bar"
-    assert_predicate testpath/"test1.bar", :exist?
-    assert_predicate testpath/"test2.bar", :exist?
-    refute_predicate testpath/"test1.foo", :exist?
-    refute_predicate testpath/"test2.foo", :exist?
+    assert_path_exists testpath/"test1.bar"
+    assert_path_exists testpath/"test2.bar"
+    refute_path_exists testpath/"test1.foo"
+    refute_path_exists testpath/"test2.foo"
   end
 end

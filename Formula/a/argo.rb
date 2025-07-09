@@ -2,17 +2,18 @@ class Argo < Formula
   desc "Get stuff done with container-native workflows for Kubernetes"
   homepage "https://argoproj.io"
   url "https://github.com/argoproj/argo-workflows.git",
-      tag:      "v3.6.0",
-      revision: "b26ed4aa4dee395844531efa4a76a022183bec22"
+      tag:      "v3.6.10",
+      revision: "459c19db6e9dd86dd757c21644404cb784863fae"
   license "Apache-2.0"
+  head "https://github.com/argoproj/argo-workflows.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0e91f7cee8189af64bc956f0bb72279c0faf55c84e8945db6b6061569cd5024b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5567cf7f7fe5259db124df9417c714f7432b21385f6a53996c4d81bc45baaaca"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "5ca0b4a7443ff7fbfb275ad1a0ac71272593ead6d55497ef10305fec0b757b03"
-    sha256 cellar: :any_skip_relocation, sonoma:        "eb7bfa175856a3c60540c59f15c3c22b8725440831cfd4564e4fa30bf3f8e35a"
-    sha256 cellar: :any_skip_relocation, ventura:       "dc54b4e180faedd8ba5535a19ea8299dffd1cb034d6c194570a2a48c6a4d786a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e8afe5fb8c3138edd03b7f87539aa557565d7f4d13bf646806339c9fcab898fb"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dd30def1326cc0cd4db4f091baabe9a7ce5e49ebcfaac548f562d67d15a762d9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "798a9d8d8a71426e607b02adb2982a6334e0a4ba99077287741cd78dc618349c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "cb79f0c0c80d5532063bcca3548de17d8658a9b273c5a64c2c61a10679aa2c22"
+    sha256 cellar: :any_skip_relocation, sonoma:        "9b9d0b2c25c4a6356c3191371f446f56093acd553754341985de299f44b77fc5"
+    sha256 cellar: :any_skip_relocation, ventura:       "c5ecc8805500e7e5fc5f96e96d0a7bf57ec42a0fdc6f6aa60cf2f61d6eeacdd6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6a556aff0b33ff4459ef08ac878124f6ab8ac45db6cfe2dc51368272911c51fc"
   end
 
   depends_on "go" => :build
@@ -25,7 +26,7 @@ class Argo < Formula
     system "make", "dist/argo", "-j1"
     bin.install "dist/argo"
 
-    generate_completions_from_executable(bin/"argo", "completion", shells: [:bash, :zsh])
+    generate_completions_from_executable(bin/"argo", "completion")
   end
 
   test do

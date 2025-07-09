@@ -10,6 +10,8 @@ class Cabextract < Formula
     regex(/href=.*?cabextract[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8101eb79dccd718a2568420757be4c4f191ee6e11a8c8107a000f1691b081456"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "624bed1dfb0c77ecba2f8d6bd3deb022caae6d47af7d4edc314008aa001b036b"
@@ -20,6 +22,7 @@ class Cabextract < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "2e30506702df76799a4c685f6004e58cbf06b27a1bbb25fb401f802aa95bd80b"
     sha256 cellar: :any_skip_relocation, monterey:       "add98c9cb4c6d920c8acb6378ad9bec3bf1f95f531a522c07e4cfc6bf00c687f"
     sha256 cellar: :any_skip_relocation, big_sur:        "af25a0c0dadcae5b550953a5c2857533c65013ff65daaa67555d6bf0b204249c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f8b8544edc056eb3c18bfb480b135d6375c1a6ae50e5ab6faa31db9eb96248e5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5631eaa72da365accb3b576606fcfcc619879e83bfdd97c74233c073f6f42374"
   end
 
@@ -39,6 +42,6 @@ class Cabextract < Formula
     (testpath/"test.cab").binwrite [cab].pack("H*")
 
     system bin/"cabextract", "test.cab"
-    assert_predicate testpath/"a", :exist?
+    assert_path_exists testpath/"a"
   end
 end

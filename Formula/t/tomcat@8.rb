@@ -14,6 +14,7 @@ class TomcatAT8 < Formula
 
   # https://tomcat.apache.org/tomcat-85-eol.html
   deprecate! date: "2024-03-31", because: :unsupported
+  disable! date: "2025-03-31", because: :unsupported
 
   depends_on "openjdk"
 
@@ -57,6 +58,6 @@ class TomcatAT8 < Formula
     ensure
       Process.wait pid
     end
-    assert_predicate testpath/"logs/catalina.out", :exist?
+    assert_path_exists testpath/"logs/catalina.out"
   end
 end

@@ -1,10 +1,12 @@
 class TheSilverSearcher < Formula
   desc "Code-search similar to ack"
-  homepage "https://github.com/ggreer/the_silver_searcher"
+  homepage "https://geoff.greer.fm/ag/"
   url "https://github.com/ggreer/the_silver_searcher/archive/refs/tags/2.2.0.tar.gz"
   sha256 "6a0a19ca5e73b2bef9481c29a508d2413ca1a0a9a5a6b1bd9bbd695a7626cbf9"
   license "Apache-2.0"
   head "https://github.com/ggreer/the_silver_searcher.git", branch: "master"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "30781ad800cf0e58f863b36727ef2d78e8c2a84061a8e57cf6c269ab3a3e9594"
@@ -21,6 +23,7 @@ class TheSilverSearcher < Formula
     sha256 cellar: :any,                 high_sierra:    "0bf5394d8ab5f61b8fbb593249f556f13b358d16eb0d3c97215be3da0476e94b"
     sha256 cellar: :any,                 sierra:         "2365e24e5d0b1bef64b35c6a8f9e4f61d1f38eafe38c06d6e0acefc6a9a955db"
     sha256 cellar: :any,                 el_capitan:     "1f35dcee133d638a16462db711560b624020e9dd8f732ac5a6f13a09b694421a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "42693255381ed7eddc6ea74405580a839969b17cf657b52916b664ed301c12d1"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "08b2980ce1d36b89a1620934e9d513116bf2707396027d54a0096a088656228f"
   end
 

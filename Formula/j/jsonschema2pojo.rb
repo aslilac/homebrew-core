@@ -11,6 +11,8 @@ class Jsonschema2pojo < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, all: "ad532cb32089ba32d3c1725c429053620ce47eb5ecffeceaa92abb2513fe9280"
   end
@@ -40,6 +42,6 @@ class Jsonschema2pojo < Formula
       }
     JSON
     system bin/"jsonschema2pojo", "-s", "src", "-t", testpath
-    assert_predicate testpath/"Jsonschema.java", :exist?, "Failed to generate Jsonschema.java"
+    assert_path_exists testpath/"Jsonschema.java", "Failed to generate Jsonschema.java"
   end
 end

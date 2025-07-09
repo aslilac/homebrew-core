@@ -4,6 +4,9 @@ class Ccheck < Formula
   url "https://github.com/nerdlem/ccheck/archive/refs/tags/v1.0.1.tar.gz"
   sha256 "2325ea8476cce5111b8f848ca696409092b1d1d9c41bd46de7e3145374ed32cf"
   license "GPL-2.0-or-later"
+  head "https://github.com/nerdlem/ccheck.git", branch: "master"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f0f8816e58c6387289a2ba6392a03b40c93f1f4e6fe840ff840b7550a476a7c2"

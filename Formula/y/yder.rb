@@ -5,6 +5,8 @@ class Yder < Formula
   sha256 "c1a7f2281514d0d0bba912b6b70f371d8c127ccfd644b8c438c9301a0fd4c5f2"
   license "LGPL-2.1-only"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "742de6bb638644e32ac9153a26fb2cecbaa8575b765ab4166221389efc71b80e"
     sha256 cellar: :any,                 arm64_sonoma:   "17f19f57371282f824f622fbc956fbdb620cc2f41558e2b7a046ee80afab7594"
@@ -15,15 +17,16 @@ class Yder < Formula
     sha256 cellar: :any,                 ventura:        "b97d5bf7aed879840df320ee2882d84553578332e362cb21cc1e84d178c1da66"
     sha256 cellar: :any,                 monterey:       "87580769714792e35280df4f0980713d5ddf488df13255ce7622e1f99b7549b0"
     sha256 cellar: :any,                 big_sur:        "03aad7c58b6f0986ff11160e37bca013eabcf67673f01d4c667b603e1820ebf1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "94e170cd9620c2ca378cd7e30d6638c2a7dad5c662757cf6121f5810f1f4b3df"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c1b907e430a7ac5a0b6c610655f0254943c3c3f4b0e1a31e59bb787223d4872b"
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
+  depends_on "pkgconf" => :build
   depends_on "orcania"
 
   on_linux do
-    depends_on "pkgconf" => :build
     depends_on "systemd"
   end
 

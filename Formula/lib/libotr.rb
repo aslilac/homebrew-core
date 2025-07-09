@@ -10,6 +10,8 @@ class Libotr < Formula
     regex(/href=.*?libotr[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sequoia:  "5e6fdf2cd7cc293066a7875b10c684b7058b553ad85ff949e18045d0aca47b6d"
@@ -22,6 +24,7 @@ class Libotr < Formula
     sha256 cellar: :any,                 monterey:       "afa5f29cdb8a4a6618ecea8a75129679c6ade432cdae03f1e31caadeec8ddadd"
     sha256 cellar: :any,                 big_sur:        "f59b69aa5af8b636f8bea1511fa63fed116f9c9571864fb7b44c21655e8a099b"
     sha256 cellar: :any,                 catalina:       "8ecf904a816fc69adc5e8fe904ca2ef1b1d147090d2f6ee694ad6b5c07faa02c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "62ee96a56e10ffa701daa578015edfd49d6a20b89d1fbbef3530795ccfde6899"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9a88f909cde9e876f1f3a9ffe30d2ba483715ba3fc03c188f78bc07758a18491"
   end
 

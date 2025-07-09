@@ -1,19 +1,18 @@
 class Dockerize < Formula
   desc "Utility to simplify running applications in docker containers"
   homepage "https://github.com/jwilder/dockerize"
-  url "https://github.com/jwilder/dockerize/archive/refs/tags/v0.8.0.tar.gz"
-  sha256 "e87dadb9537f5e33cd819d2fbe3344b41b91cf83bf8fee2a3c2c5e08fdac43f7"
+  url "https://github.com/jwilder/dockerize/archive/refs/tags/v0.9.3.tar.gz"
+  sha256 "73e1d74e4548affc8491c678b35560468998462c677c8be555c2a24657b4222a"
   license "MIT"
+  head "https://github.com/jwilder/dockerize.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "81c07f4f6c963011a0645c7fe3cf93d8de34931dccf93f2c16157d0f7c352e3a"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f8136ba1df7b4ea718f7abdcfe5f7bc2213ae359c3119b5bb405130c4c20ebb8"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "8e109bc1300311ea26c2c71eb4b1ac20a66a3355ef0fcdfe3df037cd40aef539"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3ab9433de7d68ea6f313ffe78872dadd1cf3023f248cf8161db391dc335e8a3d"
-    sha256 cellar: :any_skip_relocation, sonoma:         "dac9c34074a1dfa813b3d666cd52468a02075888c83abbf8ed195e01795057cc"
-    sha256 cellar: :any_skip_relocation, ventura:        "012a755e03ab2f2cd2e0ddc9193fbdc4bb9b10642b9129af782d9f37f17fbec0"
-    sha256 cellar: :any_skip_relocation, monterey:       "85edf73e326216f09d8ac7e3f1f59861e31a59d883f2ad82639a79f40995f3f0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f51ceb70ec23da4a4385d0dbf9aabec31c13c25dd3929bc00b12e7e55860de9b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2d9678f32f8aa1cbb9ab471d09d55191d4c0d2a04af7888fed7512d37ae042e6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2d9678f32f8aa1cbb9ab471d09d55191d4c0d2a04af7888fed7512d37ae042e6"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "2d9678f32f8aa1cbb9ab471d09d55191d4c0d2a04af7888fed7512d37ae042e6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "9d911cdb52483e88d898e261ef49ed47cb3922edaef5b7c85c58c233244ab392"
+    sha256 cellar: :any_skip_relocation, ventura:       "9d911cdb52483e88d898e261ef49ed47cb3922edaef5b7c85c58c233244ab392"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5564e1ba66e1b6b143c2187d573f8accf0fc33f55bc69b22264ca9c8e423b2ac"
   end
 
   depends_on "go" => :build

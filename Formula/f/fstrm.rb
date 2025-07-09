@@ -14,6 +14,14 @@ class Fstrm < Formula
     end
   end
 
+  # GitHub release descriptions contain a link to the `stable` tarball.
+  livecheck do
+    url :head
+    strategy :github_latest
+  end
+
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "d33b95ae03b379e72f20439898cb8c87f896d2994783778803c7701d92a57998"
     sha256 cellar: :any,                 arm64_sonoma:   "b016547f64c4a39ea5c551314def723180ee3de352008aaf09d77eb2b76bd8d2"
@@ -26,6 +34,7 @@ class Fstrm < Formula
     sha256 cellar: :any,                 big_sur:        "32c20ee504e029088d36ee45177137411beed0aaaac76ce287810cec71d3eea9"
     sha256 cellar: :any,                 catalina:       "3b775d63b3594f2264b413184aad3fbb33990c07473e0db9db12c86bd0f19950"
     sha256 cellar: :any,                 mojave:         "7f18a4569511492fdad064427c67fc88f988046c1fc6804a7973e1ae2911714e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "6b511dcdd149db9a62c58e4fc0cfb79c2c72defb16a5bad62d5295beb601a5e0"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7a1db14f84679ffb80882a5a00b733e671f82242d2a338ce485e180b4f40f1a0"
   end
 
@@ -37,23 +46,18 @@ class Fstrm < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libevent"
 
   def install
     system "autoreconf", "--force", "--install", "--verbose" if build.head?
-    system "./configure", "--disable-debug",
-           "--disable-dependency-tracking",
-           "--disable-silent-rules",
-           "--prefix=#{prefix}"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 
   test do
-    job = fork do
-      exec bin/"fstrm_capture", "-t", "protobuf:dnstap.Dnstap",
-           "-u", "dnstap.sock", "-w", "capture.fstrm", "-dddd"
-    end
+    job = spawn bin/"fstrm_capture", "-t", "protobuf:dnstap.Dnstap",
+                                     "-u", "dnstap.sock", "-w", "capture.fstrm", "-dddd"
     sleep 2
 
     system bin/"fstrm_dump", "capture.fstrm"

@@ -10,6 +10,8 @@ class UcspiTcp < Formula
     regex(/href=.*?ucspi-tcp[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "08361b13bd495c563f6340c7cf4aecabf43475f00a3e47116295de56a014c8cf"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "afe836f6e29e826d8e00da8a7f81909b65ebf51e18d3aa9d15709f991d28e5b1"
@@ -25,6 +27,7 @@ class UcspiTcp < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "b3f2714c61a157eb31ef53915901c29c24ad3dc5cf7d7c3403dcd501399e26b4"
     sha256 cellar: :any_skip_relocation, sierra:         "46d324e867e5a35cbb17e8a215ff33f693651d11645eed116e4e4a6c02085b34"
     sha256 cellar: :any_skip_relocation, el_capitan:     "a57368e57812063bc4e1450c0bef5cad8392c44e54abf3c8ca950ea51abe7ae9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "92866f7a65abdf24cf7d3cf1ef62ca038c7d8b8df368b0da9463e305c3c615c6"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1403c13191ec33d523a407bcac88d15d712598e39629a265890805527bb2a566"
   end
 

@@ -1,9 +1,17 @@
 class Speexdsp < Formula
   desc "Speex audio processing library"
-  homepage "https://github.com/xiph/speexdsp"
-  url "https://github.com/xiph/speexdsp/archive/refs/tags/SpeexDSP-1.2.1.tar.gz"
-  sha256 "d17ca363654556a4ff1d02cc13d9eb1fc5a8642c90b40bd54ce266c3807b91a7"
+  homepage "https://speex.org/"
+  url "https://ftp.osuosl.org/pub/xiph/releases/speex/speexdsp-1.2.1.tar.gz"
+  mirror "https://mirror.csclub.uwaterloo.ca/xiph/releases/speex/speexdsp-1.2.1.tar.gz"
+  sha256 "8c777343e4a6399569c72abc38a95b24db56882c83dbdb6c6424a5f4aeb54d3d"
   license "BSD-3-Clause"
+
+  livecheck do
+    url "https://ftp.osuosl.org/pub/xiph/releases/speex/?C=M&O=D"
+    regex(%r{href=(?:["']?|.*?/)speexdsp[._-]v?(\d+(?:\.\d+)+)\.t}i)
+  end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "c19e5962197be02c5124dc4c2cef39ef6a6b00bddb5f3cb7dca9c3e31929d086"
@@ -16,20 +24,42 @@ class Speexdsp < Formula
     sha256 cellar: :any,                 monterey:       "b4d9cbbd5ad3e85630759fe8183c61fa94d772888c62f9a819b11b32ed1b7664"
     sha256 cellar: :any,                 big_sur:        "58d8bf8055672d3d7192c74a6381109c03507ea2ac11c0b1e40fd6b29c288415"
     sha256 cellar: :any,                 catalina:       "3499528f9bfb7c9a1bdff9d1da7f3de4c3dc5d54d25693e156592e76dec5f1d4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e4f60d49f781e99446057cfcee58ac1ebc00f3d003d377a8615b662b56a5b9b3"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c417e96a3739f41fb59aca0ceba32fd45b07f79175d8eda837dd125159098453"
   end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  head do
+    url "https://gitlab.xiph.org/xiph/speexdsp.git", branch: "master"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  depends_on "pkgconf" => :build
 
   def install
-    system "./autogen.sh"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
-    system "make"
+    system "./autogen.sh" if build.head?
+    system "./configure", *std_configure_args
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<~C
+      #include <speex/speex_resampler.h>
+      #include <stdlib.h>
+
+      int main()
+      {
+          SpeexResamplerState *st = speex_resampler_init(1, 8000, 12000, 10, NULL);
+          speex_resampler_set_rate(st, 96000, 44100);
+          speex_resampler_skip_zeros(st);
+          speex_resampler_destroy(st);
+
+          return 0;
+      }
+    C
+    system ENV.cc, "test.c", "-L#{lib}", "-lspeexdsp", "-o", "test"
+    system "./test"
   end
 end

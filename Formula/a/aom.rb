@@ -2,17 +2,19 @@ class Aom < Formula
   desc "Codec library for encoding and decoding AV1 video streams"
   homepage "https://aomedia.googlesource.com/aom"
   url "https://aomedia.googlesource.com/aom.git",
-      tag:      "v3.11.0",
-      revision: "d6f30ae474dd6c358f26de0a0fc26a0d7340a84c"
+      tag:      "v3.12.1",
+      revision: "10aece4157eb79315da205f39e19bf6ab3ee30d0"
   license "BSD-2-Clause"
+  head "https://aomedia.googlesource.com/aom.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "eab56b62a34fa519427a4388055e3f1abe244aebfaaebbd3e7eeb6a2bf770b87"
-    sha256 cellar: :any,                 arm64_sonoma:  "02f671d324c3073b89bc753c96d2bb2e0ea79520c4ebe7354bec355eb9988b46"
-    sha256 cellar: :any,                 arm64_ventura: "a6d544883fdf924adca547941499685e5e7340a1b7e6e485e1bbfc1bdbea563c"
-    sha256 cellar: :any,                 sonoma:        "14d14953b41129d9c6ec2beb5e5d36b62efa05c3a6af8ef8f8804264c8901204"
-    sha256 cellar: :any,                 ventura:       "73666ba2ebee2685d2bcea0af94d9208b8147d35108bb3834bacd41060f23b63"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "32716bca18edf78819253b2cc58279af4e021977de36fe1109dd3dd9c53d9166"
+    sha256 cellar: :any,                 arm64_sequoia: "7187a5accf9da7614d96b6fb07df1c0b144cfb096d920e9936fa78b6fba18c4a"
+    sha256 cellar: :any,                 arm64_sonoma:  "0578655f1cb179f198fc868609ed7f9131cc2d7c31f76c993f6cc4843d8bfa11"
+    sha256 cellar: :any,                 arm64_ventura: "cf9e2b2e861a14756ce2fd7c527bf54003a0b0af8838cc87d428e6e5579320a1"
+    sha256 cellar: :any,                 sonoma:        "8ddd7ac9825cb9b13af09e3adbd3b14c260d9d76e7d9e76c50e0a11f71e9b25b"
+    sha256 cellar: :any,                 ventura:       "44aa92db669a867a7727f24da664757ae5363d32ab9f8071c61551a0db93e6e3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9cede9e7b34be52308ead8946d50c38145649d352b437395291eb2b6044fe713"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "db186588bf0e900cdd1cdc1e42eb27f5da7ceed34aeff55ec22c069c530103e4"
   end
 
   depends_on "cmake" => :build

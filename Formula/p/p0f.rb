@@ -10,6 +10,8 @@ class P0f < Formula
     regex(/href=.*?p0f[._-]v?(\d+(?:\.\d+)+[a-z]?)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 3
     sha256 arm64_sequoia:  "26d47c74e8e4c5b3c8463acf5759301a71513c8421e00d88b79fd6acc1510f3a"
@@ -21,6 +23,7 @@ class P0f < Formula
     sha256 ventura:        "648f67e2bd6d531bcd310bd22966573f7d725f134b75f7bb1504a682981648a9"
     sha256 monterey:       "2d2addb10494350f34a5bf1125bd88e83d8245def1d90ebb1286b469e944880e"
     sha256 big_sur:        "1e5a460d94d43563f06e9eff624e8ec6bba232de496320fb6dd281333b06f045"
+    sha256 arm64_linux:    "65866253e2c2d2cb04dd3cbaa0b7a9261a3172872c3a557afbbc61f157ee9ed8"
     sha256 x86_64_linux:   "ed27c8135434e63b76d61034be7a15ed48311ae6d8e146177552ad23786c03af"
   end
 

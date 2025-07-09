@@ -1,18 +1,19 @@
 class Sleef < Formula
   desc "SIMD library for evaluating elementary functions"
   homepage "https://sleef.org"
-  url "https://github.com/shibatch/sleef/archive/refs/tags/3.7.tar.gz"
-  sha256 "1fb094c1ba4c9f6ba16013715d6fdbd5b893c68e1737b6115ba31e27807de591"
+  url "https://github.com/shibatch/sleef/archive/refs/tags/3.9.0.tar.gz"
+  sha256 "af60856abac08a3b5e72a8d156dd71fec1f7ac23de8ee67793f45f9edcdf0908"
   license "BSL-1.0"
   head "https://github.com/shibatch/sleef.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "f314f76bab7b0a9e5c4a9c2fdce196f22a50104b9fb2a356a29fd265b0dc877b"
-    sha256 cellar: :any,                 arm64_sonoma:  "3c70ef4e6b934eab2b466aad8d12b00cd6c9521d7d8255c13e853b2db95e5b7b"
-    sha256 cellar: :any,                 arm64_ventura: "5a4428dda352365ebcb2575c19d6f7d6d31071ac0f02ee56a33dbac2a687390d"
-    sha256 cellar: :any,                 sonoma:        "4e7b7ee4466eb00f7508343e14a21bc82355cb2d6ecb7e6cf021e818316650a0"
-    sha256 cellar: :any,                 ventura:       "d7db46a5adc5a23bfe1073bb38099f6f6570b0242f1a463ac215d19463d4facd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e12c2a6d62246583630ecccc471d28e8f77b4263f551b23cdd5ec14c8dcf2265"
+    sha256 cellar: :any,                 arm64_sequoia: "10bd5e568d4abc431b8a8b604c5c3745106ba980dc71e1d22b607587e336bbf9"
+    sha256 cellar: :any,                 arm64_sonoma:  "ae22110074bfadf5d5d11ccebb7b211ddfed87724d79fe232c1ba551702747e8"
+    sha256 cellar: :any,                 arm64_ventura: "1dde65a699a3ec906047a473eab08828adac8f3592f91d87be5d6acab66f626c"
+    sha256 cellar: :any,                 sonoma:        "a26d81be375d9034c487372812dcd426c2573843173b610142214415cd635be7"
+    sha256 cellar: :any,                 ventura:       "aa5605545499143c1c1724ecb336205418686bcbed39080bca464794c8a0d924"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ffe74cf398e3979d201cba4686213e9719d71b2a0c24d9bdb1046d130b87e3be"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c160ff9688e9d6f8c98f84d380c667e351f9ea9d0726d121f7b423e9a70ccf02"
   end
 
   depends_on "cmake" => :build

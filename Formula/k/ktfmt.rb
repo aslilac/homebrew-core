@@ -1,27 +1,29 @@
 class Ktfmt < Formula
   desc "Kotlin code formatter"
   homepage "https://facebook.github.io/ktfmt/"
-  url "https://github.com/facebook/ktfmt/archive/refs/tags/v0.53.tar.gz"
-  sha256 "351cd93d8742efaedef800c36b6744d8e7d7abf8558333a92b7747d9a364d530"
+  url "https://github.com/facebook/ktfmt/archive/refs/tags/v0.56.tar.gz"
+  sha256 "8bb880439fe8fb721fbcb16eabbd5f663b6998430d41ac45653e3f8a1c7541ea"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "04c740271696dca6e4ed545c504f6536cce5fdb35c04d0230e446f2218910944"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5ccdf6d7763e922206819075a68c913a1eed34a63222630fc23a2825a0cbc524"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a7608bc9bb59d410ffb3dc77e00e20f310d532be9a3fd487b24f789123f83c7a"
-    sha256 cellar: :any_skip_relocation, sonoma:        "432eb1890dde168f5fe82b7ced7495c15f41d0a83df87e5ba46fcb4c1e9b16a8"
-    sha256 cellar: :any_skip_relocation, ventura:       "83f2e2bdac8a0bba0becfbf23bbc2cd859d737b51fa0933203d93e94e86566c9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0a816945be162cd48325e41ca32c7df91a5f4a08b7742c5c4ea97fa524e4bd3c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d1f30f49423c0967f42fbdf26687536b2d03bc719f01a046422e3093ef851c54"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9d26a9893debaa6aad0617dd8441e06255b512f26050435f1f86b5415450a882"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "472ef6776f1e18d7b682e6a20d749de3985b3a6d4b5bcee1a7b5cbf2a05e4b55"
+    sha256 cellar: :any_skip_relocation, sonoma:        "fe62bf59abb2f6d08852b9f0f9526b71b6fa32b195d7f66c419a5aeea2c8e255"
+    sha256 cellar: :any_skip_relocation, ventura:       "c5477affdade026f1831b803a7d943e6347d2fb26cfc48d7d3caca30caca6b80"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "98836c7bf49943d3876f3ec1af3f5dcd86df70ee32a8d1820d7a7141acf36c51"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fe2fe77d5e737b3e787b1f86e095e5021d8e7410661bd1dd41f7c9a78dcb0b04"
   end
 
-  depends_on "maven" => :build
-  depends_on "openjdk"
+  depends_on "gradle" => :build
+  depends_on "openjdk@17"
 
   def install
-    ENV["JAVA_HOME"] = Formula["openjdk"].opt_prefix
-    system "mvn", "clean", "package", "-DskipTests=true", "-Dmaven.javadoc.skip=true"
-    libexec.install "core/target/ktfmt-#{version}-jar-with-dependencies.jar"
-    bin.write_jar_script libexec/"ktfmt-#{version}-jar-with-dependencies.jar", "ktfmt"
+    ENV["JAVA_HOME"] = Formula["openjdk@17"].opt_prefix
+
+    system "gradle", "shadowJar", "--no-daemon"
+    libexec.install "core/build/libs/ktfmt-#{version}-with-dependencies.jar"
+    bin.write_jar_script libexec/"ktfmt-#{version}-with-dependencies.jar", "ktfmt", java_version: "17"
   end
 
   test do

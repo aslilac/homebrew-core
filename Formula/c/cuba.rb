@@ -10,6 +10,8 @@ class Cuba < Formula
     regex(/href=.*?Cuba[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5d9f2c34f9e6c4b4e8216db0ccaea18f75b925714037f9893da4aaf54de2b785"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "126460773e9096dfca2a9f028be96d8218e7bf3e8bfddd940477763b8b04b49f"
@@ -21,6 +23,7 @@ class Cuba < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "238e6efde7346d58330b4ebbe562a5f52375d66bd21555867883c3fe2c0405e5"
     sha256 cellar: :any_skip_relocation, big_sur:        "897095ff3030916d5470e15f85ca3a0d0460416484232cc7c821dc6e98c4406d"
     sha256 cellar: :any_skip_relocation, catalina:       "566d4ddc7e4e3a278dceb6b83abc5ce1298b9ca715ac152695bf1e5fbb8cacc4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a1ea99bdba4aae35094b0b0c80c4220f111209ed57d6ac254e68c20dfbaeb1d8"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a6d0398225a7a9364431992f44347ee9fad5bb3a049f5ed628aabb23bd405ed7"
   end
 

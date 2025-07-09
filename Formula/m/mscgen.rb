@@ -11,6 +11,8 @@ class Mscgen < Formula
     regex(/href=.*?mscgen-src[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "ba7b5077209a47d9ab11f8d19d7d47ee0162f1fa30c20fd1e464c699e64eb9bd"
     sha256 cellar: :any,                 arm64_sonoma:   "685f813d386e9429db8d73bbdf201176f7842ccbe533d18d33b0d248b8484d7b"
@@ -22,15 +24,16 @@ class Mscgen < Formula
     sha256 cellar: :any,                 monterey:       "d031bdc4d5456838a3b0c8d60108309e3b2878067fda80b747cd2c6de90cccb1"
     sha256 cellar: :any,                 big_sur:        "a62050a8f5e00af5a06fde06f2d87acc030dba511a1b6b97f49ea148423c6776"
     sha256 cellar: :any,                 catalina:       "aaa059273a50cf91bca121c093ce2adfd8bee71d854c6212df2d63b4bf7811e7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b39667ceae160bffbf727a7ffcb6624325234c9ed3b3691e324c99f29f6e9f0c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5957b2f4840517592807494271eb28d63b5c245ac014d34be596fb0355129031"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "freetype"
   depends_on "gd"
 
   def install
-    system "./configure", *std_configure_args, "--with-freetype"
+    system "./configure", "--with-freetype", *std_configure_args
     system "make", "install"
   end
 

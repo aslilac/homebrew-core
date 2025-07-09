@@ -11,6 +11,8 @@ class Man2html < Formula
     regex(/href=.*?man2html[._-]?v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ecc7e32cd32d246ff8e3efc5061325d43178e0ed1f32847b501af7c394540483"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "57f83bcc5fc4cc1278e1e8fa671a51959ff91c4952a3a2da10f602c3331f141d"
@@ -26,6 +28,7 @@ class Man2html < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "9fe2dcdd8c5f344106dfe57db3e70bec51f78594fb2c968f5561506d1bd7dbbe"
     sha256 cellar: :any_skip_relocation, sierra:         "ced5194219735226831e611db4247de1affdec0c2e53e813d5c1a7c5d3bce928"
     sha256 cellar: :any_skip_relocation, el_capitan:     "37bfcf3cab42938fff23a66429872e935b59cf769caf238928bd4acc6544d8d4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "168ef1ce0acff7648651cea049462261dc8111cd2207e80d42feeb090f927a68"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "481efdcde976cadff40796f063650a6926dff892b7e3753ee9cf65e669d8aab1"
   end
 

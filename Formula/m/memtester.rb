@@ -1,8 +1,8 @@
 class Memtester < Formula
   desc "Utility for testing the memory subsystem"
   homepage "https://pyropus.ca/software/memtester/"
-  url "https://pyropus.ca/software/memtester/old-versions/memtester-4.6.0.tar.gz", using: :homebrew_curl
-  sha256 "c9fe4eb7e80c8cef5202f9065c4c0682f5616647c0455e916a5700f98e3dbb2e"
+  url "https://pyropus.ca/software/memtester/old-versions/memtester-4.7.1.tar.gz", using: :homebrew_curl
+  sha256 "e427de663f7bd22d1ebee8af12506a852c010bd4fcbca1e0e6b02972d298b5bb"
   license "GPL-2.0-only"
 
   # Despite the name, all the versions are seemingly found on this page. If this
@@ -13,16 +13,13 @@ class Memtester < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e8935eb4d3637ccd62b0bd75f35a5fda4f0fc8354b965b65a8a53dd91cea6e0d"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "66e03622f2496abd25d5554da03f3f3805fc88ac41e44d749299b4372b81e4b7"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "41a41ca665729fff67552a31fb300107c07c5cd455b28eefbccbd72639f74fd7"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6b540c6a252e4eb89b36bfbbce41ec3bfd01d907cf8a7bb3f60992c248e8dcad"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d0d1f6ca41a92356b1730a6a18cb1504742a5c00570d5ae6f5c964bc356776e8"
-    sha256 cellar: :any_skip_relocation, sonoma:         "8b8816e0cb4a85f592967c8fdf754fd8ef9598fbfb035bee03aceed4c6205add"
-    sha256 cellar: :any_skip_relocation, ventura:        "99e25743f80404ddc89cf53826be6f286533ac63c9c5824c55ceffd01a89fca3"
-    sha256 cellar: :any_skip_relocation, monterey:       "be7d9dda10e0514edb563d68bbe0243de866f21d43e4cd6bec8c0bf3f0d0c78e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "77696db97be5d12bc7e1fda39b1877d874c2a22abc8d623fbf8a5633564b9118"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "55598380121620207e07c7806304cdd0282e3d52b78b2945b3eaea8292fa23fd"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cf486cb5e72380acf5f3b1396af8d854151452be5be0dc5103322dd27bbbec81"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0fb85d1c32821cb299a52a432788a47a12c9f10b683f7a1eef67c8d135eaeb31"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "db421b0bd918efef4c65a5fda3c6f87e979d0a3d0af630c09ad1369f835e1729"
+    sha256 cellar: :any_skip_relocation, sonoma:        "dafebaa8af7e2774e55142b2b6c8ea9e741c6c69c2c757f6deecdfc5574d0379"
+    sha256 cellar: :any_skip_relocation, ventura:       "5429e15d860dc1dc4339ed93beb76756f4b123108c20334a1bc4820043c63d34"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f8c1b9a3a3a300d787761fbb46a118efdf1d70a8d1ab686832207e76c5e2a2f3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "09e87a3a5d5b2b187c4e48b815f6e3bd5b70a2e1024add16f0c3ef12952c91e3"
   end
 
   def install

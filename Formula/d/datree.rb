@@ -18,12 +18,16 @@ class Datree < Formula
   end
 
   # project is deprecated per https://github.com/datreeio/datree/pull/964
-  deprecate! date: "2023-12-22", because: :unmaintained
+  disable! date: "2024-12-22", because: :unmaintained
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-s -w -X github.com/datreeio/datree/cmd.CliVersion=#{version}"), "-tags", "main"
+    ldflags = %W[
+      -s -w
+      -X github.com/datreeio/datree/cmd.CliVersion=#{version}
+    ]
+    system "go", "build", *std_go_args(ldflags:, tags: "main")
 
     generate_completions_from_executable(bin/"datree", "completion")
   end

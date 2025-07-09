@@ -1,9 +1,9 @@
 class Tcsh < Formula
   desc "Enhanced, fully compatible version of the Berkeley C shell"
   homepage "https://www.tcsh.org/"
-  url "https://astron.com/pub/tcsh/tcsh-6.24.13.tar.gz"
-  mirror "https://ftp.osuosl.org/pub/blfs/conglomeration/tcsh/tcsh-6.24.13.tar.gz"
-  sha256 "1e927d52e9c85d162bf985f24d13c6ccede9beb880d86fec492ed15480a5c71a"
+  url "https://astron.com/pub/tcsh/tcsh-6.24.15.tar.gz"
+  mirror "https://ftp.osuosl.org/pub/blfs/conglomeration/tcsh/tcsh-6.24.15.tar.gz"
+  sha256 "d4d0b2a4df320f57a518e44c359ef36bbcf85d64f5146d0cb8ff34984e0d23fd"
   license "BSD-3-Clause"
 
   livecheck do
@@ -12,14 +12,13 @@ class Tcsh < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "0ceaf5267bed3efc85efcedebe5e32a5c83fe675c4b03eb0681882efea27de11"
-    sha256 arm64_sonoma:   "b21a9a41ce1df413301c79c0cd433134cfa384c45270f1aca43170e81982cce3"
-    sha256 arm64_ventura:  "f731e3a53d88baaefbdc5bbac669b55d2895ab6259d7f63d922d566e8b25dc42"
-    sha256 arm64_monterey: "787dcae47ce234cdd6f3df70b6458ea955e73f936acbb53e0e9083464a109b17"
-    sha256 sonoma:         "73262bdc3403940827207e5834f2bca3dc8524d9901e334fa05d7c6fa718d9a9"
-    sha256 ventura:        "e746ac1cd27292e67bb0596abc2d22ac281b6ffda20abd0853759faf0080fa52"
-    sha256 monterey:       "a4691a92634ca8ee1b37a0176b22f46bdbeda5737fb1817f7dcbd5be11457103"
-    sha256 x86_64_linux:   "5ba8ae414fef90bbe832539c0fb69041a2106492d07c41c7d26d1ff98b9c50d1"
+    sha256 arm64_sequoia: "2cbe0bdd46defee1ad3ff4c5e8d3088e1d774d82d9f789f6d8e9f71541e1a325"
+    sha256 arm64_sonoma:  "2bd1839f9539304030031297aea14002847bac05fbfdd6b40daba0e046da9011"
+    sha256 arm64_ventura: "c616a15a27d0a6405039006e645b602a146c5dfba372e8e586de3352e5668d36"
+    sha256 sonoma:        "ddd888de4c89d208ab867ce6ccb3a190aa1ace13bfd678b93eeefe1858ab6206"
+    sha256 ventura:       "f4434873a4a37fbe06aa64e90512021171b9a6728b1411cbe0f0b5f9e2f7d6bb"
+    sha256 arm64_linux:   "260453a0e766152ddc609767d7d12328a6b76b9b25d5f54532b2140d70716535"
+    sha256 x86_64_linux:  "3b1b397961ac020ec12a78df1b9c4401f1f8ca16cfcb59cc6d99c51c475c0c61"
   end
 
   uses_from_macos "libxcrypt"

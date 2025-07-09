@@ -4,11 +4,14 @@ class Cidr2range < Formula
   url "https://github.com/ipinfo/cli/archive/refs/tags/cidr2range-1.2.0.tar.gz"
   sha256 "54af7600dc8c775f28d8fdc9debd86154e9293f07eb73f7372931d9c94744c81"
   license "Apache-2.0"
+  head "https://github.com/ipinfo/cli.git", branch: "master"
 
   livecheck do
     url :stable
     regex(/^cidr2range[._-]v?(\d+(?:\.\d+)+)$/i)
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "17e1e7697199411cdab3f8d1be909e6bfa407a2f8017cc142d83732a540bbecf"

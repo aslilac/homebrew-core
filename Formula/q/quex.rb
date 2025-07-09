@@ -14,6 +14,8 @@ class Quex < Formula
     regex(%r{url=.*?/quex[._-]v?(\d+(?:\.\d+)+)\.[tz]}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 4
     sha256 cellar: :any_skip_relocation, all: "f2d44465311851dc3bf25c68adc4d5041315e089d91ba9fce5d34a47f8a26782"
@@ -38,6 +40,6 @@ class Quex < Formula
 
   test do
     system bin/"quex", "-i", doc/"demo/C/01-Trivial/easy.qx", "-o", "tiny_lexer"
-    assert_predicate testpath/"tiny_lexer", :exist?
+    assert_path_exists testpath/"tiny_lexer"
   end
 end

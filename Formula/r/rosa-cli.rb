@@ -1,8 +1,8 @@
 class RosaCli < Formula
   desc "RedHat OpenShift Service on AWS (ROSA) command-line interface"
   homepage "https://www.openshift.com/products/amazon-openshift"
-  url "https://github.com/openshift/rosa/archive/refs/tags/v1.2.48.tar.gz"
-  sha256 "52d2b8f96b6959ba12cb07b23459cd421430a648061f25d913d32fc8cc97522b"
+  url "https://github.com/openshift/rosa/archive/refs/tags/v1.2.54.tar.gz"
+  sha256 "6bb473213ebb4088e44fbc294a27e5d46462f03fa91d0b46e0b3ed6a7a65d7c7"
   license "Apache-2.0"
   head "https://github.com/openshift/rosa.git", branch: "master"
 
@@ -12,12 +12,12 @@ class RosaCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "26c4d486500c51ca64ab4844b32021b8b0d7520df71c3836d661924ca041df35"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a103c226683582550af73cb544b984ef2fc7930d293c12c0d5aba00202cf17cc"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "49fc01980a430cb1b264f8997e34cd7f2aa9aaf1f611d0f36b561027334d59e1"
-    sha256 cellar: :any_skip_relocation, sonoma:        "f51eed6adbe7bc60c515249f65b41b19eb636d1ff48c95845e03a9af0de4b8a9"
-    sha256 cellar: :any_skip_relocation, ventura:       "0c1ef388c7be771756aedc28038a1477c8ba184e3e4707ad5c8a9420b4f4f109"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "155dfb8c1903e21ebca06a398a54f4e4c596d11204e96695810408817b1ed982"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "82adefb3337c42aa7ddac732761843fbb8d2fee3b5bedceb4bec0201640a2a93"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "18e300153fe5a989382f10e5cce2dadde7513d87bc18e8bc5aa54ea0c661b3ba"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "db96e6c794ef83fc5bd9fb397c6f11a7f9e0bd8ca7e64a39efd73d6e717a82ab"
+    sha256 cellar: :any_skip_relocation, sonoma:        "768b478fc1d5bcbc317d28a5b7fd7004b7f1241824265c1b0915033a6aba7b8c"
+    sha256 cellar: :any_skip_relocation, ventura:       "0a91695b82be6481ee1ce119d274c5931a15d00a33addda81d4c1d0061b23bef"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c2ba21e8b6776ea781ba771eb9ec01418f3ea04c6e28b7a4d1df0f9723eb8955"
   end
 
   depends_on "go" => :build
@@ -26,7 +26,7 @@ class RosaCli < Formula
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w", output: bin/"rosa"), "./cmd/rosa"
 
-    generate_completions_from_executable(bin/"rosa", "completion", base_name: "rosa")
+    generate_completions_from_executable(bin/"rosa", "completion")
   end
 
   test do

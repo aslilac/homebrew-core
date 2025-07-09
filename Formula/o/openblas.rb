@@ -1,8 +1,8 @@
 class Openblas < Formula
   desc "Optimized BLAS library"
   homepage "https://www.openblas.net/"
-  url "https://github.com/OpenMathLib/OpenBLAS/archive/refs/tags/v0.3.28.tar.gz"
-  sha256 "f1003466ad074e9b0c8d421a204121100b0751c96fc6fcf3d1456bd12f8a00a1"
+  url "https://github.com/OpenMathLib/OpenBLAS/archive/refs/tags/v0.3.30.tar.gz"
+  sha256 "27342cff518646afb4c2b976d809102e368957974c250a25ccc965e53063c95d"
   # The main license is BSD-3-Clause. Additionally,
   # 1. OpenBLAS is based on GotoBLAS2 so some code is under original BSD-2-Clause-Views
   # 2. lapack-netlib/ is a bundled LAPACK so it is BSD-3-Clause-Open-MPI
@@ -17,14 +17,13 @@ class Openblas < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "8d319fccf7a06b8f0540d8cb864a1fbdcde99f5b2c57574b8effc52bd5cf2faf"
-    sha256 cellar: :any,                 arm64_sonoma:   "0f31a93b4161cf8a6bb9cda77dd41c5285327920e75ef091e587a6f9ed74446e"
-    sha256 cellar: :any,                 arm64_ventura:  "542382c256f30f672e9b2006afb65864ae59383ec80432e2b0dcfd0bda797e82"
-    sha256 cellar: :any,                 arm64_monterey: "b0582fc465c1cd001d994b11efd60b54f47bd8d39ace6a53a289c81e7f6f99c5"
-    sha256 cellar: :any,                 sonoma:         "0ff27b7fa21c56961fcf37d0b4690e843b0ce8e5f967a73223e4b247fa462b1c"
-    sha256 cellar: :any,                 ventura:        "b11f8a96fff66cbdff06a79c5920163185ebc40abf670a90a677156144d3a80a"
-    sha256 cellar: :any,                 monterey:       "569b39c70b716df30d30334d2b5715eba0574a5f28c2316931736e776326aecb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9ac6e26f577d71f531bd0f268616ad2aa845c3c2843154b6206e7a293f017100"
+    sha256 cellar: :any,                 arm64_sequoia: "19429463a737ea1ca72573210238f7d5000731431a442679d9c00b215722fdbd"
+    sha256 cellar: :any,                 arm64_sonoma:  "81233b55f062b049f559ed43f37674648e0b7dfe06a6dc7f776251fc46144811"
+    sha256 cellar: :any,                 arm64_ventura: "4351d5aa370ac2f7cb661062b9b272fdf7ef7373d0b2dfe10f5a2c2cf9ffc95b"
+    sha256 cellar: :any,                 sonoma:        "0cc19e345f5e4b4f0b32e9dc39247a0f97adbb48c10dd9e4655d00822b1c9539"
+    sha256 cellar: :any,                 ventura:       "f6bb911cce1ea42486696f1dfc50bd22c8ec6ce6d972047a7c8ca58778c8d320"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "644c21828d8f3fdaf5d6cabdd815abf71b2bd7446a4a5d9640411fb64028d9a1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "47a79133b44870b5f5e23c546efb25da93edd4671ba2bd56a1aa43907054df81"
   end
 
   keg_only :shadowed_by_macos, "macOS provides BLAS in Accelerate.framework"
@@ -53,7 +52,7 @@ class Openblas < Formula
     end
 
     # Apple Silicon does not support SVE
-    # https://github.com/xianyi/OpenBLAS/issues/4212
+    # https://github.com/OpenMathLib/OpenBLAS/issues/4212
     ENV["NO_SVE"] = "1" if Hardware::CPU.arm?
 
     # Must call in two steps

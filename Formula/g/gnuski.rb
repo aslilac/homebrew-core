@@ -5,6 +5,8 @@ class Gnuski < Formula
   sha256 "1b629bd29dd6ad362b56055ccdb4c7ad462ff39d7a0deb915753c2096f5f959d"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "fa3056f32083991e84354204c559e07b61f5b79b0a24ca13cd655da45815b5d8"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4b235ad7ef6b4326f8e170d14a29fe29b96c18bf2cec583bfac6e88cc3ff0f7d"
@@ -20,6 +22,7 @@ class Gnuski < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "6f15bd497951ea784e84b2ec888be83343ad1ad96eb6bab9ba343bff31246700"
     sha256 cellar: :any_skip_relocation, sierra:         "3874907a4ad715492c026d969ec3265dcd5f71424dde07a83aa1c21a1e36fa38"
     sha256 cellar: :any_skip_relocation, el_capitan:     "ce14d8ee8b8d58c710b93adb2f4cedfb9d78fb64746f38daee4ea38aa977ae43"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "29dd19f42af62052c1b1e543beac12ef5a3f04a6266dbddc0ca6ae5432835ef8"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "19ecc1577888f0186d9880b9048a0fa9e4bdf931d3f2710adf807419f7a64310"
   end
 

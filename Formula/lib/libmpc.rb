@@ -6,6 +6,8 @@ class Libmpc < Formula
   sha256 "ab642492f5cf882b74aa0cb730cd410a81edcdbec895183ce930e706c1c759b8"
   license "LGPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "5c8cdc4d460525025f69157ea5187c4119da8bffab33e7923dc374c011c9cdac"
     sha256 cellar: :any,                 arm64_sonoma:   "909895bde6818f0adee6cf16f23836752ae214515da2e9e3beb0f66fbb63c490"
@@ -17,6 +19,7 @@ class Libmpc < Formula
     sha256 cellar: :any,                 ventura:        "aa4ddb0e50ace93746e6af2e6185493698b501e9359cf73ce41cfbb70369db09"
     sha256 cellar: :any,                 monterey:       "c32f2c3fe7ab06e308e6fa74874e1d4d92ff6eb3598da6e0f8e6fa7a333350f5"
     sha256 cellar: :any,                 big_sur:        "47b50c3df6a35ea3c876397eac4a7dc157b5f4109247671a16599a9a41b9c035"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "95086731276eec60b5ec29b5f07214b6fdb5d1327c7652c12cf68a99b731b760"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f6542ae5bcf643ca0c980c7000cde1585922e76be080b3cc3422dac0d4a50904"
   end
 

@@ -4,28 +4,25 @@ class Mailcatcher < Formula
   url "https://github.com/sj26/mailcatcher/archive/refs/tags/v0.10.0.tar.gz"
   sha256 "4cd027e22878342d6a002402306d42ada1f34045cc1d7f35b5a7fa37b944326e"
   license "MIT"
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "b2e53d4fee8a25e01abeaa5e827e4fa0713c4ec4bcadaaad95db6f53b2b5139e"
-    sha256 cellar: :any,                 arm64_sonoma:   "b1e3e8c79312f8a9cfc995ebf3323750c1673da1bcc46129a516124575dd4116"
-    sha256 cellar: :any,                 arm64_ventura:  "48ba775de03b394c5c7981e4e990094c1e7d98781af790f0658d8596f6126250"
-    sha256 cellar: :any,                 arm64_monterey: "72fd292521f629a91abc5a99d386689e263553cee6fe70be5ed87f1feec8a3cd"
-    sha256 cellar: :any,                 sonoma:         "c9df904bb52b0d9d3f0e4ef939d2b213fc9de876ade935ac59a215962754ee10"
-    sha256 cellar: :any,                 ventura:        "989284e497267b0c55b25e7102650703d7938d4f0ac985c1cf44f62deb930bab"
-    sha256 cellar: :any,                 monterey:       "30f848d4cbd189a75d7870b2ac8a78b6f411076c82530e24e1930d5c16819b4c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c70607653632478ba936cb62f56377dc9e17670f453e4018ea39694a15cd2837"
+    sha256 cellar: :any,                 arm64_sequoia: "42f5b6813789c297bfb3f2cf9867cb89c387124336f78f0b2db31a9490ff8e39"
+    sha256 cellar: :any,                 arm64_sonoma:  "98688362105e37e7b5642971887ec454fa5953c013c499b7401ec75f1705f6d3"
+    sha256 cellar: :any,                 arm64_ventura: "d8947cfeb3b8e095f9e9df810fe9eccb62e1da2e73889fac2e1b60794056655d"
+    sha256 cellar: :any,                 sonoma:        "65c435eea0ed3421e911b11a64f8cc73c53070b1ae015dbc2523abe62bc1c06c"
+    sha256 cellar: :any,                 ventura:       "aab17598a1e1836e38c145aaae6777516b92b0163b4deece91839d2c790280b2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3c166212f22ec358d05746d6ca05518198425233c862a414a5fc34319a226b03"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "391be8e92219c2ecdb1a9990be909b52d5d45ca818a82ae02953f291aec5649c"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libedit"
   depends_on "libyaml"
   depends_on "openssl@3"
   depends_on "ruby"
 
   uses_from_macos "xz" => :build
-  uses_from_macos "curl" => :test
-  uses_from_macos "expect" => :test
-  uses_from_macos "netcat" => :test
   uses_from_macos "libffi"
   uses_from_macos "sqlite"
   uses_from_macos "zlib"
@@ -184,60 +181,33 @@ class Mailcatcher < Formula
     smtp_port = free_port
     http_port = free_port
     system bin/"mailcatcher", "--smtp-port", smtp_port.to_s, "--http-port", http_port.to_s
-    (testpath/"mailcatcher.exp").write <<~EOS
-      #! /usr/bin/env expect
 
-      set timeout 1
-      spawn nc -c localhost #{smtp_port}
+    TCPSocket.open("localhost", smtp_port) do |sock|
+      assert_match "220 ", sock.gets
+      sock.puts "HELO example.org"
+      assert_match "250 ", sock.gets
+      sock.puts "MAIL FROM:<bob@example.org>"
+      assert_match "250 ", sock.gets
+      sock.puts "RCPT TO:<alice@example.com>"
+      assert_match "250 ", sock.gets
+      sock.puts "DATA"
+      assert_match "354 ", sock.gets
+      sock.puts <<~TEXT
+        From: Bob Example <bob@example.org>
+        To: Alice Example <alice@example.com>
+        Date: Tue, 15 Jan 2008 16:02:43 -0500
+        Subject: Test message
 
-      expect {
-        "220 *" { send -- "HELO example.org\n" }
-        timeout { exit 1 }
-      }
+        Hello Alice.
+        .
+      TEXT
+      assert_match "250 ", sock.gets
+      sock.puts "QUIT"
+      assert_match "221 ", sock.gets
+    ensure
+      sock.close
+    end
 
-      expect {
-        "250 *" { send -- "MAIL FROM:<bob@example.org>\n" }
-        timeout { exit 1 }
-      }
-
-      expect {
-        "250 *" { send -- "RCPT TO:<alice@example.com>\n" }
-        timeout { exit 1 }
-      }
-
-      expect {
-        "250 *" { send -- "DATA\n" }
-        timeout { exit 1 }
-      }
-
-      expect {
-        "354 *" {
-          send -- "From: Bob Example <bob@example.org>\n"
-          send -- "To: Alice Example <alice@example.com>\n"
-          send -- "Date: Tue, 15 Jan 2008 16:02:43 -0500\n"
-          send -- "Subject: Test message\n"
-          send -- "\n"
-          send -- "Hello Alice.\n"
-          send -- ".\n"
-        }
-        timeout { exit 1 }
-      }
-
-
-      expect {
-        "250 *" {
-          send -- "QUIT\n"
-        }
-        timeout { exit 1 }
-      }
-
-      expect {
-        "221 *" { }
-        eof { exit }
-      }
-    EOS
-
-    system "expect", "-f", "mailcatcher.exp"
     assert_match "bob@example.org", shell_output("curl --silent http://localhost:#{http_port}/messages")
     assert_equal "Hello Alice.", shell_output("curl --silent http://localhost:#{http_port}/messages/1.plain").strip
     system "curl", "--silent", "-X", "DELETE", "http://localhost:#{http_port}/"

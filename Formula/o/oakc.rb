@@ -6,6 +6,8 @@ class Oakc < Formula
   license "Apache-2.0"
   head "https://github.com/adam-mcdaniel/oakc.git", branch: "develop"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "07e3a3b23965b457f71c6938c55dd7dfcccffc666746863345e301f4888a4f13"
@@ -18,6 +20,7 @@ class Oakc < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "57b18008429add80e4fdd436cc10091e9563e3d4c01f76f9429d146b49d17184"
     sha256 cellar: :any_skip_relocation, big_sur:        "df01ac42a1ff0632e6aebd2cd10f97d14631b5221556a667b71e6b61664a07e6"
     sha256 cellar: :any_skip_relocation, catalina:       "782964257658eba472afbe784511f772a4a84e951c582a5a57546cb682bb0b25"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "eaa3710811313c7fa1f91eb0e19c56d530b5eaf226649fcacb1348639bf130b5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4ef60b48d23e35832e2d6b65a2c503ff72f88c6d5ced38a5dad9642b2147d642"
   end
 

@@ -5,6 +5,8 @@ class Tlx < Formula
   sha256 "24dd1acf36dd43b8e0414420e3f9adc2e6bb0e75047e872a06167961aedad769"
   license "BSL-1.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5e35cf4b2cf66334a3c6782fef229a96684942f5aa07063874e0020fb319e15b"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2be507f7ba45c99557ac676c7c47b0288b5e364a2c61b33e2abf173865e8f9b3"
@@ -15,17 +17,16 @@ class Tlx < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "1fa9c67739a557c7faba1bf0a20352d8ecef8e79f32ba8caf2ef293fdc098dcd"
     sha256 cellar: :any_skip_relocation, monterey:       "0065add2f25b25eeb527aeb48625e34563d0afb702a496c67223ee78f3570547"
     sha256 cellar: :any_skip_relocation, big_sur:        "00ee92b029c92c9ac1f8326e9b039970097b802fe6ab79c2b8cf33251e3e7f60"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "8740b303922f5a8190cddac66aeb6262a7c0dfa633cd98add555d0e4e1cdc6e5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e67f35bf407415cf0ab4f5afba211439f82b8da3495a6a52b0301c3a76f099b8"
   end
 
   depends_on "cmake" => :build
 
   def install
-    args = std_cmake_args + [".."]
-    mkdir "build" do
-      system "cmake", ".", *args
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

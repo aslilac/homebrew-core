@@ -1,19 +1,18 @@
 class LuckyCommit < Formula
   desc "Customize your git commit hashes!"
   homepage "https://github.com/not-an-aardvark/lucky-commit"
-  url "https://github.com/not-an-aardvark/lucky-commit/archive/refs/tags/v2.2.3.tar.gz"
-  sha256 "1631a48a535517c603850ba8cc8f44bf8b11cde2c269d6fb1ae72fb07bf37349"
+  url "https://github.com/not-an-aardvark/lucky-commit/archive/refs/tags/v2.2.5.tar.gz"
+  sha256 "cab69b87afac8b2e8db3949397695809977199ccc4894b8af53e59da7f917126"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "968d315896e179ee3dbaf5083be25fd4aa28d1b0ac59848d746d77fb53fc3c07"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "79dd8e23e5e34aafc38583104a02e4fba9a8f0600b05ad823ce6434c9cec4d12"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ee5bb3255c98f7752964997984ab36b9b135b5054f06b51b326b612b1a527305"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a89e18b1ce6f2b07933aa6f175fae7692a70f17864a0cf778a0cbc8e48170680"
-    sha256 cellar: :any_skip_relocation, sonoma:         "f56ffe7449f23459d455ae73e44b0d4574ff9ae724a4473b78419372b2a02ac5"
-    sha256 cellar: :any_skip_relocation, ventura:        "130a557e9dfb9e429b39d178f9ddada08b3dc46e98d163312f1e2cb0d6f98bdf"
-    sha256 cellar: :any_skip_relocation, monterey:       "f5db99e022a0a520dcf2ae78090633541dc5b7d2317f65c69870f3df07e37de0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2001eb19052ec4411157c629934a56dd4a4e090d8343ad5a577ab0321a6c7c7e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c93d4a4678944faa2b8d4a7144081fbb2e58cb2fd90a9738f955f257ad604d1f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4df456578bbb007849607cecb96e916bc4df5201846a2ea5b57cc6cf033c0250"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "eabaed3df8acebb03dfc099f24ab40d7a070346c5b9d926bb9a4cf8afca6987b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1cad169a029b5a10886af7b82d32f3a353df1ffdb4c253feff12fb99ed3efcbf"
+    sha256 cellar: :any_skip_relocation, ventura:       "ddc33a6a32fa743b4a6137716900a09736fa291bbdff36799637050d625e06d8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "1f1b4db17c27f0b29b0aa25395e3849f2869ad538371a813c695b794a4dc4257"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "71e04671feeb1d045a3eb1ddc47ff6f4b765b0f5f4512b6e975a3bb8be79de6a"
   end
 
   depends_on "rust" => :build

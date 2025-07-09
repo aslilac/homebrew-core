@@ -13,6 +13,8 @@ class IcarusVerilog < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "71feafd9b968350f08ca504f95b7d0be4e048799c47c145e2d7757ce0d179a5c"
     sha256 arm64_sonoma:   "16e03356975ad058efbf99a12cb1ed1a6c078aea5d7b5bb6a0035442afb0f335"
@@ -23,6 +25,7 @@ class IcarusVerilog < Formula
     sha256 ventura:        "f8d395f182e8788ae9720421d2c8ba5ab90fad839e0071ed871c8a8b23484d58"
     sha256 monterey:       "f6fea867f86a544671ff8d074da509d2997f545df8fa2d47cbb118aa7029fcfa"
     sha256 big_sur:        "b5c5e18bfcdadfcc54a69954b71bf4c56f6e9c223823f65c798c442c4ec61e79"
+    sha256 arm64_linux:    "36faa76b1a7d0089f202c91564fb24536d9e2cb7d446a36e51657505f1cf8e89"
     sha256 x86_64_linux:   "ee0b7b46d11a76808cebc2140d83fc615ae4bec40aa3cfbc346560532caf3cdb"
   end
 
@@ -46,7 +49,7 @@ class IcarusVerilog < Formula
   end
 
   test do
-    (testpath/"test.v").write <<~EOS
+    (testpath/"test.v").write <<~VERILOG
       module main;
         initial
           begin
@@ -54,7 +57,7 @@ class IcarusVerilog < Formula
             $finish;
           end
       endmodule
-    EOS
+    VERILOG
     system bin/"iverilog", "-o", "test", "test.v"
 
     expected = <<~EOS

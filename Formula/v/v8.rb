@@ -2,8 +2,9 @@ class V8 < Formula
   desc "Google's JavaScript engine"
   homepage "https://v8.dev/docs"
   # Track V8 version from Chrome stable: https://chromiumdash.appspot.com/releases?platform=Mac
-  url "https://github.com/v8/v8/archive/refs/tags/12.7.224.16.tar.gz"
-  sha256 "00425fe7fd851f11839537256922addbfee0f5d27c6bf5ab375b9d0347d8ed94"
+  # Check `brew livecheck --resources v8` for any resource updates
+  url "https://github.com/v8/v8/archive/refs/tags/13.5.212.10.tar.gz"
+  sha256 "2c47b3de22591f4384f75aa462301eb9fdb9d661ee07f73cab95a89d0a75d5ae"
   license "BSD-3-Clause"
 
   livecheck do
@@ -22,28 +23,30 @@ class V8 < Formula
     end
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "c970a5657a165144470702ac586a5b17349397446a421f35e9323a0f01dcd385"
-    sha256 cellar: :any,                 arm64_sonoma:   "15a1692bba6d316446d00640d6f0975a221cb519031b76e9fc8a7036c93a2550"
-    sha256 cellar: :any,                 arm64_ventura:  "b40b3f0daae622cc1d258b8834c9f5f6b942652deb785c22350e9b8ce08ac7c5"
-    sha256 cellar: :any,                 arm64_monterey: "d4236596413abd930b07c749b5b87c7551cc68ff744ee9878bacafe668a8b055"
-    sha256 cellar: :any,                 sonoma:         "dc5ac107d6237165e8735bd3ba8b9ed4e45ccb1b5b9a9b6b97d35c7dfb4ba045"
-    sha256 cellar: :any,                 ventura:        "087168f4e81ef0d7c0b343c99e5e382acc08201b499c49c55990a137397c38dd"
-    sha256 cellar: :any,                 monterey:       "8340f34e94f455aa9250ba6915271606b08f14e31261c9584f098bcfa62ba532"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9106a7390ca79160d728d43c22e38ced8b861c1c98e38552325efa33584f526e"
+    sha256 cellar: :any,                 arm64_sequoia: "ee9f92d890ff6d646db3b11554be91ed50219923f5a7900d7f3e980a8d00f9e8"
+    sha256 cellar: :any,                 arm64_sonoma:  "7c4952b33dd522e79610eabb3beb9bbfdddc3378f41c2153041503e9f8f0a878"
+    sha256 cellar: :any,                 arm64_ventura: "9d424966acb2e88b34d0b27bef9032dc0d789deff4b298cb6ad2d43321227de7"
+    sha256 cellar: :any,                 sonoma:        "9e25c1646f1f395ec8f9466d96fd5bd2bf3ca6f770ebf69905a43fdbaa80169e"
+    sha256 cellar: :any,                 ventura:       "c66e6c688dd73c1a6182461e765231385f2bebcafeabf64234b1c5f6d6d26576"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7ecb114d91a7473d870fa935b34b9c45588ef16313a34027208bf1098656a6d8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "17f7942f13ff8b10fb467c44c6af7d33c0b0f1d26c6bb4522b9d8e2164cfe19f"
   end
 
+  depends_on "llvm" => :build
   depends_on "ninja" => :build
   depends_on xcode: ["10.0", :build] # for xcodebuild, min version required by v8
 
   uses_from_macos "python" => :build
 
   on_macos do
-    depends_on "llvm" => :build
     depends_on "llvm" if DevelopmentTools.clang_build_version <= 1400
   end
 
   on_linux do
+    depends_on "lld" => :build
     depends_on "pkgconf" => :build
     depends_on "glib"
   end
@@ -52,61 +55,162 @@ class V8 < Formula
   # e.g. for CIPD dependency gn: https://chromium.googlesource.com/v8/v8.git/+/refs/tags/<version>/DEPS#74
   resource "gn" do
     url "https://gn.googlesource.com/gn.git",
-        revision: "b3a0bff47dd81073bfe67a402971bad92e4f2423"
+        revision: "4a8016dc391553fa1644c0740cc04eaac844121e"
+    version "4a8016dc391553fa1644c0740cc04eaac844121e"
+
+    livecheck do
+      url "https://raw.githubusercontent.com/v8/v8/refs/tags/#{LATEST_VERSION}/DEPS"
+      regex(/["']gn_version["']:\s*["']git_revision:([0-9a-f]+)["']/i)
+    end
   end
 
-  resource "v8/build" do
+  resource "build" do
     url "https://chromium.googlesource.com/chromium/src/build.git",
-        revision: "faf20f32f1d19bd492f8f16ac4a7ecfabdbb60c1"
+        revision: "efb3303345a5501074564393470197a904b4afb7"
+    version "efb3303345a5501074564393470197a904b4afb7"
+
+    livecheck do
+      url "https://raw.githubusercontent.com/v8/v8/refs/tags/#{LATEST_VERSION}/DEPS"
+      regex(%r{["']/chromium/src/build\.git["']\s*\+\s*["']@["']\s*\+\s*["']([0-9a-f]+)["']}i)
+    end
   end
 
-  resource "v8/third_party/fp16/src" do
+  resource "buildtools" do
+    url "https://chromium.googlesource.com/chromium/src/buildtools.git",
+        revision: "b248db940ef3dd7e5f4694ebf4d8a3f67aa0086d"
+    version "b248db940ef3dd7e5f4694ebf4d8a3f67aa0086d"
+
+    livecheck do
+      url "https://raw.githubusercontent.com/v8/v8/refs/tags/#{LATEST_VERSION}/DEPS"
+      regex(%r{["']/chromium/src/buildtools\.git["']\s*\+\s*["']@["']\s*\+\s*["']([0-9a-f]+)["']}i)
+    end
+  end
+
+  resource "third_party/abseil-cpp" do
+    url "https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp.git",
+        revision: "2705c6655c0008cc3fb152dae27890d44bc335f1"
+    version "2705c6655c0008cc3fb152dae27890d44bc335f1"
+
+    livecheck do
+      url "https://raw.githubusercontent.com/v8/v8/refs/tags/#{LATEST_VERSION}/DEPS"
+      regex(%r{["']/chromium/src/third_party/abseil-cpp\.git["']\s*\+\s*["']@["']\s*\+\s*["']([0-9a-f]+)["']}i)
+    end
+  end
+
+  resource "third_party/fast_float/src" do
+    url "https://chromium.googlesource.com/external/github.com/fastfloat/fast_float.git",
+        revision: "cb1d42aaa1e14b09e1452cfdef373d051b8c02a4"
+    version "cb1d42aaa1e14b09e1452cfdef373d051b8c02a4"
+
+    livecheck do
+      url "https://raw.githubusercontent.com/v8/v8/refs/tags/#{LATEST_VERSION}/DEPS"
+      regex(%r{["']/external/github.com/fastfloat/fast_float\.git["']\s*\+\s*["']@["']\s*\+\s*["']([0-9a-f]+)["']}i)
+    end
+  end
+
+  resource "third_party/fp16/src" do
     url "https://chromium.googlesource.com/external/github.com/Maratyszcza/FP16.git",
         revision: "0a92994d729ff76a58f692d3028ca1b64b145d91"
+    version "0a92994d729ff76a58f692d3028ca1b64b145d91"
+
+    livecheck do
+      url "https://raw.githubusercontent.com/v8/v8/refs/tags/#{LATEST_VERSION}/DEPS"
+      regex(%r{["']/external/github.com/Maratyszcza/FP16\.git["']\s*\+\s*["']@["']\s*\+\s*["']([0-9a-f]+)["']}i)
+    end
   end
 
-  resource "v8/third_party/googletest/src" do
+  resource "third_party/googletest/src" do
     url "https://chromium.googlesource.com/external/github.com/google/googletest.git",
-        revision: "a7f443b80b105f940225332ed3c31f2790092f47"
+        revision: "24a9e940d481f992ba852599c78bb2217362847b"
+    version "24a9e940d481f992ba852599c78bb2217362847b"
+
+    livecheck do
+      url "https://raw.githubusercontent.com/v8/v8/refs/tags/#{LATEST_VERSION}/DEPS"
+      regex(%r{["']/external/github.com/google/googletest\.git["']\s*\+\s*["']@["']\s*\+\s*["']([0-9a-f]+)["']}i)
+    end
   end
 
-  resource "v8/third_party/icu" do
+  resource "third_party/highway/src" do
+    url "https://chromium.googlesource.com/external/github.com/google/highway.git",
+        revision: "00fe003dac355b979f36157f9407c7c46448958e"
+    version "00fe003dac355b979f36157f9407c7c46448958e"
+
+    livecheck do
+      url "https://raw.githubusercontent.com/v8/v8/refs/tags/#{LATEST_VERSION}/DEPS"
+      regex(%r{["']/external/github.com/google/highway\.git["']\s*\+\s*["']@["']\s*\+\s*["']([0-9a-f]+)["']}i)
+    end
+  end
+
+  resource "third_party/icu" do
     url "https://chromium.googlesource.com/chromium/deps/icu.git",
-        revision: "98f2494518c2dbb9c488e83e507b070ea5910e95"
+        revision: "d30b7b0bb3829f2e220df403ed461a1ede78b774"
+    version "d30b7b0bb3829f2e220df403ed461a1ede78b774"
+
+    livecheck do
+      url "https://raw.githubusercontent.com/v8/v8/refs/tags/#{LATEST_VERSION}/DEPS"
+      regex(%r{["']/chromium/deps/icu\.git["']\s*\+\s*["']@["']\s*\+\s*["']([0-9a-f]+)["']}i)
+    end
   end
 
-  resource "v8/third_party/jinja2" do
+  resource "third_party/jinja2" do
     url "https://chromium.googlesource.com/chromium/src/third_party/jinja2.git",
-        revision: "2f6f2ff5e4c1d727377f5e1b9e1903d871f41e74"
+        revision: "5e1ee241ab04b38889f8d517f2da8b3df7cfbd9a"
+    version "5e1ee241ab04b38889f8d517f2da8b3df7cfbd9a"
+
+    livecheck do
+      url "https://raw.githubusercontent.com/v8/v8/refs/tags/#{LATEST_VERSION}/DEPS"
+      regex(%r{["']/chromium/src/third_party/jinja2\.git["']\s*\+\s*["']@["']\s*\+\s*["']([0-9a-f]+)["']}i)
+    end
   end
 
-  resource "v8/third_party/markupsafe" do
+  resource "third_party/markupsafe" do
     url "https://chromium.googlesource.com/chromium/src/third_party/markupsafe.git",
-        revision: "e582d7f0edb9d67499b0f5abd6ae5550e91da7f2"
+        revision: "9f8efc8637f847ab1ba984212598e6fb9cf1b3d4"
+    version "9f8efc8637f847ab1ba984212598e6fb9cf1b3d4"
+
+    livecheck do
+      url "https://raw.githubusercontent.com/v8/v8/refs/tags/#{LATEST_VERSION}/DEPS"
+      regex(%r{["']/chromium/src/third_party/markupsafe\.git["']\s*\+\s*["']@["']\s*\+\s*["']([0-9a-f]+)["']}i)
+    end
   end
 
-  resource "v8/third_party/zlib" do
+  resource "third_party/partition_alloc" do
+    url "https://chromium.googlesource.com/chromium/src/base/allocator/partition_allocator.git",
+        revision: "46d880ff62f340854a5a70142b0abf604c7af221"
+    version "46d880ff62f340854a5a70142b0abf604c7af221"
+
+    livecheck do
+      url "https://raw.githubusercontent.com/v8/v8/refs/tags/#{LATEST_VERSION}/DEPS"
+      regex(/["']partition_alloc_version["']:\s*["']([0-9a-f]+)["']/i)
+    end
+  end
+
+  resource "third_party/simdutf" do
+    url "https://chromium.googlesource.com/chromium/src/third_party/simdutf.git",
+        revision: "5a9a2134b280c1b956ad68a0643797fe26dd1c94"
+    version "5a9a2134b280c1b956ad68a0643797fe26dd1c94"
+
+    livecheck do
+      url "https://raw.githubusercontent.com/v8/v8/refs/tags/#{LATEST_VERSION}/DEPS"
+      regex(%r{["']/chromium/src/third_party/simdutf["']\s*\+\s*["']@["']\s*\+\s*["']([0-9a-f]+)["']}i)
+    end
+  end
+
+  resource "third_party/zlib" do
     url "https://chromium.googlesource.com/chromium/src/third_party/zlib.git",
-        revision: "209717dd69cd62f24cbacc4758261ae2dd78cfac"
-  end
+        revision: "788cb3c270e8700b425c7bdca1f9ce6b0c1400a9"
+    version "788cb3c270e8700b425c7bdca1f9ce6b0c1400a9"
 
-  resource "v8/third_party/abseil-cpp" do
-    url "https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp.git",
-        revision: "bfe59c2726fda7494a800f7d0ee461f0564653b3"
+    livecheck do
+      url "https://raw.githubusercontent.com/v8/v8/refs/tags/#{LATEST_VERSION}/DEPS"
+      regex(%r{["']/chromium/src/third_party/zlib\.git["']\s*\+\s*["']@["']\s*\+\s*["']([0-9a-f]+)["']}i)
+    end
   end
 
   def install
-    (buildpath/"build").install resource("v8/build")
-    (buildpath/"third_party/jinja2").install resource("v8/third_party/jinja2")
-    (buildpath/"third_party/markupsafe").install resource("v8/third_party/markupsafe")
-    (buildpath/"third_party/fp16/src").install resource("v8/third_party/fp16/src")
-    (buildpath/"third_party/googletest/src").install resource("v8/third_party/googletest/src")
-    (buildpath/"third_party/icu").install resource("v8/third_party/icu")
-    (buildpath/"third_party/zlib").install resource("v8/third_party/zlib")
-    (buildpath/"third_party/abseil-cpp").install resource("v8/third_party/abseil-cpp")
+    resources.each { |r| r.stage(buildpath/r.name) }
 
     # Build gn from source and add it to the PATH
-    (buildpath/"gn").install resource("gn")
     cd "gn" do
       system "python3", "build/gen.py"
       system "ninja", "-C", "out/", "gn"
@@ -114,11 +218,11 @@ class V8 < Formula
     ENV.prepend_path "PATH", buildpath/"gn/out"
 
     # create gclient_args.gni
-    (buildpath/"build/config/gclient_args.gni").write <<~EOS
+    (buildpath/"build/config/gclient_args.gni").write <<~GN
       declare_args() {
         checkout_google_benchmark = false
       }
-    EOS
+    GN
 
     # setup gn args
     gn_args = {
@@ -130,20 +234,23 @@ class V8 < Formula
       clang_use_chrome_plugins:     false, # disable the usage of Google's custom clang plugins
       use_custom_libcxx:            false, # uses system libc++ instead of Google's custom one
       treat_warnings_as_errors:     false, # ignore not yet supported clang argument warnings
-      use_lld:                      false, # upstream use LLD but this leads to build failure on ARM
     }
 
+    # uses Homebrew clang instead of Google clang
+    gn_args[:clang_base_path] = "\"#{Formula["llvm"].opt_prefix}\""
+    gn_args[:clang_version] = "\"#{Formula["llvm"].version.major}\""
+
     if OS.linux?
-      gn_args[:is_clang] = false # use GCC on Linux
+      ENV.llvm_clang
+      ENV["AR"] = DevelopmentTools.locate("ar")
+      ENV["NM"] = DevelopmentTools.locate("nm")
       gn_args[:use_sysroot] = false # don't use sysroot
       gn_args[:custom_toolchain] = "\"//build/toolchain/linux/unbundle:default\"" # uses system toolchain
       gn_args[:host_toolchain] = "\"//build/toolchain/linux/unbundle:default\"" # to respect passed LDFLAGS
-      ENV["AR"] = DevelopmentTools.locate("ar")
-      ENV["NM"] = DevelopmentTools.locate("nm")
       gn_args[:use_rbe] = false
     else
       ENV["DEVELOPER_DIR"] = ENV["HOMEBREW_DEVELOPER_DIR"] # help run xcodebuild when xcode-select is set to CLT
-      gn_args[:clang_base_path] = "\"#{Formula["llvm"].opt_prefix}\"" # uses Homebrew clang instead of Google clang
+      gn_args[:use_lld] = false # upstream use LLD but this leads to build failure on ARM
       # Work around failure mixing newer `llvm` headers with older Xcode's libc++:
       # Undefined symbols for architecture x86_64:
       #   "std::__1::__libcpp_verbose_abort(char const*, ...)", referenced from:

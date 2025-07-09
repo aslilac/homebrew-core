@@ -1,18 +1,19 @@
 class Cyme < Formula
   desc "List system USB buses and devices"
   homepage "https://github.com/tuna-f1sh/cyme"
-  url "https://github.com/tuna-f1sh/cyme/archive/refs/tags/v2.1.0.tar.gz"
-  sha256 "cd6955a847e27698ebc086cb2270e51e4367f47769321c1ae6bb3ad8c1d28cfd"
+  url "https://github.com/tuna-f1sh/cyme/archive/refs/tags/v2.2.3.tar.gz"
+  sha256 "566f9d7ee9dd183ddcc9f5a51a08446e84ba73222149298f5f64c606032355b2"
   license "GPL-3.0-or-later"
   head "https://github.com/tuna-f1sh/cyme.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c701624fe101a27fb96f0136f48f25ebb671091ff3ab86010b25679098419e45"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "27cc02abd006b1b49b6921d40d39d5d3b4091bb07383679af3713b8266f9abeb"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "65b47ef35162cf21bab557424957675f7a5e60cc8a50e08a2421a2efaebc9c90"
-    sha256 cellar: :any_skip_relocation, sonoma:        "6d0bbd3e18f6877c52d1fd928d1d623a9dac07e4800594e50fa0ee5f1bfffd96"
-    sha256 cellar: :any_skip_relocation, ventura:       "36671f19973d27b191734987749ce2422b0896317ff42e016528cc22ca6f0a00"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bdbfb53df50eb582d3d4d9a6b220a8a68337ff7f0de287d65b87e0dff85ffe10"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b472bfe15fa11e86fa90007edb1933a6784853bfe26cfa031b1b9e89f0852880"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0e8f4a0c9e0d63b5069d1a81e9931e94a246bbdcaee7b83c22ab72f437b81a48"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "3cbaf1c83b1c8b03bee209fd1e5ad7142d5a6ab598044b61454b31eae8210c5c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "37cb2c4f6b58949c44ef92c9f49181766ad1a51b0232a339add92601e6016dad"
+    sha256 cellar: :any_skip_relocation, ventura:       "4ed3632feb1c633f7a6bdd68ff79c2edbc1fdeccc5fa89ec63d691dd1be2aa28"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e7ba7d8fdcf67e0c8ad7f29d9b633d3bf734712a944646b2d06f17e47d3664ab"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "324cd0f6ed32816d04551b36e945324a4f3ae3791dcd0f0afa6213c0854e8765"
   end
 
   depends_on "rust" => :build
@@ -21,7 +22,7 @@ class Cyme < Formula
   def install
     system "cargo", "install", *std_cargo_args
     man1.install "doc/cyme.1"
-    bash_completion.install "doc/cyme.bash"
+    bash_completion.install "doc/cyme.bash" => "cyme"
     zsh_completion.install "doc/_cyme"
     fish_completion.install "doc/cyme.fish"
   end

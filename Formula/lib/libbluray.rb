@@ -10,6 +10,8 @@ class Libbluray < Formula
     regex(%r{href=["']?v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "82b771563b1348e8121ceb5156d5457207147e8ac851aea9d70d31c058f8a98e"
     sha256 cellar: :any,                 arm64_sonoma:   "385b5460b56cb7c811c661a39509c62436d7a60f388bd960782f23192ade074a"
@@ -21,6 +23,7 @@ class Libbluray < Formula
     sha256 cellar: :any,                 monterey:       "675911bf2b50a1f33112fb2fb76acf33c03d56d465477439c34c54088eda848e"
     sha256 cellar: :any,                 big_sur:        "18490d577635a9975be2e1f06efaa5d7b33fc238af966d3587758f3a13ceb6bf"
     sha256 cellar: :any,                 catalina:       "ea15b923a467441fd884d25c339e12a5cdd6a71b39d670b301456af6428fcd0e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "fbf92a392c04e7ea08208af7eace86c7e320256ee4227762fab7208c3d37e2da"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f5777913be5f68fb71aa0e5ed057ced402b9f8ab119a8ea74623bca2b5475f04"
   end
 
@@ -32,17 +35,17 @@ class Libbluray < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "fontconfig"
   depends_on "freetype"
 
   uses_from_macos "libxml2"
 
   def install
-    args = %W[--prefix=#{prefix} --disable-dependency-tracking --disable-silent-rules --disable-bdjava-jar]
+    args = %w[--disable-silent-rules --disable-bdjava-jar]
 
     system "./bootstrap" if build.head?
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
   end

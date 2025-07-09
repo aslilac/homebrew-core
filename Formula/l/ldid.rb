@@ -8,6 +8,8 @@ class Ldid < Formula
   revision 1
   head "git://git.saurik.com/ldid.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "84258b91d4f2085704b5d30a0a3cd50d32bebe0ca6e8e3adde999632afd63f4e"
     sha256 cellar: :any,                 arm64_sonoma:   "e3c26343041639b82e88edf54d3af9f579876f800b7aeada94d36c807e441c27"
@@ -18,6 +20,7 @@ class Ldid < Formula
     sha256 cellar: :any,                 ventura:        "b6aba3db5dd5aab6835280e0fe777a566cc5eb524290482602ee2b8018145760"
     sha256 cellar: :any,                 monterey:       "2adcc78190f359d7c5485a29cc84c37f5bf3360c39e2cd2cc975a5449bf3db6c"
     sha256 cellar: :any,                 big_sur:        "7373fc777890c829de08c79475c3b2caa55f68c30f97398201ff3dd9c55638ca"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "81c37cabe7538847906e84785f70a8592c5853374424e5866e124dabde43ea2d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4519a8fb688fea614c230562638a0d4704e7f1aad8d9372845d0b28cc5281479"
   end
 

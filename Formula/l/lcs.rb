@@ -13,6 +13,8 @@ class Lcs < Formula
     skip "Formula uses an unstable trunk version"
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "1b4eaae7da86c0a3882c11642d4dd5cdeac07f63742c7714e9cc1a57a88baf5b"
     sha256 arm64_sonoma:   "53c3857d8a8d4fbe45e84b0489f9a9b50da8078fc037f470473272ff36d7cb4d"
@@ -28,6 +30,7 @@ class Lcs < Formula
     sha256 high_sierra:    "5b640b7b87dfe6603670addce1b6af77b0cd7ebbda10c445fddc6d365960e761"
     sha256 sierra:         "a8fa614ec5adc3ee2d7417a024bf5e9c78e9f8d4e043e0b916dc5a99f1bb1d9c"
     sha256 el_capitan:     "621487b12c93a9b37e1330041f979a28d3d310c1d8c9efecf274808d081d510e"
+    sha256 arm64_linux:    "102e4a404dd5be9cd65c41bf4eb03c582c405037360447d381baa173d2e52f4e"
     sha256 x86_64_linux:   "ce3d505b47a5ada5e5b895876e51c224c3c716117c2f84e9853c05347ecddc4c"
   end
 

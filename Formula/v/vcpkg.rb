@@ -1,9 +1,9 @@
 class Vcpkg < Formula
   desc "C++ Library Manager"
   homepage "https://github.com/microsoft/vcpkg"
-  url "https://github.com/microsoft/vcpkg-tool/archive/refs/tags/2024-11-12.tar.gz"
-  version "2024.11.12"
-  sha256 "046b87f537ab9d8b56918868037afbf59459b702bc7dfe51b66af4895a817cfd"
+  url "https://github.com/microsoft/vcpkg-tool/archive/refs/tags/2025-06-20.tar.gz"
+  version "2025.06.20"
+  sha256 "a5c13011d253db8e885c54d2da6f6460741fec307fe93ee38bf17ab34922a467"
   license "MIT"
   head "https://github.com/microsoft/vcpkg-tool.git", branch: "main"
 
@@ -20,21 +20,22 @@ class Vcpkg < Formula
     end
   end
 
+  no_autobump! because: :incompatible_version_format
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "5b56a9d149909990a4c4be9e174da623a6a68d01d2c32053139d9942c615c15f"
-    sha256 cellar: :any,                 arm64_sonoma:  "2c6c6c339abd5c5c01df701cceda94541d18dcc333a9cb4d8b20422e520992b5"
-    sha256 cellar: :any,                 arm64_ventura: "fe84e172642a3e1b595d4841481e71a19a65b305f29e593859a30cb397088765"
-    sha256 cellar: :any,                 sonoma:        "2ba277e255094ba0337de2c43211b27a8a44d787b9935471c9510f389d46b0fb"
-    sha256 cellar: :any,                 ventura:       "e667fa488fd8ba3ba11c2430a823c3a21a8a2a82a4b34fdca8bf45463d74e950"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "50a76474af653913a11dfd43e7f7c825641a5663bfb340389accff3b7505d63e"
+    sha256 cellar: :any,                 arm64_sequoia: "c137688de0ad7bdc389c2bd9050a4db460e07c2fc349daf3dab2f263cd0177a0"
+    sha256 cellar: :any,                 arm64_sonoma:  "6ba896fd6dd5f883377626ad30a7aa70dd72c97bb9fd97ee0cec7ac8d0db670c"
+    sha256 cellar: :any,                 arm64_ventura: "b2ff9fcb7cfe5eeab3d642c15445846a28ea4e2183aae3fb76e77643b100d534"
+    sha256 cellar: :any,                 sonoma:        "15e0038fc0f36d2e86732e9de52737d759ce5a666996cce26f9381dd080580a4"
+    sha256 cellar: :any,                 ventura:       "3f03db528a5863adce0b860940a8b5f6aff274dc0b72cb95defb23753b45cf8c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "79bcf72c64a96f50e75e2ef39c9998ac23fa543db09221ca6f62b3c761ef216a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5a12c6435af1fad099a80a48688a833228d2eb7fbc5522659a0050387d95ed75"
   end
 
   depends_on "cmake" => :build
   depends_on "cmrc" => :build
   depends_on "fmt"
   depends_on "ninja" # This will install its own copy at runtime if one isn't found.
-
-  fails_with gcc: "5"
 
   def install
     # Improve error message when user fails to set `VCPKG_ROOT`.

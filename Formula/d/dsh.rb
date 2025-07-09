@@ -10,6 +10,8 @@ class Dsh < Formula
     regex(/href=.*?dsh[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "d73aea65a96f05c4040e1b38d8238dbaee979d65c886c388b3eb7d7f5b388295"
     sha256 arm64_sonoma:   "5ffc7bafd29a43adc43ae8eaa2d85d51c2231c62fce48da0103f310c9620387a"
@@ -25,6 +27,7 @@ class Dsh < Formula
     sha256 high_sierra:    "5d553941319eae8d839a53063057fff05b359eb13e53da2d7313c3d41fae88b0"
     sha256 sierra:         "9d694a476e5d74d7c3edbf284628e3f68c96c5a30c91b7fd3c624630805636ea"
     sha256 el_capitan:     "0b6a147235228473634c424e5e12671b6e9a4609ce6b732dd5ca9f56f335add5"
+    sha256 arm64_linux:    "07d63285b278ccbbedc618fc2722652b7bde0b671c25aa98cb1e1a34cbe3506e"
     sha256 x86_64_linux:   "b0489652a4291212811da8fdc746690777acbfaafd90f0dfd050fb4699e57734"
   end
 
@@ -40,8 +43,11 @@ class Dsh < Formula
     # Reported to the upstream developer by email as a bug tracker does not exist.
     ENV.prepend_path "PATH", Formula["gnu-sed"].libexec/"gnubin" if OS.mac?
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = []
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 end

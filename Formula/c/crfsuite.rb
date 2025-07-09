@@ -5,6 +5,8 @@ class Crfsuite < Formula
   sha256 "ab83084ed5d4532ec772d96c3e964104d689f2c295915e80299ea3c315335b00"
   license "BSD-3-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "a927557fa509ed7f639826d4ba8c469eb580b53dcceeab6268a6519fc1b41813"
     sha256 cellar: :any,                 arm64_sonoma:   "80a144cb4f7425ae6d43e321080cbaad697626aba0356c787ab62a53514a5804"
@@ -15,6 +17,7 @@ class Crfsuite < Formula
     sha256 cellar: :any,                 ventura:        "9044e7b8b91b781be38409cc180e7889fdf5430699025628726dc21919324704"
     sha256 cellar: :any,                 monterey:       "72d451e62bf3ab7b5b2d73d9cb4757946e1c0aa75c3c5f28c1c2d899d052bdd1"
     sha256 cellar: :any,                 big_sur:        "72b8c9d618a16bd4287990ae6c7b46bfdfd964cbe20582d4fa10f5b4b12f09ba"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "057472092e2730abbd995d9b23b61f77e9b6f5f829f36b63786110ef657c27f2"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "45a6dd13114c20e2a4bd3d82033e463316b635d8c7a61c582e299bca8832ec58"
   end
 
@@ -27,11 +30,6 @@ class Crfsuite < Formula
 
   conflicts_with "freeling", because: "both install `crfsuite` binaries"
 
-  resource "homebrew-conll2000-training-data" do
-    url "https://www.cnts.ua.ac.be/conll2000/chunking/train.txt.gz"
-    sha256 "bcbbe17c487d0939d48c2d694622303edb3637ca9c4944776628cd1815c5cb34"
-  end
-
   # Fix autoconf failure.
   patch do
     url "https://github.com/chokkan/crfsuite/commit/a6a4a38ccc4738deb0e90fc9ff2c11868922aa11.patch?full_index=1"
@@ -39,7 +37,7 @@ class Crfsuite < Formula
   end
 
   def install
-    system "autoreconf", "-fiv"
+    system "autoreconf", "--force", "--install", "--verbose"
 
     args = std_configure_args
     args << "--disable-sse2" if Hardware::CPU.arm?
@@ -50,6 +48,11 @@ class Crfsuite < Formula
   end
 
   test do
+    resource "homebrew-conll2000-training-data" do
+      url "https://www.cnts.ua.ac.be/conll2000/chunking/train.txt.gz"
+      sha256 "bcbbe17c487d0939d48c2d694622303edb3637ca9c4944776628cd1815c5cb34"
+    end
+
     resource("homebrew-conll2000-training-data").stage testpath
 
     # Use spawn instead of {shell,pipe}_output to directly read and write
@@ -60,6 +63,6 @@ class Crfsuite < Formula
     Process.wait(pid)
 
     system bin/"crfsuite", "learn", "--model", "CoNLL2000.model", "train.crfsuite.txt"
-    assert_predicate testpath/"CoNLL2000.model", :exist?
+    assert_path_exists testpath/"CoNLL2000.model"
   end
 end

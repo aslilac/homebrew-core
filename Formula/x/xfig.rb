@@ -1,10 +1,9 @@
 class Xfig < Formula
   desc "Facility for interactive generation of figures"
   homepage "https://mcj.sourceforge.net/"
-  url "https://downloads.sourceforge.net/mcj/xfig-3.2.9.tar.xz"
-  sha256 "13ed9d04d1bbc2dec09da7ef49ceec278382d290f6cd926474c2f2d016fec2f7"
+  url "https://downloads.sourceforge.net/mcj/xfig-3.2.9a.tar.xz"
+  sha256 "bc572a1881e5e20987ac590158b041ab7803845a9691036d3ba5e982f66d9ca3"
   license "MIT"
-  revision 1
 
   livecheck do
     url :stable
@@ -12,12 +11,14 @@ class Xfig < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "00065bb855d889cb03d1b9a6be6b8e379afbdc34eec9bd8a6b295c7c6569f66f"
-    sha256 arm64_sonoma:  "fc167af1203cd9c55c4b608d648ec787c0fab60d03addae286b93354edfa4a27"
-    sha256 arm64_ventura: "78a6256536cf3979802f06d9c739f1167a9dd1dc79e82973c426c84002616ade"
-    sha256 sonoma:        "248e1c225dbae1d8272f3fdde6e7d73ab7c200ced0855e6da9fdfea637b0fb2d"
-    sha256 ventura:       "45c8fe0a50ab221a983d50b39016857a07df1a6e753a1fa62d21b100624c7fcf"
-    sha256 x86_64_linux:  "d18838b6078735b2015842785ca34e48695ecd25a33569b406bfd125cda965da"
+    rebuild 1
+    sha256 arm64_sequoia: "161b47e43d5412e6277eff6ba8f2884e0a345c238db8ed1601ece4501f05ee5c"
+    sha256 arm64_sonoma:  "a8acd5f5d17d4bbef98332d6ece0de046b023c8485a1ce713bc183f10110db5e"
+    sha256 arm64_ventura: "e5ae9151e1f3e865317d32e0355445922d46e080e60d583b65df77591322b54b"
+    sha256 sonoma:        "9ed33c2acaeb19e8826d4e82057ffccd949e7de53334d924b3005a02b50baf78"
+    sha256 ventura:       "1cfeb80f07bbdd495c33c152b606f352e2785c421b50ba0816470ae99cc7676a"
+    sha256 arm64_linux:   "ffa26e011fab5d5d529bab92892b47c4911b9126bf1a0d8f7f62de152e6d7c56"
+    sha256 x86_64_linux:  "f4faa9ef548b215a82a5098c94bfcb09ad1acd51eebfa0539818f1a5fd20a112"
   end
 
   depends_on "fig2dev"
@@ -50,9 +51,19 @@ class Xfig < Formula
                           "--disable-silent-rules",
                           *std_configure_args
     system "make", "install-strip"
+
+    if OS.mac?
+      (etc/"X11/app-defaults/Fig").append_lines <<~X11_DEFAULTS
+        ! Disable internationalization to stop segfaults
+        ! https://github.com/Homebrew/homebrew-core/issues/221146
+        ! https://sourceforge.net/p/mcj/tickets/177/#7c23
+        Fig.international: False
+      X11_DEFAULTS
+    end
   end
 
   test do
     assert_equal "Xfig #{version}", shell_output("#{bin}/xfig -V 2>&1").strip
+    assert_equal "Error: Can't open display:", shell_output("DISPLAY= #{bin}/xfig 2>&1", 1).strip
   end
 end

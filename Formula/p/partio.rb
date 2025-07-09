@@ -1,18 +1,18 @@
 class Partio < Formula
   desc "Particle library for 3D graphics"
   homepage "https://github.com/wdas/partio"
-  url "https://github.com/wdas/partio/archive/refs/tags/v1.17.3.tar.gz"
-  sha256 "08a571ca75cf133f373415dfd50b7d0e33a0dd1811dfb63409f0ae46652033c1"
+  url "https://github.com/wdas/partio/archive/refs/tags/v1.19.0.tar.gz"
+  sha256 "128913266a88a0939aaa4bc951ae4d4da1c380408bcc0ea9e7f526556afeaad0"
   license "BSD-3-Clause"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "156678f075f4be856918ad93364d8fabc320a1d21c3604091ae0a6ba80b13377"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1ac54c92b0170c31766af0d7bb486361b091bfba772fc410fb33132071f06652"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "0da7b8ea9d0aed2ea12fbbb4e525d5a300552911bd1cf11f018f69cdd59c2e99"
-    sha256 cellar: :any_skip_relocation, sonoma:        "ded84cbbbbafe20305db9f3bf9b64f5b041d2a6d76059a3235d442736d689a0e"
-    sha256 cellar: :any_skip_relocation, ventura:       "8f6c84a190bd21fa1461172c3915aaf4b8e9f6912760a05854d7bd526e8f91ad"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "15f6f86a2f0bcc8e1add259eaad579075a719f0c7bd53ed0301f54177ff72586"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d590d5b336289ccc4cd9f862c647d95bbd69f338667fe20b7919b85aaa0be0cd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "915f63605c761393c849667661d157e7dea78ad590877de5b5bac17e94c746a6"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "7b11218fc52dd89ebea09525a28d6c545598962faf5b9faf63607c357944fcc5"
+    sha256 cellar: :any_skip_relocation, sonoma:        "95b4c5061132adf97267f3a52c0a35476124df0f40ad54c93d7e0c141605277f"
+    sha256 cellar: :any_skip_relocation, ventura:       "7300f161aaa679f5798b6a8bab305da1a22777b5a17e6a07ee7e4d2b750ba93e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "5866cdd8c7d761d3cacdea80dc76cf177dc986e9b0b2e2518b2d325b2b556a76"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5376a76f425c703390142d15aec36b56a8b14cd9ef133abca229838a377c238c"
   end
 
   depends_on "cmake" => :build

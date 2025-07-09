@@ -6,6 +6,8 @@ class Yh < Formula
   license "Apache-2.0"
   head "https://github.com/andreazorzetto/yh.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "37b637b99befa6608662694e5100828cf4ad50a9513e57cae75febfd04e9fc96"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4719f7e1a8166248cf84ac5efe7d8bf0df277a08ed4cba8e1b071f87622dfb67"
@@ -19,6 +21,7 @@ class Yh < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "1a2425d399a63df18758dfabf9d50da2559fb489c32bfb4462d7437f64fc0817"
     sha256 cellar: :any_skip_relocation, mojave:         "69f1ab9c740906f04924c780cb512ea26fa0c51bdf66be85c71c4cbaa9dc6ca1"
     sha256 cellar: :any_skip_relocation, high_sierra:    "184eb9a41954f7a3d11f3065dfab42085a724c617ec635681e05784eeebe6329"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "a31f46802b6d13d9e654ceef943f861c8c06d44a5c92385df91f942f0e610d43"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7d24c1a925e08cc62ccb741d0587e59fb79c76a34b4b5b23599c51fa58ad6dd2"
   end
 

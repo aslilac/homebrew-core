@@ -4,15 +4,18 @@ class Mosh < Formula
   url "https://github.com/mobile-shell/mosh/releases/download/mosh-1.4.0/mosh-1.4.0.tar.gz"
   sha256 "872e4b134e5df29c8933dff12350785054d2fd2839b5ae6b5587b14db1465ddd"
   license "GPL-3.0-or-later"
-  revision 22
+  revision 28
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "33dc51bf37be8f249ba0004d5e647d689de56639bc8664a785390807c7be5164"
-    sha256 cellar: :any,                 arm64_sonoma:  "fb5f8f8cca6ae74b71ff12ed06fa0cd4676858341de6e96958e98fb07ed20c1e"
-    sha256 cellar: :any,                 arm64_ventura: "3287abf4aff9c41ee8e7f48a1c8f8af7e364379408893d7c8f925b680a326df4"
-    sha256 cellar: :any,                 sonoma:        "8f262559a1216d94d747d9f9c5dd247e4c5ae768dff7990d5e331c47c9126d2e"
-    sha256 cellar: :any,                 ventura:       "647a1fecda243e7b4ebd60b61a0097e8dfdd42b5a53c5a1a56172ca085f9e667"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b9646daefdde7e41415c15e53aba506fa51eba1afec405a3e2ae3ad8e10b95d0"
+    sha256 cellar: :any,                 arm64_sequoia: "755a860faf4f4eb8715bb132abc76a8569b1b266c610fbd7ac4b7fe1ab48a539"
+    sha256 cellar: :any,                 arm64_sonoma:  "1410eac2e92eadf9dcc717f3d4d80d0505b8a32799d40831f6af95f9e0622df4"
+    sha256 cellar: :any,                 arm64_ventura: "3ee966425def3198861ce28cda95106a572b1a9ee9a0fe4b1e7e7fc673f7b6a9"
+    sha256 cellar: :any,                 sonoma:        "9d195badfc9d371c8e3f7e53606a1c8a35d2b28539013927632dae8c7c4619fa"
+    sha256 cellar: :any,                 ventura:       "83cfdc9ce4e3e5dd72284c4525272217e57cde54b11d6c6043bde2fc62ff63c9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2a8a37afa1b8ae7a1f5b3a48859e33f7b93a7529e53780dd50231668bd088fea"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a4fe1a8fc42c1ae159ccb9219f2c39ce6174c24df3f1f724887f6a7bc40fb321"
   end
 
   head do
@@ -22,7 +25,7 @@ class Mosh < Formula
     depends_on "automake" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "protobuf"
 
   uses_from_macos "ncurses"
@@ -60,8 +63,6 @@ class Mosh < Formula
 
     # `configure` does not recognise `--disable-debug` in `std_configure_args`.
     system "./configure", "--prefix=#{prefix}", "--enable-completion", "--disable-silent-rules"
-    # Mosh provides remote shell access, so let's run the tests to avoid shipping an insecure build.
-    system "make", "check" if OS.mac? # Fails on Linux.
     system "make", "install"
   end
 

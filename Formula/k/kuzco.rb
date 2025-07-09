@@ -1,18 +1,20 @@
 class Kuzco < Formula
   desc "Reviews Terraform and OpenTofu resources and uses AI to suggest improvements"
   homepage "https://github.com/RoseSecurity/Kuzco"
-  url "https://github.com/RoseSecurity/Kuzco/archive/refs/tags/v1.3.0.tar.gz"
-  sha256 "a4c3d75467a73821fecb5ab79270f96f57cc9da3bdbbea8e36376f22e92544fd"
+  url "https://github.com/RoseSecurity/Kuzco/archive/refs/tags/v1.4.1.tar.gz"
+  sha256 "65523690293b640bc2196d0276f31f264d0e8499d074dd7aecc893c9769260d2"
   license "Apache-2.0"
   head "https://github.com/RoseSecurity/Kuzco.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4df357c2c9fd7ffa3b8e9fb965ad18737d85b0ecb511395829cb4d6b2f9cd461"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4df357c2c9fd7ffa3b8e9fb965ad18737d85b0ecb511395829cb4d6b2f9cd461"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "4df357c2c9fd7ffa3b8e9fb965ad18737d85b0ecb511395829cb4d6b2f9cd461"
-    sha256 cellar: :any_skip_relocation, sonoma:        "f4ae7b7d4615ea985cc61ae161472e9a32a08009f726fa3dbfd9d36c09c8e9f0"
-    sha256 cellar: :any_skip_relocation, ventura:       "f4ae7b7d4615ea985cc61ae161472e9a32a08009f726fa3dbfd9d36c09c8e9f0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bf5d6462191ad449248bef603c5ecfb1bb11932b882be7d7f31c402c52ff5ca4"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "26eece27906eb49889a1b76d70603f685477b22a2495775a404dc22d09d2ca5c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "26eece27906eb49889a1b76d70603f685477b22a2495775a404dc22d09d2ca5c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "26eece27906eb49889a1b76d70603f685477b22a2495775a404dc22d09d2ca5c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "557afc5d2c6de2a01cf1aae676cb080fd7070a7b71e94ad90269c7d9bac0e229"
+    sha256 cellar: :any_skip_relocation, ventura:       "557afc5d2c6de2a01cf1aae676cb080fd7070a7b71e94ad90269c7d9bac0e229"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ff3aa0de79900251e6d627f8c368bb35678e3dca7f3b71fc33ce76871d2bd41a"
   end
 
   depends_on "go" => :build

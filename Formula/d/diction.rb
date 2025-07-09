@@ -6,6 +6,8 @@ class Diction < Formula
   sha256 "35c2f1bf8ddf0d5fa9f737ffc8e55230736e5d850ff40b57fdf5ef1d7aa024f6"
   license "GPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "6516cc7161c82d0f8db43cc8feb42dfac2f946e632c76432cb7ed00fde3fe078"
     sha256 arm64_sonoma:   "4589af49e9b3cd23f77eae06ba86dadb9b364ca88e1714b3aa4b2f169df49321"
@@ -21,12 +23,16 @@ class Diction < Formula
     sha256 high_sierra:    "194a52459b3bfd3e4f38f8e19ea9f4d371d2bf3b005d3e36b8aa5519c5afaf2d"
     sha256 sierra:         "70dbde26567eb6b0093d897f9ceafb212eaf51d23028a925d39c0f53b803b5b9"
     sha256 el_capitan:     "858b8312ef527a7745a02b3bf40cd483c0212216e3342ac7eaddbfe6045893dd"
+    sha256 arm64_linux:    "e73e21df8df919d01becb9b68654ec8b483dbb31207e4685f0b126b8d56c30de"
     sha256 x86_64_linux:   "fa36156d5d431720a8bc0c8b05a1681e9231cfce822b2b012c602fa1a8e3e159"
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = []
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

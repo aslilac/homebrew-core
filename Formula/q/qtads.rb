@@ -11,6 +11,8 @@ class Qtads < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "6e3606d6b81aace60e22a195af69bdc1a487903f6199f66f625b5cd80063b468"
     sha256 cellar: :any,                 arm64_sonoma:   "c8737515d6dc5506c6c44f91ceba97426015e71112171006ab57f1646a4d2231"
@@ -29,7 +31,7 @@ class Qtads < Formula
   depends_on "libsndfile"
   depends_on "libvorbis"
   depends_on "mpg123"
-  depends_on "qt@5"
+  depends_on "qt@5" # Qt6 PR: https://github.com/realnc/qtads/pull/21
   depends_on "sdl2"
 
   def install
@@ -51,6 +53,6 @@ class Qtads < Formula
 
   test do
     bin_name = OS.mac? ? "QTads" : "qtads"
-    assert_predicate testpath/"#{bin}/#{bin_name}", :exist?, "I'm an untestable GUI app."
+    assert_path_exists testpath/"#{bin}/#{bin_name}", "I'm an untestable GUI app."
   end
 end

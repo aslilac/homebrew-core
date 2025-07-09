@@ -1,23 +1,29 @@
 class GrafanaAgent < Formula
   desc "Exporter for Prometheus Metrics, Loki Logs, and Tempo Traces"
-  homepage "https://grafana.com/docs/agent/"
-  url "https://github.com/grafana/agent/archive/refs/tags/v0.43.3.tar.gz"
-  sha256 "99d48af06ac8e2c8c6696508e53a06e1bab4e1dc3bbcd5146e9f0066fef1e9ae"
+  homepage "https://grafana.com/docs/agent/latest/"
+  url "https://github.com/grafana/agent/archive/refs/tags/v0.44.2.tar.gz"
+  sha256 "ef8b19e0bda6214ad1856d636226c50e9c9690da45791c5da090227f81fba65a"
   license "Apache-2.0"
 
+  # Keep livecheck until 2025-11-01
   livecheck do
     url :stable
     strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0df50c15aefcf0ef5966448c86bd08deb85084c685de2ad4b2f0dd8cc2f5a018"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "27b23bd0769a183852d016149b1345504265653d08f1c68bbbe0fb6bff8a7997"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "508566ffd9692fdb49c66bff04865eb87d5953da70e5a4eaafa34088c1cf3e7a"
-    sha256 cellar: :any_skip_relocation, sonoma:        "7fd2bbd05f143fc7608acc767166f975176da4ce25c47dd8c03f387c761f9ec4"
-    sha256 cellar: :any_skip_relocation, ventura:       "c44eae56d3105734dd889a4e952084b55af19e7c36a6d02068f5a369e165d984"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a64752034facb371210f5da42f490635b21ee9690d19e405dece66f2622d87e4"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8947e913b3811be4c82cadf51e83bd39cc6c87b6bf13a6d0acfe132141794f2d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1d6dcd2ec5dac8ec8dec064b8632768520d1f03d8e90ff4662128c97d180b091"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c491c1d0d721cb5e2d7e23cd394ae67d6397e73ecbcf1fd17d1a235858efbe81"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d807a3a6b6e3c8404e30180ca15b1dc0ae746d2dbb869e6b19862b611d0ecc14"
+    sha256 cellar: :any_skip_relocation, ventura:       "c9cc0258e949864468d103b764f1f9a7abb64db194efa5151d07ccf8d7d51f9b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "96a26aad76428d765023b479df15a501ca44fe3220788ec5337ed0263ad27713"
   end
+
+  # Needs EOL Go 1.22 to build (https://github.com/grafana/agent/issues/6972)
+  # and deprecated upstream though will get security fixes until 2025-10-31.
+  # Disable date set 3 months after planned EOL date of 2025-11-01.
+  disable! date: "2026-02-01", because: :deprecated_upstream, replacement_formula: "grafana-alloy"
 
   # use "go" again when https://github.com/grafana/agent/issues/6972 is resolved and released
   depends_on "go@1.22" => :build

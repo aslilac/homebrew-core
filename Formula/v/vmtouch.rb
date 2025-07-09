@@ -6,6 +6,8 @@ class Vmtouch < Formula
   license "BSD-3-Clause"
   head "https://github.com/hoytech/vmtouch.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "71ea80f43e78935336818c646b4561db14301e5590d0e726f221a944cb9efb73"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "af6dca4823cffd3272dce9a60743bfe9d7fd9a8bd467b3ae55ba370b8bb37d00"
@@ -20,6 +22,7 @@ class Vmtouch < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "020d4e624a448e4e1b9a6e26b8f506bd65ab789ae1c0f23f25beda78b09bc6dd"
     sha256 cellar: :any_skip_relocation, high_sierra:    "edb14ca1ff4cbd4ab535ca9099ea113a36e280ddaf2957a65bdef10f4a7a1b88"
     sha256 cellar: :any_skip_relocation, sierra:         "7359ed3256886940e6fb1883141c495d5b3e6ab28130ed16553e0f6ab57ac3db"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "51eb867695f92dce54b46d64c23ce16cc9ea3a2fb59b581de5785ac36b96a664"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "370429512a98b307f32755176f1bc39b988f6c787f24bbd304dd95f20b7c399d"
   end
 

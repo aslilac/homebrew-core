@@ -5,6 +5,8 @@ class RangeV3 < Formula
   sha256 "015adb2300a98edfceaf0725beec3337f542af4915cec4d0b89fa0886f4ba9cb"
   license "BSL-1.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any_skip_relocation, all: "2fdd480cc63593645c0cc98d62a3607bd22600df59de39e7425bd3f89bd69c82"
@@ -12,16 +14,17 @@ class RangeV3 < Formula
 
   depends_on "cmake" => :build
 
-  fails_with gcc: "5"
-
   def install
-    system "cmake", ".",
-                    "-DRANGE_V3_TESTS=OFF",
-                    "-DRANGE_V3_HEADER_CHECKS=OFF",
-                    "-DRANGE_V3_EXAMPLES=OFF",
-                    "-DRANGE_V3_PERF=OFF",
-                    *std_cmake_args
-    system "make", "install"
+    args = %w[
+      -DRANGE_V3_TESTS=OFF
+      -DRANGE_V3_HEADER_CHECKS=OFF
+      -DRANGE_V3_EXAMPLES=OFF
+      -DRANGE_V3_PERF=OFF
+    ]
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

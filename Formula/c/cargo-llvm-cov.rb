@@ -2,18 +2,19 @@ class CargoLlvmCov < Formula
   desc "Cargo subcommand to easily use LLVM source-based code coverage"
   homepage "https://github.com/taiki-e/cargo-llvm-cov"
   # cannot use github tarball due to https://github.com/taiki-e/cargo-llvm-cov/pull/152#issuecomment-1107055622
-  url "https://static.crates.io/crates/cargo-llvm-cov/cargo-llvm-cov-0.6.14.crate"
-  sha256 "35c0d03a4d743b37e0be9dc160214f94a2450a01a1ea01d9f5b677444d53a91f"
+  url "https://static.crates.io/crates/cargo-llvm-cov/cargo-llvm-cov-0.6.17.crate"
+  sha256 "5d99e575343630676845541dad8d99b46706b58df7438c1b1297a5472faf6ce4"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/taiki-e/cargo-llvm-cov.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4fb1c743faa648d450895cd907a4920dcc7a93ef4fe9033c9aa4312c43a1067b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "fd65997c837ef86b3f9b6cb018494eca4e98d447b6d79ca0c552ab226c921423"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "648c08e0cbd72fb82936c255f7fdc8cb37e342333e3fa8b98227025765ce3a7f"
-    sha256 cellar: :any_skip_relocation, sonoma:        "7be890f1fd9a393278cd9c83073e51ec3f59cf5650289ce9ecf074f4b2e1da17"
-    sha256 cellar: :any_skip_relocation, ventura:       "d6897167796fa41791437bc883621d7b230e6ca24d5431e103213c4cadc9ef8c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e95a0baa6ec312823ba1dd983c9764499a83bd788b12f5cd4f0a8806f500bfdd"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d79004d1b3066538087fb0b055d54f03700dfbed923d55c80899a24d7d12524a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9f2013d2830eaedb2a69dc506d0c63db29fffbe9f1437058d20475e23cf5339c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b11a840743e59c9b8619afe5162d5df673f9994fec26a489d25cc9d75c71d265"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ef5b72e9dede52426b266a385aee63f31b81548c9d52015efa55746ba96bdeff"
+    sha256 cellar: :any_skip_relocation, ventura:       "cbe9f70c9a83c4386b348561306534cc2304da9e354dab66292ceb5f6b385344"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "60e07078ea3dd08c11248d35112985e66684d3c07a46a636af63c45b9982c896"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ecd5ec74624ecbd1ecb0f6a68da203ee46a063e0368edd525ca9f5e6cfa6654b"
   end
 
   depends_on "rust" => :build
@@ -27,13 +28,13 @@ class CargoLlvmCov < Formula
     # Show that we can use a different toolchain than the one provided by the `rust` formula.
     # https://github.com/Homebrew/homebrew-core/pull/134074#pullrequestreview-1484979359
     ENV.prepend_path "PATH", Formula["rustup"].bin
-    system "rustup", "default", "beta"
     system "rustup", "set", "profile", "minimal"
+    system "rustup", "default", "beta"
 
     system "cargo", "new", "hello_world", "--lib"
     cd "hello_world" do
       system "cargo", "llvm-cov", "--html"
     end
-    assert_predicate testpath/"hello_world/target/llvm-cov/html/index.html", :exist?
+    assert_path_exists testpath/"hello_world/target/llvm-cov/html/index.html"
   end
 end

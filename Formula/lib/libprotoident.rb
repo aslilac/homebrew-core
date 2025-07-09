@@ -5,6 +5,8 @@ class Libprotoident < Formula
   sha256 "2b43a492fe1d7ada2e7b7b164c8e35220b35bf816bd971c7f77decc74b69801e"
   license "LGPL-3.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "411cc8c16803983d058bcff78dfda085396c97551e1cc1b70e0774e1278650c3"
     sha256 cellar: :any,                 arm64_sonoma:   "f79ee7ff4e6f80d27d5137297a908e5d03ef51b4acffb080725e869a6e56ce09"
@@ -15,6 +17,7 @@ class Libprotoident < Formula
     sha256 cellar: :any,                 ventura:        "c3a42911911468bc01a9fc0d1d5f0cbedaf60534ad6b9d1618eb22d53191b144"
     sha256 cellar: :any,                 monterey:       "3ad6e71b4d5a2857eabee4604eae32bd5f8888afb9532f6b984d5379548f3bb1"
     sha256 cellar: :any,                 big_sur:        "56c72764357f942f42eb087698db4dfa1ca54ec8e2d80a30a66298c73ce49a57"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "29e0aab84eae088dc92a2bee2abac070cc55337f26d99b80c894d6ad3a0fae27"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "538f5938a6c533c1102a3c8d0b49d3e298e67b085fbca1fe8b8a71d92ae4f242"
   end
 
@@ -26,8 +29,7 @@ class Libprotoident < Formula
 
   def install
     system "autoreconf", "--force", "--install", "--verbose"
-    system "./configure", *std_configure_args,
-                          "--disable-silent-rules"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 

@@ -10,6 +10,8 @@ class Bootloadhid < Formula
     regex(/href=.*?bootloadHID[._-]v?(\d{4}-\d{1,2}-\d{1,2})\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "0c8755c106cb46118e33efda3ce06c507bc13949530ee87f10b4807c8cbcc55a"
     sha256 cellar: :any,                 arm64_sonoma:   "b7ff675ef48886f1dade51bab419acf430f6b0d19df5e3789231096bc15ebece"
@@ -23,6 +25,7 @@ class Bootloadhid < Formula
     sha256 cellar: :any,                 catalina:       "aa0bc95a39610d6b5951d064d781d85b898ca2ebf230acbc60aa2f4e1f51e573"
     sha256 cellar: :any,                 mojave:         "36032498ab37f82f538d6aa037dac2b2f1c90f552ab5403f3e87c184bc47e75b"
     sha256 cellar: :any,                 high_sierra:    "59d545d65c052c2a62f171d4b6e92098a2725cb7c44997051e96863e30d26a03"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "51a4a8372175512d991362b12341aac01ac7d4b11b33af352de964815084e4cb"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "eef4ea84385608a16af8533cd12d40b164a57e30bbfecfe9a58dd462e8cf22a6"
   end
 
@@ -36,6 +39,6 @@ class Bootloadhid < Formula
 
   test do
     touch "test.hex"
-    assert_equal "No data in input file, exiting.", pipe_output("#{bin}/bootloadHID -r test.hex 2>&1").strip
+    assert_equal "No data in input file, exiting.", shell_output("#{bin}/bootloadHID -r test.hex 2>&1").strip
   end
 end

@@ -7,6 +7,8 @@ class Serveit < Formula
   revision 1
   head "https://github.com/garybernhardt/serveit.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9f9a8523f4f530ab0bd0fad9a27c710efa442b2c964aafa32c4a747819c515b7"
@@ -16,6 +18,7 @@ class Serveit < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "9f9a8523f4f530ab0bd0fad9a27c710efa442b2c964aafa32c4a747819c515b7"
     sha256 cellar: :any_skip_relocation, ventura:        "9f9a8523f4f530ab0bd0fad9a27c710efa442b2c964aafa32c4a747819c515b7"
     sha256 cellar: :any_skip_relocation, monterey:       "9f9a8523f4f530ab0bd0fad9a27c710efa442b2c964aafa32c4a747819c515b7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "00ccf2f05dfd700cf0f862c6b9c1c250327d9d303fb6062f83133ff307c95197"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e33ce3c0dbb5df24170e177bf1f0246d923e061304e201b54ed3f78051687a2d"
   end
 

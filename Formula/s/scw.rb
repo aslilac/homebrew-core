@@ -1,23 +1,28 @@
 class Scw < Formula
   desc "Command-line Interface for Scaleway"
-  homepage "https://github.com/scaleway/scaleway-cli"
-  url "https://github.com/scaleway/scaleway-cli/archive/refs/tags/v2.34.0.tar.gz"
-  sha256 "ed2c62cffa0a68a4ed973a405eb190e42eb5a1aa3d021ad3729b1301f5646d70"
+  homepage "https://www.scaleway.com/en/cli/"
+  url "https://github.com/scaleway/scaleway-cli/archive/refs/tags/v2.41.0.tar.gz"
+  sha256 "ba056eacd5a012a55789421d0d7579ee002ae298ca9a04a1d9a88eefb0d13ae7"
   license "Apache-2.0"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8f108b3544ed75adf491c64a22317dcd02c5247d9f4ed683d26c449cee955fb5"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8f108b3544ed75adf491c64a22317dcd02c5247d9f4ed683d26c449cee955fb5"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "8f108b3544ed75adf491c64a22317dcd02c5247d9f4ed683d26c449cee955fb5"
-    sha256 cellar: :any_skip_relocation, sonoma:        "17e160e945e5405aabd445538119cf31abd27128ec7018dee7270b3de47875a3"
-    sha256 cellar: :any_skip_relocation, ventura:       "17e160e945e5405aabd445538119cf31abd27128ec7018dee7270b3de47875a3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "96dcc09cad7c0a81f5500848bd47fcdb9526a697d10c0d3a3fda4b3540842cd9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3c15047638fd6749cc5e8d963ed170df70012251fedda3f45f0fc8d7fcab2170"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3c15047638fd6749cc5e8d963ed170df70012251fedda3f45f0fc8d7fcab2170"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "3c15047638fd6749cc5e8d963ed170df70012251fedda3f45f0fc8d7fcab2170"
+    sha256 cellar: :any_skip_relocation, sonoma:        "99b7cc0a2ded7fa8a0d9eaf996e8c9bbdabc3beddfb14b7d4658315eef06b702"
+    sha256 cellar: :any_skip_relocation, ventura:       "99b7cc0a2ded7fa8a0d9eaf996e8c9bbdabc3beddfb14b7d4658315eef06b702"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1cb18f1190ab194a51b6c57790844e6dc81ac621bee4e24fd11c4b0c358c052c"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-X main.Version=#{version}"), "./cmd/scw"
+    system "go", "build", *std_go_args(ldflags: "-s -w -X main.Version=#{version}"), "./cmd/scw"
 
     generate_completions_from_executable(bin/"scw", "autocomplete", "script", shell_parameter_format: :none)
   end

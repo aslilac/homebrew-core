@@ -10,6 +10,8 @@ class Uftp < Formula
     regex(%r{url=.*?/uftp[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "a06f88677a1fc1815127a1e75dcc3855a46f70b9e23333883a23f9635095b466"
     sha256 cellar: :any,                 arm64_sonoma:   "24937667b9315c47cc2ddda94564cda1e1d96cc023c38ecf73be04d14ce3f451"
@@ -18,6 +20,7 @@ class Uftp < Formula
     sha256 cellar: :any,                 sonoma:         "767d6bb0732fc7caf62d2a83cefd46e505ab1f26a1fe37fd74121716bae96945"
     sha256 cellar: :any,                 ventura:        "427b1ac8f16271a483e972b4a1ef5721d7bf0f200a9d4e49f42151dab276273a"
     sha256 cellar: :any,                 monterey:       "1ae379b34875e8a2deab485dbfc9716606ecba8f34267f979eb10e36ca474745"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "4335c5c6de511f66172229cfedec62145ddf1f408b48e14b732c457e861fd746"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "dd8ee6610e199b5cd9fbc20357597205bce8d7a9c92937e45ab0287ee11aa3fc"
   end
 

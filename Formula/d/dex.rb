@@ -6,6 +6,8 @@ class Dex < Formula
   license "GPL-2.0-only"
   head "https://github.com/tihirvon/dex.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 arm64_sequoia:  "961f06389b30d15e9464ece560955feff630b3b025d5e02fcc41e8778ced1597"
@@ -22,6 +24,7 @@ class Dex < Formula
     sha256 high_sierra:    "1d36402b9470f2e714bf9b9b94e9575d06130485559826a08181ff9087e77176"
     sha256 sierra:         "1e413a64cd9e2c594ec47c7e5e9ff36ab199126f6708265f5ad87363e66f033e"
     sha256 el_capitan:     "70c249809920acc2d10405c0487427d154ee55cf201507d910d8178693c7fd61"
+    sha256 arm64_linux:    "d0e976083ba5b7bffc80bd67406135fc4dc08226ecfd3d2336f5e8bb39b634c9"
     sha256 x86_64_linux:   "53f45193c090faaeefd2c6ca8a492f51af29d6b72f7a13eacb9650b6fffd46c5"
   end
 

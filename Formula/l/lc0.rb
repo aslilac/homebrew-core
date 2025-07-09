@@ -12,13 +12,14 @@ class Lc0 < Formula
     sha256 cellar: :any_skip_relocation, arm64_ventura: "2aeb4b6042e63d1caba7f44e7a753b54032fe2c3a5b9d30b1c49db4149adc0dd"
     sha256 cellar: :any_skip_relocation, sonoma:        "23318830a811ab5d1047779f6c3fe6bd9d1c2cc4e8ede7713c8027624b36a445"
     sha256 cellar: :any_skip_relocation, ventura:       "fdf20fa39a246862aa429134e633763fa585b0a9b23865fa82bbbddd29a96596"
+    sha256                               arm64_linux:   "c4a48bea8d7085a67ff4bfea83e3536b0944bbf78f5deb997e7a37f51439797b"
     sha256                               x86_64_linux:  "4f996c61da081b7421b72a5b1a7c47e0d69ccc0f626185c1016b3df45aca48a4"
   end
 
   depends_on "cmake" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "eigen"
 
   uses_from_macos "python" => :build # required to compile .pb files
@@ -27,8 +28,6 @@ class Lc0 < Formula
   on_linux do
     depends_on "openblas"
   end
-
-  fails_with gcc: "5" # for C++17
 
   # We use "753723" network with 15 blocks x 192 filters (from release notes)
   # Downloaded from https://training.lczero.org/networks/?show_all=0

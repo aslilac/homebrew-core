@@ -2,6 +2,7 @@ class Opus < Formula
   desc "Audio codec"
   homepage "https://www.opus-codec.org/"
   url "https://ftp.osuosl.org/pub/xiph/releases/opus/opus-1.5.2.tar.gz"
+  mirror "https://github.com/xiph/opus/releases/download/v1.5.2/opus-1.5.2.tar.gz"
   sha256 "65c1d2f78b9f2fb20082c38cbe47c951ad5839345876e46941612ee87f9a7ce1"
   license "BSD-3-Clause"
 
@@ -18,6 +19,7 @@ class Opus < Formula
     sha256 cellar: :any,                 sonoma:         "858dbe63f7a6489d18c9ab19114496081881623319bce3b917e686e63550dd84"
     sha256 cellar: :any,                 ventura:        "742d2b0dabd25100776c6a57743fde9e05b02e154612ead68dc25c1ef57fcc3d"
     sha256 cellar: :any,                 monterey:       "becc7d03c9219308c69f7704d33cc7cf0579a2db902e82ef33bf5266f69a54c1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "289beb9cfacf46917db19b01dc58f2409265bc7029ddfbf0dc2def345baf8f53"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d35c066cdcaad6a6b9f840fc2dd70da4ca02000c11b08674fa065b8bf7a9b925"
   end
 
@@ -31,8 +33,7 @@ class Opus < Formula
 
   def install
     system "./autogen.sh" if build.head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-doc", "--prefix=#{prefix}"
+    system "./configure", "--disable-doc", *std_configure_args
     system "make", "install"
   end
 

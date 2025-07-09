@@ -12,6 +12,8 @@ class Libgxps < Formula
     regex(/libgxps[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any, arm64_sequoia:  "fdca2abeb3cab442e39539689c5faf9c5540fc723f01c0596c11f2943874c45b"
     sha256 cellar: :any, arm64_sonoma:   "0bc7f03e4357779ac617e6750d70daff18da2a7da889387acdfe75891bcfce0e"
@@ -22,6 +24,7 @@ class Libgxps < Formula
     sha256 cellar: :any, ventura:        "d23e0dfb5092636567f86a31839a04fc0831253eb73dc0863929c9c71d648be2"
     sha256 cellar: :any, monterey:       "e523554e0a7faa5c8f0a4ff842f4b462d9cb24411d3f855cb4f7e4eaded44fe2"
     sha256 cellar: :any, big_sur:        "187f95bca68a60db5155a911033be4eab80537598f5dd788a3edbbb7303fe5a5"
+    sha256               arm64_linux:    "c230ad46a5f67b2e3862f8d76c1a2e8b92fb59815e06d9265704d6940ae8e218"
     sha256               x86_64_linux:   "0fda080a2b1da025e6d6aef7a9e4934fefaabda48cc9c080088e1146cead5558"
   end
 
@@ -30,7 +33,7 @@ class Libgxps < Formula
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "cairo"
   depends_on "freetype"

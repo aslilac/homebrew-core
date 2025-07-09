@@ -1,41 +1,24 @@
 class Colortail < Formula
   desc "Like tail(1), but with various colors for specified output"
   homepage "https://github.com/joakim666/colortail"
-  url "https://github.com/joakim666/colortail.git",
-      revision: "f44fce0dbfd6bd38cba03400db26a99b489505b5"
-  version "0.3.4"
+  url "https://github.com/joakim666/colortail/releases/download/0.3.5/colortail-0.3.5.tar.gz"
+  sha256 "8d259560c6f4a4aaf1f4bbdb2b62d3e1053e7e19fefad7de322131b7e80e294d"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "94c9044ed869e43d16d4f5dcd1ef1b94b434443126c34c64f08a1e7bb6bbdb4d"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "dddf27b1538766c826383b6c53477a543f0d1944cc36f49e5559b30c967fda67"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "01d31038e80f6c276198a8dba844c6090156125163588cb42b344673507c68e0"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "620058633e6ec31c36c0cc251d355a1ec4537f91d1563e95b5308561b2277fdf"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2d7e35ff95a2d161fc60fcefa368c901dbe3ff1c973025f7f4c96617fd959fc3"
-    sha256 cellar: :any_skip_relocation, sonoma:         "71231c312b32b026241435da0d1dc85456f9c58c0555062e9deb61ad0575ee89"
-    sha256 cellar: :any_skip_relocation, ventura:        "83d2bb33d8908c63fa2c1c7112afe87c90fd1b185b0783b0fd05e6f0cf910a48"
-    sha256 cellar: :any_skip_relocation, monterey:       "94feb2affa50d2d9e6b829d1608246f4a4aa15b09adc485080da655022a822ad"
-    sha256 cellar: :any_skip_relocation, big_sur:        "1cbd1fd25ee747f5c8db91de50511cc93ded9deb1b6daf99b343f5efaf449cda"
-    sha256 cellar: :any_skip_relocation, catalina:       "76e327c10e6614aed10396f4da1008eda7d0574c77b009e6c4cc109829033bb1"
-    sha256 cellar: :any_skip_relocation, mojave:         "f68bafd58bcff89453bf8f81331eb968c5bde460821a885523863ec4ee9482fb"
-    sha256 cellar: :any_skip_relocation, high_sierra:    "a7974ddb2f0bd3a7946bb5d06fe637f94c7a8776f9cd811bf8fbd530caa92816"
-    sha256 cellar: :any_skip_relocation, sierra:         "44e09610d285f503fbae67f930ae7bea894c737d1e2c9c634332188340a70e3e"
-    sha256 cellar: :any_skip_relocation, el_capitan:     "e0c8c9af739ce911c0d09eaee26b615444c17f48de27c680cbaf27739e45d8f5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0bb6017dc4e925d2ac5de5eedf2202e6a45a1f59b941faa6518e3038acca544c"
-  end
-
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-
-  # Upstream PR to fix the build on ML
-  patch do
-    url "https://github.com/joakim666/colortail/commit/36dd0437bb364fd1493934bdb618cc102a29d0a5.patch?full_index=1"
-    sha256 "d799ddadeb652321f2bc443a885ad549fa0fe6e6cfc5d0104da5156305859dd3"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "46881ac8087481d7f575b911883807e424a02ab942a7af58d9c38b4d2b73ef85"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "51277f3ef27c9d547f2f07a3e81cfddb744b1e1a566e6e020c5c9a92f804f5f3"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0e6f802573fbe0d69c824e53529faf6e89703247cc1a99e0889c8ac04bb731b5"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6c5d498dedf3d26bf0636d10e5a82bdda798dbb480f89ab07a19fdc75159053a"
+    sha256 cellar: :any_skip_relocation, ventura:       "2b9245f09d0796f87a0e4d615631bd7a678135dc25d5243128b8c47104bae3aa"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "78b490e972fd2d3c0b3f1a1975bdd221f61e990caf05acd383bf5a79ef675a48"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e7f6aa1cfcfd61cef470944acee240c93f2442639355dea39fe06e414d168cab"
   end
 
   def install
-    system "./autogen.sh", "--disable-dependency-tracking",
-                           "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 

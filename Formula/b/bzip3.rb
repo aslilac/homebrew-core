@@ -1,23 +1,22 @@
 class Bzip3 < Formula
   desc "Better and stronger spiritual successor to BZip2"
   homepage "https://github.com/kspalaiologos/bzip3"
-  url "https://github.com/kspalaiologos/bzip3/releases/download/1.4.0/bzip3-1.4.0.tar.gz"
-  sha256 "a7bf2369f1ea0e1f2616686348f3749607abadd957519ee09b6f11da02b1039a"
+  url "https://github.com/kspalaiologos/bzip3/releases/download/1.5.2/bzip3-1.5.2.tar.gz"
+  sha256 "9d10092a3842378e6d0b16992ee49f711304d88eb4efac80440338184d4b6276"
   license "LGPL-3.0-only"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "1a9abfabd7a387c9ab1b86590f9c76c7d2222b7652a859866a497e01d80d44d2"
-    sha256 cellar: :any,                 arm64_sonoma:   "3aa48aeabf11d9b8c4f5f2a69a224485b3a236262fb0abd576aa3ac5ea206be5"
-    sha256 cellar: :any,                 arm64_ventura:  "040e396b19bf880ce14404c425676e2ef0590a3c4551ccf0f2dfaf78d179ad68"
-    sha256 cellar: :any,                 arm64_monterey: "242f1910fae6ae7127d0d5c55b47694bba0cfb570edaa5f3a1fd630cde6e569c"
-    sha256 cellar: :any,                 sonoma:         "9aa62ffbcd58ab5e4b2a2a1db17feadfee05e97e9d3e994ce92db79e04d9f96a"
-    sha256 cellar: :any,                 ventura:        "6abc714830c3f253caf3ae0b554ba49603240aaa378377ffbd760e9a5fd00bb4"
-    sha256 cellar: :any,                 monterey:       "4abc89e257d80847233ac4ddf6f09519b106faff66416a18034584a461e086d1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3c98aa7bd0954fff98620d6ee0897df8caccac0f35c22a3d25cff8e9766f086a"
+    sha256 cellar: :any,                 arm64_sequoia: "ad8bae59027a6b9d3a3d8aa759c6586a43204e66e23938a51f1ff7f66587b3c7"
+    sha256 cellar: :any,                 arm64_sonoma:  "e2380b06a3a38d6a312d8abbf70ade17cd7127c357055756552213d25195709c"
+    sha256 cellar: :any,                 arm64_ventura: "d20858e93f7d71dbd465b49c25c29b9bd59c3a572846599df1253ee7e7e1729a"
+    sha256 cellar: :any,                 sonoma:        "d2a113243e5510ae45b8080250b844847f1fde3bb1df66373a1cdd658be56cac"
+    sha256 cellar: :any,                 ventura:       "4ab6f2e55319729e67acaf179395228ec7cc191f87d2e78886c0753fc1725880"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b63f8228410a4cf5ae10f594eec3f18d5697b1bfa5f70b57254b8944d9eb79d9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1703e4aa6739acac3188b2d7f3c5881f9fd2562351ee6752f16af96c2efd82cc"
   end
 
   def install
-    system "./configure", *std_configure_args, "--disable-silent-rules", "--disable-arch-native"
+    system "./configure", "--disable-silent-rules", "--disable-arch-native", *std_configure_args
     system "make", "install"
   end
 

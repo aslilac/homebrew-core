@@ -6,6 +6,8 @@ class LtcTools < Formula
   license "GPL-2.0-or-later"
   head "https://github.com/x42/ltc-tools.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "50128bae6264b3239c9d2e8e0f9952e72c364349438382c36f35252c35eedcaa"
     sha256 cellar: :any,                 arm64_sonoma:   "539c3a74d0e1da9b7680063d41e735d3240bd2bb8454b2e93a7c42118b73c147"
@@ -20,11 +22,12 @@ class LtcTools < Formula
     sha256 cellar: :any,                 mojave:         "ae65212fa593ee7015eb7bfa63b4e7e7691e56a7db0fc1a82a311aef184aae55"
     sha256 cellar: :any,                 high_sierra:    "15da8efd84adb9d9eb9c7b4450c75e326679b20bed258c8e7011fc6eb2cc9b20"
     sha256 cellar: :any,                 sierra:         "51df0ba95565d43955bbdf0cfbc216696b4002f8cc95c80d8f6b387eece034d1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "5cf1b3ebc4b537434144fb06a19917cf47f63f368a6376ad0c78bcc1f42c6695"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f067afb9aec069b45d0c8025574d673d701140d4262ba2530337a868c016bd81"
   end
 
   depends_on "help2man" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "jack"
   depends_on "libltc"
   depends_on "libsndfile"

@@ -10,6 +10,8 @@ class Ssss < Formula
     regex(/href=.*?ssss[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "0baf04283135acc3f522af4d516f783c646cab07e6bc3ff9be9cd7c8f09d0059"
     sha256 cellar: :any,                 arm64_sonoma:   "56687b50265df26e2c4c08e7a3c397c3e39f66dd29c0c0bf1cfe4976c1eeac0d"
@@ -25,6 +27,7 @@ class Ssss < Formula
     sha256 cellar: :any,                 high_sierra:    "af51b1deda77dc64304532dbe4131a02520a8e619f5aea178eeef9d30f87f2c9"
     sha256 cellar: :any,                 sierra:         "d6c84cc81a0e079f55b32bf3bc35be3a70016226f5cb0e6d1862c9dca22aaa56"
     sha256 cellar: :any,                 el_capitan:     "ffc9b4c320b50f3d093000f9cde8fff3e4f2869ff4111a7da25b0cf17a2bc065"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "7b17a59f64cafbf6650d62aa354f65ff5971353ac0aa105652be34b091dca140"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "74cef70f4478596824e7ecdb1356b650c6d03e1bd4bcf8202822622c16faf6b2"
   end
 

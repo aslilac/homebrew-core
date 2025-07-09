@@ -5,6 +5,8 @@ class SomagicTools < Formula
   sha256 "b091723c55e6910cbf36c88f8d37a8d69856868691899683ec70c83b122a0715"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "6df28d78f161dc5a7e4a53d329db5c191848fe0c50abf3d7b0d71019d0ccbdae"
     sha256 cellar: :any,                 arm64_sonoma:   "1c378cda0ff89daa67d23c9747b812fc59ada83f8c7126cf894858a3f6846b8a"
@@ -20,6 +22,7 @@ class SomagicTools < Formula
     sha256 cellar: :any,                 high_sierra:    "121e3b6667ee8dcd81cf2331342d27b6221b1ebf955f83e00311176fa5fe11ca"
     sha256 cellar: :any,                 sierra:         "b0fa394d0211f43fe5c9da6e7f36b8e3b6ed5086b8a447b06df42e21bf0e30cd"
     sha256 cellar: :any,                 el_capitan:     "b73262d08d3ec9e10645290555b5fb0c5fd95492c9d5db2ab451285ccb69eac6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "aa90bfa3a829c6d5073ffd2f7552173c4b33174aec52a32a75702a7bb55e61d0"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b6a63036040014c766c494998f69b3be27f0ff5dccee6deba1a0f8ac7c6a05e3"
   end
 

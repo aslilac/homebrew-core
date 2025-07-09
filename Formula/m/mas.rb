@@ -2,25 +2,32 @@ class Mas < Formula
   desc "Mac App Store command-line interface"
   homepage "https://github.com/mas-cli/mas"
   url "https://github.com/mas-cli/mas.git",
-      tag:      "v1.8.7",
-      revision: "4405807010987802c0967bbf349c08808062b824"
+      tag:      "v2.2.2",
+      revision: "7dacbbf3fb9a622247c1b0b9f18a4a9c7673ee53"
   license "MIT"
   head "https://github.com/mas-cli/mas.git", branch: "main"
 
-  bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3d60116e4940c47bd25bc0f6a1892b0208614aa9aed42dcadaa09e3076d0c8f3"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5a8e74596411c07d2ed9836cee135d332275c0c16eb13bd913af7a57e26b6a90"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "41063e066322ddf890781b9e52aeba17531d0049f3a7b1a8b2224f526353bf5d"
-    sha256 cellar: :any_skip_relocation, sonoma:        "6c1cf3ef5f895e07f8890f74ee79ab722398dd64a62393bcc74342c52ccc1743"
-    sha256 cellar: :any_skip_relocation, ventura:       "753b67a87bdce69ead4ec7d667a3834bb72e9654594e3789f315e70d3f439243"
+  livecheck do
+    url :stable
+    strategy :github_latest
   end
 
-  depends_on xcode: ["14.2", :build]
+  no_autobump! because: :requires_manual_review
+
+  bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a4cba95e2f584f56e2e726c7808df195ceb0c1fe20aa3436f126ef0c527c59c6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "de10dbbddeff1469e06acd6ce7edefd35872fb013b75c55a6f60f8b4e6a15803"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c289261da5fa0e1b120bcb0dcb5ebf7abc67bb014f55f2a346f3ade71d2fd06b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ff349aa8bb8af56798e3bcfe5344ecd801bc082c1aa6eb68e458a4c7de74b79a"
+    sha256 cellar: :any_skip_relocation, ventura:       "dabfebb8a16bf2da2058dcb0f6c6df51d7448728412001b135549802ba360303"
+  end
+
+  depends_on xcode: ["15.0", :build]
   depends_on :macos
 
   def install
-    system "script/build"
+    ENV["MAS_DIRTY_INDICATOR"] = ""
+    system "script/build", "homebrew/core/mas", "--disable-sandbox"
     bin.install ".build/release/mas"
 
     bash_completion.install "contrib/completion/mas-completion.bash" => "mas"

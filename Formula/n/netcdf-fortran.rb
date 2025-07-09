@@ -1,18 +1,18 @@
 class NetcdfFortran < Formula
   desc "Fortran libraries and utilities for NetCDF"
   homepage "https://www.unidata.ucar.edu/software/netcdf/"
-  url "https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.6.1.tar.gz"
-  sha256 "40b534e0c81b853081c67ccde095367bd8a5eead2ee883431331674e7aa9509f"
+  url "https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.6.2.tar.gz"
+  sha256 "44cc7b5626b0b054a8503b8fe7c1b0ac4e0a79a69dad792c212454906a9224ca"
   license "NetCDF"
-  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "8b62a93777fedd65dc1fb67b84cde354588dab2352f216f89930aec00ed768f6"
-    sha256 cellar: :any,                 arm64_sonoma:  "993ceaa41b2e1fc8710ca48606136ff18f6bde953f563719b60528929b910a04"
-    sha256 cellar: :any,                 arm64_ventura: "17d6a2cf65bfdc1842136df9c62789b4ec21783d3989309bc795d7859235dd4b"
-    sha256 cellar: :any,                 sonoma:        "28c45ad6a04dc865332cb5ab992c24b595a0282263d8990a9b8d2f2441840a9b"
-    sha256 cellar: :any,                 ventura:       "5243be662389c3f85b0dc96d90cd6706dd2ff7393c493af3dbc3dbaab6a8a8fe"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b555cd5b1f9e6486a6804214836de433c9f97b118ba76d073949d37990f1da40"
+    sha256 cellar: :any,                 arm64_sequoia: "d91c6c35e16156f4542f17de1103e15b8471aa0fca99e94bb3762e9644e383e6"
+    sha256 cellar: :any,                 arm64_sonoma:  "5473275962edf3112c6075204d6cdf55dbd90e5677fb96d23a191683620fbf77"
+    sha256 cellar: :any,                 arm64_ventura: "46de0b263944a9043587d3786893444f54dbb156f7ee8d9e8db7bce515c6079b"
+    sha256 cellar: :any,                 sonoma:        "e6fd6c9ef98bd9a1598007909f3ce4b2d0d7fc0c36157146924197ab722d7426"
+    sha256 cellar: :any,                 ventura:       "9e56a4edce4c857dbe748e52bbef8252c7bf7fab0521159aef743a8591eb96f3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6e64fc9a9d7cdeecd02e16f6d5ecf60e6244f99ce9cdda0e49f17e4028c9f8cd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c43bc1f9b6084692f9dec942860261facb88aa2fff0d5c9989843d8297e6dbdd"
   end
 
   depends_on "cmake" => :build
@@ -21,7 +21,7 @@ class NetcdfFortran < Formula
   depends_on "netcdf"
 
   def install
-    args = std_cmake_args + %w[-DBUILD_TESTING=OFF -DENABLE_TESTS=OFF -DENABLE_NETCDF_4=ON -DENABLE_DOXYGEN=OFF]
+    args = std_cmake_args + %w[-DENABLE_TESTS=OFF -DENABLE_DOXYGEN=OFF]
 
     # Help netcdf-fortran find netcf
     # https://github.com/Unidata/netcdf-fortran/issues/301#issuecomment-1183204019
@@ -37,8 +37,7 @@ class NetcdfFortran < Formula
     lib.install "build_static/fortran/libnetcdff.a"
 
     # Remove shim paths
-    inreplace [bin/"nf-config", lib/"libnetcdff.settings", lib/"pkgconfig/netcdf-fortran.pc"],
-      Superenv.shims_path/ENV.cc, ENV.cc
+    inreplace [bin/"nf-config", lib/"pkgconfig/netcdf-fortran.pc"], Superenv.shims_path/ENV.cc, ENV.cc
   end
 
   test do

@@ -10,6 +10,8 @@ class Normalize < Formula
     regex(/href=.*?normalize[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any, arm64_sequoia:  "53b16243f5e01a1b903a687774320986f9a27f92efd6af821aef4e3d7f354467"
@@ -26,6 +28,7 @@ class Normalize < Formula
     sha256 cellar: :any, high_sierra:    "e4dd195c639807e3e2e25fee6c5c6f3c4263a37a4c7f8f25ab656a96395faeaf"
     sha256 cellar: :any, sierra:         "1165de2721e8b4d7f373b9ad10f52c2cd49c44a24cd8fddab5ba51983164cefe"
     sha256 cellar: :any, el_capitan:     "052ab2e8b1f6a2aa1e634a30749612d927b5cee5cc9302e057bd02c599a1c256"
+    sha256               arm64_linux:    "a035755b426126bd056c7287f416cc068b3d399a100e56f8192178a6530048dc"
     sha256               x86_64_linux:   "ac6f58e169897ddfc61943009dd38044958a8fc56a025e91632d2302de3063df"
   end
 
@@ -34,14 +37,11 @@ class Normalize < Formula
   conflicts_with "num-utils", because: "both install `normalize` binaries"
 
   def install
-    args = %W[
-      --disable-debug
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-      --mandir=#{man}
-    ]
+    args = []
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
 
-    system "./configure", *args
+    system "./configure", "--mandir=#{man}", *args, *std_configure_args
     system "make", "install"
   end
 

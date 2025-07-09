@@ -10,6 +10,12 @@ class Libsigrok < Formula
     url "https://sigrok.org/download/source/libsigrok/libsigrok-0.5.2.tar.gz"
     sha256 "4d341f90b6220d3e8cb251dacf726c41165285612248f2c52d15df4590a1ce3c"
 
+    # build patch to replace `PyEval_CallObject` with `PyObject_CallObject`
+    patch do
+      url "https://github.com/sigrokproject/libsigrok/commit/5bc8174531df86991ba8aa6d12942923925d9e72.patch?full_index=1"
+      sha256 "247bfee9777a39d5dc454a999ce425a061cdc48f4956fdb0cc31ec67a8086ce0"
+    end
+
     resource "libserialport" do
       url "https://sigrok.org/download/source/libserialport/libserialport-0.1.1.tar.gz"
       sha256 "4a2af9d9c3ff488e92fb75b4ba38b35bcf9b8a66df04773eba2a7bbf1fa7529d"
@@ -35,20 +41,25 @@ class Libsigrok < Formula
     end
   end
 
+  # The upstream website has gone down due to a server failure and the previous
+  # download page is not available, so this checks the directory listing page
+  # where the `stable` archive is found until the download page returns.
   livecheck do
-    url "https://sigrok.org/wiki/Downloads"
+    url "https://sigrok.org/download/source/libsigrok/"
     regex(/href=.*?libsigrok[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
-    sha256                               arm64_sequoia:  "ce3817f9869539b5e7f9c19c9178211484b99ace89dd9ff7a26233013649acb6"
-    sha256                               arm64_sonoma:   "531edfde4ad0fde8bc06d1380d62b85bed86415f2ea63f76706b2369f2fa70d1"
-    sha256                               arm64_ventura:  "632dc0050579c516cadca7127de3b89104b0b16088735934a0857412c31a5b3e"
-    sha256                               arm64_monterey: "09286cd2262fc0cfbfa1a29abfab61e92b88c0a031acee695b0eac837aaa44c1"
-    sha256                               sonoma:         "927be3d20407cfd3c9371f54eadc63c55036cff36f8c931d29337cb1c2d4aa05"
-    sha256                               ventura:        "ce4c862b9e10a258a23f47dba9633095abd548b5b6513aa8f14d155d9c5c0a68"
-    sha256                               monterey:       "62967ec4b00854d14da39764d6b325da4a29fd20d7ba2bc55d726ff7be6c8876"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7df2b9d29a225cdf6e78ade8aa14629773c4ddc2ccbaf0d894f864580912b7f8"
+    rebuild 1
+    sha256                               arm64_sequoia: "22e5e2db64f98452def0ed20f6896caa15fda7c38c71454adbd6c4261591eb43"
+    sha256                               arm64_sonoma:  "39c5f43f820298f30bb3ff75ea971257f1ce9a4df35be4f2ccd218355f2b7a62"
+    sha256                               arm64_ventura: "7f3024bf6ef54007c043d9be38515c29522cd9952280142d330009da93fd9fcc"
+    sha256                               sonoma:        "d0606b7df886ae65ba3fbf01968682ed5928ad17bbf293e6b905ed2fa097adc2"
+    sha256                               ventura:       "772490f83137bbd47c046691c5dd9af3ac245cc9e49d4e86d9c5db7355ed87f0"
+    sha256                               arm64_linux:   "748684586a8ca71f8957e8929a8ed28220ca62ff56e7c1c0aec30209728fd588"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d91357303c1b4ff68746181b66eba6944140ff6bf365c1e88cfafd29f9c64076"
   end
 
   head do
@@ -69,7 +80,7 @@ class Libsigrok < Formula
   depends_on "doxygen" => :build
   depends_on "graphviz" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "python-setuptools" => :build
   depends_on "sdcc" => :build
   depends_on "swig" => :build
@@ -82,7 +93,7 @@ class Libsigrok < Formula
   depends_on "nettle"
   depends_on "numpy"
   depends_on "pygobject3"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   on_macos do
     depends_on "gettext"
@@ -95,7 +106,7 @@ class Libsigrok < Formula
   end
 
   def python3
-    "python3.12"
+    "python3.13"
   end
 
   def install
@@ -171,13 +182,13 @@ class Libsigrok < Formula
         return 0;
       }
     C
-    flags = shell_output("#{Formula["pkg-config"].opt_bin}/pkg-config --cflags --libs libsigrok").strip.split
+    flags = shell_output("#{Formula["pkgconf"].opt_bin}/pkgconf --cflags --libs libsigrok").strip.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
 
-    system python3, "-c", <<~C
+    system python3, "-c", <<~PYTHON
       import sigrok.core as sr
       sr.Context.create()
-    C
+    PYTHON
   end
 end

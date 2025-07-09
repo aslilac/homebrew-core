@@ -6,6 +6,8 @@ class Gpx < Formula
   license "GPL-2.0-or-later"
   head "https://github.com/markwal/GPX.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4cce4b9145a373c3c34a20ebf23371a7927d0de776d583dca2b9e711ca07e30d"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "61e0254f04e3d84c686ebdc03b55e1e8cfdbf8763a562d7bebb098e9a350216d"
@@ -18,6 +20,7 @@ class Gpx < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "254414afa9fe68137739444a5c514637131eac89d208239d4de86d953bbed5cd"
     sha256 cellar: :any_skip_relocation, catalina:       "a982edd4fb776a077ea51294aea03533e5672dea8a7710329aadc2a3adca9ad1"
     sha256 cellar: :any_skip_relocation, mojave:         "f807c588535d7d941470c2d80dd58e97f4ad9e72d7da1b13cbbf87d9912a970a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "14c39a870eabe876ac4f7c93fde5b4821a7afaf9409a1445db1a7b4117d980fe"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "50b29dd66920ad57a1f25ca2da7bd5cbed6f73ae4141fdc6fc9a07fb2166496c"
   end
 

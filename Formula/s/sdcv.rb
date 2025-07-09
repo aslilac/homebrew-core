@@ -7,6 +7,8 @@ class Sdcv < Formula
   version_scheme 1
   head "https://github.com/Dushistov/sdcv.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "b53341800d7aad1fae6fd3b105de15a7b1f81e4192d350b50cc4f389e21298da"
     sha256 arm64_sonoma:   "7c16b9b5e5b3ae014c182f84df89c800bd60cf9da4a0b1c0fda724dfb42d991c"
@@ -17,17 +19,22 @@ class Sdcv < Formula
     sha256 ventura:        "1f634180a15ceeb5f96805722e3e885dd7e55abfb8a60cedc5628aac51b9d026"
     sha256 monterey:       "6b6f6f0cc8a7b79c11c540dd09ab258f67f8effb4c3b9222eb24c6fe7422de23"
     sha256 big_sur:        "b9500af174861ad2fabb36db77642ff700c2b04c74f0008abb157deac4f4598e"
+    sha256 arm64_linux:    "6506b6d3a7602edd66c068de46f433710a9487ed13e8bc9d93581111e4d09e6a"
     sha256 x86_64_linux:   "1d48958b5768fd52938d5358be25d96911066e0b738b0bc75497aae904c98d96"
   end
 
   depends_on "cmake" => :build
+  depends_on "gettext" => :build
   depends_on "pkgconf" => :build
 
-  depends_on "gettext"
   depends_on "glib"
   depends_on "readline"
 
   uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   # fix type mismatch and memory deallocation build errors
   # upstream PR ref, https://github.com/Dushistov/sdcv/pull/103

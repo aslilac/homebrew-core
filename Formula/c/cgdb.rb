@@ -10,6 +10,8 @@ class Cgdb < Formula
     regex(/href=.*?cgdb[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "dac79a6089d98cfbe4c2b9083d34c0558227e6888546e76c0d425550cb808f30"
     sha256 arm64_sonoma:   "f30227f01c96e73fa96c6eae457149108dc258cad4845ba3a36bdad6b3d25d67"
@@ -21,6 +23,7 @@ class Cgdb < Formula
     sha256 monterey:       "8fd498ac0f53354ec1b2298e5b6d0bf5d11f2047ca0df29b44b3b31a6bf89682"
     sha256 big_sur:        "82301d4bbc42f2feea9b20676554ed96360d7ce7626b5ef02afb6e76983818f6"
     sha256 catalina:       "0cf4c2cd5ed2f6b831581d06d3f9614007aaecc16bc4ba0a1fce85afa81a11ee"
+    sha256 arm64_linux:    "6a3ab90cdc4efe81a78b89511057f673b90bb5585cfd707fb9565b2c4cd6627d"
     sha256 x86_64_linux:   "cb3a12c3700e55375cffe843a4bdf8e4fe2541219dc1da35304f7dbece2f5809"
   end
 

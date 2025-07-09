@@ -6,6 +6,8 @@ class Hexedit < Formula
   license "GPL-2.0-or-later"
   head "https://github.com/pixel/hexedit.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "604722ab45e22e81dbfdc0d047e99be5e11dc0dbe938bb9e12623a452681f848"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "afc2fe1bf87e8c4eeca709846343c69c54e061130fa737068de92c442138eeb4"
@@ -17,6 +19,7 @@ class Hexedit < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "f24ca3b6ffe8ab46993b0044f5fa94f2663f4122d65ae290ff8355241d41ca0f"
     sha256 cellar: :any_skip_relocation, big_sur:        "145c1c6e983965f64b0e19df3a0c6adaff3577486c42ffbe1e79939ef855d9c5"
     sha256 cellar: :any_skip_relocation, catalina:       "6306cc37f5c56d10fd058db6881681e2406adf397537616b37d45aab2e732964"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "545be837a1c5050d983a83141cc68eb447da849733f010fbc4b38c3264893215"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "26a91b13749f1e68542e41109fed36f4001a23d79a412bf7a5830f2a08ddbe5c"
   end
 

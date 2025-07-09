@@ -23,6 +23,7 @@ class Gox < Formula
   end
 
   deprecate! date: "2024-02-20", because: :repo_archived
+  disable! date: "2025-02-24", because: :repo_archived
 
   depends_on "go"
 
@@ -50,7 +51,7 @@ class Gox < Formula
       assert_match "parallel", output
       assert_predicate Pathname.pwd/"pup_darwin_amd64", :executable?
       assert_predicate Pathname.pwd/"pup_freebsd_amd64", :executable?
-      refute_predicate Pathname.pwd/"pup_linux_amd64", :exist?
+      refute_path_exists Pathname.pwd/"pup_linux_amd64"
     end
   end
 end

@@ -1,37 +1,21 @@
 class Ntopng < Formula
   desc "Next generation version of the original ntop"
   homepage "https://www.ntop.org/products/traffic-analysis/ntop/"
+  url "https://github.com/ntop/ntopng/archive/refs/tags/6.4.tar.gz"
+  sha256 "3eaff9f13566e349cada66d41191824a80288ea19ff4427a49a682386348931d"
   license "GPL-3.0-only"
-  revision 1
+  head "https://github.com/ntop/ntopng.git", branch: "dev"
 
-  stable do
-    url "https://github.com/ntop/ntopng/archive/refs/tags/6.2.tar.gz"
-    sha256 "de6ef8d468be3272bce27719ab06d5b7eed6e4a33872528f64c930a81000ccd1"
-
-    depends_on "ndpi"
-
-    # Apply Gentoo patch to force dynamically linking nDPI
-    patch do
-      url "https://gitweb.gentoo.org/repo/gentoo.git/plain/net-analyzer/ntopng/files/ntopng-5.4-ndpi-linking.patch?id=25646dfc75b15c2bcc9c80ab3aba7a6bab5eec68"
-      sha256 "ddbfb32a642e890878bef52c4c8e02232e9f11c132e348c78d47c7865d5649e0"
-    end
-  end
+  no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 arm64_sequoia: "0342fbf3f9f0555a8ae63bca9e58ffcc2978d8022b680872ebf779e73ff74375"
-    sha256 arm64_sonoma:  "80574754cd8d1d02c39bad6b33921f9fac544e6b319f56a73cc18ff57d202427"
-    sha256 arm64_ventura: "74af363c5bf72edc84af1b411e8379ed7b6ad34b2b6159397a38a7bcc82163d8"
-    sha256 sonoma:        "9fdf1fec3559511322cbafd7325ace357281bd76a9a0c51f1d46bbfd8864603d"
-    sha256 ventura:       "146234370eef0a7a771049db2b67f81a67548458edc82fb9f8a13babadb6ecfd"
-    sha256 x86_64_linux:  "26aa0a5a53f7bcb8bd70f26afa3b2aba2cfcad0d12c9887ded2cfc65038dfb02"
-  end
-
-  head do
-    url "https://github.com/ntop/ntopng.git", branch: "dev"
-
-    resource "nDPI" do
-      url "https://github.com/ntop/nDPI.git", branch: "dev"
-    end
+    sha256 arm64_sequoia: "1b62120513879ce4cb6ba349d4ac92223089a6c77e6d6719df29250f61954a7b"
+    sha256 arm64_sonoma:  "40dffa8af2e27119e1ee18f2808f3578f71a437968fb8178e78c80bdb2dac34c"
+    sha256 arm64_ventura: "0fb6b854e3a12b0023d73b05c5f8241bd345d0811fa67e62606e5306ee2646be"
+    sha256 sonoma:        "0f136bffdd96b2f2265f6215872b75b532ed4119035f54e6929fc61ede54983d"
+    sha256 ventura:       "eebfd0cc2d9bf8fcd50ad648370c995967c73a820eb7077c4b335d6567bbc20f"
+    sha256 arm64_linux:   "8c3a45211d5d3e9fca45b73ae7d94d5c4929b1a11825d26fcae495dbb5d97bbd"
+    sha256 x86_64_linux:  "4b68256ead71268544621f9d21828f0fade161f54f6ba3dc3803d28f20bda3fc"
   end
 
   depends_on "autoconf" => :build
@@ -45,6 +29,7 @@ class Ntopng < Formula
   depends_on "libmaxminddb"
   depends_on "libsodium"
   depends_on "mariadb-connector-c"
+  depends_on "ndpi"
   depends_on "openssl@3"
   depends_on "rrdtool"
   depends_on "sqlite"
@@ -63,20 +48,28 @@ class Ntopng < Formula
     depends_on "libcap"
   end
 
+  # Add `--with-dynamic-ndpi` configure flag
+  # Remove in the next release
+  patch do
+    url "https://github.com/ntop/ntopng/commit/a195be91f7685fcc627e9ec88031bcfa00993750.patch?full_index=1"
+    sha256 "208b9332eed6f6edb5b756e794de3ee7161601e8208b813d2555a006cf6bef40"
+  end
+
+  # Fix compilation error when using `--with-synamic-ndpi` flag
+  # https://github.com/ntop/ntopng/pull/9252
+  patch do
+    url "https://github.com/ntop/ntopng/commit/0fc226046696bb6cc2d95319e97fad6cb3ab49e1.patch?full_index=1"
+    sha256 "807d9c58ee375cb3ecf6cdad96a00408262e2af10a6d9e7545936fd3cc528509"
+  end
+
   def install
     # Remove bundled libraries
     rm_r Dir["third-party/{json-c,rrdtool}*"]
 
-    args = []
-    if build.head?
-      resource("nDPI").stage do
-        system "./autogen.sh"
-        system "make"
-        (buildpath/"nDPI").install Dir["*"]
-      end
-    else
-      args << "--with-ndpi-includes=#{Formula["ndpi"].opt_include}/ndpi"
-    end
+    args = %W[
+      --with-dynamic-ndpi
+      --with-ndpi-includes=#{Formula["ndpi"].opt_include}/ndpi
+    ]
 
     system "./autogen.sh"
     system "./configure", *args, *std_configure_args

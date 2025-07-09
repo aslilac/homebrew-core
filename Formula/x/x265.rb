@@ -1,19 +1,20 @@
 class X265 < Formula
   desc "H.265/HEVC encoder"
   homepage "https://bitbucket.org/multicoreware/x265_git"
-  url "https://bitbucket.org/multicoreware/x265_git/downloads/x265_4.0.tar.gz"
-  sha256 "75b4d05629e365913de3100b38a459b04e2a217a8f30efaa91b572d8e6d71282"
-  license "GPL-2.0-only"
-  revision 1
+  url "https://bitbucket.org/multicoreware/x265_git/downloads/x265_4.1.tar.gz"
+  sha256 "a31699c6a89806b74b0151e5e6a7df65de4b49050482fe5ebf8a4379d7af8f29"
+  license "GPL-2.0-or-later"
   head "https://bitbucket.org/multicoreware/x265_git.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "64a91e7e9f9181a5c5c964f4b4e61cccadf12392544574ea75c1ad74c3b5a89f"
-    sha256 cellar: :any,                 arm64_sonoma:  "2320907225bc99fd3167f1871af876630458ebbb4030a0706e12ba846c07b194"
-    sha256 cellar: :any,                 arm64_ventura: "02dfe1f1d44105fbf40e26abc95b2528850e5d0c435fb3b89e13a1ca6c15b4b6"
-    sha256 cellar: :any,                 sonoma:        "1bb7c6f5ea0defd63998ccd4b48a59afb98d711d81639f026fa8cc2a827a5daf"
-    sha256 cellar: :any,                 ventura:       "5312e05c09c369b267d629220dfd0a71cd4eb53c2228d84dc41a9a13a1bbd6c1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f8c5bc441686cd06bf2ac1c1a740a58e7f1b40e0ee6b4c2b6b866ccef009f289"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "a2270c67fc2ea5a74824435cd72a9ad1441f9052d8490ab3e56ab5781bd7ad3c"
+    sha256 cellar: :any,                 arm64_sonoma:  "c8d3df545085b8f60e7c00a147ccbd90f4f9cb46a3cd275e2474d8e71648207a"
+    sha256 cellar: :any,                 arm64_ventura: "aa56445287b9782addb79abe348821ecd198170b17ffb6cc74735d7ed60b9bac"
+    sha256 cellar: :any,                 sonoma:        "303948272d75e643cbe4465e5ac39fee0b2f1f38c8b56763b62e6652fa257c1a"
+    sha256 cellar: :any,                 ventura:       "1d120ed18c3c98cefffd108236ffb658f4022827b5dbc434666ffa9568d80ed2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "84411e12f00238bb69bb1e383c6b6959c4cd3a7e417075ab81d7101eebf145de"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5b24399f347c1ad1f1981a711ce9a60cd2f87da01e998f5dcd1d04e62e7fd121"
   end
 
   depends_on "cmake" => :build
@@ -22,37 +23,54 @@ class X265 < Formula
     depends_on "nasm" => :build
   end
 
+  # cmake 4 workaround, remove in next release
+  patch do
+    url "https://api.bitbucket.org/2.0/repositories/multicoreware/x265_git/diff/b354c009a60bcd6d7fc04014e200a1ee9c45c167"
+    sha256 "f7d3ce261c4b0cd461b55ad00de38ffa6a7cc2fa13ae6f034b3e46d8bb3cb6a8"
+  end
+  patch do
+    url "https://api.bitbucket.org/2.0/repositories/multicoreware/x265_git/diff/51ae8e922bcc4586ad4710812072289af91492a8"
+    sha256 "56c78f60cbaac61a44cb6e9889ece3380f9b60d32a4b704e274d9a636a16379d"
+  end
+
   def install
     ENV.runtime_cpu_detection
     # Build based off the script at ./build/linux/multilib.sh
-    args = std_cmake_args + %W[
+    args = %W[
       -DLINKED_10BIT=ON
       -DLINKED_12BIT=ON
       -DEXTRA_LINK_FLAGS=-L.
       -DEXTRA_LIB=x265_main10.a;x265_main12.a
       -DCMAKE_INSTALL_RPATH=#{rpath}
     ]
-    high_bit_depth_args = std_cmake_args + %w[
+    args << "-DENABLE_SVE2=OFF" if OS.linux? && Hardware::CPU.arm?
+    args << "-DCMAKE_POLICY_VERSION_MINIMUM=3.5" # FIXME: Workaround for CMake 4.
+    high_bit_depth_args = %w[
       -DHIGH_BIT_DEPTH=ON -DEXPORT_C_API=OFF
       -DENABLE_SHARED=OFF -DENABLE_CLI=OFF
     ]
+    high_bit_depth_args << "-DENABLE_SVE2=OFF" if OS.linux? && Hardware::CPU.arm?
+    high_bit_depth_args << "-DCMAKE_POLICY_VERSION_MINIMUM=3.5" # FIXME: Workaround for CMake 4.
+
     (buildpath/"8bit").mkpath
+    system "cmake", "-S", buildpath/"source", "-B", "10bit",
+                    "-DENABLE_HDR10_PLUS=ON",
+                    *high_bit_depth_args,
+                    *std_cmake_args
+    system "cmake", "--build", "10bit"
+    mv "10bit/libx265.a", buildpath/"8bit/libx265_main10.a"
 
-    mkdir "10bit" do
-      system "cmake", buildpath/"source", "-DENABLE_HDR10_PLUS=ON", *high_bit_depth_args
-      system "make"
-      mv "libx265.a", buildpath/"8bit/libx265_main10.a"
-    end
+    system "cmake", "-S", buildpath/"source", "-B", "12bit",
+                    "-DMAIN12=ON",
+                    *high_bit_depth_args,
+                    *std_cmake_args
+    system "cmake", "--build", "12bit"
+    mv "12bit/libx265.a", buildpath/"8bit/libx265_main12.a"
 
-    mkdir "12bit" do
-      system "cmake", buildpath/"source", "-DMAIN12=ON", *high_bit_depth_args
-      system "make"
-      mv "libx265.a", buildpath/"8bit/libx265_main12.a"
-    end
+    system "cmake", "-S", buildpath/"source", "-B", "8bit", *args, *std_cmake_args
+    system "cmake", "--build", "8bit"
 
     cd "8bit" do
-      system "cmake", buildpath/"source", *args
-      system "make"
       mv "libx265.a", "libx265_main.a"
 
       if OS.mac?

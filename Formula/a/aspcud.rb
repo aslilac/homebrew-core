@@ -5,6 +5,8 @@ class Aspcud < Formula
   sha256 "4dddfd4a74e4324887a1ddd7f8ff36231774fc1aa78b383256546e83acdf516c"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "429008eb29edff4d08e840bd0eb373ea061c357d01ebab4e416f9d4681b95b0a"
     sha256 arm64_sonoma:   "f9754209fbab844fa1dc333dd669715fb973838a82f87c44580f9198a56b94ea"
@@ -16,6 +18,7 @@ class Aspcud < Formula
     sha256 monterey:       "8920dad4979d2ae3542553312c906d917ad1cbfe9f9059f4ee6bd726408489df"
     sha256 big_sur:        "8b458c28102da4cbc936a8ee349f4ce95764c801a70e0031dd2007b94e93d1ef"
     sha256 catalina:       "ae23d915a2acf5de9083c065c41df839558ac272725ef76e8ac269498b5cabe0"
+    sha256 arm64_linux:    "eda6f25c685bc5b196faf5a997403db0ed730f2cf4e7f680ca316861ac979bce"
     sha256 x86_64_linux:   "38882525e9e80e2f8436800e20415bd7f584130f264fdacf484c4c11a2ee0076"
   end
 

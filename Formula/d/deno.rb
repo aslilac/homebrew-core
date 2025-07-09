@@ -1,75 +1,38 @@
 class Deno < Formula
   desc "Secure runtime for JavaScript and TypeScript"
   homepage "https://deno.com/"
-  url "https://github.com/denoland/deno/releases/download/v2.1.1/deno_src.tar.gz"
-  sha256 "a2c7a33f46fcfd80447a0ab5fc164be746a9218ef4c6e2ae1c641b8ecbcab2a4"
+  url "https://github.com/denoland/deno/releases/download/v2.4.1/deno_src.tar.gz"
+  sha256 "abd378230d819eebadb01cd3cc77f29fb8dbe0136f668866816a3a05e4f94308"
   license "MIT"
   head "https://github.com/denoland/deno.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "25541ef114d61d76fa1f31b26acef53781985e1d063490ca2fd0786c6e8e2b5d"
-    sha256 cellar: :any,                 arm64_sonoma:  "52b0bf58645969abab46eaf7f2a3d795116d9820f5596776277e8f84a7525d57"
-    sha256 cellar: :any,                 arm64_ventura: "289dddc09cbb095cccbbab46c28341abf66f643fce329760f89eeb224fb1a2bf"
-    sha256 cellar: :any,                 sonoma:        "ff8b849cd3059c9aa871ee5f6c9c9fd2b0a4ddaf6ce0ec8981d8c8a70e814826"
-    sha256 cellar: :any,                 ventura:       "6920db488b33096fb02201ffe247b379d7a86505c3ae0119e0693b2c761868e9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "74d5ca3a496c5965c07629c33fc77cb70c4d98add6efd448ff4ad11d1d33d93d"
+    sha256 cellar: :any,                 arm64_sequoia: "d54994bf0959754d6a1f5d8cdb002d2e3ecb0cea90a14c6af6855ec32d04a63c"
+    sha256 cellar: :any,                 arm64_sonoma:  "79728036ad2fa076407380a7275a8a932e862b7873e29179e83121e24e28a5b4"
+    sha256 cellar: :any,                 arm64_ventura: "24c454e1ca13c8390642f8235c7e70201bec2a05aab924b93c337609a8fcb9d8"
+    sha256 cellar: :any,                 sonoma:        "ac6e68ede507859a295d71de1976c42d5ab425270235ed451a57b8b4323d9898"
+    sha256 cellar: :any,                 ventura:       "88df21b8d876ef16dcb94364540a2e46a9184d8f33c4f339a79b2a7429fd34e5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e2ef04104c88f85f41fd6e230ff270b5e573d339e92a60fd7e14ed67837595ab"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7d33cb46a6873aee7a470cdc17284ddb1c890cfe3671e7cc0c9eda09c93ed2a6"
   end
 
   depends_on "cmake" => :build
   depends_on "lld" => :build
   depends_on "llvm" => :build
   depends_on "ninja" => :build
-  depends_on "protobuf" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on xcode: ["15.0", :build] # v8 12.9+ uses linker flags introduced in xcode 15
+  depends_on "little-cms2"
   depends_on "sqlite" # needs `sqlite3_unlock_notify`
 
   uses_from_macos "python" => :build, since: :catalina
   uses_from_macos "libffi"
-  uses_from_macos "xz"
   uses_from_macos "zlib"
 
   on_linux do
-    depends_on "pkg-config" => :build
-    depends_on "glib"
-  end
-
-  fails_with gcc: "5"
-
-  # Temporary resources to work around build failure due to files missing from crate
-  # We use the crate as GitHub tarball lacks submodules and this allows us to avoid git overhead.
-  # TODO: Remove this and `v8` resource when https://github.com/denoland/rusty_v8/issues/1065 is resolved
-  # VERSION=#{version} && curl -s https://raw.githubusercontent.com/denoland/deno/v$VERSION/Cargo.lock | grep -C 1 'name = "v8"'
-  resource "rusty_v8" do
-    url "https://static.crates.io/crates/v8/v8-130.0.1.crate"
-    sha256 "c23b5c2caff00209b03a716609b275acae94b02dd3b63c4648e7232a84a8402f"
-  end
-
-  # Find the v8 version from the last commit message at:
-  # https://github.com/denoland/rusty_v8/commits/v#{rusty_v8_version}/v8
-  # Then, use the corresponding tag found in https://github.com/denoland/v8/tags
-  resource "v8" do
-    url "https://github.com/denoland/v8/archive/refs/tags/13.0.245.12-denoland-6a811c9772d847135876.tar.gz"
-    sha256 "d2de7fc75381d8d7c0cd8b2d59bb23d91f8719f5d5ad6b19b8288acd2aae8733"
-  end
-
-  # VERSION=#{version} && curl -s https://raw.githubusercontent.com/denoland/deno/v$VERSION/Cargo.lock | grep -C 1 'name = "deno_core"'
-  resource "deno_core" do
-    url "https://github.com/denoland/deno_core/archive/refs/tags/0.321.0.tar.gz"
-    sha256 "8b238d4e09c61d545e16298912bc035ff65e9308de83a1a1d1cbd48eadbb8639"
-  end
-
-  # The latest commit from `denoland/icu`, go to https://github.com/denoland/rusty_v8/tree/v#{rusty_v8_version}/third_party
-  # and check the commit of the `icu` directory
-  resource "icu" do
-    url "https://github.com/denoland/icu/archive/a22a8f24224ddda8b856437d7e8560de1da3f8e1.tar.gz"
-    sha256 "649c1d76e08e3bfb87ebc478bed2a1909e5505aadc98ebe71406c550626b4225"
-  end
-
-  # V8_TAG=#{v8_resource_tag} && curl -s https://raw.githubusercontent.com/denoland/v8/$V8_TAG/DEPS | grep gn_version
-  resource "gn" do
-    url "https://gn.googlesource.com/gn.git",
-        revision: "20806f79c6b4ba295274e3a589d85db41a02fdaa"
+    depends_on "glib" => :build
+    depends_on "pcre2" => :build
   end
 
   def llvm
@@ -77,35 +40,23 @@ class Deno < Formula
   end
 
   def install
-    # Work around files missing from crate
-    # TODO: Remove this at the same time as `rusty_v8` + `v8` resources
-    resource("rusty_v8").stage buildpath/"../rusty_v8"
-    resource("v8").stage do
-      cp_r "tools/builtins-pgo", buildpath/"../rusty_v8/v8/tools/builtins-pgo"
+    inreplace "Cargo.toml" do |s|
+      # https://github.com/Homebrew/homebrew-core/pull/227966#issuecomment-3001448018
+      s.gsub!(/^lto = true$/, 'lto = "thin"')
+
+      # Avoid vendored dependencies.
+      s.gsub!(/^libffi-sys = "(.+)"$/,
+              'libffi-sys = { version = "\\1", features = ["system"] }')
+      s.gsub!(/^rusqlite = { version = "(.+)", features = \["unlock_notify", "bundled", "session"/,
+              'rusqlite = { version = "\\1", features = ["unlock_notify", "session"')
     end
-    resource("icu").stage do
-      cp_r "common", buildpath/"../rusty_v8/third_party/icu/common"
-    end
+    inreplace "libs/npm_cache/Cargo.toml",
+              'flate2 = { workspace = true, features = ["zlib-ng-compat"] }',
+              "flate2 = { workspace = true }"
 
-    resource("deno_core").stage buildpath/"../deno_core"
-
-    # Avoid vendored dependencies.
-    inreplace "ext/ffi/Cargo.toml",
-              /^libffi-sys = "(.+)"$/,
-              'libffi-sys = { version = "\\1", features = ["system"] }'
-    inreplace "Cargo.toml",
-              /^rusqlite = { version = "(.+)", features = \["unlock_notify", "bundled"\] }$/,
-              'rusqlite = { version = "\\1", features = ["unlock_notify"] }'
-
-    if OS.mac? && (MacOS.version < :mojave)
-      # Overwrite Chromium minimum SDK version of 10.15
-      ENV["FORCE_MAC_SDK_MIN"] = MacOS.version
-    end
-
-    python3 = which("python3")
-    # env args for building a release build with our python3, ninja and gn
-    ENV["PYTHON"] = python3
-    ENV["GN"] = buildpath/"gn/out/gn"
+    ENV["LCMS2_LIB_DIR"] = Formula["little-cms2"].opt_lib
+    # env args for building a release build with our python3 and ninja
+    ENV["PYTHON"] = which("python3")
     ENV["NINJA"] = which("ninja")
     # build rusty_v8 from source
     ENV["V8_FROM_SOURCE"] = "1"
@@ -114,40 +65,15 @@ class Deno < Formula
 
     # use our clang version, and disable lld because the build assumes the lld
     # supports features from newer clang versions (>=20)
-    clang_version = llvm.version.major
-    ENV["GN_ARGS"] = "clang_version=#{clang_version} use_lld=false"
+    ENV["GN_ARGS"] = "clang_version=#{llvm.version.major} use_lld=#{OS.linux?}"
 
-    # Work around an Xcode 15 linker issue which causes linkage against LLVM's
-    # libunwind due to it being present in a library search path.
-    ENV.remove "HOMEBREW_LIBRARY_PATHS", llvm.opt_lib
-
-    resource("gn").stage buildpath/"gn"
-    cd "gn" do
-      system python3, "build/gen.py"
-      system "ninja", "-C", "out"
-    end
-
-    # cargo seems to build rusty_v8 twice in parallel, which causes problems,
-    # hence the need for ENV.deparallelize
-    # Issue ref: https://github.com/denoland/deno/issues/9244
-    ENV.deparallelize do
-      system "cargo", "--config", ".cargo/local-build.toml",
-                      "install", "--no-default-features", "-vv",
-                      *std_cargo_args(path: "cli")
-    end
-
+    system "cargo", "install", "--no-default-features", "-vv", *std_cargo_args(path: "cli")
     generate_completions_from_executable(bin/"deno", "completions")
   end
 
-  def check_binary_linkage(binary, library)
-    binary.dynamically_linked_libraries.any? do |dll|
-      next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)
-
-      File.realpath(dll) == File.realpath(library)
-    end
-  end
-
   test do
+    require "utils/linkage"
+
     IO.popen("deno run -A -r https://fresh.deno.dev fresh-project", "r+") do |pipe|
       pipe.puts "n"
       pipe.puts "n"
@@ -157,9 +83,9 @@ class Deno < Formula
 
     assert_match "# Fresh project", (testpath/"fresh-project/README.md").read
 
-    (testpath/"hello.ts").write <<~EOS
+    (testpath/"hello.ts").write <<~TYPESCRIPT
       console.log("hello", "deno");
-    EOS
+    TYPESCRIPT
     assert_match "hello deno", shell_output("#{bin}/deno run hello.ts")
     assert_match "Welcome to Deno!",
       shell_output("#{bin}/deno run https://deno.land/std@0.100.0/examples/welcome.ts")
@@ -170,11 +96,10 @@ class Deno < Formula
     unless OS.mac?
       linked_libraries += [
         Formula["libffi"].opt_lib/shared_library("libffi"),
-        Formula["zlib"].opt_lib/shared_library("libz"),
       ]
     end
     linked_libraries.each do |library|
-      assert check_binary_linkage(bin/"deno", library),
+      assert Utils.binary_linked_to_library?(bin/"deno", library),
               "No linkage with #{library.basename}! Cargo is likely using a vendored version."
     end
   end

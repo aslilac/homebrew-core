@@ -5,6 +5,8 @@ class Iat < Formula
   sha256 "fb72c42f4be18107ec1bff8448bd6fac2a3926a574d4950a4d5120f0012d62ca"
   license "GPL-2.0-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f6bc109730274136edd66490ce1029a7e48d083a418924684adbd72154a1ea84"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b9bf951c493709c86c80ded9cfda13a70c2fb7c6736ed66403bd493cd4267c5e"
@@ -20,6 +22,7 @@ class Iat < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "799764ef75d9efdf93f92a2fbc2beaedecd6037eae45eaaf7ce888c2ef2b3eb3"
     sha256 cellar: :any_skip_relocation, sierra:         "97d378d0b0ee8bb685272d126a54c833ad8d9f7f3ab34631198d054d2f1d0bdf"
     sha256 cellar: :any_skip_relocation, el_capitan:     "baadc7c40697b28b46c7541d617f65ee318b78efbdc4156c6527490616fd2dee"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "eedb0ed17c84f3336f603a629de7b551aac5f37d77cb79236aa3caaff3901562"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5f6c91342941bb21b0ac060ac56c8453578655e499ef758ab2c7366ce2052d47"
   end
 

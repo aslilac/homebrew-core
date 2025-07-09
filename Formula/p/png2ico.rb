@@ -1,7 +1,7 @@
 class Png2ico < Formula
   desc "PNG to icon converter"
-  homepage "https://www.winterdrache.de/freeware/png2ico/"
-  url "https://www.winterdrache.de/freeware/png2ico/data/png2ico-src-2002-12-08.tar.gz"
+  homepage "https://www.freshports.org/graphics/png2ico/"
+  url "https://pkg.freebsd.org/ports-distfiles/png2ico-src-2002-12-08.tar.gz"
   sha256 "d6bc2b8f9dacfb8010e5f5654aaba56476df18d88e344ea1a32523bb5843b68e"
   license "GPL-2.0-only"
   revision 1
@@ -10,6 +10,8 @@ class Png2ico < Formula
     url :homepage
     regex(/href=.*?png2ico-src[._-]v?(\d+(?:[.-]\d+)+)\.t/i)
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 2
@@ -27,6 +29,7 @@ class Png2ico < Formula
     sha256 cellar: :any,                 high_sierra:    "986b5a9efe66ddeec63f2f523a36214f0bbf3ce43a9697c83adb3c237912f38b"
     sha256 cellar: :any,                 sierra:         "63d789e767bf5fdfd3b26102441a7331531d83215c73fa61ae2b548ecf08ea74"
     sha256 cellar: :any,                 el_capitan:     "6b3b8e132ff06ed21308e73e1a30a3b74a593092e56dc94693c27ae4d03add09"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "7a6b840c65addf3f2e5d113ac2b15abcf50adace8b5baf740f4066deeea4f5ec"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "52b7eb707f96b3b8526ca15ce86c442247f0e4c34112ccef3ed22fe6cafb5a3b"
   end
 
@@ -44,7 +47,7 @@ class Png2ico < Formula
 
   test do
     system bin/"png2ico", "out.ico", test_fixtures("test.png")
-    assert_predicate testpath/"out.ico", :exist?
+    assert_path_exists testpath/"out.ico"
   end
 end
 

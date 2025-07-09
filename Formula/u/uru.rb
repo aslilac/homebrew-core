@@ -5,6 +5,8 @@ class Uru < Formula
   sha256 "47148454f4c4d5522641ac40aec552a9390a2edc1a0cd306c5d16924f0be7e34"
   license "BSD-3-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b5422b52374d4e7de9f934714fabe3b984a1e76fb795cc82cdac81c7477bbcf5"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "19c329e3ad2a981d5edcf2f708608297f4b3d5da68c8344744cb78cffd513c42"
@@ -19,6 +21,7 @@ class Uru < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "25c90f23ff4d5225d439f8783d25d440ee2b7fc6e8afdc5772914deab0ae3184"
     sha256 cellar: :any_skip_relocation, high_sierra:    "d6da062bd8e0d7134a9d98285344064a82329b138bd7e0ed14fbc01a27530079"
     sha256 cellar: :any_skip_relocation, sierra:         "fb1b6ac6bd09955f072e9b65e92cc992b6da4a14640694d8a830aaacad944518"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "3457892313460eef01491b76a45a15a2acca89237f911a482137fb09dcfa6c82"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "36ec6869ab83065e9bc5a08b7a4ec769297c4e608bc85001886d73598919c6cb"
   end
 

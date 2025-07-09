@@ -6,6 +6,15 @@ class HicolorIconTheme < Formula
   license "GPL-2.0-only"
   head "https://gitlab.freedesktop.org/xdg/default-icon-theme.git", branch: "master"
 
+  # The homepage hasn't been updated to link to more recent versions, so we
+  # have to check the directory listing page instead.
+  livecheck do
+    url "https://icon-theme.freedesktop.org/releases/"
+    regex(/href=.*?hicolor-icon-theme[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, all: "76779247990b538d304e98b042fde85677491e428d0381a59383264ce8ef199f"
   end
@@ -20,6 +29,6 @@ class HicolorIconTheme < Formula
   end
 
   test do
-    assert_predicate share/"icons/hicolor/index.theme", :exist?
+    assert_path_exists share/"icons/hicolor/index.theme"
   end
 end

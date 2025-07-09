@@ -12,6 +12,8 @@ class Sbuild < Formula
     regex(/href=.*?sbuild[._-]v?(\d+(?:\.\d+)+)(?:[._-]dist)?\.zip/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 2
     sha256 cellar: :any_skip_relocation, all: "0a8af36def5cab55a8a4ed2a793572ec0f0f9f5afe15681f3b6bef38d571a389"
@@ -30,7 +32,7 @@ class Sbuild < Formula
   end
 
   test do
-    expected = <<~EOS
+    expected = <<~SCALA
       import de.tototec.sbuild._
 
       @version("#{version}")
@@ -45,7 +47,7 @@ class Sbuild < Formula
         }
 
       }
-    EOS
+    SCALA
     system bin/"sbuild", "--create-stub"
     assert_equal expected, (testpath/"SBuild.scala").read
   end

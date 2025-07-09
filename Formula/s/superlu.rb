@@ -18,11 +18,12 @@ class Superlu < Formula
     sha256 cellar: :any,                 sonoma:         "2a8abc054e2595a4a3dd57840449adabf159c812eaf7d9d1a24c31dc0e125396"
     sha256 cellar: :any,                 ventura:        "595c90722cfb68db872db17c84ae8f85dcc6f296f4ce8a64cf5254c8c0b297d9"
     sha256 cellar: :any,                 monterey:       "40d93c338aec89af15f42e2d8a807e013daa8608f4fd6bc3f62f9581b86536f2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "3e3a619194aea2779fb2aa83e0baec2180d0da49742042361a50492069394323"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7e2bfcb8dec3fae7f0fcd94ee5515dd0d1a27327ae79a657c09b44f00299cf95"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :test
+  depends_on "pkgconf" => :test
   depends_on "gcc"
   depends_on "openblas"
 
@@ -43,8 +44,8 @@ class Superlu < Formula
   end
 
   test do
-    pkg_config_cflags = shell_output("pkg-config --cflags --libs superlu").chomp.split
-    system ENV.cc, pkgshare/"dlinsol.c", *pkg_config_cflags, "-o", "test"
+    pkgconf_cflags = shell_output("pkgconf --cflags --libs superlu").chomp.split
+    system ENV.cc, pkgshare/"dlinsol.c", *pkgconf_cflags, "-o", "test"
     assert_match "No of nonzeros in L+U = 11886",
                  shell_output("./test < #{pkgshare}/g20.rua")
   end

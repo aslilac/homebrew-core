@@ -5,6 +5,8 @@ class Rolldice < Formula
   sha256 "8bc82b26c418453ef0fe79b43a094641e7a76dae406032423a2f0fb270930775"
   license "GPL-2.0-only"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f0b8ac560f934b0d4559fc18471a9fabba189ee9d41e050c03b88c6e56490054"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4d805d84d6f2e3083c040c4e3c650009d34516e949c351e1d85a5906faa2c017"
@@ -20,6 +22,7 @@ class Rolldice < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "74364058c7f8859e71b5b43b80b40c01dd99ce6b80724ef4e97f9a9ea0587775"
     sha256 cellar: :any_skip_relocation, sierra:         "a7019dfc0a37c4cb814f8d116140b9fac999d6d97e6650e0806c02cb633087fb"
     sha256 cellar: :any_skip_relocation, el_capitan:     "3ee6afe89723d119075feffe735f4b4d4552d51bab5d79df6b8e100f90d21109"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f9367e489792cd6941e69ab7633fc40c8b6c5c964dd02b0e6f90d592eef26656"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c528a9c75ae75ef5bf9c28db1b40cd8e30fee54029580bbd05c7b5cbc8449936"
   end
 

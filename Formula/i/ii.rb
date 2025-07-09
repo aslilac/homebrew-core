@@ -4,12 +4,14 @@ class Ii < Formula
   url "https://dl.suckless.org/tools/ii-2.0.tar.gz"
   sha256 "4f67afcd208c07939b88aadbf21497a702ad0a07f9b5a6ce861f9f39ffe5425b"
   license "MIT"
-  head "https://git.suckless.org/ii", using: :git, branch: "master"
+  head "https://git.suckless.org/ii/", using: :git, branch: "master"
 
   livecheck do
     url "https://dl.suckless.org/tools/"
     regex(/href=.*?ii[._-]v?(\d+(?:\.\d+)*)\.t/i)
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ab84f7b5884e3b926510c76631987ea2eb214d73c0595af30063c7b0131fe759"
@@ -22,6 +24,7 @@ class Ii < Formula
     sha256 cellar: :any_skip_relocation, monterey:       "5e5d3163eedc2edc9c94fe7bb0d0131748b73d48696c742b34f2f1cf8492377d"
     sha256 cellar: :any_skip_relocation, big_sur:        "de3668d67aaaf8cd68d4a65afb5c0814e47e81516053c98ce1acac8cf0cdccda"
     sha256 cellar: :any_skip_relocation, catalina:       "1a3272d46510c5313a2133b4024f35dedf0f566c3b52592a29a2aaa4fa9e9e9a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "c438a93192fd567fe1da3dc018445ca4e5f269c8c8920cf429eca3484e354a75"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b2dbf5ccf220ff7c74c9c409f2ed36465f28fe20ab14d42e62b8df2499b5c320"
   end
 

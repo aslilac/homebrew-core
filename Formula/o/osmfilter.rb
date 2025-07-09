@@ -7,6 +7,8 @@ class Osmfilter < Formula
   license "AGPL-3.0-only"
   head "https://gitlab.com/osm-c-tools/osmctools.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "1d86b7309f3fbd2c39a78416fe5dc0eac2b08c2ef0795e9c3d83c165ddf122e1"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "864446d5bf53f85f504188be4f59c5f1fc1b902a647a1666de49bf467fa0fd0a"
@@ -22,6 +24,7 @@ class Osmfilter < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "b2e2d4190462b0b0e473da4a50ab5e25da007aca21db898d2d359e9e9eb2cde7"
     sha256 cellar: :any_skip_relocation, sierra:         "d7a8285fe18af71d0093b89e9b5613a4fe30ceb4978e07f61ad1974e734d7f50"
     sha256 cellar: :any_skip_relocation, el_capitan:     "6a0fd608e0bc8094f08edb6f86a51b45745506d3ef84e0454ef1498dd77f61b0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "71fba6dd634a34968c4296190c8dd7925e6a536c0a289fe97c1bb3abfe75b6ac"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "55e3476d7bcb3d9a71fc2d192812526ad3497f17647c9d08daac16b5cbdcfea6"
   end
 
@@ -36,8 +39,8 @@ class Osmfilter < Formula
   end
 
   def install
-    system "autoreconf", "-v", "-i"
-    system "./configure", "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 

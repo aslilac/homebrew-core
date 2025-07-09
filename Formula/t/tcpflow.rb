@@ -6,9 +6,16 @@ class Tcpflow < Formula
   license "GPL-3.0-only"
 
   livecheck do
-    url "https://corp.digitalcorpora.org/downloads/tcpflow/"
-    regex(/href=.*?tcpflow[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    url "https://digitalcorpora.s3.us-west-2.amazonaws.com/?list-type=2&delimiter=%2F&prefix=downloads%2Ftcpflow%2F"
+    regex(/tcpflow[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    strategy :xml do |xml, regex|
+      xml.get_elements("//Contents/Key").filter_map do |item|
+        item.text&.[](regex, 1)
+      end
+    end
   end
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 2
@@ -22,6 +29,7 @@ class Tcpflow < Formula
     sha256 cellar: :any,                 monterey:       "73e14653361b7c3276f5f5acd7e79c09982cc0f0d5f9c3f0102c1845bc5e5e95"
     sha256 cellar: :any,                 big_sur:        "b4bd69530d81550d1a428dff981fc71f5a45fd4cc406e9f10dee030e1b350b90"
     sha256 cellar: :any,                 catalina:       "96d3ce376bae12013a22db5a49e71bc45a8478a07ba7ef1bfb1dc1daa33e3bac"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "5bc8ea9e3684dbed7beefecc3b35e829b75486eaf71ebce04727ffe5898e7080"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e0fb8e4d90327529dca426de617f298ec135fac0fca31e547551774832541aac"
   end
 
@@ -38,8 +46,6 @@ class Tcpflow < Formula
   uses_from_macos "bzip2"
   uses_from_macos "libpcap"
   uses_from_macos "zlib"
-
-  fails_with gcc: "5"
 
   def install
     system "bash", "./bootstrap.sh" if build.head?

@@ -1,20 +1,18 @@
 class TotpCli < Formula
   desc "Authy/Google Authenticator like TOTP CLI tool written in Go"
   homepage "https://yitsushi.github.io/totp-cli/"
-  url "https://github.com/yitsushi/totp-cli/archive/refs/tags/v1.8.7.tar.gz"
-  sha256 "d23554e785323cc6d4145b848fe140621f9bb6fc8809280235ed5f7aeb92e5fd"
+  url "https://github.com/yitsushi/totp-cli/archive/refs/tags/v1.9.2.tar.gz"
+  sha256 "c8b87c7854f373423dba2f8c6167c2836b6ae1f66b29b1becb505c277a00c54f"
   license "MIT"
   head "https://github.com/yitsushi/totp-cli.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "cb0fc63e67ccb68a771ca2a3b045bfc085392e39649e2aceed871f592384312e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "639a52e26a4fe096876d49c21bb486fc180af52e420cca8d04144d0d6edb5bbe"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "639a52e26a4fe096876d49c21bb486fc180af52e420cca8d04144d0d6edb5bbe"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "639a52e26a4fe096876d49c21bb486fc180af52e420cca8d04144d0d6edb5bbe"
-    sha256 cellar: :any_skip_relocation, sonoma:         "0c333a8962572dde76230a73d35a892d60e4f3f63784663a6abd2b2917b5e669"
-    sha256 cellar: :any_skip_relocation, ventura:        "0c333a8962572dde76230a73d35a892d60e4f3f63784663a6abd2b2917b5e669"
-    sha256 cellar: :any_skip_relocation, monterey:       "0c333a8962572dde76230a73d35a892d60e4f3f63784663a6abd2b2917b5e669"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a5d08e28099b6ebb9af6afed9b168c289a35a79c633b2027ef82adecb95850e1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9515bdef2db3bf5da965a8277124a63896168381b4b137081f0a00aa8f2d77ac"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9515bdef2db3bf5da965a8277124a63896168381b4b137081f0a00aa8f2d77ac"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "9515bdef2db3bf5da965a8277124a63896168381b4b137081f0a00aa8f2d77ac"
+    sha256 cellar: :any_skip_relocation, sonoma:        "65b2d6046eea06c4d909b30fbbc6c63ba549bcd7d11b638f6567bcd938a99b87"
+    sha256 cellar: :any_skip_relocation, ventura:       "65b2d6046eea06c4d909b30fbbc6c63ba549bcd7d11b638f6567bcd938a99b87"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "17aa04b4b9f66b5ef84c7584f1195cff95d76395cda1a02b5e756f90e5227576"
   end
 
   depends_on "go" => :build

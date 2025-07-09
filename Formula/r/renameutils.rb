@@ -11,6 +11,8 @@ class Renameutils < Formula
     regex(/href=.*?renameutils[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any, arm64_sequoia:  "93b6c0287a2a5222cc55484b0baa724174ac826afffc016f75165fdc0d37e6ea"
     sha256 cellar: :any, arm64_sonoma:   "9f28d9eb889603714cc5473541918196f60aab1e053791993ae53afd14c27926"
@@ -24,6 +26,7 @@ class Renameutils < Formula
     sha256 cellar: :any, catalina:       "2ec48c66fea9f53acf2b2ba3b726e6f7a9ff35778a3fb574fc59e7c6d01f681a"
     sha256 cellar: :any, mojave:         "4f360267cba9842ef85e9cfbb1baaf73e9576dccfb924aade7f0ad6bbf0bf605"
     sha256 cellar: :any, high_sierra:    "d25dc64bcc5d30e7695c65a93f7285849b57fdbdb18bf7d5e7bc22f0786cb14c"
+    sha256               arm64_linux:    "7e705d1e479f9c7c96ffe78fb84bb17f90897b130bb5e9b18699381fbd3de9f4"
     sha256               x86_64_linux:   "1a7ddae9fa3352ec89e73c91eaabedc5e941e3e752fdf5afda5b5098fb65cd7c"
   end
 
@@ -47,9 +50,12 @@ class Renameutils < Formula
     # Work around build failure on Apple Silicon due to trying to use deprecated stat64.
     # io-utils.c:93:19: error: variable has incomplete type 'struct stat64'
     ENV["ac_cv_func_lstat64"] = "no" if Hardware::CPU.arm?
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-packager=Homebrew"
+
+    args = []
+    # Help old config scripts identify arm64 linux
+    args << "--build=aarch64-unknown-linux-gnu" if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+
+    system "./configure", "--with-packager=Homebrew", *args, *std_configure_args
     system "make"
     ENV.deparallelize # parallel install fails
     system "make", "install"

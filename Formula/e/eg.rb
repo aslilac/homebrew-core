@@ -6,6 +6,8 @@ class Eg < Formula
   license "GPL-2.0-or-later"
   head "https://github.com/davep/eg.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256                               arm64_sequoia:  "88dbfa7cf9217122bc925c3681ee19cefcdb758063696fa00577967301b34fbb"
     sha256                               arm64_sonoma:   "76e0f0b7dadc29420b7a83e10425eda231ba773ee90485838605b87d3934d964"
@@ -21,6 +23,7 @@ class Eg < Formula
     sha256                               high_sierra:    "4955ef20bd0d41b433f077784ca1a9d96a40eb2e6f7840c70f308b60d1fc553d"
     sha256                               sierra:         "307a0ce0f1514288179dbbc56fdac3de02100c80e8c57b1abedcab5cd0cff458"
     sha256                               el_capitan:     "500a97f229b78ab83b97591d9276f7d9e1e4ce4d392f2530f5c8a9f10543b469"
+    sha256                               arm64_linux:    "99299828caf70e443733441b290c14d8a3c4fdb74de9f5d63be1678ca7ca88fc"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b56cf6712f27d8ec7ef757e04232e7d67921566701656a983a4eedcba812843f"
   end
 

@@ -1,17 +1,19 @@
 class XorgServer < Formula
   desc "X Window System display server"
   homepage "https://www.x.org"
-  url "https://www.x.org/releases/individual/xserver/xorg-server-21.1.14.tar.xz"
-  sha256 "8f2102cebdc4747d1656c1099ef610f5063c7422c24a177e300de569b354ee35"
+  url "https://www.x.org/releases/individual/xserver/xorg-server-21.1.16.tar.xz"
+  sha256 "b14a116d2d805debc5b5b2aac505a279e69b217dae2fae2dfcb62400471a9970"
   license all_of: ["MIT", "APSL-2.0"]
 
   bottle do
-    sha256 arm64_sequoia: "22606529645f5da9177e3e85e66de78f8e152824b17130afbd4edfa86561f72f"
-    sha256 arm64_sonoma:  "53f5c87edac5d6654b979ddf8313c6e7e956f6e845488ecdbfa6756e98b61887"
-    sha256 arm64_ventura: "6d6cabe83cb14c562e2a0308841ec66e8ad17ad7ae8d73af718338da97e8975b"
-    sha256 sonoma:        "bde2755365721cb2da126704895f38eefd9cc661ab0df619ae8e8b56dad2916b"
-    sha256 ventura:       "9c11d0e8f6b02620da296cf7a65450bfef50c23c126aacd16cc209253ec0bc62"
-    sha256 x86_64_linux:  "d3c83ad0be5c286b9eba93b46708cafc6ef3705b21f844a63de0bf56ae7a0a32"
+    rebuild 1
+    sha256 arm64_sequoia: "e9ff9b62d898703ddca09e82b036a67351e6aa14c1f08ebe4bf2772fadbd7055"
+    sha256 arm64_sonoma:  "36fe7319a1317e7ea64b09a794a0c86d14f2066e887733dda516f23cdd05f773"
+    sha256 arm64_ventura: "725bff18ee85feaa9c758250a57fa14253cd087ab2e25805024a2758fc1c71cf"
+    sha256 sonoma:        "07f8f3a4e8e88b19c022a54f3e5512a95ca5984529ed435a0831284867e5b581"
+    sha256 ventura:       "a593137347c22716ea4098ecda532c2f9d8082c51d128de11059a78645a8e8cb"
+    sha256 arm64_linux:   "dd9f4e8d0a87b0390cf5c76ab45fec1e543cf6f7d3132dbc9cfab558cd9110e4"
+    sha256 x86_64_linux:  "ba290274fa63ac05cfb29e29e31944fe9e9f118ef5ef69b08e1b369c28f1add3"
   end
 
   depends_on "font-util"   => :build
@@ -39,7 +41,7 @@ class XorgServer < Formula
   depends_on "xcb-util-renderutil"
   depends_on "xcb-util-wm"
   depends_on "xkbcomp"
-  depends_on "xkeyboardconfig"
+  depends_on "xkeyboard-config"
 
   on_macos do
     depends_on "libapplewm"
@@ -57,12 +59,12 @@ class XorgServer < Formula
     depends_on "systemd"
 
     resource "xvfb-run" do
-      url "https://salsa.debian.org/xorg-team/xserver/xorg-server/-/raw/xorg-server-2_21.1.4-1/debian/local/xvfb-run"
+      url "https://salsa.debian.org/xorg-team/xserver/xorg-server/-/raw/xorg-server-2_21.1.13-3/debian/local/xvfb-run"
       sha256 "fd05e0f8e6207c3984b980a0f037381c9c4a6f22a6dd94fdcfa995318db2a0a4"
     end
 
     resource "xvfb-run.1" do
-      url "https://salsa.debian.org/xorg-team/xserver/xorg-server/-/raw/xorg-server-2_21.1.4-1/debian/local/xvfb-run.1"
+      url "https://salsa.debian.org/xorg-team/xserver/xorg-server/-/raw/xorg-server-2_21.1.13-3/debian/local/xvfb-run.1"
       sha256 "08f14f55e14e52e5d98713c4d8f25ae68d67e2ee188dc0247770c6ada6e27c05"
     end
   end

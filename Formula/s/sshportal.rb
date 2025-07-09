@@ -5,6 +5,8 @@ class Sshportal < Formula
   sha256 "713be8542c93d91811f9643a8a2954ebc15130099e300fedb5ea4785b5337b52"
   license "Apache-2.0"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e41e72b749adc2be38fd48aa7bc7414b1e06cefe22e2ee83cd1e62108403d583"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2d2011f8a00406373f0f08fe0d6ae9bc24319328644de51f42cb67047bf26005"
@@ -13,6 +15,7 @@ class Sshportal < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "d4a1076a63578d51bb79f4d6f7c35432771c479d6baf00d2d96556436da6dfd8"
     sha256 cellar: :any_skip_relocation, ventura:        "67da5adbff8a32e081440bb5f2ec8992448dcf7839faa2c8ea236ef596f00f17"
     sha256 cellar: :any_skip_relocation, monterey:       "83612694df61dc4caee75ad516e29c65a1ad024a6008b21188e34bac4d98d985"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "dcaa3b282c7d701cc33799bb3d7c754b545d1278367a08421e366e8e330ba374"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5184e0795bf5e6e3c1d785919a77d4473c9edbb12bc1e3fc4714c48887b2d178"
   end
 

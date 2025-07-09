@@ -5,6 +5,8 @@ class LibvisualPlugins < Formula
   sha256 "55988403682b180d0de5e6082f804f3cf066d9a08e887b10eb6a315eb40d9f87"
   license all_of: ["GPL-2.0-or-later", "GPL-3.0-or-later", "LGPL-2.1-or-later"]
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 arm64_sequoia:  "0203c2ea44c5978e092b682a966a72ec4099bca267a56814bdcb1d350ffac738"
     sha256 arm64_sonoma:   "2f8be28190eb7037ae6b9d2022e52b97f9fd16f0b7ce663f12725fec703951de"
@@ -15,10 +17,11 @@ class LibvisualPlugins < Formula
     sha256 ventura:        "2ee6827428dd600d21412a543dda3adfd279f80645850904860722bbab683d4f"
     sha256 monterey:       "977213a56b8ee0e6dc046a117ca5578d2c3e03e9d9430f32365a16ef224eddf4"
     sha256 big_sur:        "b2202a454a452bb02d49db40379395481fd4a21888a73a0a462b4675ef703052"
+    sha256 arm64_linux:    "1a8aa255c27a5600d66d0eba73ac39aa0708439481d577482008523119914708"
     sha256 x86_64_linux:   "dfb02d238ee8abe6fa95c0a0d1d9f4fdc77e5d1946ef670b4bfdae9f481f95b3"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "xorg-server" => :test
 
   depends_on "jack"

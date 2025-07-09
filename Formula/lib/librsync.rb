@@ -5,6 +5,8 @@ class Librsync < Formula
   sha256 "a0dedf9fff66d8e29e7c25d23c1f42beda2089fb4eac1b36e6acd8a29edfbd1f"
   license "LGPL-2.1-or-later"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "d9636c7490adcc95354151caa325f5a88d79eae4579427afe070624cf0704ce8"
     sha256 cellar: :any,                 arm64_sonoma:   "1a4dd37b91633fb0ca4ff0298be03a5877762a2a25dc50f97da96b50de64cdb6"
@@ -15,6 +17,7 @@ class Librsync < Formula
     sha256 cellar: :any,                 ventura:        "56a8016cd9f57fd16a18dc4718af15fa033220894bda2dab1eeb03583982635a"
     sha256 cellar: :any,                 monterey:       "0b1430ccb90548e554ae9b56990bfe958c416dac61594185b2ac0d38af89bb2d"
     sha256 cellar: :any,                 big_sur:        "1f060456ddd3143afd9d7b4ce09fa73de0b685d16e5b5add2eec4039175879d1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "0ab058d81de355cad8a2e2bd385733d08a58394e95ab025165ec1bcb69dc969a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9c48743c4c502118826bf142d7bb393099a994c882b55c1c11430c656382af16"
   end
 
@@ -22,8 +25,10 @@ class Librsync < Formula
   depends_on "popt"
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
+
     man1.install "doc/rdiff.1"
     man3.install "doc/librsync.3"
   end

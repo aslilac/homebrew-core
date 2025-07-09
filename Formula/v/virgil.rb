@@ -2,8 +2,8 @@ class Virgil < Formula
   desc "CLI tool to manage your Virgil account and applications"
   homepage "https://github.com/VirgilSecurity/virgil-cli"
   url "https://github.com/VirgilSecurity/virgil-cli.git",
-     tag:      "v5.2.9",
-     revision: "604e4339d100c9cd133f4730ba0efbd599321ecb"
+      tag:      "v5.2.9",
+      revision: "604e4339d100c9cd133f4730ba0efbd599321ecb"
   license "BSD-3-Clause"
   head "https://github.com/VirgilSecurity/virgil-cli.git", branch: "master"
 
@@ -17,6 +17,8 @@ class Virgil < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:  "f7b6c179875ab30f849e3cbba53c8aeed7af4c569b69d4b112c2d749e5c38ea4"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "05da77ebed1e01c11281b7f148441a6aa22f9be8d219037913c238d95c615425"
   end
+
+  disable! date: "2025-03-02", because: :does_not_build
 
   depends_on "go" => :build
   # https://github.com/VirgilSecurity/virgil-cli/issues/58

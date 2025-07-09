@@ -1,8 +1,8 @@
 class Urdfdom < Formula
   desc "Unified Robot Description Format (URDF) parser"
   homepage "https://wiki.ros.org/urdf/"
-  url "https://github.com/ros/urdfdom/archive/refs/tags/4.0.1.tar.gz"
-  sha256 "46b122c922f44ec32674a56e16fd4b5d068b53265898cbea2c3e1939ecccc62a"
+  url "https://github.com/ros/urdfdom/archive/refs/tags/5.0.2.tar.gz"
+  sha256 "f929a33ec6171a57d4ff7d4c0eff6fb79d4725c279189d4f4c8806c4aa4e71ac"
   license "BSD-3-Clause"
 
   # Upstream uses Git tags (e.g. `1.0.0`) to indicate a new version. They
@@ -14,12 +14,13 @@ class Urdfdom < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "d9c585056b45fa2d64da4613371f508b31ad4611f6510c7fe4f90ead4586fbfd"
-    sha256 cellar: :any,                 arm64_sonoma:  "2fc91d9d915c001a4bb09644ed81c3826da2bf2ac9c28c344d39f1bc68c635d5"
-    sha256 cellar: :any,                 arm64_ventura: "dd66ef35d29fcb96739777b2861277b7f26aa4300595d6c32d52a391c80a575b"
-    sha256 cellar: :any,                 sonoma:        "0c1cfbccf4ec391988a01790b5bc2c2d50d2335f74c55599772465c13e6f0505"
-    sha256 cellar: :any,                 ventura:       "fc7e201c27e4dff5f55208e03489194374f0b237b09cf4151561fb172e9b60f9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b3c2301cc4856402689959e4d995486c4c1b754a4fe3ca18128b2a202a986669"
+    sha256 cellar: :any,                 arm64_sequoia: "756fda4ead0dd187f6ed44bdbdf1d03142a4088d334e9d27bfe1ae1b6d0f2cfa"
+    sha256 cellar: :any,                 arm64_sonoma:  "08e6d3e29fb2072ade8ff174827d0c59ee5c28bcf288e8da09a56846ead4998d"
+    sha256 cellar: :any,                 arm64_ventura: "07a35187641e8a0a27266ead0227892a37e8f847ec580877c513382cca1b740c"
+    sha256 cellar: :any,                 sonoma:        "3d2f693b70cc2f54f6f9135577865cad22d5231197058020586bb98137e525e0"
+    sha256 cellar: :any,                 ventura:       "f1e57f3dd834b113e765beaa5f26e187647f5ecb34445e761fa5028614fb3d17"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c970633d691e7638e3d19fb153f405b76ed940371558199f682b71cca5043e5b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "df20fa90b221d69a837117f743067ba079e9d414d441aedf1edf1a3ec68169dc"
   end
 
   depends_on "cmake" => :build

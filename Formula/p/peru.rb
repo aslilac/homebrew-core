@@ -3,27 +3,22 @@ class Peru < Formula
 
   desc "Dependency retriever for version control and archives"
   homepage "https://github.com/buildinspace/peru"
-  url "https://files.pythonhosted.org/packages/fe/0e/b78315545923029f18669d083826bc59a12006cd3bc430c8141f896310cc/peru-1.3.2.tar.gz"
-  sha256 "161d9fd85d8d37ef10eed1d8b38da126d7ba9554b585e40ed2964138fc3b2f00"
+  url "https://files.pythonhosted.org/packages/0e/96/dc9e467f61327b686b6e775ecf7e365011c44fd25b34114de926dfb54f15/peru-1.3.4.tar.gz"
+  sha256 "2ff19ae8569b783177d5cf9fb6c0e306698f7397603f2fdf4a0672d15f7dbd73"
   license "MIT"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "3a505d5ae83c37d1c03a701730080b6c5ea64845e49e5b559092f8e456f7861c"
-    sha256 cellar: :any,                 arm64_sonoma:  "3f43433b133723e78ac768cbbf3cdf75727ec56ce717d0032b5a477c5b108933"
-    sha256 cellar: :any,                 arm64_ventura: "6ad7e31af06a24c12d7554db4cc6484efcc36ea223eb55b58f6afb1c44564159"
-    sha256 cellar: :any,                 sonoma:        "1f1cb4aff42105b14711d19944b4d7fe8d0f35ccf4d7f473e762605770adac1d"
-    sha256 cellar: :any,                 ventura:       "ed6ef91406a4e6391239f3d8a9d4608bb2f9c3133051c11b088bdaa64fcb365e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c9b15bfa66cac8e7e571c11213ab84b55d5deb0de4d742d94b36c489ba63349e"
+    sha256 cellar: :any,                 arm64_sequoia: "beeb4f77adc52280a01149f9cdfd3b4100d6c7dd92c51aa6fb59b4a4c1d50bd9"
+    sha256 cellar: :any,                 arm64_sonoma:  "6bcea08bb842546b71b214f6390e8cc31eff4b778000d178472526199a231b66"
+    sha256 cellar: :any,                 arm64_ventura: "b013421dad16894ef27b69c705cc52b729eaa7b404c70cd926b755c6ec11c461"
+    sha256 cellar: :any,                 sonoma:        "374514a3186c7992d46046a34c5293d75ca9681b767cd2a4a39d112a7e2ddc15"
+    sha256 cellar: :any,                 ventura:       "1ade107c73338fe0a62805099cc16d53e59ba95009055c01d6def097c4928dfc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7fe0da4736ccecc7dd1b2609e57f76e1eeeddbac408f7d3cd83bb204220173e9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "55ed2401a2819caa9197b706d000b153c1893036ff291ca64e6b65bd949248ef"
   end
 
   depends_on "libyaml"
   depends_on "python@3.13"
-
-  resource "docopt" do
-    url "https://files.pythonhosted.org/packages/a2/55/8f8cab2afd404cf578136ef2cc5dfb50baa1761b68c9da1fb1e4eed343c9/docopt-0.6.2.tar.gz"
-    sha256 "49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"
-  end
 
   resource "pyyaml" do
     url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
@@ -48,7 +43,7 @@ class Peru < Formula
     YAML
 
     system bin/"peru", "sync"
-    assert_predicate testpath/".peru", :exist?
-    assert_predicate testpath/"peru", :exist?
+    assert_path_exists testpath/".peru"
+    assert_path_exists testpath/"peru"
   end
 end

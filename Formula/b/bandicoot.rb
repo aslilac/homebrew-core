@@ -1,17 +1,18 @@
 class Bandicoot < Formula
   desc "C++ library for GPU accelerated linear algebra"
   homepage "https://coot.sourceforge.io/"
-  url "https://gitlab.com/bandicoot-lib/bandicoot-code/-/archive/1.16.1/bandicoot-code-1.16.1.tar.bz2"
-  sha256 "b9c6532b8c7e37dd7986ccd346a849db57cca4024ce41c3591f778139531b1d0"
+  url "https://gitlab.com/bandicoot-lib/bandicoot-code/-/archive/2.1.1/bandicoot-code-2.1.1.tar.bz2"
+  sha256 "128a02062426fbb88aaf6a00af227ee9d40e083e4c78fa560498ff06ae381544"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "d3e5cae271211ff164554d8c9f065d4a6707a08f8c20e26f1409f1e506ef01b8"
-    sha256 cellar: :any,                 arm64_sonoma:  "dcbb689ef19632d7e26ef7d17242e0357debda872cc350795ae2d8b4e0f5679a"
-    sha256 cellar: :any,                 arm64_ventura: "aa9bef5d8e8454bb791209fb94916c114003a6a0890bd666fd64e6fabb1edd63"
-    sha256 cellar: :any,                 sonoma:        "83c3169b28393ac1ee07224951d2e072f4cf8d972419507739036f4e2f095586"
-    sha256 cellar: :any,                 ventura:       "58798b5f55aac745c9aff6b7d0ab32b4ec19597673fdf62bc0a84992ccceab6b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f442ff6aaafcb1376fbf3257a5355ff369734d09f0a7b7e8218ea94dfce29a18"
+    sha256 cellar: :any,                 arm64_sequoia: "9eca2fb6a06c29cebd5fd25ddf5878ae34d88d5b923fa1fed5aed1a9e0773c98"
+    sha256 cellar: :any,                 arm64_sonoma:  "b55ec22827391201012634b5ae8e634c8e78cd254c15230b697ea3374cf46bb5"
+    sha256 cellar: :any,                 arm64_ventura: "9831c4eea08c9dc12470f68591f42f310998b6ee4ab5d362be142cb3e7514c7e"
+    sha256 cellar: :any,                 sonoma:        "2ab39c81ba1c29f3cbc6ece50efecba6235c8f6d1f8c888e2aad80f25e3890b7"
+    sha256 cellar: :any,                 ventura:       "b2c5cf47375d80f86139639924fa492acdcb7768f1e7f8b33b0f8cdce219834f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "757d99751200c72d5b79d7f90be7e0faed3a23501f62af28156c9c66512d94d3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "252019c9e01386f84034a00808cd5c9cd7c03c24d26818b855ee1ad85452c10e"
   end
 
   depends_on "cmake" => :build
@@ -49,6 +50,6 @@ class Bandicoot < Formula
     system ENV.cxx, "-std=c++11", "test.cpp", "-I#{include}", "-L#{lib}", "-lbandicoot", "-o", "test"
 
     # Check that the coot version matches with the formula version
-    assert_equal shell_output("./test").to_i, version.to_s.to_i
+    assert_equal version.to_s.to_i, shell_output("./test").to_i
   end
 end

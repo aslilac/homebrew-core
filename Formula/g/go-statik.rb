@@ -4,6 +4,9 @@ class GoStatik < Formula
   url "https://github.com/rakyll/statik/archive/refs/tags/v0.1.7.tar.gz"
   sha256 "cd05f409e63674f29cff0e496bd33eee70229985243cce486107085fab747082"
   license "Apache-2.0"
+  head "https://github.com/rakyll/statik.git", branch: "master"
+
+  no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 1
@@ -35,7 +38,7 @@ class GoStatik < Formula
       "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
     end
     system bin/"statik", "-src", font_path
-    assert_predicate testpath/"statik/statik.go", :exist?
+    assert_path_exists testpath/"statik/statik.go"
     refute_predicate (testpath/"statik/statik.go").size, :zero?
   end
 end

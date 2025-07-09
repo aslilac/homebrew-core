@@ -5,6 +5,8 @@ class Libversion < Formula
   sha256 "bb49d745a0c8e692007af6d928046d1ab6b9189f8dbba834cdf3c1d251c94a1d"
   license "MIT"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "f392a811f7f8c33d3215c42acc3162b8e4eb969ef2035b9cd1848b565a4aaa3c"
     sha256 cellar: :any,                 arm64_sonoma:   "71d067178dfa687afa51f634d5b95c5e8c7207de51ef57625bf4de2e64f7b7a8"
@@ -15,6 +17,7 @@ class Libversion < Formula
     sha256 cellar: :any,                 ventura:        "55214b46e71ca86a53fced6ec189f5d5d88f1683534578816562c0ea59b23f65"
     sha256 cellar: :any,                 monterey:       "f4f9d55d39e551756a77055b77108b65f2aea9bc2d8f3bb0eaa13b3f6023c142"
     sha256 cellar: :any,                 big_sur:        "3b8a9af1caeeba055c351dd7b39fec1cc2adc3e7dd125c63bebcbc06c3cce9f1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "376dd65501387cfc8c9b69e4e8d58e41e157020a061e62ddfab8583ca18843ae"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "244074a47f2d78925338b7e54defef0b35a250c50e4cd0ae4247c5c659a7c87f"
   end
 

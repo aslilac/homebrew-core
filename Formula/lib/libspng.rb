@@ -5,6 +5,8 @@ class Libspng < Formula
   sha256 "47ec02be6c0a6323044600a9221b049f63e1953faf816903e7383d4dc4234487"
   license "BSD-2-Clause"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "dc994f773c7bb0e13fcddb6ceda95f38d0aa0cac86ee883da34e90bf38d7ba39"
     sha256 cellar: :any,                 arm64_sonoma:   "172505ff5448c82fbdb5572865635db579c938aa58af45385606be5b949ff87e"
@@ -15,12 +17,13 @@ class Libspng < Formula
     sha256 cellar: :any,                 ventura:        "c76aaaf78c156d1ff0af19e0219c159a2da0e3134c3fb936057b566f6e10e9d5"
     sha256 cellar: :any,                 monterey:       "fdcbf11ea62d2dcbb6aaa56dd9f7f1b162c592de5a7301c09976ebb2113e217e"
     sha256 cellar: :any,                 big_sur:        "2f1bee0c91bf53b0289d067a93dfe45896f8f979914486c08e264571b82e2d91"
+    sha256                               arm64_linux:    "64efbd30e15ac3ce66bd2f493973aaa3a56229859de2fe3227f824c36175acc5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7a77bbbc2800f350812338cb58d7a588f33fd2a7bac3eb0e2be6c7acfb3687f2"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   uses_from_macos "zlib"
 

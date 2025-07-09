@@ -9,6 +9,8 @@ class Sha1dc < Formula
   # "simplified_c90" branch that's the basis for release.
   head "https://github.com/cr-marcstevens/sha1collisiondetection.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any,                 arm64_sequoia:  "5fe1a0a2661073a77af41918596aef1fda94c415dbed1a3e7b5a4ee7332aff1b"
     sha256 cellar: :any,                 arm64_sonoma:   "9a4352024715c628f177c0585164b8fabda1c4c266e16735f406353c8c2068ce"
@@ -24,6 +26,7 @@ class Sha1dc < Formula
     sha256 cellar: :any,                 high_sierra:    "a489f11b91a88486274717eace83368f6b072b134ddc62001157b1fae9873dab"
     sha256 cellar: :any,                 sierra:         "9eba4b19247672b715376e2086689e7418235d850a158636d2ba3deb46851933"
     sha256 cellar: :any,                 el_capitan:     "32d59c039a26d232b35f3c1877ca8c78ba0a303866adefee002c017359b03267"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e70a02cce5e9c673cd751665e913a54e3db1e67530aa702b86c3452e5d45db90"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "981db3d0b2fcf5e914e1506a746dfb2bd14d83a191f268d8cdf5cb57401c0475"
   end
 

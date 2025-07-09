@@ -6,6 +6,8 @@ class AtomistCli < Formula
   license "Apache-2.0"
   revision 1
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256                               arm64_sequoia:  "54a93f92a1ab76bd418aea3c87bede2490e9db5605238ba1b501717dd54377d4"
@@ -15,6 +17,7 @@ class AtomistCli < Formula
     sha256                               sonoma:         "9f084e5811bda72cbdafaa9d6ef94475d4e62f8a02a9701482d48c77c2135cf3"
     sha256                               ventura:        "059bfc06ae2d8cd4ff0c588d543b6d79637c6e199b30544e832ca5fb472701ab"
     sha256                               monterey:       "35c62db45f98397cf306aad8b2f9e4a0b0f0b61f686da6b7b91c34d41bcf18d0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "f506f68f1e09b7ace94a007c93bab7edccbdf5f6d11461756bd2921ee0d481fd"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a8a420e052281702ab92e1b510422b86556e366f8c6b149fbae2ef3864466708"
   end
 
@@ -38,15 +41,12 @@ class AtomistCli < Formula
       # Replace the vendored pre-built term-size with one we build ourselves
       ln_sf (Formula["macos-term-size"].opt_bin/"term-size").relative_path_from(macos_dir), macos_dir
     end
-
-    # Replace universal binaries with native slices.
-    deuniversalize_machos
   end
 
   test do
-    assert_predicate bin/"atomist", :exist?
+    assert_path_exists bin/"atomist"
     assert_predicate bin/"atomist", :executable?
-    assert_predicate bin/"@atomist", :exist?
+    assert_path_exists bin/"@atomist"
     assert_predicate bin/"@atomist", :executable?
 
     run_output = shell_output("#{bin}/atomist 2>&1", 1)

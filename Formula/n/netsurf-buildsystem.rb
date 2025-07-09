@@ -6,6 +6,8 @@ class NetsurfBuildsystem < Formula
   license "MIT"
   head "https://git.netsurf-browser.org/buildsystem.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     rebuild 1
     sha256 cellar: :any_skip_relocation, all: "7698443194711b12a21395fe67c378a2d9cb323ace8f590cfeb79ff730c2ed98"
@@ -21,19 +23,19 @@ class NetsurfBuildsystem < Formula
   test do
     (testpath/"src").mkpath
 
-    (testpath/"Makefile").write <<~EOS
+    (testpath/"Makefile").write <<~MAKE
       COMPONENT := hello
       COMPONENT_VERSION := 0.1.0
       COMPONENT_TYPE ?= binary
       include $(NSSHARED)/makefiles/Makefile.tools
       include $(NSBUILD)/Makefile.top
       INSTALL_ITEMS := $(INSTALL_ITEMS) /bin:$(BUILDDIR)/$(COMPONENT)
-    EOS
+    MAKE
 
-    (testpath/"src/Makefile").write <<~EOS
+    (testpath/"src/Makefile").write <<~MAKE
       DIR_SOURCES := main.c
       include $(NSBUILD)/Makefile.subdir
-    EOS
+    MAKE
 
     (testpath/"src/main.c").write <<~C
       #include <stdio.h>

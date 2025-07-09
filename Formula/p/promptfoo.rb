@@ -1,17 +1,18 @@
 class Promptfoo < Formula
   desc "Test your LLM app locally"
   homepage "https://promptfoo.dev/"
-  url "https://registry.npmjs.org/promptfoo/-/promptfoo-0.98.0.tgz"
-  sha256 "b97fbd1dc2c5292fe29ec9f2823e6423a44828eded69086e25441a660b3f5ba8"
+  url "https://registry.npmjs.org/promptfoo/-/promptfoo-0.116.4.tgz"
+  sha256 "bd419deefc896fa60da9414c921f3de0df159733082ccf96dc6de931a66e68a6"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b749876bb7a1922574876bd4b61678e39957570effff26878b2e1d1c9d6271ec"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "cb44589dca9176b3540c1b16b012c3447258291deae85fb6de8d09d520311504"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "3b1b8ec8465056a8fcd8551317554842c0db6ac02046625db1bee8e26877fd40"
-    sha256 cellar: :any_skip_relocation, sonoma:        "118c434db045ad8246f73e04147a86a5601ddb1d69fbcf89bcb417d4757e443d"
-    sha256 cellar: :any_skip_relocation, ventura:       "45f2a94939b4c424ef80db22c2abfb8a45ab5f6290120c8181b5949974578d00"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5090f72644c36bbfc2e14960a57859aa9ff28e25a91a1c4b157791ffc0957fcd"
+    sha256 cellar: :any,                 arm64_sequoia: "4b881c3ba941ba953b0b56b9327a8e8037104dbef56f9dfbf33d0f24c5f3d606"
+    sha256 cellar: :any,                 arm64_sonoma:  "e73ca5c86840c6996e796002d8adc2c0a9d863fec6a7e184fb4b28fe9a24ebe6"
+    sha256 cellar: :any,                 arm64_ventura: "bbbc9db29a3c4be290aca9769210f52caed1e79f61a4783076b2ad427218fd61"
+    sha256                               sonoma:        "29498ddedba65b530ae2f294c262fca297f48a11a24117d58b96662f87e808b8"
+    sha256                               ventura:       "c5c047b6c29e52f93d8c22b0d546afbefc171f3e3283758c1ba666f11e719be0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8edd5433df0f032867f8f6dc5f8e0d85534437c38775f68e306ba48056f5d994"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a5aff7fa4165b5850cad2a8f8b6b926e1746883327b730004d92cdfa58df5126"
   end
 
   depends_on "node"
@@ -25,7 +26,7 @@ class Promptfoo < Formula
     ENV["PROMPTFOO_DISABLE_TELEMETRY"] = "1"
 
     system bin/"promptfoo", "init", "--no-interactive"
-    assert_predicate testpath/"promptfooconfig.yaml", :exist?
+    assert_path_exists testpath/"promptfooconfig.yaml"
     assert_match "description: \"My eval\"", (testpath/"promptfooconfig.yaml").read
 
     assert_match version.to_s, shell_output("#{bin}/promptfoo --version")

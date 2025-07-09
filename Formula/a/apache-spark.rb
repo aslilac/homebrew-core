@@ -1,10 +1,10 @@
 class ApacheSpark < Formula
   desc "Engine for large-scale data processing"
   homepage "https://spark.apache.org/"
-  url "https://dlcdn.apache.org/spark/spark-3.5.3/spark-3.5.3-bin-hadoop3.tgz"
-  mirror "https://archive.apache.org/dist/spark/spark-3.5.3/spark-3.5.3-bin-hadoop3.tgz"
-  version "3.5.3"
-  sha256 "173651a8a00f5bf0ee27b74d817e0e52eed9daa49fd66d59718994974d1d367d"
+  url "https://dlcdn.apache.org/spark/spark-4.0.0/spark-4.0.0-bin-hadoop3.tgz"
+  mirror "https://archive.apache.org/dist/spark/spark-4.0.0/spark-4.0.0-bin-hadoop3.tgz"
+  version "4.0.0"
+  sha256 "2ebac46b59be8b85b0aecc5a479d6de26672265fb7f6570bde2e72859fd87cc4"
   license "Apache-2.0"
   head "https://github.com/apache/spark.git", branch: "master"
 
@@ -16,7 +16,7 @@ class ApacheSpark < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "57a6975ec946b5e729579e522a0c5fd733a3f951c3ac47b0954805c573ffad13"
+    sha256 cellar: :any_skip_relocation, all: "57dc64a028ae181115603613203c66f9bc249c87b547f83cd17cff03399b8509"
   end
 
   depends_on "openjdk@17"
@@ -32,11 +32,29 @@ class ApacheSpark < Formula
   end
 
   test do
-    assert_match "Long = 1000",
-      pipe_output(bin/"spark-shell --conf spark.driver.bindAddress=127.0.0.1",
-                  "sc.parallelize(1 to 1000).count()")
-    assert_match "String = abi/trivial",
-      pipe_output(bin/"spark-shell --conf spark.driver.bindAddress=127.0.0.1",
-                  "jdk.incubator.foreign.FunctionDescriptor.TRIVIAL_ATTRIBUTE_NAME")
+    require "pty"
+
+    output = ""
+    PTY.spawn(bin/"spark-shell") do |r, w, pid|
+      w.puts "sc.parallelize(1 to 1000).count()"
+      w.puts "jdk.incubator.foreign.FunctionDescriptor.TRIVIAL_ATTRIBUTE_NAME"
+      w.puts ":quit"
+      begin
+        r.each_line { |line| output += line }
+      rescue Errno::EIO
+        # GNU/Linux raises EIO when read is done on closed pty
+      end
+      # remove ANSI colors
+      output.encode!("UTF-8", "binary",
+        invalid: :replace,
+        undef:   :replace,
+        replace: "")
+      output.gsub!(/\e\[([;\d]+)?m/, "")
+    ensure
+      Process.kill("TERM", pid)
+    end
+
+    assert_match "Long = 1000", output
+    assert_match "String = abi/trivial", output
   end
 end

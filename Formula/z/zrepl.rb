@@ -6,6 +6,8 @@ class Zrepl < Formula
   license "MIT"
   head "https://github.com/zrepl/zrepl.git", branch: "master"
 
+  no_autobump! because: :requires_manual_review
+
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "467d9021d507942a4f74a1c64983a1a216e3215110b67ca591101a1350a93928"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "cb2b36b880afd2cf11fc4bbb7e2f544f40287e180bdd06c47da63be1c9bb2970"
@@ -20,7 +22,7 @@ class Zrepl < Formula
   depends_on "go" => :build
 
   resource "homebrew-sample_config" do
-    url "https://raw.githubusercontent.com/zrepl/zrepl/master/config/samples/local.yml"
+    url "https://raw.githubusercontent.com/zrepl/zrepl/refs/tags/v0.6.1/config/samples/local.yml"
     sha256 "f27b21716e6efdc208481a8f7399f35fd041183783e00c57f62b3a5520470c05"
   end
 
@@ -47,7 +49,7 @@ class Zrepl < Formula
   test do
     resources.each do |r|
       r.verify_download_integrity(r.fetch)
-      assert_equal "", shell_output("#{bin}/zrepl configcheck --config #{r.cached_download}")
+      assert_empty shell_output("#{bin}/zrepl configcheck --config #{r.cached_download}")
     end
   end
 end
